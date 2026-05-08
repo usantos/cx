@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -54,10 +55,8 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetal
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogTresBotoesListener;
 
 public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements OnCopiaColaListener {
@@ -187,11 +186,16 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
 
     private void showDialogCompraCancelada() {
         if (!contemBolao()){
-            DialogUtils.dialogSim(DetalhesComprasActivity.this,
+            DialogUtils.dialogTresBotoes(
+                    DetalhesComprasActivity.this,
+                    "Atenção",
                     getResources().getString(R.string.mensagem_compra_cancelada_dialog),
-                    new OnDialogBotaoListener() {
+                    "Salvar Carrinho",
+                    "Ajuda",
+                    "Cancelar",
+                    new OnDialogTresBotoesListener() {
                         @Override
-                        public void onButtonClick(DialogInterface dialog, int which) {
+                        public void TopButton(DialogInterface dialog, int which) {
                             if (dialogFavoritar != null) {
                                 dialogFavoritar.show();
                             } else {
@@ -199,24 +203,50 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
                                 dialogFavoritar.show();
                             }
                         }
+
+                        @Override
+                        public void CenterButton(DialogInterface dialog, int which) {
+                            abrirAjuda();
+                        }
+
+                        @Override
+                        public void BottomButton(DialogInterface dialog, int which) {
+
+                        }
                     }
+
             );
         }
     }
 
     private void showDialogCompraCancelada(String descricao) {
         if (!contemBolao()){
-            DialogUtils.dialogSim(DetalhesComprasActivity.this,
+            DialogUtils.dialogTresBotoes(
+                    DetalhesComprasActivity.this,
+                    "Atenção",
                     descricao,
-                    new OnDialogBotaoListener() {
+                    "Salvar Carrinho",
+                    "Ajuda",
+                    "Cancelar",
+                    new OnDialogTresBotoesListener() {
                         @Override
-                        public void onButtonClick(DialogInterface dialog, int which) {
+                        public void TopButton(DialogInterface dialog, int which) {
                             if (dialogFavoritar != null) {
                                 dialogFavoritar.show();
                             } else {
                                 setaDialogFavoritar();
                                 dialogFavoritar.show();
                             }
+                        }
+
+                        @Override
+                        public void CenterButton(DialogInterface dialog, int which) {
+                            abrirAjuda();
+                        }
+
+                        @Override
+                        public void BottomButton(DialogInterface dialog, int which) {
+
                         }
                     }
             );
@@ -243,7 +273,6 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
             public void onResponse(RepresaResponse response) {
                 loadViewProgress.dismiss();
                 if(response.getPayload().getPayload()){
-                    ViewUtils.alertTitulo(DetalhesComprasActivity.this, R.string.label_atencao, response.getPayload().getMensagem());
                     DialogUtils.dialogEntendi(DetalhesComprasActivity.this,response.getPayload().getMensagem());
                 }
             }
@@ -256,24 +285,6 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
         });
     }
 
-    private OnDialogSituacaoCompraListener onCompraCancelaDialogListener() {
-        return new OnDialogSituacaoCompraListener() {
-            @Override
-            public void ajuda() {
-                abrirAjuda();
-            }
-
-            @Override
-            public void ok() {
-                if (dialogFavoritar != null) {
-                    dialogFavoritar.show();
-                } else {
-                    setaDialogFavoritar();
-                    dialogFavoritar.show();
-                }
-            }
-        };
-    }
 
     private void showDialogEstornada() {
         DialogUtils.dialogTresBotoes(DetalhesComprasActivity.this,
@@ -286,13 +297,29 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
     }
 
     private void showDialogDevolucaoPagamento() {
-        dialogDevolucaoPix = DialogUtils.showDialogCustom(DetalhesComprasActivity.this,
+        DialogUtils.dialogDoisBotoesPersonalizados(
+                DetalhesComprasActivity.this,
                 getString(R.string.popup_pix_estorno_pagamento_devolvido),
                 getString(R.string.popup_pix_estorno_nao_possivel),
-                null,
-                getString(R.string.title_voltar),
                 getString(R.string.tenta_novamente_dialog),
-                onDialogListenerDevolucaoPix(), true);
+                getString(R.string.fechar),
+                new OnDialogDoisBotoesListener() {
+                    @Override
+                    public void PositiveButton(DialogInterface dialog, int which) {
+                        //PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                        Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, PrincipalActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void NegativeButton(DialogInterface dialog, int which) {
+                        //Sem ação apenas fecha a modal
+                    }
+                }
+
+        );
     }
 
     private void showDialogDebitoNaoAutorizado() {
@@ -340,44 +367,6 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
         };
     }
 
-    private OnDialog3ButtonsListener onDialogListenerDevolucaoPix() {
-        return new OnDialog3ButtonsListener() {
-            @Override
-            public void leftButtom() {
-                //dialogEstornadaPix.dismiss();
-            }
-
-            @Override
-            public void centerButtom() {
-                dialogDevolucaoPix.dismiss();
-                //PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
-                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, PrincipalActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void rightButtom() {
-                dialogDevolucaoPix.dismiss();
-            }
-        };
-    }
-
-    private OnDialogSituacaoCompraListener onDebitaNaoAutorizadoDialogListener() {
-        return new OnDialogSituacaoCompraListener() {
-            @Override
-            public void ajuda() {
-                abrirAjuda();
-            }
-
-            @Override
-            public void ok() {
-                tentarNovamente();
-            }
-        };
-    }
-
     private void tentarNovamente() {
 //        if (ApostaUtils.temModalidadeNormaleEspecialAberta(listaAposta)){
 //            DialogUtils.showDialogSegmentedControl(DetalhesComprasActivity.this,
@@ -411,18 +400,6 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
         };
     }
 
-    private OnDialogSegmentedControlListener onReapostaDialogListener() {
-        return opcaoSelecionada -> {
-            switch (opcaoSelecionada){
-                case AMBOS:
-                    break;
-                case NORMAL:
-                    break;
-                case ESPECIAL:
-                    break;
-            }
-        };
-    }
 
     private void abrirAjuda() {
         if (compraDTO.getMeioPagamento() != null) {
@@ -625,6 +602,16 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
             dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
             dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
         });
+
+        if(dialogFavoritar.getWindow() != null){
+
+            int screenWidth = getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * 0.85); // Define a largura da dialog como 85% da largura da tela
+
+            dialogFavoritar.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialogFavoritar.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
     }
 
     private void setaDialogFiltrar() {

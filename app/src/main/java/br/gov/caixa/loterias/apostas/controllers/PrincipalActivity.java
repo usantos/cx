@@ -1289,7 +1289,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             if (!BuildVersionUtil.isPRD()) {
-                                ViewUtils.alert(PrincipalActivity.this, "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenFirebase);
                                 DialogUtils.dialogEntendi(
                                         PrincipalActivity.this,
                                         "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenFirebase

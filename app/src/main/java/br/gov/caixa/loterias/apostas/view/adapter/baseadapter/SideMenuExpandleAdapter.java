@@ -4,7 +4,10 @@ package br.gov.caixa.loterias.apostas.view.adapter.baseadapter;
  * Created by cedesbr450 on 24/01/18.
  */
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +21,11 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DividerUtils;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
     private Context context;
@@ -231,7 +235,23 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 description.append(": ").append(totalItens).append(" itens, final");
-                layoutItem.setOnClickListener(view -> ViewUtils.abrirMenuCaixa(context));
+                layoutItem.setOnClickListener(view ->
+                    DialogUtils.dialogConfirmar(
+                            context,
+                            context.getString(R.string.caixa_loterias),
+                            new OnDialogBotaoListener() {
+                                @Override
+                                public void onButtonClick(DialogInterface dialog, int which) {
+                                    String url = "https://www.caixa.gov.br/sobre-a-caixa/governanca-corporativa/caixa-loterias/Paginas/default.aspx";
+                                    Intent i = new Intent(Intent.ACTION_VIEW);
+                                    i.setData(Uri.parse(url));
+                                    context.startActivity(i);
+                                }
+                            }
+                    )
+                );
+
+
                 break;
             default:
                 break;

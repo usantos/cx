@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -197,45 +198,38 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     private void setaDialogFavoritar() {
-//        dialogFavoritar = new Dialog(this);
-//        dialogFavoritar.setContentView(R.layout.custom_dialog_edit_text);
-//
-//        TextView tituloDialog = dialogFavoritar.findViewById(R.id.tv_titulo);
-//        tituloDialog.setText("Carrinho Favorito");
-//
-//        etCarrinho = dialogFavoritar.findViewById(R.id.et_carrinho);
-//
-//        Button btnOk = dialogFavoritar.findViewById(R.id.btn_ok);
-//        Button btnCancelar = dialogFavoritar.findViewById(R.id.btn_cancelar);
-//
-//        btnOk.setOnClickListener(v -> {
-//            String text = etCarrinho.getText().toString();
-//            if (text != null && !text.isEmpty()) {
-//                validarCarrinhoFavorito(text);
-//            }
-//        });
-//        dialogFavoritar.setOnDismissListener(dialogInterface -> {
-//            etCarrinho.setText("");
-//        });
-//        btnCancelar.setOnClickListener(v -> dialogFavoritar.dismiss());
-        dialogFavoritar = DialogUtils.buildDialogFavoritar(
-                CarrinhoActivity.this,
-                "Carrinho Favorito",
-                new OnDialogFavoritarListener() {
-                    @Override
-                    public void Confirmar(String text) {
-                        if(text != null && !text.isEmpty()) {
-                            validarCarrinhoFavorito(text);
-                        }
-                    }
+        dialogFavoritar = new Dialog(this);
+        dialogFavoritar.setContentView(R.layout.custom_dialog_edit_text);
 
-                    @Override
-                    public void Cancelar() {
-                        //Sem ação, apenas fecha o dialog
-                    }
-                },
-                false
-        );
+        TextView tituloDialog = dialogFavoritar.findViewById(R.id.tv_titulo);
+        tituloDialog.setText("Carrinho Favorito");
+
+        etCarrinho = dialogFavoritar.findViewById(R.id.et_carrinho);
+
+        Button btnOk = dialogFavoritar.findViewById(R.id.btn_ok);
+        Button btnCancelar = dialogFavoritar.findViewById(R.id.btn_cancelar);
+
+        btnOk.setOnClickListener(v -> {
+            String text = etCarrinho.getText().toString();
+            if (text != null && !text.isEmpty()) {
+                validarCarrinhoFavorito(text);
+            }
+        });
+        dialogFavoritar.setOnDismissListener(dialogInterface -> {
+            etCarrinho.setText("");
+        });
+        btnCancelar.setOnClickListener(v -> dialogFavoritar.dismiss());
+
+        if(dialogFavoritar.getWindow() != null){
+
+            int screenWidth = getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * 0.85); // Define a largura da dialog como 85% da largura da tela
+
+            dialogFavoritar.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialogFavoritar.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
+
     }
 
     private void pegaExtras() {
