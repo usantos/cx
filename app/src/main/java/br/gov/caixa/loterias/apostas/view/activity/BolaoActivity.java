@@ -61,6 +61,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.model.model.LotericaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -222,17 +223,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
         AlertDialogUtils.show(this);
         model.buscaDadosUsuario(onBuscaDadosUsuarios());
-
-        //Animação 30 anos
-        if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.MEGA_SENA) {
-
-            AlertDialogUtils.dismiss(); //remove a interfeencia
-
-            animationManager = new PartyAnimationManager(this);
-            findViewById(android.R.id.content).post(() -> {
-                animationManager.start(6500);
-            });
-        }
 
     }
 
@@ -435,6 +425,19 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         return new OnSilceListener<ApostadorDTO>() {
             @Override
             public void success(ApostadorDTO payload) {
+                AlertDialogUtils.dismiss();
+
+                //Animação 30 anos
+                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.MEGA_SENA) {
+                    animationManager = new PartyAnimationManager(BolaoActivity.this);
+                    findViewById(android.R.id.content).post(() -> {
+                        animationManager.start(6500);
+                    });
+                    // Essa logica precisa ser removida apos encerramento da mega 30 anos
+                    //TODO//
+                }
+
+
                 idMunicipio = payload.getMunicipioId().getNumero().intValue();
                 idUf = payload.getMunicipioId().getIdUF().intValue();
                 model.setIdMunicipioUF(idMunicipio, idUf);
