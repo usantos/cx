@@ -72,6 +72,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaLotericasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.AccessibleSpringDotsIndicator;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
+import br.gov.caixa.loterias.apostas.view.custom.PartyAnimationManager;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.LotericaEmptyFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -141,6 +142,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private ParametroJogoDTO parametroJogo;
     private BarraTituloFiltroLotericaFragment fragBarraTituloFiltroLoterica;
     AccessibleSpringDotsIndicator dotsIndicator;
+    private PartyAnimationManager animationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,6 +223,33 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         AlertDialogUtils.show(this);
         model.buscaDadosUsuario(onBuscaDadosUsuarios());
 
+        //Animação 30 anos
+        if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.MEGA_SENA) {
+
+            AlertDialogUtils.dismiss(); //remove a interfeencia
+
+            animationManager = new PartyAnimationManager(this);
+            findViewById(android.R.id.content).post(() -> {
+                animationManager.start(6500);
+            });
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (animationManager != null) {
+            animationManager.stop();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (animationManager != null) {
+            animationManager.stop();
+        }
     }
 
 
