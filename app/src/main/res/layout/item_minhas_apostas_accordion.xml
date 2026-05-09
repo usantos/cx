@@ -251,6 +251,8 @@
             tools:itemCount="3"/>
 
         <LinearLayout
+            android:importantForAccessibility="yes"
+            android:focusable="true"
             android:id="@+id/ll_acertos1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -258,7 +260,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:importantForAccessibility="yes"
                 android:id="@+id/tv_label_acertos1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -268,7 +269,6 @@
                 android:fontFamily="@font/caixa_std_regular" />
 
             <TextView
-                android:importantForAccessibility="no"
                 android:id="@+id/tv_acertos1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -329,6 +329,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:importantForAccessibility="yes"
+            android:focusable="true"
             android:id="@+id/ll_acertos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -336,7 +338,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:importantForAccessibility="yes"
                 android:id="@+id/tv_label_acertos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -346,7 +347,6 @@
                 android:fontFamily="@font/caixa_std_regular" />
 
             <TextView
-                android:importantForAccessibility="no"
                 android:id="@+id/tv_acertos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
