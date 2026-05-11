@@ -513,7 +513,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     private void setupLotteryGrid(RecyclerView recyclerView, List<String> mNumbers, List<String> mSortedNumbers, LotteryGridStyleConfig config) {
         setupRecyclerview(recyclerView);
 
-        List<RowItem> rowItems = buildUiModels(7, mNumbers, config.getShape() != Shape.TREVO ? mSortedNumbers : null, config.isAnnounceColumns(), mSortedNumbers!=null?RewardMatchMode.ANY_POSITION : RewardMatchMode.SAME_POSITION);
+        List<RowItem> rowItems = buildUiModels(7, mNumbers, config.getShape() != Shape.TREVO ? mSortedNumbers : null, config.isAnnounceColumns(), mSortedNumbers!=null?RewardMatchMode.SAME_POSITION : RewardMatchMode.ANY_POSITION);
         NumerosGridAdapterBackup adapter = new NumerosGridAdapterBackup(config);
 
         adapter.submitList(rowItems);

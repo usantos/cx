@@ -18,8 +18,8 @@ public class LotteryMapper {
             String number = numbers.get(i);
             boolean isRewarded;
 
-            if (matchMode == RewardMatchMode.ANY_POSITION) {
-                isRewarded = rewarded!=null && rewarded.size() > i && number != null && number.equals(rewarded.get(i));
+            if (matchMode == RewardMatchMode.SAME_POSITION) {
+                isRewarded = rewarded != null && rewarded.size() > i && number != null && number.equals(rewarded.get(i));
             } else {
                 isRewarded = rewarded != null && number != null && rewarded.contains(number);
             }
