@@ -463,43 +463,6 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         }
     }
 
-//    private void setupGridNumeros(RecyclerView recyclerView, Shape shape, int columns,  List<String> numbers,int textColor, int borderColor, int backgroudColor) {
-//        recyclerView.setLayoutManager(new GridLayoutManager(context, columns));
-//        recyclerView.setNestedScrollingEnabled(false);
-//        NumerosGridAdapter adapter = new NumerosGridAdapter(shape, numbers, textColor, borderColor, backgroudColor);
-//        recyclerView.setAdapter(adapter);
-//    }
-
-//    private void setupGridNumerosUpdated(RecyclerView recyclerView, Shape shape, int columns,  List<String> numbers,int textColor, int borderColor, int backgroudColor) {
-//        setupRecyclerview(recyclerView);
-//
-//        List<RowItem> rowItems = buildUiModels(columns, numbers, null, false);
-//
-//        NumerosGridAdapterBackup adapter = new NumerosGridAdapterBackup(shape, textColor, borderColor, backgroudColor);
-//        adapter.submitList(rowItems);
-//        recyclerView.setAdapter(adapter);
-//    }
-
-//    private void setupGridNumerosWithIntersection(RecyclerView recyclerView, Shape shape,  int columns, List<String> numbers, int textColor, int borderColor, int backgroudColor,
-//                                                  List<String> intersectionNumbers, int intersectionTextColor, int intersectionBorderColor, int intersectionBackgroudColor) {
-//        recyclerView.setLayoutManager(new GridLayoutManager(context, columns));
-//        recyclerView.setNestedScrollingEnabled(false);
-//        NumerosGridAdapter adapter = new NumerosGridAdapter(shape, numbers, textColor, borderColor, backgroudColor,
-//                intersectionNumbers, intersectionTextColor, intersectionBorderColor, intersectionBackgroudColor);
-//        recyclerView.setAdapter(adapter);
-//    }
-
-//    private void setupGridNumerosWithIntersectionUpdated(RecyclerView recyclerView, Shape shape,  int columns, List<String> numbers, int textColor, int borderColor, int backgroudColor,
-//                                                  List<String> intersectionNumbers, int intersectionTextColor, int intersectionBorderColor, int intersectionBackgroudColor) {
-//        setupRecyclerview(recyclerView);
-//
-//        List<RowItem> rowItems = buildUiModels(columns, numbers, shape != Shape.TREVO ? intersectionNumbers : Collections.emptyList(), false);
-//        NumerosGridAdapterBackup adapter = new NumerosGridAdapterBackup(shape, textColor, borderColor, backgroudColor, intersectionTextColor, intersectionBorderColor, intersectionBackgroudColor);
-//
-//        adapter.submitList(rowItems);
-//        recyclerView.setAdapter(adapter);
-//    }
-
     private void setupLotteryGrid(RecyclerView recyclerView, int columns, List<String> mNumbers, List<String> mSortedNumbers, LotteryGridStyleConfig config) {
         setupRecyclerview(recyclerView);
 
@@ -519,16 +482,6 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         adapter.submitList(rowItems);
         recyclerView.setAdapter(adapter);
     }
-
-//    private void setupGridNumerosWithIntersectionUpdated(RecyclerView recyclerView, int columns, List<String> numbers, List<String> intersectionNumbers, LotteryGridStyleConfig config) {
-//        setupRecyclerview(recyclerView);
-//
-//        List<RowItem> rowItems = buildUiModels(columns, numbers, config.getShape() != Shape.TREVO ? intersectionNumbers : Collections.emptyList(), false);
-//        NumerosGridAdapterBackup adapter = new NumerosGridAdapterBackup(config);
-//
-//        adapter.submitList(rowItems);
-//        recyclerView.setAdapter(adapter);
-//    }
 
     private void setupRecyclerview(RecyclerView recyclerView) {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -565,26 +518,6 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         }
         return list;
     }
-
-//    private void setupGridNumerosWithIntersectionS7(RecyclerView recyclerView, Shape shape,  int columns, List<String> numbers, int textColor, int borderColor, int backgroudColor,
-//                                                    List<String> intersectionNumbers, int intersectionTextColor, int intersectionBorderColor, int intersectionBackgroudColor) {
-//        recyclerView.setLayoutManager(new GridLayoutManager(context, columns));
-//        recyclerView.setNestedScrollingEnabled(false);
-//        NumerosGridAdapter adapter = new NumerosGridAdapter(shape, numbers, textColor, borderColor, backgroudColor,
-//                intersectionNumbers, intersectionTextColor, intersectionBorderColor, intersectionBackgroudColor, true);
-//        recyclerView.setAdapter(adapter);
-//    }
-
-//    private void setupGridNumerosWithIntersectionS7Updated(RecyclerView recyclerView, Shape shape,  int columns, List<String> numbers, int textColor, int borderColor, int backgroudColor,
-//                                                    List<String> intersectionNumbers, int intersectionTextColor, int intersectionBorderColor, int intersectionBackgroudColor) {
-//        setupRecyclerview(recyclerView);
-//
-//        List<RowItem> rowItems = buildUiModels(columns, numbers, intersectionNumbers, true);
-//
-//        NumerosGridAdapterBackup adapter = new NumerosGridAdapterBackup(shape, textColor, borderColor, backgroudColor, intersectionTextColor, intersectionBorderColor, intersectionBackgroudColor);
-//        adapter.submitList(rowItems);
-//        recyclerView.setAdapter(adapter);
-//    }
 
     private String[] montaDescricaoAcertos(ItemMinhasApostasDTO item) {
         int numerosAcertados = 0;
