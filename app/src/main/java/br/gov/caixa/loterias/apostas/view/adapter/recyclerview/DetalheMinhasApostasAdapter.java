@@ -317,7 +317,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                 setupLotteryGrid(holder.rvSuper7Sorteados, 7, listCabecalho1a7, null, LotteryGridStyleConfig.rectangular7(context, estilo));
                 setupLotteryGrid(holder.rvNumberSortedos, item.getNumerosSorteados(), null, LotteryGridStyleConfig.rectangular(context, estilo));
                 setupLotteryGrid(holder.rvSuper7MeusNumeros, 7, listCabecalho1a7, null, LotteryGridStyleConfig.rectangular7(context, estilo));
-                setupLotteryGrid(holder.rvMeusNumeros, item.getSeusNumeros(), item.getNumerosSorteados(), LotteryGridStyleConfig.circular(context, estilo));
+                setupLotteryGrid(holder.rvMeusNumeros, item.getSeusNumeros(), item.getNumerosSorteados(), LotteryGridStyleConfig.circular7(context, estilo));
                 break;
             case MAIS_MILIONARIA:
                 holder.tvLabelNumerosSegundoSorteio.setVisibility(View.VISIBLE);
