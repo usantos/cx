@@ -501,24 +501,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         }
     }
 
-    @NonNull
-    private static SpannableStringBuilder getSpannableStringBuilder(String label, String valor) {
-        SpannableStringBuilder ssb = new SpannableStringBuilder();
-        // Label
-        int startLabel = 0;
-        ssb.append(label);
-        int endLabel = ssb.length();
-        ssb.setSpan(new CustomTypefaceSpan("", FonteUtils.getFonte(FontCaixaEnum.REGULAR)),startLabel,endLabel,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ssb.setSpan(new AbsoluteSizeSpan(18, true),startLabel,endLabel,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // Valor
-        int startValor = ssb.length();
-        ssb.append(valor);
-        int endValor = ssb.length();
-        ssb.setSpan(new CustomTypefaceSpan("", FonteUtils.getFonte(FontCaixaEnum.BOLD)),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ssb.setSpan(new AbsoluteSizeSpan(16, true),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return ssb;
-    }
-
     private void setupFieldsBolao(List<Pair<String, String>> list) {
         AccessibleRecyclerAdapter adapter = new AccessibleRecyclerAdapter(list, estiloMKP.getCorFonteFundoEscuro());
         rvFieldsBolao.setAdapter(adapter);
