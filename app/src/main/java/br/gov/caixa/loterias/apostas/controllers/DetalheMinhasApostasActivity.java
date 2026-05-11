@@ -400,7 +400,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         concursoTxt.setVisibility(View.VISIBLE);
         concursoTxt.setText(aposta.getConcursoInicial().toString());
 
-        //Apenas para acessibilidade
         concursoLabel.setContentDescription(concursoLabel.getText() + getString(R.string.txt_space) + aposta.getConcursoInicial().toString());
         containerConcurso.setContentDescription(concursoLabel.getContentDescription());
 
@@ -422,7 +421,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
                 accessibilityContent = accessibilityContent + "("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_apostas)+")";
             }
 
-            //Apenas para acessibilidade
             concursoLabel.setContentDescription(accessibilityContent);
             containerConcurso.setContentDescription(accessibilityContent);
         }
@@ -448,13 +446,10 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             setupFieldsBolao(labelValue);
 
         } else {
-            //Apenas para acessibilidade
             String betDateAccessibilityContent = getString(R.string.contest_date) + aposta.getDataEfetivacao() + " " + StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao());
             dataAposta.setContentDescription(betDateAccessibilityContent);
             clAccessibilityLeft.setContentDescription(betDateAccessibilityContent);
-            //dataApostaTxt.setVisibility(View.VISIBLE);
             dataApostaTxt.setText(aposta.getDataEfetivacao());
-            //horaApostaTxt.setVisibility(View.VISIBLE);
             horaApostaTxt.setText(StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao()));
         }
 
@@ -465,7 +460,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             tv_val_premio.setVisibility(TextView.VISIBLE);
             tv_val_premio.setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
 
-            //Apenas para acessibilidade
             statusApostaTxt.setContentDescription(statusApostaTxt.getText() + " " + tv_val_premio_tit.getText() + " " + tv_val_premio.getText());
             clAccessibilityRight.setContentDescription(statusApostaTxt.getContentDescription());
 
