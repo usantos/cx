@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 import br.gov.caixa.loterias.apostas.view.fragment.LoginFragment;
 
@@ -19,6 +20,12 @@ public class LoginActivity extends LoteriasBaseAppActivity {
         setContentView(R.layout.activity_login);
 
         TopazUtil.check(this);
+
+        AnalyticsHelper.getInstance().logViewScreen(
+                "apostar_loteria",
+                "entrada_app",
+                AnalyticsHelper.Tela.LOGIN
+        );
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();

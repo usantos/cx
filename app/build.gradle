@@ -388,8 +388,11 @@ repositories {
 
         // Import the Firebase BoM - Utiliado em conjunto com FMC
         implementation platform('com.google.firebase:firebase-bom:32.0.0')
+
         // Firebase Cloud Messaging (Java)
         implementation 'com.google.firebase:firebase-messaging'
+        implementation("com.google.firebase:firebase-analytics:23.2.0")
+
 
         // testImplementation deps
         testImplementation 'junit:junit:4.13.2'

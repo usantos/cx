@@ -54,6 +54,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -141,6 +142,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     //TODO: MEGA 30 ANOS//
     private boolean isMega30;
     private EstiloModalidadeMKP estilo;
+    String numeroConcurso;
 
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     public void onCreate(Bundle savedInstanceState) {
@@ -153,8 +155,9 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
         try{
+            numeroConcurso = parametroSimulacao.getConcurso().getNumero().toString();
             barraTituloDTO.setDataSorteio(getDataSorteio());
-            barraTituloDTO.setNumeroConcurso(parametroSimulacao.getConcurso().getNumero().toString());
+            barraTituloDTO.setNumeroConcurso(numeroConcurso);
             barraTituloDTO.setEspecial(isEspecial);
 
         } catch (Exception e){
@@ -179,7 +182,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
 
     private void preencheBarraTitulo() {
         FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
-                tipoJogo, parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(), isEspecial, getCorBackgroundBarraTitulo(), true);
+                tipoJogo, numeroConcurso, getDataSorteio(), isEspecial, getCorBackgroundBarraTitulo(), true);
     }
 
     private int getCorBackgroundBarraTitulo() {
@@ -249,6 +252,14 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         if (paginacao != null && isFragmentCartela() && !parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA)){
             voltaPagina();
         }
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                "apostar_loteria",
+                "selecionar_modalidade",
+                AnalyticsHelper.Tela.MONTAR_APOSTA,
+                ModalidadeEnum.fromString(tipoJogo),
+                numeroConcurso
+                );
+
     }
 
     public void zerarApostas() {

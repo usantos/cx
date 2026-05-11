@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -56,6 +57,21 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         setMetodos();
         startFragments();
         aplicaEstilo();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AnalyticsHelper.getInstance().logViewScreenApostaValor(
+                "apostar_loteria",
+                "montar_bolao",
+                AnalyticsHelper.Tela.CART,
+                ModalidadeEnum.fromString(modalidade),
+                valorAposta != null ? ViewUtils.getMoedaFormat(valorAposta) : "",
+                concurso != null ? concurso : ""
+        );
+
     }
 
     private void aplicaEstilo() {

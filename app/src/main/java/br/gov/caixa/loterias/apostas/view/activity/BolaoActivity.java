@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -46,6 +47,7 @@ import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
@@ -61,10 +63,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.model.model.LotericaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.FavoritarLotericaHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrosselBolaoAdapter;
@@ -141,6 +145,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private ParametroJogoDTO parametroJogo;
     private BarraTituloFiltroLotericaFragment fragBarraTituloFiltroLoterica;
     AccessibleSpringDotsIndicator dotsIndicator;
+    String numeroConcurso;
+    String nomeModalidade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +160,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             idModalidadeInicial = idModalidade;
             tipoConcursoInicial = tipoConcurso;
             if (idModalidade != null) {
+                ModalidadeEnum modalidade = ModalidadeEnum.fromInteger(idModalidade);
+                nomeModalidade = modalidade != null
+                        ? ModalidadeEnum.fromString(modalidade)
+                        : "";
+
                 loadParametroJogo(ModalidadeEnum.fromInteger(idModalidade));
             }
         }
@@ -223,6 +234,19 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                "apostar_loteria",
+                "montar_bolao",
+                AnalyticsHelper.Tela.BOLAO,
+                nomeModalidade,
+                numeroConcurso
+        );
+    }
+
 
     private void loadParametroJogo(ModalidadeEnum modalidade) {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
@@ -236,6 +260,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         if (parametroJogo == null || parametroJogo.getConcurso() == null || parametroJogo.getConcurso().getNumero() == null) {
             return;
         }
+        numeroConcurso = parametroJogo.getConcurso().getNumero().toString();
         if (isFiltradoLoterica()) {
             fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, cotasDisponiveis.get(0).isLotericaFavorita());
             selectFiltroLoterica();
@@ -246,7 +271,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                     getSupportFragmentManager(),
                     R.id.barra_titulo_mkp,
                     modalidade,
-                    parametroJogo.getConcurso().getNumero().toString(),
+                    numeroConcurso,
                     getDataSorteio(),
                     parametroJogo.getConcurso().getEstimativa(),
                     isEspecial,

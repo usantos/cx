@@ -2,10 +2,8 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -92,6 +90,7 @@ import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ComboUtil;
@@ -351,6 +350,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         layoutSideMenu();
         fragmentSomadorCarrinho();
         checkRedirecionamento();
+        int adapterPosition  = infiniteAdapter.getRealCurrentPosition();
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                "apostar_loteria",
+                "selecionar_modalidade",
+                AnalyticsHelper.Tela.HOME,
+                ModalidadeEnum.fromString(data.get(adapterPosition).getTipoModalidade()),
+                data.get(adapterPosition).getConcurso().getNumero().toString()
+        );
     }
 
     private void checkRedirecionamento() {
@@ -806,6 +813,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         //TODO: MEGA 30 ANOS//
         boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                "apostar_loteria",
+                "selecionar_modalidade",
+                AnalyticsHelper.Tela.HOME,
+                ModalidadeEnum.fromString(data.get(adapterPosition).getTipoModalidade()),
+                data.get(adapterPosition).getConcurso().getNumero().toString()
+        );
+
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
                 //TODO: MEGA 30 ANOS//

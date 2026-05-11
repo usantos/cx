@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -177,6 +178,22 @@ public class LoginFragment extends Fragment {
         }
 
         buttonLogin.setOnClickListener(v12 -> {
+            AnalyticsHelper.getInstance().logInteraction(
+                    "cta",
+                    "clicar",
+                    "entrar_no_app",
+                    "apostar_loteria",
+                    "entrada_app",
+                    AnalyticsHelper.Tela.LOGIN
+            );
+
+            AnalyticsHelper.getInstance().logFlowStart(
+                    "login",
+                    AnalyticsHelper.Tela.LOGIN.nome,
+                    "apostar_loteria",
+                    AnalyticsHelper.Tela.LOGIN.nome,
+                    AnalyticsHelper.Tela.LOGIN
+            );
 
             biometriaDTO = DadosBiometriaBO.obterBiometria();
 
