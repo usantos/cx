@@ -92,9 +92,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private ActivityResultLauncher<Intent> launcherAddCarrinho;
 	private BotaoFavoritar botaoFavoritar;
 	private boolean isLotericaFavorita;
-	private boolean hasLotericaFavorita;
 
-	private int controleChamadaServico = 1;
+    private int controleChamadaServico = 1;
 	private Boolean isMega30 = false;
 
 	@Override
@@ -137,7 +136,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void desabilitaFavoritar(){
-		hasLotericaFavorita = getIntent().hasExtra(ARG_IS_LOTERICA_FAVORITA);
+        boolean hasLotericaFavorita = getIntent().hasExtra(ARG_IS_LOTERICA_FAVORITA);
 		if (!hasLotericaFavorita) {
 			LinearLayout favoritar_detalhes = findViewById(R.id.layout_favoritar_detalhes);
 			favoritar_detalhes.setVisibility(View.INVISIBLE);
