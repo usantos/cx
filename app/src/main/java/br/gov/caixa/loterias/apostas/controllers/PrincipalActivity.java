@@ -1069,10 +1069,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             case MENU_DUVIDAS:
                 startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
                 break;
-            case MENU_SOBRE_CAIXA:
-//                ViewUtils.abrirMenuCaixa(this);
-
-                break;
             default:
                 break;
         }
@@ -1140,6 +1136,15 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
         sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> AbrirMenusGroup(expandableListTitle.get(groupPosition)));
+        sideMenuExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                if (expandableListTitle.get(i) == DrawerEnum.MENU_SOBRE_CAIXA) {
+                    ViewUtils.abrirMenuCaixa(PrincipalActivity.this);
+                }
+                return false;
+            }
+        });
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             if (expandableListTitle.get(groupPosition) == DrawerEnum.MENU_JOGO_RESPONSAVEL) {

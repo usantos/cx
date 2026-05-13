@@ -216,7 +216,9 @@ public class ViewUtils {
                 (dialogInterface, i) -> dialogInterface.dismiss()
                 ,R.string.label_cancelar,R.string.label_confirmar);
 
-        dialog.show();
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
 
         Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
         nbutton.setText(R.string.label_cancelar);
@@ -1196,7 +1198,8 @@ public class ViewUtils {
         if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
             for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
                 if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
-                    if (parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().getValor().equalsIgnoreCase(valorTipoConcurso)) {
+                    String valorConcurso = parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().getValor();
+                    if (valorConcurso.equalsIgnoreCase(valorTipoConcurso)) {
                         return parametroSimulacao;
                     }
                 }

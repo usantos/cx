@@ -513,15 +513,15 @@
                     android:backgroundTint="@color/black"
                     android:layout_marginTop="12dp"
                     android:visibility="gone"
+                    android:importantForAccessibility="yes"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:layout_constraintTop_toBottomOf="@+id/clResgatePremio2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <LinearLayout
                         android:contentDescription="@string/button_generate_receipt"
-                        android:importantForAccessibility="yes"
-                        android:clickable="true"
-                        android:focusable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"

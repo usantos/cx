@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -92,7 +93,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private BotaoFavoritar botaoFavoritar;
 	private boolean isLotericaFavorita;
 
-	private int controleChamadaServico = 1;
+    private int controleChamadaServico = 1;
 	private Boolean isMega30 = false;
 
 	@Override
@@ -132,6 +133,14 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		modoVisualizacao = new Gson().fromJson(getIntent().getStringExtra(ARG_MODO_VISUALIZACAO), ModoVisualizacaoBolaoEnum.class);
 		numeroCota = getIntent().getStringExtra(ARG_NUMERO_COTA);
 		isLotericaFavorita = getIntent().getBooleanExtra(ARG_IS_LOTERICA_FAVORITA, false);
+	}
+
+	private void desabilitaFavoritar(){
+        boolean hasLotericaFavorita = getIntent().hasExtra(ARG_IS_LOTERICA_FAVORITA);
+		if (!hasLotericaFavorita) {
+			LinearLayout favoritar_detalhes = findViewById(R.id.layout_favoritar_detalhes);
+			favoritar_detalhes.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	private void aplicaEstilo() {
@@ -359,6 +368,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 
 		atualizaQuantidadeTextView();
 		preencheJogos();
+		desabilitaFavoritar();
 	}
 
 	private void preencheJogos() {

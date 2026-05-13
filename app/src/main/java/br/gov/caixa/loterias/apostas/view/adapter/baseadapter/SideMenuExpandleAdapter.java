@@ -231,7 +231,6 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 description.append(": ").append(totalItens).append(" itens, final");
-                layoutItem.setOnClickListener(view -> ViewUtils.abrirMenuCaixa(context));
                 break;
             default:
                 break;

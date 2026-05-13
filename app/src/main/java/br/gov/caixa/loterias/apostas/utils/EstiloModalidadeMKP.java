@@ -102,7 +102,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialSimples = R.drawable.lotofacil_indepedencia_simples;
                 imagemEspecialDupla = R.drawable.lotofacil_indepedencia_dupla;
                 imagemEspecialQuadrada = R.drawable.lotofacil_independencia_quadrado;
-                imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_da_independencia;
+                imagemEspecialDetalhes = R.drawable.lotofacil_indepedencia_simples;
                 corLetraLista = R.color.lotofacil_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;

@@ -64,6 +64,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.model.model.LotericaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -77,6 +78,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaLotericasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.AccessibleSpringDotsIndicator;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
+import br.gov.caixa.loterias.apostas.view.custom.PartyAnimationManager;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.LotericaEmptyFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -148,6 +150,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     AccessibleSpringDotsIndicator dotsIndicator;
     String numeroConcurso;
     String nomeModalidade;
+    private PartyAnimationManager animationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,10 +251,26 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         );
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (animationManager != null) {
+            animationManager.stop();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (animationManager != null) {
+            animationManager.stop();
+        }
+    }
+
 
     private void loadParametroJogo(ModalidadeEnum modalidade) {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        ParametroSimulacao parametro = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidade);
+        ParametroSimulacao parametro = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidade,tipoConcurso.toString());
         if (parametro != null) {
             parametroJogo = parametro.getParametroJogo();
         }
@@ -432,6 +451,19 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         return new OnSilceListener<ApostadorDTO>() {
             @Override
             public void success(ApostadorDTO payload) {
+                AlertDialogUtils.dismiss();
+
+                //Animação 30 anos
+                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.MEGA_SENA) {
+                    animationManager = new PartyAnimationManager(BolaoActivity.this);
+                    findViewById(android.R.id.content).post(() -> {
+                        animationManager.start(6500);
+                    });
+                    // Essa logica precisa ser removida apos encerramento da mega 30 anos
+                    //TODO//
+                }
+
+
                 idMunicipio = payload.getMunicipioId().getNumero().intValue();
                 idUf = payload.getMunicipioId().getIdUF().intValue();
                 model.setIdMunicipioUF(idMunicipio, idUf);
@@ -847,6 +879,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                             tipoConcurso = TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso());
                         }
                     }
+                    if(filtro == null){
+                        filtro = new FiltroAplicadoMarketplace();
+                        filtro.setModalidade(ModalidadeEnum.fromInteger(idModalidade));
+                        filtro.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcurso));
+                    }
+                    loadParametroJogo(ModalidadeEnum.fromInteger(idModalidade));
                 }
                 AlertDialogUtils.show(BolaoActivity.this);
                 model.zeraPaginacao();
