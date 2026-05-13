@@ -63,13 +63,28 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     protected void onResume() {
         super.onResume();
 
+        if(modalidade == null || valorAposta == null || concurso == null){
+            return;
+        }
+
         AnalyticsHelper.getInstance().logViewScreenApostaValor(
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.BOLAO,
                 AnalyticsHelper.Tela.CART,
                 ModalidadeEnum.fromString(modalidade),
-                valorAposta != null ? ViewUtils.getMoedaFormat(valorAposta) : "",
-                concurso != null ? concurso : ""
+                ViewUtils.getMoedaFormat(valorAposta),
+                concurso
+        );
+
+        AnalyticsHelper.getInstance().logOperationSuccess(
+                AnalyticsHelper.StatusParams.ADD_BOLAO,
+                AnalyticsHelper.StatusParams.APOSTAR,
+                AnalyticsHelper.Tela.CART,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.BOLAO,
+                ModalidadeEnum.fromString(modalidade),
+                concurso,
+                ViewUtils.getMoedaFormat(valorAposta)
         );
 
     }

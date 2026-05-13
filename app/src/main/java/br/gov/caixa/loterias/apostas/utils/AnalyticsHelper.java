@@ -80,6 +80,7 @@ public class AnalyticsHelper {
 
     public static final class EventLabelParams {
         public static final String ADD_TO_CART = "adicionar_aposta_carrinho";
+        public static final String PAYMENT = "proceed_to_payment";
         public static final String ADD_BOLAO = "adicionar_bolao_carrinho";
         public static final String SIMPLES  = "iniciar_aposta_simples";
 
@@ -98,6 +99,9 @@ public class AnalyticsHelper {
     }
 
     public static final class StatusParams {
+        public static final String ADD_BOLAO = "add_bolao_to_cart";
+        public static final String ADD_BET = "add_bet_to_cart";
+        public static final String APOSTAR = "apostar";
         public static final String LOGIN = "login";
 
         private StatusParams() {}
@@ -425,6 +429,98 @@ public class AnalyticsHelper {
         );
     }
 
+    public void logInteraction(
+            @NonNull String eventCategory,          // cta
+            @NonNull String eventAction,            // clicar
+            @NonNull String eventLabel,             // proceed_to_payment
+            @NonNull String journey,                // apostar_loteria
+            @NonNull String subJourney,             // carrinho
+            @NonNull Tela tela,                     // BETS_CART
+            @NonNull String cartTotalValue,         // <cart_total_value>
+            @NonNull String betsCount,              // <bets_count>
+            @NonNull String individualBetsCount,    // <individual_bets_count>
+            @NonNull String bolaoQuotesCount        // <bolao_quotes_count>
+    ) {
+        Bundle bundle = new Bundle();
+
+        // interaction base
+        bundle.putString(AnalyticsParams.EVENT_CATEGORY, eventCategory);
+        bundle.putString(AnalyticsParams.EVENT_ACTION, eventAction);
+        bundle.putString(AnalyticsParams.EVENT_LABEL, eventLabel);
+
+        // tela
+        bundle.putString(
+                FirebaseAnalytics.Param.SCREEN_NAME,
+                tela.nome
+        );
+
+        // jornada
+        bundle.putString(AnalyticsParams.JOURNEY, journey);
+        bundle.putString(AnalyticsParams.SUB_JOURNEY, subJourney);
+
+        // carrinho
+        bundle.putString("cart_total_value", cartTotalValue);
+        bundle.putString("bets_count", betsCount);
+        bundle.putString("individual_bets_count", individualBetsCount);
+        bundle.putString("bolao_quotes_count", bolaoQuotesCount);
+
+        analytics.logEvent(
+                AnalyticsEvents.INTERACTION, // event_name = interaction
+                bundle
+        );
+    }
+
+
+    public void logInteraction(
+            @NonNull String eventCategory,          // cta
+            @NonNull String eventAction,            // clicar
+            @NonNull String eventLabel,             // adicionar_aposta_carrinho
+            @NonNull Tela tela,                     // MONTAR_APOSTA
+            @NonNull String journey,                // apostar_loteria
+            @NonNull String subJourney,              // montar_aposta
+            @NonNull String gameMode,               // loteca
+            @NonNull String contestNumber,          // <current_contest_number>
+            @NonNull String matchesCount,           // <matches_count>
+            @NonNull String simpleGuessesCount,     // <current_simple_guesses_count>
+            @NonNull String doubleGuessesCount,     // <current_double_guesses_count>
+            @NonNull String tripleGuessesCount,     // <current_triple_guesses_count>
+            @NonNull String betValue                // <current_bet_value>
+    ) {
+        Bundle bundle = new Bundle();
+
+        // padrão interaction
+        bundle.putString(AnalyticsParams.EVENT_CATEGORY, eventCategory);
+        bundle.putString(AnalyticsParams.EVENT_ACTION, eventAction);
+        bundle.putString(AnalyticsParams.EVENT_LABEL, eventLabel);
+
+        // tela
+        bundle.putString(
+                FirebaseAnalytics.Param.SCREEN_NAME,
+                tela.nome
+        );
+
+        // jornada
+        bundle.putString(AnalyticsParams.JOURNEY, journey);
+        bundle.putString(AnalyticsParams.SUB_JOURNEY, subJourney);
+
+        // contexto do jogo
+        bundle.putString("game_mode", gameMode);
+        bundle.putString("contest_number", contestNumber);
+
+        // métricas da aposta (conforme imagem)
+        bundle.putString("matches_count", matchesCount);
+        bundle.putString("simple_guesses_count", simpleGuessesCount);
+        bundle.putString("double_guesses_count", doubleGuessesCount);
+        bundle.putString("triple_guesses_count", tripleGuessesCount);
+        bundle.putString("bet_value", betValue);
+
+        analytics.logEvent(
+                AnalyticsEvents.INTERACTION, // event_name = interaction
+                bundle
+        );
+    }
+
+
     public void logInteractionAddBolao(
             @NonNull Tela tela,                          // MEGA_SENA_BOLAO_DETALHE
             @NonNull String gameMode,                    // mega_sena
@@ -548,6 +644,55 @@ public class AnalyticsHelper {
         currentFlowStartTimeMs = startTime;
     }
 
+    public void logOperationSuccess(
+            @NonNull String operationName,     // add_bet_to_cart
+            @NonNull String flowName,           // apostar
+            @NonNull Tela tela,                 // ADD_TO_CART_SUCCESS
+            @NonNull String journey,            // apostar_loteria
+            @NonNull String subJourney,          // montar_aposta
+            @NonNull String gameMode,            // mega_sena
+            @NonNull String contestNumber,       // <current_contest_number>
+            @NonNull String betValue         // <current_bet_value>
+    ) {
+
+        long endTime = System.currentTimeMillis();
+        long duration = currentFlowStartTimeMs > 0
+                ? endTime - currentFlowStartTimeMs
+                : 0L; // fallback seguro
+
+        Bundle bundle = new Bundle();
+
+        // operação
+        bundle.putString("operation_name", operationName);
+        bundle.putString(AnalyticsParams.FLOW_NAME, flowName);
+
+        // tela
+        bundle.putString(
+                FirebaseAnalytics.Param.SCREEN_NAME,
+                tela.nome
+        );
+
+        // jornada
+        bundle.putString(AnalyticsParams.JOURNEY, journey);
+        bundle.putString(AnalyticsParams.SUB_JOURNEY, subJourney);
+
+        // contexto do jogo
+        bundle.putString("game_mode", gameMode);
+        bundle.putString("contest_number", contestNumber);
+
+        // valores
+        bundle.putString("bet_value", betValue);
+
+        // tempo
+        bundle.putLong("end_time_ms", endTime);
+        bundle.putLong("flow_duration_ms", duration);
+
+        analytics.logEvent(
+                "operation_success",
+                bundle
+        );
+    }
+
     public void logFlowEnd(
             @NonNull String result, // success | error | abandon
             @NonNull String journey,
@@ -592,7 +737,6 @@ public class AnalyticsHelper {
 
         analytics.logEvent(AnalyticsEvents.FLOW_END, bundle);
 
-        // ✅ limpa estado do fluxo
         currentFlowName = null;
         currentFlowStartTimeMs = 0L;
     }

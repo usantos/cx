@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -324,6 +325,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     private void onClickAvancaPagamento() {
+        logCart();
         if (LoginSP.isLoginRealizado() && RedirectUtils.temRedirectCadastrarApostador()){
             startActivity(IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, CadastrarActivity.class));
             finish();
@@ -353,6 +355,23 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             } else {
                 trataPermissao();
             }
+        }
+    }
+
+    private void logCart(){
+        if(carrinho != null) {
+            AnalyticsHelper.getInstance().logInteraction(
+                    AnalyticsHelper.EventCategoryParams.CTA,
+                    AnalyticsHelper.EventActionParams.CLICAR,
+                    AnalyticsHelper.EventLabelParams.PAYMENT,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.CARRINHO,
+                    AnalyticsHelper.Tela.BETS_CART,
+                    ViewUtils.getMoedaFormat(carrinho.getValorTotal()),
+                    String.valueOf(carrinho.getApostas().size()),
+                    String.valueOf(carrinho.getApostasIndividuais().size()),
+                    String.valueOf(carrinho.getBoloes().size())
+        );
         }
     }
 

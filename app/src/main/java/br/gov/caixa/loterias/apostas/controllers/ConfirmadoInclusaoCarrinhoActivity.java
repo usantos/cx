@@ -92,13 +92,28 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     protected void onResume() {
         super.onResume();
 
+        if (modalidade == null || value == null || numeroConcurso == null) {
+            return;
+        }
+
         AnalyticsHelper.getInstance().logViewScreenApostaValor(
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
                 AnalyticsHelper.Tela.CART,
                 ModalidadeEnum.fromString(modalidade),
                 value,
-                numeroConcurso != null ? numeroConcurso : ""
+                numeroConcurso
+        );
+
+        AnalyticsHelper.getInstance().logOperationSuccess(
+                AnalyticsHelper.StatusParams.ADD_BET,
+                AnalyticsHelper.StatusParams.APOSTAR,
+                AnalyticsHelper.Tela.CART,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                ModalidadeEnum.fromString(modalidade),
+                numeroConcurso,
+                value
         );
 
     }

@@ -27,11 +27,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
-import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostas.utils.*;
-import br.gov.caixa.loterias.apostas.view.listener.*;
 import com.android.volley.VolleyError;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -59,8 +54,22 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
+import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
+import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
+import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.InputUtils;
+import br.gov.caixa.loterias.apostas.utils.ListaUtils;
+import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
+import br.gov.caixa.loterias.apostas.utils.Utils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
@@ -69,6 +78,12 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.NomeTimemaniaTextWatcher;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
+import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
+import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
+import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
+import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
@@ -528,21 +543,7 @@ private void zeraLoteca(){
 		}
 
 		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
-
-		AnalyticsHelper.getInstance().logInteraction(
-				AnalyticsHelper.EventCategoryParams.CTA,
-				AnalyticsHelper.EventActionParams.CLICAR,
-				AnalyticsHelper.EventLabelParams.ADD_TO_CART,
-				AnalyticsHelper.JourneyParams.APOSTAR,
-				AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
-				AnalyticsHelper.Tela.MONTAR_APOSTA,
-				ModalidadeEnum.fromString(parametroJogo.getConcurso().getModalidade()),
-				parametroJogo.getConcurso().getNumero().toString(),
-				"0",
-				String.valueOf(parentActivity.qtdDezenasPossiveisSelecionado),
-				String.valueOf(parametroJogo.getTeimosinhas().get(0) == 0 ? 0 : parametroJogo.getTeimosinhas().get(0)),
-				ViewUtils.getMoedaFormat(valorTotalAposta)
-		);
+		logAposta();
 
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = ApostaUtils
@@ -553,6 +554,43 @@ private void zeraLoteca(){
 		} else {
 			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = getApostaPreenchida();
 			model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloDTO);
+		}
+	}
+
+	private void logAposta(){
+		if(parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)){
+
+			AnalyticsHelper.getInstance().logInteraction(
+					AnalyticsHelper.EventCategoryParams.CTA,
+					AnalyticsHelper.EventActionParams.CLICAR,
+					AnalyticsHelper.EventLabelParams.ADD_TO_CART,
+					AnalyticsHelper.Tela.MONTAR_APOSTA,
+					AnalyticsHelper.JourneyParams.APOSTAR,
+					AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+					ModalidadeEnum.fromString(parametroJogo.getConcurso().getModalidade()),
+					parametroJogo.getConcurso().getNumero().toString(),
+					parentActivity.getLabelValueJogosLoteca().getText().toString(),
+					parentActivity.getLabelValueSimplesLoteca().getText().toString(),
+					parentActivity.getLabelValueDuplasLoteca().getText().toString(),
+					parentActivity.getLabelValueTriplasLoteca().getText().toString(),
+					ViewUtils.getMoedaFormat(valorTotalAposta)
+			);
+		}
+		else{
+			AnalyticsHelper.getInstance().logInteraction(
+					AnalyticsHelper.EventCategoryParams.CTA,
+					AnalyticsHelper.EventActionParams.CLICAR,
+					AnalyticsHelper.EventLabelParams.ADD_TO_CART,
+					AnalyticsHelper.JourneyParams.APOSTAR,
+					AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+					AnalyticsHelper.Tela.MONTAR_APOSTA,
+					ModalidadeEnum.fromString(parametroJogo.getConcurso().getModalidade()),
+					parametroJogo.getConcurso().getNumero().toString(),
+					"0",
+					String.valueOf(parentActivity.qtdDezenasPossiveisSelecionado),
+					String.valueOf(parametroJogo.getTeimosinhas().get(0) == 0 ? 0 : parametroJogo.getTeimosinhas().get(0)),
+					ViewUtils.getMoedaFormat(valorTotalAposta)
+			);
 		}
 	}
 
