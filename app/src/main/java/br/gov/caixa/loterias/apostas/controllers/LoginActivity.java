@@ -21,12 +21,6 @@ public class LoginActivity extends LoteriasBaseAppActivity {
 
         TopazUtil.check(this);
 
-        AnalyticsHelper.getInstance().logViewScreen(
-                AnalyticsHelper.JourneyParams.APOSTAR,
-                AnalyticsHelper.SubJourneyParams.ENTRY,
-                AnalyticsHelper.Tela.LOGIN
-        );
-
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, new LoginFragment());

@@ -104,6 +104,11 @@ public class LoginFragment extends Fragment {
         biometriaLinearLayout = v.findViewById(R.id.biometriaLinearLayout);
         biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
 
+        AnalyticsHelper.getInstance().logViewScreen(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.ENTRY,
+                AnalyticsHelper.Tela.LOGIN
+        );
 
         //Selecao ambiente se NAO PRD
         if (!BuildConfig.FLAVOR.equals("prd")) {

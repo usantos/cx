@@ -69,6 +69,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnAnimacaoViewListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
@@ -804,14 +805,29 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
 
         //TODO: MEGA 30 ANOS//
-        boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
+
+        Modalidade item = (data != null && adapterPosition >= 0 && adapterPosition < data.size())
+                ? data.get(adapterPosition)
+                : null;
+
+        ConcursoDTO concurso = item != null ? item.getConcurso() : null;
+
+        Integer numeroConcurso = concurso != null ? concurso.getNumero() : null;
+        TipoConcursoEnum tipoConcurso = concurso != null ? concurso.getTipoConcurso() : null;
+        ModalidadeEnum tipoModalidade = item != null ? item.getTipoModalidade() : null;
+
+        /* MEGA 30 ANOS */
+        boolean isMega30 = numeroConcurso != null && tipoConcurso != null
+                && EspecialUtils.isMega30(numeroConcurso, tipoConcurso);
+
         AnalyticsHelper.getInstance().logViewScreenAposta(
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.SELECIONAR,
                 AnalyticsHelper.Tela.HOME,
-                ModalidadeEnum.fromString(data.get(adapterPosition).getTipoModalidade()),
-                data.get(adapterPosition).getConcurso().getNumero().toString()
+                tipoModalidade != null ? ModalidadeEnum.fromString(tipoModalidade) : "",
+                numeroConcurso != null ? numeroConcurso.toString() : ""
         );
+
 
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
