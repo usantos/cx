@@ -93,8 +93,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         super.onResume();
 
         AnalyticsHelper.getInstance().logViewScreenApostaValor(
-                "apostar_loteria",
-                "montar_aposta",
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
                 AnalyticsHelper.Tela.CART,
                 ModalidadeEnum.fromString(modalidade),
                 value,

@@ -22,8 +22,8 @@ public class LoginActivity extends LoteriasBaseAppActivity {
         TopazUtil.check(this);
 
         AnalyticsHelper.getInstance().logViewScreen(
-                "apostar_loteria",
-                "entrada_app",
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.ENTRY,
                 AnalyticsHelper.Tela.LOGIN
         );
 

@@ -253,8 +253,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             voltaPagina();
         }
         AnalyticsHelper.getInstance().logViewScreenAposta(
-                "apostar_loteria",
-                "selecionar_modalidade",
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.SELECIONAR,
                 AnalyticsHelper.Tela.MONTAR_APOSTA,
                 ModalidadeEnum.fromString(tipoJogo),
                 numeroConcurso
@@ -774,6 +774,15 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             @Override
             public void ok() {
                 qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
+                AnalyticsHelper.getInstance().logSelectContent(
+                        AnalyticsHelper.Tela.MONTAR_APOSTA,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                        AnalyticsHelper.ContentCategoryParams.CONFIG,
+                        ModalidadeEnum.fromString(tipoJogo),
+                        textoBotaoPrognosticosSelecionado,
+                        qtdNumerosList != null ? qtdNumerosList.toString() : ""
+                );
 
                 if (isFragmentCartela()) {
                     cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
@@ -824,6 +833,15 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             @Override
             public void ok() {
                 qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
+                AnalyticsHelper.getInstance().logSelectContent(
+                        AnalyticsHelper.Tela.MONTAR_APOSTA,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                        AnalyticsHelper.ContentCategoryParams.CONFIG,
+                        ModalidadeEnum.fromString(tipoJogo),
+                        textoBotaoSurpresinhasSelecionado,
+                        qtdConcursosList != null ? qtdConcursosList.toString() : ""
+                );
 
                 if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
                     if (surpresinhaFragment.getParametroJogo() != null) {

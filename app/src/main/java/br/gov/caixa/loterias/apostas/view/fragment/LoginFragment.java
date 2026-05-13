@@ -179,18 +179,18 @@ public class LoginFragment extends Fragment {
 
         buttonLogin.setOnClickListener(v12 -> {
             AnalyticsHelper.getInstance().logInteraction(
-                    "cta",
-                    "clicar",
-                    "entrar_no_app",
-                    "apostar_loteria",
-                    "entrada_app",
+                    AnalyticsHelper.EventCategoryParams.CTA,
+                    AnalyticsHelper.EventActionParams.CLICAR,
+                    AnalyticsHelper.EventLabelParams.ENTRY,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.ENTRY,
                     AnalyticsHelper.Tela.LOGIN
             );
 
             AnalyticsHelper.getInstance().logFlowStart(
-                    "login",
+                    AnalyticsHelper.StatusParams.LOGIN,
                     AnalyticsHelper.Tela.LOGIN.nome,
-                    "apostar_loteria",
+                    AnalyticsHelper.JourneyParams.APOSTAR,
                     AnalyticsHelper.Tela.LOGIN.nome,
                     AnalyticsHelper.Tela.LOGIN
             );

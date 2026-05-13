@@ -21,7 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -32,7 +35,6 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -527,6 +529,13 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 setCarrinho(payload);
                 atualizaLayout(offSet);
 
+                AnalyticsHelper.getInstance().logViewCartScreen(
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.CARRINHO,
+                        AnalyticsHelper.Tela.BETS_CART,
+                        payload
+                );
+
                 if (payload.getMsgCotaExcluida() != null && payload.getMsgCotaExcluida()) {
                     notificationCotasExcluidas();
                 }
@@ -566,6 +575,13 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 ocorrendoValidacao = false;
                 AlertDialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
+                AnalyticsHelper.getInstance().logFlowEnd(
+                        AnalyticsHelper.ResultParams.SUCCESS,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.CARRINHO,
+                        AnalyticsHelper.Tela.BETS_CART,
+                        carrinho
+                );
                 startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
             }
 

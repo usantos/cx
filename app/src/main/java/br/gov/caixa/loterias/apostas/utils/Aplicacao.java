@@ -41,6 +41,7 @@ public class Aplicacao extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         application = this;
+        AnalyticsHelper.init(this);
         registerActivityLifecycleCallbacks(new br.gov.caixa.loterias.apostas.utils.ActivityLifecycleCallbacks());
         DeviceSDK.getInstance().execute(this);
 

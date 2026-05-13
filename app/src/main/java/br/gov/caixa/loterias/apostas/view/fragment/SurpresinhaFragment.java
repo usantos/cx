@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
@@ -382,6 +383,21 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                                                              valorTotalAposta);
 
         }
+
+        AnalyticsHelper.getInstance().logInteraction(
+                AnalyticsHelper.EventCategoryParams.CTA,
+                AnalyticsHelper.EventActionParams.CLICAR,
+                AnalyticsHelper.EventLabelParams.ADD_TO_CART,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                AnalyticsHelper.Tela.MONTAR_APOSTA,
+                ModalidadeEnum.fromString(parametroJogo.getConcurso().getModalidade()),
+                parametroJogo.getConcurso().getNumero().toString(),
+                String.valueOf(qtdSurpresinhas),
+                String.valueOf(parentActivity.qtdDezenasPossiveisSelecionado),
+                String.valueOf(parametroJogo.getTeimosinhas().get(0) == 0 ? 0 : parametroJogo.getTeimosinhas().get(0)),
+                ViewUtils.getMoedaFormat(valorTotalAposta)
+        );
 
         model.addSurpresinhaCarrinho(surpresinha);
     }

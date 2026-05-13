@@ -350,14 +350,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         layoutSideMenu();
         fragmentSomadorCarrinho();
         checkRedirecionamento();
-        int adapterPosition  = infiniteAdapter.getRealCurrentPosition();
-        AnalyticsHelper.getInstance().logViewScreenAposta(
-                "apostar_loteria",
-                "selecionar_modalidade",
-                AnalyticsHelper.Tela.HOME,
-                ModalidadeEnum.fromString(data.get(adapterPosition).getTipoModalidade()),
-                data.get(adapterPosition).getConcurso().getNumero().toString()
-        );
     }
 
     private void checkRedirecionamento() {
@@ -814,8 +806,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         //TODO: MEGA 30 ANOS//
         boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
         AnalyticsHelper.getInstance().logViewScreenAposta(
-                "apostar_loteria",
-                "selecionar_modalidade",
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.SELECIONAR,
                 AnalyticsHelper.Tela.HOME,
                 ModalidadeEnum.fromString(data.get(adapterPosition).getTipoModalidade()),
                 data.get(adapterPosition).getConcurso().getNumero().toString()
@@ -896,11 +888,21 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     protected void clickButtonBolao() {
-        if(DadosUsuarioBO.checarUsuarioLogado(this)){
-            int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
-            int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
-            TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
+        int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
+        int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
+        TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
+        AnalyticsHelper.getInstance().logInteraction(
+                AnalyticsHelper.EventCategoryParams.CTA,
+                AnalyticsHelper.EventActionParams.CLICAR,
+                AnalyticsHelper.EventLabelParams.BOLAO,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.SELECIONAR,
+                AnalyticsHelper.Tela.HOME,
+                ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
+                modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero().toString()
+        );
 
+        if(DadosUsuarioBO.checarUsuarioLogado(this)){
             if (!DadosUsuarioBO.checarTutorial(DadosUsuarioBO.BOLAO_TUTORIAL)){
                 startActivity(IntentUtil.getIntentTutorial(this, ModalidadeEnum.BOLAO, idModalidade, tipoConcurso));
             } else {
@@ -912,9 +914,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 //startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
             }
         } else {
-            int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
-            int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
-            TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
 
             Bundle bolao = new Bundle();
             bolao.putInt(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
@@ -930,6 +929,17 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
         //TODO: MEGA 30 ANOS//
         int numeroConcurso = parametroJogo.getConcurso().getNumero();
+
+        AnalyticsHelper.getInstance().logInteraction(
+                AnalyticsHelper.EventCategoryParams.CTA,
+                AnalyticsHelper.EventActionParams.CLICAR,
+                AnalyticsHelper.EventLabelParams.SIMPLES,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.SELECIONAR,
+                AnalyticsHelper.Tela.HOME,
+                ModalidadeEnum.fromString(modalidade),
+                parametroJogo.getConcurso().getNumero().toString()
+        );
 
         //
         Long tempoExtraRestanteAposEncerrmento = EncerramentoUtil.

@@ -529,6 +529,21 @@ private void zeraLoteca(){
 
 		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
 
+		AnalyticsHelper.getInstance().logInteraction(
+				AnalyticsHelper.EventCategoryParams.CTA,
+				AnalyticsHelper.EventActionParams.CLICAR,
+				AnalyticsHelper.EventLabelParams.ADD_TO_CART,
+				AnalyticsHelper.JourneyParams.APOSTAR,
+				AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+				AnalyticsHelper.Tela.MONTAR_APOSTA,
+				ModalidadeEnum.fromString(parametroJogo.getConcurso().getModalidade()),
+				parametroJogo.getConcurso().getNumero().toString(),
+				"0",
+				String.valueOf(parentActivity.qtdDezenasPossiveisSelecionado),
+				String.valueOf(parametroJogo.getTeimosinhas().get(0) == 0 ? 0 : parametroJogo.getTeimosinhas().get(0)),
+				ViewUtils.getMoedaFormat(valorTotalAposta)
+		);
+
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = ApostaUtils
 					.getApostaSuperSete(parametroJogo, dezenasSelecionadas,
