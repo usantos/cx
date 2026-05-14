@@ -327,7 +327,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         ViewUtils.setColorDrawable(this, drawableQtdNumeros, estilo.getCorFonteFundoEscuro());
 
         textoBotaoPrognosticosSelecionado = qtdNumerosButton.getText().toString();
-        if ((qtdConcursosList != null && !qtdConcursosList.isEmpty()) && (qtdConcursosList.size() == 1 || qtdConcursoSelecionado == 0)) {
+        if ((qtdConcursosList != null) && (qtdConcursoSelecionado == 0)) {
             qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
         } else {
             qtdConcursosButton.setText(format(getResources().getString(R.string.percent_d_concurso), qtdConcursoSelecionado));
@@ -660,7 +660,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
                     if (numeroTeimosinha == 0) {
-                        qtdConcursosList.add(getString(R.string.teimosinhas_descricao));
+//                        qtdConcursosList.add(getString(R.string.teimosinhas_descricao));
                     } else if (numeroTeimosinha == 1) {
                         qtdConcursosList.add("" + numeroTeimosinha + getResources().getString(R.string.espaco_concurso));
                     } else {
@@ -871,13 +871,14 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     public boolean isFragmentCartela(){
         return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment;
     }
-
+//TODO//
     private void modalTeimosinhas() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
-        DialogUtils.showDialogListItens(
+        DialogUtils.showDialogListItensNovo(
                 SimularApostaActivity.this,
                 getResources().getString(R.string.teimosinhas_maiusculo),
                 null,
+                getString(R.string.teimosinhas_descricao),
                 qtdConcursosList,
                 "Confirmar",
                 "Cancelar",
@@ -889,12 +890,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         return new OnDialogListener() {
             @Override
             public void itemSelecionado(int position) {
-                if (position == 0) {
-                    textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
-                }else{
                     textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
                     qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
-                }
             }
 
             @Override

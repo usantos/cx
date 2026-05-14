@@ -1166,7 +1166,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
                 if (expandableListTitle.get(i) == DrawerEnum.MENU_SOBRE_CAIXA) {
-                    ViewUtils.abrirMenuCaixa(PrincipalActivity.this);
+//                    ViewUtils.abrirMenuCaixa(PrincipalActivity.this);
                 }
                 return false;
             }

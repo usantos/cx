@@ -166,7 +166,8 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends LoteriasBaseAppAc
                 //((TextView) findViewById(R.id.voltarPremioButton)).setText(ViewUtils.textCaixaSTDBold(getApplicationContext(), getString(R.string.btn_title_voltarAoInicio)));
 
                 if(response.getPayload() != null && response.getPayload().equals("MI053") || response.getPayload().equals("MIO53")){
-                    ViewUtils.alertTitulo(JogosConfirmadosPremioMercadoPagoActivity.this, R.string.label_atencao, getResources().getString(R.string.MI053));
+//                    ViewUtils.alertTitulo(JogosConfirmadosPremioMercadoPagoActivity.this, R.string.label_atencao, getResources().getString(R.string.MI053));
+                    DialogUtils.dialogEntendi(JogosConfirmadosPremioMercadoPagoActivity.this, getResources().getString(R.string.MI053));
                 }
 
                 comprovanteLayout.setOnClickListener(view -> {
