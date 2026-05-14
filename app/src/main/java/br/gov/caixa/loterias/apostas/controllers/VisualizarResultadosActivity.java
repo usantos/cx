@@ -398,8 +398,13 @@ public class VisualizarResultadosActivity extends LoteriasBaseAppActivity {
         layoutTrevo.setVisibility(View.VISIBLE);
         iv_trevo.setImageResource(estilo.getTrevoFundoEscuro());
         tituloModalidade.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
-            tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+        //if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
+        if (response.getPayload().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
+            if (response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().isEmpty()) {
+                tituloModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade.getTipoModalidade()).toLowerCase());
+            } else {
+                tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+            }
             if(modalidade.getTipoModalidade().equals(ModalidadeEnum.LOTOFACIL)){//Ajuste da posição do texto da lotofacil da indepencia, estava cortando o início da palavra.
                 ConstraintSet tituloHorizontalBias = new ConstraintSet();
                 tituloHorizontalBias.clone(layoutHeader);

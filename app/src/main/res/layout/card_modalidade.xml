@@ -229,7 +229,17 @@
                             android:textColor="@color/mega_verde_claro_mkp"
                             android:textSize="25sp"
                             android:fontFamily="@font/caixa_std_bold"
-                            tools:text="R$ 0,00" />
+                            tools:text="R$ 0.000" />
+
+                        <TextView
+                            android:id="@+id/textViewSpelledValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/mega_verde_claro_mkp"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/caixa_std_bold"
+                            tools:text="(R$ 0 Mil)" />
 
                         <TextView
                             android:id="@+id/textPremioEstimadoConcurso"

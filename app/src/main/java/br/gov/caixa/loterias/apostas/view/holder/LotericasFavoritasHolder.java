@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -45,6 +46,7 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
 
         verBoloes.setOnClickListener(this);
         excluirLixeira.setOnClickListener(this);
+		ViewCompat.setAccessibilityHeading(nomeLoterica,true);
 	}
 
 	@Override

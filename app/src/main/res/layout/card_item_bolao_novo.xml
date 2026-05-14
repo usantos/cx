@@ -180,18 +180,27 @@
                     android:layout_marginTop="6dp"
                     android:orientation="vertical"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:visibility="gone">
 
                     <TextView
-                        android:id="@+id/valor_estimado_premio"
+                        android:id="@+id/valor_estimado_premio_card_bolao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/caixa_std_bold"
-                        android:text="R$ 00.000.000,00"
+                        android:text="R$ 0.000"
                         android:textColor="@color/mega_verde_claro_mkp"
-                        android:textSize="22sp"
-                        android:layout_gravity="center" />
+                        android:textSize="22sp"/>
+
+                    <TextView
+                        android:id="@+id/valor_estimado_premio_card_bolao_por_extenso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:text="(R$ 0 Mil)"
+                        android:textColor="@color/mega_verde_claro_mkp"
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/descricao_numero_concurso"
@@ -200,8 +209,7 @@
                         android:fontFamily="@font/caixa_std_regular"
                         android:text="Prêmio estimado do concurso 2345"
                         android:textSize="14sp"
-                        android:textAlignment="center"
-                        android:layout_gravity="center" />
+                        android:textAlignment="center"/>
                 </LinearLayout>
 
             </FrameLayout>

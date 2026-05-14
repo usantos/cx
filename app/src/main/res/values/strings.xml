@@ -162,7 +162,7 @@
     <string name="msg_erro_data_invalida"> Data Inválida</string>
     <string name="label_excluir_aposta">Excluir aposta favorita</string>
     <string name="label_adicionar_aposta">Adicionar aposta no carrinho</string>
-
+    <string name="MI053">Prêmio resgatado com sucesso! Sua aposta possui Teimosinha e continuará participando dos próximos concursos. Foi gerado um recibo de troca válido para os próximos concursos, e este já está disponível em \'Minhas Apostas\'. </string>
     <string name="MN003">Para continuar é necessário o aceite do termo.</string>
     <string name="termo_novo">O termo de Uso foi Atualizado. É necessário aceitar novamente.</string>
     <string name="exclusao_cartao">Deseja realmente excluir essa forma de pagamento?</string>
@@ -1341,6 +1341,7 @@
     <string name="voceDesejaExcluir">Você tem certeza de que deseja excluir o cartão {bandeira} final {XXXX} dos cartões salvos?</string>
     <string name="naoExcluir">Não excluir</string>
     <string name="excluir">Excluir</string>
+    <string name="favoritar_carrinho">Favoritar carrinho</string>
     <string name="suaTitularidade">O cartão de crédito adicionado deve ser de sua titularidade</string>
 
     <!-- Confirmar Cartão - CVV -->
