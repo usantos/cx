@@ -32,6 +32,7 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -469,8 +470,13 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         }
         if (listApostas != null) {
             synchronized (rvListaApostas) {
-                listApostas.remove(position);
-                rvListaApostas.getAdapter().notifyItemRemoved(position);
+                if (apagouLotomaniaGerarEspelho(listApostas.get(position))){
+                    listApostas.remove(position);
+                    rvListaApostas.getAdapter().notifyDataSetChanged();
+                } else {
+                    listApostas.remove(position);
+                    rvListaApostas.getAdapter().notifyItemRemoved(position);
+                }
                 offSet--;
                 setValorTotalCarrinho();
                 configuraBotoesSuperiores();
@@ -479,6 +485,10 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 desabilitaApostas();
             }
         }
+    }
+
+    private boolean apagouLotomaniaGerarEspelho(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta.getModalidade() == ModalidadeEnum.LOTOMANIA && aposta.getGerarApostaEspelho();
     }
 
     public void atualizaLayout(int offSet) {
