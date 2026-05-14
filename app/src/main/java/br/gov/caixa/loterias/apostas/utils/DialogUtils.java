@@ -19,12 +19,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TeimosinhasAdapter;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
@@ -647,5 +652,124 @@ public class DialogUtils {
         return buildDialogReturn(context, titulo, conteudo,
                 labelBtnPositivo, listener::PositiveButton,
                 labelBtnNegativo, listener::NegativeButton, null, null);
+    }
+    public static void showDialogListItensNovo(
+            Context context,
+            String titulo,
+            String subtitulo,
+            String texto,
+            List<String> list,
+            String labelBotaoPositivo,
+            String labelBotaoNegativo,
+            OnDialogListener dialogListener
+    ) {
+        if (isContextInvalido(context)) {
+            return;
+        }
+
+        if (dialogListener == null) {
+            Log.w("DialogUtils", "showDialogListItens chamado com dialogListener nulo.");
+            return;
+        }
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.layout_dialog_itens_novo);
+        dialog.setCancelable(false);
+
+        TextView       tituloDialog  = dialog.findViewById(R.id.titulo_dialog_itens);
+        tituloDialog.setText(titulo);
+
+        TextView textoDialog = dialog.findViewById(R.id.texto_dialog_itens);
+        textoDialog.setText(texto);
+
+        if (subtitulo != null && !subtitulo.isEmpty()){
+            TextView txtSubtitulo = dialog.findViewById(R.id.subtitulo_dialog_itens);
+            txtSubtitulo.setText(subtitulo);
+            txtSubtitulo.setVisibility(View.VISIBLE);
+        }
+
+        ViewCompat.setAccessibilityHeading(tituloDialog,true);
+        tituloDialog.setFocusableInTouchMode(true);
+        tituloDialog.requestFocus();
+
+        if (list == null) {
+            list = Collections.emptyList();
+        }
+
+        RecyclerView picker = dialog.findViewById(R.id.picker_itens_dialog);
+
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+
+        picker.setLayoutManager(layoutManager);
+
+        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(picker);
+        picker.setAdapter(new TeimosinhasAdapter(list, dialogListener::itemSelecionado));
+        picker.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    View centerView = snapHelper.findSnapView(layoutManager);
+                    if (centerView != null) {
+                        int position = recyclerView.getChildAdapterPosition(centerView);
+                        ((TeimosinhasAdapter) recyclerView.getAdapter())
+                                .setSelectedPosition(position);
+
+                        dialogListener.itemSelecionado(position);
+                    }
+                }
+            }
+        });
+
+        Button dialogButtonConfirmar       = dialog.findViewById(R.id.button_positivo_itens);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.button_negativo_itens);
+
+        //Caso seja necessário Personalizar o texto dos botões "Confirmar" e "Cancelar" em cenários específicos,
+        // caso contrário, os textos padrão são "Confirmar" e "Cancelar", respectivamente.
+        if(labelBotaoPositivo != null && !labelBotaoPositivo.isEmpty()) {
+            dialogButtonConfirmar.setText(labelBotaoPositivo);
+        }
+        if(labelBotaoNegativo != null && !labelBotaoNegativo.isEmpty()) {
+            dialogButtonCancelar.setText(labelBotaoNegativo);
+        }
+
+        dialog.setOnShowListener(dialogInterface -> {
+            if (tituloDialog.getVisibility() == View.VISIBLE){
+                tituloDialog.post(() -> {
+                    tituloDialog.performAccessibilityAction(
+                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
+                            null
+                    );
+                });
+            }
+        });
+
+        dialogButtonConfirmar.setOnClickListener(v -> {
+            dialogListener.ok();
+            dialog.dismiss();
+        });
+
+        dialogButtonCancelar.setOnClickListener(v -> {
+            dialogListener.cancelar();
+            dialog.dismiss();
+        });
+
+        try {
+            if (!isContextInvalido(context)) {
+                dialog.show();
+            }
+        } catch (WindowManager.BadTokenException | IllegalStateException e) {
+            Log.w("DialogUtils", "Não foi possível exibir a dialog.", e);
+            return;
+        }
+
+        if (dialog.getWindow() != null) {
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * LARGURA_DIALOG_PADRAO);
+
+            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+        }
     }
 }
