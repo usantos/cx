@@ -238,7 +238,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         rvFieldsBolao = findViewById(R.id.rv_fields_bolao);
 
         clResgatePremio = findViewById(R.id.clResgatePremio);
-        setAccessibilityAnchor();
         ivResgatePremio = findViewById(R.id.ivResgatePremio);
         ResgatarPremioTxt = findViewById(R.id.ResgatarPremioTxt);
 
@@ -253,6 +252,8 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         validadePremioText = findViewById(R.id.validadePremioText);
         validadePremioLabel = findViewById(R.id.validadePremioLabel);
         validadePremioImg = findViewById(R.id.validadePremioImage);
+
+        setAccessibilityAnchor();
 
         //Botoes
         clbottons = findViewById(R.id.v_bottom);
