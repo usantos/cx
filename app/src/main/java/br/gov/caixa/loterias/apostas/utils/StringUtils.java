@@ -110,7 +110,12 @@ public class StringUtils {
         if (listtNumeros == null) {
             return listString;
         }
-        for (Number numero : listtNumeros) {
+
+        //cria cópia para não alterar lista original
+        List<Number> ordenada = new ArrayList<>(listtNumeros);
+        Collections.sort(ordenada, (a, b) -> Integer.compare(a.intValue(), b.intValue()));
+
+        for (Number numero : ordenada) {
             long longNumero = numero.longValue();
             if (longNumero == 100) {
                 longNumero = 0L;
@@ -125,7 +130,12 @@ public class StringUtils {
         if (listtNumeros == null) {
             return listString;
         }
-        for (Number numero : listtNumeros) {
+
+        //cria cópia para não alterar lista original
+        List<Number> ordenada = new ArrayList<>(listtNumeros);
+        Collections.sort(ordenada, (a, b) -> Integer.compare(a.intValue(), b.intValue()));
+
+        for (Number numero : ordenada) {
             long longNumero = numero.longValue();
             listString.add(String.format("%1d", longNumero));
         }
