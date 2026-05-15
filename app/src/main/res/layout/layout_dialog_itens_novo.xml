@@ -49,7 +49,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/picker_itens_dialog"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
+        android:layout_height="170dp"
         android:overScrollMode="never"
         android:scrollbars="none"/>
 

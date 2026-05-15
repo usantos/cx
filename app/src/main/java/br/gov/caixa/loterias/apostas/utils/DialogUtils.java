@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
@@ -29,7 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TeimosinhasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListStringAdapter;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
@@ -653,6 +652,7 @@ public class DialogUtils {
                 labelBtnPositivo, listener::PositiveButton,
                 labelBtnNegativo, listener::NegativeButton, null, null);
     }
+
     public static void showDialogListItensNovo(
             Context context,
             String titulo,
@@ -680,7 +680,13 @@ public class DialogUtils {
         tituloDialog.setText(titulo);
 
         TextView textoDialog = dialog.findViewById(R.id.texto_dialog_itens);
-        textoDialog.setText(texto);
+
+        if (texto != null && !texto.isEmpty()) {
+            textoDialog.setText(texto);
+            textoDialog.setVisibility(View.VISIBLE);
+        } else {
+            textoDialog.setVisibility(View.GONE);
+        }
 
         if (subtitulo != null && !subtitulo.isEmpty()){
             TextView txtSubtitulo = dialog.findViewById(R.id.subtitulo_dialog_itens);
@@ -698,29 +704,37 @@ public class DialogUtils {
 
         RecyclerView picker = dialog.findViewById(R.id.picker_itens_dialog);
 
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
 
-        picker.setLayoutManager(layoutManager);
+        if (picker != null) {
+            LinearLayoutManager layoutManager =
+                    new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+            picker.setLayoutManager(layoutManager);
 
-        LinearSnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(picker);
-        picker.setAdapter(new TeimosinhasAdapter(list, dialogListener::itemSelecionado));
-        picker.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    View centerView = snapHelper.findSnapView(layoutManager);
-                    if (centerView != null) {
-                        int position = recyclerView.getChildAdapterPosition(centerView);
-                        ((TeimosinhasAdapter) recyclerView.getAdapter())
-                                .setSelectedPosition(position);
+            LinearSnapHelper snapHelper = new LinearSnapHelper();
+            snapHelper.attachToRecyclerView(picker);
 
-                        dialogListener.itemSelecionado(position);
-                    }
-                }
+            WheelController wheelController =
+                    new WheelController(picker, layoutManager, snapHelper, dialogListener);
+
+            ListStringAdapter adapter =
+                    new ListStringAdapter(list, wheelController::onItemClicked);
+
+            if (!list.isEmpty()) {
+                picker.post(() -> {
+                    int initialPos = 0;
+
+                    adapter.setSelectedPosition(initialPos);
+
+                    picker.scrollToPosition(initialPos);
+
+                    wheelController.onItemClicked(initialPos);
+                });
             }
-        });
+
+            wheelController.attachAdapter(adapter);
+            picker.setAdapter(adapter);
+            wheelController.setupRecyclerForWheel();
+        }
 
         Button dialogButtonConfirmar       = dialog.findViewById(R.id.button_positivo_itens);
         Button dialogButtonCancelar = dialog.findViewById(R.id.button_negativo_itens);
