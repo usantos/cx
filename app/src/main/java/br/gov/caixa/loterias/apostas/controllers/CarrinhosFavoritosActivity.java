@@ -171,10 +171,11 @@ public class CarrinhosFavoritosActivity extends LoteriasBaseAppActivity {
 						// Armazena a opção selecionada pelo usuário (-1 = nenhuma seleção)
 						final int[] opcaoSelecionada = {-1};
 
-						DialogUtils.showDialogListItens(
+						DialogUtils.showDialogListItensNovo(
 								CarrinhosFavoritosActivity.this,
 								"Atenção",
 								descricao,
+								"",
 								list,
 								"Confirmar",
 								"Cancelar",
