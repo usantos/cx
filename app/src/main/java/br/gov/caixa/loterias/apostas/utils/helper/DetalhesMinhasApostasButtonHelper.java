@@ -11,11 +11,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -87,6 +90,8 @@ public class DetalhesMinhasApostasButtonHelper {
         ConstraintLayout comprovanteLayout = activity.findViewById(R.id.comprovanteLayout);
         ImageView salvarApostaImg = activity.findViewById(R.id.salvarApostaImg);
 
+        setAccessibility(carrinhoApostasBtn);
+
         favoritadoLayout = activity.findViewById(R.id.favoritadoLayout);
         favoriteBtn = activity.findViewById(R.id.favoriteBtn);
         layoutTextoSalveAposta  = activity.findViewById(R.id.layoutTextoSalveAposta);
@@ -112,6 +117,19 @@ public class DetalhesMinhasApostasButtonHelper {
         favoriteBtn.setOnClickListener(v-> favoriteBtn());
         favoritadoLayout.setOnClickListener(v -> favoritadoLayout());
         layoutTextoSalveAposta.setOnClickListener(v -> layoutTextoSalveAposta());
+    }
+
+    private void setAccessibility(RelativeLayout carrinhoApostasBtn) {
+        ViewCompat.setAccessibilityDelegate(carrinhoApostasBtn, new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+
+                info.setClassName(android.widget.Button.class.getName());
+                info.setClickable(true);
+                info.addAction(AccessibilityNodeInfoCompat.ACTION_CLICK);
+            }
+        });
     }
 
     public void setupDTO(ComprovanteApostaDTO comprovanteApostaDTO, DetalhesPremioDTO detalhesPremioDTO, IdentificaoDeUmaApostaDas8Modalidades aposta) {

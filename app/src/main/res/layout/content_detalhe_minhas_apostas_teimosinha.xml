@@ -415,6 +415,10 @@
 
                 <!-- Card 1: Resgatar prêmio -->
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:contentDescription="@string/button_get_reward"
+                    android:importantForAccessibility="yes"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:id="@+id/clResgatePremio2"
                     android:layout_width="246dp"
                     android:layout_height="44dp"
@@ -427,10 +431,6 @@
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <LinearLayout
-                        android:contentDescription="@string/button_get_reward"
-                        android:importantForAccessibility="yes"
-                        android:clickable="true"
-                        android:focusable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -564,10 +564,10 @@
                 android:textColor="@color/bolao_azul_filtro"
                 android:fontFamily="@font/caixa_std_regular"
                 android:textSize="18sp" />
-
         </RelativeLayout>
 
         <RelativeLayout
+            android:contentDescription="@string/label_carrinho_apostas_limpo"
             android:id="@+id/carrinhoApostasBtn"
             android:clickable="true"
             android:focusable="true"
@@ -598,7 +598,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:contentDescription="@string/label_carrinho_apostas_limpo"
                 android:text="@string/label_carrinho_apostas"
                 android:textColor="@color/bolao_azul_filtro"
                 android:fontFamily="@font/caixa_std_regular"

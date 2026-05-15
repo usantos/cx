@@ -1653,10 +1653,10 @@
     <string name="txt_voltar">Voltar</string>
     <string name="txt_duvidas">Dúvidas</string>
     <string name="txt_numeros_sorteados">Números sorteados</string>
-    <string name="txt_titulo_numeros_sorteados">Titulo: Números sorteados</string>
+    <string name="txt_titulo_numeros_sorteados">Números sorteados</string>
     <string name="txt_meus_numeros">Meus números</string>
-    <string name="txt_titulo_meus_numeros">Titulo: Meus números</string>
+    <string name="txt_titulo_meus_numeros">Meus números</string>
     <string name="txt_time_sorteado">Time sorteado</string>
-    <string name="txt_titulo_time_sorteado">Titulo: Time sorteado</string>
+    <string name="txt_titulo_time_sorteado">Time sorteado</string>
 
 </resources>

@@ -270,6 +270,28 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
                 info.addAction(AccessibilityNodeInfoCompat.ACTION_CLICK);
             }
         });
+
+        ViewCompat.setAccessibilityDelegate(clResgatePremio2, new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+
+                info.setClassName(android.widget.Button.class.getName());
+                info.setClickable(true);
+                info.addAction(AccessibilityNodeInfoCompat.ACTION_CLICK);
+            }
+        });
+
+        ViewCompat.setAccessibilityDelegate(comprovanteLayout, new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+
+                info.setClassName(android.widget.Button.class.getName());
+                info.setClickable(true);
+                info.addAction(AccessibilityNodeInfoCompat.ACTION_CLICK);
+            }
+        });
     }
 
     private void desativaComponentes() {
