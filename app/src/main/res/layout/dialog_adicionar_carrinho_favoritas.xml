@@ -115,7 +115,7 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_weight="0.5"
-        android:background="@color/cinzaDisable"
+        android:background="@drawable/button_border_new_blue"
         android:fontFamily="@font/caixa_std_bold"
         android:text="@string/adicionar_ao_carrinho"
         android:textAllCaps="false"
