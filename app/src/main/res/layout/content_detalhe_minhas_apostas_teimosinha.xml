@@ -7,7 +7,6 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.core.widget.NestedScrollView
-        android:importantForAccessibility="no"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -36,7 +35,7 @@
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
-                    app:layout_constraintWidth_min="150dp"
+                    app:layout_constraintWidth_min="250dp"
                     android:id="@+id/cl_concursos"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
