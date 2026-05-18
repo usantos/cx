@@ -376,6 +376,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 holder.tvLabelMeuTimeMes.setText(R.string.label_time_do_coracao);
                 holder.tvLabelMeuTimeMes.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+                holder.llCoracao.setContentDescription(holder.tvLabelMeuTimeMes.getText() + " " + item.getSeuTimeMes());
+                ViewCompat.setAccessibilityHeading(holder.llCoracao, true);
                 holder.tvMeuTimeMes.setText(item.getSeuTimeMes());
                 holder.tvMeuTimeMes.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
@@ -389,6 +391,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 holder.tvLabelMeuTimeMes.setText(R.string.label_mes_de_sorte);
                 holder.tvLabelMeuTimeMes.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+                holder.llCoracao.setContentDescription(holder.tvLabelMeuTimeMes.getText() + " " + item.getSeuTimeMes());
+                ViewCompat.setAccessibilityHeading(holder.llCoracao, true);
                 holder.tvMeuTimeMes.setText(item.getSeuTimeMes());
                 holder.tvMeuTimeMes.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
@@ -604,6 +608,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         TextView tvLabelPremio, tvPremio, tvLabelAcertos, tvLabelAcertos1, tvAcertos, tvAcertos1;
         ImageView ivExpandCollapse, ivIconeCentro;
         LinearLayout clAcordeonCorpo, llPremio, llAcertos, llAcertos1;
+        LinearLayout llCoracao;
         ConstraintLayout clAcordeonCabeca;
         RecyclerView rvNumberSortedos, rvNumberSortedos2, rvMeusNumeros, rvMeusNumeros2, rvSuper7Sorteados, rvSuper7MeusNumeros;
         View vLinhaAccordion1, vLinhaAccordion2, vDivisorTrevo;
@@ -623,6 +628,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             vLinhaAccordion1 = itemView.findViewById(R.id.v_linha_accordion1);
             vLinhaAccordion2 = itemView.findViewById(R.id.v_linha_accordion2);
             ivIconeCentro = itemView.findViewById(R.id.icone_centro);
+            llCoracao = itemView.findViewById(R.id.ll_coracao);
+            ViewCompat.setAccessibilityHeading(llCoracao, true);
 
             tvLabelNumerosSorteados = itemView.findViewById(R.id.tv_label_numeros_sorteados);
             ViewCompat.setAccessibilityHeading(tvLabelNumerosSorteados, true);

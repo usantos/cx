@@ -308,13 +308,16 @@
 
         <!-- TIMEMANIA MESSORTE -->
         <LinearLayout
+            android:id="@+id/ll_coracao"
+            android:focusable="true"
+            android:importantForAccessibility="yes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:orientation="horizontal">
 
             <TextView
-                android:importantForAccessibility="yes"
+                android:importantForAccessibility="no"
                 android:id="@+id/tv_label_meu_time_mes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -324,7 +327,7 @@
                 android:fontFamily="@font/caixa_std_regular" />
 
             <TextView
-                android:importantForAccessibility="yes"
+                android:importantForAccessibility="no"
                 android:id="@+id/tv_meu_time_mes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
