@@ -248,7 +248,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 holder.tvLabelTimeMesSorteado.setText(R.string.label_time_sorteado);
                 holder.tvLabelTimeMesSorteado.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
-                holder.llCoracao.setContentDescription(holder.tvLabelTimeMesSorteado.getText() + " " + item.getTimeMesSorteado());
+                holder.llMesSorte.setContentDescription(holder.tvLabelTimeMesSorteado.getText() + " " + item.getTimeMesSorteado());
                 holder.tvTimeMesSorteado.setText(item.getTimeMesSorteado());
                 holder.tvTimeMesSorteado.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
@@ -270,7 +270,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 holder.tvLabelTimeMesSorteado.setText(R.string.label_mes_sorteado_);
                 holder.tvLabelTimeMesSorteado.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
-                holder.llCoracao.setContentDescription(holder.tvLabelTimeMesSorteado.getText()+ " " + item.getTimeMesSorteado());
+                holder.llMesSorte.setContentDescription(holder.tvLabelTimeMesSorteado.getText()+ " " + item.getTimeMesSorteado());
                 holder.tvTimeMesSorteado.setText(item.getTimeMesSorteado());
                 holder.tvTimeMesSorteado.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
@@ -612,7 +612,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         TextView tvLabelPremio, tvPremio, tvLabelAcertos, tvLabelAcertos1, tvAcertos, tvAcertos1;
         ImageView ivExpandCollapse, ivIconeCentro;
         LinearLayout clAcordeonCorpo, llPremio, llAcertos, llAcertos1;
-        LinearLayout llCoracao;
+        LinearLayout llCoracao, llMesSorte;
         ConstraintLayout clAcordeonCabeca;
         RecyclerView rvNumberSortedos, rvNumberSortedos2, rvMeusNumeros, rvMeusNumeros2, rvSuper7Sorteados, rvSuper7MeusNumeros;
         View vLinhaAccordion1, vLinhaAccordion2, vDivisorTrevo;
@@ -633,7 +633,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             vLinhaAccordion2 = itemView.findViewById(R.id.v_linha_accordion2);
             ivIconeCentro = itemView.findViewById(R.id.icone_centro);
             llCoracao = itemView.findViewById(R.id.ll_coracao);
-            ViewCompat.setAccessibilityHeading(llCoracao, true);
+            llMesSorte = itemView.findViewById(R.id.ll_mes_sorte);
 
             tvLabelNumerosSorteados = itemView.findViewById(R.id.tv_label_numeros_sorteados);
             ViewCompat.setAccessibilityHeading(tvLabelNumerosSorteados, true);
@@ -645,7 +645,6 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             ViewCompat.setAccessibilityHeading(tvLabelNumerosSegundoSorteio, true);
             rvNumberSortedos2 = itemView.findViewById(R.id.rv_numbers_sorteados2);
             tvLabelTimeMesSorteado = itemView.findViewById(R.id.tv_label_time_mes_sorteado);
-            ViewCompat.setAccessibilityHeading(tvLabelTimeMesSorteado, true);
             tvTimeMesSorteado = itemView.findViewById(R.id.tv_time_mes_sorteado);
             tvLabelMeusNumeros = itemView.findViewById(R.id.tv_label_meus_numeros);
             ViewCompat.setAccessibilityHeading(tvLabelMeusNumeros, true);
