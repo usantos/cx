@@ -327,11 +327,13 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 holder.tvLabelNumerosSegundoSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
                 holder.tvLabelNumerosSegundoSorteio.setText(R.string.label_trevos_sorteados);
-                holder.tvLabelNumerosSegundoSorteio.setContentDescription("Título: Trevos sorteados");
+                holder.tvLabelNumerosSegundoSorteio.setContentDescription("Trevos sorteados");
+                ViewCompat.setAccessibilityHeading(holder.tvLabelNumerosSegundoSorteio, true);
 
                 holder.tvLabelMeusNumerosSegundoSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
                 holder.tvLabelMeusNumerosSegundoSorteio.setText(R.string.label_trevos);
-                holder.tvLabelMeusNumerosSegundoSorteio.setContentDescription("Título: Trevos");
+                holder.tvLabelMeusNumerosSegundoSorteio.setContentDescription("Trevos");
+                ViewCompat.setAccessibilityHeading(holder.tvLabelMeusNumerosSegundoSorteio, true);
 
                 setupLotteryGrid(holder.rvNumberSortedos,6, item.getNumerosSorteados(),
                         null, LotteryGridStyleConfig.noShape(context, estilo));

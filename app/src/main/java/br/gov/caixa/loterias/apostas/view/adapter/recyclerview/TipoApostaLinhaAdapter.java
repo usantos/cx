@@ -49,7 +49,8 @@ public class TipoApostaLinhaAdapter extends RecyclerView.Adapter<TipoApostaLinha
     public void onBindViewHolder(TipoApostaLinhaHolder holder, int position) {
         TipoApostaLinhaEnum tipoApostaLinhaEnum = itemList.get(position);
 
-        holder.itemView.setContentDescription("Titulo: " + context.getString(tipoApostaLinhaEnum.getTextResId()));
+        holder.itemView.setContentDescription(context.getString(tipoApostaLinhaEnum.getTextResId()));
+        ViewCompat.setAccessibilityHeading(holder.itemView, true);
         holder.itemView.setFocusable(true);
         holder.itemView.setClickable(false);
 
