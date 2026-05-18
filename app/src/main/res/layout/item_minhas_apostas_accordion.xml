@@ -195,7 +195,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/txt_time_sorteado"
-                android:contentDescription="@string/txt_titulo_time_sorteado"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:fontFamily="@font/caixa_std_regular" />

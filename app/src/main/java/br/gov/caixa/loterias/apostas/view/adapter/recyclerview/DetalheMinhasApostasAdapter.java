@@ -248,11 +248,13 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 holder.tvLabelTimeMesSorteado.setText(R.string.label_time_sorteado);
                 holder.tvLabelTimeMesSorteado.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+                holder.llCoracao.setContentDescription(holder.tvLabelTimeMesSorteado.getText() + " " + item.getTimeMesSorteado());
                 holder.tvTimeMesSorteado.setText(item.getTimeMesSorteado());
                 holder.tvTimeMesSorteado.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
                 holder.tvLabelMeuTimeMes.setText(R.string.label_time_do_coracao);
                 holder.tvLabelMeuTimeMes.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+                holder.llCoracao.setContentDescription(holder.tvLabelMeuTimeMes.getText() + " " + item.getSeuTimeMes());
                 holder.tvMeuTimeMes.setText(item.getSeuTimeMes());
                 holder.tvMeuTimeMes.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
@@ -268,11 +270,13 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 holder.tvLabelTimeMesSorteado.setText(R.string.label_mes_sorteado_);
                 holder.tvLabelTimeMesSorteado.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+                holder.llCoracao.setContentDescription(holder.tvLabelTimeMesSorteado.getText()+ " " + item.getTimeMesSorteado());
                 holder.tvTimeMesSorteado.setText(item.getTimeMesSorteado());
                 holder.tvTimeMesSorteado.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
                 holder.tvLabelMeuTimeMes.setText(R.string.label_mes_de_sorte);
                 holder.tvLabelMeuTimeMes.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+                holder.llCoracao.setContentDescription(holder.tvLabelMeuTimeMes.getText() + " " + item.getSeuTimeMes());
                 holder.tvMeuTimeMes.setText(item.getSeuTimeMes());
                 holder.tvMeuTimeMes.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
