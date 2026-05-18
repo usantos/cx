@@ -7,6 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.core.widget.NestedScrollView
+        android:importantForAccessibility="no"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -16,12 +17,14 @@
 
         <!-- ÚNICO FILHO do ScrollView -->
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:importantForAccessibility="no"
             android:id="@+id/cl_scroll_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <!-- Bloco 1: cabeçalho -->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:importantForAccessibility="no"
                 android:id="@+id/rl_header_bloco"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

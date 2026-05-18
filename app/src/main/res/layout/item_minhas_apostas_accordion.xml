@@ -127,7 +127,6 @@
 
         <!-- LOTOFACIL e outras -->
         <TextView
-            android:accessibilityHeading="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_numeros_sorteados"
             android:layout_width="wrap_content"
@@ -242,7 +241,6 @@
             tools:itemCount="1"/>
 
         <TextView
-            android:accessibilityHeading="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_meus_numeros_primeiro_sorteio"
             android:layout_width="wrap_content"
@@ -291,7 +289,6 @@
 
         <!-- DUPLASENA E MAISMILIONARIA-->
         <TextView
-            android:accessibilityHeading="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_meus_numeros_segundo_sorteio"
             android:layout_width="wrap_content"
