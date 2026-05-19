@@ -460,9 +460,9 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                     info.setClassName(CONST_WIDGET);
 
-                    String prefixo = "Aposta: " + position+1 + " de " + getItemCount();
+                    String prefixo = "Aposta: " + (position+1);
                     if (!dto.isBolao()) {
-                        prefixo = "Concurso: " + position+1 + " de " + getItemCount();
+                        prefixo = "Concurso: " + dto.getConcurso();
                     }
 
                     if (dto.isExpanded()) {

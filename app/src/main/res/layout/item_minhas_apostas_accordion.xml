@@ -9,8 +9,7 @@
     android:paddingHorizontal="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:focusable="true"
-        android:importantForAccessibility="yes"
+        android:importantForAccessibility="no"
         android:id="@+id/cl_acordeon_cabeca"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
