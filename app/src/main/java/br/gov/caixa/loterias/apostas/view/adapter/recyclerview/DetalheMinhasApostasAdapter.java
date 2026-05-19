@@ -68,6 +68,14 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
         boolean isExpanded = item.isExpanded();
         handleAccessibility(items.size(), item, holder.itemView, position);
+
+        if (isExpanded) {
+            holder.itemView.setOnClickListener(v -> {
+                item.setExpanded(!item.isExpanded());
+                notifyItemChanged(position);
+            });
+        }
+
         //holder.contentlayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.ivExpandCollapse.setRotation(isExpanded ? 180 : 0);
         holder.ivExpandCollapse.setColorFilter(context.getColor(estilo.getCorFonteFundoEscuro()));
@@ -462,7 +470,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                     String prefixo = "Aposta: " + (position+1);
                     if (!dto.isBolao()) {
-                        prefixo = "Concurso: " + dto.getConcurso();
+                        prefixo = "Resultado do concurso: " + dto.getConcurso() + " situação " + dto.getSituacao();
                     }
 
                     if (dto.isExpanded()) {

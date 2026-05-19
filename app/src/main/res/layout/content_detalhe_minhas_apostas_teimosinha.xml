@@ -336,7 +336,6 @@
 
             <!-- Bloco 3: Recycle -->
             <androidx.recyclerview.widget.RecyclerView
-                android:importantForAccessibility="no"
                 android:id="@+id/rv_accordion_teimosinha"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
