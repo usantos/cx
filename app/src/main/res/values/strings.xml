@@ -1616,6 +1616,7 @@
     <string name="label_trevos">Trevos</string>
     <string name="label_concurso_nao_apurado">Concurso\nnão apurado</string>
     <string name="label_concurso_nao_premiado">Não premiado</string>
+    <string name="label_concurso_premio_pago">Prêmio pago</string>
     <string name="label_acertos_dois_pontos">Acertos:</string>
     <string name="label_acertos_nenhum">nenhum</string>
     <string name="label_premio_dois_pontos">Prêmio:</string>
