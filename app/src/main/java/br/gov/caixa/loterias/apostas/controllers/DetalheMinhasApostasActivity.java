@@ -632,6 +632,10 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
                     for (ConcursoPremiadoDTO concursoPremiado : detalhesPremioDTO.getPremio().getConcursos()) {
                         if (concursoPremiado.getConcurso().getNumero().equals(resultadoConcursoDTO.getConcurso().getNumero())) {
                             situacao = concursoPremiado.getSituacao();
+                            if (aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO &&
+                                concursoPremiado.getSituacao().equalsIgnoreCase("Premiado")) {
+                                situacao = "Prêmio pago";
+                            }
                             valorPremio = concursoPremiado.getValorLiquido();
                             break;
                         }
