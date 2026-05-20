@@ -184,7 +184,7 @@ public class ResultadoLerBilhetesActivity extends LoteriasBaseAppActivity {
                 if (isPremiado(payload)) {
                     List<FaixaPremiadaDTO> faixas = ViewUtils.getFaixaPremiadoNaoPremiado(resultadoConsultaBilheteDTO.getPremioDTO());
                     atualizarLayoutPremiado(faixas);
-                    RateUtils.avaliarAplicativo(ResultadoLerBilhetesActivity.this, true);
+                    RateUtils.solicitarReview(ResultadoLerBilhetesActivity.this);
                 } else if (isPreescrito(payload)){
                     atualizarLayoutApenasMensagem(R.string.label_concurso_prescrito);
                 } else if (isPremioPago(payload)){
@@ -226,7 +226,7 @@ public class ResultadoLerBilhetesActivity extends LoteriasBaseAppActivity {
                 resultadoConsultaBilheteDTO = payload;
                 if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PREMIADA.getValor())) {
                     atualizarLayoutPremiado(null);
-                    RateUtils.avaliarAplicativo(ResultadoLerBilhetesActivity.this, true);
+                    RateUtils.solicitarReview(ResultadoLerBilhetesActivity.this);
                 } else {
                     atualizarLayoutNaoPremiado();
                 }

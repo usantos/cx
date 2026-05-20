@@ -21,7 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -629,6 +632,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             Intent intent = IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, PrincipalActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("ORIGEM_TELA", "CARRINHO");
             startActivity(intent);
         } else {
             setResult(2);

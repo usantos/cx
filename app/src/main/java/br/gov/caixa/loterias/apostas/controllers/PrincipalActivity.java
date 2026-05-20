@@ -210,7 +210,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         listenerSair();
         //callWebservice();
         iniciarBancoLocal();
-        RateUtils.avaliarAplicativo(this);
+        if(veioDoCarrinho() || veioDoPagamento()) {
+            RateUtils.solicitarReview(this);
+        }
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
 
         if (SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
@@ -218,6 +220,21 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
 
         TimerNotificarCotasExpiradasSingleton.getInstance(this).iniciarVerificacao();
+    }
+    private boolean veioDoCarrinho() {
+        String origem = getIntent() != null
+                ? getIntent().getStringExtra("ORIGEM_TELA")
+                : null;
+
+        return "CARRINHO_INC".equals(origem) || "CARRINHO_BOLAO".equals(origem) || "CARRINHO".equals(origem);
+    }
+
+    private boolean veioDoPagamento() {
+        String origem = getIntent() != null
+                ? getIntent().getStringExtra("ORIGEM_TELA")
+                : null;
+
+        return "MERCADO".equals(origem);
     }
 
     private void setViews() {
