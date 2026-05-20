@@ -67,6 +67,7 @@ import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.custom.PartyAnimationManager;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
@@ -142,7 +143,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     //TODO: MEGA 30 ANOS//
     private boolean isMega30;
     private EstiloModalidadeMKP estilo;
-    private PartyAnimationManager animationManager;
+    //private PartyAnimationManager animationManager;
+    private LottieManager lottieManager;
 
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     public void onCreate(Bundle savedInstanceState) {
@@ -179,28 +181,33 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         }
 
         //Animação 30 anos
-        if (isEspecial && tipoJogo == ModalidadeEnum.MEGA_SENA) {
-            animationManager = new PartyAnimationManager(this);
-            findViewById(android.R.id.content).post(() -> {
-               animationManager.start(6500);
-            });
-        }
+//        if (isEspecial && tipoJogo == ModalidadeEnum.MEGA_SENA) {
+//            animationManager = new PartyAnimationManager(this);
+//            findViewById(android.R.id.content).post(() -> {
+//               animationManager.start(6500);
+//            });
+//        }
+        lottieManager = new LottieManager(this, R.raw.copa_loteca_1);
+        lottieManager.start();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (animationManager != null) {
-            animationManager.stop();
+//        if (animationManager != null) {
+//            animationManager.stop();
+//        }
+        if (lottieManager != null) {
+            lottieManager.destroy();
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (animationManager != null) {
-            animationManager.stop();
-        }
+//        if (animationManager != null) {
+//            animationManager.stop();
+//        }
     }
 
     private void preencheBarraTitulo() {
