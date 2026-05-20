@@ -190,7 +190,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     private void habilitaBotaoAdicionar(boolean isEnabled) {
         if (isEnabled){
             adicionarCarrinhoFavoritosButton.setEnabled(true);
-            adicionarCarrinhoFavoritosButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.verdeazul));
+            adicionarCarrinhoFavoritosButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
         } else {
             adicionarCarrinhoFavoritosButton.setEnabled(false);
             adicionarCarrinhoFavoritosButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaDisable));
