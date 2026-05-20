@@ -187,7 +187,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
 //               animationManager.start(6500);
 //            });
 //        }
-        lottieManager = new LottieManager(this, R.raw.copa_loteca_1);
+        //lottieManager = new LottieManager(this, R.raw.quina_sao_joao_1);
+        lottieManager = new LottieManager(this, R.raw.copa_loteca_3);
         lottieManager.start();
     }
 
