@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +39,6 @@ import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
@@ -386,7 +384,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         AnalyticsHelper.getInstance().logInteraction(
                 AnalyticsHelper.EventCategoryParams.CTA,
-                AnalyticsHelper.EventActionParams.CLICAR,
+                AnalyticsHelper.EventActionParams.CLICK,
                 AnalyticsHelper.EventLabelParams.ADD_TO_CART,
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,

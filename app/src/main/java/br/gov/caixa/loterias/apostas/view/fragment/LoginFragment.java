@@ -14,7 +14,6 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ import androidx.biometric.BiometricPrompt;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
 
@@ -104,12 +102,6 @@ public class LoginFragment extends Fragment {
         biometriaLinearLayout = v.findViewById(R.id.biometriaLinearLayout);
         biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
 
-        AnalyticsHelper.getInstance().logViewScreen(
-                AnalyticsHelper.JourneyParams.APOSTAR,
-                AnalyticsHelper.SubJourneyParams.ENTRY,
-                AnalyticsHelper.Tela.LOGIN
-        );
-
         //Selecao ambiente se NAO PRD
         if (!BuildConfig.FLAVOR.equals("prd")) {
             //Ambiente Selecao
@@ -185,7 +177,7 @@ public class LoginFragment extends Fragment {
         buttonLogin.setOnClickListener(v12 -> {
             AnalyticsHelper.getInstance().logInteraction(
                     AnalyticsHelper.EventCategoryParams.CTA,
-                    AnalyticsHelper.EventActionParams.CLICAR,
+                    AnalyticsHelper.EventActionParams.CLICK,
                     AnalyticsHelper.EventLabelParams.ENTRY,
                     AnalyticsHelper.JourneyParams.APOSTAR,
                     AnalyticsHelper.SubJourneyParams.ENTRY,
@@ -293,6 +285,12 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        AnalyticsHelper.getInstance().logViewScreen(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.ENTRY,
+                AnalyticsHelper.Tela.LOGIN
+        );
 
         if (!temMatriculaBiometria) {
             BiometricManager biometricManager = BiometricManager.from(getActivity());

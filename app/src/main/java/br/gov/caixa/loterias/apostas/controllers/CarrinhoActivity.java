@@ -35,7 +35,6 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -362,7 +361,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         if(carrinho != null) {
             AnalyticsHelper.getInstance().logInteraction(
                     AnalyticsHelper.EventCategoryParams.CTA,
-                    AnalyticsHelper.EventActionParams.CLICAR,
+                    AnalyticsHelper.EventActionParams.CLICK,
                     AnalyticsHelper.EventLabelParams.PAYMENT,
                     AnalyticsHelper.JourneyParams.APOSTAR,
                     AnalyticsHelper.SubJourneyParams.CARRINHO,

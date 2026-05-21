@@ -565,7 +565,7 @@ private void zeraLoteca(){
 
 			AnalyticsHelper.getInstance().logInteraction(
 					AnalyticsHelper.EventCategoryParams.CTA,
-					AnalyticsHelper.EventActionParams.CLICAR,
+					AnalyticsHelper.EventActionParams.CLICK,
 					AnalyticsHelper.EventLabelParams.ADD_TO_CART,
 					AnalyticsHelper.Tela.MONTAR_APOSTA,
 					AnalyticsHelper.JourneyParams.APOSTAR,
@@ -582,7 +582,7 @@ private void zeraLoteca(){
 		else{
 			AnalyticsHelper.getInstance().logInteraction(
 					AnalyticsHelper.EventCategoryParams.CTA,
-					AnalyticsHelper.EventActionParams.CLICAR,
+					AnalyticsHelper.EventActionParams.CLICK,
 					AnalyticsHelper.EventLabelParams.ADD_TO_CART,
 					AnalyticsHelper.JourneyParams.APOSTAR,
 					AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,

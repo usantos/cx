@@ -73,7 +73,7 @@ public class AnalyticsHelper {
     }
 
     public static final class EventActionParams {
-        public static final String CLICAR = "clicar";
+        public static final String CLICK = "click";
 
         private EventActionParams() {}
     }

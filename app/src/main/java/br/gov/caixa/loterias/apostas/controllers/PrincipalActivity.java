@@ -171,6 +171,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private int anInt;
     private int ano;
     Boolean expandido = false;
+    private Integer numeroConcurso = null;
+    private ModalidadeEnum tipoModalidade = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -328,6 +330,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         super.onResume();
         String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase(new Locale(getResources().getString(R.string.pt), getResources().getString(R.string.br))).split(getResources().getString(R.string.espaco_em_branco));
         String nomeUsuario = StringUtils.capitalizer(separarNome[0]+getResources().getString(R.string.espaco_em_branco)+separarNome[separarNome.length - 1]);
+
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.SELECIONAR,
+                AnalyticsHelper.Tela.HOME,
+                tipoModalidade != null ? ModalidadeEnum.fromString(tipoModalidade) : "",
+                numeroConcurso != null ? numeroConcurso.toString() : ""
+        );
 
         if(!" ".equals(nomeUsuario)) {
             String texto = getResources().getString(R.string.ola_usuario);
@@ -812,9 +822,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         ConcursoDTO concurso = item != null ? item.getConcurso() : null;
 
-        Integer numeroConcurso = concurso != null ? concurso.getNumero() : null;
+        numeroConcurso = concurso != null ? concurso.getNumero() : null;
         TipoConcursoEnum tipoConcurso = concurso != null ? concurso.getTipoConcurso() : null;
-        ModalidadeEnum tipoModalidade = item != null ? item.getTipoModalidade() : null;
+        tipoModalidade = item != null ? item.getTipoModalidade() : null;
 
         /* MEGA 30 ANOS */
         boolean isMega30 = numeroConcurso != null && tipoConcurso != null
@@ -909,7 +919,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
         AnalyticsHelper.getInstance().logInteraction(
                 AnalyticsHelper.EventCategoryParams.CTA,
-                AnalyticsHelper.EventActionParams.CLICAR,
+                AnalyticsHelper.EventActionParams.CLICK,
                 AnalyticsHelper.EventLabelParams.BOLAO,
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.SELECIONAR,
@@ -948,7 +958,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         AnalyticsHelper.getInstance().logInteraction(
                 AnalyticsHelper.EventCategoryParams.CTA,
-                AnalyticsHelper.EventActionParams.CLICAR,
+                AnalyticsHelper.EventActionParams.CLICK,
                 AnalyticsHelper.EventLabelParams.SIMPLES,
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.SELECIONAR,

@@ -6,7 +6,6 @@ import static android.view.View.VISIBLE;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -19,7 +18,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +37,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -48,7 +45,6 @@ import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
@@ -64,7 +60,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.model.model.LotericaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -241,6 +236,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (parametroJogo != null
+                && parametroJogo.getConcurso() != null
+                && parametroJogo.getConcurso().getNumero() != null) {
+
+            numeroConcurso = parametroJogo.getConcurso().getNumero().toString();
+        }
 
         AnalyticsHelper.getInstance().logViewScreenAposta(
                 AnalyticsHelper.JourneyParams.APOSTAR,
@@ -1248,7 +1250,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                     AnalyticsHelper.Tela.BOLAO,
                     ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
                     AnalyticsHelper.EventCategoryParams.CTA,
-                    AnalyticsHelper.EventActionParams.CLICAR,
+                    AnalyticsHelper.EventActionParams.CLICK,
                     AnalyticsHelper.EventLabelParams.ADD_BOLAO,
                     AnalyticsHelper.JourneyParams.APOSTAR,
                     AnalyticsHelper.SubJourneyParams.BOLAO,
