@@ -64,7 +64,7 @@ public class SuperSeteResultadoLayout extends LinearLayout {
 		List<String> matrizResultadosTexto = convertList(matrizResultado);
 
 		ArrayList<String> listCabecalho1a7 = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7"));
-		setupGridNumeros(rv_head, Shape.RETANGULO_CAROUSEL, 7, listCabecalho1a7, context.getColor(estilo.getCorEscura()), context.getColor(estilo.getCorClara()), context.getColor(estilo.getCorClara()));
+		setupGridNumeros(rv_head, Shape.RETANGULO_CAROUSEL, 7, listCabecalho1a7, context.getColor(R.color.super_sete_letra_mkp), context.getColor(R.color.super_sete_claro_mkp), context.getColor(R.color.super_sete_claro_mkp));
 		setupGridNumeros(rv_body, Shape.RETANGULO_CAROUSEL, 7, matrizResultadosTexto, context.getColor(estilo.getCorFonteFundoEscuro()), Color.TRANSPARENT, Color.TRANSPARENT);
 
 		this.partidaViewDetalhesResultadoView.setLayout(modalidade);
@@ -88,7 +88,7 @@ public class SuperSeteResultadoLayout extends LinearLayout {
 
 		ArrayList<String> listCabecalho1a7 = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7"));
 
-		setupGridNumeros(rv_head, Shape.RETANGULO_CAROUSEL, 7, listCabecalho1a7, context.getColor(R.color.super_sete_escuro_mkp), context.getColor(R.color.super_sete_claro_mkp), context.getColor(R.color.super_sete_claro_mkp));
+		setupGridNumeros(rv_head, Shape.RETANGULO_CAROUSEL, 7, listCabecalho1a7, context.getColor(R.color.super_sete_letra_mkp), context.getColor(R.color.super_sete_claro_mkp), context.getColor(R.color.super_sete_claro_mkp));
 		setupGridNumeros(rv_body, Shape.RETANGULO_CAROUSEL, 7, matrizResultadosTexto, R.color.branco, Color.TRANSPARENT, Color.TRANSPARENT);
 	}
 
