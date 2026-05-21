@@ -472,9 +472,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO : listaGanhadores) {
                 count += 1;
                 TextView title1 = new TextView(getContext());
-                title1.setText(getResources().getString(R.string.label_texto_barra_texto,
+                title1.setText(textCaixaSTDBold(getContext(), "_"+getResources().getString(R.string.label_texto_barra_texto,
                         ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(),
-                        ganhadoresPorRegiaoDTO.getUfSorteio().getSigla()));
+                        ganhadoresPorRegiaoDTO.getUfSorteio().getSigla())+"_"));
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -540,7 +540,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title);
 
         TextView text = new TextView(getContext());
-        text.setText(ViewUtils.getMoedaFormat(valor));
+        text.setText(textCaixaSTDBold(getContext(), "_"+ViewUtils.getMoedaFormat(valor)+"_"));
 
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
