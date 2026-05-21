@@ -72,6 +72,9 @@ public class NumerosGridAdapter extends RecyclerView.Adapter<NumerosGridAdapter.
             case RETANGULO:
                 layoutId = R.layout.item_numeros_grid_retangulo;
                 break;
+            case RETANGULO_CAROUSEL:
+                layoutId = R.layout.item_numeros_grid_retangulo_carrossel;
+                break;
             case TREVO:
                 layoutId = R.layout.item_numeros_grid_trevo;
                 break;
