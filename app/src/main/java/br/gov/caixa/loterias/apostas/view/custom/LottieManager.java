@@ -61,6 +61,23 @@ public class LottieManager {
         }
     }
 
+    public LottieAnimationView getLottieView() {
+        return lottieView;
+    }
+
+    public void setSpeed(float speed) {
+        pendingSpeed = speed;
+        if (lottieView != null) {
+            lottieView.setSpeed(speed);
+        }
+    }
+
+    public void setRepeatCount(int count) {
+        pendingRepeatCount = count;
+        int lottieCount = (count == 0) ? LottieDrawable.INFINITE : (count -1);
+        lottieView.setRepeatCount(lottieCount);
+    }
+
     private LottieAnimationView buildLottieView() {
         LottieAnimationView view = new LottieAnimationView(activity);
 
