@@ -54,6 +54,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -67,6 +68,7 @@ import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.custom.AccordionView;
 import br.gov.caixa.loterias.apostas.view.custom.PartyAnimationManager;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
@@ -118,6 +120,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private PaginacaoFragment paginacaoFragment;
     private TrevosFragment trevosFragment;
     private RodapeSimulacaoApostaFragment rodapeFragment;
+
+    private AccordionView accordionView;
 
     private int typeGameColorLight;
     private int typeGameColorDark;
@@ -185,6 +189,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                animationManager.start(6500);
             });
         }
+
+        AccordionModel model = new AccordionModel(tipoJogo);
     }
 
     @Override
@@ -266,6 +272,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         this.imageQtdNumerosButton = findViewById(R.id.imageQtdNumerosButton);
         this.imageQtdConcursosButton = findViewById(R.id.imageQtdConcursosButton);
         this.paginacaoView = findViewById(R.id.paginacaoView);
+        this.accordionView = findViewById(R.id.custom_accordion_view);
     }
 
     @Override
