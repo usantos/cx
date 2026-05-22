@@ -1,12 +1,21 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
+import android.animation.Animator;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class LottieManager {
 
@@ -14,9 +23,13 @@ public class LottieManager {
     private static final int DEFAULT_REPEAT_COUNT  = 1;
     private float pendingSpeed = DEFAULT_SPEED;
     private int pendingRepeatCount = DEFAULT_REPEAT_COUNT;
+    private static final String PREF_NAME = "LottiePref";
+    private static final String PREF_POPUP_SHOW_PREFIX = "popup_show_";
+    private static final String PREF_DISABLE_ANIMATION_PREFIX = "animation_disabled_";
     private final Activity activity;
     private final int rawRes;
     private LottieAnimationView lottieView;
+    private boolean isDismissed = false;
 
     public LottieManager(Activity activity, int rawRes) {
         this.activity = activity;
@@ -24,7 +37,10 @@ public class LottieManager {
     }
 
     public void start() {
-        if (lottieView != null) return;
+        if (isAnimationDisable(rawRes)) {
+            return;
+        }
+        if (lottieView != null) return; //ja inciado
 
         lottieView = buildLottieView();
 
@@ -32,7 +48,7 @@ public class LottieManager {
         root.addView(lottieView);
 
         lottieView.post(() -> {
-           if(!lottieView.isAnimating()) {
+           if(lottieView != null && !lottieView.isAnimating()) {
                lottieView.playAnimation();
            }
         });
@@ -51,6 +67,7 @@ public class LottieManager {
     }
 
     public void destroy() {
+        isDismissed = true;
         if(lottieView != null) {
             lottieView.cancelAnimation();
 
@@ -58,6 +75,25 @@ public class LottieManager {
             if(parent != null) {
                 parent.removeView(lottieView);
             }
+        }
+    }
+
+    public void dismissPresentation() {
+        if (isDismissed) return;;
+        isDismissed = true;
+
+        if (lottieView != null) {
+            lottieView.cancelAnimation();
+
+            ViewGroup parent = (ViewGroup) lottieView.getParent();
+            if (parent != null) {
+                parent.removeView(lottieView);
+            }
+            lottieView = null;
+        }
+
+        if (!isPopupShow(rawRes)) {
+            showOcultarDialog();
         }
     }
 
@@ -88,8 +124,10 @@ public class LottieManager {
         view.setLayoutParams(params);
 
         view.setBackgroundColor(Color.TRANSPARENT);
-        view.setClickable(false);
-        view.setFocusable(false);
+        view.setClickable(true);
+        view.setFocusable(true);
+
+        view.setOnClickListener( v -> dismissPresentation());
 
         view.setAnimation(rawRes);
         view.setSpeed(pendingSpeed);
@@ -97,7 +135,77 @@ public class LottieManager {
         int lottieCount = (pendingRepeatCount == 0) ? LottieDrawable.INFINITE : (pendingRepeatCount -1);
         view.setRepeatCount(lottieCount);
 
+        view.addAnimatorListener(new Animator.AnimatorListener() {
+
+            @Override
+            public void onAnimationStart(@NonNull Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(@NonNull Animator animation) {
+                dismissPresentation();
+            }
+
+            @Override
+            public void onAnimationCancel(@NonNull Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(@NonNull Animator animation) {
+
+            }
+        });
+
         return view;
     }
 
+    private String getResourceKey(int rawRes) {
+        try {
+            return activity.getResources().getResourceEntryName(rawRes);
+        } catch (Exception e ) {
+            return String.valueOf(rawRes);
+        }
+    }
+    private boolean isPopupShow(int rawRes) {
+        String key = PREF_POPUP_SHOW_PREFIX + getResourceKey(rawRes);
+        SharedPreferences prefs = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean(key, false);
+    }
+    private void setPopupShow(int rawRes, boolean show) {
+        String key = PREF_POPUP_SHOW_PREFIX + getResourceKey(rawRes);
+        SharedPreferences prefs = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(key, show).apply();
+    }
+    private boolean isAnimationDisable(int rawRes) {
+        String key = PREF_DISABLE_ANIMATION_PREFIX + getResourceKey(rawRes);
+        SharedPreferences prefs = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean(key, false);
+    }
+    private void setAnimationDisable(int rawRes, boolean disable) {
+        String key = PREF_DISABLE_ANIMATION_PREFIX + getResourceKey(rawRes);
+        SharedPreferences prefs = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(key, disable).apply();
+    }
+
+
+    private void showOcultarDialog() {
+        if (activity.isFinishing() || activity.isDestroyed()) {
+            return;
+        }
+
+        new AlertDialog.Builder(activity)
+                .setMessage("Deseja ocultar essa animação nas próximas vezes?")
+                .setPositiveButton("Sim", (DialogInterface dialog, int which) -> {
+                    setPopupShow(rawRes, true);
+                    setAnimationDisable(rawRes, true);
+                })
+                .setNegativeButton("Não", (DialogInterface dialog, int which) -> {
+                    setPopupShow(rawRes, true);
+                    setAnimationDisable(rawRes, false);
+                })
+                .setCancelable(false)
+                .show();
+    }
 }

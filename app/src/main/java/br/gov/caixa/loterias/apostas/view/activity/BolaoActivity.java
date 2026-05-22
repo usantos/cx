@@ -72,6 +72,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrosselBolaoAda
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaLotericasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.AccessibleSpringDotsIndicator;
+import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
 import br.gov.caixa.loterias.apostas.view.custom.PartyAnimationManager;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
@@ -143,7 +144,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private ParametroJogoDTO parametroJogo;
     private BarraTituloFiltroLotericaFragment fragBarraTituloFiltroLoterica;
     AccessibleSpringDotsIndicator dotsIndicator;
-    private PartyAnimationManager animationManager;
+    //private PartyAnimationManager animationManager;
+    private LottieManager lottieManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,16 +231,22 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (animationManager != null) {
-            animationManager.stop();
+        //if (animationManager != null) {
+        //    animationManager.stop();
+        //}
+        if (lottieManager != null) {
+            lottieManager.destroy();
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (animationManager != null) {
-            animationManager.stop();
+        //if (animationManager != null) {
+        //    animationManager.stop();
+        //}
+        if (lottieManager != null) {
+            lottieManager.pause();
         }
     }
 
@@ -428,13 +436,26 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 AlertDialogUtils.dismiss();
 
                 //Animação 30 anos
-                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.MEGA_SENA) {
-                    animationManager = new PartyAnimationManager(BolaoActivity.this);
-                    findViewById(android.R.id.content).post(() -> {
-                        animationManager.start(6500);
-                    });
-                    // Essa logica precisa ser removida apos encerramento da mega 30 anos
-                    //TODO//
+                //if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.MEGA_SENA) {
+                //    animationManager = new PartyAnimationManager(BolaoActivity.this);
+                //    findViewById(android.R.id.content).post(() -> {
+                //        animationManager.start(6500);
+                //    });
+                //    // Essa logica precisa ser removida apos encerramento da mega 30 anos
+                //    //TODO//
+                //}
+
+                //Animação Copa da Loteca
+                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.LOTECA) {
+                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.copa_loteca_3);
+                    lottieManager.setSpeed(1.75f);
+                    lottieManager.start();
+                }
+                //Animação Quina de São João
+                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.QUINA) {
+                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.quina_sao_joao_1);
+                    lottieManager.setSpeed(1.5f);
+                    lottieManager.start();
                 }
 
 

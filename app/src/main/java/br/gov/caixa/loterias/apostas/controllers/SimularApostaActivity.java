@@ -189,13 +189,13 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
 //        }
 
         //Animação Copa da Loteca
-        if (tipoJogo == ModalidadeEnum.LOTECA) { // && isEspecial
+        if (tipoJogo == ModalidadeEnum.LOTECA && isEspecial) {
             lottieManager = new LottieManager(this, R.raw.copa_loteca_3);
             lottieManager.setSpeed(1.75f);
             lottieManager.start();
         }
         //Animação Quina de São João
-        if (tipoJogo == ModalidadeEnum.QUINA) { // && isEspecial
+        if (tipoJogo == ModalidadeEnum.QUINA && isEspecial) {
             lottieManager = new LottieManager(this, R.raw.quina_sao_joao_1);
             lottieManager.setSpeed(1.5f);
             lottieManager.start();
