@@ -60,12 +60,16 @@ public class AccordionView extends ConstraintLayout {
         this.model = model;
         EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(model.getModalidadeEnum());
 
-        tvHeader.setTextColor(getContext().getColor(R.color.branco));
+        tvHeader.setTextColor(getContext().getColor(estilo.getCorFonteFundoEscuro()));
+        ivIcon.setColorFilter(getContext().getColor(estilo.getCorFonteFundoEscuro()));
+
         header.setBackgroundColor(getContext().getColor(estilo.getCorEscura()));
+
+        body.setBackgroundColor(getContext().getColor(R.color.cinzaCx));
+
         tvBody.setText(model.getBodyText());
         tvBody.setBackgroundColor(getContext().getColor(R.color.transparente));
-        body.setBackgroundColor(getContext().getColor(R.color.cinzaCx));
-        ivIcon.setColorFilter(getContext().getColor(R.color.branco));
+
         applyState();
     }
 
