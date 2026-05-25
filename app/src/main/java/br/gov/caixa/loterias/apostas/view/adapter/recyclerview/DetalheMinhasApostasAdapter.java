@@ -470,7 +470,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                     String prefixo = "Aposta: " + (position+1);
                     if (!dto.isBolao()) {
-                        prefixo = "Resultado do concurso: " + dto.getConcurso() + " situação " + dto.getSituacao();
+                        prefixo = "Resultado do concurso: " + dto.getConcurso() + " situação " + dto.getSituacao() + " " + position+1 + " de " + getItemCount();
                     }
 
                     if (dto.isExpanded()) {
