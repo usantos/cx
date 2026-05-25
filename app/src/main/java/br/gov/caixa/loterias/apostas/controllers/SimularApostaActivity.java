@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.graphics.drawable.Drawable;
@@ -15,7 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
@@ -97,12 +98,13 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     public final static String extra_modalidade = "modalidade";
     private int numero_concurso;
     private ConstraintLayout toolBarLoteca;
-    private Button qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela;
+    private Button qtdNumerosButton, qtdConcursosButton;
+    private MaterialButton botaoLimparAposta,botaoAdicionarCompletarCartela;
     private AppCompatImageView simularTelaAposta, surpresinhaTela;
     private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
             labelValueTriplasLoteca, textoSalveEstaAposta;
     private LinearLayout toolBarSimularAposta;
-    private RelativeLayout salvarApostaLayout;
+    private ConstraintLayout salvarApostaLayout;
     private ImageButton btnSalvarAposta;
     private EditText editNomeAposta;
     private ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton, imageQtdConcursosButton;
@@ -367,7 +369,10 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             qtdNumerosButton.setOnClickListener(this);
             qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
             botaoAdicionarCompletarCartela.setOnClickListener(this);
-            botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(typeGameColorDark));
+            botaoAdicionarCompletarCartela.setBackgroundTintList(
+                    ColorStateList.valueOf(getResources().getColor(typeGameColorDark))
+            );
+
             botaoLimparAposta.setOnClickListener(this);
             voltaPagina();
         }
@@ -450,11 +455,11 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         return labelValueTriplasLoteca;
     }
 
-    public Button getBotaoLimparAposta() {
+    public MaterialButton getBotaoLimparAposta() {
         return botaoLimparAposta;
     }
 
-    public Button getBotaoAdicionarCompletarCartela() {
+    public MaterialButton getBotaoAdicionarCompletarCartela() {
         return botaoAdicionarCompletarCartela;
     }
 
@@ -466,7 +471,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         return rodapeFragment.getTvValorAposta();
     }
 
-    public RelativeLayout getSalvarApostaLayout() {
+    public ConstraintLayout getSalvarApostaLayout() {
         return salvarApostaLayout;
     }
 
@@ -543,7 +548,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
                 AlertDialogUtils.dismiss();
 
-                atualizaLayoutSalverAposta();
+                atualizaLayoutSalvarAposta();
             }
 
             @Override
@@ -914,12 +919,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     }
 
     @Override
-    public Button getButtonFinalizar() {
+    public MaterialButton getButtonFinalizar() {
         return botaoAdicionarCompletarCartela;
     }
 
     @Override
-    public Button getButtonLimpar() {
+    public MaterialButton getButtonLimpar() {
         return botaoLimparAposta;
     }
 
@@ -939,7 +944,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     }
 
     @Override
-    public RelativeLayout getButtonSalvar() {
+    public ConstraintLayout getButtonSalvar() {
         return salvarApostaLayout;
     }
 
@@ -958,10 +963,10 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     }
 
     @Override
-    public void atualizaLayoutSalverAposta() {
-        RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
+    public void atualizaLayoutSalvarAposta() {
+        ConstraintLayout salvarApostaLayout = getSalvarApostaLayout();
 
-        salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
+        salvarApostaLayout.setBackgroundResource(R.drawable.bg_salvar_aposta_verde);
         ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 
         final float scale = getResources().getDisplayMetrics().density;
@@ -971,10 +976,9 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
 
         TextView tituloSalvarAposta = getTextoSalveEstaAposta();
         tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
-        tituloSalvarAposta.setGravity(Gravity.CENTER);
 
         ImageView starSalvarApostaImageView = getIconStarSalvar();
-        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
+        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado_novo);
 
         flagApostaSalva = true;
     }

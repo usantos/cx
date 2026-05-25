@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -21,18 +22,21 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.*;
 import br.gov.caixa.loterias.apostas.view.listener.*;
 import com.android.volley.VolleyError;
+import com.google.android.material.button.MaterialButton;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -116,7 +120,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public BigDecimal valorTotalAposta;
 	public int typeGameColorLight, typeGameColorDark;
 	public int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
-	public Button botaoFinalizar, botaoLimparAposta;
+	public MaterialButton botaoFinalizar, botaoLimparAposta;
 	public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
 	public ListaDezenaRecyclerView simularDezenasAdapter;
 	public String dataSorteioAtual;
@@ -474,7 +478,7 @@ private void zeraLoteca(){
 			break;
 
 			case R.id.salvarApostaLayout: {
-				RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
+				ConstraintLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
 				ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 
@@ -884,9 +888,9 @@ private void zeraLoteca(){
 	}
 
 	public void voltaSalvarApostaParaLayoutInicial() {
-		RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
+		ConstraintLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
-		salvarApostaLayout.setBackgroundResource(R.color.cinzaescuro);
+		salvarApostaLayout.setBackgroundResource(R.drawable.bg_salvar_aposta);
 		TextView tituloSalvarAposta = parentActivity.getTextoSalveEstaAposta();
 
 		tituloSalvarAposta.setText(R.string.label_salve_esta_aposta_carinha);
@@ -899,7 +903,7 @@ private void zeraLoteca(){
 		salvarApostaLayout.setLayoutParams(relativelayoutParams);
 
 		ImageView starSalvarApostaImageView = parentActivity.getIconStarSalvar();
-		starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritar);
+		starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritar_novo);
 
 		salvarApostaLayout.setOnClickListener(this);
 
@@ -996,7 +1000,7 @@ private void zeraLoteca(){
 	}
 
 	private void ocutarSalvarAposta() {
-		RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
+		ConstraintLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
 		salvarApostaLayout.setVisibility(View.GONE);
 		verificaMostraRodape();
@@ -1012,7 +1016,7 @@ private void zeraLoteca(){
 	}
 
 	private void mostrarSalvarAposta() {
-		RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
+		ConstraintLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
 		salvarApostaLayout.setVisibility(View.VISIBLE);
 		final float scale = parentActivity.getResources().getDisplayMetrics().density;
@@ -1026,7 +1030,10 @@ private void zeraLoteca(){
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 			if (partidasSelecionadas.size() < parametroJogo.getPartidas().size()) {
 				botaoFinalizar.setVisibility(View.INVISIBLE);
-				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
+				botaoFinalizar.setBackgroundTintList(
+						ColorStateList.valueOf(ContextCompat.getColor(parentActivity, R.color.cinza))
+				);
+
 				botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_complete_placar_aleatoriamente)));
 				botaoFinalizar.setTextColor(getResources().getColor(R.color.branco));
 			} else {
@@ -1035,15 +1042,21 @@ private void zeraLoteca(){
 			}
 		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 			if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado) {
-				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
+				botaoFinalizar.setBackgroundTintList(
+						ColorStateList.valueOf(ContextCompat.getColor(parentActivity, typeGameColorDark))
+				);
 				if (mGridTimeCoracao != null) {
 					botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.label_selecionar_time_aleatoriamente)));
 					botaoFinalizar.setTextColor(getResources().getColor(R.color.branco));
-					botaoFinalizar.setBackgroundColor(getContext().getResources().getColor(R.color.cinza));
+					botaoFinalizar.setBackgroundTintList(
+							ColorStateList.valueOf(getContext().getResources().getColor(R.color.cinza))
+					);
 				} else {
 					botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.label_escolha_time_coracao)));
 					botaoFinalizar.setTextColor(getResources().getColor(corFonteFundoEscuro));
-					botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
+					botaoFinalizar.setBackgroundTintList(
+							ColorStateList.valueOf(ContextCompat.getColor(parentActivity, typeGameColorDark))
+					);
 				}
 			} else {
 				atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
@@ -1084,7 +1097,10 @@ private void zeraLoteca(){
 
 			} else {
 				botaoFinalizar.setVisibility(View.INVISIBLE);
-				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
+				botaoFinalizar.setBackgroundTintList(
+						ColorStateList.valueOf(ContextCompat.getColor(parentActivity, R.color.cinza))
+				);
+
 				botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_times_aleatoriamente)));
 				botaoFinalizar.setTextColor(getResources().getColor(R.color.branco));
 			}
@@ -1102,10 +1118,14 @@ private void zeraLoteca(){
 				if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 					if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
 						botaoFinalizar.setClickable(true);
-						botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
+						botaoFinalizar.setBackgroundTintList(
+								ColorStateList.valueOf(ContextCompat.getColor(parentActivity, typeGameColorDark))
+						);
 					} else {
 						botaoFinalizar.setClickable(false);
-						botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.azulclaro));
+						botaoFinalizar.setBackgroundTintList(
+								ColorStateList.valueOf(ContextCompat.getColor(parentActivity, R.color.azulclaro))
+						);
 						parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
 					}
 				}
@@ -1126,21 +1146,27 @@ private void zeraLoteca(){
 	}
 
 	private void atualizarBotaoFinalizar(int stringId) {
-		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
+		botaoFinalizar.setBackgroundTintList(
+				ColorStateList.valueOf(ContextCompat.getColor(parentActivity, typeGameColorDark))
+		);
 		botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(stringId)));
 		botaoFinalizar.setTextColor(getResources().getColor(corFonteFundoEscuro));
 		verificaSeMostraSalvarApostaView();
 	}
 
 	private void atualizarBotaoFinalizarCompletarCartela() {
-		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
+		botaoFinalizar.setBackgroundTintList(
+				ColorStateList.valueOf(ContextCompat.getColor(parentActivity, R.color.cinza))
+		);
 		botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.completarCartela)));
 		botaoFinalizar.setTextColor(getResources().getColor(R.color.branco));
 		parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
 	}
 
 	private void atualizarBotaoFinalizarAdicionarCarrinho() {
-		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
+		botaoFinalizar.setBackgroundTintList(
+				ColorStateList.valueOf(ContextCompat.getColor(parentActivity, typeGameColorDark))
+		);
 		botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.adicionarAoCarrinho)));
 		botaoFinalizar.setTextColor(ContextCompat.getColor(parentActivity, corFonteFundoEscuro));
 		if ((!parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) && !parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) && !parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {

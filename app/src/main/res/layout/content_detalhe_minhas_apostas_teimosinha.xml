@@ -684,7 +684,7 @@
                     android:layout_width="21dp"
                     android:layout_height="21dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/icon_favoritado" />
+                    android:src="@drawable/icon_favoritado_novo" />
 
                 <TextView
                     android:id="@+id/labelApostaSalvaTxt"
@@ -706,7 +706,7 @@
                 android:layout_alignParentTop="true"
                 android:background="@drawable/rounded_text_view_colunas"
                 android:backgroundTint="@color/cinza110"
-                android:drawableStart="@drawable/icon_favoritar"
+                android:drawableStart="@drawable/icon_favoritar_novo"
                 android:drawablePadding="10dp"
                 android:gravity="center"
                 android:minHeight="61dp"
