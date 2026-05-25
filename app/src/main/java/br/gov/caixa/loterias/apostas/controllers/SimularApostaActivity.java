@@ -138,6 +138,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     //mocks
     public int qtdDezenasPossiveisSelecionado;
     public int qtdConcursoSelecionado;
+    private int posicaoDialogTeimosinhas;
     private Boolean flagApostaSalva = false;
 
     private Boolean isSurpresinha = false;
@@ -152,7 +153,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         setContentView(R.layout.activity_simular_aposta);
         init();
     }
-    
+
     protected void init() {
         dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
@@ -787,7 +788,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                         stringNumero = itemValue.substring(0, 1);
                     }
                     ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(Integer.valueOf(stringNumero), 2);
-                    
+
                     if (valorAposta != null){
                         textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
                         qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
@@ -869,12 +870,13 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         return new OnDialogListener() {
             @Override
             public void itemSelecionado(int position) {
-                    textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
-                    qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
+                posicaoDialogTeimosinhas = position;
             }
 
             @Override
             public void ok() {
+                textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(posicaoDialogTeimosinhas);
+                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(posicaoDialogTeimosinhas);
                 qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
 
                 if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
