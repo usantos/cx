@@ -17,6 +17,8 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import br.gov.caixa.loterias.apostas.R;
+
 public class LottieManager {
 
     private static final float DEFAULT_SPEED = 1.0f;
@@ -196,7 +198,7 @@ public class LottieManager {
         }
 
         new AlertDialog.Builder(activity)
-                .setMessage("Deseja ocultar essa animação nas próximas vezes?")
+                .setMessage(R.string.animacao_msg)
                 .setPositiveButton("Sim", (DialogInterface dialog, int which) -> {
                     setPopupShow(rawRes, true);
                     setAnimationDisable(rawRes, true);
