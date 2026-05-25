@@ -191,6 +191,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         }
 
         AccordionModel model = new AccordionModel(tipoJogo);
+        accordionView.bind(model);
     }
 
     @Override

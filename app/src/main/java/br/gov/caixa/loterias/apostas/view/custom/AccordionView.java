@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.transition.TransitionManager;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,7 +20,6 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 
 public class AccordionView extends ConstraintLayout {
 
-    private ConstraintLayout container;
     private ConstraintLayout header;
     private ConstraintLayout body;
 
@@ -32,7 +32,6 @@ public class AccordionView extends ConstraintLayout {
 
     private void init(){
         inflate(getContext(), R.layout.view_accordion, this);
-        container = findViewById(R.id.container);
 
         header = findViewById(R.id.header);
         body = findViewById(R.id.body);
@@ -60,21 +59,13 @@ public class AccordionView extends ConstraintLayout {
     public void bind(AccordionModel model) {
         this.model = model;
         EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(model.getModalidadeEnum());
-//        header.setBackgroundColor();
-//        tvHeader.setTextColor(model.getHeaderTextColor());
-//        tvBody.setText(model.getBodyText());
-//        tvBody.setTextColor(model.getBodyTextColor());
-//        body.setBackgroundColor(model.getBodyBackgroundColor());
-//        ivIcon.setImageResource(model.getIconRes());
-//        ImageViewCompat.setImageTintList(
-//                ivIcon,
-//                ColorStateList.valueOf(model.getIconColor())
-//        );
 
-        body.setVisibility(model.isExpanded() ? View.VISIBLE: View.GONE);
-
-        ivIcon.setRotation(model.isExpanded() ? 180f : 0);
-
+        tvHeader.setTextColor(getContext().getColor(R.color.branco));
+        header.setBackgroundColor(getContext().getColor(estilo.getCorEscura()));
+        tvBody.setText(model.getBodyText());
+        tvBody.setBackgroundColor(getContext().getColor(R.color.transparente));
+        body.setBackgroundColor(getContext().getColor(R.color.cinzaCx));
+        ivIcon.setColorFilter(getContext().getColor(R.color.branco));
         applyState();
     }
 
