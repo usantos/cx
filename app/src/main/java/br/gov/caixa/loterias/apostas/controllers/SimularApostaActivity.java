@@ -639,7 +639,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
                     if (numeroTeimosinha == 0) {
-//                        qtdConcursosList.add(getString(R.string.teimosinhas_descricao));
+                        qtdConcursosList.add(getString(R.string.teimosinhas_descricao));
                     } else if (numeroTeimosinha == 1) {
                         qtdConcursosList.add("" + numeroTeimosinha + getResources().getString(R.string.espaco_concurso));
                     } else {
