@@ -8,7 +8,10 @@ public class AccordionModel {
     private boolean expanded;
     private final ModalidadeEnum modalidadeEnum;
 
-    public AccordionModel(ModalidadeEnum modalidade) {
+    private boolean isEspecial = false;
+
+    public AccordionModel(ModalidadeEnum modalidade, boolean isEspecial) {
+        this.isEspecial = isEspecial;
         this.modalidadeEnum = modalidade;
         createString(modalidade);
     }
@@ -73,5 +76,13 @@ public class AccordionModel {
 
     public ModalidadeEnum getModalidadeEnum() {
         return modalidadeEnum;
+    }
+
+    public boolean isEspecial() {
+        return isEspecial;
+    }
+
+    public void setEspecial(boolean especial) {
+        isEspecial = especial;
     }
 }

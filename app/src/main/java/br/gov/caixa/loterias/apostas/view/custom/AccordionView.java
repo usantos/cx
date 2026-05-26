@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.ImageViewCompat;
 
@@ -64,6 +65,9 @@ public class AccordionView extends ConstraintLayout {
         ivIcon.setColorFilter(getContext().getColor(estilo.getCorFonteFundoEscuro()));
 
         header.setBackgroundColor(getContext().getColor(estilo.getCorEscura()));
+        if (model.isEspecial() && estilo.getImagemSubCabecalho() > 0) {
+            header.setBackground(AppCompatResources.getDrawable(getContext(), estilo.getImagemSubCabecalho()));
+        }
 
         body.setBackgroundColor(getContext().getColor(R.color.cinzaCx));
 
