@@ -1088,6 +1088,7 @@
     <string name="menos_uma_hora">Menos de uma hora</string>
     <string name="espaco_teimosinhas">&#160;Teimosinhas</string>
     <string name="espaco_teimosinha">&#160;Teimosinha</string>
+    <string name="nao_teimosinhas">Por ser uma modalidade especial, esse concurso não permite teimosinhas.</string>
     <string name="extra_compra_dto">CompraDTO</string>
     <string name="extra_ordem">ordem</string>
     <string name="extra_tempo_pix">tempoPix</string>
