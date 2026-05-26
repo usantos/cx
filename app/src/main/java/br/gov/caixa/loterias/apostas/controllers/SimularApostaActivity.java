@@ -198,7 +198,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                 tipoJogo == ModalidadeEnum.COMBO) {
             accordionView.setVisibility(View.GONE);
         } else {
-            AccordionModel model = new AccordionModel(tipoJogo);
+            AccordionModel model = new AccordionModel(tipoJogo, isEspecial);
             accordionView.bind(model);
         }
     }
