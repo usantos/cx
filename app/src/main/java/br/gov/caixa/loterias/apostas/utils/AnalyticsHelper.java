@@ -25,6 +25,7 @@ public class AnalyticsHelper {
         LOGIN("entrada_app"),
         HOME("home"),
         CART("add_to_cart_success"),
+        BOLAO_CART("bolao_add_to_cart_success"),
         BETS_CART("bets_cart"),
         BOLAO("bolao_detalhe"),
         MONTAR_APOSTA("montar_aposta"),

@@ -70,7 +70,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         AnalyticsHelper.getInstance().logViewScreenApostaValor(
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.BOLAO,
-                AnalyticsHelper.Tela.CART,
+                AnalyticsHelper.Tela.BOLAO_CART,
                 ModalidadeEnum.fromString(modalidade),
                 ViewUtils.getMoedaFormat(valorAposta),
                 concurso
@@ -79,7 +79,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         AnalyticsHelper.getInstance().logOperationSuccess(
                 AnalyticsHelper.StatusParams.ADD_BOLAO,
                 AnalyticsHelper.StatusParams.APOSTAR,
-                AnalyticsHelper.Tela.CART,
+                AnalyticsHelper.Tela.BOLAO_CART,
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.BOLAO,
                 ModalidadeEnum.fromString(modalidade),
