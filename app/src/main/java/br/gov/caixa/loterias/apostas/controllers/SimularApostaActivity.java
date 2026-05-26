@@ -875,16 +875,21 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
 //TODO//
     private void modalTeimosinhas() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
-        DialogUtils.showDialogListItensNovo(
-                SimularApostaActivity.this,
-                getResources().getString(R.string.teimosinhas_maiusculo),
-                null,
-                getString(R.string.teimosinhas_descricao),
-                qtdConcursosList,
-                "Confirmar",
-                "Cancelar",
-                onTeimosinhaDialogListener()
-        );
+        if(!isEspecial) {
+            DialogUtils.showDialogListItensNovo(
+                    SimularApostaActivity.this,
+                    getResources().getString(R.string.teimosinhas_maiusculo),
+                    null,
+                    getString(R.string.teimosinhas_descricao),
+                    qtdConcursosList,
+                    "Confirmar",
+                    "Cancelar",
+                    onTeimosinhaDialogListener()
+            );
+        }
+        else {
+            DialogUtils.dialogEntendi(SimularApostaActivity.this,getString(R.string.nao_teimosinhas));
+        }
     }
 
     private OnDialogListener onTeimosinhaDialogListener() {
