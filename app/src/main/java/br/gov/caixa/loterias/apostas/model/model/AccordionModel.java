@@ -22,7 +22,9 @@ public class AccordionModel {
                 this.bodyText = "Escolha de 6 a 15 números entre os 50 disponíveis e ganhe prêmios acertando 3 (terno), 4 (quadra), 5 (quina) ou 6 (sena) dos números sorteados em um ou nos dois sorteios. Você pode concorrer com a mesma aposta por 2, 3, 4, 6, 8, 9 ou 12 concursos consecutivos com a opção teimosinha. Com a opção surpresinha, o sistema escolhe os números por você, tornando sua aposta mais prática, nesta opção os números apenas serão revelados a você após o pagamento.";
                 break;
             case LOTECA:
-                this.bodyText = "";
+                this.bodyText = "Escolha os resultados dos jogos abaixo.\\nVocê precisa apostar em todos os jogos, sendo que pelo menos 1 palpite deve ser duplo\n" +
+                        "        (apostar nos dois times ou em um time e no empate) ou triplo (apostar em empate e nos dois times).\n" +
+                        "        Você ganha com 13 ou 14 palpites corretos.";
                 break;
             case LOTOFACIL:
                 this.bodyText = "Escolha de 15 a 20 números entre os 25 números disponíveis e ganhe prêmios acertando 11, 12, 13, 14 ou 15 dos números sorteados. Você pode concorrer com a mesma aposta por 2, 3, 4, 6, 8, 9, 12, 18 ou 24 concursos consecutivos com a opção teimosinha. Com a opção surpresinha, o sistema escolhe os números por você, tornando sua aposta mais prática, nesta opção os números apenas serão revelados a você após o pagamento.";

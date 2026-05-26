@@ -24,12 +24,202 @@
         android:layout_height="wrap_content"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolBarLoteca"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/drawer_linha_divisao_bg"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/custom_accordion_view">
+
+
+        <TextView
+            android:id="@+id/labelTituloLoteca"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dp"
+            android:paddingTop="8dp"
+            android:text="@string/label_suas_apostas"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_bold"
+            android:textColor="@color/cinza"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/labelJogosLoteca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="@string/label_jogos"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textColor="@color/cinza"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="52dp"
+            android:paddingTop="8dp"
+            android:text="@string/label_dois_pontos"
+            android:textColor="@color/cinza"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+
+        <TextView
+            android:id="@+id/labelValueJogosLoteca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="65dp"
+            android:paddingTop="6dp"
+            android:text="@string/zero"
+            android:textColor="@color/loteca_claro_mkp"
+            android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+
+        <TextView
+            android:id="@+id/labelSimplesLoteca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:paddingLeft="95dp"
+            android:paddingTop="8dp"
+            android:text="@string/label_simples"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textColor="@color/cinza"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="147dp"
+            android:paddingTop="8dp"
+            android:text="@string/label_dois_pontos"
+            android:textColor="@color/cinza"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+
+        <TextView
+            android:id="@+id/labelValueSimplesLoteca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="155dp"
+            android:paddingTop="6dp"
+            android:text="@string/zero"
+            android:textColor="@color/loteca_claro_mkp"
+            android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+
+        <TextView
+            android:id="@+id/labelDuplasLoteca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="180dp"
+            android:paddingTop="8dp"
+            android:text="@string/label_duplas"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textColor="@color/cinza"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="227dp"
+            android:paddingTop="8dp"
+            android:text="@string/label_dois_pontos"
+            android:textColor="@color/cinza"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+
+        <TextView
+            android:id="@+id/labelValueDuplasLoteca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="232dp"
+            android:paddingTop="6dp"
+            android:text="@string/zero"
+            android:textColor="@color/loteca_claro_mkp"
+            android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+
+        <TextView
+            android:id="@+id/labelTriplasLoteca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="260dp"
+            android:paddingTop="8dp"
+            android:text="@string/label_triplas"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textColor="@color/cinza"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="305dp"
+            android:paddingTop="8dp"
+            android:text="@string/label_dois_pontos"
+            android:textColor="@color/cinza"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+
+        <TextView
+            android:id="@+id/labelValueTriplasLoteca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="315dp"
+            android:paddingTop="6dp"
+            android:text="@string/zero"
+            android:textColor="@color/loteca_claro_mkp"
+            android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+            app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/custom_accordion_view"
+        app:layout_constraintTop_toBottomOf="@id/toolBarLoteca"
         >
 
         <LinearLayout
@@ -122,209 +312,6 @@
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolBarLoteca"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/drawer_linha_divisao_bg"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/labelExplicaSuasApostas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="17dp"
-                android:layout_marginEnd="17dp"
-                android:paddingTop="5dp"
-                android:text="@string/label_suas_apostas_explica"
-                android:fontFamily="@font/caixa_std_regular"
-                android:textSize="12dp"
-                android:textColor="@color/cinza"
-                app:layout_constraintEnd_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/labelTituloLoteca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
-                android:paddingTop="8dp"
-                android:text="@string/label_suas_apostas"
-                android:textSize="14sp"
-                android:fontFamily="@font/caixa_std_bold"
-                android:textColor="@color/cinza"
-                app:layout_constraintStart_toStartOf="@id/labelExplicaSuasApostas"
-                app:layout_constraintTop_toBottomOf="@id/labelExplicaSuasApostas" />
-
-            <TextView
-                android:id="@+id/labelJogosLoteca"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:text="@string/label_jogos"
-                android:textSize="14sp"
-                android:fontFamily="@font/caixa_std_regular"
-                android:textColor="@color/cinza"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="52dp"
-                android:paddingTop="8dp"
-                android:text="@string/label_dois_pontos"
-                android:textColor="@color/cinza"
-                android:textSize="14sp"
-                android:fontFamily="@font/caixa_std_regular"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-                />
-
-            <TextView
-                android:id="@+id/labelValueJogosLoteca"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="65dp"
-                android:paddingTop="6dp"
-                android:text="@string/zero"
-                android:textColor="@color/loteca_claro_mkp"
-                android:textSize="18sp"
-                android:fontFamily="@font/caixa_std_bold"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-            />
-
-            <TextView
-                android:id="@+id/labelSimplesLoteca"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:paddingLeft="95dp"
-                android:paddingTop="8dp"
-                android:text="@string/label_simples"
-                android:textSize="14sp"
-                android:fontFamily="@font/caixa_std_regular"
-                android:textColor="@color/cinza"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-                 />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="147dp"
-                android:paddingTop="8dp"
-                android:text="@string/label_dois_pontos"
-                android:textColor="@color/cinza"
-                android:textSize="14sp"
-                android:fontFamily="@font/caixa_std_regular"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-            />
-
-            <TextView
-                android:id="@+id/labelValueSimplesLoteca"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="155dp"
-                android:paddingTop="6dp"
-                android:text="@string/zero"
-                android:textColor="@color/loteca_claro_mkp"
-                android:textSize="18sp"
-                android:fontFamily="@font/caixa_std_bold"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-            />
-
-            <TextView
-                android:id="@+id/labelDuplasLoteca"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="180dp"
-                android:paddingTop="8dp"
-                android:text="@string/label_duplas"
-                android:textSize="14sp"
-                android:fontFamily="@font/caixa_std_regular"
-                android:textColor="@color/cinza"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-            />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="227dp"
-                android:paddingTop="8dp"
-                android:text="@string/label_dois_pontos"
-                android:textColor="@color/cinza"
-                android:textSize="14sp"
-                android:fontFamily="@font/caixa_std_regular"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-            />
-
-            <TextView
-                android:id="@+id/labelValueDuplasLoteca"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="232dp"
-                android:paddingTop="6dp"
-                android:text="@string/zero"
-                android:textColor="@color/loteca_claro_mkp"
-                android:textSize="18sp"
-                android:fontFamily="@font/caixa_std_bold"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-             />
-
-            <TextView
-                android:id="@+id/labelTriplasLoteca"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="260dp"
-                android:paddingTop="8dp"
-                android:text="@string/label_triplas"
-                android:textSize="14sp"
-                android:fontFamily="@font/caixa_std_regular"
-                android:textColor="@color/cinza"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-            />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="305dp"
-                android:paddingTop="8dp"
-                android:text="@string/label_dois_pontos"
-                android:textColor="@color/cinza"
-                android:textSize="14sp"
-                android:fontFamily="@font/caixa_std_regular"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-            />
-
-            <TextView
-                android:id="@+id/labelValueTriplasLoteca"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="315dp"
-                android:paddingTop="6dp"
-                android:text="@string/zero"
-                android:textColor="@color/loteca_claro_mkp"
-                android:textSize="18sp"
-                android:fontFamily="@font/caixa_std_bold"
-                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
-            />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

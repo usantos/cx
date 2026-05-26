@@ -195,8 +195,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         if (tipoJogo == ModalidadeEnum.INSTANTANEA ||
                 tipoJogo == ModalidadeEnum.BOLAO ||
                 tipoJogo == ModalidadeEnum.LOTOGOL ||
-                tipoJogo == ModalidadeEnum.COMBO ||
-                tipoJogo == ModalidadeEnum.LOTECA) {
+                tipoJogo == ModalidadeEnum.COMBO) {
             accordionView.setVisibility(View.GONE);
         } else {
             AccordionModel model = new AccordionModel(tipoJogo);
