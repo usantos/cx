@@ -1643,8 +1643,8 @@
     <string name="button_get_reward">Resgatar Prêmio</string>
     <string name="contest_reward_valid_time">Validade prêmio: 90 dias</string>
     <string name="button_generate_receipt">Gerar comprovante</string>
-    <string name="expandablelistview_expanded_text">Expandido. Toque duas vezes para recolher.</string>
-    <string name="expandablelistview_retracted_text">Recolhido. Toque duas vezes para expandir.</string>
+    <string name="expandablelistview_expanded_text">Expandido.</string>
+    <string name="expandablelistview_retracted_text">Recolhido.</string>
     <string name="expandablelistview_retracted">Recolher</string>
     <string name="expandablelistview_expanded">Expandir</string>
     <string name="txt_rewarded">premiado</string>

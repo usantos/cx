@@ -73,6 +73,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             holder.itemView.setOnClickListener(v -> {
                 item.setExpanded(!item.isExpanded());
                 notifyItemChanged(position);
+                delayedAnnounce(v, item);
             });
         }
 
@@ -112,6 +113,12 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                 }
             }
 //        }
+    }
+
+    private static void delayedAnnounce(View v, ItemMinhasApostasDTO item) {
+        v.postDelayed(() -> {
+            v.announceForAccessibility(item.isExpanded() ? "Expandido":"Recolhido");
+        }, 100);
     }
 
     @Override
@@ -167,16 +174,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.clAcordeonCabeca.setOnClickListener(v -> {
             item.setExpanded(!item.isExpanded());
             notifyItemChanged(position);
-        });
-
-        ViewCompat.setAccessibilityDelegate(holder.clAcordeonCabeca, new AccessibilityDelegateCompat() {
-            @Override
-            public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
-                super.onInitializeAccessibilityNodeInfo(host, info);
-
-                info.setClassName("android.widget.ExpandableListView");
-                info.setStateDescription(item.isExpanded() ? "Expandido" : "Recolhido");
-            }
+            delayedAnnounce(v, item);
         });
     }
 
@@ -209,6 +207,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.clAcordeonCabeca.setOnClickListener(v -> {
             item.setExpanded(!item.isExpanded());
             notifyItemChanged(position);
+            delayedAnnounce(v, item);
         });
     }
 
@@ -468,9 +467,14 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                     info.setClassName(CONST_WIDGET);
 
-                    String prefixo = "Aposta: " + (position+1);
+                    String shouldAdd = "";
+                    if (dto.isSurpresinha()) {
+                        shouldAdd = "Surpresinha";
+                    }
+
+                    String prefixo = "Aposta: " + Integer.valueOf(position+1).toString() + " de " + getItemCount() + " " + shouldAdd;
                     if (!dto.isBolao()) {
-                        prefixo = "Resultado do concurso: " + dto.getConcurso() + " situação " + dto.getSituacao() + " " + position+1 + " de " + getItemCount();
+                        prefixo = "Resultado do concurso: " + dto.getConcurso() + " situação " + dto.getSituacao() + " " + Integer.valueOf(position+1).toString() + " de " + getItemCount();
                     }
 
                     if (dto.isExpanded()) {
