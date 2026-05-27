@@ -140,7 +140,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.tvResultadoConcurso.setText(context.getString(R.string.resultado_concurso) + " " + item.getConcurso());
         holder.tvResultadoConcurso.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
         holder.tvLabelSituacao.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
-        if (item.getSituacao().equals(context.getString(R.string.label_concurso_nao_premiado))) {
+        if (item.getSituacao().equals(context.getString(R.string.label_concurso_nao_premiado)) || item.getSituacao().equals(context.getString(R.string.label_concurso_premio_pago))) {
             holder.tvSituacao.setText(item.getSituacao());
         } else {
             holder.tvSituacao.setText(ViewUtils.textCaixaSTDBold(context, context.getString(R.string.texto_caixaStd_bold, item.getSituacao())));
