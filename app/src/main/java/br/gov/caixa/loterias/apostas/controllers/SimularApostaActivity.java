@@ -131,7 +131,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private List<String> qtdConcursosList;
     private ModalidadeEnum tipoJogo;
     private String textoBotaoPrognosticosSelecionado;
-    private String textoBotaoSurpresinhasSelecionado;
+    private String textoBotaoTeimosinhas;
     private ParametroJogoDTO parametroSimulacao;
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
@@ -304,7 +304,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     public void zerarApostas() {
         qtdNumerosList = new ArrayList<>();
         qtdConcursosList = new ArrayList<>();
-        textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
+        textoBotaoTeimosinhas = getString(R.string.label_sem_teimosinha);
         mesDeSorteCartela = null;
         mesDeSorteSurpresinha = null;
         configuraParametrosJogo();
@@ -328,10 +328,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         ViewUtils.setColorDrawable(this, drawableQtdNumeros, estilo.getCorFonteFundoEscuro());
 
         textoBotaoPrognosticosSelecionado = qtdNumerosButton.getText().toString();
-        if ((qtdConcursosList != null) && (qtdConcursoSelecionado == 0)) {
-            qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
-        } else {
-            qtdConcursosButton.setText(format(getResources().getString(R.string.percent_d_concurso), qtdConcursoSelecionado));
+        if ((qtdConcursosList != null) ){
+            qtdConcursosButton.setText(textoBotaoTeimosinhas);
         }
         qtdConcursosButton.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
         Drawable drawableQtdConcursos = imageQtdConcursosButton.getDrawable();
@@ -661,7 +659,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
                     if (numeroTeimosinha == 0) {
-                        qtdConcursosList.add(getString(R.string.teimosinhas_descricao));
+                        qtdConcursosList.add("Nenhuma");
                     } else if (numeroTeimosinha == 1) {
                         qtdConcursosList.add("" + numeroTeimosinha + getResources().getString(R.string.espaco_concurso));
                     } else {
@@ -901,9 +899,13 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
 
             @Override
             public void ok() {
-                textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(posicaoDialogTeimosinhas);
                 qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(posicaoDialogTeimosinhas);
-                qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
+                textoBotaoTeimosinhas = (String) qtdConcursosList.get(posicaoDialogTeimosinhas);
+                if (qtdConcursoSelecionado == 0) {
+                    qtdConcursosButton.setText(R.string.label_sem_teimosinha);
+                } else {
+                    qtdConcursosButton.setText(textoBotaoTeimosinhas);
+                }
 
                 if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
                     if (surpresinhaFragment.getParametroJogo() != null) {
