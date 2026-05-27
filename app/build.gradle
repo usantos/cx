@@ -288,7 +288,7 @@ repositories {
         implementation 'androidx.appcompat:appcompat:1.7.1'
         // versions
         def supportVersion = '27.1.1'
-        def lottieVersion = '3.6.1';
+        def lottieVersion = '6.4.0';
         def appCenterSdkVersion = '4.1.0'
 
         implementation "androidx.lifecycle:lifecycle-process:2.8.7"

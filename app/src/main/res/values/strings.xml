@@ -1653,4 +1653,6 @@
     <string name="expandablelistview_expanded">Expandir</string>
     <string name="txt_rewarded">premiado</string>
 
+    <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
+
 </resources>
