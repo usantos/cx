@@ -22,6 +22,7 @@ public class AnalyticsHelper {
 
     /** Nome das telas (tela_nome) */
     public enum Tela {
+        APP_START("app_start"),
         LOGIN("entrada_app"),
         HOME("home"),
         CART("add_to_cart_success"),
@@ -303,11 +304,11 @@ public class AnalyticsHelper {
         bundle.putString(AnalyticsParams.SUB_JOURNEY, subJourney);
 
         // cart_total_value
-        double total = 0d;
+        String total = "";
         if (carrinho.getValorTotal() != null) {
-            total = carrinho.getValorTotal().doubleValue();
+            total = ViewUtils.getMoedaFormat(carrinho.getValorTotal());
         }
-        bundle.putDouble(AnalyticsParams.CART_TOTAL_VALUE, total);
+        bundle.putString(AnalyticsParams.CART_TOTAL_VALUE, total);
 
         // contagens
         int betsCount = (carrinho.getApostas() != null) ? carrinho.getApostas().size() : 0;
@@ -620,31 +621,6 @@ public class AnalyticsHelper {
 
     }
 
-    /** Evento: flow_start */
-    public void logFlowStart(
-            @NonNull String flowName,
-            @NonNull String entryPoint,
-            @NonNull String journey,
-            @NonNull String subJourney,
-            @NonNull Tela tela
-    ) {
-        long startTime = System.currentTimeMillis();
-
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, tela.nome);
-        bundle.putString(AnalyticsParams.FLOW_NAME, flowName);
-        bundle.putString(AnalyticsParams.ENTRY_POINT, entryPoint);
-        bundle.putString(AnalyticsParams.JOURNEY, journey);
-        bundle.putString(AnalyticsParams.SUB_JOURNEY, subJourney);
-        bundle.putLong(AnalyticsParams.START_TIME_MS, startTime);
-
-        analytics.logEvent(AnalyticsEvents.FLOW_START, bundle);
-
-        // guarda estado do fluxo
-        currentFlowName = flowName;
-        currentFlowStartTimeMs = startTime;
-    }
-
     public void logOperationSuccess(
             @NonNull String operationName,     // add_bet_to_cart
             @NonNull String flowName,           // apostar
@@ -653,7 +629,8 @@ public class AnalyticsHelper {
             @NonNull String subJourney,          // montar_aposta
             @NonNull String gameMode,            // mega_sena
             @NonNull String contestNumber,       // <current_contest_number>
-            @NonNull String betValue         // <current_bet_value>
+            @NonNull String betValue,         // <current_bet_value>,
+            @NonNull Boolean isBolao
     ) {
 
         long endTime = System.currentTimeMillis();
@@ -681,8 +658,14 @@ public class AnalyticsHelper {
         bundle.putString("game_mode", gameMode);
         bundle.putString("contest_number", contestNumber);
 
-        // valores
-        bundle.putString("bet_value", betValue);
+        if(isBolao){
+            // valores
+            bundle.putString("total_quota_value", betValue);
+        }
+        else {
+            // valores
+            bundle.putString("bet_value", betValue);
+        }
 
         // tempo
         bundle.putLong("end_time_ms", endTime);
@@ -694,8 +677,34 @@ public class AnalyticsHelper {
         );
     }
 
+    /** Evento: flow_start */
+    public void logFlowStart(
+            @NonNull String flowName,
+            @NonNull String entryPoint,
+            @NonNull String journey,
+            @NonNull String subJourney,
+            @NonNull Tela tela
+    ) {
+        long startTime = System.currentTimeMillis();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, tela.nome);
+        bundle.putString(AnalyticsParams.FLOW_NAME, flowName);
+        bundle.putString(AnalyticsParams.ENTRY_POINT, entryPoint);
+        bundle.putString(AnalyticsParams.JOURNEY, journey);
+        bundle.putString(AnalyticsParams.SUB_JOURNEY, subJourney);
+        bundle.putLong(AnalyticsParams.START_TIME_MS, startTime);
+
+        analytics.logEvent(AnalyticsEvents.FLOW_START, bundle);
+
+        // guarda estado do fluxo
+        currentFlowName = flowName;
+        currentFlowStartTimeMs = startTime;
+    }
+
     public void logFlowEnd(
             @NonNull String result, // success | error | abandon
+            @NonNull String flowName,
             @NonNull String journey,
             @NonNull String subJourney,
             @NonNull Tela tela,
@@ -711,7 +720,7 @@ public class AnalyticsHelper {
 
         Bundle bundle = new Bundle();
 
-        bundle.putString(AnalyticsParams.FLOW_NAME, currentFlowName);
+        bundle.putString(AnalyticsParams.FLOW_NAME, flowName);
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, tela.nome);
         bundle.putString(AnalyticsParams.JOURNEY, journey);
         bundle.putString(AnalyticsParams.SUB_JOURNEY, subJourney);

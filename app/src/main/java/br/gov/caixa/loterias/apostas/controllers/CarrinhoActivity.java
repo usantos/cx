@@ -596,6 +596,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 AnalyticsHelper.getInstance().logFlowEnd(
                         AnalyticsHelper.ResultParams.SUCCESS,
                         AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
                         AnalyticsHelper.SubJourneyParams.CARRINHO,
                         AnalyticsHelper.Tela.BETS_CART,
                         carrinho

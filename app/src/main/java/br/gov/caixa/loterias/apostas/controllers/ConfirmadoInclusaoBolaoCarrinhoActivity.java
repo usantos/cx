@@ -84,7 +84,8 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
                 AnalyticsHelper.SubJourneyParams.BOLAO,
                 ModalidadeEnum.fromString(modalidade),
                 concurso,
-                ViewUtils.getMoedaFormat(valorAposta)
+                ViewUtils.getMoedaFormat(valorAposta),
+                true
         );
 
     }

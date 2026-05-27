@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisD
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
@@ -64,6 +65,17 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
         filaBRAManager = new FilaBRAManager();
         startaFila();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        AnalyticsHelper.getInstance().logViewScreen(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.ENTRY,
+                AnalyticsHelper.Tela.APP_START
+        );
     }
 
     public static boolean isRootAvailable(){

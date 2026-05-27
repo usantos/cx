@@ -113,7 +113,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                 AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
                 ModalidadeEnum.fromString(modalidade),
                 numeroConcurso,
-                value
+                value,
+                false
         );
 
     }
