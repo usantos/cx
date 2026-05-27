@@ -126,6 +126,7 @@
 
         <!-- LOTOFACIL e outras -->
         <TextView
+            android:focusable="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_numeros_sorteados"
             android:layout_width="wrap_content"
@@ -146,6 +147,7 @@
 
         <TextView
             android:importantForAccessibility="yes"
+            android:focusable="true"
             android:id="@+id/tv_label_numeros_primeiro_sorteio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -164,6 +166,7 @@
 
         <!-- DUPKASENA E MAISMILIONARIA-->
         <TextView
+            android:focusable="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_numeros_segundo_sorteio"
             android:layout_width="wrap_content"
@@ -183,6 +186,7 @@
 
         <!-- TIMEMANIA MESSORTE -->
         <LinearLayout
+            android:focusable="true"
             android:id="@+id/ll_mes_sorte"
             android:importantForAccessibility="yes"
             android:layout_width="match_parent"
@@ -222,6 +226,7 @@
 
         <!-- LOTOFACIL e outras -->
         <TextView
+            android:focusable="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_meus_numeros"
             android:layout_width="wrap_content"
@@ -241,6 +246,7 @@
             tools:itemCount="1"/>
 
         <TextView
+            android:focusable="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_meus_numeros_primeiro_sorteio"
             android:layout_width="wrap_content"
@@ -259,8 +265,8 @@
             tools:itemCount="3"/>
 
         <LinearLayout
-            android:importantForAccessibility="yes"
             android:focusable="true"
+            android:importantForAccessibility="yes"
             android:id="@+id/ll_acertos1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -289,6 +295,7 @@
 
         <!-- DUPLASENA E MAISMILIONARIA-->
         <TextView
+            android:focusable="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_meus_numeros_segundo_sorteio"
             android:layout_width="wrap_content"
@@ -368,6 +375,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:focusable="true"
             android:id="@+id/ll_premio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
