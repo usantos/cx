@@ -59,6 +59,10 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemMinhasApostasDTO item = items.get(position);
 
+        if (items.size() == 1 && item.isBolao()) {
+            item.setExpanded(true);
+        }
+
         desabilitaTodos(holder);
 
         boolean isExpanded = item.isExpanded();
