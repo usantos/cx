@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 
 import java.math.BigDecimal;
@@ -63,6 +64,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private FiltroAplicadoMarketplace filtro;
 	private TextView modalidade;
 	private TextView valorPremio;
+	private TextView valorPremioPorExtenso;
 	private TextView concurso;
 	private TextView loterica;
 	private RelativeLayout trapezio;
@@ -83,8 +85,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		layoutLoerica = itemView.findViewById(R.id.layoutLoterica);
 		layoutPremio = itemView.findViewById(R.id.layoutPremio);
 
-		modalidade 		= itemView.findViewById(R.id.textViewCardBolaoTitle);
-		valorPremio 	= itemView.findViewById(R.id.valor_estimado_premio);
+		modalidade = itemView.findViewById(R.id.textViewCardBolaoTitle);
+		valorPremio = itemView.findViewById(R.id.valor_estimado_premio_card_bolao);
+		valorPremioPorExtenso = itemView.findViewById(R.id.valor_estimado_premio_card_bolao_por_extenso);
 		concurso 		= itemView.findViewById(R.id.descricao_numero_concurso);
 		loterica 		= itemView.findViewById(R.id.loterica_cidade_uf);
 		trapezio		= itemView.findViewById(R.id.layout_trevo);
@@ -150,6 +153,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			}
 			modalidade.setTextColor(corFonteFundoClaro);
 			valorPremio.setTextColor(corLetraLista);
+			valorPremioPorExtenso.setTextColor(corLetraLista);
 			concurso.setTextColor(corLetraLista);
 		} else {
 			cabecalho.setBackground(VectorUtils.getShape(R.drawable.rounded_card_cabecalho_bolao, estilo.getCorClara()));
@@ -184,12 +188,25 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			layoutPremio.setVisibility(View.VISIBLE);
 
 			if (isEspecial(bolao.getTipoConcurso())){
-				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
+				//modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
+				if (bolao.getModalidade() == ModalidadeEnum.LOTECA) {
+					modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
+					//TextViewUtils.mudarTamanhoPorPorcentagem(modalidade, -20f);
+				}else {
+					modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
+				}
 			} else {
 				modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
 			}
 
-			valorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
+			valorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(bolao.getVrPremioEstimado()));
+			String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado());
+			if (!valorEstimadoPorExtenso.isEmpty()){
+				valorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));
+				valorPremioPorExtenso.setVisibility(View.VISIBLE);
+			} else {
+				valorPremioPorExtenso.setVisibility(View.GONE);
+			}
 			concurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
 					itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero, bolao.getConcurso())));
 
@@ -197,6 +214,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			cabecalho.setVisibility(View.VISIBLE);
 			cabecalhoFiltrado.setVisibility(View.GONE);
 			lotericaNome.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
+			ViewCompat.setAccessibilityHeading(lotericaNome,true);
 			lotericaCidade.setText(cidadeUf);
 		}
 

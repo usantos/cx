@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
@@ -32,7 +34,7 @@ public class BarraTituloBolaoFragment extends Fragment {
     private static final String ARG_VALOR_PREMIO = "ARG_VALOR_PREMIO";
 
     private View view;
-    private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio, tvValorPremio, labelPremioEstimado;
+    private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio, tvValorPremio, tvValorPremioPorExtenso, labelPremioEstimado;
     private ConstraintLayout backgroundModalidade, backgroundPremio;
     private String concurso, sorteio;
     private BigDecimal valorPremio;
@@ -42,6 +44,7 @@ public class BarraTituloBolaoFragment extends Fragment {
     private EstiloModalidadeMKP estilo;
 
     private RelativeLayout layoutTrevo;
+    private LinearLayout premioMkp;
 
     private ImageView trevo;
 
@@ -86,12 +89,15 @@ public class BarraTituloBolaoFragment extends Fragment {
         tvConcurso = view.findViewById(R.id.numero_concurso_mkp);
         tvSorteio = view.findViewById(R.id.data_sorteio_mkp);
         tvValorPremio = view.findViewById(R.id.valor_premio_mkp);
+        tvValorPremioPorExtenso = view.findViewById(R.id.valor_premio_mkp_por_extenso);
         backgroundModalidade = view.findViewById(R.id.container_modalidade_mkp);
         backgroundPremio = view.findViewById(R.id.container_premio_estimado_mkp);
 
         labelConcurso = view.findViewById(R.id.label_concurso_mkp);
         labelSorteio = view.findViewById(R.id.label_sorteio_mkp);
         labelPremioEstimado = view.findViewById(R.id.label_premio_mkp);
+        premioMkp = view.findViewById(R.id.group_premio_mkp);
+        ViewCompat.setAccessibilityHeading(premioMkp,true);
         if(modalidade.equals(ModalidadeEnum.LOTECA)){
             labelSorteio.setText(R.string.label_resultado);
         }
@@ -112,6 +118,7 @@ public class BarraTituloBolaoFragment extends Fragment {
         tvConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
         tvSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
         tvValorPremio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+        tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
         labelConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
         labelSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
         labelPremioEstimado.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
@@ -145,9 +152,16 @@ public class BarraTituloBolaoFragment extends Fragment {
         } else {
             tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
         }
+        ViewCompat.setAccessibilityHeading(tvModalidade,true);
         tvConcurso.setText(concurso);
         tvSorteio.setText(sorteio);
-        String valorFormatado = ViewUtils.getMoedaFormatPorExtenso(valorPremio);
-        tvValorPremio.setText(valorFormatado);
+        tvValorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(valorPremio));
+        String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(valorPremio);
+        if (!valorEstimadoPorExtenso.isEmpty()){
+            tvValorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));
+            tvValorPremioPorExtenso.setVisibility(View.VISIBLE);
+        } else {
+            tvValorPremioPorExtenso.setVisibility(View.GONE);
+        }
     }
 }

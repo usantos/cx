@@ -216,7 +216,9 @@ public class ViewUtils {
                 (dialogInterface, i) -> dialogInterface.dismiss()
                 ,R.string.label_cancelar,R.string.label_confirmar);
 
-        dialog.show();
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
 
         Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
         nbutton.setText(R.string.label_cancelar);
@@ -734,6 +736,15 @@ public class ViewUtils {
         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
+    public static String getMoedaFormatSemCentavos(BigDecimal valor) {
+        if (valor == null) {
+            valor = BigDecimal.ZERO;
+        }
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        nf.setMaximumFractionDigits(0);
+        return nf.format(valor);
+    }
+
     public static String getMoedaFormatPorExtenso(BigDecimal valor) {
         if (valor == null) {
             valor = BigDecimal.ZERO;
@@ -755,8 +766,7 @@ public class ViewUtils {
             BigDecimal valorMil = valor.divide(mil);
             return formatarValorPorExtenso(valorMil, prefixo, "Mil", "Mil", ptBrLocale);
         } else {
-            NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
-            return nf.format(valor).replace("R$", prefixo);
+            return "";
         }
     }
 
@@ -1188,7 +1198,8 @@ public class ViewUtils {
         if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
             for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
                 if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
-                    if (parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().getValor().equalsIgnoreCase(valorTipoConcurso)) {
+                    String valorConcurso = parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().getValor();
+                    if (valorConcurso.equalsIgnoreCase(valorTipoConcurso)) {
                         return parametroSimulacao;
                     }
                 }

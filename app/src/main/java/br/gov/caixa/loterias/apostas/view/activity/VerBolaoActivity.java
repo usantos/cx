@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -153,6 +154,7 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
         fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, true);
         contentHeaderMkp.setVisibility(GONE);
         toolBarTxt.setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.loterica_favorita_bold)));
+        ViewCompat.setAccessibilityHeading(toolBarTxt,true);
 
         scrollView.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
             View view = v.getChildAt(v.getChildCount() - 1);

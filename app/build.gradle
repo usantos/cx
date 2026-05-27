@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'org.sonarqube'
+apply plugin: 'com.google.firebase.crashlytics'
 
 
 android {
@@ -59,10 +60,10 @@ android {
         minSdkVersion 23
         targetSdkVersion 35
 
-        //                   22                 1.22.0 = 01 022               00
+        //                   22                 1.23.0 = 01 023               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220102206
-        versionName "1.22.0"
+        versionCode 220102300
+        versionName "1.23.0"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -386,11 +387,6 @@ repositories {
         //Joda time
         implementation 'net.danlew:android.joda:2.10.9.1'
 
-        // Import the Firebase BoM - Utiliado em conjunto com FMC
-        implementation platform('com.google.firebase:firebase-bom:32.0.0')
-        // Firebase Cloud Messaging (Java)
-        implementation 'com.google.firebase:firebase-messaging'
-
         // testImplementation deps
         testImplementation 'junit:junit:4.13.2'
         testImplementation 'org.mockito:mockito-core:1.10.19'
@@ -415,6 +411,17 @@ repositories {
 
         androidTestImplementation 'androidx.test:runner:1.6.1'
         androidTestUtil 'androidx.test:orchestrator:1.5.0'
+
+        //Firebase
+        implementation platform("com.google.firebase:firebase-bom:34.12.0")
+        implementation "com.google.firebase:firebase-analytics"
+        implementation "com.google.firebase:firebase-crashlytics"
+        implementation "com.google.firebase:firebase-messaging"
+        implementation "com.google.firebase:firebase-config"
+        implementation "com.google.firebase:firebase-perf"
+        implementation "com.google.firebase:firebase-appcheck"
+        implementation "com.google.firebase:firebase-installations"
+        implementation "com.google.firebase:firebase-sessions"
 
     }
 

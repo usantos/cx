@@ -13,11 +13,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,6 +67,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	public static final String ARG_NUMERO_COTA = "ARG_NUMERO_COTA";
 	public static final String ARG_IS_LOTERICA_FAVORITA = "ARG_IS_LOTERICA_FAVORITA";
 	private TextView tvValorPremio;
+	private TextView tvValorPremioPorExtenso;
 	private TextView tvNomeLoterica, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota, tvCodigoLoterica, tvCidadeUfLoterica, tvFavoritar;
 	private TextView textQtdDezenas, textQtdCotas;
 	private Button btnAdd, btnDiminui, btnAumenta;
@@ -90,7 +93,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private BotaoFavoritar botaoFavoritar;
 	private boolean isLotericaFavorita;
 
-	private int controleChamadaServico = 1;
+    private int controleChamadaServico = 1;
 	private Boolean isMega30 = false;
 
 	@Override
@@ -132,12 +135,21 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		isLotericaFavorita = getIntent().getBooleanExtra(ARG_IS_LOTERICA_FAVORITA, false);
 	}
 
+	private void desabilitaFavoritar(){
+        boolean hasLotericaFavorita = getIntent().hasExtra(ARG_IS_LOTERICA_FAVORITA);
+		if (!hasLotericaFavorita) {
+			LinearLayout favoritar_detalhes = findViewById(R.id.layout_favoritar_detalhes);
+			favoritar_detalhes.setVisibility(View.INVISIBLE);
+		}
+	}
+
 	private void aplicaEstilo() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
 		}
 
 		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
+		tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
 		tvValorCotaBtn.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
 		tvLabelQtdCotas.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
@@ -204,6 +216,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private void setViews() {
 		layoutDetalhes = findViewById(R.id.layout_detalhes_bolao);
 		tvValorPremio = findViewById(R.id.id_valor_premio);
+		tvValorPremioPorExtenso = findViewById(R.id.id_valor_premio_por_extenso);
 		tvNomeLoterica = findViewById(R.id.nome_loterica);
 		tvCodigoLoterica = findViewById(R.id.codigo_loterica);
 		tvCidadeUfLoterica = findViewById(R.id.cidade_uf_loterica);
@@ -225,6 +238,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		frameRodape = findViewById(R.id.id_fg_rodape);
 		botaoFavoritar = findViewById(R.id.btn_favoritar_detalhes);
 		tvFavoritar = findViewById(R.id.txt_favoritar_loterica);
+		ViewCompat.setAccessibilityHeading(tvNomeLoterica,true);
 	}
 
 	public void atualizaQuantidadeTextView() {
@@ -317,7 +331,14 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		String valorTotal = "Total: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaComTarifa());
 
 		botaoFavoritar.setState(isLotericaFavorita);
-		tvValorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
+		tvValorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(bolao.getVrPremioEstimado()));
+		String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado());
+		if (!valorEstimadoPorExtenso.isEmpty()){
+			tvValorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));
+			tvValorPremioPorExtenso.setVisibility(View.VISIBLE);
+		} else {
+			tvValorPremioPorExtenso.setVisibility(View.GONE);
+		}
 		tvNomeLoterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
 		tvCodigoLoterica.setText(codigoLoterica);
 		tvCidadeUfLoterica.setText(cidadeUfLoterica);
@@ -347,6 +368,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 
 		atualizaQuantidadeTextView();
 		preencheJogos();
+		desabilitaFavoritar();
 	}
 
 	private void preencheJogos() {

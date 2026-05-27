@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.apostas.view.animation;
 import android.content.Context;
 import android.view.animation.AnimationUtils;
 
-import com.daimajia.swipe.SwipeLayout;
+import br.gov.caixa.loterias.apostas.utils.SwipeLayout;
 
 import br.gov.caixa.loterias.apostas.R;
 

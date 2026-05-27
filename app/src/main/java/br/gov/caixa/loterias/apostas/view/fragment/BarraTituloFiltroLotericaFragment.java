@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
@@ -59,7 +60,7 @@ public class BarraTituloFiltroLotericaFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_barra_titulo_filtro_loterica, container, false);
         tvNomeLoterica = view.findViewById(R.id.nome_loterica);
         tvStringLoterica = view.findViewById(R.id.string_loterica);
-
+        ViewCompat.setAccessibilityHeading(tvNomeLoterica,true);
         botaoFavoritar = view.findViewById(R.id.btn_favoritar_mkp);
 
         botaoFavoritar.setState(estadoInicial);
@@ -86,7 +87,7 @@ public class BarraTituloFiltroLotericaFragment extends Fragment {
         //botaoFavoritar.setState(bolao.isLotericaFavorita());
 
         tvNomeLoterica.setText(StringUtils.capitalizerNovo(filtro.getLotericaDTO().getNomeFantasia().trim()));
-
+        ViewCompat.setAccessibilityHeading(tvNomeLoterica,true);
         String stringLoterica = //filtro.getLotericaDTO().getCodigo().trim() + " / " +
                                 UF.nomeFromId(filtro.getLotericaDTO().getIdUF().intValue()) + " - " +
                                 UF.siglaFromId(filtro.getLotericaDTO().getIdUF().intValue());
