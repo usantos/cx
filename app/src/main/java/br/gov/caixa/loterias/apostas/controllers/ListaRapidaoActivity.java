@@ -21,7 +21,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -184,28 +183,28 @@ public class ListaRapidaoActivity extends LoteriasBaseAppActivity {
 
     private void callWebservice(int quantidade) {
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaSilceBO.getInstance().gerarApostas(quantidade, new RequestListener<CarrinhoDTOResponse>() {
-            @Override
-            public void onResponse(CarrinhoDTOResponse response) {
-                loadViewProgress.dismiss();
-                AppCenterManager.registraEvento("GEROU_LISTA_APOSTAS_RAPIDAO");
-
-                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
-                apostas = null;
-                apostas = CarrinhoSingleton.getInstance().getCarrinho().getApostas();
-                atualizaLayout();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaRapidaoActivity.this);
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, ListaRapidaoActivity.this );
-            }
-        });
+//        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+//        ApostaSilceBO.getInstance().gerarApostas(quantidade, new RequestListener<CarrinhoDTOResponse>() {
+//            @Override
+//            public void onResponse(CarrinhoDTOResponse response) {
+//                loadViewProgress.dismiss();
+//                AppCenterManager.registraEvento("GEROU_LISTA_APOSTAS_RAPIDAO");
+//
+//                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+//                apostas = null;
+//                apostas = CarrinhoSingleton.getInstance().getCarrinho().getApostas();
+//                atualizaLayout();
+//                if (response.getRedirect() != null){
+//                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaRapidaoActivity.this);
+//                }
+//            }
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                loadViewProgress.dismiss();
+//                RedirectNetwork.checkRedirect( error, ListaRapidaoActivity.this );
+//            }
+//        });
     }
 
     private void valorTotal(){
