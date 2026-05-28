@@ -433,10 +433,10 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     }
 
     public void setColorValuesLoteca() {
-        this.labelValueJogosLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
-        this.labelValueSimplesLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
-        this.labelValueDuplasLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
-        this.labelValueTriplasLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
+        this.labelValueJogosLoteca.setTextColor(getResources().getColor(R.color.loteca_numbers));
+        this.labelValueSimplesLoteca.setTextColor(getResources().getColor(R.color.loteca_numbers));
+        this.labelValueDuplasLoteca.setTextColor(getResources().getColor(R.color.loteca_numbers));
+        this.labelValueTriplasLoteca.setTextColor(getResources().getColor(R.color.loteca_numbers));
     }
     public void setLabelValueJogosLoteca(String labelValueJogosLoteca) {
         this.labelValueJogosLoteca.setText(labelValueJogosLoteca);

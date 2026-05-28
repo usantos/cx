@@ -848,7 +848,7 @@ private void zeraLoteca(){
 	private void configuraBotoesLotecaOuLotogol(){
 		botaoFinalizar = parentActivity.getBotaoAdicionarCompletarCartela();
 		botaoFinalizar.setOnClickListener(this);
-			botaoFinalizar.setVisibility(View.INVISIBLE);
+			botaoFinalizar.setVisibility(View.GONE);
 			String textoBotao;
 			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 				textoBotao = getString(R.string.label_selecionar_times_aleatoriamente);
@@ -1092,11 +1092,11 @@ private void zeraLoteca(){
 					botaoFinalizar.setVisibility(View.VISIBLE);
 					atualizarBotaoFinalizarAdicionarCarrinho();
 				} else {
-					botaoFinalizar.setVisibility(View.INVISIBLE);
+					botaoFinalizar.setVisibility(View.GONE);
 				}
 
 			} else {
-				botaoFinalizar.setVisibility(View.INVISIBLE);
+				botaoFinalizar.setVisibility(View.GONE);
 				botaoFinalizar.setBackgroundTintList(
 						ColorStateList.valueOf(ContextCompat.getColor(parentActivity, R.color.cinza))
 				);
@@ -1455,18 +1455,18 @@ private void zeraLoteca(){
 
 
 		if (somaTotais >= 14) {
-			valorTotalJogos.setTextColor(getResources().getColor(R.color.verdeazul));
-			valorTotalSimples.setTextColor(getResources().getColor(R.color.verdeazul));
+			valorTotalJogos.setTextColor(getResources().getColor(R.color.greyText));
+			valorTotalSimples.setTextColor(getResources().getColor(R.color.greyText));
 		} else {
-			valorTotalJogos.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
-			valorTotalSimples.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
+			valorTotalJogos.setTextColor(getResources().getColor(R.color.loteca_numbers));
+			valorTotalSimples.setTextColor(getResources().getColor(R.color.loteca_numbers));
 		}
 		if (valueDuplas  == 0 && valueTriplas == 0) {
-			valorTotalDuplas.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
-			valorTotalTriplas.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
+			valorTotalDuplas.setTextColor(getResources().getColor(R.color.loteca_numbers));
+			valorTotalTriplas.setTextColor(getResources().getColor(R.color.loteca_numbers));
 		} else {
-			valorTotalDuplas.setTextColor(getResources().getColor(R.color.verdeazul));
-			valorTotalTriplas.setTextColor(getResources().getColor(R.color.verdeazul));
+			valorTotalDuplas.setTextColor(getResources().getColor(R.color.greyText));
+			valorTotalTriplas.setTextColor(getResources().getColor(R.color.greyText));
 		}
 
 
@@ -1489,7 +1489,7 @@ private void zeraLoteca(){
 		parentActivity.zerarApostasLoteca();
 		ocutarSalvarAposta();
 		atualizaValorApostaLoteca();
-		botaoFinalizar.setVisibility(View.INVISIBLE);
+		botaoFinalizar.setVisibility(View.GONE);
 	}
 
 	@Override

@@ -1,51 +1,56 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
-import br.gov.caixa.loterias.apostas.view.custom.PartidaView;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.holder.LotecaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 
-/**
- * Created by joafilho on 26/12/2017.
- * Class LotecaAdapter
- */
-
 public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
 
-    private List<ParametroPartida> listaPartidas;
-    private ParametroJogoDTO parametroJogo;
-    private LocateAdapterListener listener;
+    private final List<ParametroPartida> listaPartidas;
+    private final ParametroJogoDTO parametroJogo;
+    private final LocateAdapterListener listener;
 
     public LotecaAdapter(ParametroJogoDTO parametroJogo, LocateAdapterListener listener) {
         this.parametroJogo = parametroJogo;
-        this.listaPartidas = parametroJogo != null ? parametroJogo.getPartidas(): new ArrayList<>();
+        this.listaPartidas = parametroJogo != null && parametroJogo.getPartidas() != null
+                ? parametroJogo.getPartidas()
+                : new ArrayList<>();
         this.listener = listener;
+        setHasStableIds(false);
+    }
+
+    @NonNull
+    @Override
+    public LotecaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_loteca_novo, parent, false);
+        return new LotecaHolder(view);
     }
 
     @Override
-    public LotecaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //PartidaView view = PartidaView_.build(parent.getContext());
-        PartidaView view = PartidaView.build(parent.getContext());
-        return new LotecaHolder(view, parametroJogo, listener);
-    }
+    public void onBindViewHolder(@NonNull LotecaHolder holder, int position) {
+        ParametroPartida item = listaPartidas.get(position);
+        Context context = holder.itemView.getContext();
 
-    @Override
-    public void onBindViewHolder(LotecaHolder holder, int position) {
-        ParametroPartida parametroPartida = listaPartidas.get(position);
-        holder.bind(parametroPartida, position);
-    }
+        holder.bind(item, position);
 
-    @Override
-    public long getItemId(int i) {
-        return 0;
+        configurarClique(holder.timeUm, holder, item, context, TipoSelecao.TIME_UM);
+        configurarClique(holder.timeDois, holder, item, context, TipoSelecao.TIME_DOIS);
+        configurarClique(holder.empate, holder, item, context, TipoSelecao.EMPATE);
     }
 
     @Override
@@ -53,4 +58,116 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
         return listaPartidas.size();
     }
 
+    private void configurarClique(
+            View view,
+            LotecaHolder holder,
+            ParametroPartida item,
+            Context context,
+            TipoSelecao tipoSelecao
+    ) {
+        view.setOnClickListener(v -> {
+            if (!verificaAberto(context)) {
+                return;
+            }
+
+            alternarSelecao(item, tipoSelecao);
+            holder.bindEstadoVisual(context, item);
+            notificarClique(item);
+        });
+    }
+
+    private void notificarClique(ParametroPartida item) {
+        if (listener != null) {
+            listener.clickEquipeLoteca(item);
+        }
+    }
+
+    private boolean verificaAberto(Context context) {
+        if (parametroJogo != null
+                && parametroJogo.getConcurso() != null
+                && parametroJogo.getConcurso().getAberto() != null
+                && !parametroJogo.getConcurso().getAberto()) {
+
+            ViewUtils.alertTitleButton(
+                    context,
+                    R.string.label_atencao,
+                    context.getResources()
+                            .getString(R.string.msg_conc_nao_aberto)
+                            .replace(
+                                    "{num_concurso}",
+                                    parametroJogo.getConcurso().getNumero().toString()
+                            ),
+                    context.getResources().getString(R.string.title_entendi)
+            );
+            return false;
+        }
+        return true;
+    }
+
+    private void alternarSelecao(ParametroPartida item, TipoSelecao tipoSelecao) {
+        item.setQtdItensSelecionadosAnterior(item.getQtdItensSelecionados());
+
+        switch (tipoSelecao) {
+            case TIME_UM:
+                toggleTimeUm(item);
+                break;
+            case TIME_DOIS:
+                toggleTimeDois(item);
+                break;
+            case EMPATE:
+                toggleEmpate(item);
+                break;
+        }
+    }
+
+    private void toggleTimeUm(ParametroPartida item) {
+        if (item.getEquipe1().isSelecionado()) {
+            item.getEquipe1().setSelecionado(false);
+            item.setQtdItensSelecionados(item.getQtdItensSelecionados() - 1);
+
+            if (!item.isEmpate() && !item.getEquipe2().isSelecionado()) {
+                item.setSelecionado(false);
+            }
+        } else {
+            item.getEquipe1().setSelecionado(true);
+            item.setSelecionado(true);
+            item.setQtdItensSelecionados(item.getQtdItensSelecionados() + 1);
+        }
+    }
+
+    private void toggleTimeDois(ParametroPartida item) {
+        if (item.getEquipe2().isSelecionado()) {
+            item.getEquipe2().setSelecionado(false);
+            item.setQtdItensSelecionados(item.getQtdItensSelecionados() - 1);
+
+            if (!item.isEmpate() && !item.getEquipe1().isSelecionado()) {
+                item.setSelecionado(false);
+            }
+        } else {
+            item.getEquipe2().setSelecionado(true);
+            item.setSelecionado(true);
+            item.setQtdItensSelecionados(item.getQtdItensSelecionados() + 1);
+        }
+    }
+
+    private void toggleEmpate(ParametroPartida item) {
+        if (item.isEmpate()) {
+            item.setEmpate(false);
+            item.setQtdItensSelecionados(item.getQtdItensSelecionados() - 1);
+
+            if (!item.getEquipe1().isSelecionado() && !item.getEquipe2().isSelecionado()) {
+                item.setSelecionado(false);
+            }
+        } else {
+            item.setEmpate(true);
+            item.setSelecionado(true);
+            item.setQtdItensSelecionados(item.getQtdItensSelecionados() + 1);
+        }
+    }
+
+    private enum TipoSelecao {
+        TIME_UM,
+        TIME_DOIS,
+        EMPATE
+    }
 }
