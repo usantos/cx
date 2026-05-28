@@ -96,7 +96,7 @@
                     android:fontFamily="@font/caixa_std_regular"
                     android:gravity="center_vertical"
                     android:paddingLeft="3dp"
-                    android:text="Teimosinha"
+                    android:text="@string/label_sem_teimosinha"
                     android:textAllCaps="false"
                     android:textColor="@color/branco"
                     android:textSize="14sp" />
