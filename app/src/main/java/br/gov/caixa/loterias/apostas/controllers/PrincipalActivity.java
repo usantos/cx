@@ -171,6 +171,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private int anInt;
     private int ano;
     Boolean expandido = false;
+    private static final int REQ_CARRINHO = 1001;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -764,6 +766,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         if (resultCode == RESULT_OK && requestCode == 1) {
             callWebservice();
         }
+        if (requestCode == REQ_CARRINHO && resultCode == 2) {
+            RateUtils.solicitarReview(this);
+        }
     }
 
     private void sairLogin() {
@@ -1010,7 +1015,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     protected void vaiProCarrinho() {
         if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
-            startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
+            startActivityForResult(
+                    new Intent(PrincipalActivity.this, CarrinhoActivity.class),
+                    REQ_CARRINHO
+            );
         }
     }
 
