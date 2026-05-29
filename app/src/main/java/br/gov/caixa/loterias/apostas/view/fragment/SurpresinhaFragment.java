@@ -359,6 +359,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     public void adicionarSurpresinhaNoCarrinho() {
         IncluirSurpresinhaDTO surpresinha;
+        AnalyticsHelper.getInstance().logSelectContent(
+                AnalyticsHelper.Tela.MONTAR_APOSTA,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                AnalyticsHelper.ContentCategoryParams.CONFIG,
+                ModalidadeEnum.fromString(tipoJogo),
+                String.format(Locale.getDefault(), "%d", qtdSurpresinhas)
+        );
         switch (parametroJogo.getConcurso().getModalidade()){
             case TIMEMANIA:
                 surpresinha = ApostaUtils.getSurpresinhaTimemania(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
@@ -449,6 +457,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             }
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
+            AnalyticsHelper.getInstance().logSelectContent(
+                    AnalyticsHelper.Tela.MONTAR_APOSTA,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                    AnalyticsHelper.ContentCategoryParams.CONFIG,
+                    ModalidadeEnum.fromString(tipoJogo),
+                    String.format(Locale.getDefault(), "%d", qtdSurpresinhas)
+            );
         }
     }
 
@@ -462,6 +478,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
         btnMenosSurpresinha.setBackgroundTintList(getCor(corFonteFundoBranco));
+        AnalyticsHelper.getInstance().logSelectContent(
+                AnalyticsHelper.Tela.MONTAR_APOSTA,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                AnalyticsHelper.ContentCategoryParams.CONFIG,
+                ModalidadeEnum.fromString(tipoJogo),
+                String.format(Locale.getDefault(), "%d", qtdSurpresinhas)
+        );
 
     }
 

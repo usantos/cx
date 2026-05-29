@@ -163,7 +163,6 @@ public class AnalyticsHelper {
 
         public static final String CONTENT_CATEGORY = "content_category";
         public static final String OPTION_SELECTED = "option_selected";
-        public static final String OPTION_SOURCE = "option_source";
 
         public static final String OPERATION_NAME = "operation_name";
 
@@ -610,8 +609,7 @@ public class AnalyticsHelper {
             @NonNull String subJourney,
             @NonNull String contentCategory,
             @NonNull String gameMode,
-            String optionSelected,
-            String optionSource
+            String optionSelected
     ) {
         Bundle bundle = new Bundle();
 
@@ -627,7 +625,6 @@ public class AnalyticsHelper {
 
         bundle.putString(AnalyticsParams.CONTENT_CATEGORY, contentCategory);
         bundle.putString(AnalyticsParams.OPTION_SELECTED, optionSelected);
-        bundle.putString(AnalyticsParams.OPTION_SOURCE, optionSource);
 
         analytics.logEvent(
                 FirebaseAnalytics.Event.SELECT_CONTENT,
