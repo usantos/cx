@@ -54,23 +54,30 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
 	public void bind(ParametroPartida item, int position) {
 		Context context = itemView.getContext();
 
-		bindTitulo(position);
+		bindTitulo(position,item);
 		bindTextos(item);
 		bindEscudos(context, item);
 		bindEstadoVisual(context, item);
 	}
 
-	private void bindTitulo(int position) {
-		tvTitulo.setText(String.format(Locale.getDefault(), "Jogo %02d", position + 1));
-	}
+	private void bindTitulo(int position, ParametroPartida item) {
+		String legenda = item != null ? item.getLegendaAbreviada() : null;
 
+		String jogoTitle = String.format(Locale.getDefault(), "Jogo %02d ", position + 1);
+
+		if (!("(MAS)".equals(legenda))) {
+			jogoTitle += legenda;
+		}
+
+		tvTitulo.setText(jogoTitle);
+	}
 	private void bindTextos(ParametroPartida item) {
 		txtTimeUm.setText(item.getEquipe1().getNome());
 		txtTimeDois.setText(item.getEquipe2().getNome());
 		txtEmpate.setText(R.string.label_empate);
 
-		descTimeUm.setText(Utils.getUfTime(item.getEquipe1()) + " " + item.getLegendaAbreviada());
-		descTimeDois.setText(Utils.getUfTime(item.getEquipe2()) + " " + item.getLegendaAbreviada());
+		descTimeUm.setText(Utils.getUfTime(item.getEquipe1()));
+		descTimeDois.setText(Utils.getUfTime(item.getEquipe2()));
 	}
 
 	private void bindEscudos(Context context, ParametroPartida item) {
