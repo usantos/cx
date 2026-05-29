@@ -286,12 +286,6 @@ public class LoginFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        AnalyticsHelper.getInstance().logViewScreen(
-                AnalyticsHelper.JourneyParams.APOSTAR,
-                AnalyticsHelper.SubJourneyParams.ENTRY,
-                AnalyticsHelper.Tela.LOGIN
-        );
-
         if (!temMatriculaBiometria) {
             BiometricManager biometricManager = BiometricManager.from(getActivity());
             switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {

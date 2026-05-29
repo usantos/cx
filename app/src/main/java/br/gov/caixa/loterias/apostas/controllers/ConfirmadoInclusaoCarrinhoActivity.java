@@ -106,15 +106,15 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         );
 
         AnalyticsHelper.getInstance().logOperationSuccess(
-                AnalyticsHelper.StatusParams.ADD_BET,
-                AnalyticsHelper.StatusParams.APOSTAR,
+                AnalyticsHelper.StatusParams.SUCESSSO,
                 AnalyticsHelper.Tela.CART,
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
                 ModalidadeEnum.fromString(modalidade),
                 numeroConcurso,
                 value,
-                false
+                false,
+                AnalyticsHelper.AnalyticsFields.APOSTA_SIMPLES
         );
 
     }

@@ -28,4 +28,15 @@ public class LoginActivity extends LoteriasBaseAppActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        AnalyticsHelper.getInstance().logViewScreen(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.ENTRY,
+                AnalyticsHelper.Tela.LOGIN
+        );
+    }
+
 }

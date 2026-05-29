@@ -594,7 +594,6 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 AlertDialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
                 AnalyticsHelper.getInstance().logFlowEnd(
-                        AnalyticsHelper.ResultParams.SUCCESS,
                         AnalyticsHelper.JourneyParams.APOSTAR,
                         AnalyticsHelper.JourneyParams.APOSTAR,
                         AnalyticsHelper.SubJourneyParams.CARRINHO,

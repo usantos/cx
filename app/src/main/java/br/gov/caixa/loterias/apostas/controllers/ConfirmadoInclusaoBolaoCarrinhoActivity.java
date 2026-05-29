@@ -77,15 +77,15 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         );
 
         AnalyticsHelper.getInstance().logOperationSuccess(
-                AnalyticsHelper.StatusParams.ADD_BOLAO,
-                AnalyticsHelper.StatusParams.APOSTAR,
+                AnalyticsHelper.StatusParams.SUCESSSO,
                 AnalyticsHelper.Tela.BOLAO_CART,
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.BOLAO,
                 ModalidadeEnum.fromString(modalidade),
                 concurso,
                 ViewUtils.getMoedaFormat(valorAposta),
-                true
+                true,
+                AnalyticsHelper.AnalyticsFields.BOLAO
         );
 
     }

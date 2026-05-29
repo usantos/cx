@@ -67,17 +67,6 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         startaFila();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        AnalyticsHelper.getInstance().logViewScreen(
-                AnalyticsHelper.JourneyParams.APOSTAR,
-                AnalyticsHelper.SubJourneyParams.ENTRY,
-                AnalyticsHelper.Tela.APP_START
-        );
-    }
-
     public static boolean isRootAvailable(){
         for(String pathDir : System.getenv("PATH").split(":")){
             if(new File(pathDir, "su").exists()) {

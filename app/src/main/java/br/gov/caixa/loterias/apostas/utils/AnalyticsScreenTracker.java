@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.apostas.utils;
 
 public class AnalyticsScreenTracker {
 
-    private static String lastScreenName = "app_start";
+    private static String lastScreenName = "entrada_app";
 
     public static String getLastScreenName() {
         return lastScreenName;
