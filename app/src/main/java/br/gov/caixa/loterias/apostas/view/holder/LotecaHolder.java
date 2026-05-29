@@ -14,6 +14,7 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 
 public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
@@ -66,7 +67,7 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
 		String jogoTitle = String.format(Locale.getDefault(), "Jogo %02d ", position + 1);
 
 		if (!("(MAS)".equals(legenda))) {
-			jogoTitle += legenda;
+			jogoTitle += StringUtils.capitalizerNovo(legenda);
 		}
 
 		tvTitulo.setText(jogoTitle);
