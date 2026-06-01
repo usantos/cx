@@ -315,8 +315,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             }
         }
 
-        listaOpcaoResgate.setLayoutManager(new LinearLayoutManager(this));
         listaOpcaoResgate.setAdapter(new OpcaoResgatePremioAdapter(list));
+        listaOpcaoResgate.setLayoutManager(new LinearLayoutManager(this));
 
         if (detalhesPremioDTO.getMensagemInformativaIR() != null && !detalhesPremioDTO.getMensagemInformativaIR().isEmpty()){
             apresentaInfoResgateIR();
