@@ -38,8 +38,12 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 
 	@Override
 	public void bind(PartidaLotecaDTO partida, int position) {
-		nomeEquipe1.setText(Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()) + " " + partida.getLegendaAbreviada());
-		nomeEquipe2.setText(Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()) + " " + partida.getLegendaAbreviada());
+		//TODO//
+		//String nomeequipe1 = Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()) + " " + partida.getLegendaAbreviada();
+		//String nomeequipe2 = Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()) + " " + partida.getLegendaAbreviada();
+
+		nomeEquipe1.setText(Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()));
+		nomeEquipe2.setText(Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()));
 		if (configuracaoLoteca != null) {
 			nomeEquipe1.setTextColor(context.getResources().getColor(configuracaoLoteca.getCorTexto()));
 			nomeEquipe2.setTextColor(context.getResources().getColor(configuracaoLoteca.getCorTexto()));

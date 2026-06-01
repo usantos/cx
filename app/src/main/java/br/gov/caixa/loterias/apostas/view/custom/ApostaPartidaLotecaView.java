@@ -79,7 +79,9 @@ public class ApostaPartidaLotecaView extends LinearLayout {
                                                 EquipeDTO equipeDTO, String legenda) {
         apostaEquipeLotecaView.getImageApostaPartidaLoteca().setSelected(equipeDTO.getVitoria());
         if (legenda != null) {
-            apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO) + " " + legenda);
+            apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));
+            //TODO//
+//            apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO) + " " + legenda);
         } else {
             apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));
         }
