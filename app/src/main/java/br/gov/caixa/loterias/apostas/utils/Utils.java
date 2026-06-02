@@ -133,11 +133,18 @@ public class Utils {
         return equipeComTime + getUfTime(equipeDTO.getParametroEquipe());
     }
 
+    public static String getEquipeNome(EquipeDTO equipeDTO){
+        return (equipeDTO != null && equipeDTO.getNome() != null) ? equipeDTO.getNome(): "";
+    }
+
     public static String getEquipeComUf(EquipeDTO equipeDTO){
         String equipeComTime = (equipeDTO != null && equipeDTO.getNome() != null) ? equipeDTO.getNome(): "";
         return equipeComTime + getUfTime(equipeDTO);
     }
 
+    public static String getEquipeNome(ParametroEquipe equipe){
+        return (equipe != null && equipe.getNome() != null) ? equipe.getNome(): "";
+    }
     public static String getEquipeComUf(ParametroEquipe equipe){
         String equipeComTime = (equipe != null && equipe.getNome() != null) ? equipe.getNome(): "";
         return equipeComTime + getUfTime(equipe);

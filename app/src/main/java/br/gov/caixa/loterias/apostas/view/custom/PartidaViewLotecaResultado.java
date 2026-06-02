@@ -73,16 +73,19 @@ public class PartidaViewLotecaResultado extends LinearLayout {
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1().getParametroEquipe(), lotecaTimeUm.getItemImage());
         lotecaTimeUm.getItemTitle().setText(parametroPartida.getEquipe1().getNome());
         //TODO//
-//        String time1 = Utils.getUfTime(parametroPartida.getEquipe1())+" "+parametroPartida.getLegendaAbreviada();
-
-        lotecaTimeUm.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe1()));
+        //String time1 = Utils.getUfTime(parametroPartida.getEquipe1())+" "+parametroPartida.getLegendaAbreviada();
+        if (parametroPartida.getEquipe1().getIndicadorSelecao() != null && !parametroPartida.getEquipe1().getIndicadorSelecao()) {
+            lotecaTimeUm.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe1()));
+        }
 
         lotecaTimeDois.getItemImage().setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe2().getParametroEquipe(), lotecaTimeDois.getItemImage());
         lotecaTimeDois.getItemTitle().setText(parametroPartida.getEquipe2().getNome());
         //TODO//
-//        String time2 = Utils.getUfTime(parametroPartida.getEquipe2())+" "+parametroPartida.getLegendaAbreviada();
-        lotecaTimeDois.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe2()));
+        //String time2 = Utils.getUfTime(parametroPartida.getEquipe2())+" "+parametroPartida.getLegendaAbreviada();
+        if (parametroPartida.getEquipe2().getIndicadorSelecao() != null && !parametroPartida.getEquipe2().getIndicadorSelecao()) {
+            lotecaTimeDois.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe2()));
+        }
 
         diaSemanaDataPartidaText.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.texto_futura_bold, getResources().getString(R.string.label_domingo))));
 

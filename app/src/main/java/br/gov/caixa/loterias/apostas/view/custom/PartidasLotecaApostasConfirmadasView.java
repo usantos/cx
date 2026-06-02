@@ -87,8 +87,16 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
         //String time1 = Utils.getEquipeComUf(partidaLotecaDTO.getEquipe1())+" "+partidaLotecaDTO.getLegendaAbreviada();
         //String time2 = Utils.getEquipeComUf(partidaLotecaDTO.getEquipe2())+" "+partidaLotecaDTO.getLegendaAbreviada();
 
-        this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaUm, textApostaPartidaLotecaUm, partidaLotecaDTO.getEquipe1(), Utils.getEquipeComUf(partidaLotecaDTO.getEquipe1()), partidaLotecaDTO);
-        this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaDois, textApostaPartidaLotecaDois, partidaLotecaDTO.getEquipe2(), Utils.getEquipeComUf(partidaLotecaDTO.getEquipe2()), partidaLotecaDTO);
+        if (partidaLotecaDTO.getEquipe1().getIndicadorSelecao() != null && partidaLotecaDTO.getEquipe1().getIndicadorSelecao()) {
+            this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaUm, textApostaPartidaLotecaUm, partidaLotecaDTO.getEquipe1(), Utils.getEquipeNome(partidaLotecaDTO.getEquipe1()), partidaLotecaDTO);
+        } else {
+            this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaUm, textApostaPartidaLotecaUm, partidaLotecaDTO.getEquipe1(), Utils.getEquipeComUf(partidaLotecaDTO.getEquipe1()), partidaLotecaDTO);
+        }
+        if (partidaLotecaDTO.getEquipe2().getIndicadorSelecao() != null && partidaLotecaDTO.getEquipe2().getIndicadorSelecao()) {
+            this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaDois, textApostaPartidaLotecaDois, partidaLotecaDTO.getEquipe2(), Utils.getEquipeNome(partidaLotecaDTO.getEquipe2()), partidaLotecaDTO);
+        } else {
+            this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaDois, textApostaPartidaLotecaDois, partidaLotecaDTO.getEquipe2(), Utils.getEquipeComUf(partidaLotecaDTO.getEquipe2()), partidaLotecaDTO);
+        }
 
         EquipeDTO equipeDTOEmpate = new EquipeDTO();
         equipeDTOEmpate.setVitoria(partidaLotecaDTO.getEmpate());

@@ -23,7 +23,9 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 	private ConfiguracaoLoteca configuracaoLoteca;
 	private ResultadoConcursoDTO resultado;
 
-	public PartidaLotecaHolder(View itemView, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso) {
+	private Boolean isEspecial;
+
+	public PartidaLotecaHolder(View itemView, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso, Boolean isEspecial) {
 		super(itemView);
 		nomeEquipe1 = itemView.findViewById(R.id.nome_equipe_1);
 		nomeEquipe2 = itemView.findViewById(R.id.nome_equipe_2);
@@ -34,6 +36,7 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 		this.context = context;
 		this.configuracaoLoteca = configuracaoLoteca;
 		this.resultado = resultadoConcurso;
+		this.isEspecial = isEspecial;
 	}
 
 	@Override
@@ -42,8 +45,20 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 		//String nomeequipe1 = Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()) + " " + partida.getLegendaAbreviada();
 		//String nomeequipe2 = Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()) + " " + partida.getLegendaAbreviada();
 
-		nomeEquipe1.setText(Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()));
-		nomeEquipe2.setText(Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()));
+		//if (partida.getEquipe1().getIndicadorSelecao() == null || partida.getEquipe1().getIndicadorSelecao()) {
+		if (isEspecial != null && isEspecial) {
+			nomeEquipe1.setText(Utils.getEquipeNome(partida.getEquipe1().getParametroEquipe()));
+		} else {
+			nomeEquipe1.setText(Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()));
+		}
+
+		//if (partida.getEquipe2().getIndicadorSelecao() == null || partida.getEquipe2().getIndicadorSelecao()) {
+		if (isEspecial != null && isEspecial) {
+			nomeEquipe2.setText(Utils.getEquipeNome(partida.getEquipe2().getParametroEquipe()));
+		} else {
+			nomeEquipe2.setText(Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()));
+		}
+
 		if (configuracaoLoteca != null) {
 			nomeEquipe1.setTextColor(context.getResources().getColor(configuracaoLoteca.getCorTexto()));
 			nomeEquipe2.setTextColor(context.getResources().getColor(configuracaoLoteca.getCorTexto()));
