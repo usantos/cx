@@ -157,7 +157,7 @@ public class BarraTituloBolaoFragment extends Fragment {
         ViewCompat.setAccessibilityHeading(tvModalidade,true);
         tvConcurso.setText(concurso);
         tvSorteio.setText(sorteio);
-        tvValorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(valorPremio));
+        tvValorPremio.setText(ViewUtils.getMoedaFormatComCentavos(valorPremio, 2));
         String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(valorPremio);
         if (!valorEstimadoPorExtenso.isEmpty()){
             tvValorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));

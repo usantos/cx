@@ -736,12 +736,12 @@ public class ViewUtils {
         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
-    public static String getMoedaFormatSemCentavos(BigDecimal valor) {
+    public static String getMoedaFormatComCentavos(BigDecimal valor, int qtdCasasDecimais) {
         if (valor == null) {
             valor = BigDecimal.ZERO;
         }
         NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-        nf.setMaximumFractionDigits(0);
+        nf.setMaximumFractionDigits(qtdCasasDecimais);
         return nf.format(valor);
     }
 
