@@ -116,7 +116,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 			}
 			cidade.setVisibility(View.GONE);
 			valorPremio.setVisibility(View.VISIBLE);
-			valorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(bolao.getVrPremioEstimado()));
+			valorPremio.setText(ViewUtils.getMoedaFormatComCentavos(bolao.getVrPremioEstimado(), 2));
 			String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado());
 			if (!valorEstimadoPorExtenso.isEmpty()){
 				valorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));

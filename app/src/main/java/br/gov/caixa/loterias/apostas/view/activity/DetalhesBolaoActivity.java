@@ -331,7 +331,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		String valorTotal = "Total: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaComTarifa());
 
 		botaoFavoritar.setState(isLotericaFavorita);
-		tvValorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(bolao.getVrPremioEstimado()));
+		tvValorPremio.setText(ViewUtils.getMoedaFormatComCentavos(bolao.getVrPremioEstimado(), 2));
 		String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado());
 		if (!valorEstimadoPorExtenso.isEmpty()){
 			tvValorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));
