@@ -51,11 +51,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
-import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
+import br.gov.caixa.loterias.apostas.utils.SelecaoConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
@@ -160,10 +160,10 @@ public class DetalhesMinhasApostasButtonHelper {
         });
     }
     private void editarApostaBtn() {
-        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(true, "Editar Aposta"));
+        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(true));
     }
     private void adicionarCarrinhoBtn() {
-        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false, "Adicionar ao\n carrinho"));
+        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false));
     }
     private void goToEditarAposta(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
@@ -176,14 +176,12 @@ public class DetalhesMinhasApostasButtonHelper {
         }
     }
 
-    private OnModalidadesAbertasListener onChegagemModalidadesListener(boolean isEditing, String btnText){
+    private OnModalidadesAbertasListener onChegagemModalidadesListener(boolean isEditing){
         return new OnModalidadesAbertasListener() {
             @Override
             public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
-                AppCompatActivity appCompatActivity = (AppCompatActivity) activity;
-                DialogFragmentUtils.startEscolhaModalidade(appCompatActivity.getSupportFragmentManager(), arrayConcursos, aposta.getId(),
-                        activity.getResources().getString(R.string.adicionar_carrinho_favoritas_view), btnText,false, false,
-                        (tipoConcurso, teimosinha, espelho) -> {
+                SelecaoConcursoUtils.selecionarConcurso(activity, arrayConcursos,
+                        (tipoConcurso) -> {
                             IdentificaoDeUmaApostaDas8Modalidades clone = aposta;
                             if (!tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())) {
                                 clone = ApostaUtils.converteTipoDeConcurso(aposta);

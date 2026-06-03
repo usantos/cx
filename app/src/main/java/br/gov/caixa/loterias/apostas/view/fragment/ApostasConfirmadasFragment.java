@@ -72,11 +72,11 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
+import br.gov.caixa.loterias.apostas.utils.SelecaoConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
@@ -490,10 +490,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         @Override
                         public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
                             ApostaDTO apostaDTO = apostasList.get(position);
-                            FragmentManager fm = getActivity().getSupportFragmentManager();
-                            DialogFragmentUtils.startEscolhaModalidade(fm, arrayConcursos, apostaDTO.getId(),
-                                    getContext().getResources().getString(R.string.adicionar_carrinho_favoritas_view), null, false, false,
-                                    (tipoConcurso, teimosinha, espelho) -> {
+                            SelecaoConcursoUtils.selecionarConcurso(getActivity(), arrayConcursos,
+                                    (tipoConcurso) -> {
                                         if (tipoConcurso.toString().equalsIgnoreCase(apostaDTO.getTipoConcurso().getValor())){
                                             AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
                                         } else {
