@@ -249,7 +249,7 @@ public class CadastroActivity extends LoteriasBaseAppActivity {
                     }
 
                     @Override
-                    public void ok() {
+                    public void ok(int position) {
                         editTextMunicipioContent.setText(municipioSelect);
                         if (isMunicipioUsuario) {
                             for (MunicipioDTO municipio : municipioDTOList) {

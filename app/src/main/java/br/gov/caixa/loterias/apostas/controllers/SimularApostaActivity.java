@@ -840,7 +840,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             }
 
             @Override
-            public void ok() {
+            public void ok(int position) {
                 qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
 
                 if (isFragmentCartela()) {
@@ -893,14 +893,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private OnDialogListener onTeimosinhaDialogListener() {
         return new OnDialogListener() {
             @Override
-            public void itemSelecionado(int position) {
-                posicaoDialogTeimosinhas = position;
-            }
+            public void itemSelecionado(int position) {}
 
             @Override
-            public void ok() {
-                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(posicaoDialogTeimosinhas);
-                textoBotaoTeimosinhas = (String) qtdConcursosList.get(posicaoDialogTeimosinhas);
+            public void ok(int position) {
+                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
+                textoBotaoTeimosinhas = qtdConcursosList.get(position);
                 if (qtdConcursoSelecionado == 0) {
                     qtdConcursosButton.setText(R.string.label_sem_teimosinha);
                 } else {
