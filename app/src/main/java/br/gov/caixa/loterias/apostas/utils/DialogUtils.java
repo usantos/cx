@@ -665,13 +665,36 @@ public class DialogUtils {
             String labelBotaoNegativo,
             OnDialogListener dialogListener
     ) {
-        if (isContextInvalido(context)) {
+        Dialog dialog = buildDialogListItensNovo(context, titulo, subtitulo, texto, list, labelBotaoPositivo, labelBotaoNegativo, dialogListener);
+        if (dialog == null) {
             return;
+        }
+        try {
+            if (!isContextInvalido(context)) {
+                dialog.show();
+            }
+        } catch (WindowManager.BadTokenException | IllegalStateException e) {
+            Log.w("DialogUtils", "Não foi possível exibir a dialog.", e);
+        }
+    }
+
+    public static Dialog buildDialogListItensNovo(
+            Context context,
+            String titulo,
+            String subtitulo,
+            String texto,
+            List<String> list,
+            String labelBotaoPositivo,
+            String labelBotaoNegativo,
+            OnDialogListener dialogListener
+    ) {
+        if (isContextInvalido(context)) {
+            return null;
         }
 
         if (dialogListener == null) {
             Log.w("DialogUtils", "showDialogListItens chamado com dialogListener nulo.");
-            return;
+            return null;
         }
 
         final Dialog dialog = new Dialog(context);
@@ -707,7 +730,7 @@ public class DialogUtils {
         RecyclerView picker = dialog.findViewById(R.id.picker_itens_dialog);
 
         if (picker == null) {
-            return;
+            return null;
         }
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
@@ -770,15 +793,6 @@ public class DialogUtils {
             dialog.dismiss();
         });
 
-        try {
-            if (!isContextInvalido(context)) {
-                dialog.show();
-            }
-        } catch (WindowManager.BadTokenException | IllegalStateException e) {
-            Log.w("DialogUtils", "Não foi possível exibir a dialog.", e);
-            return;
-        }
-
         if (dialog.getWindow() != null) {
             int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
             int dialogWidth = (int) (screenWidth * LARGURA_DIALOG_PADRAO);
@@ -786,5 +800,7 @@ public class DialogUtils {
             dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
         }
+
+        return dialog;
     }
 }
