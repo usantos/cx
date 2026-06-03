@@ -276,7 +276,9 @@ public class DialogUtils {
         listViewItens.setAdapter(adapter);
         listViewItens.setSelector(R.drawable.select_unselect_bg_popup_itens);
 
+        final int[] lastSelected = {-1};
         listViewItens.setOnItemClickListener((parent, view, position, id) -> {
+            lastSelected[0] = position;
             dialogListener.itemSelecionado(position);
         });
 
@@ -304,7 +306,7 @@ public class DialogUtils {
         });
 
         dialogButtonConfirmar.setOnClickListener(v -> {
-            dialogListener.ok();
+            dialogListener.ok(lastSelected[0]);
             dialog.dismiss();
         });
 
@@ -704,37 +706,36 @@ public class DialogUtils {
 
         RecyclerView picker = dialog.findViewById(R.id.picker_itens_dialog);
 
-
-        if (picker != null) {
-            LinearLayoutManager layoutManager =
-                    new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
-            picker.setLayoutManager(layoutManager);
-
-            LinearSnapHelper snapHelper = new LinearSnapHelper();
-            snapHelper.attachToRecyclerView(picker);
-
-            WheelController wheelController =
-                    new WheelController(picker, layoutManager, snapHelper, dialogListener);
-
-            ListStringAdapter adapter =
-                    new ListStringAdapter(list, wheelController::onItemClicked);
-
-            if (!list.isEmpty()) {
-                picker.post(() -> {
-                    int initialPos = 0;
-
-                    adapter.setSelectedPosition(initialPos);
-
-                    picker.scrollToPosition(initialPos);
-
-                    wheelController.onItemClicked(initialPos);
-                });
-            }
-
-            wheelController.attachAdapter(adapter);
-            picker.setAdapter(adapter);
-            wheelController.setupRecyclerForWheel();
+        if (picker == null) {
+            return;
         }
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+        picker.setLayoutManager(layoutManager);
+
+        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(picker);
+
+        WheelController wheelController =
+                new WheelController(picker, layoutManager, snapHelper, dialogListener);
+
+        ListStringAdapter adapter = new ListStringAdapter(list, wheelController::onItemClicked);
+
+        if (!list.isEmpty()) {
+            picker.post(() -> {
+                int initialPos = 0;
+
+                adapter.setSelectedPosition(initialPos);
+
+                picker.scrollToPosition(initialPos);
+
+                wheelController.onItemClicked(initialPos);
+            });
+        }
+
+        wheelController.attachAdapter(adapter);
+        picker.setAdapter(adapter);
+        wheelController.setupRecyclerForWheel();
 
         Button dialogButtonConfirmar       = dialog.findViewById(R.id.button_positivo_itens);
         Button dialogButtonCancelar = dialog.findViewById(R.id.button_negativo_itens);
@@ -760,7 +761,7 @@ public class DialogUtils {
         });
 
         dialogButtonConfirmar.setOnClickListener(v -> {
-            dialogListener.ok();
+            dialogListener.ok(adapter.getSafeSelectedPosition());
             dialog.dismiss();
         });
 

@@ -393,7 +393,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             }
 
             @Override
-            public void ok() {
+            public void ok(int position) {
                 listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
                 int ultimoValor = valoresApostas.size() - 1;
                 if (valoresApostas.get(ultimoValor).equals(valorApostaSelecionado)){

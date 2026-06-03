@@ -186,7 +186,7 @@ public class CarrinhosFavoritosActivity extends LoteriasBaseAppActivity {
 									}
 
 									@Override
-									public void ok() {
+									public void ok(int position) {
 										if (opcaoSelecionada[0] == -1) {
 											// Nenhum item foi selecionado, alerta o usuário
 											DialogUtils.dialogEntendi(
