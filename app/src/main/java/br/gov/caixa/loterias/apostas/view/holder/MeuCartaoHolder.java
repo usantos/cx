@@ -72,7 +72,8 @@ public class MeuCartaoHolder extends LoteriasHolder<RetornoCartao> implements  V
 			case "diners":
 				return context.getDrawable(R.drawable.ic_diners);
 			case "elo":
-				return context.getDrawable(R.drawable.ic_elo);
+				//return context.getDrawable(R.drawable.ic_elo);
+				return context.getDrawable(R.drawable.elo_fundo_escuro);
 			case "amex":
 			case "american express":
 				return context.getDrawable(R.drawable.ic_american);

@@ -170,8 +170,16 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 
 	//region Support Methods
 	public int temApostaEspecial() {
-		int                      countModalidade = 0;
-		List<ParametroSimulacao> parametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+		int countModalidade = 0;
+		List<ParametroSimulacao> parametros = null;
+		SessaoUsuario sessao = SessaoUsuario.getInstance();
+		if (sessao != null && sessao.getParametrosSimulacao() != null) {
+			parametros = sessao.getParametrosSimulacao().getParametros();
+		}
+		if (parametros == null || parametros.isEmpty()) {
+			return countModalidade;
+		}
+
 		if (listaApostasCarrinho != null) {
 			for (ApostaCarrinhoFavoritoDTO aposta : listaApostasCarrinho) {
 				countModalidade = 0;

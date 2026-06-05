@@ -209,7 +209,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title1.setTextColor(ContextCompat.getColor(getContext(), corFonte));
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
-            adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(), modalidade);
+            if (modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio() != null) {
+                adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(), modalidade);
+            }
 
             TextView titleGanhadores = new TextView(getContext());
             titleGanhadores.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_bold)));

@@ -20,7 +20,7 @@ public class LoteriasAppActivity extends LoteriasBaseAppActivity {
 		configMenu();
 	}
 
-	private void configMenu() {
+	protected void configMenu() {
 		btnAjuda = findViewById(R.id.ib_duvidas);
 		btnAjuda.setVisibility(View.VISIBLE);
 		btnAjuda.setOnClickListener(v -> abrirTermosUso());

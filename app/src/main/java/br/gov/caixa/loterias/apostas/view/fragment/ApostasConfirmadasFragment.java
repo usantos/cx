@@ -36,12 +36,12 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivity;
+import br.gov.caixa.loterias.apostas.controllers.DetalheMinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
-import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.NovaAPIBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -52,15 +52,16 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DadosChavePixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PeriodoConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -395,6 +396,14 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 if(filtroAdapter.getNpTipoConcurso() != null) {
                     page.setTipoConcurso(filtroAdapter.getNpTipoConcurso().getValue());
                 }
+
+                if (filtroAdapter.getBotoesFiltroApostas() != null){
+                    page.setTeimosinha(filtroAdapter.getBotoesFiltroApostas().getTeimosinha());
+                    page.setSurpresinha(filtroAdapter.getBotoesFiltroApostas().getSurpresinha());
+                    page.setCombo(filtroAdapter.getBotoesFiltroApostas().getCombo());
+                }
+
+
                 page.setOffset(0);
                 reloadingEntireList = true;
                 requestApostasConfirmadas();
@@ -598,9 +607,20 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         //SERVICO /apostas/{id}/comprovante-premio Informacao COMBO está errada
                         result.getPayload().getAposta().setCombo(apostaDTO.getCombo());
 
-                        Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
-                                ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
-                        startActivity(intent);
+                        boolean isTeimosinha = result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0;
+                        boolean isBolao = result.getPayload().getAposta().getIndicadorCotaBolao();
+                        boolean isSimples = !isTeimosinha && !isBolao;
+                        boolean isLoteca = result.getPayload().getAposta().getModalidade() == ModalidadeEnum.LOTECA;
+
+                        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
+                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
+                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+                            startActivity(intent);
+                        } else {
+                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
@@ -616,6 +636,13 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         ComprovanteApostaDTO comprovante = result.getPayload();
                         if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
                             comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                        }
+
+                        //Utilizada na Teimosinha, apostaDTO-Situacao.PREMIADA e comprovante-Situacao-EFETIVADA
+                        if (comprovante.getAposta().getQuantidadeTeimosinhas() >0) {
+                            if (apostaDTO.getSituacao().getValor() == SituacaoAposta.PREMIADA && comprovante.getAposta().getSituacao().getValor() == SituacaoAposta.EFETIVADA) {
+                                comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                            }
                         }
 
                         //SERVICO /apostas/:idAposta/comprovante  Informacao COMBO está errada
@@ -634,9 +661,21 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private void startDetalheComprovante(ComprovanteApostaDTO comprovante) {
-        Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
-                ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
-        startActivity(intent);
+
+        boolean isTeimosinha = comprovante.getAposta().getQuantidadeTeimosinhas() > 0;
+        boolean isBolao = comprovante.getAposta().getIndicadorCotaBolao();
+        boolean isSimples = !isTeimosinha && !isBolao;
+        boolean isLoteca = comprovante.getAposta().getModalidade() == ModalidadeEnum.LOTECA;
+
+        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
+            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
+                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+            startActivity(intent);
+        } else {
+            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+            startActivity(intent);
+        }
     }
 
     private void handleOnItemClickHistorico(ApostaDTO apostaDTO) {

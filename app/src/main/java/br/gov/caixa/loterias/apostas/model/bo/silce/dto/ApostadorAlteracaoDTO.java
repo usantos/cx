@@ -37,6 +37,8 @@ public class ApostadorAlteracaoDTO {
     private Boolean alterandoLoterica = null;
     @SerializedName("limiteDiario")
     private BigDecimal limiteDiario = null;
+    @SerializedName("aceitaReceberNoticias")
+    private Boolean aceitaReceberNoticias = null;
 
     /**
      * CEP relacionado com o endereço do apostador
@@ -90,6 +92,13 @@ public class ApostadorAlteracaoDTO {
     }
     public void setAlterandoLoterica(Boolean alterandoLoterica) {
         this.alterandoLoterica = alterandoLoterica;
+    }
+
+    /**
+     * Alterar recebimento ou não de notícias
+     */
+    public void setAceitaReceberNoticias(Boolean aceitaReceberNoticias){
+        this.aceitaReceberNoticias = aceitaReceberNoticias;
     }
 
     /**

@@ -139,8 +139,7 @@
                         android:textColor="@color/branco"
                         android:textSize="18.0sp"
                         android:fontFamily="@font/futura_std_bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/cl_trevo"
+                        app:layout_constraintStart_toEndOf="@+id/cl_trevo"
                         tools:text="mega-sena" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout

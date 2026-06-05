@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
@@ -105,8 +106,11 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private void aplicaEstilo() {
 		background.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorClara()));
 		setaVoltar.setImageDrawable(VectorUtils.getShape(R.drawable.seta_esquerda, estilo.getCorFonteFundoClaro()));
-		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1){
-			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
+//		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1){
+//			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
+//		}
+		if (isEspecial && estilo.getImagemEspecialSimples() != -1){
+			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialSimples()));
 		}
 	}
 
@@ -127,6 +131,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 		} else {
 			tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
 		}
+		ViewCompat.setAccessibilityHeading(tvModalidade,true);
 		tvConcurso.setText(concurso);
 		tvSorteio.setText(sorteio);
 	}

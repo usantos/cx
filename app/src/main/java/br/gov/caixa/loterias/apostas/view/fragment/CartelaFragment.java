@@ -96,7 +96,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private TimeCoracaoAdapter timeCoracaoAdapter;
 
 	private SimularApostaActivity parentActivity;
-	private AppCompatCheckBox selcioneOutrosNumeros;
+	private AppCompatCheckBox selecioneOutrosNumeros;
 	private View view;
 	private EditText informeNomeTime;
 	private RelativeLayout opcaoOutrosNumerosLayout, rlColunasSuperSete;
@@ -175,7 +175,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas).movePointLeft(0));
 		}
 
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && selcioneOutrosNumeros.isChecked()) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && selecioneOutrosNumeros.isChecked()) {
 			valorEmReais = valorEmReais.multiply(Constantes.DOIS_BIG_DECIMAL);
 		}
 
@@ -241,9 +241,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		model = new SimularApostaModel(getActivity());
 		cartelaModel = new CartelaModel();
 		partidasSelecionadas = new HashSet<>();
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)){
-			configuraBotoesLotecaOuLotogol();
-		}
 
 	}
 
@@ -253,9 +250,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 		loadParametroJogo();
 
+		if(parentActivity != null && parametroJogo != null){
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)){
+				configuraBotoesLotecaOuLotogol();
+			}
+		}
+
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
 			opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);
-			selcioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.selcioneOutrosNumeros);
+			selecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.selcioneOutrosNumeros);
 			TextView infoSelecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.infoSelecioneOutrosNumeros);
 			infoSelecioneOutrosNumeros.setText(ViewUtils.fromHtml(Constantes.INFO_OUTROS_50_NUMEROS));
 			onClickOutrosNumerosLayout();
@@ -564,7 +567,7 @@ private void zeraLoteca(){
 
 	private void setVisibilityCheckedNumerosLayout(int visibility) {
 		opcaoOutrosNumerosLayout.setVisibility(visibility);
-		selcioneOutrosNumeros.setChecked(Boolean.FALSE);
+		selecioneOutrosNumeros.setChecked(Boolean.FALSE);
 	}
 
 	private void limparTimeSelecionado() {
@@ -644,7 +647,7 @@ private void zeraLoteca(){
 	private void adicionarApostaPreencherNumerosLotomania() {
 		if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 			//verifica se foi marcada a opção para gerar outros números
-			if (selcioneOutrosNumeros.isChecked()) {
+			if (selecioneOutrosNumeros.isChecked()) {
 				// Gera uma nova aposta com os outros 50 números não selecionados
 
 				if (dezenasSelecionadas != null && dezenasSelecionadas.size() > 0) {
@@ -668,10 +671,10 @@ private void zeraLoteca(){
 
 	private void onClickOutrosNumerosLayout() {
 		opcaoOutrosNumerosLayout.setOnClickListener(view -> {
-			if (selcioneOutrosNumeros.isChecked()) {
-				selcioneOutrosNumeros.setChecked(false);
+			if (selecioneOutrosNumeros.isChecked()) {
+				selecioneOutrosNumeros.setChecked(false);
 			} else {
-				selcioneOutrosNumeros.setChecked(true);
+				selecioneOutrosNumeros.setChecked(true);
 			}
 			atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
 		});
@@ -1191,8 +1194,8 @@ private void zeraLoteca(){
 						parentActivity.verificaNovoQtdDezenasMax(dezenasSelecionadas.size());
 						verificaSeMostraBotaoLimparAposta();
 					}
-					if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && selcioneOutrosNumeros.isChecked()) {
-						selcioneOutrosNumeros.setChecked(false);
+					if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && selecioneOutrosNumeros.isChecked()) {
+						selecioneOutrosNumeros.setChecked(false);
 					}
 					atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
 

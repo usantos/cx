@@ -1,11 +1,17 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
+import android.util.Log;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
+import java.nio.charset.StandardCharsets;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,6 +50,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericasFavoritasResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
@@ -51,6 +58,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
@@ -244,6 +252,18 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
 
         if(page.getTipoAposta() != 0) {
             queryParams.put("tipoAposta", String.valueOf(page.getTipoAposta()));
+        }
+
+        if(page.isSurpresinha() != 0){
+            queryParams.put("surpresinha", String.valueOf(page.isSurpresinha()));
+        }
+
+        if(page.isTeimosinha() != 0){
+            queryParams.put("teimosinha", String.valueOf(page.isTeimosinha()));
+        }
+
+        if(page.isCombo() != 0){
+            queryParams.put("combo", String.valueOf(page.isCombo()));
         }
         if(page.getTipoConcurso() != 0) {
             queryParams.put("tipoConcurso", String.valueOf(page.getTipoConcurso()));
@@ -891,6 +911,33 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         getServiceConnection().request(request, listener);
     }
 
+    public void getResultadoModalidadeConcurso(final String descricaoModalidade, final Integer concursoInicial, final Integer concursoFinal, final RequestListener<ResultadoConcursosDTOResponse> listener) {
+//        //Map não aceita parametros repetidos
+//        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+//        String queryString = "modalidade=" + descricaoModalidade;
+//        for (int i = concursoInicial; i <= concursoFinal; i++) {
+//            queryString += "&concursos=" + i;
+//        }
+//        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO+"?"+queryString;
+
+        List<Map.Entry<String, String>> queryParams = new ArrayList<>();
+        queryParams.add(new AbstractMap.SimpleEntry<>("modalidade", descricaoModalidade));
+        for (int i = concursoInicial; i <= concursoFinal; i++) {
+            queryParams.add(new AbstractMap.SimpleEntry<>("concursos", String.valueOf(i)));
+        }
+        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO;
+
+        final GsonRequest request = getServiceConnection().buildGetRequest(url,
+                queryParams,
+                ResultadoConcursosDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
     public void getResultadoModalidade(final String modalidade, final RequestListener<ResultadoConcursoDTOResponse> listener) {
         getResultadoModalidade( modalidade, "", listener);
     }
@@ -1009,6 +1056,57 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         }
         listener.onErrorResponse(new VolleyError(new NetworkResponse(401, null, false, 0L, null)));
         return false;
+    }
+
+    //LOTERICAS FAVORITAS
+
+    public void getLotericasFavoritas(final RequestListener<LotericasFavoritasResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+
+        final GsonRequest request = getServiceConnection().buildGetRequest(
+                ServerMethods.LOTERICAS_FAVORITAS,
+                queryParams,
+                LotericasFavoritasResponse.class,
+                response -> {
+                    Log.d("HTTP-SUCCESS", "Status: 200 (OK)");
+                    Log.d("HTTP-SUCCESS", "Response: " + new Gson().toJson(response));
+                    listener.getSilceListener().onResponse(response);
+                },
+
+                error -> {
+                    if (error.networkResponse != null) {
+                        Log.d("HTTP-ERROR", "Status: " + error.networkResponse.statusCode);
+                        String body = error.networkResponse.data != null
+                                ? new String(error.networkResponse.data, StandardCharsets.UTF_8)
+                                : "<sem body>";
+                        Log.d("HTTP-ERROR", "Body: " + body);
+                    } else {
+                        Log.d("HTTP-ERROR", "Sem resposta do servidor (networkResponse == null)");
+                    }
+
+                    Log.d("HTTP-ERROR", "networkTimeMs: " + error.getNetworkTimeMs());
+
+                    Log.d("HTTP-ERROR", "message: " + error.getMessage());
+                    Throwable cause = error.getCause();
+                    if (cause != null) {
+                        Log.d("HTTP-ERROR", "cause class: " + cause.getClass().getName());
+                        Log.d("HTTP-ERROR", "cause message: " + cause.getMessage());
+                        Log.d("HTTP-ERROR", Log.getStackTraceString(cause));
+                    } else {
+                        Log.d("HTTP-ERROR", Log.getStackTraceString(error));
+                    }
+
+                    if (error.networkResponse != null && error.networkResponse.headers != null) {
+                        Log.d("HTTP-ERROR", "headers: " + error.networkResponse.headers.toString());
+                    }
+
+                    listener.getErrorListener().onErrorResponse(error);
+                }
+                ,
+                getHeaderToken()
+        );
+
+        getServiceConnection().request(request, listener);
     }
 
     // BOLAO
@@ -1149,4 +1247,35 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
+
+    public void incluirLotericaFavorita(Long idLoterica, final RequestListener<RetornoPadraoResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("nuCd", String.valueOf(idLoterica));
+        final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.INCLUIR_LOTERICA_FAVORITA,
+                queryParams,
+                "",
+                RetornoPadraoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void excluirLotericaFavorita(Long idLoterica, final RequestListener<RetornoPadraoResponse> listener) {
+        String url = ServerMethods.EXCLUIR_LOTERICA_FAVORITA.replace("{nuCd}", String.valueOf(idLoterica));
+
+        final GsonRequest request = getServiceConnection().buildDeleteRequest(url,
+                new LinkedHashMap<>(),
+                RetornoPadraoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+
 }

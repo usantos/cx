@@ -104,7 +104,8 @@ public class CotasBolaoDTO {
     private SituacaoCotaEnum situacaoCota = null;
     @SerializedName("tempoExpiracao")
     private Integer tempoExpiracao = null;
-
+    @SerializedName("lotericaFavorita")
+    private boolean lotericaFavorita = false;
     private Boolean isAbertoParaMostrarDetalhes = Boolean.FALSE;
 
     public void aumentaQuantidade() {
@@ -670,6 +671,18 @@ public class CotasBolaoDTO {
     }
 
     /**
+     * isLotericaFavorita
+     * @return lotericaFavorita
+     **/
+    public boolean isLotericaFavorita() {
+        return lotericaFavorita;
+    }
+
+    public void setLotericaFavorita(boolean lotericaFavorita) {
+        this.lotericaFavorita = lotericaFavorita;
+    }
+
+    /**
      * Get operacaoExecutadaComSucesso
      * @return operacaoExecutadaComSucesso
      **/
@@ -740,6 +753,7 @@ public class CotasBolaoDTO {
                 Objects.equals(this.apostasBolao, dadosCotaBolao.apostasBolao) &&
                 Objects.equals(this.situacaoCota, dadosCotaBolao.situacaoCota) &&
                 Objects.equals(this.tempoExpiracao, dadosCotaBolao.tempoExpiracao) &&
+                Objects.equals(this.lotericaFavorita, dadosCotaBolao.lotericaFavorita) &&
                 Objects.equals(this.operacaoExecutadaComSucesso, dadosCotaBolao.operacaoExecutadaComSucesso);
     }
 
@@ -755,7 +769,7 @@ public class CotasBolaoDTO {
                             vrCotaComTarifa, valorCota, valorTarifaServico, vrTarifaBolao,
                             vrTotalBolaoComTarifa, vrTotalBolaoSemTarifa, qtdApostas,
                             numeroCota, dataHoraReserva, dataRegistroBolao, horaRegistroBolao,
-                            numeroTerminalLoterico, apostasBolao, situacaoCota, tempoExpiracao,operacaoExecutadaComSucesso);
+                            numeroTerminalLoterico, apostasBolao, situacaoCota, tempoExpiracao, lotericaFavorita, operacaoExecutadaComSucesso);
     }
 
 
@@ -805,6 +819,7 @@ public class CotasBolaoDTO {
         sb.append("    apostasBolao: ").append(toIndentedString(apostasBolao)).append("\n");
         sb.append("    situacaoCota: ").append(toIndentedString(situacaoCota)).append("\n");
         sb.append("    tempoExpiracao: ").append(toIndentedString(tempoExpiracao)).append("\n");
+        sb.append("    lotericaFavorita: ").append(toIndentedString(lotericaFavorita)).append("\n");
         sb.append("    operacaoExecutadaComSucesso: ").append(toIndentedString(operacaoExecutadaComSucesso)).append("\n");
         sb.append("}");
         return sb.toString();

@@ -12,7 +12,9 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
@@ -25,14 +27,17 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.DialogTitle;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -164,7 +169,9 @@ public class ViewUtils {
 
     public static AlertDialog dialogoNew(Context context, String tituloResId, String mensagem,
                                          DialogInterface.OnClickListener positiveListener,
-                                         DialogInterface.OnClickListener negativeListener) {
+                                         DialogInterface.OnClickListener negativeListener,
+                                         int labelNo,
+                                         int labelYes) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_alert_new, null);
@@ -183,8 +190,8 @@ public class ViewUtils {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setView(dialogView)
                 .setCancelable(false)
-                .setNegativeButton(R.string.label_nao, negativeListener)
-                .setPositiveButton(R.string.label_sim, positiveListener)
+                .setNegativeButton(labelNo, negativeListener)
+                .setPositiveButton(labelYes, positiveListener)
                 .create();
 
 
@@ -200,6 +207,33 @@ public class ViewUtils {
         }
 
         return dialog;
+    }
+
+    public static void abrirMenuCaixa(Context context) {
+        AlertDialog dialog = ViewUtils.dialogoNew(context,
+                context.getString(R.string.label_atencao), context.getString(R.string.caixa_loterias),
+                (dialogInterface, i) -> {openLink(context); dialogInterface.dismiss();},
+                (dialogInterface, i) -> dialogInterface.dismiss()
+                ,R.string.label_cancelar,R.string.label_confirmar);
+
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+
+        Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        nbutton.setText(R.string.label_cancelar);
+        nbutton.setAllCaps(false);
+        nbutton.setTextColor(context.getResources().getColor(R.color.cinza));
+
+        Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        pbutton.setAllCaps(false);
+    }
+
+    private static void openLink(Context context){
+        String url = "https://www.caixa.gov.br/sobre-a-caixa/governanca-corporativa/caixa-loterias/Paginas/default.aspx";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        context.startActivity(i);
     }
 
 
@@ -348,7 +382,9 @@ public class ViewUtils {
                 tituloResId,
                 message,
                 listenerYes,
-                listenerNo
+                listenerNo,
+                R.string.label_nao,
+                R.string.label_sim
                 );
         dialog.show();
 
@@ -456,6 +492,45 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static Dialog alertTitleCustomNewPositiveNegativeListener(
+            Context context,
+            String title,
+            String message,
+            DialogInterface.OnClickListener listener,
+            DialogInterface.OnClickListener listenerNo,
+            int labelNo,
+            int labelYes
+    ) {
+        AlertDialog dialog = ViewUtils.dialogoNew(context, title, message,listener,listenerNo, labelNo, labelYes);
+        dialog.show();
+
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+        final Button btnPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        final Button btnNegative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+        int colorNo = ContextCompat.getColor(context, R.color.greyText);
+
+
+        if (btnNegative != null) {
+            btnNegative.setAllCaps(false);
+            btnNegative.setText(StringUtils.capitalizerNovo(context.getString(labelNo)));
+            btnNegative.setTextColor(colorNo);
+            btnNegative.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+        }
+
+        if (btnPositive != null) {
+            btnPositive.setAllCaps(false);
+            btnPositive.setText(StringUtils.capitalizerNovo(context.getString(labelYes)));
+            btnPositive.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+        }
+
+        return dialog;
+    }
+
+
     public static Dialog alertCustomDismiss(
             Context context,
             int labelTitle,
@@ -534,7 +609,9 @@ public class ViewUtils {
                 context.getString(R.string.label_atencao),
                 context.getString(R.string.MA003),
                 (dialogInterface, i) -> dialogInterface.dismiss(),
-                listener
+                listener,
+                R.string.label_nao,
+                R.string.label_sim
         );
         dialog.show();
 
@@ -562,6 +639,81 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static Dialog alertEntendiCustom(Context context, String mensagem){
+        AlertDialog dialog = ViewUtils.dialogoNewEntendi(
+                context,
+                R.string.label_atencao,
+                R.layout.dialog_alert_new,
+                mensagem
+        );
+
+        dialog.show();
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+        final Button btnPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (btnPositive != null) {
+            btnPositive.setAllCaps(false);
+            btnPositive.setText(StringUtils.capitalizerNovo(context.getString(R.string.button_entendi)));
+            btnPositive.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+        }
+        return dialog;
+    }
+
+    public static Dialog alertFecharCustom(Context context, String mensagem, @Nullable Runnable onFechar) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_alert_caixa, null);
+
+        TextView tvTitle = dialogView.findViewById(R.id.dialogTitle);
+        TextView tvMessage = dialogView.findViewById(R.id.dialogMessage);
+        TextView tvClose  = dialogView.findViewById(R.id.dialogClose);
+
+        if (tvTitle != null) tvTitle.setText(context.getString(R.string.label_atencao));
+        if (tvMessage != null) {
+            tvMessage.setText(mensagem);
+            tvMessage.setContentDescription(mensagem);
+        }
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(dialogView)
+                .setCancelable(false) // igual ao seu padrão
+                .create();
+
+        // Clique no "Fechar" (DENTRO do card)
+        if (tvClose != null) {
+            tvClose.setOnClickListener(v -> {
+                if (onFechar != null) onFechar.run();
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setOnShowListener(dlg -> {
+            if (dialog.getWindow() != null) {
+                Window window = dialog.getWindow();
+
+                // A janela fica transparente; o fundo arredondado está no ROOT do layout
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                // Largura responsiva (~92% da tela)
+                DisplayMetrics dm = context.getResources().getDisplayMetrics();
+                int widthPx = (int) (dm.widthPixels * 0.92f);
+                window.setLayout(widthPx, WindowManager.LayoutParams.WRAP_CONTENT);
+
+                // Centralizado
+                window.setGravity(Gravity.CENTER);
+                WindowManager.LayoutParams lp = window.getAttributes();
+                lp.y = 0;
+                lp.dimAmount = 0f; // 0 = sem escurecimento, 1 = totalmente escuro
+                window.setAttributes(lp);
+            }
+        });
+
+        dialog.show();
+        return dialog;
+    }
+
+
     public static String getMoedaFormat(BigDecimal valor) {
         if (valor == null) {
             valor = BigDecimal.ZERO;
@@ -582,6 +734,15 @@ public class ViewUtils {
 
         String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
+    }
+
+    public static String getMoedaFormatSemCentavos(BigDecimal valor) {
+        if (valor == null) {
+            valor = BigDecimal.ZERO;
+        }
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        nf.setMaximumFractionDigits(0);
+        return nf.format(valor);
     }
 
     public static String getMoedaFormatPorExtenso(BigDecimal valor) {
@@ -605,8 +766,7 @@ public class ViewUtils {
             BigDecimal valorMil = valor.divide(mil);
             return formatarValorPorExtenso(valorMil, prefixo, "Mil", "Mil", ptBrLocale);
         } else {
-            NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
-            return nf.format(valor).replace("R$", prefixo);
+            return "";
         }
     }
 
@@ -769,6 +929,57 @@ public class ViewUtils {
             return spannableStringBuilder;
         }catch (Exception e){
             return  new SpannableStringBuilder().append(texto);
+        }
+    }
+
+    public static SpannableStringBuilder textCaixaSTDSemiBold(Context context, String texto) {
+        try{
+            Typeface fontRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface fontSemiBold = FonteUtils.getFonte(FontCaixaEnum.SEMI_BOLD);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+
+            boolean isSemiBold = false;
+            String[] parts = texto.split("_");
+            for (String part: parts) {
+                int start = spannableStringBuilder.length();
+                spannableStringBuilder.append(part);
+                Typeface fontToApply = isSemiBold ? fontSemiBold : fontRegular;
+                spannableStringBuilder.setSpan(new CustomTypefaceSpan("", fontToApply),
+                        start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+                isSemiBold = !isSemiBold;
+            }
+            return spannableStringBuilder;
+        }catch (Exception e){
+            return  new SpannableStringBuilder().append(texto);
+        }
+    }
+
+
+    public static SpannableStringBuilder infoPrognosticosMkp(Context context, String texto, int tamanhoFonteSemiBold, int tamanhoFonteRegular) {
+        try {
+            Typeface fonteRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface fonteSemiBold = FonteUtils.getFonte(FontCaixaEnum.SEMI_BOLD);
+
+            // Remove os underlines do texto exibido
+            String textoSemUnderscore = texto.replace("_", "");
+            SpannableStringBuilder ssb = new SpannableStringBuilder(textoSemUnderscore);
+
+            // Aplica fonte e tamanho REGULAR para todo o texto
+            ssb.setSpan(new CustomTypefaceSpan("", fonteRegular), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            ssb.setSpan(new AbsoluteSizeSpan(tamanhoFonteRegular, true), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+            // Calcula as posições dos trechos entre "_" no texto original
+            List<PositionStringBold> ranges = listPositionString(texto);
+
+            // Aplica SemiBold e tamanho nos intervalos calculados
+            for (PositionStringBold range : ranges) {
+                ssb.setSpan(new CustomTypefaceSpan("", fonteSemiBold), range.getStart(), range.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                ssb.setSpan(new AbsoluteSizeSpan(tamanhoFonteSemiBold, true), range.getStart(), range.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            }
+            return ssb;
+        } catch (Exception e) {
+            return new SpannableStringBuilder().append(texto.replace("_", ""));
         }
     }
 
@@ -987,7 +1198,8 @@ public class ViewUtils {
         if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
             for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
                 if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
-                    if (parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().getValor().equalsIgnoreCase(valorTipoConcurso)) {
+                    String valorConcurso = parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().getValor();
+                    if (valorConcurso.equalsIgnoreCase(valorTipoConcurso)) {
                         return parametroSimulacao;
                     }
                 }

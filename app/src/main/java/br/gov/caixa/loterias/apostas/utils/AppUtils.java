@@ -26,7 +26,7 @@ import br.gov.caixa.loterias.apostas.R;
 
 public class AppUtils {
 
-    public static void applyInsets(Activity activity) {
+    public static void applyInsets(Activity activity, boolean consumeInsets) {
         // Ativa edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(activity.getWindow(), false);
 
@@ -46,6 +46,9 @@ public class AppUtils {
                 v.setPadding(systemInsets.left, systemInsets.top, systemInsets.right, systemInsets.bottom);
             }
 
+            if (!consumeInsets) {
+                return insets;
+            }
             return WindowInsetsCompat.CONSUMED;
         });
 

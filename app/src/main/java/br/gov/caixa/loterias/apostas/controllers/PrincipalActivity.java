@@ -2,8 +2,10 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,8 +15,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -36,16 +38,9 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
-import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
-import br.gov.caixa.loterias.apostas.utils.ComboUtil;
-import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
-import br.gov.caixa.loterias.apostas.model.model.ComboModel;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
@@ -64,6 +59,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
@@ -74,6 +70,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnAnimacaoViewListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
@@ -89,13 +86,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerNotificarCotasExpiradasSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
+import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.ComboUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -146,7 +147,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             rlMsgDisque180;
     private LinearLayout atalhoRapidoLoterias;
     private ExpandableListView sideMenuExpandableListView;
-    private ConstraintLayout viewSair, recolherMenu;
+    private ConstraintLayout viewSair;
+    private ConstraintLayout recolherMenu;
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
@@ -168,6 +170,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private static int contRegressivo = 1;
     private int anInt;
     private int ano;
+    Boolean expandido = false;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,6 +247,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         this.sideMenuExpandableListView = findViewById(R.id.sideMenuExpandableListView);
         this.viewSair = findViewById(R.id.viewSair);
         View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
+        TextView texto = recolherMenu.findViewById(R.id.nav_user_text);
+        ImageView arrow = recolherMenu.findViewById(R.id.imagemMaisOpcoes);
+        TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
+        nomeCaixa.setHint("Título, Botão, Recolhido");
+        nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
 
         buttonHomeBet.setOnClickListener(view -> clickButtonHomeBet());
 
@@ -269,7 +277,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         relativeLayoutContentLerBilhetes.setOnClickListener(view -> clickRelativeLayoutContentLerBilhetes());
 
-        recolherMenu.setOnClickListener(view -> clickRecolherMenu());
+        recolherMenu.setOnClickListener(v -> {
+            expandido = texto.getVisibility() == View.VISIBLE;
+            String hint = "Título, Botão, " + (expandido ? "Recolhido" : "Expandido");
+            nomeCaixa.setHint(hint);
+            nomeCaixa.announceForAccessibility(getString(R.string.cef_id_tit) + hint);
+            texto.setVisibility(expandido ? View.GONE : View.VISIBLE);
+            arrow.setRotation(expandido ? 0f : 180f);
+        });
     }
 
     @Override
@@ -326,7 +341,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
         TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
         nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
-        nomeCaixa.setHint("Título");
+        String hint = "Título, Botão, " + (expandido ? "Recolhido" : "Expandido");
+        nomeCaixa.setHint(hint);
         TextView botaoSair = findViewById(R.id.txtSairMenu);
         botaoSair.setContentDescription(getString(R.string.title_sair) + ":Botão");
 
@@ -440,6 +456,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
+        //Não apager (utilizado pra testes)
         //EncerramentoUtil.mockApagaModalidadeNosParametroJogo(
         //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
         EncerramentoUtil.verificaSeCriaCardTemporario();
@@ -767,11 +784,29 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     @Override
     public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
-        adapterPosition  = infiniteAdapter.getRealCurrentPosition();
+
         if (viewHolder != null) {
-            //TODO: MEGA 30 ANOS//
-            boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
-            if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
+            updateHomeButtonsForPosition(adapterPosition);
+        }
+    }
+
+    private void updateHomeButtonsForPosition(int adapterPosition) {
+        adapterPosition  = infiniteAdapter.getRealCurrentPosition();
+
+        if (data != null
+                && adapterPosition >= 0
+                && adapterPosition < data.size()
+                && Boolean.TRUE.equals(data.get(adapterPosition).getResultadosAberto())) {
+            if (buttonHomeBet != null)    buttonHomeBet.setVisibility(View.GONE);
+            if (buttonHomeBolao != null)  buttonHomeBolao.setVisibility(View.GONE);
+            return;
+        }
+
+        if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
+
+        //TODO: MEGA 30 ANOS//
+        boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
+        if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
                 //TODO: MEGA 30 ANOS//
                 EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
@@ -792,25 +827,40 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 buttonHomeBet.setTag(adapterPosition);
                 if (modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima() == null ||
                     modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima().compareTo(BigDecimal.ZERO) == 0) {
-                    buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
-                } else {
-                    buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
-                            getResources().getString(R.string.espaco_em_branco) +
-                            ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
-                }
+                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
+            } else {
+                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
+                        getResources().getString(R.string.espaco_em_branco) +
+                        ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+            }
 
-                if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
-                        temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
+            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+                    temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
 
-                    buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
-                                    .getString(R.string.apostas_boloes)));
-                    buttonHomeBolao.setVisibility(View.VISIBLE);
-                } else {
-                    buttonHomeBolao.setVisibility(View.GONE);
-                }
+                buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
+                        .getString(R.string.apostas_boloes)));
+                buttonHomeBolao.setVisibility(View.VISIBLE);
+            } else {
+                buttonHomeBolao.setVisibility(View.GONE);
             }
         }
     }
+
+    public void ocultarBotoesHomeParaResultados() {
+        if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.GONE);
+        if (buttonHomeBolao != null) buttonHomeBolao.setVisibility(View.GONE);
+    }
+
+    public void exibirBotoesHomeAposResultados() {
+        if (infiniteAdapter != null) {
+            int adapterPosition = infiniteAdapter.getRealCurrentPosition();
+            updateHomeButtonsForPosition(adapterPosition); // reaplica regras de apresentação
+        }
+        // Garante que fiquem visíveis após recalcular (se as regras mandarem ocultar o bolão, ele seguirá GONE)
+        if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
+        // buttonHomeBolao é controlado por updateHomeButtonsForPosition
+    }
+
 
     private boolean temBolaoModalidadeDisponivel(ModalidadeEnum modalidade) {
         List<ModalidadeDisponivelCota> listModalidadesDisponiveis = SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas();
@@ -964,13 +1014,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
     }
 
-
-    private void clickRecolherMenu() {
-        onBackPressed();
-    }
-
     private void AbrirMenusGroup(DrawerEnum item) {
-        if (item != DrawerEnum.MENU_MINHA_AREA && item != DrawerEnum.MENU_JOGO_RESPONSAVEL) {
+        if (item != DrawerEnum.MENU_MINHA_AREA && item != DrawerEnum.MENU_JOGO_RESPONSAVEL && item != DrawerEnum.MENU_SOBRE_CAIXA) {
             drawerLayout.closeDrawer(GravityCompat.START, false);
         }
         switch (item) {
@@ -1066,6 +1111,15 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
         sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> AbrirMenusGroup(expandableListTitle.get(groupPosition)));
+        sideMenuExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                if (expandableListTitle.get(i) == DrawerEnum.MENU_SOBRE_CAIXA) {
+                    ViewUtils.abrirMenuCaixa(PrincipalActivity.this);
+                }
+                return false;
+            }
+        });
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             if (expandableListTitle.get(groupPosition) == DrawerEnum.MENU_JOGO_RESPONSAVEL) {

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DadosChavePixDTO;
@@ -24,6 +25,7 @@ import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoComboFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoSimulacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ConfirmacaoChavePixResgateFragment;
@@ -35,6 +37,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.LotericaEmptyFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
@@ -45,6 +48,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloBolaoFragment;
 
 public class FragmentUtils {
 
@@ -141,6 +145,19 @@ public class FragmentUtils {
 		return frag;
 	}
 
+	public static BarraTituloBolaoFragment startFragmentBarraTituloBolao (FragmentManager fm, int id, ModalidadeEnum modalidade,
+																				 String concurso, String sorteio, BigDecimal valorPremio, boolean especial, int corBackground, int corBackgroundPremio) {
+		BarraTituloBolaoFragment frag = BarraTituloBolaoFragment.newInstance(modalidade, concurso, sorteio, valorPremio, especial, corBackground, corBackgroundPremio);
+		startFragmentAllowingStateLoss(fm, id, frag);
+		return frag;
+	}
+
+	public static BarraTituloFiltroLotericaFragment startFragmentBarraTituloFiltroLoterica (FragmentManager fm, int id, FiltroAplicadoMarketplace filtro, boolean isLotericaFavorita) {
+		BarraTituloFiltroLotericaFragment frag = BarraTituloFiltroLotericaFragment.newInstance(filtro, isLotericaFavorita);
+		startFragmentAllowingStateLoss(fm, id, frag);
+		return frag;
+	}
+
 	public static BarraTitutoComboFragment startFragmentBarraTituloCombo(FragmentManager fm, int id, ModalidadeEnum modalidade,
 																		 int corBackground) {
 		BarraTitutoComboFragment frag = BarraTitutoComboFragment.newInstance(modalidade, corBackground);
@@ -208,6 +225,11 @@ public class FragmentUtils {
 		return frag;
 	}
 
+	public static LotericaEmptyFragment startLotericaVazia(FragmentManager fm, int idFrag) {
+		LotericaEmptyFragment frag = LotericaEmptyFragment.newInstance();
+		startFragmentAllowingStateLoss(fm, idFrag, frag);
+		return frag;
+	}
 	public static MesesFragment startMesesFragment(FragmentManager fm, int id, ModalidadeEnum modalidadeEnum,
 												   ParametroJogoDTO parametro, ArrayList<Integer> selecionados) {
 		MesesFragment fragment = MesesFragment.newInstance(modalidadeEnum, parametro, selecionados);

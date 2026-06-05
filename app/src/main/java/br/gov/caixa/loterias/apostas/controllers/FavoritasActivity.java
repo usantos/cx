@@ -309,7 +309,8 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                 AlertDialog dialog = ViewUtils.dialogoNew(FavoritasActivity.this,
                         getString(R.string.label_atencao), getString(R.string.exclui_favorita).replace("xxx", nomeFavorita),
                         (dialogInterface, i) -> {excluiApostaFavorita(position); dialogInterface.dismiss();},
-                        (dialogInterface, i) -> dialogInterface.dismiss());
+                        (dialogInterface, i) -> dialogInterface.dismiss()
+                ,R.string.label_nao,R.string.label_sim);
                 dialog.show();
             }
 

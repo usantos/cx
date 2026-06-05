@@ -5,18 +5,26 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/boxSideMenu"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="15dp"
-        android:background="@color/linhaDivisa">
+        android:layout_height="wrap_content"
+        android:minHeight="58dp"
+        android:background="@color/bolao_branco_hight_light">
 
         <TextView
             android:id="@+id/titleItemSideMenu"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="59dp"
-            android:text="@string/dados_pessoais" />
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="3dp"
+            android:paddingHorizontal="8dp"
+            android:text="@string/dados_pessoais"
+            android:textColor="@color/greyText"
+            android:textSize="16sp"
+            android:fontFamily="@font/caixa_std_bold"
+            />
     </LinearLayout>
 
     <View

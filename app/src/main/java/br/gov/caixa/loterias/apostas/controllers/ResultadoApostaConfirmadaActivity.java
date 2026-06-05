@@ -77,6 +77,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     private TextView concursoTextView, situacaoTextView, faixaPremiacaoTextView, quantidadePremiacaoTextView, sorteioTextView, premiacaoTextView;
 
+    private boolean isEspeial;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resultado_aposta_confirmada);
@@ -96,15 +98,20 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         montaTipoApostaLinha(detalhesPremioDTO.getAposta(), estiloModalidadeMKP.getCorEscura(),
                 estiloModalidadeMKP.getCorFonteFundoEscuro(), estiloModalidadeMKP.getCorFonteFundoEscuro());
 
-        contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
+        if (isEspeial()) {
+            contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidadeMKP.getImagemEspecialSimples()));
+        } else {
+            contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
+        }
+
         contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidadeMKP.getTrapezio()));
         contentResultadoPremiado.getImgTrevoResultado().setImageResource(estiloModalidadeMKP.getTrevoFundoEscuro());
 
         if (isBolao(detalhesPremioDTO.getAposta())) {
-            contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
+            //contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
             contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidadeMKP.getTrapezio()));
             contentResultadoPremiado.getImgTrevoResultado().setImageResource(estiloModalidadeMKP.getTrevoFundoEscuro());
-            contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
+            //contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
         }
 
         //cores
@@ -159,6 +166,10 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         trataFormasDeResgate();
         RateUtils.avaliarAplicativo(this, true);
         setResult(RESULT_FIRST_USER);
+    }
+
+    private boolean isEspeial() {
+        return (detalhesPremioDTO.getAposta().getTipoConcurso().getValor().equalsIgnoreCase("2"));
     }
 
     private void montaTipoApostaLinha(IdentificaoDeUmaApostaDas8Modalidades aposta,

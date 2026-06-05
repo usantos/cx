@@ -2,7 +2,11 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class StringUtils {
 
@@ -24,6 +28,42 @@ public class StringUtils {
         }
         return stringBuilder.toString();
     }
+
+    public static String capitalizerNovo(String texto){
+        // Palavras que não devem ser capitalizadas (exceto se forem a primeira palavra)
+        String[] palavrasMinusculas = {"de", "da", "do", "das", "dos", "a", "o", "as", "os",
+                "e", "em", "no", "na", "nos", "nas", "por", "para"};
+
+        texto = texto.toLowerCase(new Locale("pt", "BR"));
+        StringBuilder stringBuilder = new StringBuilder();
+        String[] palavras = texto.split(" ");
+
+        for(int i = 0; i < palavras.length; i++){
+            String palavra = palavras[i];
+            boolean deveCapitalizar = true;
+
+            // Não capitaliza palavras da lista, exceto se for a primeira palavra
+            if(i > 0){
+                for(String palavraMinuscula : palavrasMinusculas){
+                    if(palavra.equals(palavraMinuscula)){
+                        deveCapitalizar = false;
+                        break;
+                    }
+                }
+            }
+
+            if(deveCapitalizar && !palavra.isEmpty()){
+                palavra = palavra.substring(0, 1).toUpperCase() + palavra.substring(1);
+            }
+
+            stringBuilder.append(palavra);
+            if(i < palavras.length - 1){
+                stringBuilder.append(" ");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
 
     public static String formatDouble(Double valor){
         return String.format("%.2f", valor);
@@ -59,4 +99,75 @@ public class StringUtils {
         String cotaText = (cota <= 1) ? "cota disponível" : "cotas disponíveis";
         return "_"+cota+"_ "+cotaText+" de _"+total+"_";
     }
+
+    public static String transformToHorahMinuto(String hh_mm_ss) {
+        return hh_mm_ss.substring(0,2) + "h" +
+               hh_mm_ss.substring(3,5);
+    }
+
+    public static List<String> formatToStringList(List<? extends Number> listtNumeros) {
+        List<String> listString = new ArrayList<>();
+        if (listtNumeros == null) {
+            return listString;
+        }
+
+        //cria cópia para não alterar lista original
+        List<Number> ordenada = new ArrayList<>(listtNumeros);
+        Collections.sort(ordenada, (a, b) -> Integer.compare(a.intValue(), b.intValue()));
+
+        for (Number numero : ordenada) {
+            long longNumero = numero.longValue();
+            if (longNumero == 100) {
+                longNumero = 0L;
+            }
+            listString.add(String.format("%02d", longNumero));
+        }
+        return listString;
+    }
+
+    public static List<String> formatToStringList1Digito(List<? extends Number> listtNumeros) {
+        List<String> listString = new ArrayList<>();
+        if (listtNumeros == null) {
+            return listString;
+        }
+
+        //cria cópia para não alterar lista original
+        List<Number> ordenada = new ArrayList<>(listtNumeros);
+        Collections.sort(ordenada, (a, b) -> Integer.compare(a.intValue(), b.intValue()));
+
+        for (Number numero : ordenada) {
+            long longNumero = numero.longValue();
+            listString.add(String.format("%1d", longNumero));
+        }
+        return listString;
+    }
+
+    public static List<String> formatToStringListFlexPrimeiro(List<?> input) {
+        List<String> out = new ArrayList<>();
+        if (input == null) return out;
+
+        for (Object item : input) {
+            if (item == null) continue;
+
+            if (item instanceof Number) {
+                Number n = (Number) item;
+                long v = Math.round(n.doubleValue()); // use n.longValue() para truncar
+                out.add(String.format("%01d", v));
+            } else if (item instanceof List<?>) {
+                List<?> inner = (List<?>) item;
+                if (inner.isEmpty()) continue;
+
+                Object first = inner.get(0);
+                if (first instanceof Number) {
+                    Number n0 = (Number) first;
+                    long v = Math.round(n0.doubleValue());
+                    out.add(String.format("%01d", v));
+                }
+                // Se "first" não for Number, ignora.
+            }
+            // Se não for Number nem List, ignora.
+        }
+        return out;
+    }
+
 }

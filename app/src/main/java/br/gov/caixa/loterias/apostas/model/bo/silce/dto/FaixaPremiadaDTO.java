@@ -37,6 +37,8 @@ public class FaixaPremiadaDTO implements Serializable {
     protected BigDecimal valorPremioCota = null;
     @SerializedName("quantidadeAcertos")
     protected Integer quantidadeAcertos = null;
+    @SerializedName("descricaoAcerto")
+    protected String descricaoAcerto = null;
 
     private String situacao;
     private int qtd;
@@ -131,6 +133,14 @@ public class FaixaPremiadaDTO implements Serializable {
 
     public void setQuantidadeAcertos(Integer quantidadeAcertos) {
         this.quantidadeAcertos = quantidadeAcertos;
+    }
+
+    public String getDescricaoAcerto() {
+        return descricaoAcerto;
+    }
+
+    public void setDescricaoAcerto(String descricaoAcerto) {
+        this.descricaoAcerto = descricaoAcerto;
     }
 
     @Override

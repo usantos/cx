@@ -110,7 +110,7 @@
     </style>
 
     <style name="ArialMT" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/arialmt</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
     </style>
 
     <style name="CaixaStdRegular" parent="TextAppearance.AppCompat">
@@ -125,12 +125,12 @@
         <item name="android:fontFamily">@font/futura_std_bold</item>
     </style>
 
-    <style name="ExplicativoArialMT" parent="ArialMT">
+    <style name="ExplicativoArialMT" parent="CaixaStdRegular">
         <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/cinza</item>
     </style>
 
-    <style name="editTextRegisterTheme" parent="ArialMT">
+    <style name="editTextRegisterTheme" parent="CaixaStdRegular">
         <item name="android:textColor">@color/cinza</item>
         <item name="android:textColorHint">@color/colorAccent</item>
         <item name="android:textSize">16sp</item>
@@ -146,7 +146,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="editTextArialMTTheme" parent="ArialMT">
+    <style name="helperTextRegisterThemeCaixa" parent="CaixaStdRegular">
+        <item name="android:textColor">@color/cinza_button</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="editTextArialMTTheme" parent="CaixaStdRegular">
         <item name="android:textColor">@color/cinza</item>
     </style>
 
@@ -325,6 +330,17 @@
         <!-- Used for the background -->
         <item name="android:background">@color/branco</item>
         <item name="android:textColor">@color/verdeagua</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+    </style>
+
+    <style name="MyAlertDialogStyleNew" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/blue_caixa</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">@color/cinza110</item>
+        <!-- Used for the background -->
+        <item name="android:background">@drawable/rounded_dialog_background</item>
+        <item name="android:textColor">@color/blue_caixa</item>
         <item name="android:fontFamily">@font/caixa_std_regular</item>
     </style>
 

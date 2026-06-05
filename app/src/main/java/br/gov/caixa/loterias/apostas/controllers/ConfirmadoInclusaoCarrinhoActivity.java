@@ -95,7 +95,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                         parametroSimulacao.getConcurso().getNumero().toString(),
                         getDataSorteio(),
                         parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)),
-                        getCorClara(), false);
+                        getCorClara(), true);
+                        //getCorClara(), false);
 
             }catch (Exception e){
                 if (barraTituloDTO != null && (barraTituloDTO.getDataSorteio() != null && barraTituloDTO.getNumeroConcurso() != null)){

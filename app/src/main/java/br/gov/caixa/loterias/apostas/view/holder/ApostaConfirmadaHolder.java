@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
@@ -179,7 +180,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 		if (listTipoApostaLinha.size() > 0) {
 			tipoApostaLinhaView.setVisibility(View.VISIBLE);
-			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha_clara, R.color.cinzaescuro, iconColorRes, TipoApostaLinhaView.TriangleDirection.UP);
+			//tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha_clara, R.color.cinzaescuro, iconColorRes, TipoApostaLinhaView.TriangleDirection.UP);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha_clara, R.color.cinzaescuro, R.color.cinzaescuro, TipoApostaLinhaView.TriangleDirection.UP);
 		}
 	}
 
@@ -204,9 +206,9 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 		if(parametroJogo != null && !ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial())){
 			if (ConfiguracaoAppSingleton.getInstance().isNovaApi() || ConfiguracaoAppSingleton.getInstance().isMicroServico()){
-				descricaoStatus = aposta.getSituacao().getDescricao();
+				descricaoStatus = ApostaUtils.descricaoCorrigida(aposta.getSituacao());
 			}else {
-				descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado).toLowerCase();
+				descricaoStatus = SituacaoAposta.EnumSituacaoAposta.CONCURSO_NAO_APURADO.getDescricao().toLowerCase();
 
 				if (!BuildVersionUtil.isPRD()){
 					descricaoStatus = "* " +descricaoStatus + " *";
@@ -217,12 +219,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}else {
 
 			if (parametroJogo != null){
-				// 4 = aposta efetivada
-				if (aposta.getSituacao().getValor() == 4) {
-					descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
-				} else {
-					descricaoStatus = aposta.getSituacao().getDescricao();
-				}
+				descricaoStatus = ApostaUtils.descricaoCorrigida(aposta.getSituacao());
 			} else {
 				descricaoStatus = "";
 			}
@@ -286,7 +283,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 	}
 	public boolean precisaConferirSituacao(){
-		if (this.situacaoTxt != null && this.situacaoTxt.getText().toString().contains(itemView.getContext().getString(R.string.a_conferir))){
+		if (this.situacaoTxt != null && this.situacaoTxt.getText().toString().contains(SituacaoAposta.EnumSituacaoAposta.EFETIVADA.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt),itemView.getContext().getResources().getString(R.string.br))))){
 			return true;
 		}
 		return false;
@@ -300,12 +297,10 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	}
 
 	public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
-		if (situacao.getDescricao().equalsIgnoreCase(itemView.getContext().getResources().getString(R.string.premiada_maiusculo))) {
-			holder.situacaoTxt.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_underline) + situacao.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))) + itemView.getContext().getResources().getString(R.string.underline)));
+		if (situacao.getValor() == SituacaoAposta.PREMIADA) {
+			holder.situacaoTxt.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_underline) + ApostaUtils.descricaoCorrigida(situacao).toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))) + itemView.getContext().getResources().getString(R.string.underline)));
 		} else {
-			holder.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_espaco)
-											 + situacao.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt),
-																							  itemView.getContext().getResources().getString(R.string.br))));
+			holder.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_espaco) + ApostaUtils.descricaoCorrigida(situacao).toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt),itemView.getContext().getResources().getString(R.string.br))));
 		}
 
 		holder.progressBarSituacao.setVisibility(View.INVISIBLE);

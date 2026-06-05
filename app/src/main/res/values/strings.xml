@@ -21,7 +21,9 @@
     <string name="valorDessaAposta">Valor dessa\naposta</string>
     <string name="imagemCarrinho">Carrinho</string>
     <string name="carrinhoDeApostas">Carrinho \nde apostas</string>
+    <string name="label_premio_estimado_concurso_numero">Pr\u00eamio estimado Concurso %d</string>
     <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
+    <string name="label_premio_estimado">Pr\u00eamio estimado</string>
 
     <string name="escolhaOmes">_Escolha_\no m\u00eas de sorte</string>
     <string name="adicionarAoCarrinho">_Adicionar_\nao carrinho de apostas</string>
@@ -88,6 +90,11 @@
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
     <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
     <string name="compra_sendo_processada">Sua compra está sendo processada</string>
+    <string name="confirmacaoPagamentoProcessamento">Estamos processando sua compra.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, a aposta precisa estar _EFETIVADA_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo2">O pagamento realizado _não garante_ automaticamente a efetivação da aposta.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo3">Se a aposta não for registrada, o valor será devolvido.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo4">Você pode acompanhar tudo em _Minhas Compras_.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -122,6 +129,7 @@
     <string name="btn_finalizar">Finalizar</string>
     <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com o</string>
     <string name="termo_de_uso_underline"><u>termo de uso</u>.</string>
+    <string name="declaracao_notificacoes">Aceito receber notificações de loterias.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
     <string name="cod_loterica">Cod. Lotérica: </string>
@@ -154,7 +162,7 @@
     <string name="msg_erro_data_invalida"> Data Inválida</string>
     <string name="label_excluir_aposta">Excluir aposta favorita</string>
     <string name="label_adicionar_aposta">Adicionar aposta no carrinho</string>
-
+    <string name="MI053">Prêmio resgatado com sucesso! Sua aposta possui Teimosinha e continuará participando dos próximos concursos. Foi gerado um recibo de troca válido para os próximos concursos, e este já está disponível em \'Minhas Apostas\'. </string>
     <string name="MN003">Para continuar é necessário o aceite do termo.</string>
     <string name="termo_novo">O termo de Uso foi Atualizado. É necessário aceitar novamente.</string>
     <string name="exclusao_cartao">Deseja realmente excluir essa forma de pagamento?</string>
@@ -230,6 +238,7 @@
 
     <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
     <string name="btn_entendi">entendi</string>
+    <string name="button_entendi">Entendi</string>
     <string name="msg_qtd_max_ultrapassada_milionaria">Você aumentou a quantidade de trevos, o valor será alterado. Fique atento ao valor final da sua aposta."</string>
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
     <string name="msg_qtd_max_col_super_sete">Você só pode selecionar 3 números por coluna</string>
@@ -285,6 +294,7 @@
     <string name="label_carrinho_apostas">Carrinho\nde apostas</string>
     <string name="label_salve_aposta">Salve esta aposta :)</string>
     <string name="concurso">Concurso</string>
+    <string name="concursos">Concursos</string>
     <string name="data_da_aposta">Data da aposta:</string>
     <string name="seus_numeros">Seus números</string>
     <string name="sua_aposta">Sua aposta</string>
@@ -334,6 +344,7 @@
     <string name="label_sua_aposta">Sua aposta</string>
     <string name="label_concurso_abreviado_espaco">Conc.&#160;</string>
     <string name="label_data_aposta">Data da aposta:</string>
+    <string name="label_dt_aposta">Data aposta:</string>
     <string name="label_conferir_resultado">Conferir resultado</string>
     <string name="label_nao_apurado">Não apurado</string>
     <string name="label_concurso_prescrito">Concurso prescrito</string>
@@ -671,10 +682,11 @@
     <string name="placeholder_two">Two</string>
     <string name="placeholder_three">three</string>
     <string name="atualizar">Atualizar</string>
-    <string name="seekbar_titulo">Limite Diário de Apostas</string>
-    <string name="seekbar_val_min">R$ 30,00</string>
-    <string name="seekbar_val_max">R$ 945,00</string>
-    <string name="dados_limite_compra">Solicitar limite \n acima de \n</string>
+    <string name="limite_titulo">Limite Diário de Apostas</string>
+    <string name="restringe_limite_ao_minimo">O valor mínimo é %1$s</string>
+    <string name="restringe_limite_ao_maximo">O valor máximo é %1$s</string>
+    <string name="limite_maximo_e_minimo">R$ 2,00 até R$ 9.300,00</string>
+    <string name="dados_limite_compra">Solicitar limite\nacima de\n%1$s</string>
     <string name="precisamos_que_voc_informe_numa_lot_rica_de_sua_prefer_ncia">Precisamos que você informe uma lotérica de sua preferência.</string>
     <string name="cidade">Cidade</string>
     <string name="bairro">Bairro</string>
@@ -847,6 +859,9 @@
     <string name="confirmar">Confirmar</string>
     <string name="evento_entrou_formas_pagamento">ENTROU_FORMAS_DE_PAGAMENTO</string>
     <string name="evento_carregou_boloes_disponiveis">CARREGOU_BOLOES_DISPONIVEIS</string>
+    <string name="delete_loterica_favorita">DELETOU_LOTERICA_FAVORITA</string>
+    <string name="evento_carregou_lotericas_favoritas">CARREGOU_LOTERICAS_FAVORITAS</string>
+    <string name="deletou_lotericas_favoritas">CARREGOU_LOTERICAS_FAVORITAS</string>
     <string name="evento_carregou_detalhe_bolao">CARREGOU_DETALHE_BOLAO</string>
     <string name="string_true">true</string>
     <string name="string_false">false</string>
@@ -1031,8 +1046,6 @@
     <string name="barra_n_time_do_coracao_dois_pontos_espaco">\nTime do coração:&#160;</string>
     <string name="barra_n_mes_da_sorte_dois_pontos">\nMês de sorte:&#160;</string>
     <string name="conferindo_resultado_ponto">Conferindo resultado.</string>
-    <string name="a_conferir">conferir aposta</string>
-    <string name="nao_apurado">Concurso ainda não apurado</string>
     <string name="situacao_dois_pontos_espaco">situação:&#160;</string>
     <string name="premiada_maiusculo">Premiada</string>
     <string name="situacao_dois_pontos_underline">situação: _</string>
@@ -1082,8 +1095,8 @@
     <string name="textoInfoSelecioneFormaPagamento">textoInfoSelecioneFormaPagamento</string>
     <string name="como_jogar">Como jogar</string>
     <string name="no_whatsapp">Não existe whatsapp instalado neste celular.</string>
-    <string name="cef_id_tit">Caixa Econômica Federal</string>
-    <string name="cef_id1">CNPJ 00.360.305/0001-04\nSBS QUADRA 4 LT 3/4 - ASA SUL\nCEP 70.070-140 BRASILIA - DF</string>
+    <string name="cef_id_tit">CAIXA Loterias</string>
+    <string name="cef_id1">CNPJ 24.038.490.0001-83\nED. José Alencar - SEPN 512, Conjunto C, Lote 12, Asa Norte, Brasília - DF\nCEP 70760-500 BRASÍLIA - DF</string>
 
     <!-- Tutorial SuperSete -->
     <string name="bem_vindo_super_sete">Bem vindo ao  \n_Super Sete_</string>
@@ -1200,7 +1213,7 @@
     <string name="title_QrCode">QR Code</string>
     <string name="title_digiteSuaAposta">Digite a sua aposta</string>
     <string name="leitor_digital">Acessar com biometria</string>
-
+    <string name="label_notificacoes">Receber notificações</string>
     <string name="entrar">Entrar como</string>
     <string name="ativar_biometria">Necessário habilitar biometria</string>
     <string name="habilitar">Habilitar</string>
@@ -1328,6 +1341,7 @@
     <string name="voceDesejaExcluir">Você tem certeza de que deseja excluir o cartão {bandeira} final {XXXX} dos cartões salvos?</string>
     <string name="naoExcluir">Não excluir</string>
     <string name="excluir">Excluir</string>
+    <string name="favoritar_carrinho">Favoritar carrinho</string>
     <string name="suaTitularidade">O cartão de crédito adicionado deve ser de sua titularidade</string>
 
     <!-- Confirmar Cartão - CVV -->
@@ -1403,6 +1417,7 @@
 
     <!-- Strings de boloes mkp -->
     <string name="filtrar">_Filtrar_</string>
+    <string name="filtros">_Filtros_</string>
     <string name="filtrar_modalidades">Filtrar</string>
     <string name="modalidades">Modalidades</string>
     <string name="valor_minimo_cota">Valor Mínimo Cota</string>
@@ -1486,10 +1501,12 @@
     <string name="todas_modalidades">Todas as\nmodalidades</string>
     <string name="todas">Todas</string>
     <string name="gerar_comprovante">Gerar Comprovante</string>
+    <string name="gr_comprovante">Gerar comprovante</string>
     <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
     <string name="usuario_bloqueio_parcial">Usuário habilitado apenas para consultas.</string>
     <string name="label_loterica_filtro">Lotéricas</string>
     <string name="nome_loteria">Nome da Lotérica:</string>
+    <string name="codigo_loteria">Código:</string>
     <string name="nao_sei_cep">Não sei o meu CEP</string>
     <string name="jogo_responsavel">Jogo Responsável</string>
     <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
@@ -1560,6 +1577,7 @@
 
     <string name="tipo_aposta_bolao">Bolão</string>
     <string name="tipo_aposta_combo">Combo</string>
+    <string name="tipo_aposta_combos">Combos</string>
     <string name="tipo_aposta_espelho">Espelho</string>
     <string name="tipo_aposta_surpresinha">Surpresinha</string>
     <string name="tipo_aposta_teimosinha">Teimosinha</string>
@@ -1567,12 +1585,71 @@
     <string name="selecione_modalidade_desejada">Selecione a modalidade desejada</string>
     <string name="voce_ainda_nao_tem_apostas">Você ainda não tem apostas favoritas. Que tal adicionar uma agora?</string>
     <string name="exclui_favorita">Deseja excluir a aposta favorita: xxx?</string>
+    <string name="exclui_loterica_favorita">Deseja excluir xxx da sua lista de favoritas?</string>
     <string name="sem_modalidade">Você ainda não tem apostas favoritas desta modalidade. Que tal adicionar uma agora?</string>
     <string name="incluir_aposta_favorita">Incluir aposta favorita</string>
     <string name="label_modal_checkbox_aposta_espelho">Ao selecionar esta opção, o sistema fará a aposta automaticamente, escolhendo os 50 números que não foram registrados na sua aposta original.</string>
 
+    <string name="label_boloes">Bolões</string>
+    <string name="label_lotericas_favoritas">Lotéricas Favoritas</string>
+    <string name="label_boloes_loterica">Bolões da Lotérica</string>
+    <string name="imagem_de_coracao_para_favoritar">Imagem de coração para favoritar lotérica</string>
+    <string name="estado_vazio_mkp_descricao">Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente.</string>
+    <string name="vazio_Lotericas_favoritas">Você ainda não possui nenhuma lotérica favorita.</string>
+    <string name="sem_boloes_lotericas_favoritas">Esta lotérica não possui bolões disponíveis no momento.</string>
+    <string name="msg_incluir_favorita">Deseja incluir %1$s na sua lista de favoritas?</string>
+    <string name="msg_excluir_favorita">Deseja excluir %1$s da sua lista de favoritas?</string>
+    <string name="loterica_favorita">Lotérica Favorita</string>
+    <string name="loterica_favorita_bold">_Lotérica Favorita_</string>
+    <string name="favoritar_loterica">Favoritar Lotérica</string>
+    <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
+
+    <!-- DETALHE MINHAS APOSTAS -->
+    <string name="label_aposta_maiuscula">Aposta</string>
+    <string name="resultado_concurso">Resultado do Concurso</string>
+    <string name="label_situacao">Situação:</string>
+    <string name="label_time_sorteado">Time sorteado</string>
+    <string name="label_time_do_coracao">Time do coração:</string>
+    <string name="label_mes_sorteado_">Mês sorteado</string>
+    <string name="label_mes_de_sorte">Mês de sorte:</string>
+    <string name="label_trevos_sorteados">Trevos sorteados</string>
+    <string name="label_trevos">Trevos</string>
+    <string name="label_concurso_nao_apurado">Concurso\nnão apurado</string>
+    <string name="label_concurso_nao_premiado">Não premiado</string>
+    <string name="label_acertos_dois_pontos">Acertos:</string>
+    <string name="label_acertos_nenhum">nenhum</string>
+    <string name="label_premio_dois_pontos">Prêmio:</string>
+    <string name="erro_minas_apostas_teimosinha">Não conseguimos processar sua solicitação.\nTente novamente!</string>
+    <string name="label_cidade_uf">Cidade/UF:</string>
+    <string name="label_valor_cota">Valor da Cota:</string>
+    <string name="label_tarifa_servico">Tarifa de Serviço:</string>
+    <string name="label_cota">Cota:</string>
+    <string name="label_surpresinha">| Surpresinha</string>
+
+
+    <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>
+    <string name="marcador_oval">Marcador oval (bullet) para item de lista</string>
+    <string name="botao_duvidas">Botão dúvidas</string>
+
     <!-- MEGA 30 ANOS   -->
     <string name="mega_sena_30_anos">mega-sena 30 anos</string>
     <string name="mega_sena_30_anos_duas_linhas">mega-sena\n30 anos</string>
+    <string name="caixa_loterias">Você será direcionado para o site da CAIXA Loterias e sairá do aplicativo. Deseja continuar?</string>
+    <string name="label_cancelar">Cancelar</string>
+    <string name="label_confirmar">Confirmar</string>
+    <string name="contest_example">1234 - 4321</string>
+    <string name="contest_bet">(24 apostas)</string>
+    <string name="contest_date">Data aposta</string>
+    <string name="contest_timestamp_example">01/01/2026</string>
+    <string name="contest_timestamp_example_hour">11h20</string>
+    <string name="contest_example_waiting">Aguardando</string>
+    <string name="button_get_reward">Botão: Resgatar Prêmio</string>
+    <string name="contest_reward_valid_time">Validade prêmio: 90 dias</string>
+    <string name="button_generate_receipt">Botão: gerar comprovante</string>
+    <string name="expandablelistview_expanded_text">Expandido. Toque duas vezes para recolher.</string>
+    <string name="expandablelistview_retracted_text">Recolhido. Toque duas vezes para expandir.</string>
+    <string name="expandablelistview_retracted">Recolher</string>
+    <string name="expandablelistview_expanded">Expandir</string>
+    <string name="txt_rewarded">premiado</string>
 
 </resources>

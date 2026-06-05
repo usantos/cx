@@ -17,6 +17,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.enums.TipoConsultaBolaoEnum;
 import br.gov.caixa.loterias.apostas.model.repository.BolaoRepository;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
@@ -100,6 +101,14 @@ public class BolaoModel extends AppModel{
 				listener.error(error);
 			}
 		} );
+	}
+
+	public void incluirLotericaFavorita(Long idLoterica, OnSilceListener<RetornoPadraoResponse> listener) {
+		bolaoRepository.incluirLotericaFavorita(idLoterica, listener);
+	}
+
+	public void excluirLotericaFavorita(Long idLoterica, OnSilceListener<RetornoPadraoResponse> listener) {
+		bolaoRepository.excluirLotericaFavorita(idLoterica, listener);
 	}
 
 	public void addBolaoCarrinho(CotasBolaoDTO bolao) {

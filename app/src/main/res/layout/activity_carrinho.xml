@@ -7,7 +7,7 @@
     android:background="@color/branco"
     android:descendantFocusability="blocksDescendants">
 
-    <include layout="@layout/app_bar_degrade_pesquisa" />
+    <include layout="@layout/app_bar_degrade_pesquisa_novo" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_toolbar"
@@ -20,6 +20,7 @@
         android:id="@+id/sv_carrinho"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/cl_tab_bar"
         app:layout_constraintTop_toTopOf="@id/gl_toolbar">
@@ -178,10 +179,10 @@
         android:layout_height="56dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp"
-        android:background="@drawable/button_white_with_green_border"
+        android:background="@drawable/button_white_blue_border_round"
         android:text="@string/continuarApostando"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
-        android:textColor="@color/verdeazul"
+        android:textColor="@color/colorAccent"
         android:textSize="16sp"
         android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintBottom_toTopOf="@+id/btn_avancar_pagamento"
@@ -194,7 +195,7 @@
         android:layout_height="70dp"
         android:layout_below="@id/btn_nova_aposta"
         android:layout_marginBottom="51dp"
-        android:background="@color/verdeazul"
+        android:background="@drawable/btn_rounded_blue"
         android:text="@string/avancarFormaPagamento"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"

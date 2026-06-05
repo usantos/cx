@@ -42,6 +42,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PremiacaoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -109,6 +110,8 @@ public class VisualizarResultadosActivity extends LoteriasBaseAppActivity {
 
     private EstiloModalidadeMKP estilo;
 
+    private boolean isEspecial;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,9 +149,9 @@ public class VisualizarResultadosActivity extends LoteriasBaseAppActivity {
         tvNumeroSorteio.setText(getString(R.string.resultados_numeros_sorteados));
         //btnVoltarInterno.setVisibility(View.GONE);
         ibPesquisar.setVisibility(View.VISIBLE);
-        if(corEscura!= null && corClara !=null && resourceTrapezio!= null){
-            setBackground(corClara,corEscura,resourceTrapezio);
-        }
+//        if(corEscura!= null && corClara !=null && resourceTrapezio!= null){
+//            setBackground(corClara,corEscura,resourceTrapezio);
+//        }
         setTitle("");
 
         containerFragmentTrevos = findViewById(R.id.v_container_trevos_fragment);
@@ -317,7 +320,13 @@ public class VisualizarResultadosActivity extends LoteriasBaseAppActivity {
         this.corEscura = corEscura;
         this.resourceTrapezio = resourceTrapezio;
         scrollResultado.setBackgroundResource(corEscura);
-        layoutHeader.setBackgroundResource(corClara);
+
+        if (isEspecial) {
+            layoutHeader.setBackgroundResource(estilo.getImagemEspecialDupla());
+        } else {
+            layoutHeader.setBackgroundResource(corClara);
+        }
+
         divisoria.setBackgroundResource(corClara);
         layoutListaPremiacao.setBackgroundResource(corClara);
         layoutTrevo.setBackgroundResource(resourceTrapezio);
@@ -332,6 +341,12 @@ public class VisualizarResultadosActivity extends LoteriasBaseAppActivity {
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), VisualizarResultadosActivity.this);
                 }
+
+                isEspecial = false;
+                if (response.getPayload().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
+                    isEspecial = true;
+                }
+
                 configuraRetornoRequisicao(response);
             }
 
@@ -379,8 +394,13 @@ public class VisualizarResultadosActivity extends LoteriasBaseAppActivity {
         layoutTrevo.setVisibility(View.VISIBLE);
         iv_trevo.setImageResource(estilo.getTrevoFundoEscuro());
         tituloModalidade.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
-            tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+        //if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
+        if (response.getPayload().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
+            if (response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().isEmpty()) {
+                tituloModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade.getTipoModalidade()).toLowerCase());
+            } else {
+                tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+            }
             if(modalidade.getTipoModalidade().equals(ModalidadeEnum.LOTOFACIL)){//Ajuste da posição do texto da lotofacil da indepencia, estava cortando o início da palavra.
                 ConstraintSet tituloHorizontalBias = new ConstraintSet();
                 tituloHorizontalBias.clone(layoutHeader);

@@ -13,56 +13,96 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.security.auth.callback.Callback;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.view.listener.onStatusPermissaoChecked;
 
 
 public class LocalizacaoUtils {
 
     public static final String ACCESS_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     public static final String ACCESS_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-
-    public static final int VERSAO_MIN_LOCALIZACAO = android.os.Build.VERSION_CODES.M;
+    public static final int VERSAO_MIN_LOCALIZACAO = Build.VERSION_CODES.M;
     public static final int LOC_NAO_PERMITIDA = 102;
     public static final int LOC_NEG_PERMANENTEMENTE = 103;
     public static final int LOC_DESATIVADA = 104;
     public static final int LOC_FORA_DO_BRASIL = 105;
     public static final int LOC_NO_BRASIL = 106;
     public static final int LOC_ERRO = 404;
-
     public static final int PERMISSAO_LOCALIZACAO_COD = 400;
-
     private static Location locationUpdated;
+    private static final ExecutorService executor = Executors.newFixedThreadPool(4);
+    private static final Handler mainHandler = new Handler(Looper.getMainLooper());
 
-    public static int checaStatusPermissao(Activity activity) {
-        //Verifica versão mínima para verificação em tempo de execução
-        if (checaVersaoMinima()) {
-            if (checaPermissao(activity)) {
-                return checaStatusGps(activity);
-            } else {
-                if (checaNegadaDefinitivamente(activity)) {
-                    return LOC_NEG_PERMANENTEMENTE;
-                } else {
-                    return LOC_NAO_PERMITIDA;
-                }
-            }
-        } else {
-            return checaStatusGps(activity);
+    public static void checaStatusPermissaoAsync(Activity activity, onStatusPermissaoChecked checked) {
+        final WeakReference<Activity> activityRef = new WeakReference<>(activity);
+        final LocationManager manager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        LocationListener listener = getListener();
+
+
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            checked.statusPermissaoChecked(LOC_NAO_PERMITIDA);
         }
+        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, listener);
+        manager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 10000, 10, listener);
+        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, listener);
+        Location location = getLastLocation(manager);
+        if (location == null) {
+            location = locationUpdated;
+        }
+
+        Location finalLocation = location;
+        executor.execute(() -> {
+            int resultado;
+
+            Activity act = activityRef.get();
+            if (act == null || act.isFinishing()) {
+                return;
+            }
+            if (checaVersaoMinima()) {
+                if (checaPermissao(act)) {
+                    resultado = checaStatusGps(act, finalLocation);
+                } else {
+                    if (checaNegadaDefinitivamente(act)) {
+                        resultado = LOC_NEG_PERMANENTEMENTE;
+                    } else {
+                        resultado = LOC_NAO_PERMITIDA;
+                    }
+                }
+            } else {
+                resultado = checaStatusGps(act, finalLocation);
+            }
+
+            final int finalResultado = resultado;
+            mainHandler.post(() -> {
+                Activity a = activityRef.get();
+                if (a == null || a.isFinishing()) return;
+                checked.statusPermissaoChecked(finalResultado);
+            });
+        });
     }
 
-    public static int checaStatusGps(Activity activity) {
+    public static int checaStatusGps(Activity activity, Location location) {
         if (LocalizacaoUtils.verificaGpsAtivo(activity)) {
-            int statusGps = LocalizacaoUtils.verificaRegiao(activity);
+            int statusGps = LocalizacaoUtils.verificaRegiao(activity, location);
             if (statusGps == LocalizacaoUtils.LOC_NO_BRASIL) {
                 return LOC_NO_BRASIL;
             } else if (statusGps == LOC_NAO_PERMITIDA){
@@ -85,25 +125,8 @@ public class LocalizacaoUtils {
     }
 
 
-    public static int verificaRegiao(Activity activity) {
-        final LocationManager manager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-        String bestProvider;
-        LocationListener listener = getListener();
+    public static int verificaRegiao(Activity activity, Location location) {
 
-        Criteria criteria = new Criteria();
-        bestProvider = manager.getBestProvider(criteria, false);
-
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return LOC_NAO_PERMITIDA;
-        }
-        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, listener);
-        manager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 10000, 10, listener);
-        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, listener);
-        Location location = getLastLocation(manager);
-        if(location == null) {
-            location = locationUpdated;
-        }
         if (location != null ){
             Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
             try {
@@ -145,7 +168,7 @@ public class LocalizacaoUtils {
     }
 
     public static void intentConfigGps(Activity activity) {
-        activity.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        activity.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
     }
 
     public static void intentConfigPermissao(Activity activity) {
@@ -166,7 +189,7 @@ public class LocalizacaoUtils {
     }
 
     public static Boolean checaVersaoMinima() {
-        return android.os.Build.VERSION.SDK_INT >= VERSAO_MIN_LOCALIZACAO;
+        return Build.VERSION.SDK_INT >= VERSAO_MIN_LOCALIZACAO;
     }
 
     public static Boolean checaNegadaDefinitivamente(Activity activity) {

@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -117,6 +118,18 @@ public class ServiceConnection {
         return request;
     }
 
+    public <T> GsonRequest buildGetRequest(String path, List<Map.Entry<String, String>> queryParams,
+                                           Class<T> responseDataClass,
+                                           Response.Listener<T> listener,
+                                           Response.ErrorListener errorListener, Map<String, String> headers) {
+
+        String url = fillUrlWithQueryParams(path, queryParams);
+        GsonRequest request = new GsonRequest<String, T>(GET, url, responseDataClass, headers, listener, errorListener);
+        request.setRetryPolicy(createRetryPolicy());
+        //Log.i(TAG_REQUEST, getPath(path, queryParams));
+        return request;
+    }
+
     public <REQ, RSP> GsonRequest buildPostRequest(String path, Map<String, String> queryParams,
                                                    REQ body, Class<RSP> responseDataClass,
                                                    Response.Listener<RSP> listener,
@@ -169,7 +182,8 @@ public class ServiceConnection {
         if (baseUrl.endsWith("/")) {
             baseSemBarra = baseUrl.substring(0,baseUrl.length() -1);
         }
-        ServicoNuvemUtil.apresentaCaminhoTQS(baseSemBarra + path + fillParamToString(queryParams));
+        //Bloqueadada Não mais necessaria (*** Messaging ***)
+        //ServicoNuvemUtil.apresentaCaminhoTQS(baseSemBarra + path + fillParamToString(queryParams));
         return baseSemBarra + path + fillParamToString(queryParams);
     }
 
@@ -180,7 +194,13 @@ public class ServiceConnection {
             return fillUrl(path) + fillParamStr(queryParams);
         }
     }
-
+    private String fillUrlWithQueryParams(String path, List<Map.Entry<String, String>> queryParams) {
+        //if (ServicoNuvemUtil.isEndpointNuvem(path)) {
+        //    return  fillUrlWithQueryParamsNuvem(path, queryParams);
+        //} else {
+            return fillUrl(path) + fillParamStr(queryParams);
+        //}
+    }
     private <T> String prepareBody(T body, String endPoint) {
         if (ServicoNuvemUtil.isEndpointNuvem(endPoint)) {
             return new Gson().toJson(body);
@@ -205,6 +225,23 @@ public class ServiceConnection {
     }
 
     private String fillParamStr(Map<String, String> queryParams) {
+        if ((queryParams == null) || (queryParams.isEmpty())) {
+            return "";
+        }
+
+        try {
+            Bin encryptedParams = silceCrypto.encryptParams(queryParams);
+            String paramStr = encryptedParams.toIso8859_1()
+                    + "!#!#!" + KEY.toIso8859_1()
+                    + "!#!#!" + IV.toIso8859_1();
+            String urlEncoded = URLEncoder.encode(paramStr, "UTF-8");
+
+            return "/?q=" + urlEncoded;
+        } catch (Exception e) {
+            throw new RuntimeException("Exceção ao preparar os parâmetros de query da requisição ao SILCE", e);
+        }
+    }
+    private String fillParamStr(List<Map.Entry<String, String>> queryParams) {
         if ((queryParams == null) || (queryParams.isEmpty())) {
             return "";
         }

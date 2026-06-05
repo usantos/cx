@@ -61,6 +61,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -489,7 +490,6 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                 return;
             }
         }
-
         AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
     }
 
@@ -728,7 +728,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                 toolbar.setBackgroundResource(R.drawable.cabecalho_mega_trinta_anos_detalhe);
             }
             else {
-                toolbar.setBackgroundResource(R.drawable.rodape_mega_sena);
+                toolbar.setBackgroundResource(R.drawable.mega_virada_simples);
             }
         } else if (isEspecial(aposta.getTipoConcurso().getValor()) && estiloMKP.getImagemEspecialDetalhes() > 0) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
@@ -800,7 +800,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                 Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor(), situacao.getValor())) {
             getApostaDetalhePremio(aposta.getId(), this, comprovanteApostaDTO);
         }
-        if(!situacao.getDescricao().equalsIgnoreCase("Premiada")){
+        if(!(situacao.getValor() == SituacaoAposta.PREMIADA)){
             inibirTeim();
         }
     }

@@ -11,7 +11,7 @@ public class Constantes {
     public static final String ESCOLHA_NUMEROS_HTML = "Escolha os " + "<strong>" + "números" + "</strong>";
     public static final String PAGINACAO_UM_DOIS = "<strong>" + "1 | " + "</strong>" + "2";
     public static final String PAGINACAO_DOIS_DOIS = "<strong>" + "2 | " + "</strong>" + "2";
-    public static final String INFO_OUTROS_50_NUMEROS = "<strong> Aumente suas chances de ganhar com a aposta-espelho. <br/> </strong>  Marque esta opção e inclua uma nova aposta com os outros 50 números não selecionados.";
+    public static final String INFO_OUTROS_50_NUMEROS = "<strong> Aumente suas chances de ganhar com a aposta-espelho. <br/> </strong> Ao escolher esta opção, o sistema fará uma aposta automaticamente com os 50 números não escolhidos na aposta original. A mesma regra se aplica às apostas com Surpresinha e/ou Teimosinha.";
 //Aumente suas chances de ganhar com a aposta-espelho.
     public static final String ZERO_STRING = "0";
     public static final String UM_STRING = "1";

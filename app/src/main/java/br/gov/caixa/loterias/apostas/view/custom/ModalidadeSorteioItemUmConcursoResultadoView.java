@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
 
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,10 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Shape;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosGridAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultadosAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TrevosResultadosAdapter;
 
@@ -59,10 +66,12 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
     }
 
     public void setLayout(Modalidade modalidade) {
+
         //TODO: MEGA 30 ANOS//
         boolean isMega30 = EspecialUtils.isMega30(modalidade.getConcurso().getNumero(), modalidade.getConcurso().getTipoConcurso());
         EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
-        tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
+        //tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
+        tracoViewDivisoriaResultado.setBackground(getContext().getDrawable(estilo.getCorFonteFundoClaro()));
 
         NumerosResultadosAdapter numerosResultadosAdapter;
 
@@ -73,10 +82,10 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
             }
         }
 
-        this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        //TODO: MEGA 30 ANOS//
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade(), modalidade);
-        this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
+        //this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
+        //numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
+        //this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
+        setupGridNumeros(recyclerNumerosResultado,Shape.NO_SHAPE,numberOfColumns, StringUtils.formatToStringList(modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio()),getContext().getColor(estilo.getCorFonteFundoClaro()), Color.TRANSPARENT, Color.TRANSPARENT);
 
         if(modalidade.getNome().equalsIgnoreCase("Mais Milionária".toLowerCase())){
             tvTrevos.setVisibility(VISIBLE);
@@ -104,4 +113,11 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
+
+    private void setupGridNumeros(RecyclerView recyclerView, Shape shape, int columns, List<String> numbers, int textColor, int borderColor, int backgroudColor) {
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), columns));
+        recyclerView.setNestedScrollingEnabled(false);
+        NumerosGridAdapter adapter = new NumerosGridAdapter(shape, numbers, textColor, borderColor, backgroudColor);
+        recyclerView.setAdapter(adapter);
+    }
 }

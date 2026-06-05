@@ -123,8 +123,10 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 
 	private void aplicaEstilo() {
 		background.setBackgroundColor(ContextCompat.getColor(getContext(), corBackground));
-		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1 && showBackground){
-			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
+		//if (isEspecial && estilo.getImagemEspecialDetalhes() != -1 && showBackground){
+			//background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
+		if (isEspecial && estilo.getImagemEspecialSimples() != -1 && showBackground){
+			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialSimples()));
 		}
 
 		if ((isEspecial && showBackground || isMega30) && estilo.getImagemEspecialDetalhes() > 0) {
@@ -144,7 +146,12 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 				if (isMega30) {
 					tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase());
 				} else {
-					tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+					if (modalidade == ModalidadeEnum.LOTECA) {
+						tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
+						TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -20f);
+					}else {
+						tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+					}
 				}
 			}
 		} else {
