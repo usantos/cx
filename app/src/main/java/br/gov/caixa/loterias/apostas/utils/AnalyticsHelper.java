@@ -40,7 +40,7 @@ public class AnalyticsHelper {
         public static final String INTERACTION = "interaction";
         public static final String FLOW_START = "flow_start";
         public static final String FLOW_END    = "flow_end";
-        public static final String OPERATION_SUCCESS = "sucesso_operacao";
+        public static final String OPERATION_SUCCESS = "operation_success";
         private AnalyticsEvents() {}
     }
 
@@ -93,7 +93,7 @@ public class AnalyticsHelper {
         public static final String SIMPLES  = "iniciar_aposta_simples";
 
         public static final String BOLAO  = "iniciar_bolao";
-        public static final String ENTRY = "entrar_no_app";
+        public static final String ENTRY = "entrada_app";
 
         private EventLabelParams() {}
     }
@@ -109,7 +109,6 @@ public class AnalyticsHelper {
     public static final class StatusParams {
         public static final String SUCESSSO = "sucesso_operacao";
         public static final String APOSTAR = "apostar";
-        public static final String LOGIN = "login";
 
         private StatusParams() {}
     }
@@ -137,7 +136,7 @@ public class AnalyticsHelper {
         public static final String CART_TOTAL_VALUE = "cart_total_value";
         public static final String BETS_COUNT = "bets_count";
         public static final String INDIVIDUAL_BETS_COUNT = "individual_bets_count";
-        public static final String BOLAO_QUOTES_COUNT = "bolao_quotes_count";
+        public static final String BOLAO_QUOTES_COUNT = "bolao_bets_count";
 
         public static final String SELECTED_NUMBERS_COUNT = "selected_numbers_count";
         public static final String SELECTED_SURPRESINHA_COUNT = "selected_surpresinha_count";
@@ -155,6 +154,7 @@ public class AnalyticsHelper {
 
         public static final String BOLAO_BETS_COUNT = "bolao_bets_count";
         public static final String BOLAO_NUMBERS_PER_BET = "bolao_numbers_per_bet";
+        public static final String BOLAO_GUESSES_COUNT = "bolao_guesses_count";
         public static final String QUOTA_VALUE = "quota_value";
         public static final String SERVICE_FEE = "service_fee";
         public static final String TOTAL_QUOTA_VALUE = "total_quota_value";
@@ -542,6 +542,7 @@ public class AnalyticsHelper {
         bundle.putString(AnalyticsParams.DOUBLE_GUESSES_COUNT, doubleGuessesCount);
         bundle.putString(AnalyticsParams.TRIPLE_GUESSES_COUNT, tripleGuessesCount);
         bundle.putString(AnalyticsParams.BET_VALUE, betValue);
+        bundle.putString(AnalyticsParams.BET_TYPE, AnalyticsFields.APOSTA_SIMPLES);
 
         analytics.logEvent(
                 AnalyticsEvents.INTERACTION,
@@ -566,8 +567,9 @@ public class AnalyticsHelper {
             @NonNull String serviceFee,
             @NonNull String totalQuotaValue,
             @NonNull String bolaoTotalQuotas,
-            @NonNull String bolaoSelectedQuotas
-    ) {
+            @NonNull String bolaoSelectedQuotas,
+            @NonNull String contestNumber
+            ) {
         Bundle bundle = new Bundle();
 
         bundle.putString(AnalyticsParams.EVENT_CATEGORY, eventCategory);
@@ -596,6 +598,63 @@ public class AnalyticsHelper {
         bundle.putString(AnalyticsParams.BOLAO_TOTAL_QUOTAS, bolaoTotalQuotas);
         bundle.putString(AnalyticsParams.BOLAO_SELECTED_QUOTAS, bolaoSelectedQuotas);
         bundle.putString(AnalyticsParams.BET_TYPE,AnalyticsFields.BOLAO);
+        bundle.putString(AnalyticsParams.CONTEST_NUMBER, contestNumber);
+
+        analytics.logEvent(
+                AnalyticsEvents.INTERACTION,
+                bundle
+        );
+    }
+
+    public void logInteractionAddLoteca(
+            @NonNull Tela tela,
+            @NonNull String gameMode,
+            @NonNull String eventCategory,
+            @NonNull String eventAction,
+            @NonNull String eventLabel,
+            @NonNull String journey,
+            @NonNull String subjourney,
+            @NonNull Long lotteryShopCode,
+            @NonNull String lotteryShopName,
+            @NonNull String lotteryShopCity,
+            @NonNull String bolaoBetsCount,
+            @NonNull String bolaoNumbersPerBet,
+            @NonNull String quotaValue,
+            @NonNull String serviceFee,
+            @NonNull String totalQuotaValue,
+            @NonNull String bolaoTotalQuotas,
+            @NonNull String bolaoSelectedQuotas,
+            @NonNull String contestNumber
+    ) {
+        Bundle bundle = new Bundle();
+
+        bundle.putString(AnalyticsParams.EVENT_CATEGORY, eventCategory);
+        bundle.putString(AnalyticsParams.EVENT_ACTION, eventAction);
+        bundle.putString(AnalyticsParams.EVENT_LABEL, eventLabel);
+
+        bundle.putString(
+                FirebaseAnalytics.Param.SCREEN_NAME,
+                tela.nome
+        );
+
+        bundle.putString(AnalyticsParams.JOURNEY, journey);
+        bundle.putString(AnalyticsParams.SUB_JOURNEY, subjourney);
+
+        bundle.putString(AnalyticsParams.GAME_MODE, gameMode);
+
+        bundle.putLong(AnalyticsParams.LOTTERY_SHOP_CODE, lotteryShopCode);
+        bundle.putString(AnalyticsParams.LOTTERY_SHOP_NAME, lotteryShopName);
+        bundle.putString(AnalyticsParams.LOTTERY_SHOP_CITY, lotteryShopCity);
+
+        bundle.putString(AnalyticsParams.BOLAO_BETS_COUNT, bolaoBetsCount);
+        bundle.putString(AnalyticsParams.BOLAO_GUESSES_COUNT, bolaoNumbersPerBet);
+        bundle.putString(AnalyticsParams.QUOTA_VALUE, quotaValue);
+        bundle.putString(AnalyticsParams.SERVICE_FEE, serviceFee);
+        bundle.putString(AnalyticsParams.TOTAL_QUOTA_VALUE, totalQuotaValue);
+        bundle.putString(AnalyticsParams.BOLAO_TOTAL_QUOTAS, bolaoTotalQuotas);
+        bundle.putString(AnalyticsParams.BOLAO_SELECTED_QUOTAS, bolaoSelectedQuotas);
+        bundle.putString(AnalyticsParams.BET_TYPE,AnalyticsFields.BOLAO);
+        bundle.putString(AnalyticsParams.CONTEST_NUMBER, contestNumber);
 
         analytics.logEvent(
                 AnalyticsEvents.INTERACTION,
@@ -664,11 +723,11 @@ public class AnalyticsHelper {
         bundle.putString(AnalyticsParams.CONTEST_NUMBER, contestNumber);
 
         if (isBolao) {
-            bundle.putString(AnalyticsParams.TOTAL_QUOTA_VALUE, betValue);
+            bundle.putString(AnalyticsParams.BET_TYPE,AnalyticsFields.BOLAO);
         } else {
-            bundle.putString(AnalyticsParams.BET_VALUE, betValue);
+            bundle.putString(AnalyticsParams.BET_TYPE, AnalyticsFields.APOSTA_SIMPLES);
         }
-
+        bundle.putString(AnalyticsParams.BET_VALUE, betValue);
         bundle.putLong(AnalyticsParams.END_TIME_MS, endTime);
         bundle.putLong(AnalyticsParams.FLOW_DURATION_MS, duration);
 

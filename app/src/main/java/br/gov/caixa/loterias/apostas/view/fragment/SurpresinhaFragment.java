@@ -401,7 +401,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 parametroJogo.getConcurso().getNumero().toString(),
                 String.valueOf(qtdSurpresinhas),
                 String.valueOf(parentActivity.qtdDezenasPossiveisSelecionado),
-                String.valueOf(parametroJogo.getTeimosinhas().get(0) == 0 ? 0 : parametroJogo.getTeimosinhas().get(0)),
+                String.valueOf(parentActivity.qtdConcursoSelecionado),
                 ViewUtils.getMoedaFormat(valorTotalAposta)
         );
 

@@ -280,7 +280,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         }
         AnalyticsHelper.getInstance().logViewScreenAposta(
                 AnalyticsHelper.JourneyParams.APOSTAR,
-                AnalyticsHelper.SubJourneyParams.SELECIONAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
                 AnalyticsHelper.Tela.MONTAR_APOSTA,
                 ModalidadeEnum.fromString(tipoJogo),
                 numeroConcurso

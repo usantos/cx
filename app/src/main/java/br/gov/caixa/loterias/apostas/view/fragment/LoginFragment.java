@@ -185,7 +185,7 @@ public class LoginFragment extends Fragment {
             );
 
             AnalyticsHelper.getInstance().logFlowStart(
-                    AnalyticsHelper.StatusParams.LOGIN,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
                     AnalyticsHelper.Tela.LOGIN.nome,
                     AnalyticsHelper.JourneyParams.APOSTAR,
                     AnalyticsHelper.Tela.LOGIN.nome,

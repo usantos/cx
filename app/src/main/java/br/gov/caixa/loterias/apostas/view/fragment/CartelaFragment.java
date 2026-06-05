@@ -591,7 +591,7 @@ private void zeraLoteca(){
 					parametroJogo.getConcurso().getNumero().toString(),
 					"0",
 					String.valueOf(parentActivity.qtdDezenasPossiveisSelecionado),
-					String.valueOf(parametroJogo.getTeimosinhas().get(0) == 0 ? 0 : parametroJogo.getTeimosinhas().get(0)),
+					String.valueOf(parentActivity.qtdConcursoSelecionado),
 					ViewUtils.getMoedaFormat(valorTotalAposta)
 			);
 		}
