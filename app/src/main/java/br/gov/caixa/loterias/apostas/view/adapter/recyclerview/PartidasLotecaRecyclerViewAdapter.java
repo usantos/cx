@@ -22,10 +22,18 @@ public class PartidasLotecaRecyclerViewAdapter extends RecyclerView.Adapter<Part
 	private ResultadoConcursoDTO resultadoConcurso;
 	private ConfiguracaoLoteca configuracaoLoteca;
 
+	private Boolean isEspecial;
+
 	public PartidasLotecaRecyclerViewAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca) {
 		this.partidas = partidas;
 		this.context = context;
 		this.configuracaoLoteca = configuracaoLoteca;
+	}
+	public PartidasLotecaRecyclerViewAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca, Boolean isEspecial) {
+		this.partidas = partidas;
+		this.context = context;
+		this.configuracaoLoteca = configuracaoLoteca;
+		this.isEspecial = isEspecial;
 	}
 
 	public PartidasLotecaRecyclerViewAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso) {
@@ -40,7 +48,7 @@ public class PartidasLotecaRecyclerViewAdapter extends RecyclerView.Adapter<Part
 	public PartidaLotecaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_partida_loteca,
 																		parent, false);
-		return new PartidaLotecaHolder(view, context, configuracaoLoteca, resultadoConcurso);
+		return new PartidaLotecaHolder(view, context, configuracaoLoteca, resultadoConcurso, isEspecial);
 	}
 
 	@Override

@@ -8,9 +8,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -20,18 +17,13 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.view.custom.AccessibleSpringDotsIndicator;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao1Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao2Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao3Fragment;
 
 
 public class IntroducaoActivity extends AppCompatActivity {
-    MyPagerAdapter adapterViewPager;
-
     ViewPager2 vpPager;
-
-    Button buttonPular;
 
     Boolean pulouTour = false;
 
@@ -58,7 +50,6 @@ public class IntroducaoActivity extends AppCompatActivity {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tour_tela_4));
             }
             pulouTour = true;
-            TopazUtil.check(this);
             DadosUsuarioBO.updateFecharIntroducao(true);
             startActivity(new Intent(IntroducaoActivity.this, LoginActivity.class));
             finish();

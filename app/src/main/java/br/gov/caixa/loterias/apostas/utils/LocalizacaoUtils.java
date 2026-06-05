@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -29,8 +28,6 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.security.auth.callback.Callback;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.view.listener.onStatusPermissaoChecked;
 
@@ -50,6 +47,9 @@ public class LocalizacaoUtils {
     private static Location locationUpdated;
     private static final ExecutorService executor = Executors.newFixedThreadPool(4);
     private static final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private static String CONT_PERMISSION_LOCATION = "CONT_PERMISSION_LOCATION";
+    private static final int NULL_VALUE_LOCATION = 0;
+    private static final int MAX_VALUE_LOCATION = 2;
 
     public static void checaStatusPermissaoAsync(Activity activity, onStatusPermissaoChecked checked) {
         final WeakReference<Activity> activityRef = new WeakReference<>(activity);
@@ -59,7 +59,15 @@ public class LocalizacaoUtils {
 
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            checked.statusPermissaoChecked(LOC_NAO_PERMITIDA);
+            if (!verificaGpsAtivo(activity)){
+                checked.statusPermissaoChecked(LOC_DESATIVADA);
+            } else if (getCont() < MAX_VALUE_LOCATION){
+                checked.statusPermissaoChecked(LOC_NAO_PERMITIDA);
+            } else {
+                checked.statusPermissaoChecked(LOC_NEG_PERMANENTEMENTE);
+            }
+
+            return;
         }
         manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, listener);
         manager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 10000, 10, listener);
@@ -121,7 +129,7 @@ public class LocalizacaoUtils {
 
     public static boolean verificaGpsAtivo(Activity activity) {
         final LocationManager manager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER) || manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
 
@@ -224,6 +232,16 @@ public class LocalizacaoUtils {
 
           }
       };
+    }
+
+    public static void incrementContLocation() {
+        int cont = getCont();
+        cont++;
+        SharedPreferencesUtils.setValor(CONT_PERMISSION_LOCATION, cont);
+    }
+
+    private static int getCont() {
+        return SharedPreferencesUtils.getValorInt(CONT_PERMISSION_LOCATION, NULL_VALUE_LOCATION);
     }
 
 }

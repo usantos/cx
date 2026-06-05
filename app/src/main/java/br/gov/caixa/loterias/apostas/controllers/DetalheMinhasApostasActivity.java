@@ -171,7 +171,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        if (isEspecial(aposta.getTipoConcurso().getValor())) {
+        if (isEspecial(aposta.getTipoConcurso().getValor()) && estiloMKP.getImagemEspecialSimples() > 0) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialSimples());
         } else {
             toolbar.setBackgroundColor(ContextCompat.getColor(this, estiloMKP.getCorClara()));
@@ -632,6 +632,10 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
                     for (ConcursoPremiadoDTO concursoPremiado : detalhesPremioDTO.getPremio().getConcursos()) {
                         if (concursoPremiado.getConcurso().getNumero().equals(resultadoConcursoDTO.getConcurso().getNumero())) {
                             situacao = concursoPremiado.getSituacao();
+                            if (aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO &&
+                                concursoPremiado.getSituacao().equalsIgnoreCase("Premiado")) {
+                                situacao = "Prêmio pago";
+                            }
                             valorPremio = concursoPremiado.getValorLiquido();
                             break;
                         }

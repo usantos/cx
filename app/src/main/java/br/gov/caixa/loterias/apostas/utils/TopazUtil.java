@@ -16,6 +16,7 @@ public class TopazUtil {
 
 	public static void check(Activity activity) {
 		PermissaoUtil.checkList(activity, getListaPermissoes(), REQUEST_LIST_PERMISSIONS);
+		LocalizacaoUtils.incrementContLocation();
 	}
 
 	private static String[] getListaPermissoes() {
@@ -27,7 +28,6 @@ public class TopazUtil {
 				Manifest.permission.RECEIVE_BOOT_COMPLETED,
 				Manifest.permission.ACCESS_WIFI_STATE,
 				Manifest.permission.READ_PHONE_STATE,
-				Manifest.permission.ACCESS_COARSE_LOCATION,
 				Manifest.permission.READ_EXTERNAL_STORAGE,
 				Manifest.permission.GET_ACCOUNTS,
 				Manifest.permission.READ_CONTACTS,

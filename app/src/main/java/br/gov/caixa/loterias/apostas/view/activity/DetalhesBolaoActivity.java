@@ -331,7 +331,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		String valorTotal = "Total: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaComTarifa());
 
 		botaoFavoritar.setState(isLotericaFavorita);
-		tvValorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(bolao.getVrPremioEstimado()));
+		tvValorPremio.setText(ViewUtils.getMoedaFormatComCentavos(bolao.getVrPremioEstimado(), 2));
 		String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado());
 		if (!valorEstimadoPorExtenso.isEmpty()){
 			tvValorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));
@@ -373,7 +373,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 
 	private void preencheJogos() {
 		if (bolao.getModalidade() == ModalidadeEnum.LOTECA && !bolao.getApostas().isEmpty()){
-			partidasAdapter = new PartidasLotecaRecyclerViewAdapter(bolao.getApostas().get(0).getPartidasLoteca(), DetalhesBolaoActivity.this, new ConfiguracaoLoteca(R.color.black));
+			partidasAdapter = new PartidasLotecaRecyclerViewAdapter(bolao.getApostas().get(0).getPartidasLoteca(), DetalhesBolaoActivity.this, new ConfiguracaoLoteca(R.color.black), isEspecial());
 			listaJogos.setAdapter(partidasAdapter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 		} else if (bolao.getModalidade() == ModalidadeEnum.SUPER_7) {
