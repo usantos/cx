@@ -42,7 +42,7 @@
             android:id="@+id/modalidade_mkp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="24dp"
             android:fontFamily="@font/futura_std_bold"
             android:textColor="@color/branco"

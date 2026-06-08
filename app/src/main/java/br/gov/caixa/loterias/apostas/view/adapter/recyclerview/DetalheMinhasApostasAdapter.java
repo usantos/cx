@@ -229,7 +229,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.tvLabelMeusNumeros.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
         holder.ivIconeCentro.setImageDrawable(context.getDrawable(estilo.getTrevoFundoClaro()));
-        //holder.vLinhaAccordion2.setBackgroundColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+        holder.vLinhaAccordion2.setBackgroundColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
         //Acertos
         holder.llAcertos.setVisibility(View.VISIBLE);
