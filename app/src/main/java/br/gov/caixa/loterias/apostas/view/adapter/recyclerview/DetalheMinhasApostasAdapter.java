@@ -44,7 +44,14 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     public DetalheMinhasApostasAdapter(Context context, List<ItemMinhasApostasDTO> items) {
         this.context = context;
         this.items = items;
+        validateIfOnlyOneItem(items);
         this.estilo = new EstiloModalidadeMKP(items.get(0).getModalidade());
+    }
+
+    private static void validateIfOnlyOneItem(List<ItemMinhasApostasDTO> items) {
+        if (items.size() == 1 && items.get(0).isBolao()) {
+            items.get(0).setExpanded(true);
+        }
     }
 
     @NonNull
