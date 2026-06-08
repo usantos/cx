@@ -456,7 +456,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             //dataApostaTxt.setVisibility(View.VISIBLE);
             dataApostaTxt.setText(aposta.getDataEfetivacao());
             //horaApostaTxt.setVisibility(View.VISIBLE);
-            horaApostaTxt.setText(StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao()));
+            horaApostaTxt.setText(aposta.getHoraEfetivacao());
         }
 
         if (isApostaPremiada(aposta) && detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null){
