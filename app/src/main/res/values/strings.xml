@@ -292,6 +292,7 @@
     <string name="label_adicionar_carrinho_apostas">ao carrinho de apostas</string>
     <string name="label_editar_aposta">Editar\naposta</string>
     <string name="label_carrinho_apostas">Carrinho\nde apostas</string>
+    <string name="label_carrinho_apostas_limpo">Carrinho de apostas</string>
     <string name="label_salve_aposta">Salve esta aposta :)</string>
     <string name="concurso">Concurso</string>
     <string name="concursos">Concursos</string>
@@ -1621,9 +1622,6 @@
     <string name="label_premio_dois_pontos">Prêmio:</string>
     <string name="erro_minas_apostas_teimosinha">Não conseguimos processar sua solicitação.\nTente novamente!</string>
     <string name="label_cidade_uf">Cidade/UF:</string>
-    <string name="label_valor_cota">Valor da Cota:</string>
-    <string name="label_tarifa_servico">Tarifa de Serviço:</string>
-    <string name="label_cota">Cota:</string>
     <string name="label_surpresinha">| Surpresinha</string>
 
 
@@ -1643,13 +1641,23 @@
     <string name="contest_timestamp_example">01/01/2026</string>
     <string name="contest_timestamp_example_hour">11h20</string>
     <string name="contest_example_waiting">Aguardando</string>
-    <string name="button_get_reward">Botão: Resgatar Prêmio</string>
+    <string name="button_get_reward">Resgatar Prêmio</string>
     <string name="contest_reward_valid_time">Validade prêmio: 90 dias</string>
-    <string name="button_generate_receipt">Botão: gerar comprovante</string>
-    <string name="expandablelistview_expanded_text">Expandido. Toque duas vezes para recolher.</string>
-    <string name="expandablelistview_retracted_text">Recolhido. Toque duas vezes para expandir.</string>
+    <string name="button_generate_receipt">Gerar comprovante</string>
+    <string name="expandablelistview_expanded_text">Expandido.</string>
+    <string name="expandablelistview_retracted_text">Recolhido.</string>
     <string name="expandablelistview_retracted">Recolher</string>
     <string name="expandablelistview_expanded">Expandir</string>
     <string name="txt_rewarded">premiado</string>
+    <string name="txt_space">" "</string>
+    <string name="txt_space_with_word">" de "</string>
+    <string name="txt_voltar">Voltar</string>
+    <string name="txt_duvidas">Dúvidas</string>
+    <string name="txt_numeros_sorteados">Números sorteados</string>
+    <string name="txt_titulo_numeros_sorteados">Números sorteados</string>
+    <string name="txt_meus_numeros">Meus números</string>
+    <string name="txt_titulo_meus_numeros">Meus números</string>
+    <string name="txt_time_sorteado">Time sorteado</string>
+    <string name="txt_titulo_time_sorteado">Time sorteado</string>
 
 </resources>
