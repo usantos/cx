@@ -678,8 +678,10 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
                         break;
 
                     case SUPER_7:
-                        item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(resultado));
-                        item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                        //item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(resultado));
+                        item.setNumerosSorteados(StringUtils.formatToStringListFlexS7(resultado));
+                        //item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                        item.setSeusNumeros(StringUtils.formatToStringListFlexS7(aposta.getNumerosSelecionados()));
                         items.add(item);
                         break;
 
@@ -723,7 +725,8 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
                     item.setSeusNumeros2(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
                     break;
                 case SUPER_7:
-                    item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                    //item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                    item.setSeusNumeros(StringUtils.formatToStringListFlexS7(aposta.getNumerosSelecionados()));
                     break;
                 case MAIS_MILIONARIA:
                     item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
@@ -797,9 +800,11 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
                         break;
 
                     case SUPER_7:
-                        item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(apostaBolaoDTO.getDezenas()));
+                        //item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(apostaBolaoDTO.getDezenas()));
+                        item.setSeusNumeros(StringUtils.formatToStringListFlexS7(apostaBolaoDTO.getDezenas()));
                         if (resultadoConcursoDTO != null) {
-                            item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(listResultados));
+                            //item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(listResultados));
+                            item.setNumerosSorteados(StringUtils.formatToStringListFlexS7(listResultados));
                         }
                         break;
 
@@ -891,9 +896,11 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
                 break;
 
             case SUPER_7:
-                item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                //item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                item.setSeusNumeros(StringUtils.formatToStringListFlexS7(aposta.getNumerosSelecionados()));
                 if (resultadoConcursoDTO != null) {
-                    item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(resultado));
+                    //item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(resultado));
+                    item.setNumerosSorteados(StringUtils.formatToStringListFlexS7(resultado));
                     item.setValorPremio(valorPremio);
                 }
                 items.add(item);

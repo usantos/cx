@@ -483,7 +483,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             String numero = seusNumeros.get(i);
             if (numero != null) {
                 if (item.getModalidade() == ModalidadeEnum.SUPER_7) {
-                    if (numero != null && numerosSorteados.get(i) != null && numerosSorteados.get(i).equals(numero)) {
+                    if (numero != null && numerosSorteados.get((i<7) ? i : (i-7)) != null && numerosSorteados.get((i<7) ? i : (i-7)).equals(numero)) {
                         numerosAcertados++;
                     }
                 } else {

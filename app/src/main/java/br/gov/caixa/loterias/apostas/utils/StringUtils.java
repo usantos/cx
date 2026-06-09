@@ -142,31 +142,81 @@ public class StringUtils {
         return listString;
     }
 
-    public static List<String> formatToStringListFlexPrimeiro(List<?> input) {
+//    public static List<String> formatToStringListFlexPrimeiro(List<?> input) {
+//        List<String> out = new ArrayList<>();
+//        if (input == null) return out;
+//
+//        for (Object item : input) {
+//            if (item == null) continue;
+//
+//            if (item instanceof Number) {
+//                Number n = (Number) item;
+//                long v = Math.round(n.doubleValue()); // use n.longValue() para truncar
+//                out.add(String.format("%01d", v));
+//            } else if (item instanceof List<?>) {
+//                List<?> inner = (List<?>) item;
+//                if (inner.isEmpty()) continue;
+//
+//                Object first = inner.get(0);
+//                if (first instanceof Number) {
+//                    Number n0 = (Number) first;
+//                    long v = Math.round(n0.doubleValue());
+//                    out.add(String.format("%01d", v));
+//                }
+//                // Se "first" não for Number, ignora.
+//            }
+//            // Se não for Number nem List, ignora.
+//        }
+//        return out;
+//    }
+
+    public static List<String> formatToStringListFlexS7(List<?> input) {
+        if (input == null || input.size() != 7) {
+            return null;
+        }
+
         List<String> out = new ArrayList<>();
-        if (input == null) return out;
+
+        // Descobrir o maior tamanho das sublistas (quantas "camadas" existem)
+        int maxDepth = 1;
 
         for (Object item : input) {
-            if (item == null) continue;
-
-            if (item instanceof Number) {
-                Number n = (Number) item;
-                long v = Math.round(n.doubleValue()); // use n.longValue() para truncar
-                out.add(String.format("%01d", v));
-            } else if (item instanceof List<?>) {
-                List<?> inner = (List<?>) item;
-                if (inner.isEmpty()) continue;
-
-                Object first = inner.get(0);
-                if (first instanceof Number) {
-                    Number n0 = (Number) first;
-                    long v = Math.round(n0.doubleValue());
-                    out.add(String.format("%01d", v));
-                }
-                // Se "first" não for Number, ignora.
+            if (item instanceof List<?>) {
+                maxDepth = Math.max(maxDepth, ((List<?>) item).size());
+            } else {
+                maxDepth = Math.max(maxDepth, 1);
             }
-            // Se não for Number nem List, ignora.
         }
+
+        // Para cada "camada" (posição interna)
+        for (int i = 0; i < maxDepth; i++) {
+
+            for (Object item : input) {
+                String value = null; //""; // default
+
+                if (item instanceof Number) {
+                    // Só participa da camada 0
+                    if (i == 0) {
+                        long v = Math.round(((Number) item).doubleValue());
+                        value = String.format("%01d", v);
+                    }
+                } else if (item instanceof List<?>) {
+                    List<?> inner = (List<?>) item;
+
+                    if (i < inner.size()) {
+                        Object obj = inner.get(i);
+
+                        if (obj instanceof Number) {
+                            long v = Math.round(((Number) obj).doubleValue());
+                            value = String.format("%01d", v);
+                        }
+                    }
+                }
+
+                out.add(value);
+            }
+        }
+
         return out;
     }
 
