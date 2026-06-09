@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 
@@ -42,5 +43,14 @@ public class PermissaoUtil {
 		}
 		return true;
 	}
+
+	public static String[] getListaLocalizacaoPermissoes() {
+		return new String[]{
+				Manifest.permission.ACCESS_FINE_LOCATION,
+				Manifest.permission.ACCESS_COARSE_LOCATION
+		};
+	}
+
+
 
 }

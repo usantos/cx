@@ -50,6 +50,7 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
+import br.gov.caixa.loterias.apostas.utils.PermissaoUtil;
 import br.gov.caixa.loterias.apostas.utils.RedirectUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -369,11 +370,14 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                         new OnDialogListenerLeftRight() {
                             @Override
                             public void left() {
-                                if (result == LocalizacaoUtils.LOC_NAO_PERMITIDA ||
-                                        result == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE)
+                                if (result == LocalizacaoUtils.LOC_NAO_PERMITIDA) {
+                                    PermissaoUtil.checkList(CarrinhoActivity.this, PermissaoUtil.getListaLocalizacaoPermissoes(), 123);
+                                    LocalizacaoUtils.incrementContLocation();
+                                } else if (result == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE) {
                                     LocalizacaoUtils.intentConfigPermissao(CarrinhoActivity.this);
-                                if (result == LocalizacaoUtils.LOC_DESATIVADA)
+                                } else if (result == LocalizacaoUtils.LOC_DESATIVADA) {
                                     LocalizacaoUtils.intentConfigGps(CarrinhoActivity.this);
+                                }
                             }
 
                             @Override

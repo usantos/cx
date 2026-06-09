@@ -24,16 +24,23 @@ public class AlertDialogUtils {
     }
 
     public static boolean isShow(){
-        if(alertDialog != null){
-            return alertDialog.isShowing();
+        try {
+            if(alertDialog != null){
+                return alertDialog.isShowing();
+            }
+            return false;
+        } catch (Exception e){
+            return false;
         }
-        return false;
     }
 
     public static void dismiss() {
-        if (alertDialog != null && isShow()) {
-            alertDialog.dismiss();
-            alertDialog = null;
-        }
+        try {
+            if (alertDialog != null && isShow()) {
+                alertDialog.dismiss();
+                alertDialog = null;
+            }
+        } catch (Exception e){}
     }
+
 }

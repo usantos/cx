@@ -98,7 +98,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         montaTipoApostaLinha(detalhesPremioDTO.getAposta(), estiloModalidadeMKP.getCorEscura(),
                 estiloModalidadeMKP.getCorFonteFundoEscuro(), estiloModalidadeMKP.getCorFonteFundoEscuro());
 
-        if (isEspeial()) {
+        if (isEspeial() && estiloModalidadeMKP.getImagemEspecialSimples() > 0) {
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidadeMKP.getImagemEspecialSimples()));
         } else {
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
@@ -314,8 +314,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             }
         }
 
-        listaOpcaoResgate.setLayoutManager(new LinearLayoutManager(this));
         listaOpcaoResgate.setAdapter(new OpcaoResgatePremioAdapter(list));
+        listaOpcaoResgate.setLayoutManager(new LinearLayoutManager(this));
 
         if (detalhesPremioDTO.getMensagemInformativaIR() != null && !detalhesPremioDTO.getMensagemInformativaIR().isEmpty()){
             apresentaInfoResgateIR();

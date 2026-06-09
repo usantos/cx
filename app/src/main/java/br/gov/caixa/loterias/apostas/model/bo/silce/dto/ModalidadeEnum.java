@@ -213,8 +213,9 @@ public enum ModalidadeEnum implements Serializable {
                 return "Dupla de Páscoa";
             case LOTECA:
                 return "Copa da Loteca";
+            default:
+                return getDescricao(modalidade);
         }
-        return "";
     }
 
     public static String getDescricaoEspecialDuasLinhas(ModalidadeEnum modalidade) {

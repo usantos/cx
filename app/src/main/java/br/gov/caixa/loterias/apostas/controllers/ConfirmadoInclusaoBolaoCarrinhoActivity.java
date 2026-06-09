@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
@@ -43,12 +42,10 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     private Boolean isEspecial;
     private ImageView imageSetaApontandoCarrinho;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmado_inclusao_bolao_carrinho);
-
 
         getExtras();
         estilo = new EstiloModalidadeMKP(modalidade);
