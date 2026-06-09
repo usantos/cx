@@ -423,6 +423,9 @@ repositories {
         implementation "com.google.firebase:firebase-installations"
         implementation "com.google.firebase:firebase-sessions"
 
+        //PlayStore
+        implementation "com.google.android.play:review:2.0.1"
+
     }
 
     sonarqube {

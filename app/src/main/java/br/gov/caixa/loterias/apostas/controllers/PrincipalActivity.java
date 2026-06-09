@@ -171,6 +171,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private int anInt;
     private int ano;
     Boolean expandido = false;
+    private static final int REQ_CARRINHO = 1001;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,7 +212,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         listenerSair();
         //callWebservice();
         iniciarBancoLocal();
-        RateUtils.avaliarAplicativo(this);
+        if(veioDoCarrinho() || veioDoPagamento()) {
+            RateUtils.solicitarReview(this);
+        }
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
 
         if (SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
@@ -218,6 +222,21 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
 
         TimerNotificarCotasExpiradasSingleton.getInstance(this).iniciarVerificacao();
+    }
+    private boolean veioDoCarrinho() {
+        String origem = getIntent() != null
+                ? getIntent().getStringExtra("ORIGEM_TELA")
+                : null;
+
+        return "CARRINHO_INC".equals(origem) || "CARRINHO_BOLAO".equals(origem) || "CARRINHO".equals(origem);
+    }
+
+    private boolean veioDoPagamento() {
+        String origem = getIntent() != null
+                ? getIntent().getStringExtra("ORIGEM_TELA")
+                : null;
+
+        return "MERCADO".equals(origem);
     }
 
     private void setViews() {
@@ -747,6 +766,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         if (resultCode == RESULT_OK && requestCode == 1) {
             callWebservice();
         }
+        if (requestCode == REQ_CARRINHO && resultCode == 2) {
+            RateUtils.solicitarReview(this);
+        }
     }
 
     private void sairLogin() {
@@ -993,7 +1015,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     protected void vaiProCarrinho() {
         if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
-            startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
+            startActivityForResult(
+                    new Intent(PrincipalActivity.this, CarrinhoActivity.class),
+                    REQ_CARRINHO
+            );
         }
     }
 

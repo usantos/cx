@@ -164,7 +164,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         createListPremiacao();
         trataFormasDeResgate();
-        RateUtils.avaliarAplicativo(this, true);
         setResult(RESULT_FIRST_USER);
     }
 

@@ -304,7 +304,6 @@ public class ConfirmarCartaoActivity extends LoteriasBaseAppActivity {
 		new CompraModel(this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
 		AlertDialogUtils.dismiss();
 		AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
-		RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
 		startActivity(new Intent(this, ConfirmacaoPagamentoActivity.class));
 		CarrinhoSingleton.getInstance().zerarCarrinho();
 		model.limparCarrinhoFavorito();
