@@ -42,7 +42,6 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     public static final int ADAPTER_SIZE = 0;
     private final List<ItemMinhasApostasDTO> items;
     private final Context context;
-
     private EstiloModalidadeMKP estilo;
 
     private static final String CONST_WIDGET = Button.class.getName();
@@ -81,6 +80,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         //holder.contentlayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.ivExpandCollapse.setRotation(isExpanded ? 180 : 0);
         holder.ivExpandCollapse.setColorFilter(context.getColor(estilo.getCorFonteFundoEscuro()));
+        holder.setExpanded(isExpanded);
 
 
         //if (!item.isApurado()) {
@@ -153,8 +153,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     }
 
     private void montaAcordeonCabeca(ViewHolder holder, int position, ItemMinhasApostasDTO item) {
-        holder.clAcordeonCorpo.setVisibility(item.isExpanded() ? View.VISIBLE : View.GONE);
-        holder.ivExpandCollapse.setRotation(item.isExpanded() ? 180 : 0);
+        holder.clAcordeonCorpo.setVisibility(holder.isExpanded() ? View.VISIBLE : View.GONE);
+        holder.ivExpandCollapse.setRotation(holder.isExpanded() ? 180 : 0);
         holder.ivExpandCollapse.setColorFilter(context.getColor(estilo.getCorFonteFundoEscuro()));
 
         //Cabecalho Accordion
@@ -162,7 +162,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.tvResultadoConcurso.setText(context.getString(R.string.resultado_concurso) + " " + item.getConcurso());
         holder.tvResultadoConcurso.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
         holder.tvLabelSituacao.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
-        if (item.getSituacao().equals(context.getString(R.string.label_concurso_nao_premiado))) {
+        if (item.getSituacao().equals(context.getString(R.string.label_concurso_nao_premiado)) || item.getSituacao().equals(context.getString(R.string.label_concurso_premio_pago))) {
             holder.tvSituacao.setText(item.getSituacao());
         } else {
             holder.tvSituacao.setText(ViewUtils.textCaixaSTDBold(context, context.getString(R.string.texto_caixaStd_bold, item.getSituacao())));
@@ -170,18 +170,19 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.tvSituacao.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
         holder.vLinhaAccordion1.setBackgroundColor(context.getColor(estilo.getCorFonteFundoEscuro()));
         holder.vLinhaAccordion2.setBackgroundColor(context.getColor(estilo.getCorFonteFundoEscuro()));
-        holder.vLinhaAccordion1.setVisibility(item.isExpanded() ? View.GONE : View.VISIBLE);
+        holder.vLinhaAccordion1.setVisibility(holder.isExpanded() ? View.GONE : View.VISIBLE);
 
         holder.clAcordeonCabeca.setOnClickListener(v -> {
             item.setExpanded(!item.isExpanded());
+            holder.setExpanded(item.isExpanded());
             notifyItemChanged(position);
             delayedAnnounce(v, item);
         });
     }
 
     private void montaAcordeonCabecaBolao(ViewHolder holder, int position, ItemMinhasApostasDTO item) {
-        holder.clAcordeonCorpo.setVisibility(item.isExpanded() ? View.VISIBLE : View.GONE);
-        holder.ivExpandCollapse.setRotation(item.isExpanded() ? 180 : 0);
+        holder.clAcordeonCorpo.setVisibility(holder.isExpanded() ? View.VISIBLE : View.GONE);
+        holder.ivExpandCollapse.setRotation(holder.isExpanded() ? 180 : 0);
         holder.ivExpandCollapse.setColorFilter(context.getColor(estilo.getCorFonteFundoEscuro()));
 
         //Cabecalho Accordion Bolao
@@ -203,10 +204,11 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
         holder.vLinhaAccordion1.setBackgroundColor(context.getColor(estilo.getCorFonteFundoEscuro()));
         holder.vLinhaAccordion2.setBackgroundColor(context.getColor(estilo.getCorFonteFundoEscuro()));
-        holder.vLinhaAccordion1.setVisibility(item.isExpanded() ? View.GONE : View.VISIBLE);
+        holder.vLinhaAccordion1.setVisibility(holder.isExpanded() ? View.GONE : View.VISIBLE);
 
         holder.clAcordeonCabeca.setOnClickListener(v -> {
             item.setExpanded(!item.isExpanded());
+            holder.setExpanded(item.isExpanded());
             notifyItemChanged(position);
             delayedAnnounce(v, item);
         });
@@ -630,6 +632,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         RecyclerView rvNumberSortedos, rvNumberSortedos2, rvMeusNumeros, rvMeusNumeros2, rvSuper7Sorteados, rvSuper7MeusNumeros;
         View vLinhaAccordion1, vLinhaAccordion2, vDivisorTrevo;
         ImageView ivApresentaSurpresinha;
+        private boolean isExpanded = false;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -681,6 +684,14 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             tvLabelPremio = itemView.findViewById(R.id.tv_label_premio);
             tvPremio = itemView.findViewById(R.id.tv_premio);
             vDivisorTrevo = itemView.findViewById(R.id.divisor_trevo);
+        }
+
+        public void setExpanded(boolean isExpanded) {
+            this.isExpanded = isExpanded;
+        }
+
+        public boolean isExpanded(){
+            return isExpanded;
         }
     }
 

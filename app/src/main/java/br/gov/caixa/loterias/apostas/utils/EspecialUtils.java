@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
 public class EspecialUtils {
@@ -37,4 +38,15 @@ public class EspecialUtils {
         return isEspecial && numeroConcurso.equals(Integer.toString(mega30));
     }
 
+    public static Boolean isMega30(ParametroJogoDTO parametroSimulacao) {
+        try {
+            return parametroSimulacao != null && parametroSimulacao.getConcurso() != null
+                    && parametroSimulacao.getConcurso().getNumero() != null
+                    && parametroSimulacao.getConcurso().getTipoConcurso() != null
+                    && isMega30(parametroSimulacao.getConcurso().getNumero(), parametroSimulacao.getConcurso().getTipoConcurso());
+        } catch (Exception e){
+            return false;
+        }
+
+    }
 }

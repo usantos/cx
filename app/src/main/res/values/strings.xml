@@ -1617,6 +1617,7 @@
     <string name="label_trevos">Trevos</string>
     <string name="label_concurso_nao_apurado">Concurso\nnão apurado</string>
     <string name="label_concurso_nao_premiado">Não premiado</string>
+    <string name="label_concurso_premio_pago">Prêmio pago</string>
     <string name="label_acertos_dois_pontos">Acertos:</string>
     <string name="label_acertos_nenhum">nenhum</string>
     <string name="label_premio_dois_pontos">Prêmio:</string>
@@ -1659,5 +1660,7 @@
     <string name="txt_titulo_meus_numeros">Meus números</string>
     <string name="txt_time_sorteado">Time sorteado</string>
     <string name="txt_titulo_time_sorteado">Time sorteado</string>
+
+    <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
 
 </resources>
