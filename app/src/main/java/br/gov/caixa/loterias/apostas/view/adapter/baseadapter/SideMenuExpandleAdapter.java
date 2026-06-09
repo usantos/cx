@@ -4,6 +4,8 @@ package br.gov.caixa.loterias.apostas.view.adapter.baseadapter;
  * Created by cedesbr450 on 24/01/18.
  */
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -11,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
