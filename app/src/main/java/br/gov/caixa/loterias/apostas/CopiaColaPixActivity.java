@@ -28,7 +28,6 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
-import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
@@ -98,8 +97,6 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 			new CompraModel(CopiaColaPixActivity.this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
 
 			AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
-
-			RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
 
 			CarrinhoSingleton.getInstance().zerarCarrinho();
 			CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(CopiaColaPixActivity.this);

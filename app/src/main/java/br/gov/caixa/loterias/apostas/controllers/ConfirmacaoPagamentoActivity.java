@@ -56,7 +56,6 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 
         getExtras();
         configLayout();
-        RateUtils.avaliarAplicativo(this,RateUtils.getQtdCompras());
     }
 
     private void configViews() {

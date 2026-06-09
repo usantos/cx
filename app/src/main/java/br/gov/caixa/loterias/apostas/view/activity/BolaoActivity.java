@@ -18,7 +18,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,7 +60,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.model.model.LotericaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -72,8 +70,8 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrosselBolaoAda
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaLotericasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.AccessibleSpringDotsIndicator;
+import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
-import br.gov.caixa.loterias.apostas.view.custom.PartyAnimationManager;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.LotericaEmptyFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -143,7 +141,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private ParametroJogoDTO parametroJogo;
     private BarraTituloFiltroLotericaFragment fragBarraTituloFiltroLoterica;
     AccessibleSpringDotsIndicator dotsIndicator;
-    private PartyAnimationManager animationManager;
+    private LottieManager lottieManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,16 +227,16 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (animationManager != null) {
-            animationManager.stop();
+        if (lottieManager != null) {
+            lottieManager.destroy();
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (animationManager != null) {
-            animationManager.stop();
+        if (lottieManager != null) {
+            lottieManager.pause();
         }
     }
 
@@ -410,6 +408,20 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 if (lotericasList == null || lotericasList.isEmpty()) {
                     initLotericasVazia();
                 }
+
+                //Animação Copa da Loteca
+                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.LOTECA) {
+                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.copa_loteca_3);
+                    lottieManager.setSpeed(1.75f);
+                    lottieManager.start();
+                }
+                //Animação Quina de São João
+                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.QUINA) {
+                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.quina_sao_joao_1);
+                    lottieManager.setSpeed(1.5f);
+                    lottieManager.start();
+                }
+
             }
 
             @Override
@@ -426,17 +438,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             @Override
             public void success(ApostadorDTO payload) {
                 AlertDialogUtils.dismiss();
-
-                //Animação 30 anos
-                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.MEGA_SENA) {
-                    animationManager = new PartyAnimationManager(BolaoActivity.this);
-                    findViewById(android.R.id.content).post(() -> {
-                        animationManager.start(6500);
-                    });
-                    // Essa logica precisa ser removida apos encerramento da mega 30 anos
-                    //TODO//
-                }
-
 
                 idMunicipio = payload.getMunicipioId().getNumero().intValue();
                 idUf = payload.getMunicipioId().getIdUF().intValue();

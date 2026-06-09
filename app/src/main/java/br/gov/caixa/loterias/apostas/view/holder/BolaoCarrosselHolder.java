@@ -199,7 +199,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 				modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
 			}
 
-			valorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(bolao.getVrPremioEstimado()));
+			valorPremio.setText(ViewUtils.getMoedaFormatComCentavos(bolao.getVrPremioEstimado(), 2));
 			String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado());
 			if (!valorEstimadoPorExtenso.isEmpty()){
 				valorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));

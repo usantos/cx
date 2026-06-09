@@ -62,8 +62,8 @@ android {
 
         //                   22                 1.23.0 = 01 023               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220102300
-        versionName "1.23.0"
+        versionCode 220102304
+        versionName "1.23.1"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -288,7 +288,7 @@ repositories {
         implementation 'androidx.appcompat:appcompat:1.7.1'
         // versions
         def supportVersion = '27.1.1'
-        def lottieVersion = '3.6.1';
+        def lottieVersion = '6.4.0';
         def appCenterSdkVersion = '4.1.0'
 
         implementation "androidx.lifecycle:lifecycle-process:2.8.7"
@@ -422,6 +422,9 @@ repositories {
         implementation "com.google.firebase:firebase-appcheck"
         implementation "com.google.firebase:firebase-installations"
         implementation "com.google.firebase:firebase-sessions"
+
+        //PlayStore
+        implementation "com.google.android.play:review:2.0.1"
 
     }
 
