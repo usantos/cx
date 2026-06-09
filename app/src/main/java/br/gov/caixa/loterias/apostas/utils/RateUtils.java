@@ -33,16 +33,6 @@ public class RateUtils {
 		});
 	}
 
-	private static void showDialog(){
-		new Handler().postDelayed(RateUtils::showDialogAvaliar, 500);
-	}
-
-	private static void showDialogAvaliar(){
-		try {
-			dialogAvaliar.show();
-		} catch (Exception e){}
-	}
-
 	public static void redirecionaParaLoja(Activity activity){
 		final String appPackageName = activity.getPackageName();
 		try {
