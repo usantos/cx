@@ -14,7 +14,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.InsetDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
@@ -33,7 +32,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -736,12 +734,12 @@ public class ViewUtils {
         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
-    public static String getMoedaFormatSemCentavos(BigDecimal valor) {
+    public static String getMoedaFormatComCentavos(BigDecimal valor, int qtdCasasDecimais) {
         if (valor == null) {
             valor = BigDecimal.ZERO;
         }
         NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-        nf.setMaximumFractionDigits(0);
+        nf.setMaximumFractionDigits(qtdCasasDecimais);
         return nf.format(valor);
     }
 
@@ -1253,12 +1251,26 @@ public class ViewUtils {
                 }
             } else {
                 return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                        modalidadeDetalhada.getDescricaoEspecial() :
+                        getNomeEspecialSemRespostaDoServico(aposta, modalidadeDetalhada) :
                         modalidadeDetalhada.getDescricao();
             }
         }
 
         return getNomeModalidadePorApostaMockada(aposta);
+    }
+
+    private static String getNomeEspecialSemRespostaDoServico(IdentificaoDeUmaApostaDas8Modalidades aposta, ModalidadeDTO modalidadeDTO){
+        if (modalidadeDTO.getDescricaoEspecial() == null || modalidadeDTO.getDescricaoEspecial().isEmpty()){
+            return getNomeModalidadePorApostaMockada(aposta);
+        }
+        return modalidadeDTO.getDescricaoEspecial();
+    }
+
+    private static String getNomeEspecialSemRespostaDoServico(ApostaDTO aposta, ModalidadeDTO modalidadeDTO){
+        if (modalidadeDTO.getDescricaoEspecial() == null || modalidadeDTO.getDescricaoEspecial().isEmpty()){
+            return getNomeModalidadePorApostaMockada(aposta);
+        }
+        return modalidadeDTO.getDescricaoEspecial();
     }
 
     private static String getNomeModalidadePorApostaMockada(ApostaDTO aposta) {
@@ -1294,7 +1306,7 @@ public class ViewUtils {
                 }
             } else {
                 return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                        modalidadeDetalhada.getDescricaoEspecial():
+                        getNomeEspecialSemRespostaDoServico(aposta, modalidadeDetalhada):
                         modalidadeDetalhada.getDescricao();
             }
         }

@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,6 +45,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginad
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
@@ -53,7 +53,6 @@ import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasRecyclerViewAdapter;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
 
 public class ListaComprasActivity extends LoteriasBaseAppActivity {
@@ -61,7 +60,6 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
     private static final int PAGE_SIZE = 10;
     private List<MesAnoDTO> listaMesAnoDTO;
     private List<CompraDTO> listaComprasDto;
-    private List<ApostaDTO> listaAposta = new ArrayList<>();
     private List<MeioPagamentoDTO> listaMeioPagamentoDTO = new ArrayList<>();
     private List<SituacoesCompraDTO> listaSituacoesCompraDTO = new ArrayList<>();
     private CompraDTO compraSelecionada;
@@ -104,18 +102,18 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
     private void callWebServiceMesCompras(){
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         ApostaSilceBO.getInstance().getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
             @Override
             public void onResponse(MesAnoDTOResponse response) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 listaMesAnoDTO = response.getPayload();
                 addSpinner();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
 
             }
@@ -126,12 +124,12 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
         offsetItem = 0;
         isMaisCompras = true;
         bloquearRequestScroll = false;
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         try{
             ApostaSilceBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
                 @Override
                 public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     if(response.getPayload() != null){
                         listaComprasDto = response.getPayload().getLista();
                         offsetItem = PAGE_SIZE;
@@ -147,13 +145,13 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     Log.e("listaComprasActivity", "Erro ao recuperar as compras", error);
                     RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
                 }
             });
         }catch (Exception e){
-            loadViewProgress.dismiss();
+            AlertDialogUtils.dismiss();
             Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de compras", e);
         }
 
@@ -161,12 +159,12 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
     private void callWebServiceMeioPagamento(boolean chamaServicoSituacoesCompra){
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         try{
             DadosCorporativosSilceBO.getInstance().buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
                 @Override
                 public void onResponse(MeiosPagamentosResponse response) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     if (response.getPayload() != null) {
                         listaMeioPagamentoDTO = response.getPayload();
                         if(chamaServicoSituacoesCompra) {
@@ -179,26 +177,26 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     Log.e("ListaComprasActivity", "Erro ao recuperar os meios de pagamento", error);
                     RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
 
                 }
             });
         } catch (Exception e){
-            loadViewProgress.dismiss();
+            AlertDialogUtils.dismiss();
             Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de meios de pagamento", e);
         }
     }
 
     public void callWebServiceSituacoesCompra(Long idMeioPagamento, boolean abreModalFiltro){
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         try{
             ApostaSilceBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
                 @Override
                 public void onResponse(SituacoesCompraResponse response) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     if(response.getPayload() != null){
                         listaSituacoesCompraDTO = response.getPayload();
                         if(abreModalFiltro){
@@ -212,14 +210,14 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     Log.e("ListaComprasActivity", "Erro ao recuperar as siturações de compra", error);
                     RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
 
                 }
             });
         } catch (Exception e){
-            loadViewProgress.dismiss();
+            AlertDialogUtils.dismiss();
             Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de situações de compra", e);
         }
     }
@@ -578,11 +576,11 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
     private void pegaApostasDaCompra() {
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         ApostaSilceBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaComprasActivity.this);
                 }
@@ -593,7 +591,7 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, ListaComprasActivity.this);
             }
         });

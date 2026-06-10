@@ -171,7 +171,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        if (isEspecial(aposta.getTipoConcurso().getValor())) {
+        if (isEspecial(aposta.getTipoConcurso().getValor()) && estiloMKP.getImagemEspecialSimples() > 0) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialSimples());
         } else {
             toolbar.setBackgroundColor(ContextCompat.getColor(this, estiloMKP.getCorClara()));
