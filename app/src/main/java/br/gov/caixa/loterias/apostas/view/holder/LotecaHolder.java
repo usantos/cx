@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
@@ -66,9 +67,10 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
 
 		String jogoTitle = String.format(Locale.getDefault(), "Jogo %02d ", position + 1);
 
-		if (!("(MAS)".equals(legenda))) {
-			jogoTitle += StringUtils.capitalizerNovo(legenda);
-		}
+		//TODO: VOLTAR COM A LEGENDA//
+//		if (!("(MAS)".equals(legenda))) {
+//			jogoTitle += StringUtils.capitalizerNovo(legenda);
+//		}
 
 		tvTitulo.setText(jogoTitle);
 	}
@@ -77,8 +79,24 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
 		txtTimeDois.setText(item.getEquipe2().getNome());
 		txtEmpate.setText(R.string.label_empate);
 
-		descTimeUm.setText(Utils.getUfTime(item.getEquipe1()));
-		descTimeDois.setText(Utils.getUfTime(item.getEquipe2()));
+		bindDescricaoEquipe(descTimeUm, item.getEquipe1());
+		bindDescricaoEquipe(descTimeDois, item.getEquipe2());
+	}
+
+	private void bindDescricaoEquipe(TextView view, ParametroEquipe equipe) {
+		if (equipe != null && !equipe.isSelecionado() && Boolean.FALSE.equals(equipe.getIndicadorSelecao())) {
+			view.setText(Utils.getUfTime(equipe));
+			view.setVisibility(View.VISIBLE);
+		} else {
+			view.setVisibility(View.GONE);
+		}
+	}
+
+
+	private void setColorSeNaoSelecionado(TextView view, ParametroEquipe equipe, int cor) {
+		if (equipe != null && Boolean.FALSE.equals(equipe.getIndicadorSelecao())) {
+			view.setTextColor(cor);
+		}
 	}
 
 	private void bindEscudos(Context context, ParametroPartida item) {
@@ -98,8 +116,8 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
 		int corSelecionado = ContextCompat.getColor(context, R.color.colorAccent);
 		int corNaoSelecionado = ContextCompat.getColor(context, R.color.cinza);
 
-		aplicarCorTexto(txtTimeUm, descTimeUm, selecionadoTimeUm, corSelecionado, corNaoSelecionado);
-		aplicarCorTexto(txtTimeDois, descTimeDois, selecionadoTimeDois, corSelecionado, corNaoSelecionado);
+		aplicarCorTexto(txtTimeUm, descTimeUm, item.getEquipe1(), selecionadoTimeUm, corSelecionado, corNaoSelecionado);
+		aplicarCorTexto(txtTimeDois, descTimeDois, item.getEquipe2(), selecionadoTimeDois, corSelecionado, corNaoSelecionado);
 
 		txtEmpate.setTextColor(selecionadoEmpate ? corSelecionado : corNaoSelecionado);
 		imgEmpate.setImageTintList(
@@ -114,13 +132,14 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
 	private void aplicarCorTexto(
 			TextView titulo,
 			TextView descricao,
+			ParametroEquipe equipe,
 			boolean selecionado,
 			int corSelecionado,
 			int corNaoSelecionado
 	) {
 		int cor = selecionado ? corSelecionado : corNaoSelecionado;
 		titulo.setTextColor(cor);
-		descricao.setTextColor(cor);
+		setColorSeNaoSelecionado(descricao,equipe,cor);
 	}
 
 	private void aplicarElevation(View view, boolean selecionado) {

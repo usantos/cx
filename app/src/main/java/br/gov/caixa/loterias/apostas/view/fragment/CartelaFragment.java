@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,12 +28,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
-import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostas.utils.*;
-import br.gov.caixa.loterias.apostas.view.listener.*;
 import com.android.volley.VolleyError;
 import com.google.android.material.button.MaterialButton;
 
@@ -63,8 +56,21 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
+import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
+import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
+import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.InputUtils;
+import br.gov.caixa.loterias.apostas.utils.ListaUtils;
+import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
+import br.gov.caixa.loterias.apostas.utils.Utils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
@@ -73,6 +79,12 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.NomeTimemaniaTextWatcher;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
+import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
+import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
+import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
+import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
@@ -1484,7 +1496,10 @@ private void zeraLoteca(){
 			partida.setQtdItensSelecionadosAnterior(0);
 			partida.setQtdItensSelecionados(0);
 		}
-		recyclerViewPartida.getAdapter().notifyDataSetChanged();
+		recyclerViewPartida.getAdapter().notifyItemRangeChanged(
+				0,
+				recyclerViewPartida.getAdapter().getItemCount()
+		);
 		partidasSelecionadas.clear();
 		parentActivity.zerarApostasLoteca();
 		ocutarSalvarAposta();
