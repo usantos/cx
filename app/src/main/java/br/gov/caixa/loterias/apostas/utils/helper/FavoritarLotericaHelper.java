@@ -1,7 +1,8 @@
 package br.gov.caixa.loterias.apostas.utils.helper;
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.content.DialogInterface;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 
@@ -11,9 +12,13 @@ import br.gov.caixa.loterias.apostas.model.bo.BaseBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public final class FavoritarLotericaHelper {
+
+    private static final String TAG = "FavoritarLotericaHelper";
 
     private FavoritarLotericaHelper() {}
 
@@ -38,60 +43,52 @@ public final class FavoritarLotericaHelper {
                 ? activity.getString(R.string.msg_excluir_favorita, nomeFantasia)
                 : activity.getString(R.string.msg_incluir_favorita, nomeFantasia);
 
-        ViewUtils.alertTitleCustomNewPositiveNegativeListener(
-                activity,
-                activity.getString(R.string.label_atencao),
+        DialogUtils.dialogConfirmar(activity,
                 mensagem,
-                (d, which) -> {
-                    AlertDialogUtils.show(activity);
-                    OnSilceListener<RetornoPadraoResponse> listener = new OnSilceListener<RetornoPadraoResponse>() {
-                        @Override
-                        public void success(RetornoPadraoResponse payload) {
-                            AlertDialogUtils.dismiss();
-                            // Atualiza UI somente após sucesso
-                            boolean novoEstado = !estadoAtual;
-                            estadoUi.atualizar(novoEstado);
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        AlertDialogUtils.show(activity);
+                        OnSilceListener<RetornoPadraoResponse> listener = new OnSilceListener<RetornoPadraoResponse>() {
+                            @Override
+                            public void success(RetornoPadraoResponse payload) {
+                                AlertDialogUtils.dismiss();
+                                // Atualiza UI somente após sucesso
+                                boolean novoEstado = !estadoAtual;
+                                estadoUi.atualizar(novoEstado);
 
-                        }
-
-                        @Override
-                        public void error(VolleyError error) {
-                            AlertDialogUtils.dismiss();
-                            try {
-                                ErrorResponse er = BaseBO.transformaErroEmErrorResponse(error);
-                                if ("002024".equals(er.getCodigo())) {
-                                    ViewUtils.alertEntendiCustom(activity, er.getMensagem());
-                                } else {
-                                    ViewUtils.alertTitleButton(
-                                            activity,
-                                            R.string.label_atencao,
-                                            activity.getString(R.string.nao_concluiu_operacao),
-                                            activity.getString(R.string.ok),
-                                            dialogInterface -> {}
-                                    );
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                ViewUtils.alertTitleButton(
-                                        activity,
-                                        R.string.label_atencao,
-                                        activity.getString(R.string.nao_concluiu_operacao),
-                                        activity.getString(R.string.ok),
-                                        dialogInterface -> {}
-                                );
                             }
-                        }
-                    };
 
-                    if (estadoAtual) {
-                        acoes.excluir(lotericaId, listener);
-                    } else {
-                        acoes.incluir(lotericaId, listener);
+                            @Override
+                            public void error(VolleyError error) {
+                                AlertDialogUtils.dismiss();
+                                try {
+                                    ErrorResponse er = BaseBO.transformaErroEmErrorResponse(error);
+                                    if ("002024".equals(er.getCodigo())) {
+                                        DialogUtils.dialogEntendi(activity, er.getMensagem());
+                                    } else {
+                                        DialogUtils.dialogEntendi(activity,
+                                                activity.getString(R.string.nao_concluiu_operacao));
+                                    }
+                                } catch (Exception e) {
+                                    Log.e(TAG, "Erro ao processar resposta de favoritar", e);
+                                    DialogUtils.dialogEntendi(
+                                            activity,
+                                            activity.getString(R.string.nao_concluiu_operacao));
+
+                                }
+                            }
+                        };
+
+                        if (estadoAtual) {
+                            acoes.excluir(lotericaId, listener);
+                        } else {
+                            acoes.incluir(lotericaId, listener);
+                        }
+
                     }
-                },
-                (d, which) -> d.dismiss(),
-                R.string.cancelar,
-                R.string.confirmar
-                );
+                }
+        );
+
     }
 }
