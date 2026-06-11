@@ -93,20 +93,8 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		carrinhoApostas = view.findViewById(R.id.simularApostaLayoutCarrinhoApostas);
 		containerValor = view.findViewById(R.id.container_valor_aposta);
 		carrinhoApostas.setOnClickListener(v -> abreCarrinhoApostas());
-		ViewCompat.setAccessibilityDelegate(carrinhoApostas, new AccessibilityDelegateCompat() {
-			@Override
-			public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
-				super.onInitializeAccessibilityNodeInfo(host, info);
-				info.setClassName(Button.class.getName());
-			}
-		});
-		ViewCompat.setAccessibilityDelegate(containerValor, new AccessibilityDelegateCompat() {
-			@Override
-			public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
-				super.onInitializeAccessibilityNodeInfo(host, info);
-				info.setClassName(Button.class.getName());
-			}
-		});
+		setAccessibility(containerValor);
+		setAccessibility(carrinhoApostas);
 
 		atualizaValorBolao(valorAposta);
 		atualizaValorCarrinho(valorCarrinho);
@@ -114,6 +102,15 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		return view;
 	}
 
+	private void setAccessibility(View view){
+		ViewCompat.setAccessibilityDelegate(view, new AccessibilityDelegateCompat() {
+			@Override
+			public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+				super.onInitializeAccessibilityNodeInfo(host, info);
+				info.setClassName(Button.class.getName());
+			}
+		});
+	}
 	public void atualizaValorBolao(BigDecimal valorApostaBolao){
 		if (valorApostaBolao != null && tvValorAposta != null){
 			ViewUtils.setMoedaFormatHtml(valorApostaBolao, tvValorAposta);

@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,24 +40,20 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
 	public final TextView descTimeDois;
 	public final TextView txtEmpate;
 	public final ImageView imgEmpate;
+	private LinearLayout containerJogos;
 
 	public LotecaHolder(View itemView) {
 		super(itemView);
 		tvTitulo = itemView.findViewById(R.id.tv_titulo_jogo);
 		ViewCompat.setAccessibilityHeading(tvTitulo,true);
 		timeUm = itemView.findViewById(R.id.time_um);
-		ViewCompat.setAccessibilityDelegate(timeUm, new AccessibilityDelegateCompat() {
-			@Override
-			public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
-				super.onInitializeAccessibilityNodeInfo(host, info);
-
-				info.setClassName(android.widget.CheckBox.class.getName());
-				info.setClickable(true);
-				info.addAction(AccessibilityNodeInfoCompat.ACTION_CLICK);
-			}
-		});
 		timeDois = itemView.findViewById(R.id.time_dois);
 		empate = itemView.findViewById(R.id.time_empate);
+		aplicarAccessibilityCheck(timeUm);
+		aplicarAccessibilityCheck(timeDois);
+		aplicarAccessibilityCheck(empate);
+		containerJogos = itemView.findViewById(R.id.containerJogos);
+		configAcessibilidadeContainer(containerJogos);
 		imgTimeUm = itemView.findViewById(R.id.img_time_um);
 		imgTimeDois = itemView.findViewById(R.id.img_time_dois);
 		txtTimeUm = itemView.findViewById(R.id.txt_time_um);
@@ -67,6 +64,41 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
 		imgEmpate = itemView.findViewById(R.id.img_empate);
 	}
 
+	private void configAcessibilidadeContainer(View container) {
+		ViewCompat.setAccessibilityDelegate(container, new AccessibilityDelegateCompat() {
+			@Override
+			public void onInitializeAccessibilityNodeInfo(
+					@NonNull View host,
+					@NonNull AccessibilityNodeInfoCompat info
+			) {
+				super.onInitializeAccessibilityNodeInfo(host, info);
+
+				info.setCollectionInfo(
+						AccessibilityNodeInfoCompat.CollectionInfoCompat.obtain(
+								1, // 1 linha
+								3, // 3 colunas
+								false,
+								AccessibilityNodeInfoCompat.CollectionInfoCompat.SELECTION_MODE_MULTIPLE
+						)
+				);
+			}
+		});
+	}
+	private void aplicarAccessibilityCheck(View view) {
+		ViewCompat.setAccessibilityDelegate(view, new AccessibilityDelegateCompat() {
+			@Override
+			public void onInitializeAccessibilityNodeInfo(
+					@NonNull View host,
+					@NonNull AccessibilityNodeInfoCompat info
+			) {
+				super.onInitializeAccessibilityNodeInfo(host, info);
+
+				info.setClassName(android.widget.CheckBox.class.getName());
+				info.setClickable(true);
+				info.addAction(AccessibilityNodeInfoCompat.ACTION_CLICK);
+			}
+		});
+	}
 	@Override
 	public void bind(ParametroPartida item, int position) {
 		Context context = itemView.getContext();

@@ -166,7 +166,12 @@ public class BarraTituloSimulacaoFragment extends Fragment {
 		}
 		tvConcurso.setText(concurso);
 		tvSorteio.setText(sorteio);
-		containerSorteio.setContentDescription(getString(R.string.sorteio) + " " + sorteio);
+		if(modalidade.equals(ModalidadeEnum.LOTECA)){
+			containerSorteio.setContentDescription(getString(R.string.resultado) + " " + sorteio);
+		}
+		else {
+			containerSorteio.setContentDescription(getString(R.string.sorteio) + " " + sorteio);
+		}
 		containerConcurso.setContentDescription(getString(R.string.concurso) + " " + concurso);
 	}
 }

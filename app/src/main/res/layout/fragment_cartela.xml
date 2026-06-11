@@ -394,6 +394,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:importantForAccessibility="no"
                     android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@+id/selecioneTimeCoracao">
 
@@ -409,7 +410,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
-                            android:focusableInTouchMode="true"
                             android:importantForAccessibility="no"
                             android:orientation="horizontal"
                             android:paddingVertical="12dp"
@@ -433,6 +433,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:clickable="false"
+                            android:importantForAccessibility="no"
                             android:nestedScrollingEnabled="false"
                             android:orientation="vertical"
                             android:paddingBottom="119dp" />
