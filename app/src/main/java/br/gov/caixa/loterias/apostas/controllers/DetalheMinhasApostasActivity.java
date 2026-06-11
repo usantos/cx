@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
@@ -55,6 +56,8 @@ import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.CustomTypefaceSpan;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -62,6 +65,7 @@ import br.gov.caixa.loterias.apostas.utils.helper.DetalhesMinhasApostasButtonHel
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.AccessibleRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheMinhasApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class DetalheMinhasApostasActivity extends AppCompatActivity {
     public static final String ARG_COMPROVANTE = "ARG_COMPROVANTE";
@@ -661,8 +665,17 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     }
 
     private void apresentaErro() {
-        ViewUtils.alertFecharCustom(this, this.getString(R.string.erro_minas_apostas_teimosinha),
-                () -> { this.finish(); }
+
+        DialogUtils.dialogEntendiListener(
+                DetalheMinhasApostasActivity.this,
+                getString(R.string.erro_minas_apostas_teimosinha),
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }
+
         );
     }
 

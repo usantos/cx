@@ -123,7 +123,7 @@ public class ListaRapidaoActivity extends LoteriasBaseAppActivity {
     }
     private void validarCarrinho() {
         if(valorTotalCarrinhoRapidao.getText().toString().equals("R$ 0,00")) {
-            DialogUtils.showDialogCarrinhoVazio(ListaRapidaoActivity.this, getResources().getString(R.string.verCarrinhoVazio));
+            DialogUtils.dialogEntendi(ListaRapidaoActivity.this, getResources().getString(R.string.verCarrinhoVazio));
             return;
         }
 

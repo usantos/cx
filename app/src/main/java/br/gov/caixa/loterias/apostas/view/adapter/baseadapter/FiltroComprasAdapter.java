@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -324,7 +325,10 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
                 public void onErrorResponse(VolleyError error) {
                     loadViewProgress.dismiss();
                     Log.e("FiltroComprasAdapter", "Erro ao recuperar as siturações de compra", error);
-                    ViewUtils.alertTitulo(activity, R.string.label_atencao, "Erro ao recuperar as situações de compra para o meio de pagamento selecionado");
+                    DialogUtils.dialogEntendi(
+                            activity,
+                            "Erro ao recuperar as situações de compra para o meio de pagamento selecionado"
+                    );
 
                 }
             });

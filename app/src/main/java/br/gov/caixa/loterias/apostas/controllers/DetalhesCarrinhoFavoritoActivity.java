@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -18,9 +19,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDT
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.model.model.DetalhesCarrinhoFavoritoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostasCarrinhoFavoritoAdapter;
 import br.gov.caixa.loterias.apostas.view.listener.OnDetalheCarrinhoFavoritoClickListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity.RESPOSTA_APOSTAS;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity.RESPOSTA_EXCLUIU_APOSTAS;
@@ -79,26 +82,33 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
 
     private OnDetalheCarrinhoFavoritoClickListener onItemClickListener() {
         return position -> {
-            ViewUtils.alertTitleButtonYesOrNotListener(DetalhesCarrinhoFavoritoActivity.this, getResources().getString(R.string.carrinho_fav_deseja_excluir_aposta), (dialogInterface, i) -> {
-                if (model.getList().size() > 1) {
-                    AlertDialogUtils.show(DetalhesCarrinhoFavoritoActivity.this);
-                    model.deletaApostaCarrinhoFavorito(model.getIdApostaByPosition(position), new OnSilceListener<List<ApostaCarrinhoFavoritoDTO>>() {
-                        @Override
-                        public void success(List<ApostaCarrinhoFavoritoDTO> payload) {
-                            AlertDialogUtils.dismiss();
-                            model.setListApostas(payload);
-                            configuraRecyclerView(payload);
-                        }
+            DialogUtils.dialogSim(DetalhesCarrinhoFavoritoActivity.this,
+                    getResources().getString(R.string.carrinho_fav_deseja_excluir_aposta),
 
+                    new OnDialogBotaoListener() {
                         @Override
-                        public void error(VolleyError error) {
-                            AlertDialogUtils.dismiss();
+                        public void onButtonClick(DialogInterface dialog, int which) {
+                            if (model.getList().size() > 1) {
+                                AlertDialogUtils.show(DetalhesCarrinhoFavoritoActivity.this);
+                                model.deletaApostaCarrinhoFavorito(model.getIdApostaByPosition(position), new OnSilceListener<List<ApostaCarrinhoFavoritoDTO>>() {
+                                    @Override
+                                    public void success(List<ApostaCarrinhoFavoritoDTO> payload) {
+                                        AlertDialogUtils.dismiss();
+                                        model.setListApostas(payload);
+                                        configuraRecyclerView(payload);
+                                    }
+
+                                    @Override
+                                    public void error(VolleyError error) {
+                                        AlertDialogUtils.dismiss();
+                                    }
+                                });
+                            } else {
+                                excluirCarrinho(model.getIdCarrinho());
+                            }
                         }
-                    });
-                } else {
-                    excluirCarrinho(model.getIdCarrinho());
-                }
-            });
+                    }
+            );
 
         };
     }
