@@ -74,15 +74,15 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
-    private ConstraintLayout clScroll, clResgatePremio, clResgatePremio2, comprovanteLayout, clInformacoesBolao;
+    private ConstraintLayout clScroll, clResgatePremio, clResgatePremio2, comprovanteLayout, clInformacoesBolao, cl_minhas_apostas;
 
     private RecyclerView rvFieldsBolao;
 
     private ImageView ivResgatePremio, ivResgatePremio2;
 
-    private ImageView validadePremioImg, ivImageDownload;
+    private ImageView validadePremioImg, ivImageDownload, iv_lupa_legenda;
 
-    private View divider;
+    private View divider, v_linha_loteca;
 
     private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, horaApostaTxt;
     private TextView containerConcurso;
@@ -91,6 +91,9 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     private TextView ResgatarPremioTxt, ResgatarPremioTxt2;
 
     private TextView validadePremioText, validadePremioLabel, gerarConprovanteTxt;
+
+    private TextView tv_label_minhas_apostas, tv_label_legenda;
+
 
     private TipoApostaLinhaView tipoApostaLinhaView;
 
@@ -154,21 +157,22 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         ativaComponentes();
 
         detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasActivity.this);
-        detalhesMinhasApostasButtonHelper.setupButtonListeners(isBolao());
+        detalhesMinhasApostasButtonHelper.setupButtonListeners(isBolao() || isLoteca());
         detalhesMinhasApostasButtonHelper.setupDTO(comprovanteApostaDTO, detalhesPremioDTO, aposta);
 
         preencheCabecalho();
         preencheTipoApostaLinha();
         preencheRodape();
 
-        if (isBolao()) {
+
+        if (isLoteca()) {
+            preencheCentroLoteca();
+        } else if (isBolao()) {
             preencheCentroBolao();
+        } else if (isTeimosinha(aposta)) {
+            preencheCentroTeimosinha();
         } else {
-            if (isTeimosinha(aposta)) {
-                preencheCentroTeimosinha();
-            } else {
-                preencheApostaSimples();
-            }
+            preencheCentroApSimples();
         }
     }
 
@@ -252,6 +256,13 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         validadePremioText = findViewById(R.id.validadePremioText);
         validadePremioLabel = findViewById(R.id.validadePremioLabel);
         validadePremioImg = findViewById(R.id.validadePremioImage);
+
+        //Loteca
+        cl_minhas_apostas = findViewById(R.id.cl_minhas_apostas);
+        tv_label_minhas_apostas = findViewById(R.id.tv_label_minhas_apostas);
+        tv_label_legenda = findViewById(R.id.tv_label_legenda);
+        iv_lupa_legenda = findViewById(R.id.iv_lupa_legenda);
+        v_linha_loteca = findViewById(R.id.v_linha_loteca);
 
         setAccessibilityAnchor();
 
@@ -413,6 +424,13 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         validadePremioLabel.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
         validadePremioImg.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+
+        if (isLoteca()) {
+            tv_label_minhas_apostas.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            tv_label_legenda.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            iv_lupa_legenda.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            v_linha_loteca.setBackgroundResource(estiloMKP.getCorFonteFundoEscuro());
+        }
     }
 
     private void preencheCabecalho() {
@@ -555,6 +573,10 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             tipoApostaLinhaView.setVisibility(View.VISIBLE);
             tipoApostaLinhaView.setupView(listTipoApostaLinha, estiloMKP.getCorClara(), estiloMKP.getCorFonteFundoClaro(), estiloMKP.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.DOWN, true);
         }
+    }
+
+    private boolean isLoteca() {
+        return aposta.getModalidade() == ModalidadeEnum.LOTECA;
     }
 
     private boolean isBolao() {
@@ -761,7 +783,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             items.add(item);
         }
 
-        RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
+        RecyclerView recyclerView = findViewById(R.id.rv_centro_detalhe_minhas_apostas);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         DetalheMinhasApostasAdapter adapter = new DetalheMinhasApostasAdapter(this, items);
         recyclerView.setNestedScrollingEnabled(false);
@@ -846,14 +868,14 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             }
         }
 
-        RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
+        RecyclerView recyclerView = findViewById(R.id.rv_centro_detalhe_minhas_apostas);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         DetalheMinhasApostasAdapter adapter = new DetalheMinhasApostasAdapter(this, items);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
     }
 
-    private void preencheApostaSimples() {
+    private void preencheCentroApSimples() {
         List<ItemMinhasApostasDTO> items = new ArrayList<>();
 
         ResultadoConcursoDTO resultadoConcursoDTO = null;
@@ -948,11 +970,19 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
                 break;
         }
 
-        RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
+        RecyclerView recyclerView = findViewById(R.id.rv_centro_detalhe_minhas_apostas);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         DetalheMinhasApostasAdapter adapter = new DetalheMinhasApostasAdapter(this, items);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
     }
+
+
+    private void preencheCentroLoteca() {
+        cl_minhas_apostas.setVisibility(View.VISIBLE);
+
+
+    }
+
 
 }

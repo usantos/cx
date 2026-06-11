@@ -662,20 +662,20 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private void startDetalheComprovante(ComprovanteApostaDTO comprovante) {
 
-        boolean isTeimosinha = comprovante.getAposta().getQuantidadeTeimosinhas() > 0;
-        boolean isBolao = comprovante.getAposta().getIndicadorCotaBolao();
-        boolean isSimples = !isTeimosinha && !isBolao;
-        boolean isLoteca = comprovante.getAposta().getModalidade() == ModalidadeEnum.LOTECA;
+//        boolean isTeimosinha = comprovante.getAposta().getQuantidadeTeimosinhas() > 0;
+//        boolean isBolao = comprovante.getAposta().getIndicadorCotaBolao();
+//        boolean isSimples = !isTeimosinha && !isBolao;
+//        boolean isLoteca = comprovante.getAposta().getModalidade() == ModalidadeEnum.LOTECA;
 
-        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
+//        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
                     ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
             startActivity(intent);
-        } else {
-            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
-                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
-            startActivity(intent);
-        }
+//        } else {
+//            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+//                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+//            startActivity(intent);
+//        }
     }
 
     private void handleOnItemClickHistorico(ApostaDTO apostaDTO) {
