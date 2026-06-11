@@ -22,6 +22,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -316,6 +317,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         this.setLabelValueSimplesLoteca(Constantes.ZERO_STRING);
         this.setLabelValueDuplasLoteca(Constantes.ZERO_STRING);
         this.setLabelValueTriplasLoteca(Constantes.ZERO_STRING);
+        setContentDescriptionLoteca(
+                Constantes.ZERO_STRING,
+                Constantes.ZERO_STRING,
+                Constantes.ZERO_STRING,
+                Constantes.ZERO_STRING
+        );
         setColorValuesLoteca();
     }
 
@@ -457,6 +464,21 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
 
     public void setLabelValueTriplasLoteca(String labelValueTriplasLoteca) {
         this.labelValueTriplasLoteca.setText(labelValueTriplasLoteca);
+    }
+
+    public void setContentDescriptionLoteca(
+            String partidas,
+            String simples,
+            String duplas,
+            String triplas
+    ){
+        String desc = "Suas apostas, "
+                + partidas + " partidas, "
+                + simples + " simples, "
+                + duplas + " duplas, "
+                + triplas + " triplas";
+
+        toolBarLoteca.setContentDescription(desc);
     }
 
     public TextView getLabelValueSimplesLoteca() {

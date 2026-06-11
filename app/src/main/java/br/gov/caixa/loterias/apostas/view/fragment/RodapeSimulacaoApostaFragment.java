@@ -8,9 +8,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
@@ -42,6 +47,7 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 	private TextView tvQtd;
 
 	private BigDecimal valorAposta, valorCarrinho;
+	private ConstraintLayout carrinhoApostas, containerValor;
 
 	public RodapeSimulacaoApostaFragment() {
 		// Required empty public constructor
@@ -84,7 +90,23 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		tvValorCarrinho = view.findViewById(R.id.valorAtualCarrinho);
 		circuloQtd = view.findViewById(R.id.circuloQuantidade);
 		tvQtd = view.findViewById(R.id.tvQuantidadeApostas);
-		view.findViewById(R.id.simularApostaLayoutCarrinhoApostas).setOnClickListener(v -> abreCarrinhoApostas());
+		carrinhoApostas = view.findViewById(R.id.simularApostaLayoutCarrinhoApostas);
+		containerValor = view.findViewById(R.id.container_valor_aposta);
+		carrinhoApostas.setOnClickListener(v -> abreCarrinhoApostas());
+		ViewCompat.setAccessibilityDelegate(carrinhoApostas, new AccessibilityDelegateCompat() {
+			@Override
+			public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+				super.onInitializeAccessibilityNodeInfo(host, info);
+				info.setClassName(Button.class.getName());
+			}
+		});
+		ViewCompat.setAccessibilityDelegate(containerValor, new AccessibilityDelegateCompat() {
+			@Override
+			public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+				super.onInitializeAccessibilityNodeInfo(host, info);
+				info.setClassName(Button.class.getName());
+			}
+		});
 
 		atualizaValorBolao(valorAposta);
 		atualizaValorCarrinho(valorCarrinho);

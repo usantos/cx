@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -141,6 +142,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private CartelaModel cartelaModel;
 	private View rodape;
 	private boolean mudouTamanhoValor = false;
+	private TextView titleLoteca;
 
 	public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
 	public CartelaFragment() {
@@ -326,6 +328,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_cartela, container, false);
 		rodape = view.findViewById(R.id.rodape_espacamento);
+		titleLoteca = view.findViewById(R.id.titleInformeBold);
+		ViewCompat.setAccessibilityHeading(titleLoteca,true);
 		return view;
 	}
 
@@ -1481,6 +1485,12 @@ private void zeraLoteca(){
 			valorTotalTriplas.setTextColor(getResources().getColor(R.color.greyText));
 		}
 
+		parentActivity.setContentDescriptionLoteca(
+				parentActivity.getLabelValueJogosLoteca().getText().toString(),
+				parentActivity.getLabelValueSimplesLoteca().getText().toString(),
+				parentActivity.getLabelValueDuplasLoteca().getText().toString(),
+				parentActivity.getLabelValueTriplasLoteca().getText().toString()
+		);
 
 		Boolean mostraBotao = atualizaValorApostaLoteca();
 		atualizaStatusBotaoFinalizarLoteca(mostraBotao);

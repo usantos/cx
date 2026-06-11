@@ -7,7 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import java.util.Locale;
 
@@ -39,7 +43,18 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
 	public LotecaHolder(View itemView) {
 		super(itemView);
 		tvTitulo = itemView.findViewById(R.id.tv_titulo_jogo);
+		ViewCompat.setAccessibilityHeading(tvTitulo,true);
 		timeUm = itemView.findViewById(R.id.time_um);
+		ViewCompat.setAccessibilityDelegate(timeUm, new AccessibilityDelegateCompat() {
+			@Override
+			public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+				super.onInitializeAccessibilityNodeInfo(host, info);
+
+				info.setClassName(android.widget.CheckBox.class.getName());
+				info.setClickable(true);
+				info.addAction(AccessibilityNodeInfoCompat.ACTION_CLICK);
+			}
+		});
 		timeDois = itemView.findViewById(R.id.time_dois);
 		empate = itemView.findViewById(R.id.time_empate);
 		imgTimeUm = itemView.findViewById(R.id.img_time_um);

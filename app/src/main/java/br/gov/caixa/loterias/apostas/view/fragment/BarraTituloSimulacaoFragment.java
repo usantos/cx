@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
@@ -24,7 +26,7 @@ import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 
-public class BarraTitutoSimulacaoFragment extends Fragment {
+public class BarraTituloSimulacaoFragment extends Fragment {
 	private static final String ARG_MODALIDADE = "ARG_MODALIDADE";
 	private static final String ARG_CONCURSO = "ARG_CONCURSO";
 	private static final String ARG_SORTEIO = "ARG_SORTEIO";
@@ -35,7 +37,8 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 	private  View view;
 	private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio;
 	private ConstraintLayout background;
-	private AppCompatImageView btnVoltar, btnDuvida;
+	private ImageButton btnVoltar, btnDuvida;
+	private LinearLayout containerSorteio, containerConcurso;
 	private String concurso;
 	private String sorteio;
 	private boolean isEspecial, showBackground;
@@ -45,10 +48,10 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 	private boolean isMega30 = false ;
 	private EstiloModalidadeMKP estilo;
 
-	public BarraTitutoSimulacaoFragment() {}
+	public BarraTituloSimulacaoFragment() {}
 
-	public static BarraTitutoSimulacaoFragment newInstance(ModalidadeEnum modalidade, String concuso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
-		BarraTitutoSimulacaoFragment fragment = new BarraTitutoSimulacaoFragment();
+	public static BarraTituloSimulacaoFragment newInstance(ModalidadeEnum modalidade, String concuso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
+		BarraTituloSimulacaoFragment fragment = new BarraTituloSimulacaoFragment();
 		Bundle                  args     = new Bundle();
 		args.putString(ARG_MODALIDADE, new Gson().toJson(modalidade));
 		args.putSerializable(ARG_CONCURSO, concuso);
@@ -81,6 +84,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 		view = inflater.inflate(R.layout.fragment_barra_titulo_simulacao, container, false);
 
 		tvModalidade = view.findViewById(R.id.id_modalidade);
+		ViewCompat.setAccessibilityHeading(tvModalidade,true);
 		tvConcurso = view.findViewById(R.id.id_concurso);
 		tvSorteio = view.findViewById(R.id.id_sorteio);
 		background = view.findViewById(R.id.layout_fragmento);
@@ -88,8 +92,11 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 		btnDuvida = view.findViewById(R.id.duvida);
 		labelConcurso = view.findViewById(R.id.label_concurso);
 		labelSorteio = view.findViewById(R.id.label_sorteio);
+		containerSorteio = view.findViewById(R.id.container_sorteio);
+		containerConcurso = view.findViewById(R.id.container_concurso);
 		if(modalidade.equals(ModalidadeEnum.LOTECA)){
 			labelSorteio.setText(R.string.label_resultado);
+			containerSorteio.setContentDescription(getString(R.string.resultado) + " " + sorteio);
 		}
 
 		setClickListener();
@@ -159,5 +166,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 		}
 		tvConcurso.setText(concurso);
 		tvSorteio.setText(sorteio);
+		containerSorteio.setContentDescription(getString(R.string.sorteio) + " " + sorteio);
+		containerConcurso.setContentDescription(getString(R.string.concurso) + " " + concurso);
 	}
 }

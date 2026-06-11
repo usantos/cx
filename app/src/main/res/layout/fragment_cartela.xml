@@ -400,6 +400,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:importantForAccessibility="no"
                         android:paddingHorizontal="16dp"
                         android:orientation="vertical">
 
@@ -409,6 +410,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:focusableInTouchMode="true"
+                            android:importantForAccessibility="no"
                             android:orientation="horizontal"
                             android:paddingVertical="12dp"
                             android:visibility="gone"
@@ -420,6 +422,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/label_resultado_das_partidas"
                                 android:textColor="@color/blue_caixa"
+                                android:importantForAccessibility="yes"
                                 android:textSize="16sp"
                                 android:fontFamily="@font/caixa_std_bold"/>
 

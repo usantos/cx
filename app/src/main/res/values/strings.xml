@@ -21,6 +21,7 @@
     <string name="valorDessaAposta">Valor dessa\naposta</string>
     <string name="imagemCarrinho">Carrinho</string>
     <string name="carrinhoDeApostas">Carrinho \nde apostas</string>
+    <string name="carrinho_apostas">Carrinho de Apostas</string>
     <string name="label_premio_estimado_concurso_numero">Pr\u00eamio estimado Concurso %d</string>
     <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
     <string name="label_premio_estimado">Pr\u00eamio estimado</string>
@@ -197,7 +198,7 @@
     <string name="label_duplas">Duplas:</string>
     <string name="label_triplas">Triplas:</string>
     <string name="label_dois_pontos">:</string>
-    <string name="label_resultado_das_partidas">Informe o resultado das partidas.</string>
+    <string name="label_resultado_das_partidas">Informe o resultado das partidas</string>
     <string name="label_selecionar_times_aleatoriamente">_Selecionar_\ntimes aleatoriamente</string>
     <string name="label_selecionar_time_aleatoriamente">_Selecionar_\ntime aleatoriamente</string>
     <string name="label_escolha_time_coracao">_Escolha_\no time do coração</string>
@@ -1628,6 +1629,7 @@
     <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>
     <string name="marcador_oval">Marcador oval (bullet) para item de lista</string>
     <string name="botao_duvidas">Botão dúvidas</string>
+    <string name="duvidas">Dúvidas</string>
 
     <!-- MEGA 30 ANOS   -->
     <string name="mega_sena_30_anos">mega-sena 30 anos</string>
