@@ -114,7 +114,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalhe_minhas_apostas_teimosinha);
+        setContentView(R.layout.activity_detalhe_minhas_apostas_todas);
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
 
         pegaExtras();
