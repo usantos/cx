@@ -47,11 +47,13 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoPremiadoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ItemMinhasApostasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
@@ -67,6 +69,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.DetalhesMinhasApostasButtonHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.AccessibleRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheMinhasApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
@@ -998,9 +1001,25 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         cl_minhas_apostas.setVisibility(View.VISIBLE);
         iv_lupa_legenda.setOnClickListener(v-> dialogLegendaLoteca());
 
-
+        RecyclerView recyclerView = findViewById(R.id.rv_centro_detalhe_minhas_apostas);
+        recyclerView.setAdapter(new PartidasLotecaRecyclerViewAdapter(getPartidas(), this,
+                new ConfiguracaoLoteca(R.color.branco, R.color.loteca_escuro_mkp, R.color.branco), getResultadoConcurso()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setFocusable(Boolean.FALSE);
     }
 
+    private List<PartidaLotecaDTO> getPartidas() {
+        if (!aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().isEmpty()){
+            if (aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getPartidasLoteca() != null){
+                return aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getPartidasLoteca();
+            }
+        }
+        return new ArrayList<>();
+    }
+    public ResultadoConcursoDTO getResultadoConcurso(){
+        return this.comprovanteApostaDTO;
+    }
     private void dialogLegendaLoteca() {
 
         if (isFinishing()) return;
