@@ -126,8 +126,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private Integer idModalidade, idModalidadeInicial;
     private Integer tipoConcurso, tipoConcursoInicial;
     private int itensCardslVisiveis = 0;
-    private ImageView[] itemPaginacao;
-    private LinearLayout layoutPaginacaoCarrossel;
 
     private RadioButton btnBoloes, btnLotericasFavoritas;
 
