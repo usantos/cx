@@ -1,8 +1,10 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -18,7 +20,7 @@ import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 
 	private TextView labelJogo, nomeEquipe1, nomeEquipe2, nomeEmpate;
-	private ImageView checkEquipe1, checkEquipe2, checkEmpate;
+	private RadioButton checkEquipe1, checkEquipe2, checkEmpate;
 	private Context context;
 	private ConfiguracaoLoteca configuracaoLoteca;
 	private ResultadoConcursoDTO resultado;
@@ -67,16 +69,15 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 		if (configuracaoLoteca != null) {
 			labelJogo.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
 			vLinhaDivisoria.setBackgroundColor(context.getColor(configuracaoLoteca.getCorTexto()));
+			checkEquipe1.setButtonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
+			checkEquipe2.setButtonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
+			checkEmpate.setButtonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
 			nomeEquipe1.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
 			nomeEquipe2.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
 			nomeEmpate.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
 		}
 
 		aplicaChecks(partida);
-
-		if (resultado != null){
-			aplicaResultados(position);
-		}
 
 		boolean sel1 = partida.getEquipe1().getVitoria();
 		boolean sel2 = partida.getEquipe2().getVitoria();
@@ -95,65 +96,35 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 			acertoEmpate = Boolean.TRUE.equals(res.getEmpate());
 		}
 
-		// aplica legenda conforme dialog
 		aplicaLegenda(nomeEquipe1, sel1, sel1 && acerto1);
 		aplicaLegenda(nomeEquipe2, sel2, sel2 && acerto2);
 		aplicaLegenda(nomeEmpate, selEmpate, selEmpate && acertoEmpate);
-
-	}
-
-	private void aplicaResultados(int position) {
-		if (resultado.getPartidasLoteca() != null && !resultado.getPartidasLoteca().isEmpty()){
-			PartidaLotecaDTO partida = (PartidaLotecaDTO) resultado.getPartidasLoteca().get(position);
-			if (partida.getEquipe1() != null && partida.getEquipe1().getVitoria() != null && partida.getEquipe1().getVitoria()){
-				aplicaCorSelecionado(nomeEquipe1);
-			} else if (partida.getEquipe2() != null && partida.getEquipe2().getVitoria() != null && partida.getEquipe2().getVitoria()){
-				aplicaCorSelecionado(nomeEquipe2);
-			} else if (partida.getEmpate() != null && partida.getEmpate()){
-				aplicaCorSelecionado(nomeEmpate);
-			}
-		}
-	}
-
-	private void aplicaCorSelecionado(TextView txt) {
-		txt.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTextoSelecionado()));
-		txt.setBackgroundColor(ContextCompat.getColor(context, configuracaoLoteca.getBackgroundSelecionado()));
 	}
 
 	private void aplicaChecks(PartidaLotecaDTO partida) {
-		aplicaCheck(checkEquipe1, partida.getEquipe1().getVitoria());
-		aplicaCheck(checkEmpate, partida.getEmpate());
-		aplicaCheck(checkEquipe2, partida.getEquipe2().getVitoria());
-	}
-
-	private void aplicaCheck(ImageView imageView, boolean isCheck) {
-		if (isCheck){
-			imageView.setBackground(ResourcesCompat.getDrawable(context.getResources(),R.drawable.ic_radio_checked, null));
-			if (configuracaoLoteca != null) {
-				imageView.setImageDrawable(VectorUtils.getShape(R.drawable.ic_radio_checked, configuracaoLoteca.getCorTexto()));
-			}
-		} else {
-			imageView.setBackground(ResourcesCompat.getDrawable(context.getResources(),R.drawable.ic_radio_unchecked, null));
-			if (configuracaoLoteca != null) {
-				imageView.setImageDrawable(VectorUtils.getShape(R.drawable.ic_radio_unchecked, configuracaoLoteca.getCorTexto()));
-			}
-		}
+		checkEquipe1.setChecked(partida.getEquipe1().getVitoria());
+		checkEmpate.setChecked(partida.getEmpate());
+		checkEquipe2.setChecked(partida.getEquipe2().getVitoria());
 	}
 
 	private void aplicaLegenda(TextView txt, boolean selecionado, boolean acertou) {
 
 		if (acertou) { 									//Acertou palpite
 			txt.setBackground(ContextCompat.getDrawable(context, R.drawable.background_roudend_less_branco));
-			txt.setTextColor(ContextCompat.getColor(context, R.color.loteca_escuro_mkp));
+			txt.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTextoSelecionado()));
+			txt.setPadding(16, 8, 16, 8);
 		} else if (selecionado && resultado == null) { 	//Escolhido e NÃO apurado
 			txt.setBackground(ContextCompat.getDrawable(context, R.drawable.button_rouded_border_white));
 			txt.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+			txt.setPadding(16, 8, 16, 8);
 		} else if (selecionado) { 						//Escolhido e apurado (mas não acertou)
 			txt.setBackground(null);
 			txt.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+			txt.setPadding(0, 0, 0, 0);
 		} else { 										//Não escolhido
 			txt.setBackground(null);
 			txt.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+			txt.setPadding(0, 0, 0, 0);
 		}
 	}
 
