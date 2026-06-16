@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPreferencesUtils {
+	public static final Boolean BOLAO_HABILITADO_DEFAULT = false;
+	public static final String BOLAO = "bolaoHabilitado";
 
 	private static Context context = Aplicacao.application.getApplicationContext();
 
