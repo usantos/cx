@@ -69,8 +69,10 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.DetalhesMinhasApostasButtonHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.AccessibleRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheMinhasApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaNovaAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
+import br.gov.caixa.loterias.apostas.view.holder.PartidaLotecaNovaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class DetalheMinhasApostasActivity extends AppCompatActivity {
@@ -998,18 +1000,28 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
 
     private void preencheCentroLoteca() {
+        //Top
         cl_minhas_apostas.setVisibility(View.VISIBLE);
         iv_lupa_legenda.setOnClickListener(v-> dialogLegendaLoteca());
 
         RecyclerView recyclerView = findViewById(R.id.rv_centro_detalhe_minhas_apostas);
-        recyclerView.setAdapter(new PartidasLotecaRecyclerViewAdapter(getPartidas(), this,
-                new ConfiguracaoLoteca(R.color.branco, R.color.loteca_escuro_mkp, R.color.branco), getResultadoConcurso()));
+        if (isBolao()) {
+            recyclerView.setAdapter(new PartidasLotecaNovaAdapter(getPartidasBolao(), this,
+                    new ConfiguracaoLoteca(R.color.branco, R.color.loteca_escuro_mkp, R.color.branco), getResultadoConcurso()) {
+            });
+        } else {
+            recyclerView.setAdapter(new PartidasLotecaNovaAdapter(getPartidas(), this,
+                    new ConfiguracaoLoteca(R.color.branco, R.color.loteca_escuro_mkp, R.color.branco), getResultadoConcurso()) {
+            });
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setFocusable(Boolean.FALSE);
+
+        //Bottom
     }
 
-    private List<PartidaLotecaDTO> getPartidas() {
+    private List<PartidaLotecaDTO> getPartidasBolao() {
         if (!aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().isEmpty()){
             if (aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getPartidasLoteca() != null){
                 return aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getPartidasLoteca();
@@ -1017,9 +1029,19 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         }
         return new ArrayList<>();
     }
-    public ResultadoConcursoDTO getResultadoConcurso(){
-        return this.comprovanteApostaDTO;
+
+    private List<PartidaLotecaDTO> getPartidas() {
+        return aposta.getPartidasLoteca();
     }
+
+    public ResultadoConcursoDTO getResultadoConcurso(){
+        if (listResultadoConcursoDTO != null && !listResultadoConcursoDTO.isEmpty()) {
+            return this.listResultadoConcursoDTO.get(0);
+        }
+        //return new ResultadoConcursoDTO();
+        return null;
+    }
+
     private void dialogLegendaLoteca() {
 
         if (isFinishing()) return;
