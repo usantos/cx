@@ -794,7 +794,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
                     case DUPLA_SENA:
                         item.setSeusNumeros2(StringUtils.formatToStringList(apostaBolaoDTO.getDezenas()));
                         if (resultadoConcursoDTO != null) {
-                            ArrayList<Number> listResultados2 = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
+                            ArrayList<Number> listResultados2 = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosSegundoSorteio();
                             item.setNumerosSorteados2(StringUtils.formatToStringList(listResultados2));
                         }
                         break;
