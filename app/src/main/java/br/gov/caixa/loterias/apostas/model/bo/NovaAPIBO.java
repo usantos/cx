@@ -6,19 +6,20 @@ import java.util.Map;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnCertificadoListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoNovaAPISingleton;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.NovaAPISingleton;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 
 public class NovaAPIBO extends BaseBO {
     private static NovaAPIBO instance;
     private NovaAPIBO(){
         super(NovaAPISingleton.getInstance().getRequestQueue(),
-                ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas(),
+                SharedPreferencesUtils.getValorString(ConfiguracoesEnum.URL_BASE_BUSCA_APOSTAS.get(), ConfiguracoesDefaultEnum.URL_BASE_BUSCA_APOSTAS.asString()),
                 true,
                 onCertificadoListener());
     }
