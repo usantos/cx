@@ -108,22 +108,22 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
             startActivity(new Intent(SplashScreenActivity.this, AtualizacaoActivity.class));
         } else {
             // chama configuracoes do app
+            LoginSP.limpar();
+            setBolaoBotaoDefault();
             callConfiguracoesApp();
-            new Handler().postDelayed(() -> {
-                LoginSP.limpar();
-                //if (!redirectDeepLink()) {
-                if(!DadosUsuarioBO.checarFecharIntroducao()) {
-                    startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
-                }
-                else{
-                    startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-                }
-                    //}
-                finish();
-            }, SPLASH_TIME);
         }
     }
 
+    private void redirectApp(){
+        if(!DadosUsuarioBO.checarFecharIntroducao()) {
+            startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+        }
+        else{
+            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+        }
+        //}
+        finish();
+    }
     private void callConfiguracoesApp() {
         try {
             ApostaSilceBO.getInstance().getApresentaHistorico(new RequestListener<ParametrosConfiguraveisDTOResponse>() {
@@ -132,7 +132,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
                     if (temInformacaoBolao(result)){
                         ConfiguracaoAppSingleton.getInstance().setBolaoHabilitado(result.getPayload().getMapa().getBolaoHabilitado());
-                        SharedPreferencesUtils.setValor("bolaoHabilitado",result.getPayload().getMapa().getBolaoHabilitado());
+                        SharedPreferencesUtils.setValor(SharedPreferencesUtils.BOLAO,result.getPayload().getMapa().getBolaoHabilitado());
                     }
 
                     if (temDadosResposta(result)){
@@ -162,15 +162,18 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_DUAS_LINHAS,getString(R.string.mega_sena_30_anos_duas_linhas));
                         }
                     }
+                    redirectApp();
                 }
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     setMenuApostasDefault();
+                    redirectApp();
                 }
             });
         }catch (Exception e){
             setMenuApostasDefault();
+            redirectApp();
         }
     }
 
@@ -184,6 +187,10 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
     private void setMenuApostasDefault() {
         setMostraMenuApostas(ConfiguracaoAppSingleton.MOSTRA_MENU_APOSTAS_DEFAULT);
+    }
+
+    private void setBolaoBotaoDefault() {
+        SharedPreferencesUtils.setValor(SharedPreferencesUtils.BOLAO,SharedPreferencesUtils.BOLAO_HABILITADO_DEFAULT);
     }
 
     private void setMostraMenuApostas(Boolean habilitaMenuApostas) {
