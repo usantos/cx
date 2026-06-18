@@ -1018,12 +1018,12 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.rv_centro_detalhe_minhas_apostas);
         if (isBolao()) {
             recyclerView.setAdapter(new PartidasLotecaNovaAdapter(getPartidasBolao(), this,
-                    new ConfiguracaoLoteca(estiloMKP.getCorFonteFundoEscuro(), estiloMKP.getCorEscura(), R.color.branco), getResultadoConcurso(),
+                    new ConfiguracaoLoteca(estiloMKP.getCorFonteFundoEscuro(), estiloMKP.getCorEscura()), getResultadoConcurso(),
                     isEspecial(aposta.getTipoConcurso().getValor())) {
             });
         } else {
             recyclerView.setAdapter(new PartidasLotecaNovaAdapter(getPartidas(), this,
-                    new ConfiguracaoLoteca(estiloMKP.getCorFonteFundoEscuro(), estiloMKP.getCorEscura(), R.color.branco), getResultadoConcurso(),
+                    new ConfiguracaoLoteca(estiloMKP.getCorFonteFundoEscuro(), estiloMKP.getCorEscura()), getResultadoConcurso(),
                     isEspecial(aposta.getTipoConcurso().getValor())) {
             });
         }
