@@ -10,7 +10,7 @@
         android:id="@+id/label_jogo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Jogo 01"
+        android:text="Jogo 01:"
         android:fontFamily="@font/caixa_std_regular"
         android:textSize="18sp"
         android:layout_marginTop="0dp"
@@ -18,6 +18,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/label_vencedor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="VENCEDOR"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textSize="18sp"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="4dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/label_jogo" />
 
     <RadioButton
         android:id="@+id/check_equipe_1"

@@ -29,12 +29,13 @@ public abstract class PartidasLotecaNovaAdapter extends RecyclerView.Adapter<Par
 //		this.context = context;
 //		this.configuracaoLoteca = configuracaoLoteca;
 //	}
-//	public PartidasLotecaNovaAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca, Boolean isEspecial) {
-//		this.partidas = partidas;
-//		this.context = context;
-//		this.configuracaoLoteca = configuracaoLoteca;
-//		this.isEspecial = isEspecial;
-//	}
+
+	public PartidasLotecaNovaAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso,
+									 Boolean isEspecial) {
+		this(partidas, context, configuracaoLoteca, resultadoConcurso);
+		this.isEspecial = isEspecial;
+	}
+
 
 	public PartidasLotecaNovaAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso) {
 		this.partidas = partidas;

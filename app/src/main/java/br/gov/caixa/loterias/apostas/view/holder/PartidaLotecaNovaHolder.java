@@ -16,10 +16,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 
-	private TextView labelJogo, nomeEquipe1, nomeEquipe2, nomeEmpate;
+	private TextView labelJogo, labelVencedor, nomeEquipe1, nomeEquipe2, nomeEmpate;
 	private RadioButton checkEquipe1, checkEquipe2, checkEmpate;
 	private Context context;
 	private ConfiguracaoLoteca configuracaoLoteca;
@@ -31,6 +32,7 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 	public PartidaLotecaNovaHolder(View itemView, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso, Boolean isEspecial) {
 		super(itemView);
 		labelJogo = itemView.findViewById(R.id.label_jogo);
+		labelVencedor = itemView.findViewById(R.id.label_vencedor);
 		vLinhaDivisoria = itemView.findViewById(R.id.v_linha_divisoria_loteca);
 		nomeEquipe1 = itemView.findViewById(R.id.nome_equipe_1);
 		nomeEquipe2 = itemView.findViewById(R.id.nome_equipe_2);
@@ -46,20 +48,13 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 
 	@Override
 	public void bind(PartidaLotecaDTO partida, int position) {
-		//TODO//
-		//String nomeequipe1 = Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()) + " " + partida.getLegendaAbreviada();
-		//String nomeequipe2 = Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()) + " " + partida.getLegendaAbreviada();
 
-		labelJogo.setText("Jogo " + String.format("%02d", position + 1));
-
-		//if (partida.getEquipe1().getIndicadorSelecao() == null || partida.getEquipe1().getIndicadorSelecao()) {
 		if (isEspecial != null && isEspecial) {
 			nomeEquipe1.setText(Utils.getEquipeNome(partida.getEquipe1().getParametroEquipe()));
 		} else {
 			nomeEquipe1.setText(Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()));
 		}
 
-		//if (partida.getEquipe2().getIndicadorSelecao() == null || partida.getEquipe2().getIndicadorSelecao()) {
 		if (isEspecial != null && isEspecial) {
 			nomeEquipe2.setText(Utils.getEquipeNome(partida.getEquipe2().getParametroEquipe()));
 		} else {
@@ -68,6 +63,7 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 
 		if (configuracaoLoteca != null) {
 			labelJogo.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
+			labelVencedor.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
 			vLinhaDivisoria.setBackgroundColor(context.getColor(configuracaoLoteca.getCorTexto()));
 			checkEquipe1.setButtonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
 			checkEquipe2.setButtonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
@@ -77,28 +73,48 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 			nomeEmpate.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
 		}
 
-		aplicaChecks(partida);
+		String jogo = "Jogo " + String.format("%02d", position + 1);
 
-		boolean sel1 = partida.getEquipe1().getVitoria();
-		boolean sel2 = partida.getEquipe2().getVitoria();
-		boolean selEmpate = partida.getEmpate();
-
-		// resultado (se existir)
 		boolean acerto1 = false;
 		boolean acerto2 = false;
 		boolean acertoEmpate = false;
 
+		//Resultado (se existir)
 		if (resultado != null && resultado.getPartidasLoteca() != null) {
 			PartidaLotecaDTO res = (PartidaLotecaDTO) resultado.getPartidasLoteca().get(position);
 
 			acerto1 = res.getEquipe1() != null && Boolean.TRUE.equals(res.getEquipe1().getVitoria());
 			acerto2 = res.getEquipe2() != null && Boolean.TRUE.equals(res.getEquipe2().getVitoria());
 			acertoEmpate = Boolean.TRUE.equals(res.getEmpate());
+
+			jogo += ":";
+
+			labelVencedor.setVisibility(View.VISIBLE);
+			if (acerto1) {
+				labelVencedor.setText(nomeEquipe1.getText().toString());
+			} else if (acerto2) {
+				labelVencedor.setText(nomeEquipe2.getText().toString());
+			} else {
+				labelVencedor.setText(nomeEmpate.getText().toString());
+			}
 		}
+
+		labelJogo.setText(jogo);
+
+		boolean sel1 = partida.getEquipe1().getVitoria();
+		boolean sel2 = partida.getEquipe2().getVitoria();
+		boolean selEmpate = partida.getEmpate();
 
 		aplicaLegenda(nomeEquipe1, sel1, sel1 && acerto1);
 		aplicaLegenda(nomeEquipe2, sel2, sel2 && acerto2);
 		aplicaLegenda(nomeEmpate, selEmpate, selEmpate && acertoEmpate);
+
+		aplicaChecks(partida);
+
+		//Ultima linha
+		if (position == 13) {
+			vLinhaDivisoria.setVisibility(View.GONE);
+		}
 	}
 
 	private void aplicaChecks(PartidaLotecaDTO partida) {
@@ -107,25 +123,27 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 		checkEquipe2.setChecked(partida.getEquipe2().getVitoria());
 	}
 
-	private void aplicaLegenda(TextView txt, boolean selecionado, boolean acertou) {
+	private void aplicaLegenda(TextView tv, boolean selecionado, boolean acertou) {
 
 		if (acertou) { 									//Acertou palpite
-			txt.setBackground(ContextCompat.getDrawable(context, R.drawable.background_roudend_less_branco));
-			txt.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTextoSelecionado()));
-			txt.setPadding(16, 8, 16, 8);
+			tv.setBackground(ContextCompat.getDrawable(context, R.drawable.background_roudend_less_branco));
+			tv.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTextoSelecionado()));
+			tv.setText(ViewUtils.textCaixaSTDBold(context, "_"+tv.getText().toString()+"_"));
+			tv.setPadding(16, 8, 16, 8);
 		} else if (selecionado && resultado == null) { 	//Escolhido e NÃO apurado
-			txt.setBackground(ContextCompat.getDrawable(context, R.drawable.button_rouded_border_white));
-			txt.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-			txt.setPadding(16, 8, 16, 8);
+			tv.setBackground(ContextCompat.getDrawable(context, R.drawable.button_rouded_border_white));
+			tv.setTextColor(ContextCompat.getColor(context,  configuracaoLoteca.getCorTexto()));
+			tv.setText(ViewUtils.textCaixaSTDBold(context, "_"+tv.getText().toString()+"_"));
+			tv.setPadding(16, 8, 16, 8);
 		} else if (selecionado) { 						//Escolhido e apurado (mas não acertou)
-			txt.setBackground(null);
-			txt.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-			txt.setPadding(0, 0, 0, 0);
+			tv.setBackground(null);
+			tv.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
+			tv.setText(ViewUtils.textCaixaSTDBold(context, "_"+tv.getText().toString()+"_"));
+			tv.setPadding(0, 0, 0, 0);
 		} else { 										//Não escolhido
-			txt.setBackground(null);
-			txt.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-			txt.setPadding(0, 0, 0, 0);
+			tv.setBackground(null);
+			tv.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
+			tv.setPadding(0, 0, 0, 0);
 		}
 	}
-
 }

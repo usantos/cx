@@ -70,9 +70,7 @@ import br.gov.caixa.loterias.apostas.utils.helper.DetalhesMinhasApostasButtonHel
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.AccessibleRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheMinhasApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaNovaAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
-import br.gov.caixa.loterias.apostas.view.holder.PartidaLotecaNovaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class DetalheMinhasApostasActivity extends AppCompatActivity {
@@ -86,7 +84,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
-    private ConstraintLayout clScroll, clResgatePremio, clResgatePremio2, comprovanteLayout, clInformacoesBolao, cl_minhas_apostas;
+    private ConstraintLayout clScroll, clResgatePremio, clResgatePremio2, comprovanteLayout, clInformacoesBolao, cl_loteca_top, cl_loteca_bottom;
 
     private RecyclerView rvFieldsBolao;
 
@@ -94,7 +92,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
     private ImageView validadePremioImg, ivImageDownload, iv_lupa_legenda;
 
-    private View divider, v_linha_loteca;
+    private View divider, vLinhaLoteca, vLinhaLoteca2, vLinhaLoteca3;
 
     private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, horaApostaTxt;
     private TextView containerConcurso;
@@ -104,7 +102,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
     private TextView validadePremioText, validadePremioLabel, gerarConprovanteTxt;
 
-    private TextView tv_label_minhas_apostas, tv_label_legenda;
+    private TextView tvLabelMinhasApostas, tvLabelLegenda, tvLabelLotecaAcertos, tvLotecaAcertos, tvLabelLotecaPremio, tvLotecaPremio;
 
 
     private TipoApostaLinhaView tipoApostaLinhaView;
@@ -270,11 +268,18 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         validadePremioImg = findViewById(R.id.validadePremioImage);
 
         //Loteca
-        cl_minhas_apostas = findViewById(R.id.cl_minhas_apostas);
-        tv_label_minhas_apostas = findViewById(R.id.tv_label_minhas_apostas);
-        tv_label_legenda = findViewById(R.id.tv_label_legenda);
+        cl_loteca_top = findViewById(R.id.cl_loteca_top);
+        cl_loteca_bottom = findViewById(R.id.cl_loteca_bottom);
+        tvLabelMinhasApostas = findViewById(R.id.tv_label_minhas_apostas);
+        tvLabelLegenda = findViewById(R.id.tv_label_legenda);
         iv_lupa_legenda = findViewById(R.id.iv_lupa_legenda);
-        v_linha_loteca = findViewById(R.id.v_linha_loteca);
+        vLinhaLoteca = findViewById(R.id.v_linha_loteca);
+        vLinhaLoteca2 = findViewById(R.id.v_linha_loteca2);
+        tvLabelLotecaAcertos = findViewById(R.id.tv_label_loteca_acertos);
+        tvLotecaAcertos = findViewById(R.id.tv_loteca_acertos);
+        tvLabelLotecaPremio = findViewById(R.id.tv_label_loteca_premio);
+        tvLotecaPremio = findViewById(R.id.tv_loteca_premio);
+        vLinhaLoteca3 = findViewById(R.id.v_linha_loteca3);
 
         setAccessibilityAnchor();
 
@@ -438,10 +443,16 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         validadePremioImg.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
         if (isLoteca()) {
-            tv_label_minhas_apostas.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-            tv_label_legenda.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            tvLabelMinhasApostas.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            tvLabelLegenda.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
             iv_lupa_legenda.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-            v_linha_loteca.setBackgroundResource(estiloMKP.getCorFonteFundoEscuro());
+            vLinhaLoteca.setBackgroundResource(estiloMKP.getCorFonteFundoEscuro());
+            vLinhaLoteca2.setBackgroundResource(estiloMKP.getCorFonteFundoEscuro());
+            tvLabelLotecaAcertos.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            tvLotecaAcertos.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            tvLabelLotecaPremio.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            tvLotecaPremio.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            vLinhaLoteca3.setBackgroundResource(estiloMKP.getCorFonteFundoEscuro());
         }
     }
 
@@ -1001,17 +1012,19 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
     private void preencheCentroLoteca() {
         //Top
-        cl_minhas_apostas.setVisibility(View.VISIBLE);
+        cl_loteca_top.setVisibility(View.VISIBLE);
         iv_lupa_legenda.setOnClickListener(v-> dialogLegendaLoteca());
 
         RecyclerView recyclerView = findViewById(R.id.rv_centro_detalhe_minhas_apostas);
         if (isBolao()) {
             recyclerView.setAdapter(new PartidasLotecaNovaAdapter(getPartidasBolao(), this,
-                    new ConfiguracaoLoteca(estiloMKP.getCorFonteFundoEscuro(), estiloMKP.getCorEscura(), R.color.branco), getResultadoConcurso()) {
+                    new ConfiguracaoLoteca(estiloMKP.getCorFonteFundoEscuro(), estiloMKP.getCorEscura(), R.color.branco), getResultadoConcurso(),
+                    isEspecial(aposta.getTipoConcurso().getValor())) {
             });
         } else {
             recyclerView.setAdapter(new PartidasLotecaNovaAdapter(getPartidas(), this,
-                    new ConfiguracaoLoteca(estiloMKP.getCorFonteFundoEscuro(), estiloMKP.getCorEscura(), R.color.branco), getResultadoConcurso()) {
+                    new ConfiguracaoLoteca(estiloMKP.getCorFonteFundoEscuro(), estiloMKP.getCorEscura(), R.color.branco), getResultadoConcurso(),
+                    isEspecial(aposta.getTipoConcurso().getValor())) {
             });
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -1019,6 +1032,25 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         recyclerView.setFocusable(Boolean.FALSE);
 
         //Bottom
+        if (getResultadoConcurso() != null) {
+            cl_loteca_bottom.setVisibility(View.VISIBLE);
+            if (isBolao()) {
+                tvLotecaAcertos.setText(calculaAcertos(getResultadoConcurso(), getPartidasBolao())) ;
+            } else {
+                tvLotecaAcertos.setText(calculaAcertos(getResultadoConcurso(), getPartidas()));
+            }
+
+            if (chamaServicoApostaDetalhePremio(aposta)) {
+                tvLabelLotecaPremio.setVisibility(View.VISIBLE);
+                tvLotecaPremio.setVisibility(View.VISIBLE);
+
+                BigDecimal valorPremio = BigDecimal.ZERO;
+                if (detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null) {
+                    valorPremio = detalhesPremioDTO.getPremio().getValorLiquido();
+                }
+                tvLotecaPremio.setText(ViewUtils.getMoedaFormat(valorPremio));
+            }
+        }
     }
 
     private List<PartidaLotecaDTO> getPartidasBolao() {
@@ -1034,12 +1066,34 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         return aposta.getPartidasLoteca();
     }
 
-    public ResultadoConcursoDTO getResultadoConcurso(){
+    private ResultadoConcursoDTO getResultadoConcurso(){
         if (listResultadoConcursoDTO != null && !listResultadoConcursoDTO.isEmpty()) {
             return this.listResultadoConcursoDTO.get(0);
         }
-        //return new ResultadoConcursoDTO();
         return null;
+    }
+
+    private String calculaAcertos(ResultadoConcursoDTO resultado, List<PartidaLotecaDTO> partidas) {
+        Integer acertos = 0;
+        if (resultado != null && resultado.getPartidasLoteca() != null) {
+            for (int i = 0; i < resultado.getPartidasLoteca().toArray().length; i++) {
+                PartidaLotecaDTO res = (PartidaLotecaDTO) resultado.getPartidasLoteca().get(i);
+                if ((res.getEquipe1().getVitoria() && partidas.get(i).getEquipe1().getVitoria()) ||
+                    (res.getEquipe2().getVitoria() && partidas.get(i).getEquipe2().getVitoria()) ||
+                    (res.getEmpate() && partidas.get(i).getEmpate())) {
+                    acertos++;
+                }
+            }
+        }
+        String acertosString = "nenhum";
+        if (acertos > 0) {
+            if (acertos == 1) {
+                acertosString = acertos.toString() + " " + getString(R.string.palpite);
+            } else {
+                acertosString = acertos.toString() + " " + getString(R.string.palpite) + "s";
+            }
+        }
+        return acertosString;
     }
 
     private void dialogLegendaLoteca() {

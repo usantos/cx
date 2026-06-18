@@ -612,20 +612,20 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         //SERVICO /apostas/{id}/comprovante-premio Informacao COMBO está errada
                         result.getPayload().getAposta().setCombo(apostaDTO.getCombo());
 
-                        boolean isTeimosinha = result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0;
-                        boolean isBolao = result.getPayload().getAposta().getIndicadorCotaBolao();
-                        boolean isSimples = !isTeimosinha && !isBolao;
-                        boolean isLoteca = result.getPayload().getAposta().getModalidade() == ModalidadeEnum.LOTECA;
-
-                        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
+//                        boolean isTeimosinha = result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0;
+//                        boolean isBolao = result.getPayload().getAposta().getIndicadorCotaBolao();
+//                        boolean isSimples = !isTeimosinha && !isBolao;
+//                        boolean isLoteca = result.getPayload().getAposta().getModalidade() == ModalidadeEnum.LOTECA;
+//
+//                        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
                             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
                                     ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
                             startActivity(intent);
-                        } else {
-                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
-                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
-                            startActivity(intent);
-                        }
+//                        } else {
+//                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+//                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+//                            startActivity(intent);
+//                        }
                     }
 
                     @Override
