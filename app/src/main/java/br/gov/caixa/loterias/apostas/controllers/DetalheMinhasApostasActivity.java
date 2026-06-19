@@ -27,6 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -588,7 +591,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                apresentaErro();
+                apresentaErro(error);
             }
         });
     }
@@ -607,16 +610,24 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                apresentaErro();
+                apresentaErro(error);
             }
         });
     }
 
-    private void apresentaErro() {
-
-        ViewUtils.alertFecharCustom(this, this.getString(R.string.erro_minas_apostas_teimosinha),
-                () -> { this.finish(); }
-        );
+    private void apresentaErro(VolleyError error) {
+        boolean emApuracao = error.networkResponse != null && error.networkResponse.statusCode == 404 && error.networkResponse.data != null;
+        if (emApuracao) {
+            try {
+                String codigo = new JSONObject(new String(error.networkResponse.data)).getString("codigo");
+                emApuracao = codigo.equals("001005");
+            } catch (JSONException e) {
+                emApuracao = new String(error.networkResponse.data).matches("(?s).*\"codigo\"\\s*:\\s*\"001005\".*");
+            }
+        }
+        String mensagem = emApuracao ? this.getString(R.string.erro_minhas_apostas_nao_apurado)
+                                     : this.getString(R.string.erro_minhas_apostas_teimosinha);
+        ViewUtils.alertFecharCustom(this, mensagem, this::finish);
     }
 
     private void preencheCentroTeimosinha() {
