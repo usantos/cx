@@ -93,14 +93,16 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         TextView selectText = view.findViewById(R.id.selecioneText);
         selectText.requestFocus();
         selectText.setHint(getString(R.string.titulo));
-        picker_tipo_concurso = view.findViewById(R.id.picker_tipo_concurso);
-        adicionarCarrinhoFavoritosButton = view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
+
+        picker_tipo_concurso                    = view.findViewById(R.id.picker_tipo_concurso);
+        adicionarCarrinhoFavoritosButton        = view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
         cancelarModalFavoritosAddCarrinhoButton = view.findViewById(R.id.cancelarModalFavoritosAddCarrinhoButton);
-        selecioneConcursoButton = view.findViewById(R.id.selecioneConcursoButton);
+        selecioneConcursoButton                 = view.findViewById(R.id.selecioneConcursoButton);
+        selecioneQntTeimosinhaButton            = view.findViewById(R.id.selecioneQntTeimosinhaButton);
+        checkBox                                = view.findViewById(R.id.checkbox_aposta_espelho);
+
         selecioneConcursoButton.setHint("Recolhido");
-        selecioneQntTeimosinhaButton = view.findViewById(R.id.selecioneQntTeimosinhaButton);
         selecioneQntTeimosinhaButton.setHint("Recolhido");
-        checkBox = view.findViewById(R.id.checkbox_aposta_espelho);
 
         if (txtBotao != null){
             adicionarCarrinhoFavoritosButton.setText(txtBotao);
@@ -114,7 +116,6 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
                     && (arrayConcursos.get( 0 ).getParametroJogo().getTeimosinhas().size()) > 0 ){
                 selecioneConcursoButton.setVisibility( View.GONE );
                 apresentaQtdTeimosinha(TipoConcursoEnum.NORMAL);
-                habilitaBotaoAdicionar(true);
             }
         } else {
             if(arrayConcursos.get( 0 ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL
@@ -162,7 +163,8 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
 
         selecioneQntTeimosinhaButton.setOnClickListener(view1 -> {
-            if (picker_qnt_teimosinhas.getVisibility() == View.VISIBLE) {
+            habilitaBotaoAdicionar(true);
+            if (picker_qnt_teimosinhas.getVisibility() == View.VISIBLE && selecioneQntTeimosinhaButton.getHint().equals("Expandido")) {
                 selecioneQntTeimosinhaButton.setHint("Recolhido");
                 setarAlturaConteudo(0, picker_qnt_teimosinhas);
                 picker_qnt_teimosinhas.setVisibility(View.GONE);
