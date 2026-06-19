@@ -1620,7 +1620,8 @@
     <string name="label_acertos_dois_pontos">Acertos:</string>
     <string name="label_acertos_nenhum">nenhum</string>
     <string name="label_premio_dois_pontos">Prêmio:</string>
-    <string name="erro_minas_apostas_teimosinha">Não conseguimos processar sua solicitação.\nTente novamente!</string>
+    <string name="erro_minhas_apostas_teimosinha">Não conseguimos processar sua solicitação.\nTente novamente!</string>
+    <string name="erro_minhas_apostas_nao_apurado">Concurso em apuração. A conferência de apostas estará disponível após a divulgação dos resultados.</string>
     <string name="label_cidade_uf">Cidade/UF:</string>
     <string name="label_valor_cota">Valor da Cota:</string>
     <string name="label_tarifa_servico">Tarifa de Serviço:</string>
