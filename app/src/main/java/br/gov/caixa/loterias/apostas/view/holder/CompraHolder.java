@@ -52,7 +52,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		itemComprasContentModalideLinearLayout = itemView.findViewById(R.id.itemComprasContentModalideLinearLayout);
 		tvTeimosinhas = itemView.findViewById(R.id.tv_teimosinhas);
 		//tagBolao = itemView.findViewById(R.id.image_tag_bolao);
-		tipoApostaLinhaView = itemView.findViewById(R.id.tipo_aposta_linha_compras);
+		tipoApostaLinhaView = itemView.findViewById(R.id.talvHeader);
 		this.activity = activity;
 	}
 

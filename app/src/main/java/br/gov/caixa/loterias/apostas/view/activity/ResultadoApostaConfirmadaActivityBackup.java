@@ -1,4 +1,4 @@
-package br.gov.caixa.loterias.apostas.controllers;
+package br.gov.caixa.loterias.apostas.view.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,6 +24,11 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.ResgatePixActivity;
+import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
+import br.gov.caixa.loterias.apostas.controllers.ResgatePremioLotericaActivity;
+import br.gov.caixa.loterias.apostas.controllers.ResgatePremioLotericaAgenciaActivity;
+import br.gov.caixa.loterias.apostas.controllers.SettingToolbarActivity;
 import br.gov.caixa.loterias.apostas.model.bean.OpcaoResgatePremio;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
@@ -52,7 +57,7 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 
-public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
+public class ResultadoApostaConfirmadaActivityBackup extends SettingToolbarActivity {
     public final static String DETALHES_PREMIO_DTO_EXTRA = "detalhesPremioDTO";
     public final static String COMPROVANTE_EXTRA = "comprovante";
 
@@ -163,7 +168,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         }
 
         createListPremiacao();
-        trataFormasDeResgate();
+//        trataFormasDeResgate();
         RateUtils.avaliarAplicativo(this, true);
         setResult(RESULT_FIRST_USER);
     }
@@ -242,7 +247,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             public void onResponse(CodigoResgateDTOResponse result) {
                 alertDialog.dismiss();
                 if(isLoterica){
-                    Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, ResgatePremioLotericaActivity.class);
+                    Intent it = new Intent(ResultadoApostaConfirmadaActivityBackup.this, ResgatePremioLotericaActivity.class);
                     it.putExtra(DETALHES, detalhesPremioDTO);
                     it.putExtra(COMPROVANTE, comprovante);
                     it.putExtra(CODIGO_RESGATE, result.getPayload());
@@ -260,7 +265,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 alertDialog.dismiss();
-                String msgError = MensagensNetwork.setMensagem(error, ResultadoApostaConfirmadaActivity.this);
+                String msgError = MensagensNetwork.setMensagem(error, ResultadoApostaConfirmadaActivityBackup.this);
                 ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, msgError, getContext().getResources().getString( R.string.ok ));
             }
         });
@@ -271,7 +276,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     }
 
     protected void clickBotaoAposteAgora() {
-        Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, PrincipalActivity.class);
+        Intent it = new Intent(ResultadoApostaConfirmadaActivityBackup.this, PrincipalActivity.class);
         it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
         startActivity(it);
@@ -286,42 +291,42 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         }
     }
 
-    private void trataFormasDeResgate() {
-        ArrayList<OpcaoResgatePremio> list = new ArrayList<>();
-        for (int i = 0; i < detalhesPremioDTO.getMeiosResgate().size(); i++){
-            TipoPagamentoDTO meioPagamento = detalhesPremioDTO.getMeiosResgate().get(i);
-            if (meioPagamento.getId().equals(MeioPagamentoUtil.PIX)) {
-                list.add(new OpcaoResgatePremio(getDrawable(R.drawable.icone_do_pix), getString(R.string.label_pix), v -> {
-                    Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);
-                    intent.putExtra(ResgatePixActivity.ARG_VALOR, detalhesPremioDTO.getPremio().getValorLiquido());
-                    intent.putExtra(ResgatePixActivity.ARG_ID_APOSTA, detalhesPremioDTO.getAposta().getId());
-                    startActivity(intent);
-                }));
-            } else if (meioPagamento.getId().equals(MeioPagamentoUtil.MERCADO_PAGO)) {
-                list.add(new OpcaoResgatePremio(null, getString(R.string.label_mercado_pago), v -> {
-                    Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
-                    intent.putExtra( getResources().getString(R.string.extra_valor_premio), ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
-                    intent.putExtra( getResources().getString(R.string.extra_id_aposta), detalhesPremioDTO.getAposta().getId() );
-                    startActivityForResult(intent,RESGATOU_MERCADO_PAGO);
-                }));
-            } else if (meioPagamento.getId().equals(MeioPagamentoUtil.AGENCIA)) {
-                list.add(new OpcaoResgatePremio(null, getString(R.string.label_agencia_maiuscula), v -> {
-                    apresentaOrientacoesResgate(false);
-                }));
-            } else if (meioPagamento.getId().equals(MeioPagamentoUtil.LOTERICA)) {
-                list.add(new OpcaoResgatePremio(null, getString(R.string.label_loterica), v -> {
-                    apresentaOrientacoesResgate(true);
-                }));
-            }
-        }
-
-        listaOpcaoResgate.setLayoutManager(new LinearLayoutManager(this));
-        listaOpcaoResgate.setAdapter(new OpcaoResgatePremioAdapter(list));
-
-        if (detalhesPremioDTO.getMensagemInformativaIR() != null && !detalhesPremioDTO.getMensagemInformativaIR().isEmpty()){
-            apresentaInfoResgateIR();
-        }
-    }
+//    private void trataFormasDeResgate() {
+//        ArrayList<OpcaoResgatePremio> list = new ArrayList<>();
+//        for (int i = 0; i < detalhesPremioDTO.getMeiosResgate().size(); i++){
+//            TipoPagamentoDTO meioPagamento = detalhesPremioDTO.getMeiosResgate().get(i);
+//            if (meioPagamento.getId().equals(MeioPagamentoUtil.PIX)) {
+//                list.add(new OpcaoResgatePremio(ContextCompat.getDrawable(getContext(), R.drawable.icone_do_pix), getString(R.string.label_pix), v -> {
+//                    Intent intent = new Intent( ResultadoApostaConfirmadaActivityBackup.this, ResgatePixActivity.class);
+//                    intent.putExtra(ResgatePixActivity.ARG_VALOR, detalhesPremioDTO.getPremio().getValorLiquido());
+//                    intent.putExtra(ResgatePixActivity.ARG_ID_APOSTA, detalhesPremioDTO.getAposta().getId());
+//                    startActivity(intent);
+//                }));
+//            } else if (meioPagamento.getId().equals(MeioPagamentoUtil.MERCADO_PAGO)) {
+//                list.add(new OpcaoResgatePremio(null, getString(R.string.label_mercado_pago), v -> {
+//                    Intent intent = new Intent( ResultadoApostaConfirmadaActivityBackup.this, JogosConfirmadosPremioMercadoPagoActivity.class);
+//                    intent.putExtra( getResources().getString(R.string.extra_valor_premio), ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
+//                    intent.putExtra( getResources().getString(R.string.extra_id_aposta), detalhesPremioDTO.getAposta().getId() );
+//                    startActivityForResult(intent,RESGATOU_MERCADO_PAGO);
+//                }));
+//            } else if (meioPagamento.getId().equals(MeioPagamentoUtil.AGENCIA)) {
+//                list.add(new OpcaoResgatePremio(null, getString(R.string.label_agencia_maiuscula), v -> {
+//                    apresentaOrientacoesResgate(false);
+//                }));
+//            } else if (meioPagamento.getId().equals(MeioPagamentoUtil.LOTERICA)) {
+//                list.add(new OpcaoResgatePremio(null, getString(R.string.label_loterica), v -> {
+//                    apresentaOrientacoesResgate(true);
+//                }));
+//            }
+//        }
+//
+//        listaOpcaoResgate.setLayoutManager(new LinearLayoutManager(this));
+//        listaOpcaoResgate.setAdapter(new OpcaoResgatePremioAdapter(list));
+//
+//        if (detalhesPremioDTO.getMensagemInformativaIR() != null && !detalhesPremioDTO.getMensagemInformativaIR().isEmpty()){
+//            apresentaInfoResgateIR();
+//        }
+//    }
 
     private boolean isBolao(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         return aposta != null && aposta.getIndicadorCotaBolao() != null && aposta.getIndicadorCotaBolao();
@@ -353,7 +358,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     }
 
     private Context getContext() {
-        return ResultadoApostaConfirmadaActivity.this;
+        return ResultadoApostaConfirmadaActivityBackup.this;
     }
 
 }

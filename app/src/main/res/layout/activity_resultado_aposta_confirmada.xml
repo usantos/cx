@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/backgroundTopbar"
+            android:id="@+id/clBackgroundTopbar"
             android:layout_width="90dp"
             android:layout_height="56dp">
 
@@ -28,7 +28,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/imgTrevoResultado"
+                android:id="@+id/ivTrevoResultado"
                 android:layout_width="22sp"
                 android:layout_height="22dp"
                 android:layout_gravity="center_vertical"
@@ -37,7 +37,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            app:layout_constraintLeft_toRightOf="@id/backgroundTopbar"
+            app:layout_constraintLeft_toRightOf="@id/clBackgroundTopbar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/tvTituloModalidade"
@@ -52,10 +52,10 @@
             android:id="@+id/clFocoConcurso"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintLeft_toLeftOf="@id/tvConcurso"
-            app:layout_constraintRight_toRightOf="@id/tvConcurso"
+            app:layout_constraintLeft_toLeftOf="@id/tvFaixaConcursos"
+            app:layout_constraintRight_toRightOf="@id/tvFaixaConcursos"
             app:layout_constraintTop_toTopOf="@id/tvConcursos"
-            app:layout_constraintBottom_toBottomOf="@id/tvConcurso"/>
+            app:layout_constraintBottom_toBottomOf="@id/tvFaixaConcursos"/>
 
         <TextView
             android:textColor="@color/branco"
@@ -67,13 +67,13 @@
             android:layout_width="wrap_content"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tvConcurso"
+            app:layout_constraintBottom_toTopOf="@id/tvFaixaConcursos"
             app:layout_constraintVertical_chainStyle="packed"
             android:text="@string/txt_contest"/>
         <TextView
             android:textColor="@color/branco"
             android:textSize="16sp"
-            android:id="@+id/tvConcurso"
+            android:id="@+id/tvFaixaConcursos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +85,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         app:layout_constraintTop_toBottomOf="@id/clTopbarModalidade"
-        android:id="@+id/topoResultadoPremioLinearLayout"
+        android:id="@+id/clTopoResultadoPremio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mega_verde_escuro_mkp"
@@ -93,7 +93,7 @@
 
         <TextView
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/idPodeComemorar"
+            android:id="@+id/tvPodeComemorar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_width="match_parent"
@@ -107,10 +107,10 @@
             android:fontFamily="@font/caixa_std_regular"/>
 
         <TextView
-            app:layout_constraintTop_toBottomOf="@id/idPodeComemorar"
+            app:layout_constraintTop_toBottomOf="@id/tvPodeComemorar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:id="@+id/valorPremioTituloTextView"
+            android:id="@+id/tvPremioTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -125,7 +125,7 @@
     
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clMidLayout"
-        app:layout_constraintTop_toBottomOf="@id/topoResultadoPremioLinearLayout"
+        app:layout_constraintTop_toBottomOf="@id/clTopoResultadoPremio"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
@@ -133,15 +133,20 @@
         android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
-            tools:listitem="@layout/layout_bet_contest"
-            android:layout_margin="16dp"
-            android:id="@+id/rvConcursos"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:minHeight="80dp"
+            app:layout_constraintHeight_min="80dp"
+            app:layout_constraintHeight_max="200dp"
+            app:layout_constraintHeight_default="wrap"
+            tools:listitem="@layout/layout_item_corpo"
             tools:itemCount="2"
-            android:layout_width="match_parent"
+            android:layout_margin="16dp"
+            android:id="@+id/rvConcursos"
+            android:layout_width="0dp"
             android:layout_height="0dp"/>
+
 
         <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
             android:layout_marginTop="16dp"
@@ -149,7 +154,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/tipo_aposta_linha_compras"
+            android:id="@+id/talvHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -166,22 +171,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
-        <TextView
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:textAlignment="center"
-            android:text="@string/txt_choose_your_reward"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:id="@+id/tvEscolhaPremio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
         <androidx.recyclerview.widget.RecyclerView
             tools:listitem="@layout/layout_bet_reward"
             app:layout_constraintVertical_bias="0"
-            app:layout_constraintTop_toBottomOf="@id/tvEscolhaPremio"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -9,25 +9,24 @@ import br.gov.caixa.loterias.apostas.model.bean.OpcaoResgatePremio;
 
 public class OpcaoResgatePremioHolder extends LoteriasHolder<OpcaoResgatePremio>{
 	private View view;
-	private ImageView icon;
-	private TextView descricao;
+	private ImageView ivIcon;
+	private TextView tvTitle;
+	private TextView tvSubtitle;
 
 	public OpcaoResgatePremioHolder(View view){
 		super(view);
 		this.view = view;
-		this.icon = view.findViewById(R.id.iconOpcao);
-		this.descricao = view.findViewById(R.id.descricaoOpcao);
+		this.ivIcon = view.findViewById(R.id.ivIcon);
+		this.tvTitle = view.findViewById(R.id.tvTitle);
+		this.tvSubtitle = view.findViewById(R.id.tvSubtitle);
 	}
 
 
 	@Override
 	public void bind(OpcaoResgatePremio item, int position) {
-		if (item.getIcon() != null){
-			icon.setImageDrawable(item.getIcon());
-		} else {
-			icon.setVisibility(View.GONE);
-		}
-		descricao.setText(item.getDescricao());
+		ivIcon.setImageDrawable(item.getIcon());
+		tvTitle.setText(item.getTitle());
+		tvSubtitle.setText(item.getSubtitle());
 		view.setOnClickListener(item.getListener());
 	}
 }
