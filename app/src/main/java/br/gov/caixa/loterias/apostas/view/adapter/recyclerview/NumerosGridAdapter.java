@@ -98,7 +98,8 @@ public class NumerosGridAdapter extends RecyclerView.Adapter<NumerosGridAdapter.
 
         boolean isIntersection;
         if (intersectionS7) {
-            isIntersection = intersectionNumbers != null && intersectionNumbers.get((position<7) ? position : (position-7)).equals(number);
+            int indice = position % 7;
+            isIntersection = intersectionNumbers != null && intersectionNumbers.get(indice).equals(number);
         } else {
             isIntersection = intersectionNumbers != null && intersectionNumbers.contains(number);
         }
