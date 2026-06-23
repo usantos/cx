@@ -357,8 +357,23 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
+                <LinearLayout
+                    android:id="@+id/ll_legenda_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:importantForAccessibility="yes"
+                    android:contentDescription="@string/acessibilidade_legenda_botao"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
                 <TextView
                     android:id="@+id/tv_label_legenda"
+                    android:importantForAccessibility="no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/caixa_std_regular"
@@ -370,18 +385,19 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <ImageView
-                    android:importantForAccessibility="no"
                     android:id="@+id/iv_lupa_legenda"
+                    android:importantForAccessibility="no"
                     android:layout_width="19dp"
                     android:layout_height="19dp"
                     android:fontFamily="@font/caixa_std_regular"
                     android:src="@drawable/lupa_legenda"
                     app:tint="@color/black"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginEnd="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />
+                </LinearLayout>
 
                 <View
                     android:id="@+id/v_linha_loteca"

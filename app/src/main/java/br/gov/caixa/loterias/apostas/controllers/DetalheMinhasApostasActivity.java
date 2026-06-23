@@ -85,6 +85,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
     private ConstraintLayout clScroll, clResgatePremio, clResgatePremio2, comprovanteLayout, clInformacoesBolao, cl_loteca_top, cl_loteca_bottom;
+    private LinearLayout llLegendaButton;
 
     private RecyclerView rvFieldsBolao;
 
@@ -273,6 +274,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         tvLabelMinhasApostas = findViewById(R.id.tv_label_minhas_apostas);
         tvLabelLegenda = findViewById(R.id.tv_label_legenda);
         iv_lupa_legenda = findViewById(R.id.iv_lupa_legenda);
+        llLegendaButton = findViewById(R.id.ll_legenda_button);
         vLinhaLoteca = findViewById(R.id.v_linha_loteca);
         vLinhaLoteca2 = findViewById(R.id.v_linha_loteca2);
         tvLabelLotecaAcertos = findViewById(R.id.tv_label_loteca_acertos);
@@ -1013,7 +1015,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     private void preencheCentroLoteca() {
         //Top
         cl_loteca_top.setVisibility(View.VISIBLE);
-        iv_lupa_legenda.setOnClickListener(v-> dialogLegendaLoteca());
+        llLegendaButton.setOnClickListener(v-> dialogLegendaLoteca());
 
         RecyclerView recyclerView = findViewById(R.id.rv_centro_detalhe_minhas_apostas);
         if (isBolao()) {
