@@ -118,8 +118,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         String fim = "";
         if(viewModel.getDetalhesPremio().getAposta().getConcursoAlvo()>0
-                && viewModel.getDetalhesPremio().getAposta().getConcursoAlvo()
-                != viewModel.getDetalhesPremio().getAposta().getConcursoInicial()) {
+                && !viewModel.getDetalhesPremio().getAposta().getConcursoAlvo().toString()
+                .equals(viewModel.getDetalhesPremio().getAposta().getConcursoInicial().toString())) {
             fim = " - " + viewModel.getDetalhesPremio().getAposta().getConcursoAlvo().toString();
         }
         tvConcurso.setText(String.format("%s%s", viewModel.getDetalhesPremio().getAposta().getConcursoInicial().toString(), fim));

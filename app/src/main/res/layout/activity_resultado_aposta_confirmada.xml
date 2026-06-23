@@ -157,7 +157,6 @@
             android:id="@+id/talvHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
             android:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

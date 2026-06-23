@@ -108,6 +108,12 @@ public class ResultadoApostaConfirmadaViewModel extends ViewModel {
             posFixQtd = " (" + faixa.getQuantidadeAcertos() + " vezes)";
         }
 
-        return faixa.getDescricaoAcerto() + posFixQtd;
+        String nfx = faixa.getDescricaoAcerto();
+        if (nfx.contains("1º") || nfx.contains("2º")){
+            nfx = nfx.replace("1º", "1º Sorteio")
+                    .replace("2º", "2º Sorteio");
+        }
+
+        return nfx + posFixQtd;
     }
 }
