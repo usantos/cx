@@ -103,13 +103,11 @@ public class ResultadoApostaConfirmadaViewModel extends ViewModel {
     }
 
     private String getAcertosNormalized(FaixaPremiadaDTO faixa) {
-        String posFixAcertos = faixa.getQuantidadeAcertos() >= 2 ? " acertos" : " acerto";
-
         String posFixQtd = "";
-        if (faixa.getQtd() >= 2) {
-            posFixQtd = " (" + faixa.getQtd() + " vezes)";
+        if (faixa.getQuantidadeAcertos() >= 2) {
+            posFixQtd = " (" + faixa.getQuantidadeAcertos() + " vezes)";
         }
 
-        return faixa.getQuantidadeAcertos() + posFixAcertos + posFixQtd;
+        return faixa.getDescricaoAcerto() + posFixQtd;
     }
 }

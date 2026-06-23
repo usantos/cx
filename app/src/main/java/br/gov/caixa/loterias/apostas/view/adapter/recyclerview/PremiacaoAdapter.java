@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class PremiacaoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int TYPE_CORPO = 1;
     private static final int TYPE_DIVIDER = 2;
 
-    private EstiloModalidadeMKP estiloModalidadeMKP;
+    private static EstiloModalidadeMKP estiloModalidadeMKP;
 
     private List<ItemLoteria> itens = new ArrayList<>();
 
@@ -45,6 +46,7 @@ public class PremiacaoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return new TituloViewHolder(view);
         } else if (viewType == TYPE_DIVIDER) {
             View view = inflater.inflate(R.layout.layout_item_divider, parent, false);
+            view.setBackgroundColor(ContextCompat.getColor(parent.getContext(), estiloModalidadeMKP.getCorFonteFundoClaro()));
             return new DividerViewHolder(view);
         } else {
             View view = inflater.inflate(R.layout.layout_item_corpo, parent, false);
@@ -67,7 +69,7 @@ public class PremiacaoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void submitColor(EstiloModalidadeMKP estiloModalidadeMKP) {
-        this.estiloModalidadeMKP = estiloModalidadeMKP;
+        PremiacaoAdapter.estiloModalidadeMKP = estiloModalidadeMKP;
     }
 
     static class DividerViewHolder extends RecyclerView.ViewHolder {
@@ -82,6 +84,7 @@ public class PremiacaoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public TituloViewHolder(@NonNull View itemView) {
             super(itemView);
             this.tvConcurso = itemView.findViewById(R.id.tvContestTitle);
+            tvConcurso.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorFonteFundoClaro()));
         }
 
         void bind(ItemLoteria.Titulo item) {
@@ -96,6 +99,8 @@ public class PremiacaoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(itemView);
             tvConcurrency = itemView.findViewById(R.id.tvConcurrency);
             tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvConcurrency.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorFonteFundoClaro()));
+            tvDescription.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorFonteFundoClaro()));
         }
 
         void bind(ItemLoteria.Corpo item) {

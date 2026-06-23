@@ -17,7 +17,7 @@ import br.gov.caixa.loterias.apostas.view.holder.OpcaoResgatePremioHolder;
 
 
 public class OpcaoResgatePremioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<OpcaoResgatePremio> list;
+    private final List<OpcaoResgatePremio> list;
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_BODY = 1;
