@@ -125,25 +125,34 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 
 	private void aplicaLegenda(TextView tv, boolean selecionado, boolean acertou) {
 
+		String textoOriginal = tv.getText().toString();
+		String descricaoAcessibilidade = textoOriginal;
+
 		if (acertou) { 									//Acertou palpite
 			tv.setBackground(ContextCompat.getDrawable(context, R.drawable.background_roudend_less_branco));
 			tv.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTextoSelecionado()));
 			tv.setText(ViewUtils.textCaixaSTDBold(context, "_"+tv.getText().toString()+"_"));
 			tv.setPadding(16, 8, 16, 8);
+			descricaoAcessibilidade = textoOriginal + ", caixa branca sólida";
 		} else if (selecionado && resultado == null) { 	//Escolhido e NÃO apurado
 			tv.setBackground(ContextCompat.getDrawable(context, R.drawable.button_rouded_border_white));
 			tv.setTextColor(ContextCompat.getColor(context,  configuracaoLoteca.getCorTexto()));
 			tv.setText(ViewUtils.textCaixaSTDBold(context, "_"+tv.getText().toString()+"_"));
 			tv.setPadding(16, 8, 16, 8);
+			descricaoAcessibilidade = textoOriginal + ", caixa com borda";
 		} else if (selecionado) { 						//Escolhido e apurado (mas não acertou)
 			tv.setBackground(null);
 			tv.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
 			tv.setText(ViewUtils.textCaixaSTDBold(context, "_"+tv.getText().toString()+"_"));
 			tv.setPadding(0, 0, 0, 0);
+			descricaoAcessibilidade = textoOriginal + ", negrito sem borda";
 		} else { 										//Não escolhido
 			tv.setBackground(null);
 			tv.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
 			tv.setPadding(0, 0, 0, 0);
+			descricaoAcessibilidade = textoOriginal; // normal
 		}
+
+		tv.setContentDescription(descricaoAcessibilidade);
 	}
 }

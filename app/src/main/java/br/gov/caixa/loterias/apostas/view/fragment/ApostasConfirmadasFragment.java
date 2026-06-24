@@ -619,7 +619,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 //
 //                        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
                             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
-                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+                                    DetalheMinhasApostasActivity.ARG_DETALHES_PREMIO, result.getPayload());
                             startActivity(intent);
 //                        } else {
 //                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
@@ -674,7 +674,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
 //        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
-                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+                    DetalheMinhasApostasActivity.ARG_COMPROVANTE, comprovante);
             startActivity(intent);
 //        } else {
 //            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
