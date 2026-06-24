@@ -117,13 +117,20 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         tvTituloModalidade.setText(descricaoModalidade);
 
         String fim = "";
+        if (viewModel.getDetalhesPremio().getAposta().getQuantidadeTeimosinhas() > 0) {
+            tvConcursos.setText(R.string.txt_concursos);
+            fim = viewModel.getConcursoRange();
+        }
+
         if(viewModel.getDetalhesPremio().getAposta().getConcursoAlvo()>0
                 && !viewModel.getDetalhesPremio().getAposta().getConcursoAlvo().toString()
                 .equals(viewModel.getDetalhesPremio().getAposta().getConcursoInicial().toString())) {
-            fim = " - " + viewModel.getDetalhesPremio().getAposta().getConcursoAlvo().toString();
+            fim = viewModel.getDetalhesPremio().getAposta().getConcursoInicial().toString()
+                + " - " + viewModel.getDetalhesPremio().getAposta().getConcursoAlvo().toString();
             tvConcursos.setText(R.string.txt_concursos);
         }
-        tvConcurso.setText(String.format("%s%s", viewModel.getDetalhesPremio().getAposta().getConcursoInicial().toString(), fim));
+
+        tvConcurso.setText(fim);
 
         if (viewModel.getDetalhesPremio().getPremio().getValorLiquido() != null && !(BigDecimal.ZERO.compareTo(viewModel.getDetalhesPremio().getPremio().getValorLiquido()) == 0)) {
             tvPremioTitulo.setText(getResources().getString(R.string.label_voce_foi_premiado).replace(getResources().getString(R.string.chave_valor_premio_chave), ViewUtils.getMoedaFormat(viewModel.getDetalhesPremio().getPremio().getValorLiquido())));

@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.viewModel;
 
+import android.util.Pair;
+
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -115,5 +117,12 @@ public class ResultadoApostaConfirmadaViewModel extends ViewModel {
         }
 
         return nfx + posFixQtd;
+    }
+
+    public String getConcursoRange() {
+        ConcursoPremiadoDTO primeiro = detalhesPremio.getPremio().getConcursos().get(0);
+        ConcursoPremiadoDTO ultimo = detalhesPremio.getPremio().getConcursos().get(detalhesPremio.getPremio().getConcursos().size() -1);
+
+        return primeiro.getConcurso().getNumero().toString() +  " - " + ultimo.getConcurso().getNumero().toString();
     }
 }
