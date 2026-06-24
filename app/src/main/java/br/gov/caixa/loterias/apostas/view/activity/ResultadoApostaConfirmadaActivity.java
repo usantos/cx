@@ -116,7 +116,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         }
         tvTituloModalidade.setText(descricaoModalidade);
 
-        String fim = "";
+        String fim = viewModel.getDetalhesPremio().getAposta().getConcursoAlvo().toString();
         if (viewModel.getDetalhesPremio().getAposta().getQuantidadeTeimosinhas() > 0) {
             tvConcursos.setText(R.string.txt_concursos);
             fim = viewModel.getConcursoRange();
