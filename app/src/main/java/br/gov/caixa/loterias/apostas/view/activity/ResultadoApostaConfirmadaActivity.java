@@ -121,6 +121,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                 && !viewModel.getDetalhesPremio().getAposta().getConcursoAlvo().toString()
                 .equals(viewModel.getDetalhesPremio().getAposta().getConcursoInicial().toString())) {
             fim = " - " + viewModel.getDetalhesPremio().getAposta().getConcursoAlvo().toString();
+            tvConcursos.setText(R.string.txt_concursos);
         }
         tvConcurso.setText(String.format("%s%s", viewModel.getDetalhesPremio().getAposta().getConcursoInicial().toString(), fim));
 
@@ -265,7 +266,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                     startActivity(intent);
                 }));
             } else if (meioPagamento.getId().equals(MeioPagamentoUtil.MERCADO_PAGO)) {
-                list.add(new OpcaoResgatePremio(ContextCompat.getDrawable(getContext(), R.drawable.ic_mercadopago),
+                list.add(new OpcaoResgatePremio(ContextCompat.getDrawable(getContext(), R.drawable.logo_mercado_pago),
                         "Mercado Pago","Receba na hora", v -> {
                     Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
                     intent.putExtra( getResources().getString(R.string.extra_valor_premio), ViewUtils.getMoedaFormat(viewModel.getDetalhesPremio().getPremio().getValorLiquido()) );

@@ -1653,6 +1653,7 @@
     <string name="txt_rewarded">premiado</string>
     <string name="txt_como_jogar">Como jogar</string>
     <string name="txt_choose_your_reward">Escolha como resgatar seu prêmio</string>
-    <string name="txt_contest">Concursos</string>
+    <string name="txt_contest">Concurso</string>
+    <string name="txt_concursos">Concursos</string>
 
 </resources>
