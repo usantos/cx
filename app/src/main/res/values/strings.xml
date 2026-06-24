@@ -466,7 +466,7 @@
     <string name="label_app_indisponivel">O aplicativo está temporariamente indisponível. Tente novamente mais tarde.</string>
 
     <string name="nao_concluiu_operacao">Não foi possível concluir esta operação. Por favor, tente novamente.</string>
-    <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Por favor, tente novamente.</string>
+    <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Aguarde e tente novamente mais tarde.</string>
     <string name="title_tente_novamente">Tentar novamente</string>
     <string name="label_rapidao_resolve">Deixa que o _Rapidão_ resolve!</string>
 
