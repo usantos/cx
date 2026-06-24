@@ -46,6 +46,7 @@ public class FavoritaModel extends AppModel {
 	private Boolean isMaisCompras = true;
 	private Boolean bloquearRequestScroll = false;
 	private List<ApostaFavoritaDTO> apostaList;
+	private Activity activity;
 	//endregion
 
 	//region Constructors
@@ -55,6 +56,7 @@ public class FavoritaModel extends AppModel {
 		carrinhoRepository = new CarrinhoRepository(activity);
 		offsetItem = 0;
 		apostaList = new ArrayList<>();
+		this.activity = activity;
 	}
 	//endregion
 
@@ -147,7 +149,7 @@ public class FavoritaModel extends AppModel {
 				carrinhoDTO != null && carrinhoDTO.getValorTotal() != null &&
 				SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
 						.compareTo(carrinhoDTO.getValorTotal()
-								.add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico(apostaFavoritaDTO))) < 0;
+								.add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico(apostaFavoritaDTO, activity))) < 0;
 	}
 
 	private void checarApostasRepetidas(final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO, OnSilceListener<CarrinhoDTO> listener) {

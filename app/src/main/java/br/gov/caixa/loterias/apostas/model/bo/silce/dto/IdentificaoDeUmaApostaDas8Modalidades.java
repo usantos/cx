@@ -12,6 +12,10 @@
 
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -22,9 +26,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.Utils;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -739,7 +748,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		return false;
 	}
 
-	public static BigDecimal getValorApostaFavoritaPorProagnostico(ApostaFavoritaDTO apostaFavoritaDTO) {
+	public static BigDecimal getValorApostaFavoritaPorProagnostico(ApostaFavoritaDTO apostaFavoritaDTO, Activity activity) {
 		if (apostaFavoritaDTO == null || apostaFavoritaDTO.getModalidade() == null)
 			return BigDecimal.ZERO;
 
@@ -767,6 +776,23 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 					return parametroSimulacao.getParametroJogo().getValorApostaMinima();
 				} else {
 					List<ParametroValorApostaDTO> parametroValorApostaDTOList = parametroSimulacao.getParametroJogo().getValoresAposta();
+
+					if(parametroValorApostaDTOList == null || parametroValorApostaDTOList.isEmpty()){
+						DialogUtils.dialogEntendiListener(
+								activity,
+								activity.getString(R.string.nao_concluiu_aposta),
+								new OnDialogBotaoListener() {
+									@Override
+									public void onButtonClick(DialogInterface dialog, int which) {
+										Intent intent = IntentUtil.getIntentLimpandoPilhaActivities(activity, PrincipalActivity.class);
+										activity.startActivity(intent);
+										activity.finish();
+									}
+								}
+						);
+						return BigDecimal.ZERO;
+					}
+
 					for (ParametroValorApostaDTO parametroValorApostaDTO : parametroValorApostaDTOList) {
 						if (apostaFavoritaDTO.getModalidade().getValor() != 7) {
 							if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getListaNumerosSelecionados().size()) {
