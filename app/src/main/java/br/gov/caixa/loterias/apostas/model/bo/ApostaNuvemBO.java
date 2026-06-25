@@ -450,18 +450,18 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaRepository {
         }
     }
 
-    @Override
-    public void buscaCombo(final RequestListener<CombosDTOResponse> listener) {
-        final GsonRequest request = getServiceConnection().buildGetRequest(LOGADO + ServerMethods.BUSCA_COMBOS_PATH,
-                    new LinkedHashMap<>(),
-                    CombosDTOResponse.class,
-                    listener.getSilceListener(),
-                    listener.getErrorListener(),
-                    getHeaderToken());
-
-            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
-            getServiceConnection().request(request, listener);
-    }
+//    @Override
+//    public void buscaCombo(final RequestListener<CombosDTOResponse> listener) {
+//        final GsonRequest request = getServiceConnection().buildGetRequest(LOGADO + ServerMethods.BUSCA_COMBOS_PATH,
+//                    new LinkedHashMap<>(),
+//                    CombosDTOResponse.class,
+//                    listener.getSilceListener(),
+//                    listener.getErrorListener(),
+//                    getHeaderToken());
+//
+//            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+//            getServiceConnection().request(request, listener);
+//    }
 
     private <T> boolean verificaAcessToken(final RequestListener<T> listener) {
         if (KeycloakBO.getInstance().getAccessToken() != null) {

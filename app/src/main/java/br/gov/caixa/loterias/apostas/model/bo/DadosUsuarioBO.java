@@ -38,7 +38,7 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 /**
  * Created by cedesbr450 on 07/12/17.
  */
-public class DadosUsuarioBO extends SilceBO implements DadosUsuarioRepository {
+public class DadosUsuarioBO extends SilceBO {
     private static final String INTRODUCAO_KEY = "INTRODUCAO_KEY";
     private static final String USUARIO_KEY = "USUARIO_KEY";
     private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
@@ -268,22 +268,6 @@ public class DadosUsuarioBO extends SilceBO implements DadosUsuarioRepository {
 
         final GsonRequest request = getServiceConnection().buildPutRequest(ServerMethods.USUARIOS_PATH, new LinkedHashMap<>(),
                 apostadorAlteracaoDTO, CadastrarApostadorDTOResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(), headers);
-
-        request.setErrorListener(interceptError(request, headers, listener));
-        getServiceConnection().request(request, listener);
-    }
-
-    @Override
-    public void postVerificarCadastro(final List<IdentificaoDeUmaApostaDas8Modalidades> listaApostas, final RequestListener<UsuarioLogadoResponse> listener) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
-
-        AutenticacaoDTO autenticacaoDTO = new AutenticacaoDTO();
-        autenticacaoDTO.setApostas(listaApostas);
-        final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.USUARIOS_VERIFICAR_CADASTRO_PATH, new LinkedHashMap<>(),
-                autenticacaoDTO, UsuarioLogadoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
