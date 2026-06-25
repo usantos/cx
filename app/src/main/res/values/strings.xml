@@ -818,6 +818,10 @@
     <string name="r_30_00">R$ 30,00</string>
     <string name="_4395">**** **** **** 4395</string>
     <string name="mastercard">Mastercard</string>
+    <string name="amex">American Express</string>
+    <string name="elo">Elo</string>
+    <string name="visa">Visa</string>
+    <string name="hipercard">Hipercard</string>
     <string name="master">Mastercard</string>
     <string name="placeholder_numero_conc">Nº 1456</string>
     <string name="placeholder_data_hora_concurso">10/04 | 18h00</string>
