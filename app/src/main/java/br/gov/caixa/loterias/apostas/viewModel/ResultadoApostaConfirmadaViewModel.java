@@ -116,6 +116,14 @@ public class ResultadoApostaConfirmadaViewModel extends ViewModel {
                     .replace("2º", "2º Sorteio");
         }
 
+        if (detalhesPremio.getAposta().getModalidade() == ModalidadeEnum.DUPLA_SENA) {
+            if (faixa.getSorteio() == 1) {
+                nfx = "1º Sorteio - " + nfx;
+            } else if (faixa.getSorteio() == 2) {
+                nfx = "2º Sorteio - " + nfx;
+            }
+        }
+
         return nfx + posFixQtd;
     }
 
