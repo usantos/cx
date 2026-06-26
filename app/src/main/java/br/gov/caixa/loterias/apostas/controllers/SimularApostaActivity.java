@@ -1008,7 +1008,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     public void atualizaLayoutSalvarAposta() {
         ConstraintLayout salvarApostaLayout = getSalvarApostaLayout();
 
-        salvarApostaLayout.setBackgroundResource(R.drawable.bg_salvar_aposta_verde);
+        salvarApostaLayout.setBackgroundResource(R.drawable.bg_salvar_aposta_azul);
         ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 
         final float scale = getResources().getDisplayMetrics().density;
