@@ -111,9 +111,11 @@ public class ResultadoApostaConfirmadaViewModel extends ViewModel {
         }
 
         String nfx = faixa.getDescricaoAcerto();
-        if (nfx.contains("1º") || nfx.contains("2º")){
-            nfx = nfx.replace("1º", "1º Sorteio")
-                    .replace("2º", "2º Sorteio");
+        if (nfx.contains("1º") || nfx.contains("2º")
+                && detalhesPremio.getAposta().getModalidade() == ModalidadeEnum.LOTECA){
+            nfx = nfx.replace("1º (", "")
+                    .replace("2º (", "")
+                    .replace(")", "");
         }
 
         if (detalhesPremio.getAposta().getModalidade() == ModalidadeEnum.DUPLA_SENA) {

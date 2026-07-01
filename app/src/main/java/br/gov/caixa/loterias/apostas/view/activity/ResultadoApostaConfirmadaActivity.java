@@ -266,7 +266,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             TipoPagamentoDTO meioPagamento = viewModel.getDetalhesPremio().getMeiosResgate().get(i);
             if (meioPagamento.getId().equals(MeioPagamentoUtil.PIX)) {
                 list.add(new OpcaoResgatePremio(ContextCompat.getDrawable(getContext(), R.drawable.icone_do_pix),
-                        "PIX", "Recebe na hora", v -> {
+                        "PIX", "Receba na hora", v -> {
                     Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);
                     intent.putExtra(ResgatePixActivity.ARG_VALOR, viewModel.getDetalhesPremio().getPremio().getValorLiquido());
                     intent.putExtra(ResgatePixActivity.ARG_ID_APOSTA, viewModel.getDetalhesPremio().getAposta().getId());
