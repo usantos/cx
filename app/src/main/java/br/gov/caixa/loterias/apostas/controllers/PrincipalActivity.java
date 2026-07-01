@@ -197,7 +197,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         setSupportActionBar(toolbar);
 
-        if (!BuildConfig.FLAVOR.equals("prd")) {
+        if (!(BuildConfig.FLAVOR.equals("prd") ||  BuildConfig.FLAVOR.equals("net"))) {
             String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO.name());
             txtAmbiente.setText(ambienteSalvo);
             txtAmbiente.setVisibility(View.VISIBLE);
