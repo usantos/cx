@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="14dp"
+    android:background="@color/branco">
+
+    <TextView
+        android:id="@+id/titulo_dialog_itens"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        tools:text="Teimosinha"
+        android:textColor="@color/blue_caixa"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="17dp"
+        android:background="@color/cinza70" />
+
+    <TextView
+        android:id="@+id/texto_dialog_itens"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="16dp"
+        tools:text="Selecione uma opção abaixo"
+        android:textColor="@color/cinza110"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_regular" />
+
+    <TextView
+        android:id="@+id/subtitulo_dialog_itens"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/valores_para_apostas_com_2_trevos"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textColor="@color/cinza110"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/picker_itens_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+
+    <LinearLayout
+        android:id="@+id/layout_botoes_padrao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/button_negativo_itens"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:textAllCaps="false"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textColor="@color/cinza110"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/button_positivo_itens"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirmar"
+            android:textAllCaps="false"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:textColor="@color/blue_caixa"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

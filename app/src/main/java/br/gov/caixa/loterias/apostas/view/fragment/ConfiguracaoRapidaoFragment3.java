@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingleton;
 import br.gov.caixa.loterias.apostas.utils.CustomTypefaceSpan;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.MoneyTextWatcher;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -328,28 +329,24 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	}
 
 	private void mostraMsgValorIncorreto(){
-		ViewUtils.alertTitleButton(
+		DialogUtils.dialogEntendi(
 				getActivity(),
-				R.string.ops,
 				"O valor selecionado tem que estar entre R$ " +
 						StringUtils.formatDouble(valorMinimo) +
 						" e R$ " +
-						StringUtils.formatDouble(limiteDiario),
-				getString(R.string.ok)
-								  );
+						StringUtils.formatDouble(limiteDiario)
+		);
 	}
 
 	private void mostraMsgValorAjustado(){
-		ViewUtils.alertTitleButton(
+		DialogUtils.dialogEntendi(
 				getActivity(),
-				R.string.ops,
 				"O valor escolhido tem que ser um pouco maior que o valor mínimo do carrinho, para isso já ajustamos o máximo para R$ " +
 						StringUtils.formatDouble(valorSelecionadoMax) +
 						" e o mínimo para R$ " +
 						StringUtils.formatDouble(valorSelecionadoMin)+
-						" assim tudo vai funcionar perfeitamente.",
-				getString(R.string.ok)
-								  );
+						" assim tudo vai funcionar perfeitamente."
+		);
 	}
 
 	private Spannable pegaMinMaxTexto(Double valMin, Double valMax){

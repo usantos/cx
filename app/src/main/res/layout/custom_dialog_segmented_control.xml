@@ -39,7 +39,8 @@
         app:layout_constraintTop_toBottomOf="@+id/vw_topo" />
 
 
-    <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+    <info.hoang8f.android.segmented.SegmentedGroup
+        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sg_opcoes"
         android:layout_width="match_parent"
         android:layout_height="60dp"

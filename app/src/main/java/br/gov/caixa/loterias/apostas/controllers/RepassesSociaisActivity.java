@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import static br.gov.caixa.loterias.apostas.utils.ViewUtils.alertEntendi;
 
 import android.content.Intent;
 import android.os.Bundle;
