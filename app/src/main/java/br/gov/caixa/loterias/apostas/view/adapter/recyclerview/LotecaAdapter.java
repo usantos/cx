@@ -17,6 +17,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.holder.LotecaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
@@ -91,16 +92,13 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
                 && parametroJogo.getConcurso().getAberto() != null
                 && !parametroJogo.getConcurso().getAberto()) {
 
-            ViewUtils.alertTitleButton(
+            DialogUtils.dialogEntendi(
                     context,
-                    R.string.label_atencao,
-                    context.getResources()
-                            .getString(R.string.msg_conc_nao_aberto)
+                    context.getString(R.string.msg_conc_nao_aberto)
                             .replace(
                                     "{num_concurso}",
                                     parametroJogo.getConcurso().getNumero().toString()
-                            ),
-                    context.getResources().getString(R.string.title_entendi)
+                            )
             );
             return false;
         }
