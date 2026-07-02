@@ -22,7 +22,7 @@ public abstract class PartidasLotecaNovaAdapter extends RecyclerView.Adapter<Par
 	private ResultadoConcursoDTO resultadoConcurso;
 	private ConfiguracaoLoteca configuracaoLoteca;
 
-	private Boolean isEspecial;
+//	private Boolean isEspecial;
 
 //	public PartidasLotecaNovaAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca) {
 //		this.partidas = partidas;
@@ -30,11 +30,11 @@ public abstract class PartidasLotecaNovaAdapter extends RecyclerView.Adapter<Par
 //		this.configuracaoLoteca = configuracaoLoteca;
 //	}
 
-	public PartidasLotecaNovaAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso,
-									 Boolean isEspecial) {
-		this(partidas, context, configuracaoLoteca, resultadoConcurso);
-		this.isEspecial = isEspecial;
-	}
+//	public PartidasLotecaNovaAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso,
+//									 Boolean isEspecial) {
+//		this(partidas, context, configuracaoLoteca, resultadoConcurso);
+//		this.isEspecial = isEspecial;
+//	}
 
 
 	public PartidasLotecaNovaAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso) {
@@ -48,7 +48,8 @@ public abstract class PartidasLotecaNovaAdapter extends RecyclerView.Adapter<Par
 	@Override
 	public PartidaLotecaNovaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_partida_loteca_nova, parent, false);
-		return new PartidaLotecaNovaHolder(view, context, configuracaoLoteca, resultadoConcurso, isEspecial);
+		//return new PartidaLotecaNovaHolder(view, context, configuracaoLoteca, resultadoConcurso, isEspecial);
+		return new PartidaLotecaNovaHolder(view, context, configuracaoLoteca, resultadoConcurso);
 	}
 
 	public void onBindViewHolder(@NonNull PartidaLotecaNovaHolder holder, int position) {

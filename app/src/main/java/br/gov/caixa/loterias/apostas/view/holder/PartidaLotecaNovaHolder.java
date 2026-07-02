@@ -27,9 +27,9 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 	private ResultadoConcursoDTO resultado;
 	private View vLinhaDivisoria;
 
-	private Boolean isEspecial;
+	//private Boolean isEspecial;
 
-	public PartidaLotecaNovaHolder(View itemView, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso, Boolean isEspecial) {
+	public PartidaLotecaNovaHolder(View itemView, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso) {
 		super(itemView);
 		labelJogo = itemView.findViewById(R.id.label_jogo);
 		labelVencedor = itemView.findViewById(R.id.label_vencedor);
@@ -43,23 +43,23 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 		this.context = context;
 		this.configuracaoLoteca = configuracaoLoteca;
 		this.resultado = resultadoConcurso;
-		this.isEspecial = isEspecial;
+		//this.isEspecial = isEspecial;
 	}
 
 	@Override
 	public void bind(PartidaLotecaDTO partida, int position) {
 
-		if (isEspecial != null && isEspecial) {
-			nomeEquipe1.setText(Utils.getEquipeNome(partida.getEquipe1().getParametroEquipe()));
-		} else {
+//		if (isEspecial != null && isEspecial) {
+//			nomeEquipe1.setText(Utils.getEquipeNome(partida.getEquipe1().getParametroEquipe()));
+//		} else {
 			nomeEquipe1.setText(Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()));
-		}
+//		}
 
-		if (isEspecial != null && isEspecial) {
-			nomeEquipe2.setText(Utils.getEquipeNome(partida.getEquipe2().getParametroEquipe()));
-		} else {
+//		if (isEspecial != null && isEspecial) {
+//			nomeEquipe2.setText(Utils.getEquipeNome(partida.getEquipe2().getParametroEquipe()));
+//		} else {
 			nomeEquipe2.setText(Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()));
-		}
+//		}
 
 		if (configuracaoLoteca != null) {
 			labelJogo.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
@@ -73,7 +73,7 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 			nomeEmpate.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
 		}
 
-		String jogo = "Jogo " + String.format("%02d", position + 1);
+		String jogo = "Jogo " + String.format("%02d", position + 1) + descricaoPartida(partida);
 
 		boolean acerto1 = false;
 		boolean acerto2 = false;
@@ -154,5 +154,22 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 		}
 
 		tv.setContentDescription(descricaoAcessibilidade);
+	}
+
+	private String descricaoPartida(PartidaLotecaDTO partida) {
+		if (partida.getDescricaoLegenda() != null) {
+			if (partida.getDescricaoLegenda().toString().contains("FEM.") ||
+					partida.getDescricaoLegenda().toString().contains("FEMININO")) {
+				return " (feminino)";
+			}
+			if (partida.getDescricaoLegenda().toString().contains("SUB17")) {
+				return " (sub 17)";
+			}
+			if (partida.getDescricaoLegenda().toString().contains("SUB20")) {
+				return " (sub 20)";
+			}
+		}
+
+		return "";
 	}
 }
