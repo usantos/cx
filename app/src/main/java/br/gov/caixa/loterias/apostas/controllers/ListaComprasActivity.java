@@ -1,10 +1,12 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,7 +19,6 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,7 +47,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginad
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
@@ -54,6 +57,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
 
 public class ListaComprasActivity extends LoteriasBaseAppActivity {
@@ -61,7 +65,6 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
     private static final int PAGE_SIZE = 10;
     private List<MesAnoDTO> listaMesAnoDTO;
     private List<CompraDTO> listaComprasDto;
-    private List<ApostaDTO> listaAposta = new ArrayList<>();
     private List<MeioPagamentoDTO> listaMeioPagamentoDTO = new ArrayList<>();
     private List<SituacoesCompraDTO> listaSituacoesCompraDTO = new ArrayList<>();
     private CompraDTO compraSelecionada;
@@ -104,18 +107,18 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
     private void callWebServiceMesCompras(){
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         ApostaSilceBO.getInstance().getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
             @Override
             public void onResponse(MesAnoDTOResponse response) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 listaMesAnoDTO = response.getPayload();
                 addSpinner();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
 
             }
@@ -126,12 +129,12 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
         offsetItem = 0;
         isMaisCompras = true;
         bloquearRequestScroll = false;
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         try{
             ApostaSilceBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
                 @Override
                 public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     if(response.getPayload() != null){
                         listaComprasDto = response.getPayload().getLista();
                         offsetItem = PAGE_SIZE;
@@ -147,13 +150,13 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     Log.e("listaComprasActivity", "Erro ao recuperar as compras", error);
                     RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
                 }
             });
         }catch (Exception e){
-            loadViewProgress.dismiss();
+            AlertDialogUtils.dismiss();
             Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de compras", e);
         }
 
@@ -161,12 +164,12 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
     private void callWebServiceMeioPagamento(boolean chamaServicoSituacoesCompra){
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         try{
             DadosCorporativosSilceBO.getInstance().buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
                 @Override
                 public void onResponse(MeiosPagamentosResponse response) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     if (response.getPayload() != null) {
                         listaMeioPagamentoDTO = response.getPayload();
                         if(chamaServicoSituacoesCompra) {
@@ -179,26 +182,26 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     Log.e("ListaComprasActivity", "Erro ao recuperar os meios de pagamento", error);
                     RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
 
                 }
             });
         } catch (Exception e){
-            loadViewProgress.dismiss();
+            AlertDialogUtils.dismiss();
             Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de meios de pagamento", e);
         }
     }
 
     public void callWebServiceSituacoesCompra(Long idMeioPagamento, boolean abreModalFiltro){
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         try{
             ApostaSilceBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
                 @Override
                 public void onResponse(SituacoesCompraResponse response) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     if(response.getPayload() != null){
                         listaSituacoesCompraDTO = response.getPayload();
                         if(abreModalFiltro){
@@ -212,14 +215,14 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    loadViewProgress.dismiss();
+                    AlertDialogUtils.dismiss();
                     Log.e("ListaComprasActivity", "Erro ao recuperar as siturações de compra", error);
                     RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
 
                 }
             });
         } catch (Exception e){
-            loadViewProgress.dismiss();
+            AlertDialogUtils.dismiss();
             Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de situações de compra", e);
         }
     }
@@ -430,6 +433,16 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
             dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
             dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
         });
+
+        if(dialogFavoritar.getWindow() != null){
+
+            int screenWidth = getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * 0.85); // Define a largura da dialog como 85% da largura da tela
+
+            dialogFavoritar.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialogFavoritar.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
     }
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
@@ -447,10 +460,15 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                ViewUtils.alertTitleButtonYesOrNotListener(
+               DialogUtils.dialogSim(
                         ListaComprasActivity.this,
                         MensagensNetwork.getErrorMessage(error),
-                        (dialogInterface, i) ->  favoritarCarrinho(nome,idFavorito)
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                favoritarCarrinho(nome,idFavorito);
+                            }
+                        }
                 );
             }
         });
@@ -466,11 +484,15 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( result.getRedirect(), ListaComprasActivity.this);
                 }
-                ViewUtils.alertTitleButton(ListaComprasActivity.this,
-                        R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
-                        getString(R.string.ok), dialogInterface -> {
-                            dialogFavoritar.dismiss();
-                            startActivity(new Intent(ListaComprasActivity.this, CarrinhosFavoritosActivity.class));
+                DialogUtils.dialogEntendiListener(
+                        ListaComprasActivity.this,
+                        getString(R.string.carrinho_fav_lbl_msg),
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                dialogFavoritar.dismiss();
+                                startActivity(new Intent(ListaComprasActivity.this, CarrinhosFavoritosActivity.class));
+                            }
                         }
                 );
             }
@@ -578,11 +600,11 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
     private void pegaApostasDaCompra() {
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         ApostaSilceBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaComprasActivity.this);
                 }
@@ -593,7 +615,7 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, ListaComprasActivity.this);
             }
         });

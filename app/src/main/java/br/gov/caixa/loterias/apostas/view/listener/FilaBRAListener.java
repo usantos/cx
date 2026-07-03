@@ -8,7 +8,7 @@ import com.filabra.adapter.android.FilaBRAClientListener;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 
 public class FilaBRAListener implements FilaBRAClientListener {
 
@@ -38,8 +38,7 @@ public class FilaBRAListener implements FilaBRAClientListener {
     @Override
     public void onNoInternet() {
         Log.e(getClass().getName(), "FilaBRAClient-Método onNoInternet");
-        ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
-    }
+        DialogUtils.dialogEntendi(activity,activity.getResources().getString(R.string.seminternet) );    }
     @Override
     public void onError(String errorMessage) {
         Log.e(getClass().getName(), "FilaBRAClient-Método onError... " + errorMessage);

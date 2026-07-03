@@ -94,12 +94,6 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 	@Override
 	public void bind(ApostaDTO aposta, int position) {
-		if (aposta.getConcursoAlvo() != null && aposta.getConcursoAlvo().toString().equalsIgnoreCase("5847")){
-			aposta.getConcursoAlvo();
-		}
-		if (aposta.getConcursoInicial() != null && aposta.getConcursoInicial().toString().equalsIgnoreCase("5847")){
-			aposta.getConcursoAlvo();
-		}
 		if(aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
 			isMega30 = EspecialUtils.isMega30(aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
 		}

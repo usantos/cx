@@ -22,6 +22,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.model.AdicionaCartaoCreditoModel;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
@@ -260,9 +261,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
 
         if(invalido){
-            ViewUtils.alertTitleButton(AdicionaCartaoActivity.this,
-                                       R.string.label_atencao, errorMessage,
-                                       AdicionaCartaoActivity.this.getResources().getString(R.string.ok));
+            DialogUtils.dialogEntendi(AdicionaCartaoActivity.this, errorMessage);
         }
     }
 

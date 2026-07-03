@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,7 +70,7 @@ import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.AccordionView;
-import br.gov.caixa.loterias.apostas.view.custom.PartyAnimationManager;
+import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
@@ -78,6 +79,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnPaginacaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
@@ -129,7 +131,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private List<String> qtdConcursosList;
     private ModalidadeEnum tipoJogo;
     private String textoBotaoPrognosticosSelecionado;
-    private String textoBotaoSurpresinhasSelecionado;
+    private String textoBotaoTeimosinhas;
     private ParametroJogoDTO parametroSimulacao;
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
@@ -140,13 +142,14 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     //mocks
     public int qtdDezenasPossiveisSelecionado;
     public int qtdConcursoSelecionado;
+    private int posicaoDialogTeimosinhas;
     private Boolean flagApostaSalva = false;
 
     private Boolean isSurpresinha = false;
     //TODO: MEGA 30 ANOS//
     private boolean isMega30;
     private EstiloModalidadeMKP estilo;
-    private PartyAnimationManager animationManager;
+    private LottieManager lottieManager;
 
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     public void onCreate(Bundle savedInstanceState) {
@@ -154,7 +157,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         setContentView(R.layout.activity_simular_aposta);
         init();
     }
-    
+
     protected void init() {
         dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
@@ -182,12 +185,17 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             startActivity(new Intent(this,TutorialSuperSeteActivity.class));
         }
 
-        //Animação 30 anos
-        if (isEspecial && tipoJogo == ModalidadeEnum.MEGA_SENA) {
-            animationManager = new PartyAnimationManager(this);
-            findViewById(android.R.id.content).post(() -> {
-               animationManager.start(6500);
-            });
+        //Animação Copa da Loteca
+        if (tipoJogo == ModalidadeEnum.LOTECA && isEspecial) {
+            lottieManager = new LottieManager(this, R.raw.copa_loteca_3);
+            lottieManager.setSpeed(1.75f);
+            lottieManager.start();
+        }
+        //Animação Quina de São João
+        if (tipoJogo == ModalidadeEnum.QUINA && isEspecial) {
+            lottieManager = new LottieManager(this, R.raw.quina_sao_joao_1);
+            lottieManager.setSpeed(1.5f);
+            lottieManager.start();
         }
 
         if (tipoJogo == ModalidadeEnum.INSTANTANEA ||
@@ -205,16 +213,16 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (animationManager != null) {
-            animationManager.stop();
+        if (lottieManager != null) {
+            lottieManager.destroy();
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (animationManager != null) {
-            animationManager.stop();
+        if (lottieManager != null) {
+            lottieManager.pause();
         }
     }
 
@@ -296,7 +304,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     public void zerarApostas() {
         qtdNumerosList = new ArrayList<>();
         qtdConcursosList = new ArrayList<>();
-        textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
+        textoBotaoTeimosinhas = getString(R.string.label_sem_teimosinha);
         mesDeSorteCartela = null;
         mesDeSorteSurpresinha = null;
         configuraParametrosJogo();
@@ -320,10 +328,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         ViewUtils.setColorDrawable(this, drawableQtdNumeros, estilo.getCorFonteFundoEscuro());
 
         textoBotaoPrognosticosSelecionado = qtdNumerosButton.getText().toString();
-        if ((qtdConcursosList != null && !qtdConcursosList.isEmpty()) && (qtdConcursosList.size() == 1 || qtdConcursoSelecionado == 0)) {
-            qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
-        } else {
-            qtdConcursosButton.setText(format(getResources().getString(R.string.percent_d_concurso), qtdConcursoSelecionado));
+        if ((qtdConcursosList != null) ){
+            qtdConcursosButton.setText(textoBotaoTeimosinhas);
         }
         qtdConcursosButton.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
         Drawable drawableQtdConcursos = imageQtdConcursosButton.getDrawable();
@@ -534,13 +540,22 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                 AlertDialogUtils.dismiss();
                 AlertDialogUtils.dismiss();
                 if(isErroNegocial(error)){
-                    ViewUtils.alertTitleButtonYesOrNotListener(
+//                    ViewUtils.alertTitleButtonYesOrNotListener(
+//                            SimularApostaActivity.this,
+//                            MensagensNetwork.getErrorMessage(error),
+//                            (dialogInterface, i) ->
+//                    );
+
+                    DialogUtils.dialogSim(
                             SimularApostaActivity.this,
                             MensagensNetwork.getErrorMessage(error),
-                            (dialogInterface, i) ->
-                                    salvarAposta(apostaFavorita)
-
-                                                              );
+                            new OnDialogBotaoListener() {
+                                @Override
+                                public void onButtonClick(DialogInterface dialog, int which) {
+                                    salvarAposta(apostaFavorita);
+                                }
+                            }
+                    );
                 } else {
                     RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
                 }
@@ -644,7 +659,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
                     if (numeroTeimosinha == 0) {
-                        qtdConcursosList.add(getString(R.string.teimosinhas_descricao));
+                        qtdConcursosList.add("Nenhuma");
                     } else if (numeroTeimosinha == 1) {
                         qtdConcursosList.add("" + numeroTeimosinha + getResources().getString(R.string.espaco_concurso));
                     } else {
@@ -760,13 +775,22 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private void modalNumeros() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));
         if (parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
-            DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
-                                               getResources().getString(R.string.quant_de_numeros), getResources().getString(R.string.valores_para_apostas_com_2_trevos),
-                                               qtdNumerosList, onNumerosDialogListener());
+            DialogUtils.showDialogListItens(SimularApostaActivity.this,
+                    getResources().getString(R.string.quant_de_numeros),
+                    getResources().getString(R.string.valores_para_apostas_com_2_trevos),
+                    qtdNumerosList,
+                    "Confirmar",
+                    "Cancelar",
+                    onNumerosDialogListener());
         } else {
-            DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
-                                               getResources().getString(R.string.quant_de_numeros), null,
-                                               qtdNumerosList, onNumerosDialogListener());
+            DialogUtils.showDialogListItens(SimularApostaActivity.this,
+                    getResources().getString(R.string.quant_de_numeros),
+                    null,
+                    qtdNumerosList,
+                    "Confirmar",
+                    "Cancelar",
+                    onNumerosDialogListener());
+
         }
     }
 
@@ -783,13 +807,21 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                         stringNumero = itemValue.substring(0, 1);
                     }
                     ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(Integer.valueOf(stringNumero), 2);
-                    
+
                     if (valorAposta != null){
                         textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
                         qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
                     }
                     if ((position >= 1) && (!isAvisou)) {
-                        ViewUtils.alertTitleButton(SimularApostaActivity.this, R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+//                        ViewUtils.alertTitleButton(SimularApostaActivity.this,
+//                                R.string.label_atencao,
+//                                getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+
+                        DialogUtils.dialogEntendi(
+                                SimularApostaActivity.this,
+                                getString(R.string.msg_qtd_max_ultrapassada)
+                        );
+
                         isAvisou = true;
                     }
                 }else {
@@ -797,13 +829,18 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                     qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
                 }
                 if ((position >= 1) && (!isAvisou)) {
-                    ViewUtils.alertTitleButton(SimularApostaActivity.this, R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+//                    ViewUtils.alertTitleButton(SimularApostaActivity.this,
+//                            R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+                    DialogUtils.dialogEntendi(
+                            SimularApostaActivity.this,
+                            getString(R.string.msg_qtd_max_ultrapassada)
+                    );
                     isAvisou = true;
                 }
             }
 
             @Override
-            public void ok() {
+            public void ok(int position) {
                 qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
 
                 if (isFragmentCartela()) {
@@ -833,28 +870,40 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     public boolean isFragmentCartela(){
         return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment;
     }
-
+//TODO//
     private void modalTeimosinhas() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
-        DialogUtils.showDialogListaEscolha(SimularApostaActivity.this, getResources().getString(R.string.teimosinhas_maiusculo), null,
-                                           qtdConcursosList, onTeimosinhaDialogListener());
+        if(!isEspecial) {
+            DialogUtils.showDialogListItensNovo(
+                    SimularApostaActivity.this,
+                    getResources().getString(R.string.teimosinhas_maiusculo),
+                    null,
+                    getString(R.string.teimosinhas_descricao),
+                    qtdConcursosList,
+                    "Confirmar",
+                    "Cancelar",
+                    onTeimosinhaDialogListener()
+            );
+        }
+        else {
+            DialogUtils.dialogEntendi(SimularApostaActivity.this,getString(R.string.nao_teimosinhas));
+        }
     }
 
     private OnDialogListener onTeimosinhaDialogListener() {
         return new OnDialogListener() {
             @Override
-            public void itemSelecionado(int position) {
-                if (position == 0) {
-                    textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
-                }else{
-                    textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
-                    qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
-                }
-            }
+            public void itemSelecionado(int position) {}
 
             @Override
-            public void ok() {
-                qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
+            public void ok(int position) {
+                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
+                textoBotaoTeimosinhas = qtdConcursosList.get(position);
+                if (qtdConcursoSelecionado == 0) {
+                    qtdConcursosButton.setText(R.string.label_sem_teimosinha);
+                } else {
+                    qtdConcursosButton.setText(textoBotaoTeimosinhas);
+                }
 
                 if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
                     if (surpresinhaFragment.getParametroJogo() != null) {

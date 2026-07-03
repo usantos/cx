@@ -22,7 +22,9 @@ import br.gov.caixa.loterias.apostas.LoteriasAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.enums.FiltroMessagePushEnum;
 import br.gov.caixa.loterias.apostas.model.model.MensagemPushModel;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnMensagemPushListener;
 
 public class MensagensPushActivity extends LoteriasAppActivity {
@@ -76,16 +78,33 @@ public class MensagensPushActivity extends LoteriasAppActivity {
             checarEstadoVazio();
         });
 
-        buttonMsgExcluir.setOnClickListener(v -> showAlert(getResources().getString(R.string.msg_push_excluir),
-                (dialog, which) -> {
-            adapter.apagarTodas();
-            listaVazia.setVisibility(View.VISIBLE);
-            recyclerViewMensagens.setVisibility(View.GONE);
-        }
-        ));
+        buttonMsgExcluir.setOnClickListener(v ->
+                DialogUtils.dialogSim(
+                        MensagensPushActivity.this,
+                        getResources().getString(R.string.msg_push_excluir),
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                adapter.apagarTodas();
+                                listaVazia.setVisibility(View.VISIBLE);
+                                recyclerViewMensagens.setVisibility(View.GONE);
+                            }
+                        }
+                )
+        );
 
-        buttonMsgLida.setOnClickListener(v -> showAlert(getResources().getString(R.string.msg_push_marcar_lidas),
-                                                        (dialog, which) -> adapter.marcarTodasComoLidas()));
+        buttonMsgLida.setOnClickListener(v ->
+                DialogUtils.dialogSim(
+                        MensagensPushActivity.this,
+                        getResources().getString(R.string.msg_push_marcar_lidas),
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                adapter.marcarTodasComoLidas();
+                            }
+                        }
+                )
+        );
 
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -118,21 +137,35 @@ public class MensagensPushActivity extends LoteriasAppActivity {
 
             @Override
             public void delete(int position) {
-                showAlert(MensagensPushActivity.this.getResources().getString(R.string.msg_push_excluir_item),
-                          (dialog, which) -> {
-                              MessagePush messagePush = adapter.getItemByPosition(position);
-                              adapter.deleteMensagem(position);
-                              model.deleteMensagem(mensagensList, messagePush);
-                          });
+
+                DialogUtils.dialogSim(
+                        MensagensPushActivity.this,
+                        MensagensPushActivity.this.getResources().getString(R.string.msg_push_excluir_item),
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                MessagePush messagePush = adapter.getItemByPosition(position);
+                                adapter.deleteMensagem(position);
+                                model.deleteMensagem(mensagensList, messagePush);
+                            }
+                        }
+
+                );
             }
 
             @Override
             public void read(int position) {
-                showAlert(MensagensPushActivity.this.getResources().getString(R.string.msg_push_marcar_lida_item),
-                          (dialog, which) -> {
-                              adapter.marcaMensagemLida(position);
-                              model.marcarComoLida(mensagensList, adapter.getItemByPosition(position));
-                          });
+                DialogUtils.dialogSim(
+                        MensagensPushActivity.this,
+                        MensagensPushActivity.this.getResources().getString(R.string.msg_push_marcar_lida_item),
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                adapter.marcaMensagemLida(position);
+                                model.marcarComoLida(mensagensList, adapter.getItemByPosition(position));
+                            }
+                        }
+                );
             }
 
             @Override
@@ -145,12 +178,6 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         };
     }
 
-    private void showAlert(String msg, DialogInterface.OnClickListener listenerYes){
-        ViewUtils.alertTitleButtonYesOrNotListener(
-                MensagensPushActivity.this,
-                msg, listenerYes,
-                (dialog, which) -> dialog.dismiss());
-    }
 
     private void shareMessage(MessagePush messagePush) {
         String textToShare = messagePush.getTitulo() + " <br>" + messagePush.getConteudo();

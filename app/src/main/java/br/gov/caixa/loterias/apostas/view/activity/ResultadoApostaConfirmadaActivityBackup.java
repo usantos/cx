@@ -42,6 +42,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -103,7 +104,7 @@ public class ResultadoApostaConfirmadaActivityBackup extends SettingToolbarActiv
         montaTipoApostaLinha(detalhesPremioDTO.getAposta(), estiloModalidadeMKP.getCorEscura(),
                 estiloModalidadeMKP.getCorFonteFundoEscuro(), estiloModalidadeMKP.getCorFonteFundoEscuro());
 
-        if (isEspeial()) {
+        if (isEspeial() && estiloModalidadeMKP.getImagemEspecialSimples() > 0) {
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidadeMKP.getImagemEspecialSimples()));
         } else {
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
@@ -168,8 +169,7 @@ public class ResultadoApostaConfirmadaActivityBackup extends SettingToolbarActiv
         }
 
         createListPremiacao();
-//        trataFormasDeResgate();
-        RateUtils.avaliarAplicativo(this, true);
+        trataFormasDeResgate();
         setResult(RESULT_FIRST_USER);
     }
 
@@ -265,8 +265,11 @@ public class ResultadoApostaConfirmadaActivityBackup extends SettingToolbarActiv
             @Override
             public void onErrorResponse(VolleyError error) {
                 alertDialog.dismiss();
-                String msgError = MensagensNetwork.setMensagem(error, ResultadoApostaConfirmadaActivityBackup.this);
-                ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, msgError, getContext().getResources().getString( R.string.ok ));
+                String msgError = MensagensNetwork.setMensagem(error, ResultadoApostaConfirmadaActivity.this);
+                DialogUtils.dialogEntendi(
+                        getContext(),
+                        msgError
+                );
             }
         });
     }

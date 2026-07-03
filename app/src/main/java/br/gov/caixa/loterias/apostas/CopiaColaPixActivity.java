@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,12 +29,11 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
-import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 
 public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopiaColaListener {
 	public static final String ARG_GEROU_CODIGO = "ARG_GEROU_CODIGO";
@@ -44,7 +44,6 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	private GerarPixDTO codigoPix;
 	private PixModel model;
 	private CardPixFragment pixFragment;
-	private Dialog confirmaSairTelaPix;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -98,8 +97,6 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 			new CompraModel(CopiaColaPixActivity.this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
 
 			AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
-
-			RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
 
 			CarrinhoSingleton.getInstance().zerarCarrinho();
 			CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(CopiaColaPixActivity.this);
@@ -168,11 +165,24 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 
 	private void voltarTela() {
 		if(!tempoExpirado && gerouCodigoPix){
-			confirmaSairTelaPix = DialogUtils.showDialogCustom(this,
-					getString(R.string.label_atencao),
+
+			DialogUtils.dialogDoisBotoesPersonalizados(CopiaColaPixActivity.this,
+					"Atenção",
 					getString(R.string.mensagem_pop_up_aguardando_confirmacao_pix_pergunta),
-					getString(R.string.label_voltar_ao_inicio), getString(R.string.label_sim),
-					null, onDialogListener(), true);
+					"Sim",
+					"Voltar ao início",
+					new OnDialogDoisBotoesListener() {
+						@Override
+						public void PositiveButton(DialogInterface dialog, int which) {
+							//Sem ação, pois o botão "Sim" é o de confirmar que o usuário quer permanecer na tela, ou seja, não tem ação a ser executada
+						}
+
+						@Override
+						public void NegativeButton(DialogInterface dialog, int which) {
+							voltarParaCarrossel();
+						}
+					});
+
 		}else{
 			voltarParaCarrossel();
 		}
@@ -181,27 +191,6 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	@Override
 	public void onBackPressed() {
 		voltarTela();
-	}
-
-	private OnDialog3ButtonsListener onDialogListener() {
-		return new OnDialog3ButtonsListener() {
-			@Override
-			public void leftButtom() {
-				//ocultado
-				voltarParaCarrossel();
-
-			}
-
-			@Override
-			public void centerButtom() {
-				confirmaSairTelaPix.dismiss();
-			}
-
-			@Override
-			public void rightButtom() {
-
-			}
-		};
 	}
 
 	private void voltarParaCarrossel(){

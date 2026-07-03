@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -46,6 +49,20 @@ public class TipoApostaLinhaAdapter extends RecyclerView.Adapter<TipoApostaLinha
     public void onBindViewHolder(TipoApostaLinhaHolder holder, int position) {
         TipoApostaLinhaEnum tipoApostaLinhaEnum = itemList.get(position);
 
+        holder.itemView.setContentDescription(context.getString(tipoApostaLinhaEnum.getTextResId()));
+        ViewCompat.setAccessibilityHeading(holder.itemView, true);
+        holder.itemView.setFocusable(true);
+        holder.itemView.setClickable(false);
+
+        ViewCompat.setAccessibilityDelegate(holder.itemView, new AccessibilityDelegateCompat(){
+            @Override
+            public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+
+                info.setClassName(TextView.class.getName());
+            }
+        });
+
         holder.text.setText(context.getString(tipoApostaLinhaEnum.getTextResId()));
         holder.text.setTextColor(ContextCompat.getColor(context, textColor));
 
@@ -69,6 +86,7 @@ public class TipoApostaLinhaAdapter extends RecyclerView.Adapter<TipoApostaLinha
 
         public TipoApostaLinhaHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
             icon = itemView.findViewById(R.id.row_item_icon);
             text = itemView.findViewById(R.id.row_item_text);
         }
