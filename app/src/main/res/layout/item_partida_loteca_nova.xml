@@ -28,6 +28,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginStart="4dp"
         android:visibility="gone"
+        android:importantForAccessibility="no"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/label_jogo" />
 
