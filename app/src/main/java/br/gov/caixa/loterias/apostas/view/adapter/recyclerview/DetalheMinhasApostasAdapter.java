@@ -561,11 +561,12 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         List<String> numerosSorteados = item.getNumerosSorteados();
         List<String> seusNumeros = item.getSeusNumeros();
 
-        for (int i=0; i<seusNumeros.size(); i++) {
+        for (int i = 0; i < seusNumeros.size(); i++) {
             String numero = seusNumeros.get(i);
             if (numero != null) {
                 if (item.getModalidade() == ModalidadeEnum.SUPER_7) {
-                    if (numero != null && numerosSorteados.get(i) != null && numerosSorteados.get(i).equals(numero)) {
+                    int indice = i % 7;
+                    if (numero != null && numerosSorteados.get(indice) != null && numerosSorteados.get(indice).equals(numero)) {
                         numerosAcertados++;
                     }
                 } else {

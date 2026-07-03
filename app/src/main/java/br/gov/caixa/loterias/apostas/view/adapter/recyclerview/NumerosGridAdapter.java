@@ -92,10 +92,17 @@ public class NumerosGridAdapter extends RecyclerView.Adapter<NumerosGridAdapter.
         String number = numbers.get(position);
         holder.textView.setText(number);
 
-        boolean isIntersection;
+        if (number == null || number.isEmpty()) {
+            GradientDrawable background = (GradientDrawable) holder.textView.getBackground().mutate();
+            background.setStroke(3, Color.TRANSPARENT);
+            background.setColor(Color.TRANSPARENT);
+            return;
+        }
 
+        boolean isIntersection;
         if (intersectionS7) {
-            isIntersection = intersectionNumbers != null && intersectionNumbers.get(position).equals(number);
+            int indice = position % 7;
+            isIntersection = intersectionNumbers != null && intersectionNumbers.get(indice).equals(number);
         } else {
             isIntersection = intersectionNumbers != null && intersectionNumbers.contains(number);
         }

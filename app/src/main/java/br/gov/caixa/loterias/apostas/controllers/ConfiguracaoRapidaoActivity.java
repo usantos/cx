@@ -133,22 +133,22 @@ public class ConfiguracaoRapidaoActivity extends LoteriasBaseAppActivity {
 	}
 
 	private void callWebservice() {
-		 loadViewProgress = LoadingViewLoterias.show(this);
-
-		apostaSilceBO.getRapidoes(new RequestListener<RapidaoDTOResponse>() {
-			@Override
-			public void onResponse(final RapidaoDTOResponse response) {
-				loadViewProgress.dismiss();
-				processarRegistro(response);
-				setMethods();
-			}
-
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				loadViewProgress.dismiss();
-				RedirectNetwork.checkRedirect(error, ConfiguracaoRapidaoActivity.this);
-			}
-		});
+//		 loadViewProgress = LoadingViewLoterias.show(this);
+//
+//		apostaSilceBO.getRapidoes(new RequestListener<RapidaoDTOResponse>() {
+//			@Override
+//			public void onResponse(final RapidaoDTOResponse response) {
+//				loadViewProgress.dismiss();
+//				processarRegistro(response);
+//				setMethods();
+//			}
+//
+//			@Override
+//			public void onErrorResponse(VolleyError error) {
+//				loadViewProgress.dismiss();
+//				RedirectNetwork.checkRedirect(error, ConfiguracaoRapidaoActivity.this);
+//			}
+//		});
 	}
 
 	private void processarRegistro(RapidaoDTOResponse response) {
@@ -226,26 +226,26 @@ public class ConfiguracaoRapidaoActivity extends LoteriasBaseAppActivity {
 	}
 
 	private void salvarConfiguracao(){
-		 loadViewProgress = LoadingViewLoterias.show(this);
-
-		 apostaSilceBO.postRapidoes(RapidaoConfigSingleton.getInstance().getRapidaoConfig(), new RequestListener<RapidaoDTOResponse>() {
-			 @Override
-			 public void onResponse(RapidaoDTOResponse result) {
-				 loadViewProgress.dismiss();
-				 if(!DadosUsuarioBO.checarTutorialRapidao()) {
-					 DadosUsuarioBO.updateTutorialRapidao(true);
-					 startActivity(new Intent(ConfiguracaoRapidaoActivity.this,ListaRapidaoActivity.class));
-					 finish();
-				 }else {
-					 finish();
-				 }
-			 }
-
-			 @Override
-			 public void onErrorResponse(VolleyError error) {
-				 loadViewProgress.dismiss();
-				 RedirectNetwork.checkRedirect(error, ConfiguracaoRapidaoActivity.this);
-			 }
-		 });
+//		 loadViewProgress = LoadingViewLoterias.show(this);
+//
+//		 apostaSilceBO.postRapidoes(RapidaoConfigSingleton.getInstance().getRapidaoConfig(), new RequestListener<RapidaoDTOResponse>() {
+//			 @Override
+//			 public void onResponse(RapidaoDTOResponse result) {
+//				 loadViewProgress.dismiss();
+//				 if(!DadosUsuarioBO.checarTutorialRapidao()) {
+//					 DadosUsuarioBO.updateTutorialRapidao(true);
+//					 startActivity(new Intent(ConfiguracaoRapidaoActivity.this,ListaRapidaoActivity.class));
+//					 finish();
+//				 }else {
+//					 finish();
+//				 }
+//			 }
+//
+//			 @Override
+//			 public void onErrorResponse(VolleyError error) {
+//				 loadViewProgress.dismiss();
+//				 RedirectNetwork.checkRedirect(error, ConfiguracaoRapidaoActivity.this);
+//			 }
+//		 });
 	}
 }
