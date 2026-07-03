@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.android.volley.VolleyError;
 import com.microsoft.appcenter.AppCenter;
