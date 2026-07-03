@@ -39,6 +39,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
@@ -141,7 +142,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         createListPremiacao();
         trataFormasDeResgate();
-        RateUtils.avaliarAplicativo(this, true);
+//        RateUtils.avaliarAplicativo(this, true);
         setResult(RESULT_FIRST_USER);
     }
 
@@ -244,7 +245,10 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             public void onErrorResponse(VolleyError error) {
                 alertDialog.dismiss();
                 String msgError = MensagensNetwork.setMensagem(error, ResultadoApostaConfirmadaActivity.this);
-                ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, msgError, getContext().getResources().getString( R.string.ok ));
+                DialogUtils.dialogEntendi(
+                        getContext(),
+                        msgError
+                );
             }
         });
     }
