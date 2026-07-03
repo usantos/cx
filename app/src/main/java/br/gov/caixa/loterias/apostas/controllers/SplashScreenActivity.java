@@ -27,12 +27,14 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.FilaBRAManager;
 import br.gov.caixa.loterias.apostas.view.listener.FilaBRAListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
@@ -50,10 +52,16 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         if (BuildVersionUtil.isPRD()) {
             RootBeer rootBeer = new RootBeer(this);
             if (rootBeer.isRooted() || isRootAvailable()) {
-                ViewUtils.alertTitleButton(this, R.string.label_atencao, "Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.",
-                                           getString(R.string.ok), (DialogInterface.OnDismissListener) dialog -> {
-                    finish();
-                });
+                DialogUtils.dialogEntendiListener(
+                        SplashScreenActivity.this,
+                        "Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.",
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }
+                );
                 return;
             }
         }

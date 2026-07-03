@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,12 +28,14 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.MeusCartoesRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.holder.MeuCartaoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.MeusCartoesListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnMeusCartoesListener;
 
 /**
@@ -158,20 +161,26 @@ public class MeusCartoesFragment extends Fragment {
 			@Override
 			public void deletar(MeuCartaoHolder holder, int position) {
 				if (cartoes.get(position).isFav()){
-					ViewUtils.alertTitleButton(getContext(),
-											   R.string.excluir_cartao_interrogacao,
-											   getString(R.string.nao_e_possivel_eliminar_cartao_favorito),
-											   getString(R.string.title_entendi));
+					DialogUtils.dialogTituloEntendi(
+							getContext(),
+							getString(R.string.excluir_cartao_interrogacao),
+							getString(R.string.nao_e_possivel_eliminar_cartao_favorito)
+					);
 				} else {
 					String mensagem = getString(R.string.deseja_realmente_exluir_cartao) + " " + cartoes.get(position).getUltimosDigitos() + "?";
-					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.excluir_cartao_interrogacao),
-																				getString(R.string.label_nao),
-																				getString(R.string.confirmar),
-																						  mensagem,
-																				(dialog, which) -> {
-																					deletaCartao(cartoes.get(position), position);
-																				});
-					dialogConfirmacao.show();
+
+					DialogUtils.dialogTituloSim(
+							getContext(),
+							getString(R.string.excluir_cartao_interrogacao),
+							mensagem,
+							new OnDialogBotaoListener() {
+								@Override
+								public void onButtonClick(DialogInterface dialog, int which) {
+									deletaCartao(cartoes.get(position), position);
+								}
+							}
+
+					);
 				}
 			}
 		};

@@ -55,7 +55,6 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     private ModalidadeEnum modalidade;
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
-    private SubBarraModalidadeFragment subBarFragment;
 
     private BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     private ConstraintLayout background;
@@ -68,10 +67,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmado_inclusao_carrinho);
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.modalidade)), ParametroJogoDTO.class);
-        isMega30 = EspecialUtils.isMega30(parametroSimulacao.getConcurso().getNumero(), parametroSimulacao.getConcurso().getTipoConcurso());
-        String numConcurso = parametroSimulacao.getConcurso().getNumero().toString();
-        Boolean especial = parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo));
-        isMega30 = EspecialUtils.isMega30(numConcurso,especial);
+        isMega30 = EspecialUtils.isMega30(parametroSimulacao);
 
         try {
             barraTituloDTO = (BarraTituloDTO) getIntent().getSerializableExtra("barraTituloModel");
@@ -167,10 +163,10 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     }
 
     private int getCorClara() {
-        return new EstiloModalidadeMKP(modalidade,isMega30).getCorClara();
+        return new EstiloModalidadeMKP(modalidade, isMega30).getCorClara();
     }
     private int getCorEscura() {
-        return new EstiloModalidadeMKP(modalidade,isMega30).getCorEscura();
+        return new EstiloModalidadeMKP(modalidade, isMega30).getCorEscura();
     }
 
     private String getDataSorteio() {
@@ -236,7 +232,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     }
 
     private void configuraLayoutTela(ModalidadeEnum modalidadeEnum) {
-        estilo = new EstiloModalidadeMKP(modalidadeEnum,isMega30);
+        estilo = new EstiloModalidadeMKP(modalidadeEnum, isMega30);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
@@ -283,6 +279,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                 //PrincipalActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
                 Intent intent = IntentUtil.getIntentOrigemDestino(this, PrincipalActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("ORIGEM_TELA", "CARRINHO_INC");
                 startActivity(intent);
             }
             break;

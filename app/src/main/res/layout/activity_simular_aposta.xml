@@ -15,13 +15,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <br.gov.caixa.loterias.apostas.view.custom.AccordionView
+        app:layout_constraintTop_toBottomOf="@id/id_fg_barra_titulo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/custom_accordion_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/id_fg_barra_titulo">
+        app:layout_constraintTop_toBottomOf="@id/custom_accordion_view"
+        >
 
         <LinearLayout
             android:id="@+id/toolBarSimularAposta"
@@ -96,7 +105,7 @@
                     android:fontFamily="@font/caixa_std_regular"
                     android:gravity="center_vertical"
                     android:paddingLeft="3dp"
-                    android:text="Teimosinha"
+                    android:text="@string/label_sem_teimosinha"
                     android:textAllCaps="false"
                     android:textColor="@color/branco"
                     android:textSize="14sp" />

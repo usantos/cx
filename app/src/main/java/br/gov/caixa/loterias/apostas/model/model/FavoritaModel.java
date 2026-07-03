@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
@@ -30,11 +31,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.repository.ApostaFavoritaRepository;
 import br.gov.caixa.loterias.apostas.model.repository.CarrinhoRepository;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.PickerApostaParamsManager;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostas.view.listener.OnEscolheModalidadeDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnEscolheApostaParamsListener;
 
 public class FavoritaModel extends AppModel {
 	//region Variables
@@ -124,9 +126,16 @@ public class FavoritaModel extends AppModel {
 	//region Privates
 	private void checarLimiteDiario(ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO, OnSilceListener<CarrinhoDTO> listener) {
 		if (isLimiteDiarioExcedido(carrinhoDTO, apostaFavoritaDTO)) {
-			ViewUtils.alertTitleButtonYesOrNotListener(getActivity(), getActivity().getResources().getString(R.string.MA014), (dialog, which) -> {
-				checarApostasRepetidas(apostaFavoritaDTO, carrinhoDTO, listener);
-			});
+			DialogUtils.dialogSim(getActivity(),
+					getActivity().getResources().getString(R.string.MA014),
+
+					new OnDialogBotaoListener() {
+						@Override
+						public void onButtonClick(DialogInterface dialog, int which) {
+							checarApostasRepetidas(apostaFavoritaDTO, carrinhoDTO, listener);
+						}
+					}
+			);
 		} else {
 			checarApostasRepetidas(apostaFavoritaDTO, carrinhoDTO, listener);
 		}
@@ -143,10 +152,17 @@ public class FavoritaModel extends AppModel {
 
 	private void checarApostasRepetidas(final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO, OnSilceListener<CarrinhoDTO> listener) {
 		if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(apostaFavoritaDTO, carrinhoDTO)) {
-			ViewUtils.alertTitleButtonYesOrNotListenerNew(getActivity(),getActivity().getResources().getString(R.string.MA015),getActivity().getResources().getString(R.string.label_atencao),(dialog, which) -> {
-				AlertDialogUtils.show(getActivity());
-				adicionarCarrinho(apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade(), listener);
-			}, ((dialogInterface, i) -> dialogInterface.dismiss()));
+			DialogUtils.dialogSim(getActivity(),
+					getActivity().getResources().getString(R.string.MA015),
+
+					new OnDialogBotaoListener() {
+						@Override
+						public void onButtonClick(DialogInterface dialog, int which) {
+							AlertDialogUtils.show(getActivity());
+							adicionarCarrinho(apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade(), listener);
+						}
+					}
+			);
 
 		} else {
 			adicionarCarrinho(apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade(), listener);
@@ -182,7 +198,7 @@ public class FavoritaModel extends AppModel {
 			}
 		} else {
 			if (arrayConcursos.isEmpty()){
-				ViewUtils.alertTitulo(getActivity(), R.string.label_atencao,"Modalidade não disponível no momento.");
+				DialogUtils.dialogEntendi(getActivity(),"Modalidade não disponível no momento.");
 				AlertDialogUtils.dismiss();
 			} else {
 				if (arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
@@ -203,20 +219,10 @@ public class FavoritaModel extends AppModel {
 	}
 
 	private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita, boolean temEspelho) {
-		FragmentManager fm = ((FavoritasActivity) getActivity()).getSupportFragmentManager();
-//		AdicionarCarrinhoFavoritasView adicionarCarrinhoFavoritasView = AdicionarCarrinhoFavoritasView.newInstance();
-//		//adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
-//		//adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;
-//		adicionarCarrinhoFavoritasView.setArrayConcursos(arrayConcursos);
-//		adicionarCarrinhoFavoritasView.setIdApostaFavorita(idApostaFavorita);
-//		adicionarCarrinhoFavoritasView.show(fm, getActivity().getResources().getString(R.string.adicionar_carrinho_favoritas_view));
-
-		DialogFragmentUtils.startEscolhaModalidade(fm, arrayConcursos, idApostaFavorita,
-				((FavoritasActivity) getActivity()).getResources().getString(R.string.adicionar_carrinho_favoritas_view),null, true, temEspelho,
-				onDialogFragmentListener(idApostaFavorita));
+		new PickerApostaParamsManager(getActivity(), arrayConcursos, temEspelho, apostaParamsListener(idApostaFavorita)).iniciar();
 	}
 
-	private OnEscolheModalidadeDialogListener onDialogFragmentListener(Long idApostaFavorita) {
+	private OnEscolheApostaParamsListener apostaParamsListener(Long idApostaFavorita) {
 		return (Integer tipoConcurso, int qtdTeimosinhas, Boolean espelho) -> {
 			Activity activity = getActivity();
 			final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
@@ -228,15 +234,11 @@ public class FavoritaModel extends AppModel {
 					if (response.getRedirect() != null){
 						RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
 					}
-					ViewUtils.alertCustomDismiss(
-							activity,
-							R.string.apostas_favoritas,
-							R.layout.dialog_alert_new,
-							activity.getResources().getString(R.string.label_new_favorita_no_carrinho),
-							R.id.dialogTitle,
-							R.id.dialogMessage,
-							activity.getResources().getString(R.string.ok)
-					);
+
+					DialogUtils.dialogTituloEntendi(activity,
+							activity.getResources().getString(R.string.apostas_favoritas),
+							activity.getResources().getString(R.string.label_new_favorita_no_carrinho));
+
 					CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
 				}
 

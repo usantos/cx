@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -82,11 +83,10 @@ public class PartidaView extends LinearLayout {
                 parametroJogoDTO.getConcurso() != null &&
                 parametroJogoDTO.getConcurso().getAberto() != null &&
                 !parametroJogoDTO.getConcurso().getAberto()) {
-            ViewUtils.alertTitleButton(getContext(),
-                                       R.string.label_atencao ,
-                                       getResources().getString(R.string.msg_conc_nao_aberto).replace("{num_concurso}",
-                                                                                                      parametroJogoDTO.getConcurso().getNumero().toString()),
-                                       getResources().getString(R.string.title_entendi));
+            DialogUtils.dialogEntendi(
+                    getContext(),
+                    getResources().getString(R.string.msg_conc_nao_aberto).replace("{num_concurso}",
+                            parametroJogoDTO.getConcurso().getNumero().toString()));
             return false;
         } else {
             return true;
@@ -202,13 +202,21 @@ public class PartidaView extends LinearLayout {
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1(), lotecaTimeUm.getItemImage());
 
         lotecaTimeUm.getItemTitle().setText(parametroPartida.getEquipe1().getNome());
-        lotecaTimeUm.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe1())+" "+parametroPartida.getLegendaAbreviada());
+        //TODO//
+        //String nomeTime = Utils.getUfTime(parametroPartida.getEquipe1())+" "+parametroPartida.getLegendaAbreviada();
+        if (parametroPartida.getEquipe1().getIndicadorSelecao() != null && !parametroPartida.getEquipe1().getIndicadorSelecao()) {
+            lotecaTimeUm.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe1()));
+        }
 
         lotecaTimeDois.setSelected(parametroPartida.getEquipe2().isSelecionado());
 //        lotecaTimeDois.getItemImage().setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe2(), lotecaTimeDois.getItemImage());
         lotecaTimeDois.getItemTitle().setText(parametroPartida.getEquipe2().getNome());
-        lotecaTimeDois.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe2())+" "+parametroPartida.getLegendaAbreviada());
+        //TODO//
+        //String nomeTime2 = Utils.getUfTime(parametroPartida.getEquipe2())+" "+parametroPartida.getLegendaAbreviada();
+        if (parametroPartida.getEquipe2().getIndicadorSelecao() != null && !parametroPartida.getEquipe2().getIndicadorSelecao()) {
+            lotecaTimeDois.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe2()));
+        }
 
         lotecaEmpate.setSelected(parametroPartida.isEmpate());
 //        lotecaEmpate.getItemImage().setPadding(14,18,14,18);

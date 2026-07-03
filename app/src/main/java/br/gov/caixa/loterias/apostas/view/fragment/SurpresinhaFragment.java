@@ -38,6 +38,7 @@ import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
@@ -498,7 +499,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
         if 	((qtdTrevos > (2)) && (!isAvisouT))
         {
-            ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
+            DialogUtils.dialogEntendi(
+                    getActivity(),
+                    getString(R.string.msg_qtd_max_ultrapassada_milionaria)
+            );
             isAvisouT = true;
         }
 
@@ -525,7 +529,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         parentActivity.atualizaTextoBotoesQtdSelecionadas();
         if 	((getQtdNumeros > (6)) && (!isAvisouN))
         {
-            ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+           DialogUtils.dialogEntendi(
+                    getActivity(),
+                    getString(R.string.msg_qtd_max_ultrapassada)
+            );
             isAvisouN = true;
         }
 

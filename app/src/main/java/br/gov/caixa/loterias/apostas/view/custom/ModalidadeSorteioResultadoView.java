@@ -59,7 +59,10 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
 
         this.numeroeDataConcursoResultadoMegaSena.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
         //this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.fromHtml("Nº <b>" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "</b> | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
-        this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.textCaixaSTDBold(getContext(), "_Nº " + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "_ | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
+        String sorteio = modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio();
+        String[] p = sorteio.split(" ");
+        String resultado = p[0] + " " + Character.toUpperCase(p[1].charAt(0)) + p[1].substring(1) + " " + p[2];
+        this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.textCaixaSTDBold(getContext(), "_Nº " + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "_ | " + resultado));
         //title1.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_premiacao_bold)));
 
         if (ModalidadeEnum.LOTECA.toString().equalsIgnoreCase(modalidade.getTipoModalidade().toString())) {

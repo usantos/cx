@@ -109,6 +109,7 @@ import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
@@ -119,6 +120,7 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
 public class PrincipalActivity extends LoteriasBaseAppActivity
@@ -171,8 +173,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private int anInt;
     private int ano;
     Boolean expandido = false;
+    private static final int REQ_CARRINHO = 1001;
     private Integer numeroConcurso = null;
     private ModalidadeEnum tipoModalidade = null;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -212,7 +216,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         listenerSair();
         //callWebservice();
         iniciarBancoLocal();
-        RateUtils.avaliarAplicativo(this);
+        if(veioDoCarrinho() || veioDoPagamento()) {
+            RateUtils.solicitarReview(this);
+        }
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
 
         if (SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
@@ -220,6 +226,21 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
 
         TimerNotificarCotasExpiradasSingleton.getInstance(this).iniciarVerificacao();
+    }
+    private boolean veioDoCarrinho() {
+        String origem = getIntent() != null
+                ? getIntent().getStringExtra("ORIGEM_TELA")
+                : null;
+
+        return "CARRINHO_INC".equals(origem) || "CARRINHO_BOLAO".equals(origem) || "CARRINHO".equals(origem);
+    }
+
+    private boolean veioDoPagamento() {
+        String origem = getIntent() != null
+                ? getIntent().getStringExtra("ORIGEM_TELA")
+                : null;
+
+        return "MERCADO".equals(origem);
     }
 
     private void setViews() {
@@ -510,11 +531,17 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private void trataPopupDeNotificacaoHandler() {
         if (UltimaNotificacaoSingleton.getInstance().isPagamentoNaoIdentificado()){
-            DialogUtils.showDialog1Botao(this, getString(R.string.label_atencao),
+            DialogUtils.dialogLabelUmBotaoListener(
+                    PrincipalActivity.this,
                     getString(R.string.alerta_descricao_pagamento_nao_identificado),
                     getString(R.string.acompanhe_suas_compras),
-                    () -> startActivity(IntentUtil.getIntentOrigemDestino(PrincipalActivity.this, ListaComprasActivity.class))
-                    );
+                    new OnDialogBotaoListener() {
+                        @Override
+                        public void onButtonClick(DialogInterface dialog, int which) {
+                            startActivity(IntentUtil.getIntentOrigemDestino(PrincipalActivity.this, ListaComprasActivity.class));
+                        }
+                    }
+            );
         } else if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
             if(getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){
                 trataPopupDeNotificacao();
@@ -757,32 +784,43 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         if (resultCode == RESULT_OK && requestCode == 1) {
             callWebservice();
         }
+        if (requestCode == REQ_CARRINHO && resultCode == 2) {
+            RateUtils.solicitarReview(this);
+        }
     }
 
     private void sairLogin() {
 
-        ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), (dialog, which) -> {
-            if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
-                AlertDialogUtils.show(PrincipalActivity.this);
-
-                new LoginSilceModel(PrincipalActivity.this).sair(new OnSilceListener<NetworkResponse>() {
+        DialogUtils.dialogSim(
+                PrincipalActivity.this,
+                getResources().getString(R.string.MA008),
+                new OnDialogBotaoListener() {
                     @Override
-                    public void success(NetworkResponse payload) {
-                        realizandoLogin = true;
-                        AlertDialogUtils.dismiss();
-                    }
+                    public void onButtonClick(DialogInterface dialog, int which) {
 
-                    @Override
-                    public void error(VolleyError error) {
-                        AlertDialogUtils.dismiss();
+                        if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
+                            AlertDialogUtils.show(PrincipalActivity.this);
+
+                            new LoginSilceModel(PrincipalActivity.this).sair(new OnSilceListener<NetworkResponse>() {
+                                @Override
+                                public void success(NetworkResponse payload) {
+                                    realizandoLogin = true;
+                                    AlertDialogUtils.dismiss();
+                                }
+
+                                @Override
+                                public void error(VolleyError error) {
+                                    AlertDialogUtils.dismiss();
+                                }
+                            });
+                        } else {
+                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_logout_offline_sucesso));
+                            startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+                            finish();
+                        }
                     }
-                });
-            } else {
-                AppCenterManager.registraEvento(getResources().getString(R.string.evento_logout_offline_sucesso));
-                startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
+                }
+        );
     }
 
     @Override
@@ -940,6 +978,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 //startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
             }
         } else {
+            int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
+            int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
+            TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
 
             Bundle bolao = new Bundle();
             bolao.putInt(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
@@ -973,12 +1014,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                         modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso(),
                         modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero());
         if (tempoExtraRestanteAposEncerrmento != null) {
-             DialogUtils.showDialogCustom(this,
-                    getString(R.string.label_atencao),
+             DialogUtils.dialogEntendi(
+                     PrincipalActivity.this,
                      getString(R.string.ainda_da_tempo,
-                             modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero()),
-                    null, getString(R.string.title_entendi),
-                    null, null, false);
+                             modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero())
+
+             );
             return;
        }
 
@@ -1044,7 +1085,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     protected void vaiProCarrinho() {
         if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
-            startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
+            startActivityForResult(
+                    new Intent(PrincipalActivity.this, CarrinhoActivity.class),
+                    REQ_CARRINHO
+            );
         }
     }
 
@@ -1135,7 +1179,17 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private void trataMenuJogoResponsavel(DrawerEnum item, int itemPosition) {
         switch (item) {
             case MENU_JOGO_RESPONSAVEL_POLITICA:
-                DialogUtils.modalJogoresponsavel(PrincipalActivity.this);
+                DialogUtils.dialogTituloConfirmar(
+                        PrincipalActivity.this,
+                        getString(R.string.jogo_responsavel),
+                        getString(R.string.voce_sera_redirecionado_para_o_site_jogo_responsavel),
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                Utils.abreUrl(PrincipalActivity.this, R.string.url_jogo_responsavel);
+                            }
+                        }
+                );
                 break;
             case MENU_JOGO_RESPONSAVEL_AVALIACAO:
                 startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
@@ -1166,7 +1220,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
                 if (expandableListTitle.get(i) == DrawerEnum.MENU_SOBRE_CAIXA) {
-                    ViewUtils.abrirMenuCaixa(PrincipalActivity.this);
+//                    ViewUtils.abrirMenuCaixa(PrincipalActivity.this);
                 }
                 return false;
             }
@@ -1198,7 +1252,18 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private void redirecionaJogoResponsavel(){
         //startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
-        DialogUtils.modalJogoresponsavel(PrincipalActivity.this);
+        DialogUtils.dialogTituloConfirmar(
+                PrincipalActivity.this,
+                getString(R.string.jogo_responsavel),
+                getString(R.string.voce_sera_redirecionado_para_o_site_jogo_responsavel),
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        Utils.abreUrl(PrincipalActivity.this, R.string.url_jogo_responsavel);
+                    }
+                }
+
+        );
     }
     private void redirecionaMsgDisque180(){
         boolean installed = isAppInstalled("com.whatsapp");
@@ -1215,16 +1280,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
 
     }
-    private AlertDialog myDialog;
+   // private AlertDialog myDialog;
     private void showDialogNoWhatsapp() {
-        if (myDialog == null) {
-            myDialog = new AlertDialog.Builder(this)
-                    .setTitle(getResources().getString(R.string.label_atencao))
-                    .setMessage(getResources().getString(R.string.no_whatsapp))
-                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
-                    .create();
-        }
-        myDialog.show();
+        DialogUtils.dialogEntendi(
+                PrincipalActivity.this,
+                getResources().getString(R.string.no_whatsapp)
+        );
     }
     private boolean isAppInstalled(String s) {
         PackageManager packageManager = getPackageManager();
@@ -1301,7 +1362,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                         public void onResponse(PushRegistrarDispositivoResponse response) {
                             if (response.getPayload().getCodigo().equals("200")) {
                                 if (!BuildVersionUtil.isPRD()) {
-                                    ViewUtils.alert(PrincipalActivity.this, "GRAVOU O TOKEN DO DISPOSITIVO COM SUCESSO\n" + tokenFirebase);
+                                    DialogUtils.dialogEntendi(
+                                            PrincipalActivity.this,
+                                            "GRAVOU O TOKEN DO DISPOSITIVO COM SUCESSO\n" + tokenFirebase
+                                    );
                                 }
                                 messagingToken.setTokenEnviado(cpf, tokenFirebase);
                             }
@@ -1309,7 +1373,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             if (!BuildVersionUtil.isPRD()) {
-                                ViewUtils.alert(PrincipalActivity.this, "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenFirebase);
+                                DialogUtils.dialogEntendi(
+                                        PrincipalActivity.this,
+                                        "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenFirebase
+                                );
                             }
                         }
                     });

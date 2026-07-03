@@ -37,6 +37,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -98,7 +99,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         montaTipoApostaLinha(detalhesPremioDTO.getAposta(), estiloModalidadeMKP.getCorEscura(),
                 estiloModalidadeMKP.getCorFonteFundoEscuro(), estiloModalidadeMKP.getCorFonteFundoEscuro());
 
-        if (isEspeial()) {
+        if (isEspeial() && estiloModalidadeMKP.getImagemEspecialSimples() > 0) {
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidadeMKP.getImagemEspecialSimples()));
         } else {
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
@@ -164,7 +165,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         createListPremiacao();
         trataFormasDeResgate();
-        RateUtils.avaliarAplicativo(this, true);
         setResult(RESULT_FIRST_USER);
     }
 
@@ -261,7 +261,10 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             public void onErrorResponse(VolleyError error) {
                 alertDialog.dismiss();
                 String msgError = MensagensNetwork.setMensagem(error, ResultadoApostaConfirmadaActivity.this);
-                ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, msgError, getContext().getResources().getString( R.string.ok ));
+                DialogUtils.dialogEntendi(
+                        getContext(),
+                        msgError
+                );
             }
         });
     }
@@ -315,8 +318,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             }
         }
 
-        listaOpcaoResgate.setLayoutManager(new LinearLayoutManager(this));
         listaOpcaoResgate.setAdapter(new OpcaoResgatePremioAdapter(list));
+        listaOpcaoResgate.setLayoutManager(new LinearLayoutManager(this));
 
         if (detalhesPremioDTO.getMensagemInformativaIR() != null && !detalhesPremioDTO.getMensagemInformativaIR().isEmpty()){
             apresentaInfoResgateIR();

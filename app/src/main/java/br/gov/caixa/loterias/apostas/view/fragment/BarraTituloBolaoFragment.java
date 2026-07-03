@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class BarraTituloBolaoFragment extends Fragment {
@@ -144,6 +145,7 @@ public class BarraTituloBolaoFragment extends Fragment {
     private void preencheDados() {
         if (isEspecial){
             if(modalidade.equals(ModalidadeEnum.LOTOFACIL)) {
+                //TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -10);
                 tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
             } else{
                 tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
@@ -155,7 +157,7 @@ public class BarraTituloBolaoFragment extends Fragment {
         ViewCompat.setAccessibilityHeading(tvModalidade,true);
         tvConcurso.setText(concurso);
         tvSorteio.setText(sorteio);
-        tvValorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(valorPremio));
+        tvValorPremio.setText(ViewUtils.getMoedaFormatComCentavos(valorPremio, 2));
         String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(valorPremio);
         if (!valorEstimadoPorExtenso.isEmpty()){
             tvValorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));
