@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -978,9 +979,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 //startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
             }
         } else {
-            int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
-            int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
-            TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
 
             Bundle bolao = new Bundle();
             bolao.putInt(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
