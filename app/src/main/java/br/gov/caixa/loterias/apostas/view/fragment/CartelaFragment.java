@@ -144,6 +144,20 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
 		BigDecimal valorEmReais = BigDecimal.ZERO;
 		loadParametroJogo();
+		if (parametroJogo.getValoresAposta() == null) {
+			DialogUtils.dialogEntendiListener(getActivity(),
+					getString(R.string.nao_concluiu_aposta),
+					new OnDialogBotaoListener() {
+						@Override
+						public void onButtonClick(DialogInterface dialog, int which) {
+							Intent intent = IntentUtil.getIntentLimpandoPilhaActivities(getActivity(), PrincipalActivity.class);
+							getActivity().startActivity(intent);
+							getActivity().finish();
+						}
+					});
+
+			return;
+		}
 
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 			ParametroValorApostaDTO valorAposta = parametroJogo.getValorApostaBy(numPrognostico, parametroJogo.getTrevos().getQtdMinima());
@@ -208,16 +222,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		else {
 			DialogUtils.dialogEntendiListener(getActivity(),
 					getString(R.string.nao_concluiu_aposta),
-
 					new OnDialogBotaoListener() {
 						@Override
 						public void onButtonClick(DialogInterface dialog, int which) {
-							Intent intent = new Intent(getContext(), PrincipalActivity.class);
-							startActivity(intent);
-
+							Intent intent = IntentUtil.getIntentLimpandoPilhaActivities(getActivity(), PrincipalActivity.class);
+							getActivity().startActivity(intent);
+							getActivity().finish();
 						}
-					}
-			);
+					});
 		}
 	}
 
