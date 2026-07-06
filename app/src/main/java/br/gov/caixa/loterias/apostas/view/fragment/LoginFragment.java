@@ -14,7 +14,6 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ import androidx.biometric.BiometricPrompt;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
 
@@ -58,6 +56,7 @@ import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -102,7 +101,6 @@ public class LoginFragment extends Fragment {
 
         biometriaLinearLayout = v.findViewById(R.id.biometriaLinearLayout);
         biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
-
 
         //Selecao ambiente se NAO PRD
         if (!BuildConfig.FLAVOR.equals("prd")) {
@@ -177,6 +175,22 @@ public class LoginFragment extends Fragment {
         }
 
         buttonLogin.setOnClickListener(v12 -> {
+            AnalyticsHelper.getInstance().logInteraction(
+                    AnalyticsHelper.EventCategoryParams.CTA,
+                    AnalyticsHelper.EventActionParams.CLICK,
+                    AnalyticsHelper.EventLabelParams.ENTRY,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.ENTRY,
+                    AnalyticsHelper.Tela.LOGIN
+            );
+
+            AnalyticsHelper.getInstance().logFlowStart(
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.Tela.LOGIN.nome,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.Tela.LOGIN.nome,
+                    AnalyticsHelper.Tela.LOGIN
+            );
 
             biometriaDTO = DadosBiometriaBO.obterBiometria();
 

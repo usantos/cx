@@ -60,7 +60,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 35
 
-        //                   22                 1.23.0 = 01 023               00
+        //                   22                 1.22.0 = 01 022               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
         versionCode 220102305
         versionName "1.23.2"

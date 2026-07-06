@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -153,7 +154,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private boolean isMega30;
     private EstiloModalidadeMKP estilo;
     private LottieManager lottieManager;
-
+    String numeroConcurso;
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,8 +166,9 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
         try{
+            numeroConcurso = parametroSimulacao.getConcurso().getNumero().toString();
             barraTituloDTO.setDataSorteio(getDataSorteio());
-            barraTituloDTO.setNumeroConcurso(parametroSimulacao.getConcurso().getNumero().toString());
+            barraTituloDTO.setNumeroConcurso(numeroConcurso);
             barraTituloDTO.setEspecial(isEspecial);
 
         } catch (Exception e){
@@ -230,7 +232,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
 
     private void preencheBarraTitulo() {
         FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
-                tipoJogo, parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(), isEspecial, getCorBackgroundBarraTitulo(), true);
+                tipoJogo, numeroConcurso, getDataSorteio(), isEspecial, getCorBackgroundBarraTitulo(), true);
     }
 
     private int getCorBackgroundBarraTitulo() {
@@ -301,6 +303,14 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         if (paginacao != null && isFragmentCartela() && !parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA)){
             voltaPagina();
         }
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                AnalyticsHelper.Tela.MONTAR_APOSTA,
+                ModalidadeEnum.fromString(tipoJogo),
+                numeroConcurso
+                );
+
     }
 
     public void zerarApostas() {
@@ -352,7 +362,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                 break;
             case R.id.surpresinhaTela:
                 surpresinhaFragment.setArguments(new Bundle());
-                abrirTelaSurprezinha();
+                abrirTelaSurpresinha();
                 if (temPaginacao()){
                     paginacaoView.setVisibility(View.GONE);
                 }
@@ -436,7 +446,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         Bundle bundle = new Bundle();
         bundle.putString(getResources().getString(R.string.extra_equipe_selecionada), (new Gson()).toJson(equipeSelecionada));
         surpresinhaFragment.setArguments(bundle);
-        abrirTelaSurprezinha();
+        abrirTelaSurpresinha();
     }
 
     @Override
@@ -654,7 +664,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         }
     }
 
-    private void abrirTelaSurprezinha() {
+    private void abrirTelaSurpresinha() {
         FragmentUtils.startFragmentAllowingStateLoss(fragmentManager, R.id.fragmentSimularApostas, surpresinhaFragment);
         if (tipoJogo == ModalidadeEnum.TIMEMANIA){
             Drawable ic_numeros = ContextCompat.getDrawable(this, R.drawable.icon_seleciona2);
@@ -868,6 +878,14 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             @Override
             public void ok(int position) {
                 qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
+                AnalyticsHelper.getInstance().logSelectContent(
+                        AnalyticsHelper.Tela.MONTAR_APOSTA,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                        AnalyticsHelper.ContentCategoryParams.CONFIG,
+                        ModalidadeEnum.fromString(tipoJogo),
+                        textoBotaoPrognosticosSelecionado
+                );
 
                 if (isFragmentCartela()) {
                     cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
@@ -930,7 +948,14 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                 } else {
                     qtdConcursosButton.setText(textoBotaoTeimosinhas);
                 }
-
+                AnalyticsHelper.getInstance().logSelectContent(
+                        AnalyticsHelper.Tela.MONTAR_APOSTA,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                        AnalyticsHelper.ContentCategoryParams.CONFIG,
+                        ModalidadeEnum.fromString(tipoJogo),
+                        textoBotaoTeimosinhas
+                );
                 if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
                     if (surpresinhaFragment.getParametroJogo() != null) {
                         surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);

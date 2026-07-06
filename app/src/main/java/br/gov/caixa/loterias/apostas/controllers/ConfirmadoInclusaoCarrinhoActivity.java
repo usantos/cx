@@ -10,9 +10,11 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
 import br.gov.caixa.loterias.apostas.utils.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -57,6 +59,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     private BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     private ConstraintLayout background;
     private Boolean isMega30 = false;
+    String numeroConcurso;
+    String value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,47 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         configuraActivityIncluidoApostaCarrinho();
         fragmentSomadorCarrinho();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (modalidade == null || value == null || numeroConcurso == null) {
+            return;
+        }
+
+        AnalyticsHelper.getInstance().logViewScreenApostaValor(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                AnalyticsHelper.Tela.CART,
+                ModalidadeEnum.fromString(modalidade),
+                value,
+                numeroConcurso
+        );
+
+        AnalyticsHelper.getInstance().logOperationSuccess(
+                AnalyticsHelper.StatusParams.SUCESSSO,
+                AnalyticsHelper.Tela.CART,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                ModalidadeEnum.fromString(modalidade),
+                numeroConcurso,
+                value,
+                false,
+                AnalyticsHelper.AnalyticsFields.APOSTA_SIMPLES
+        );
+
+    }
+
+    @Nullable
+    private String getNumeroConcurso() {
+        if (parametroSimulacao == null) return null;
+        if (parametroSimulacao.getConcurso() == null) return null;
+        if (parametroSimulacao.getConcurso().getNumero() == null) return null;
+
+        return String.valueOf(parametroSimulacao.getConcurso().getNumero());
+    }
+
     private void preencheBarraTitulo() {
         if (modalidade.equals(ModalidadeEnum.COMBO)) {
             FragmentUtils.startFragmentBarraTituloCombo(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
@@ -86,9 +131,10 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                     getCorEscura());
         } else {
             try{
+                numeroConcurso = getNumeroConcurso();
                 FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
                         modalidade,
-                        parametroSimulacao.getConcurso().getNumero().toString(),
+                        numeroConcurso,
                         getDataSorteio(),
                         parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)),
                         getCorClara(), true);
@@ -154,6 +200,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
 
         configuraLayoutTela(modalidade);
         TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
+        value = ViewUtils.getMoedaFormat(valorAposta);
         if (valorAposta.doubleValue() > 999.99){
             TextViewUtils.mudarTamanhoPorPorcentagem(valorApostaText, -30);
         }

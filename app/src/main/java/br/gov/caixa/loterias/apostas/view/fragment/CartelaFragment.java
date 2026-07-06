@@ -64,6 +64,7 @@ import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
@@ -562,6 +563,7 @@ private void zeraLoteca(){
 		}
 
 		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
+		logAposta();
 
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = ApostaUtils
@@ -572,6 +574,43 @@ private void zeraLoteca(){
 		} else {
 			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = getApostaPreenchida();
 			model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloDTO);
+		}
+	}
+
+	private void logAposta(){
+		if(parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)){
+
+			AnalyticsHelper.getInstance().logInteraction(
+					AnalyticsHelper.EventCategoryParams.CTA,
+					AnalyticsHelper.EventActionParams.CLICK,
+					AnalyticsHelper.EventLabelParams.ADD_TO_CART,
+					AnalyticsHelper.Tela.MONTAR_APOSTA,
+					AnalyticsHelper.JourneyParams.APOSTAR,
+					AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+					ModalidadeEnum.fromString(parametroJogo.getConcurso().getModalidade()),
+					parametroJogo.getConcurso().getNumero().toString(),
+					parentActivity.getLabelValueJogosLoteca().getText().toString(),
+					parentActivity.getLabelValueSimplesLoteca().getText().toString(),
+					parentActivity.getLabelValueDuplasLoteca().getText().toString(),
+					parentActivity.getLabelValueTriplasLoteca().getText().toString(),
+					ViewUtils.getMoedaFormat(valorTotalAposta)
+			);
+		}
+		else{
+			AnalyticsHelper.getInstance().logInteraction(
+					AnalyticsHelper.EventCategoryParams.CTA,
+					AnalyticsHelper.EventActionParams.CLICK,
+					AnalyticsHelper.EventLabelParams.ADD_TO_CART,
+					AnalyticsHelper.JourneyParams.APOSTAR,
+					AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+					AnalyticsHelper.Tela.MONTAR_APOSTA,
+					ModalidadeEnum.fromString(parametroJogo.getConcurso().getModalidade()),
+					parametroJogo.getConcurso().getNumero().toString(),
+					"0",
+					String.valueOf(parentActivity.qtdDezenasPossiveisSelecionado),
+					String.valueOf(parentActivity.qtdConcursoSelecionado),
+					ViewUtils.getMoedaFormat(valorTotalAposta)
+			);
 		}
 	}
 

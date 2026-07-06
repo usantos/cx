@@ -54,6 +54,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/trevo" />
+        <meta-data
+            android:name="google_analytics_automatic_screen_reporting_enabled"
+            android:value="false"/>
         <activity
             android:name=".controllers.QueroNaoQueroActivity"
             android:exported="false"
