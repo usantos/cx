@@ -727,7 +727,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private OnAnimacaoViewListener onAnimacaoAcessoRapido() {
         return () -> {
-            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+            if (SharedPreferencesUtils.getValorBoolean(SharedPreferencesUtils.BOLAO,false) &&
                     temBolaoModalidadeDisponivel(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade())){
                 buttonHomeBolao.setVisibility(View.VISIBLE);
             }
@@ -872,7 +872,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                         ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
             }
 
-            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+            if (SharedPreferencesUtils.getValorBoolean(SharedPreferencesUtils.BOLAO,false) &&
                     temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
 
                 buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
