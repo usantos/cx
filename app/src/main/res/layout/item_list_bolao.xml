@@ -104,6 +104,18 @@
         />
 
     <TextView
+        android:id="@+id/cotas_e_dezenas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Restam 1 de 10 cotas\n5 apostas de 10 dezenas"
+        android:textColor="@color/cinza110"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/cidade_bolao"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cidade_bolao"
+        />
+
+        <TextView
         android:id="@+id/valor_cota"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
