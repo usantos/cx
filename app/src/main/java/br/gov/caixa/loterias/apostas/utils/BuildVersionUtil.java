@@ -6,6 +6,7 @@ public class BuildVersionUtil {
 	private static final String EMULADOR = "emulador";
 	private static final String TQS = "tqs";
 	private static final String PRD = "prd";
+	private static final String NET = "net";
 	private static final String AUTOMACAO = "automacao";
 
 	public static boolean isEmulador(){
@@ -17,7 +18,7 @@ public class BuildVersionUtil {
 	}
 
 	public static boolean isPRD(){
-		return isVersao(PRD);
+		return isVersao(PRD) || isVersao(NET);
 	}
 
 	public static boolean isAutomacao(){
