@@ -444,7 +444,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".controllers.ResultadoApostaConfirmadaActivity"
+            android:name=".view.activity.ResultadoApostaConfirmadaActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait" />
         <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity" />

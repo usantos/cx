@@ -21,6 +21,7 @@
     <string name="valorDessaAposta">Valor dessa\naposta</string>
     <string name="imagemCarrinho">Carrinho</string>
     <string name="carrinhoDeApostas">Carrinho \nde apostas</string>
+    <string name="carrinho_apostas">Carrinho de Apostas</string>
     <string name="label_premio_estimado_concurso_numero">Pr\u00eamio estimado Concurso %d</string>
     <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
     <string name="label_premio_estimado">Pr\u00eamio estimado</string>
@@ -59,6 +60,7 @@
     <string name="label_atencao">Atenção</string>
     <string name="label_atencao_exclama">Atenção!</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
+    <string name="label_salvar_aposta">Salvar aposta</string>
     <string name="label_de_nome">Dê um nome</string>
 
     <string name="verCarrinho">_Ver carrinho_\nde apostas</string>
@@ -192,13 +194,12 @@
     <string name="label_suas_apostas_explica">Escolha os resultados dos jogos abaixo.\nVocê precisa apostar em todos os jogos, sendo que pelo menos 1 palpite deve ser duplo
         (apostar nos dois times ou em um time e no empate) ou triplo (apostar em empate e nos dois times).
         Você ganha com 13 ou 14 palpites corretos.</string>
-    <string name="label_jogos">Partidas</string>
-    <string name="label_simples">Simples</string>
-    <string name="label_duplas">Duplas</string>
-    <string name="label_triplas">Triplas</string>
+    <string name="label_jogos">Partidas:</string>
+    <string name="label_simples">Simples:</string>
+    <string name="label_duplas">Duplas:</string>
+    <string name="label_triplas">Triplas:</string>
     <string name="label_dois_pontos">:</string>
-    <string name="label_informe">Informe</string>
-    <string name="label_resultado_das_partidas">o resultado das partidas.</string>
+    <string name="label_resultado_das_partidas">Informe o resultado das partidas</string>
     <string name="label_selecionar_times_aleatoriamente">_Selecionar_\ntimes aleatoriamente</string>
     <string name="label_selecionar_time_aleatoriamente">_Selecionar_\ntime aleatoriamente</string>
     <string name="label_escolha_time_coracao">_Escolha_\no time do coração</string>
@@ -319,8 +320,8 @@
     <string name="label_ganhadores_regiao_primeiro_sorteio_bold">_Ganhadores por regi\u00e3o - 1º sorteio_</string>
     <string name="label_ganhadores_regiao_segundo_sorteio_bold">_Ganhadores por regi\u00e3o - 2º sorteio_</string>
     <string name="label_nao_foi_dessa_vez">Não premiado ou ainda não apurado</string>
-    <string name="label_pode_comemorar">Pode comemorar,</string>
-    <string name="label_voce_foi_premiado">você foi premiado com \n {ValorPremio}</string>
+    <string name="label_pode_comemorar">Pode comemorar!</string>
+    <string name="label_voce_foi_premiado">você foi premiado com total de \n {ValorPremio}</string>
     <string name="label_voce_foi_premiado_exclamacao">você foi premiado!</string>
     <string name="label_estimativa_de_premio">Estimativa de prêmio</string>
     <string name="label_limite_diario">Limite diário</string>
@@ -1627,11 +1628,15 @@
     <string name="erro_minas_apostas_teimosinha">Não conseguimos processar sua solicitação.\nTente novamente!</string>
     <string name="label_cidade_uf">Cidade/UF:</string>
     <string name="label_surpresinha">| Surpresinha</string>
+    <string name="label_legenda">Legenda</string>
+    <string name="palpite">palpite</string>
+    <string name="acessibilidade_legenda_botao">Legenda, botão</string>
 
 
     <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>
     <string name="marcador_oval">Marcador oval (bullet) para item de lista</string>
     <string name="botao_duvidas">Botão dúvidas</string>
+    <string name="duvidas">Dúvidas</string>
 
     <!-- MEGA 30 ANOS   -->
     <string name="mega_sena_30_anos">mega-sena 30 anos</string>
@@ -1666,5 +1671,8 @@
 
     <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
     <string name="txt_como_jogar">Como jogar</string>
+    <string name="txt_choose_your_reward">Escolha como resgatar seu prêmio</string>
+    <string name="txt_contest">Concurso</string>
+    <string name="txt_concursos">Concursos</string>
 
 </resources>

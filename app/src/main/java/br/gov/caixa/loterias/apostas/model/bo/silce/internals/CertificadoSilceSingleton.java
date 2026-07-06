@@ -22,7 +22,8 @@ public class CertificadoSilceSingleton {
 
     private static void initCertificados() {
         certificados = new ArrayList<>();
-        certificados.add(R.raw.new_certificado);
+        certificados.add(R.raw.certificado_atual);
+        certificados.add(R.raw.novo_certificado);
         position = 0;
     }
 

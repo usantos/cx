@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity;
+import br.gov.caixa.loterias.apostas.view.activity.ResultadoApostaConfirmadaActivity;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;

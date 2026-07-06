@@ -213,7 +213,7 @@ public enum ModalidadeEnum implements Serializable {
             case DUPLA_SENA:
                 return "Dupla de Páscoa";
             case LOTECA:
-                return "Copa da Loteca";
+                return "Loteca Especial";
             default:
                 return getDescricao(modalidade);
         }
@@ -230,7 +230,7 @@ public enum ModalidadeEnum implements Serializable {
             case DUPLA_SENA:
                 return "Dupla de \nPáscoa";
             case LOTECA:
-                return "Copa da \nLoteca";
+                return "Loteca \nEspecial";
         }
         return "";
     }
