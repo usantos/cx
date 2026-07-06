@@ -47,6 +47,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_detalhe_minhas_apostas_teimosinha" />
+    <include layout="@layout/content_detalhe_minhas_apostas_todas" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
