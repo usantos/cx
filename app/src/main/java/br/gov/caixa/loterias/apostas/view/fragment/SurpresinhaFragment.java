@@ -21,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
@@ -256,7 +257,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             atualizaBotoesQtdTrevos();
         }
 
-        Button botaoAdicionarSurpresinhaAoCarrinho = parentActivity.getBotaoAdicionarCompletarCartela();
+        MaterialButton botaoAdicionarSurpresinhaAoCarrinho = parentActivity.getBotaoAdicionarCompletarCartela();
         //botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
         botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
         botaoAdicionarSurpresinhaAoCarrinho.setOnClickListener(this);

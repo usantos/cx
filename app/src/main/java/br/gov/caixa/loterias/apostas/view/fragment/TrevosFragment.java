@@ -243,7 +243,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
 
                 AlertDialogUtils.dismiss();
 
-               listener.atualizaLayoutSalverAposta();
+               listener.atualizaLayoutSalvarAposta();
             }
 
             @Override
