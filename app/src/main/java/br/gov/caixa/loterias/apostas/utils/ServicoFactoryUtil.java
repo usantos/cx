@@ -5,28 +5,18 @@ import br.gov.caixa.loterias.apostas.model.bo.*;
 public class ServicoFactoryUtil {
 
 	public static ApostaRepository getApostaService() {
-		if (ServicoNuvemUtil.isServicoNuvem()) {
-			return ApostaNuvemBO.getInstance();
-		} else {
-			return ApostaSilceBO.getInstance();
-		}
+		return ApostaNuvemBO.getInstance();
 	}
 
 	public static DadosCorporativoRepository getDadosCorporativoService() {
-		if (ServicoNuvemUtil.isServicoNuvem()) {
-			return DadosCorporativosNuvemBO.getInstance();
-		} else {
-			return DadosCorporativosSilceBO.getInstance();
-		}
+		return DadosCorporativosNuvemBO.getInstance();
 	}
 
 	public static DadosUsuarioRepository getDadosUsuarioService() {
 		if(ServicoApostadorUtil.isServicoApostador()){
 			return DadosUsuarioApostadorBO.getInstance();
-		} else if (ServicoNuvemUtil.isServicoNuvem()) {
-			return DadosUsuarioNuvemBO.getInstance();
 		} else {
-			return DadosUsuarioBO.getInstance();
+			return DadosUsuarioNuvemBO.getInstance();
 		}
 	}
 
