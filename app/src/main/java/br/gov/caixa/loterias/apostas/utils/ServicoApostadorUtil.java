@@ -1,15 +1,12 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 
 public class ServicoApostadorUtil {
 
 
     private static boolean cpfAcessamApostador() {
-
-
-        String cpfAcessam[] = ConfiguracaoAppSingleton.getInstance().getGrupoDeCpfsApostador().split(";");
+        String cpfAcessam[] = SharedPreferencesUtils.getValorString(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_APOSTADOR.asString()).split(";");
 
         int finalCpfAcessamApostador = new Integer(cpfAcessam[0]);
 
@@ -38,8 +35,7 @@ public class ServicoApostadorUtil {
 
 
     public static String getBaseUrlApostador() {
-
-        return ConfiguracaoAppSingleton.getInstance().getUrlBaseApostador();
+        return SharedPreferencesUtils.getValorString(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), ConfiguracoesDefaultEnum.URL_BASE_APOSTADOR.asString());
     }
 
     public static boolean isServicoApostadorAtivo() {
