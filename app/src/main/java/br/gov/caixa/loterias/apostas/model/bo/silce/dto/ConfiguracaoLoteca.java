@@ -11,6 +11,11 @@ public class ConfiguracaoLoteca implements Serializable {
 		this.corTexto = corTexto;
 	}
 
+	public ConfiguracaoLoteca(int corTexto, int corTextoSelecionado){
+		this.corTexto = corTexto;
+		this.corTextoSelecionado = corTextoSelecionado;
+	}
+
 	public ConfiguracaoLoteca(int corTexto, int corTextoSelecionado, int backgroundSelecionado) {
 		this.corTexto = corTexto;
 		this.corTextoSelecionado = corTextoSelecionado;

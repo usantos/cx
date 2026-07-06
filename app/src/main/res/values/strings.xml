@@ -1627,6 +1627,9 @@
     <string name="erro_minas_apostas_teimosinha">Não conseguimos processar sua solicitação.\nTente novamente!</string>
     <string name="label_cidade_uf">Cidade/UF:</string>
     <string name="label_surpresinha">| Surpresinha</string>
+    <string name="label_legenda">Legenda</string>
+    <string name="palpite">palpite</string>
+    <string name="acessibilidade_legenda_botao">Legenda, botão</string>
 
 
     <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>
