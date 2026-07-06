@@ -35,6 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pagarVia"
+            android:importantForAccessibility="yes"
+            android:focusable="true"
             android:textColor="@color/cinzaescuro"
             android:textSize="13sp"
             android:fontFamily="@font/caixa_std_regular"
@@ -51,7 +53,10 @@
             android:text="@string/bandeirasAceitas"
             android:fontFamily="@font/caixa_std_regular"
             android:textColor="@color/cinzaescuro"
+            android:accessibilityTraversalAfter="@id/imagemMeioPagamento"
             android:textSize="13sp"
+            android:importantForAccessibility="yes"
+            android:focusable="true"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="@id/containerBandeiras"
@@ -60,6 +65,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imagemMeioPagamento"
             android:layout_width="wrap_content"
+            android:accessibilityTraversalAfter="@id/textoPagarVia"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginTop="16dp"
@@ -93,52 +99,57 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/imgBandeira1"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:contentDescription="@string/amex"
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira2"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:src="@drawable/ic_bandeira_amex" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/imgBandeira2"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:contentDescription="@string/elo"
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira3"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira1"
                 tools:src="@drawable/elo_fundo_claro" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/imgBandeira3"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:contentDescription="@string/hipercard"
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira4"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira2"
                 tools:src="@drawable/ic_hipercard" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/imgBandeira4"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:contentDescription="@string/mastercard"
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira5"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira3"
                 tools:src="@drawable/ic_master_card" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/imgBandeira5"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:contentDescription="@string/visa"
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira6"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira4"
                 tools:src="@drawable/ic_bandeira_visa" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/imgBandeira6"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
