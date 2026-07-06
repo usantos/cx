@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 
 public class ServicoNuvemUtil {
 
@@ -30,7 +29,7 @@ public class ServicoNuvemUtil {
 	}
 
 	private static boolean cpfAcessamNuvem() {
-		String cpfAcessam[] = ConfiguracaoAppSingleton.getInstance().getGrupoDeCpfsQueAcessamOServicoDaAzure().split(";");
+		String cpfAcessam[] = SharedPreferencesUtils.getValorString(ConfiguracoesEnum.GRUPO_CPFS_AZURE.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_AZURE.asString()).split(";");
 		int finalCpfAcessamNuvem = new Integer(cpfAcessam[0]);
 
 		if (finalCpfAcessamNuvem == 100) {
@@ -78,11 +77,11 @@ public class ServicoNuvemUtil {
 		String baseUrlCarrinho;
 
 		if(isAmbienteTQS()) {
-			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
+			baseUrlCarrinho = SharedPreferencesUtils.getValorString(ConfiguracoesEnum.URL_BASE_CARRINHO_PILOTO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PILOTO.asString());
 			//baseUrlCarrinho = "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1"; //TQS
 			//"https://silce.carrinho.tqs.caixa.gov.br/loterias-web/carrinho/v1"
 		} else {
-			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
+			baseUrlCarrinho = SharedPreferencesUtils.getValorString(ConfiguracoesEnum.URL_BASE_CARRINHO_PRODUCAO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PRODUCAO.asString());
 		}
 
 		return baseUrlCarrinho;
