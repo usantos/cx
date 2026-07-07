@@ -499,6 +499,20 @@
                 android:value="br.gov.caixa.loterias.apostas.controllers.RapidaoConfigActivity_" />
         </activity>
         -->
+        <activity
+            android:name=".debug.activity.NetworkInspectorDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+
+        <activity
+            android:name=".debug.activity.PayloadViewerActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+
+        <activity
+            android:name=".debug.activity.NetworkInspectorActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
 
         <activity
             android:name="com.filabra.adapter.android.FilaBRAActivity"

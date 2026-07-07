@@ -132,6 +132,9 @@
         android:id="@+id/dadosCarrinho"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:importantForAccessibility="yes"
+        android:focusable="true"
+        android:screenReaderFocusable="true"
         android:orientation="vertical"
         tools:visibility="visible">
 
@@ -148,6 +151,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:focusable="true"
+                android:importantForAccessibility="yes"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -163,7 +168,6 @@
 
                 <TextView
                     android:id="@+id/numeroConcurso"
-                    android:accessibilityTraversalAfter="@id/tipoAposta"
                     style="@style/editTextCaixaRegularTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -252,11 +256,12 @@
 
                 <TextView
                     android:id="@+id/numerosText"
-                    android:accessibilityTraversalAfter="@id/numeroConcurso"
                     style="@style/editTextCaixaRegularTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxWidth="155dp"
+                    android:importantForAccessibility="yes"
+                    android:focusable="true"
                     android:text=""
                     tools:text="01 - 02 - 03 - 04 - 05 - 06"
                     android:textColor="@color/cinza"
@@ -298,12 +303,12 @@
 
                 <TextView
                     android:id="@+id/valorAposta"
-                    android:accessibilityTraversalAfter="@id/numerosText"
                     style="@style/editTextCaixaRegularTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="14dp"
                     android:layout_marginEnd="16dp"
+                    android:focusable="true"
                     android:text="@string/r_0_00"
                     android:importantForAccessibility="yes"
                     android:textAlignment="textEnd"
@@ -313,7 +318,6 @@
 
                 <ImageButton
                     android:id="@+id/excluirApostaCarrinho"
-                    android:accessibilityTraversalAfter="@id/valorAposta"
                     android:layout_width="18dp"
                     android:layout_height="22dp"
                     android:layout_marginTop="2dp"
@@ -342,12 +346,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:importantForAccessibility="no"
             android:layout_height="wrap_content">
 
             <View
                 android:id="@+id/v_div_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:importantForAccessibility="no"
                 android:background="@color/cinzaclaro"/>
         </RelativeLayout>
 

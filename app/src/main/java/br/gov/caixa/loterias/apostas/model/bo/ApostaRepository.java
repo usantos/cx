@@ -5,7 +5,6 @@ import br.gov.caixa.loterias.apostas.model.bean.MeioPagamentoPix;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixResponse;
@@ -61,7 +60,7 @@ public interface ApostaRepository {
 
     void gerarCodigoPix(MeioPagamentoPix meioPagamento, final RequestListener<GerarPixResponse> listener);
 
-    void buscaCombo(final RequestListener<CombosDTOResponse> listener);
+    //void buscaCombo(final RequestListener<CombosDTOResponse> listener);
 
     void adicionarComboNoCarrinho(final IncluirComboDTO incluirComboDTO,
                                   final RequestListener<CarrinhoDTOResponse> listener);

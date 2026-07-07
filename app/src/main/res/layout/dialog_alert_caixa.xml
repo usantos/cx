@@ -23,7 +23,7 @@
         android:id="@+id/dialogMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/erro_minas_apostas_teimosinha"
+        android:text="@string/erro_minhas_apostas_teimosinha"
         android:fontFamily="@font/caixa_std_regular"
         android:textSize="15sp"
         android:textColor="@color/cinza110"

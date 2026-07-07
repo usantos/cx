@@ -22,17 +22,17 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
+import br.gov.caixa.loterias.apostas.utils.FilaBRAManager;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.utils.FilaBRAManager;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.view.listener.FilaBRAListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
@@ -109,22 +109,22 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
             startActivity(new Intent(SplashScreenActivity.this, AtualizacaoActivity.class));
         } else {
             // chama configuracoes do app
+            LoginSP.limpar();
+            setPreferencesDefault();
             callConfiguracoesApp();
-            new Handler().postDelayed(() -> {
-                LoginSP.limpar();
-                //if (!redirectDeepLink()) {
-                if(!DadosUsuarioBO.checarFecharIntroducao()) {
-                    startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
-                }
-                else{
-                    startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-                }
-                    //}
-                finish();
-            }, SPLASH_TIME);
         }
     }
 
+    private void redirectApp(){
+        if(!DadosUsuarioBO.checarFecharIntroducao()) {
+            startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+        }
+        else{
+            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+        }
+        //}
+        finish();
+    }
     private void callConfiguracoesApp() {
         try {
             ApostaSilceBO.getInstance().getApresentaHistorico(new RequestListener<ParametrosConfiguraveisDTOResponse>() {
@@ -132,8 +132,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                 public void onResponse(ParametrosConfiguraveisDTOResponse result) {
 
                     if (temInformacaoBolao(result)){
-                        ConfiguracaoAppSingleton.getInstance().setBolaoHabilitado(result.getPayload().getMapa().getBolaoHabilitado());
-                        SharedPreferencesUtils.setValor("bolaoHabilitado",result.getPayload().getMapa().getBolaoHabilitado());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.BOLAO.get(),result.getPayload().getMapa().getBolaoHabilitado());
                     }
 
                     if (temDadosResposta(result)){
@@ -143,35 +142,39 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                     }
 
                     if (precisaAtualizarPublicKey(result)){
-                        ConfiguracaoAppSingleton.getInstance().setAtualizaPublicKey(result.getPayload().getMapa().isAtualizaPublicKey());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_ATUALIZA_PUBLIC_KEY.get(), result.getPayload().getMapa().isAtualizaPublicKey());
                     }
 
                     if (temDadosPayloadMapa(result)) {
                         if (temDadosComboApostasHabilitado(result)) {
-                            ConfiguracaoAppSingleton.getInstance().setComboApostasHabilitado(result.getPayload().getMapa().getComboApostasHabilitado());
+                            SharedPreferencesUtils.setValor(ConfiguracoesEnum.COMBO_APOSTAS.get(), result.getPayload().getMapa().getComboApostasHabilitado());
                         }
 
-                        ConfiguracaoAppSingleton.getInstance().setUrlBaseCarrinhoPiloto(result.getPayload().getMapa().getUrlBaseCarrinhoPiloto());
-                        ConfiguracaoAppSingleton.getInstance().setUrlBaseCarrinhoProducao(result.getPayload().getMapa().getUrlBaseCarrinhoProducao());
-                        ConfiguracaoAppSingleton.getInstance().setGrupoDeCpfsQueAcessamOServicoDaAzure(result.getPayload().getMapa().getGrupoDeCpfsQueAcessamOServicoDaAzure());
-                        ConfiguracaoAppSingleton.getInstance().setRapidaoHabilitado(result.getPayload().getMapa().isRapidaoHabilitado());
-                        ConfiguracaoAppSingleton.getInstance().setUrlBaseApostador(result.getPayload().getMapa().getUrlBaseApostador());
-                        ConfiguracaoAppSingleton.getInstance().setGrupoDeCpfsApostador(result.getPayload().getMapa().getGrupoDeCpfsApostador());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PILOTO.get(), result.getPayload().getMapa().getUrlBaseCarrinhoPiloto());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PRODUCAO.get(), result.getPayload().getMapa().getUrlBaseCarrinhoProducao());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_AZURE.get(), result.getPayload().getMapa().getGrupoDeCpfsQueAcessamOServicoDaAzure());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_RAPIDAO.get(), result.getPayload().getMapa().isRapidaoHabilitado());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), result.getPayload().getMapa().getUrlBaseApostador());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), result.getPayload().getMapa().getGrupoDeCpfsApostador());
+
                         if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_VALOR,result.getPayload().getMapa().getConcursoMega30Anos());
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_LINHA,getString(R.string.mega_sena_30_anos));
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_DUAS_LINHAS,getString(R.string.mega_sena_30_anos_duas_linhas));
                         }
                     }
+                    redirectApp();
                 }
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     setMenuApostasDefault();
+                    redirectApp();
                 }
             });
         }catch (Exception e){
             setMenuApostasDefault();
+            redirectApp();
         }
     }
 
@@ -184,11 +187,41 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
     }
 
     private void setMenuApostasDefault() {
-        setMostraMenuApostas(ConfiguracaoAppSingleton.MOSTRA_MENU_APOSTAS_DEFAULT);
+        setMostraMenuApostas(ConfiguracoesDefaultEnum.MOSTRA_MENU_APOSTAS.asBoolean());
     }
 
+    private void setPreferencesDefault() {
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.MOSTRA_MENU_APOSTA.get(), ConfiguracoesDefaultEnum.MOSTRA_MENU_APOSTAS.asBoolean());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.BOLAO.get(), ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.COMBO_APOSTAS.get(), ConfiguracoesDefaultEnum.COMBO_APOSTAS.asBoolean());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_ATUALIZA_PUBLIC_KEY.get(), ConfiguracoesDefaultEnum.IS_ATUALIZA_PUBLIC_KEY.asBoolean());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_NOVA_API.get(), ConfiguracoesDefaultEnum.IS_NOVA_API.asBoolean());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPF_NOVA_API.get(), ConfiguracoesDefaultEnum.GRUPO_CPF_NOVA_API.asInt());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_BUSCA_APOSTAS.get(), ConfiguracoesDefaultEnum.URL_BASE_BUSCA_APOSTAS.asString());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PILOTO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PILOTO.asString());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PRODUCAO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PRODUCAO.asString());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_AZURE.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_AZURE.asString());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), ConfiguracoesDefaultEnum.URL_BASE_APOSTADOR.asString());
+
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_APOSTADOR.asString());
+    }
     private void setMostraMenuApostas(Boolean habilitaMenuApostas) {
-        ConfiguracaoAppSingleton.getInstance().setMostraMenuAposta(habilitaMenuApostas);
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.MOSTRA_MENU_APOSTA.get(), habilitaMenuApostas);
     }
 
     private boolean temDadosResposta(ParametrosConfiguraveisDTOResponse result) {

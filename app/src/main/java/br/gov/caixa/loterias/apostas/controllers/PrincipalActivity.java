@@ -25,7 +25,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -82,7 +81,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerNotificarCotasExpiradasSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
@@ -109,6 +107,8 @@ import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -200,7 +200,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         setSupportActionBar(toolbar);
 
-        if (!BuildConfig.FLAVOR.equals("prd")) {
+        if (!(BuildConfig.FLAVOR.equals("prd") ||  BuildConfig.FLAVOR.equals("net"))) {
             String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO.name());
             txtAmbiente.setText(ambienteSalvo);
             txtAmbiente.setVisibility(View.VISIBLE);
@@ -283,7 +283,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         relativeLayoutContentRepassados.setOnClickListener(view -> clickRelativeLayoutContentRepassados());
 
-        if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+        if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
             relativeLayoutContentRapidao.setOnClickListener(view -> {clickRelativeLayoutContentRapidao();});
         }else{
             relativeLayoutContentRapidao.setVisibility(View.GONE);
@@ -497,7 +497,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             refezParametrosSimulacao = true;
         }
 
-        if (ConfiguracaoAppSingleton.getInstance().isComboApostasHabilitado() && refezParametrosSimulacao) {
+        if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.COMBO_APOSTAS.get(), ConfiguracoesDefaultEnum.COMBO_APOSTAS.asBoolean()) && refezParametrosSimulacao) {
             new ComboModel(this).buscaCombos(new OnSilceListener() {
                 @Override
                 public void success(Object payload) {
@@ -738,7 +738,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private OnAnimacaoViewListener onAnimacaoAcessoRapido() {
         return () -> {
-            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+            if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(),ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean()) &&
                     temBolaoModalidadeDisponivel(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade())){
                 buttonHomeBolao.setVisibility(View.VISIBLE);
             }
@@ -906,7 +906,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                         ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
             }
 
-            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+            if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(),ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean()) &&
                     temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
 
                 buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
@@ -1064,7 +1064,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     protected void clickRelativeLayoutContentRapidao() {
         //AnimacaoFecharMenuRapido(relativeContentPrincipal);
         showMenu();
-        if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+        if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
             redirecionaRapidao();
         }
     }
@@ -1116,7 +1116,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 startActivity(new Intent(PrincipalActivity.this, SelecaoModalidadesResultados.class));
                 break;
             case MENU_RAPIDAO:
-                if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+                if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
                     redirecionaRapidao();
                 }
                 break;
