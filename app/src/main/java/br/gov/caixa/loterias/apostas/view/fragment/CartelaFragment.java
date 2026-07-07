@@ -2,10 +2,13 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,11 +31,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import br.gov.caixa.loterias.apostas.controllers.AutoSuspensaoActivity;
+import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.*;
 import br.gov.caixa.loterias.apostas.view.listener.*;
+
+import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -135,6 +144,20 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
 		BigDecimal valorEmReais = BigDecimal.ZERO;
 		loadParametroJogo();
+		if (parametroJogo.getValoresAposta() == null) {
+			DialogUtils.dialogEntendiListener(getActivity(),
+					getString(R.string.nao_concluiu_aposta),
+					new OnDialogBotaoListener() {
+						@Override
+						public void onButtonClick(DialogInterface dialog, int which) {
+							Intent intent = IntentUtil.getIntentLimpandoPilhaActivities(getActivity(), PrincipalActivity.class);
+							getActivity().startActivity(intent);
+							getActivity().finish();
+						}
+					});
+
+			return;
+		}
 
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 			ParametroValorApostaDTO valorAposta = parametroJogo.getValorApostaBy(numPrognostico, parametroJogo.getTrevos().getQtdMinima());
@@ -180,20 +203,34 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			valorEmReais = valorEmReais.multiply(Constantes.DOIS_BIG_DECIMAL);
 		}
 
-		if (valorEmReais.doubleValue() > 999.99){
-			if (!mudouTamanhoValor){
-				TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, -30);
-				mudouTamanhoValor = true;
+		if(valorEmReais != null) {
+			if (valorEmReais.doubleValue() > 999.99) {
+				if (!mudouTamanhoValor) {
+					TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, -30);
+					mudouTamanhoValor = true;
+				}
+			} else {
+				if (mudouTamanhoValor) {
+					TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, 30);
+					mudouTamanhoValor = false;
+				}
 			}
-		} else {
-			if (mudouTamanhoValor){
-				TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, 30);
-				mudouTamanhoValor = false;
-			}
+			ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
+			valorAposta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+			valorTotalAposta = valorEmReais;
 		}
-		ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
-		valorAposta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-		valorTotalAposta = valorEmReais;
+		else {
+			DialogUtils.dialogEntendiListener(getActivity(),
+					getString(R.string.nao_concluiu_aposta),
+					new OnDialogBotaoListener() {
+						@Override
+						public void onButtonClick(DialogInterface dialog, int which) {
+							Intent intent = IntentUtil.getIntentLimpandoPilhaActivities(getActivity(), PrincipalActivity.class);
+							getActivity().startActivity(intent);
+							getActivity().finish();
+						}
+					});
+		}
 	}
 
 	private void loadParametroJogo() {

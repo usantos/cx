@@ -767,6 +767,9 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 					return parametroSimulacao.getParametroJogo().getValorApostaMinima();
 				} else {
 					List<ParametroValorApostaDTO> parametroValorApostaDTOList = parametroSimulacao.getParametroJogo().getValoresAposta();
+					if(parametroValorApostaDTOList == null){
+						return BigDecimal.valueOf(-1);
+					}
 					for (ParametroValorApostaDTO parametroValorApostaDTO : parametroValorApostaDTOList) {
 						if (apostaFavoritaDTO.getModalidade().getValor() != 7) {
 							if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getListaNumerosSelecionados().size()) {

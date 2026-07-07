@@ -2,17 +2,20 @@ package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.VolleyError;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -32,6 +35,7 @@ import br.gov.caixa.loterias.apostas.model.repository.ApostaFavoritaRepository;
 import br.gov.caixa.loterias.apostas.model.repository.CarrinhoRepository;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PickerApostaParamsManager;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -125,22 +129,38 @@ public class FavoritaModel extends AppModel {
 
 	//region Privates
 	private void checarLimiteDiario(ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO, OnSilceListener<CarrinhoDTO> listener) {
-		if (isLimiteDiarioExcedido(carrinhoDTO, apostaFavoritaDTO)) {
-			DialogUtils.dialogSim(getActivity(),
-					getActivity().getResources().getString(R.string.MA014),
 
+		BigDecimal valorApostaFavorita = IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico(apostaFavoritaDTO);
+
+		if(valorApostaFavorita.compareTo(BigDecimal.valueOf(-1)) == 0){
+			DialogUtils.dialogEntendiListener(getActivity(),
+					getActivity().getResources().getString(R.string.nao_concluiu_aposta),
 					new OnDialogBotaoListener() {
 						@Override
 						public void onButtonClick(DialogInterface dialog, int which) {
-							checarApostasRepetidas(apostaFavoritaDTO, carrinhoDTO, listener);
+							Intent intent = IntentUtil.getIntentLimpandoPilhaActivities(getActivity(), PrincipalActivity.class);
+							getActivity().startActivity(intent);
+							getActivity().finish();
 						}
-					}
-			);
-		} else {
-			checarApostasRepetidas(apostaFavoritaDTO, carrinhoDTO, listener);
-		}
-	}
+					});
+		}else{
+			if (isLimiteDiarioExcedido(carrinhoDTO, apostaFavoritaDTO)) {
+				DialogUtils.dialogSim(getActivity(),
+						getActivity().getResources().getString(R.string.MA014),
 
+						new OnDialogBotaoListener() {
+							@Override
+							public void onButtonClick(DialogInterface dialog, int which) {
+								checarApostasRepetidas(apostaFavoritaDTO, carrinhoDTO, listener);
+							}
+						}
+				);
+			} else {
+				checarApostasRepetidas(apostaFavoritaDTO, carrinhoDTO, listener);
+			}
+		}
+
+	}
 	private boolean isLimiteDiarioExcedido(CarrinhoDTO carrinhoDTO, ApostaFavoritaDTO apostaFavoritaDTO) {
 		return SessaoUsuario.getInstance().getParametrosSimulacao() != null &&
 				SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() != null &&
