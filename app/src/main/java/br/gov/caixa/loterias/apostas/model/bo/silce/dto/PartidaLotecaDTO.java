@@ -29,6 +29,8 @@ public class PartidaLotecaDTO implements Serializable {
     protected EquipeDTO equipe2 = null;
     @SerializedName("empate")
     protected Boolean empate = null;
+    @SerializedName("numero")
+    protected Integer numero = null;
     @Expose(serialize = false, deserialize = false)
     protected transient Long idDB;
     @SerializedName("descricaoLegenda")
@@ -126,7 +128,17 @@ public class PartidaLotecaDTO implements Serializable {
         PartidaLotecaDTO partidaLotecaDTO = (PartidaLotecaDTO) o;
         return (this.equipe1 == null ? partidaLotecaDTO.equipe1 == null : this.equipe1.customEquals(partidaLotecaDTO.equipe1)) &&
                 (this.equipe2 == null ? partidaLotecaDTO.equipe2 == null : this.equipe2.customEquals(partidaLotecaDTO.equipe2)) &&
+                (this.numero == null ? partidaLotecaDTO.numero == null : this.numero.equals(partidaLotecaDTO.numero)) &&
                 (this.empate == null ? partidaLotecaDTO.empate == null : this.empate.equals(partidaLotecaDTO.empate));
+    }
+
+    @ApiModelProperty(value = "")
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
     }
 
     @Override
@@ -134,6 +146,7 @@ public class PartidaLotecaDTO implements Serializable {
         int result = 17;
         result = 31 * result + (this.equipe1 == null ? 0 : this.equipe1.hashCode());
         result = 31 * result + (this.equipe2 == null ? 0 : this.equipe2.hashCode());
+        result = 31 * result + (this.numero == null ? 0 : this.numero.hashCode());
         result = 31 * result + (this.empate == null ? 0 : this.empate.hashCode());
         return result;
     }
@@ -142,6 +155,7 @@ public class PartidaLotecaDTO implements Serializable {
     public String toString() {
 
         String sb = "class PartidaLotecaDTO {\n" +
+                "  numero: " + numero + "\n" +
                 "  equipe1: " + equipe1 + "\n" +
                 "  equipe2: " + equipe2 + "\n" +
                 "  empate: " + empate + "\n" +

@@ -258,6 +258,13 @@ public class MeioPagamentoFragment extends Fragment {
 			btnAdd.setPaintFlags(btnAdd.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			btnListaMaisMenos.setPaintFlags(btnListaMaisMenos.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
+			if(model.isMercadoPago(config.getMeioPagamento().getValor())){
+				imagem.setContentDescription("Mercado Pago");
+			}
+			else {
+				imagem.setContentDescription("Recarga Pay");
+			}
+			imagem.setFocusable(true);
 			for(int i = 0; i < config.getBandeirasMeioPagamento().size(); i++){
 				imageViewBandeiras[i].setImageDrawable(getActivity().getDrawable(config.getBandeirasMeioPagamento().get(i)));
 			}

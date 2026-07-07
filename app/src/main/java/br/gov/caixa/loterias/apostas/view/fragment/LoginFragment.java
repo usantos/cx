@@ -105,7 +105,7 @@ public class LoginFragment extends Fragment {
 
 
         //Selecao ambiente se NAO PRD
-        if (!BuildConfig.FLAVOR.equals("prd")) {
+        if (!(BuildConfig.FLAVOR.equals("prd") ||  BuildConfig.FLAVOR.equals("net"))) {
             //Ambiente Selecao
             ambienteSpinner = v.findViewById(R.id.spin_ambiente);
             ambienteSpinner.setVisibility(View.VISIBLE);
