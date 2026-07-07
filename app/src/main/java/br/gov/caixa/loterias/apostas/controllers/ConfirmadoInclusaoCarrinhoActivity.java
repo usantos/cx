@@ -232,6 +232,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                 //PrincipalActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
                 Intent intent = IntentUtil.getIntentOrigemDestino(this, PrincipalActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("ORIGEM_TELA", "CARRINHO_INC");
                 startActivity(intent);
             }
             break;

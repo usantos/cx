@@ -8,8 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.flexbox.FlexDirection;
@@ -72,6 +77,14 @@ public class TipoApostaLinhaView extends LinearLayout {
 	}
 
 	public void setupView(List<TipoApostaLinhaEnum> itemList, int backgroundColorResId, int textColorResId, int iconColorResId, TipoApostaLinhaView.TriangleDirection direction, boolean isBoald) {
+		ViewCompat.setAccessibilityDelegate(recyclerView, new AccessibilityDelegateCompat(){
+			@Override
+			public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+				super.onInitializeAccessibilityNodeInfo(host, info);
+
+				info.setCollectionItemInfo(null);
+			}
+		});
 
 		flexboxContentContainer.setBackgroundColor(ContextCompat.getColor(getContext(), backgroundColorResId));
 

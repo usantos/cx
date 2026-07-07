@@ -638,7 +638,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 		linearRelogio.setVisibility(View.GONE);
 		clTimer30Min.setVisibility(View.VISIBLE);
-		if (!BuildConfig.FLAVOR.equals("prd")) {
+		if (!(BuildConfig.FLAVOR.equals("prd") ||  BuildConfig.FLAVOR.equals("net"))) {
 			ModalidadeDisponivelCota modalidadeDisponivelCota = EncerramentoUtil.
 					getModalidadeDisponivelCota(modalidade.getTipoModalidade(),
 							modalidade.getConcurso().getTipoConcurso(),

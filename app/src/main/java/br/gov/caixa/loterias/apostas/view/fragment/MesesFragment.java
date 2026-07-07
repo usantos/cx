@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.MesesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
@@ -175,7 +176,10 @@ public class MesesFragment extends Fragment {
                     aposta.setMesDeSorte(getItemSelecionado());
                     parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
                 } else {
-                    ViewUtils.alert(getActivity(), getString(R.string.msg_favor_inserir_nome_aposta));
+                    DialogUtils.dialogEntendi(
+                            getActivity(),
+                            getString(R.string.msg_favor_inserir_nome_aposta)
+                    );
                 }
             });
         }

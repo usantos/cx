@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -54,8 +54,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTORespo
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     private TextInputLayout editTextLimiteLayout;
@@ -181,17 +183,32 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
             if (!telaRenderizada) return;
             atualizarDescricaoNotificacoes(containerNotificacoes,isChecked);
             if (isChecked) {
-                ViewUtils.alertEntendiCustom(this, "Ao ativar esta opção, você receberá notificações importantes de loterias se estiverem habilitadas no seu aparelho. A funcionalidade pode ser ativada ou desativada a qualquer momento. Para salvar, clique em atualizar."
+                DialogUtils.dialogEntendi(
+                        DadosPessoaisActivity.this,
+                        "Ao ativar esta opção, você receberá notificações importantes de loterias se estiverem habilitadas no seu aparelho. A funcionalidade pode ser ativada ou desativada a qualquer momento. Para salvar, clique em atualizar."
                 );
             } else {
-                ViewUtils.alertEntendiCustom(this, "Ao desativar esta opção, você não receberá mais notificações de loterias. Para salvar, clique em atualizar.");
+                DialogUtils.dialogEntendi(
+                        DadosPessoaisActivity.this,
+                        "Ao desativar esta opção, você não receberá mais notificações de loterias. Para salvar, clique em atualizar."
+                );
             }
         });
 
         containerNotificacoes.setOnClickListener(view -> {notificacaoSwitch.toggle();});
 
         naoSeiCepButton.setOnClickListener(view ->{
-            DialogUtils.modalNaoSeiCep(DadosPessoaisActivity.this);
+            DialogUtils.dialogTituloConfirmar(DadosPessoaisActivity.this,
+                    getString(R.string.nao_sei_cep),
+                    getString(R.string.voce_sera_redirecionado_para_o_site_dos_correios),
+
+                    new OnDialogBotaoListener() {
+                        @Override
+                        public void onButtonClick(DialogInterface dialog, int which) {
+                            Utils.abreUrl(DadosPessoaisActivity.this, R.string.Url_Correios);
+                        }
+                    }
+            );
         });
 
         updateDadosPessoaisLimiteButton.setOnClickListener(view -> {
@@ -381,10 +398,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     }
 
     private void cepInvalido(String msg) {
-        ViewUtils.alertTitleButton(DadosPessoaisActivity.this,
-                R.string.label_atencao,
-                msg,
-                getApplicationContext().getResources().getString(R.string.ok));
+        DialogUtils.dialogEntendi(DadosPessoaisActivity.this, msg);
         editTextUFContent.setText("");
         editTextMunicipioContent.setText("");
         editTextCepContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -441,8 +455,9 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         if (StringUtils.isEmpty(campos)) {
             return true;
         } else {
-            ViewUtils.alertTitulo(DadosPessoaisActivity.this, R.string.label_atencao,
-                    this.getResources().getString( R.string.MA002 ) + getResources().getString(R.string.espaco_em_branco) + campos);
+            DialogUtils.dialogEntendi(DadosPessoaisActivity.this,
+                    this.getResources().getString( R.string.MA002 ) + getResources().getString(R.string.espaco_em_branco) + campos
+                    );
             return false;
         }
     }

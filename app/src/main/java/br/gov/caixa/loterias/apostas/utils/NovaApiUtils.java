@@ -1,17 +1,16 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 
 public class NovaApiUtils {
 
     public static boolean isNovaApiHabilitada(){
-        return ConfiguracaoAppSingleton.getInstance().isNovaApi() != null && ConfiguracaoAppSingleton.getInstance().isNovaApi();
+        return SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_NOVA_API.get(), ConfiguracoesDefaultEnum.IS_NOVA_API.asBoolean());
     }
 
     public static boolean isFinalCPFAcessaNovaApi() {
 
-        int finalCpf = ConfiguracaoAppSingleton.getInstance().getGrupoCpfNovaApi();
+        int finalCpf = SharedPreferencesUtils.getValorInt(ConfiguracoesEnum.GRUPO_CPF_NOVA_API.get(), ConfiguracoesDefaultEnum.GRUPO_CPF_NOVA_API.asInt());;
 
         if (finalCpf == 0) {
             return false;

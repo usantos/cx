@@ -122,6 +122,36 @@ android {
                 buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME", "\"caixa\""
                 buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME", "\"loteriasprd\""
                 buildConfigField "String", "URL_BASE_API_NOTIFICACOES", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+                buildConfigField "boolean", "ENABLE_NETWORK_INSPECTOR", "false"
+                manifestPlaceholders = [
+                        appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                        hostName             : "br.gov.caixa.caixaloterias",
+                        path                 : "/oauth2Callback",
+                        scheme               : "https"
+                ]
+            }
+
+            net {
+                dimension "default"
+                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://mobileloterias.caixa.gov.br/silce-servico-rest/rest/v1/\""
+                buildConfigField "String", "PUBLIC_KEY_MP", "\"APP_USR-7cebaf99-f15f-4ef2-a9b4-61d3ca29b279\""
+                buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
+                buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+                buildConfigField "String", "URL_SSO", "\"https://login.caixa.gov.br\""
+                buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
+                buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
+                buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+                buildConfigField "String", "URL_SSO_LOGOUT", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+                buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
+                buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+                buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
+                buildConfigField "String", "RP_CREATE_TOKEN_URL", "\"https://secure.recarga.com\""
+                buildConfigField "String", "APP_CENTER_KEY", "\"a4640b29-34da-4726-9224-b48a68e920d9\""
+                buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME", "\"caixa\""
+                buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME", "\"loteriasprd\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+                buildConfigField "boolean", "ENABLE_NETWORK_INSPECTOR", "true"
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                         hostName             : "br.gov.caixa.caixaloterias",
@@ -229,6 +259,7 @@ android {
                 buildConfigField "String", "URL_BASE_API_NOTIFICACOES_INTERNO_ESTEIRA", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 buildConfigField "String", "URL_BASE_API_NOTIFICACOES_HML", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 buildConfigField "String", "URL_BASE_API_NOTIFICACOES_PILOTO", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+                buildConfigField "boolean", "ENABLE_NETWORK_INSPECTOR", "true"
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                         hostName             : "br.gov.caixa.caixaloterias",
@@ -422,6 +453,9 @@ repositories {
         implementation "com.google.firebase:firebase-appcheck"
         implementation "com.google.firebase:firebase-installations"
         implementation "com.google.firebase:firebase-sessions"
+
+        //PlayStore
+        implementation "com.google.android.play:review:2.0.1"
 
     }
 

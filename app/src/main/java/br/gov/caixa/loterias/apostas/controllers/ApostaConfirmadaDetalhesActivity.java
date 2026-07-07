@@ -1,7 +1,12 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
+import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -64,20 +69,22 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResp
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
+import br.gov.caixa.loterias.apostas.utils.SelecaoConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
@@ -86,11 +93,8 @@ import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhes
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
-
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
-import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 /**
  * Created by pmotta on 22/03/2018.
@@ -173,7 +177,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         setupToolbar();
         setaMetodos();
 
-        if(ConfiguracaoAppSingleton.getInstance().isMicroServico() && resultadoConcurso != null){
+        if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean()) && resultadoConcurso != null){
             apresentaBySituacao(aposta.getSituacao());
         } else {
             getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
@@ -249,7 +253,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         }
 
         if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
-            if(!ConfiguracaoAppSingleton.getInstance().isMicroServico() || aposta.getSituacao().getDescricao().contains("Aposta não conferida")) {
+            if(!SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean()) || aposta.getSituacao().getDescricao().contains("Aposta não conferida")) {
                 isBuscandoSituacaoSilce = true;
                 ConferirResultadoHelper.conferirResultadoHandler = this;
                 ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
@@ -432,9 +436,8 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         return new OnModalidadesAbertasListener() {
             @Override
             public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
-                DialogFragmentUtils.startEscolhaModalidade(getSupportFragmentManager(), arrayConcursos, aposta.getId(),
-                        getResources().getString(R.string.adicionar_carrinho_favoritas_view), btnText,false, false,
-                        (tipoConcurso, teimosinha, espelho) -> {
+                SelecaoConcursoUtils.selecionarConcurso(ApostaConfirmadaDetalhesActivity.this, arrayConcursos,
+                        (tipoConcurso) -> {
                             IdentificaoDeUmaApostaDas8Modalidades clone = aposta;
                             if (!tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())) {
                                 clone = ApostaUtils.converteTipoDeConcurso(aposta);
@@ -452,7 +455,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
             @Override
             public void ambasFechadas() {
                 AlertDialogUtils.dismiss();
-                ViewUtils.alertTitulo(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao,"Modalidade não disponível no momento.");
+                DialogUtils.dialogEntendi(ApostaConfirmadaDetalhesActivity.this, "Modalidade não disponível no momento.");
             }
 
             @Override
@@ -466,15 +469,21 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                 } else {
                     String msg = MensagemUtils.getMensagemConverteModalidade(aposta.getModalidade(), aposta.getTipoConcurso().getValor());
 
-                    ViewUtils.alertTitleButtonPositiveListener(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
-                        IdentificaoDeUmaApostaDas8Modalidades clone =  ApostaUtils.converteTipoDeConcurso(aposta);
-                        parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, clone.getModalidade(), clone.getTipoConcurso().getValor());
-                        if (isEditing){
-                            goToEditarAposta(clone);
-                        } else {
-                            adicionaApostaCarrinho(clone);
-                        }
-                    });
+                    DialogUtils.dialogConfirmar(ApostaConfirmadaDetalhesActivity.this, msg,
+
+                            new OnDialogBotaoListener() {
+                                @Override
+                                public void onButtonClick(DialogInterface dialog, int which) {
+                                    IdentificaoDeUmaApostaDas8Modalidades clone =  ApostaUtils.converteTipoDeConcurso(aposta);
+                                    parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, clone.getModalidade(), clone.getTipoConcurso().getValor());
+                                    if (isEditing){
+                                        goToEditarAposta(clone);
+                                    } else {
+                                        adicionaApostaCarrinho(clone);
+                                    }
+                                }
+                            }
+                    );
                 }
             }
         };
@@ -533,7 +542,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
             model.validaAposta(apostaFavoritaDTO, onValidaApostaListener());
 
         } else {
-            ViewUtils.alert(this, getString(R.string.msg_favor_inserir_nome_aposta));
+            DialogUtils.dialogEntendi(ApostaConfirmadaDetalhesActivity.this, getString(R.string.msg_favor_inserir_nome_aposta));
         }
     }
 
@@ -548,11 +557,15 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
             public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
                 if(isErroNegocial(error)){
-                    ViewUtils.alertTitleButtonYesOrNotListener(
-                            ApostaConfirmadaDetalhesActivity.this,
-                            MensagensNetwork.getErrorMessage(error),
-                            (dialogInterface, i) ->
-                                    salvarAposta());
+                    DialogUtils.dialogSim(ApostaConfirmadaDetalhesActivity.this, MensagensNetwork.getErrorMessage(error),
+
+                            new OnDialogBotaoListener() {
+                                @Override
+                                public void onButtonClick(DialogInterface dialog, int which) {
+                                    salvarAposta();
+                                }
+                            }
+                    );
                 } else {
                     RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
                 };
@@ -708,10 +721,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     private void inibirTeim() {
         if(!apresentouTeimosinha){
             if (aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
-                ViewUtils.alertTitleButton(this,
-                        R.string.label_atencao ,
-                        getResources().getString(R.string.inibir_teimosinha_V2),
-                        getResources().getString(R.string.title_entendi));
+                DialogUtils.dialogEntendi(ApostaConfirmadaDetalhesActivity.this, getResources().getString(R.string.inibir_teimosinha_V2));
                 apresentouTeimosinha = true;
             }
         }

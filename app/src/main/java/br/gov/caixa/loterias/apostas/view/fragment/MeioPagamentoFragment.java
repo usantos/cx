@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -33,6 +35,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesMeioPagame
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.holder.CartaoMeioPagamentoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnCartaoMeioPagamentoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class MeioPagamentoFragment extends Fragment {
 	private static final String ARG_CONFIG = "ARG_CONFIG";
@@ -149,36 +152,46 @@ public class MeioPagamentoFragment extends Fragment {
 			@Override
 			public void favoritar(CartaoMeioPagamentoHolder holder, int position) {
 				if (!cartoes.get(position).isFav()){
-					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getStringById(R.string.alterar_favorito_interrogacao),
-																						  getStringById(R.string.cancelar),
-																						  getStringById(R.string.confirmar),
-																						  getStringById(R.string.confirmar_alterar_cartao_favorito),
-																						  (dialog, which) -> {
-																							  adapter.atualizaCartaoFavorito(cartoes.get(position));
-																						  });
-					dialogConfirmacao.show();
+					DialogUtils.dialogTituloConfirmar(
+							getContext(),
+							getStringById(R.string.alterar_favorito_interrogacao),
+							getStringById(R.string.confirmar_alterar_cartao_favorito),
+							new OnDialogBotaoListener() {
+								@Override
+								public void onButtonClick(DialogInterface dialog, int which) {
+									adapter.atualizaCartaoFavorito(cartoes.get(position));
+								}
+							}
+					);
 				}
 			}
 
 			@Override
 			public void deletar(CartaoMeioPagamentoHolder holder, int position) {
 				if (cartoes.get(position).isFav()){
-					ViewUtils.alertTitleButton(getContext(),
-											   R.string.excluir_cartao_interrogacao,
-											   getStringById(R.string.nao_e_possivel_eliminar_cartao_favorito),
-											   getStringById(R.string.title_entendi));
+					DialogUtils.dialogTituloEntendi(
+							getContext(),
+							getStringById(R.string.excluir_cartao_interrogacao),
+							getStringById(R.string.nao_e_possivel_eliminar_cartao_favorito)
+					);
+
 				} else {
 					String mensagem = getStringById(R.string.voceDesejaExcluir);
 					mensagem = mensagem.replace("{bandeira}", cartoes.get(position).getNomeMetodoPagamento());
 					mensagem = mensagem.replace("{XXXX}", cartoes.get(position).getUltimosDigitos());
-					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getStringById(R.string.excluir_cartao_interrogacao),
-																				getStringById(R.string.naoExcluir),
-																				getStringById(R.string.excluir),
-																				mensagem,
-																				(dialog, which) -> {
-																					deletaCartao(cartoes.get(position), position);
-																				});
-					dialogConfirmacao.show();
+
+					DialogUtils.dialogTituloSim(
+							getContext(),
+							getStringById(R.string.excluir_cartao_interrogacao),
+							mensagem,
+							new OnDialogBotaoListener() {
+								@Override
+								public void onButtonClick(DialogInterface dialog, int which) {
+									deletaCartao(cartoes.get(position), position);
+								}
+							}
+
+					);
 				}
 			}
 		};
@@ -220,10 +233,16 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void configButton() {
 		btnAdd.setOnClickListener(v -> {
-			ViewUtils.alertTitleButtonYesListener(getContext(),
+			DialogUtils.dialogEntendiListener(
+					getContext(),
 					getStringById(R.string.suaTitularidade),
-					getStringById(R.string.title_entendi),
-					(dialogInterface, i) -> goToAddCartao());
+					new OnDialogBotaoListener() {
+						@Override
+						public void onButtonClick(DialogInterface dialog, int which) {
+							goToAddCartao();
+						}
+					}
+			);
 		});
 
 		btnListaMaisMenos.setOnClickListener(v -> clickMostraMaisMenos());
@@ -239,6 +258,13 @@ public class MeioPagamentoFragment extends Fragment {
 			btnAdd.setPaintFlags(btnAdd.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			btnListaMaisMenos.setPaintFlags(btnListaMaisMenos.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
+			if(model.isMercadoPago(config.getMeioPagamento().getValor())){
+				imagem.setContentDescription("Mercado Pago");
+			}
+			else {
+				imagem.setContentDescription("Recarga Pay");
+			}
+			imagem.setFocusable(true);
 			for(int i = 0; i < config.getBandeirasMeioPagamento().size(); i++){
 				imageViewBandeiras[i].setImageDrawable(getActivity().getDrawable(config.getBandeirasMeioPagamento().get(i)));
 			}

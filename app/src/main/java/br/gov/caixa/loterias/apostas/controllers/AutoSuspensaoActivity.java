@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,7 +35,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoResponse;
 import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class AutoSuspensaoActivity extends LoteriasBaseAppActivity {
     private TextView tvSuspensao1,tvSuspensao2,tvSuspensao3,tvSuspensao4;
@@ -224,37 +227,42 @@ public class AutoSuspensaoActivity extends LoteriasBaseAppActivity {
                 texto = texto.replace("YY", dataHora.substring(11));
                 //texto = ViewUtils.textCaixaSTDBold(this, texto);
 
-                ViewUtils.alertTitleButton(AutoSuspensaoActivity.this, R.string.label_atencao_exclama,
-                    texto, getString(R.string.btn_entendi),
-                    dialogInterface -> {
-                        AlertDialogUtils.show(AutoSuspensaoActivity.this);
-                        new LoginSilceModel(AutoSuspensaoActivity.this).sair(new OnSilceListener<NetworkResponse>() {
-                            @Override
-                            public void success(NetworkResponse payload) {
-                                sairRedirecionar();
-                            }
-                            @Override
-                            public void error(VolleyError error) {
-                                sairRedirecionar();
-                            }
+                DialogUtils.dialogEntendiListener(AutoSuspensaoActivity.this,
+                        texto,
 
-                            private void sairRedirecionar() {
-                                AlertDialogUtils.dismiss();
-                                //**Aguarda 2 segundos para redirecionar
-                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                AlertDialogUtils.show(AutoSuspensaoActivity.this);
+                                new LoginSilceModel(AutoSuspensaoActivity.this).sair(new OnSilceListener<NetworkResponse>() {
                                     @Override
-                                    public void run() {
-                                        DadosUsuarioBO.updateUsuarioLogado(AutoSuspensaoActivity.this, false);
-                                        Intent intent = new Intent(AutoSuspensaoActivity.this, LoginActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                        finish();
-                                        dialogInterface.dismiss();
+                                    public void success(NetworkResponse payload) {
+                                        sairRedirecionar();
                                     }
-                                }, 2000); //2 segundos
+                                    @Override
+                                    public void error(VolleyError error) {
+                                        sairRedirecionar();
+                                    }
+
+                                    private void sairRedirecionar() {
+                                        AlertDialogUtils.dismiss();
+                                        //**Aguarda 2 segundos para redirecionar
+                                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                DadosUsuarioBO.updateUsuarioLogado(AutoSuspensaoActivity.this, false);
+                                                Intent intent = new Intent(AutoSuspensaoActivity.this, LoginActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }, 2000); //2 segundos
+                                    }
+                                });
+
                             }
-                        });
-                    });
+                        }
+                );
 
 //                btnDesistir.setVisibility(View.GONE);
 //                btnSuspender.setVisibility(View.GONE);

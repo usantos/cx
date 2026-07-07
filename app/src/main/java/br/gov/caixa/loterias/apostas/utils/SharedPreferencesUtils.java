@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPreferencesUtils {
-
 	private static Context context = Aplicacao.application.getApplicationContext();
 
 	public static < T > void setValor(String chave, T valor) {
