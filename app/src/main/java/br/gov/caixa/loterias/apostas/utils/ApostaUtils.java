@@ -293,6 +293,7 @@ public class ApostaUtils {
 				lotecaDTO.setEquipe1(equipeDTO1);
 				lotecaDTO.setEquipe2(equipeDTO2);
 				lotecaDTO.setEmpate(partida.isEmpate());
+				lotecaDTO.setNumero(partida.getNumero());
 
 				aposta.getPartidasLoteca().add(lotecaDTO);
 			}
