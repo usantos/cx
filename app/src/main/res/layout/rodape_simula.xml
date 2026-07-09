@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Linha dos botões -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCompletar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Completar aleatoriamente"
+                android:textAllCaps="false"
+                android:textColor="@color/cinza110"
+                android:fontFamily="@font/caixa_std_regular"
+                android:backgroundTint="@color/branco"
+                app:strokeColor="@color/cinza110"
+                app:strokeWidth="1dp"
+                app:cornerRadius="4dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/favoritar_aposta"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:text="Favoritar aposta"
+                android:textAllCaps="false"
+                android:textColor="@color/cinza110"
+                android:fontFamily="@font/caixa_std_regular"
+                android:backgroundTint="@color/branco"
+                app:strokeColor="@color/cinza110"
+                app:strokeWidth="1dp"
+                app:cornerRadius="4dp" />
+
+        </FrameLayout>
+
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="1dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLimpar"
+            android:layout_width="130dp"
+            app:cornerRadius="4dp"
+            app:strokeColor="@color/cinza110"
+            app:strokeWidth="1dp"
+            android:backgroundTint="@color/branco"
+            android:layout_height="40dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Limpar"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+    <!-- Adicionar ao carrinho -->
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAdicionarCarrinho"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/branco"
+        android:layout_marginTop="12dp"
+        app:strokeColor="@color/cinza110"
+        app:strokeWidth="1dp"
+        app:cornerRadius="4dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:enabled="false"
+        android:text="Adicionar ao carrinho"
+        android:textAllCaps="false" />
+
+    <!-- Rodapé -->
+
+    <LinearLayout
+        android:id="@+id/layoutRodape"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valor dessa aposta"
+                android:textColor="#666666"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/tvValorAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_bold"
+                android:text="R$ 3,00"
+                android:textColor="#222222"
+                android:textSize="14sp"
+                 />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:background="#D9D9D9" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total do carrinho"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="#666666"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/tvTotalCarrinho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R$ 0,00"
+                android:textColor="#222222"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:background="#D9D9D9" />
+
+        <FrameLayout
+            android:layout_width="56dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivCarrinho"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_cart" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvBadgeCarrinho"-->
+<!--                android:layout_width="14dp"-->
+<!--                android:layout_height="14dp"-->
+<!--                android:layout_gravity="end|center_vertical"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:layout_marginBottom="8dp"-->
+<!--                android:background="@drawable/bg_badge_laranja"-->
+<!--                android:gravity="center"-->
+<!--                android:text="0"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textSize="8sp"-->
+<!--                android:textStyle="bold" />-->
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

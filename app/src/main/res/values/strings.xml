@@ -1639,6 +1639,7 @@
     <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>
     <string name="marcador_oval">Marcador oval (bullet) para item de lista</string>
     <string name="botao_duvidas">Botão dúvidas</string>
+    <string name="duvidas">Dúvidas</string>
 
     <!-- MEGA 30 ANOS   -->
     <string name="mega_sena_30_anos">mega-sena 30 anos</string>

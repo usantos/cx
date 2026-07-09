@@ -70,13 +70,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".controllers.CombosActivity"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:exported="false" />
+            android:name=".controllers.CombosActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
         <activity
-                android:name=".controllers.DetalheComboActivity"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:exported="false" />
+            android:name=".controllers.DetalheComboActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
         <activity
             android:name=".controllers.FiltraMarketplaceActivity"
             android:exported="false"
@@ -197,16 +197,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.VIEW" />-->
 
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+            <!--                <category android:name="android.intent.category.DEFAULT" />-->
+            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-<!--                <data-->
-<!--                    android:host="loteriasonline.caixa.gov.br"-->
-<!--                    android:scheme="https" />-->
-<!--            </intent-filter>-->
+            <!--                <data-->
+            <!--                    android:host="loteriasonline.caixa.gov.br"-->
+            <!--                    android:scheme="https" />-->
+            <!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".controllers.IntroducaoActivity"
@@ -232,6 +232,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".view.activity.SimulaActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Theme.SimulaMaterial"/>
         <activity
             android:name=".controllers.ConfirmadoInclusaoCarrinhoActivity"
             android:configChanges="orientation"

@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoComboFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoSimulacaoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.CabecalhoSimulacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ConfirmacaoChavePixResgateFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
@@ -145,8 +146,15 @@ public class FragmentUtils {
 		return frag;
 	}
 
+	public static CabecalhoSimulacaoFragment startCabecalhoSimulacao(FragmentManager fm, int id, ModalidadeEnum modalidade,
+																	 String concurso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
+		CabecalhoSimulacaoFragment frag = CabecalhoSimulacaoFragment.newInstance(modalidade, concurso, sorteio, especial, corBackground, showBGEspecial);
+		startFragmentAllowingStateLoss(fm, id, frag);
+		return frag;
+	}
+
 	public static BarraTituloBolaoFragment startFragmentBarraTituloBolao (FragmentManager fm, int id, ModalidadeEnum modalidade,
-																				 String concurso, String sorteio, BigDecimal valorPremio, boolean especial, int corBackground, int corBackgroundPremio) {
+																		  String concurso, String sorteio, BigDecimal valorPremio, boolean especial, int corBackground, int corBackgroundPremio) {
 		BarraTituloBolaoFragment frag = BarraTituloBolaoFragment.newInstance(modalidade, concurso, sorteio, valorPremio, especial, corBackground, corBackgroundPremio);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
@@ -194,10 +202,10 @@ public class FragmentUtils {
 	}
 
 	public static ApostaConfirmadaPartidaDetalhesFragment startApostaConfirmadaPartidaDetalhes(FragmentManager fm, int id,
-																							  IdentificaoDeUmaApostaDas8Modalidades aposta,
-																					   ResultadoConcursoDTO resultado,
-																					   ComprovanteApostaDTO comprovante,
-																					   BigDecimal valorPremio, boolean isToteca) {
+																							   IdentificaoDeUmaApostaDas8Modalidades aposta,
+																							   ResultadoConcursoDTO resultado,
+																							   ComprovanteApostaDTO comprovante,
+																							   BigDecimal valorPremio, boolean isToteca) {
 		ApostaConfirmadaPartidaDetalhesFragment fragment = ApostaConfirmadaPartidaDetalhesFragment
 				.newInstance(aposta, resultado, comprovante, valorPremio, isToteca);
 		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
@@ -248,7 +256,7 @@ public class FragmentUtils {
 		return SurpresinhaFragment.newInstance();
 	}
 
-    public static ApostasConfirmadasFragment getApostasConfirmadasFragment(boolean isHistorico, ConfigConsultaDTO configConsulta) {
+	public static ApostasConfirmadasFragment getApostasConfirmadasFragment(boolean isHistorico, ConfigConsultaDTO configConsulta) {
 		ApostasConfirmadasFragment fragment = ApostasConfirmadasFragment.newInstance(isHistorico, configConsulta);
 		return fragment;
 	}

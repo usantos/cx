@@ -112,6 +112,7 @@ import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
+import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
@@ -491,7 +492,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 public void success(Object payload) {
                     SessaoUsuario.getInstance().setListCombosDTO((List<CombosDTO>) payload);
                     if (SessaoUsuario.getInstance().getListCombosDTO() != null &&
-                        SessaoUsuario.getInstance().getListCombosDTO().size() > 0) {
+                            SessaoUsuario.getInstance().getListCombosDTO().size() > 0) {
                         ComboUtil.atualizaCardCombo();
                     } else {
                         ComboUtil.excluiCardCombo();
@@ -536,10 +537,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 trataPopupDeNotificacao();
             } else {
 //                if(contRegressivo <= 3) {
-                    new Handler().postDelayed(() -> {
-                        contRegressivo++;
-                        trataPopupDeNotificacaoHandler();
-                        }, 3000);
+                new Handler().postDelayed(() -> {
+                    contRegressivo++;
+                    trataPopupDeNotificacaoHandler();
+                }, 3000);
 //                }
             }
         }
@@ -547,8 +548,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private void trataPopupDeNotificacao() {
         popupNotification = NotificacaoUtils.showNotificacao(PrincipalActivity.this,
-                                                             viewNotification, navigationBarListaModalidade,
-                                                             onRemovePopup());
+                viewNotification, navigationBarListaModalidade,
+                onRemovePopup());
     }
 
     private OnNotificacaoListener onRemovePopup() {
@@ -845,24 +846,24 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
-                //TODO: MEGA 30 ANOS//
-                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-                buttonHomeBet.setTag(adapterPosition);
-                buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
-                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
-                buttonHomeBolao.setVisibility(View.GONE);
+            //TODO: MEGA 30 ANOS//
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
+            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+            buttonHomeBet.setTag(adapterPosition);
+            buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
+            buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
+            buttonHomeBolao.setVisibility(View.GONE);
+        } else {
+            //TODO: MEGA 30 ANOS//
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
+            if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
+                buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
             } else {
-                //TODO: MEGA 30 ANOS//
-                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
-                if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
-                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-                } else {
-                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, R.color.branco));
-                }
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-                buttonHomeBet.setTag(adapterPosition);
-                if (modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima() == null ||
+                buttonHomeBet.setTextColor(ContextCompat.getColor(this, R.color.branco));
+            }
+            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+            buttonHomeBet.setTag(adapterPosition);
+            if (modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima() == null ||
                     modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima().compareTo(BigDecimal.ZERO) == 0) {
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
             } else {
@@ -959,14 +960,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                         modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso(),
                         modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero());
         if (tempoExtraRestanteAposEncerrmento != null) {
-             DialogUtils.dialogEntendi(
-                     PrincipalActivity.this,
-                     getString(R.string.ainda_da_tempo,
-                             modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero())
+            DialogUtils.dialogEntendi(
+                    PrincipalActivity.this,
+                    getString(R.string.ainda_da_tempo,
+                            modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero())
 
-             );
+            );
             return;
-       }
+        }
 
         if (modalidade == ModalidadeEnum.INSTANTANEA) {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_instantanea));
@@ -991,7 +992,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         } else {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
 
-            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
+            Intent activity = new Intent(PrincipalActivity.this, SimulaActivity.class);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
             //TODO: MEGA 30 ANOS//
@@ -1070,7 +1071,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             case MENU_COFERIR_BILHETE:
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
+                            new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
                 } else {
                     startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
                 }
@@ -1225,7 +1226,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
 
     }
-   // private AlertDialog myDialog;
+    // private AlertDialog myDialog;
     private void showDialogNoWhatsapp() {
         DialogUtils.dialogEntendi(
                 PrincipalActivity.this,
@@ -1301,7 +1302,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             public void onSucesso(String tokenFirebase) {
 
                 if ((cpf != null && cpf.length() > 0) &&
-                     !messagingToken.isTokenEnviado(cpf, tokenFirebase)) {
+                        !messagingToken.isTokenEnviado(cpf, tokenFirebase)) {
                     DadosUsuarioBO.getInstance().postPushRegistrarDispositivo(cpf, tokenFirebase, new RequestListener<PushRegistrarDispositivoResponse>() {
                         @Override
                         public void onResponse(PushRegistrarDispositivoResponse response) {
