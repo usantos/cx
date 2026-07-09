@@ -82,10 +82,19 @@ public class SimulaViewModel extends ViewModel {
             return;
         }
 
-        if (event instanceof SimulaUiEvent.CompletarApostaSolicitado) {
+        if (event instanceof SimulaUiEvent.CompletarApostaClicado) {
 
-            handleCompletarApostaSolicitado(
-                    (SimulaUiEvent.CompletarApostaSolicitado) event
+            handleCompletarApostaClicado(
+                    (SimulaUiEvent.CompletarApostaClicado) event
+            );
+
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.AdicionarCarrinhoClicado) {
+
+            handleAdicionarCarrinhoClicado(
+                    (SimulaUiEvent.AdicionarCarrinhoClicado) event
             );
 
             return;
@@ -103,18 +112,28 @@ public class SimulaViewModel extends ViewModel {
             limparFlagsDeRenderizacao();
         }
     }
-    private void handleCompletarTimemania(
-            SimulaUiEvent.CompletarApostaSolicitado event
+    private void handleCompletarApostaClicado(
+            SimulaUiEvent.CompletarApostaClicado event
     ) {
 
-        boolean apostaCompleta =
-                event.getQtdDezenasSelecionadas()
-                        == event.getQtdDezenasPossiveisSelecionado();
+        ModalidadeEnum tipoJogo = event.getTipoJogo();
 
-        if (event.isEscolhaTimeBtnAtivado()
-                && apostaCompleta) {
+        if (tipoJogo == ModalidadeEnum.SUPER_7) {
 
-            if (!event.isTelaSelecaoTimeAtivado()) {
+            publicarComandoCompletar(
+                    new ComandoCompletarAposta.PreencherSuperSete()
+            );
+
+            return;
+        }
+
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
+
+            boolean apostaCompleta =
+                    event.getQtdDezenasSelecionadas()
+                            == event.getQtdDezenasPossiveisSelecionado();
+
+            if (apostaCompleta && !event.isTelaSelecaoTimeAtivado()) {
 
                 publicarComandoCompletar(
                         new ComandoCompletarAposta.MostrarEscolhaTimeCoracao()
@@ -123,21 +142,51 @@ public class SimulaViewModel extends ViewModel {
                 return;
             }
 
-            if (event.isEquipeSelecionadaValida()) {
-
-                publicarComandoCompletar(
-                        new ComandoCompletarAposta.ApostaProntaParaAdicionar(false)
-                );
-
-            } else {
+            if (event.isTelaSelecaoTimeAtivado()
+                    && !event.isEquipeSelecionadaValida()) {
 
                 publicarComandoCompletar(
                         new ComandoCompletarAposta.SelecionarTimeAleatorio()
                 );
+
+                return;
             }
+
+            publicarComandoCompletar(
+                    new ComandoCompletarAposta.PreencherNumerosAleatorios()
+            );
 
             return;
         }
+
+        if (tipoJogo == ModalidadeEnum.LOTECA) {
+
+            publicarComandoCompletar(
+                    new ComandoCompletarAposta.ZerarLoteca()
+            );
+
+            return;
+        }
+
+        if (tipoJogo == ModalidadeEnum.LOTOGOL) {
+
+            publicarComandoCompletar(
+                    new ComandoCompletarAposta.PreencherNumerosAleatorios()
+            );
+
+            return;
+        }
+
+        publicarComandoCompletar(
+                new ComandoCompletarAposta.PreencherNumerosAleatorios()
+        );
+    }
+
+    private void handleAdicionarCarrinhoClicado(
+            SimulaUiEvent.AdicionarCarrinhoClicado event
+    ) {
+
+        ModalidadeEnum tipoJogo = event.getTipoJogo();
 
         if (event.isEscolhaTimeCoracaoSurpresinha()) {
 
@@ -148,56 +197,84 @@ public class SimulaViewModel extends ViewModel {
             return;
         }
 
-        publicarComandoCompletar(
-                new ComandoCompletarAposta.PreencherNumerosAleatorios()
-        );
-    }
-    private void handleCompletarLoteca(
-            SimulaUiEvent.CompletarApostaSolicitado event
-    ) {
+        if (!isApostaProntaParaAdicionar(event)) {
 
-        boolean partidasCompletas =
-                event.getQtdPartidasSelecionadas()
-                        == event.getQtdPartidasTotal();
+//            publicarComandoCompletar(
+//                    new ComandoCompletarAposta.MostrarMensagem(
+//                            R.string.completarCartela
+//                    )
+//            );
 
-        boolean possuiDuploOuTriplo =
-                event.getDuplosLoteca() > 0
-                        || event.getTriplosLoteca() > 0;
+            return;
+        }
 
-        if (partidasCompletas && possuiDuploOuTriplo) {
+        if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE
+                && event.isFragmentCartela()) {
 
             publicarComandoCompletar(
-                    new ComandoCompletarAposta.ApostaProntaParaAdicionar(true)
+                    new ComandoCompletarAposta.AbrirMesDeSorte()
+            );
+
+            return;
+        }
+
+        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA
+                && event.isFragmentCartela()) {
+
+            publicarComandoCompletar(
+                    new ComandoCompletarAposta.AbrirTrevos()
             );
 
             return;
         }
 
         publicarComandoCompletar(
-                new ComandoCompletarAposta.ZerarLoteca()
+                new ComandoCompletarAposta.ApostaProntaParaAdicionar(false)
         );
     }
-    private void handleCompletarLotogol(
-            SimulaUiEvent.CompletarApostaSolicitado event
+    private boolean isApostaProntaParaAdicionar(
+            SimulaUiEvent.AdicionarCarrinhoClicado event
     ) {
 
-        boolean partidasCompletas =
-                event.getQtdPartidasSelecionadas()
-                        == event.getQtdPartidasTotal();
+        ModalidadeEnum tipoJogo = event.getTipoJogo();
 
-        if (partidasCompletas) {
-
-            publicarComandoCompletar(
-                    new ComandoCompletarAposta.ApostaProntaParaAdicionar(false)
-            );
-
-            return;
+        if (tipoJogo == ModalidadeEnum.SUPER_7) {
+            return event.getQtdTotalSelecionadosSuperSete()
+                    == event.getQtdDezenasPossiveisSelecionado();
         }
 
-        publicarComandoCompletar(
-                new ComandoCompletarAposta.PreencherNumerosAleatorios()
-        );
+        if (tipoJogo == ModalidadeEnum.LOTECA) {
+
+            boolean partidasCompletas =
+                    event.getQtdPartidasSelecionadas()
+                            == event.getQtdPartidasTotal();
+
+            boolean possuiDuploOuTriplo =
+                    event.getDuplosLoteca() > 0
+                            || event.getTriplosLoteca() > 0;
+
+            return partidasCompletas && possuiDuploOuTriplo;
+        }
+
+        if (tipoJogo == ModalidadeEnum.LOTOGOL) {
+            return event.getQtdPartidasSelecionadas()
+                    == event.getQtdPartidasTotal();
+        }
+
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
+
+            boolean dezenasCompletas =
+                    event.getQtdDezenasSelecionadas()
+                            == event.getQtdDezenasPossiveisSelecionado();
+
+            return dezenasCompletas
+                    && event.isEquipeSelecionadaValida();
+        }
+
+        return event.getQtdDezenasSelecionadas()
+                == event.getQtdDezenasPossiveisSelecionado();
     }
+
     private void publicarComandoCompletar(
             ComandoCompletarAposta comando
     ) {
@@ -227,83 +304,7 @@ public class SimulaViewModel extends ViewModel {
                         .build()
         );
     }
-    private void handleCompletarApostaSolicitado(
-            SimulaUiEvent.CompletarApostaSolicitado event
-    ) {
 
-        ModalidadeEnum tipoJogo = event.getTipoJogo();
-
-        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-
-            handleCompletarTimemania(event);
-            return;
-        }
-
-        if (tipoJogo == ModalidadeEnum.LOTECA) {
-
-            handleCompletarLoteca(event);
-            return;
-        }
-
-        if (tipoJogo == ModalidadeEnum.LOTOGOL) {
-
-            handleCompletarLotogol(event);
-            return;
-        }
-
-        if (event.getQtdDezenasSelecionadas()
-                == event.getQtdDezenasPossiveisSelecionado()) {
-
-            if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE
-                    && event.isFragmentCartela()) {
-
-                publicarComandoCompletar(
-                        new ComandoCompletarAposta.AbrirMesDeSorte()
-                );
-
-                return;
-            }
-
-            if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA
-                    && event.isFragmentCartela()) {
-
-                publicarComandoCompletar(
-                        new ComandoCompletarAposta.AbrirTrevos()
-                );
-
-                return;
-            }
-
-            publicarComandoCompletar(
-                    new ComandoCompletarAposta.ApostaProntaParaAdicionar(false)
-            );
-
-            return;
-        }
-
-        if (tipoJogo == ModalidadeEnum.SUPER_7) {
-
-            if (event.getQtdTotalSelecionadosSuperSete()
-                    == event.getQtdDezenasPossiveisSelecionado()) {
-
-                publicarComandoCompletar(
-                        new ComandoCompletarAposta.ApostaProntaParaAdicionar(false)
-                );
-
-            } else {
-
-                publicarComandoCompletar(
-                        new ComandoCompletarAposta.PreencherSuperSete()
-                );
-            }
-
-            return;
-        }
-
-        publicarComandoCompletar(
-                new ComandoCompletarAposta.PreencherNumerosAleatorios()
-        );
-    }
 
     private void handleTelaInicializada(
             SimulaUiEvent.TelaInicializada event

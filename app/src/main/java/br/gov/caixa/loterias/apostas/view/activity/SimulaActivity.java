@@ -99,7 +99,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     //TODO: MEGA 30 ANOS//
     private int numero_concurso;
     private ConstraintLayout toolBarLoteca;
-    private Button qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela;
+    private Button qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoCompletar,botaoAdicionar;
     private AppCompatImageView simularTelaAposta, surpresinhaTela;
     private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
             labelValueTriplasLoteca, textoSalveEstaAposta;
@@ -388,8 +388,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.surpresinhaTela = findViewById(R.id.surpresinhaTela);
         this.qtdNumerosButton = findViewById(R.id.qtdNumerosButton);
         this.qtdConcursosButton = findViewById(R.id.qtdConcursosButton);
-        this.botaoLimparAposta = findViewById(R.id.botaoLimparAposta);
-        this.botaoAdicionarCompletarCartela = findViewById(R.id.botaoAdicionarCompletarCartela);
+        this.botaoLimparAposta = findViewById(R.id.btnLimpar);
+        this.botaoCompletar = findViewById(R.id.btnCompletar);
+        this.botaoAdicionar = findViewById(R.id.btnAdicionarCarrinho);
         this.labelValueJogosLoteca = findViewById(R.id.labelValueJogosLoteca);
         this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
         this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
@@ -501,8 +502,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
             qtdNumerosButton.setOnClickListener(this);
             qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
-            botaoAdicionarCompletarCartela.setOnClickListener(this);
-            botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(typeGameColorDark));
+            botaoCompletar.setOnClickListener(this);
+            botaoAdicionar.setOnClickListener(this);
             botaoLimparAposta.setOnClickListener(this);
             voltaPagina();
         }
@@ -589,8 +590,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         return botaoLimparAposta;
     }
 
-    public Button getBotaoAdicionarCompletarCartela() {
-        return botaoAdicionarCompletarCartela;
+    public Button getBotaoCompletar() {
+        return botaoCompletar;
+    }
+
+    public Button getBotaoAdicionar() {
+        return botaoAdicionar;
     }
 
     public TextView getTextoSalveEstaAposta() {
@@ -1091,7 +1096,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     @Override
     public Button getButtonFinalizar() {
-        return botaoAdicionarCompletarCartela;
+        return botaoCompletar;
     }
 
     @Override

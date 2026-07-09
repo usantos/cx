@@ -338,7 +338,7 @@
         app:layout_constraintTop_toBottomOf="@id/id_fg_barra_titulo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/botaoLimparAposta">
+        app:layout_constraintBottom_toTopOf="@id/rodape_simula">
 
         <include
             android:id="@+id/simulaToolbar"
@@ -425,19 +425,22 @@
         android:layout_marginBottom="10dp"
         android:background="@color/cinza"
         android:clickable="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/botaoLimparAposta"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/salvarApostaLayout"
             android:layout_width="184dp"
             android:layout_height="140dp"
-            tools:visibility="visible">
+            android:visibility="gone"
+            tools:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="152dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textoDeNomeInfo"
                 android:layout_alignStart="@+id/textoDeNomeInfo"
@@ -447,6 +450,8 @@
                 <ImageButton
                     android:id="@+id/btnSalvarAposta"
                     android:layout_width="20dp"
+                    android:visibility="gone"
+
                     android:layout_height="20dp"
                     android:layout_centerInParent="true"
 
@@ -462,6 +467,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:backgroundTint="@color/branco"
+                    android:visibility="gone"
                     android:inputType="textNoSuggestions"
                     android:paddingBottom="7dp"
                     android:paddingLeft="0dp"
@@ -478,6 +484,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/iconStarSalvar"
+                android:visibility="gone"
                 android:layout_alignStart="@+id/iconStarSalvar"
                 android:layout_below="@+id/textoSalveEstaAposta"
                 android:layout_marginTop="29dp"
@@ -497,6 +504,8 @@
                 android:layout_toRightOf="@+id/iconStarSalvar"
                 android:gravity="center_vertical"
                 android:padding="0dp"
+                android:visibility="gone"
+
                 android:text="@string/tituloSalvarAposta"
                 android:textColor="@color/branco"
                 android:textSize="14sp"
@@ -505,6 +514,8 @@
             <ImageView
                 android:id="@+id/iconStarSalvar"
                 android:layout_width="21dp"
+                android:visibility="gone"
+
                 android:layout_height="21dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -524,6 +535,7 @@
         android:background="@drawable/button_white_with_border"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
+        android:visibility="gone"
         android:text="@string/limparAposta"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/cinza"
@@ -539,18 +551,29 @@
         android:layout_marginBottom="51dp"
         android:background="@color/cinzaescuro"
         android:elevation="15dp"
+        android:visibility="gone"
         android:text="@string/adicionarAoCarrinho"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/branco"
         android:fontFamily="@font/caixa_std_regular"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rodape_simula"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+    <include
+        android:id="@+id/rodape_simula"
+        layout="@layout/rodape_simula"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <FrameLayout
         android:id="@+id/id_fg_rodape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
