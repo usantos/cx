@@ -50,6 +50,10 @@ public class SimulaUiState {
     private final boolean botaoFinalizarVisivel;
     private final int textoBotaoFinalizarResId;
 
+    private final boolean botaoCompletarHabilitado;
+    private final boolean botaoAdicionarHabilitado;
+    private final boolean botaoLimparHabilitado;
+
     public SimulaUiState(
             BarraTituloDTO barraTituloDTO,
             boolean exibirAnimacao,
@@ -85,7 +89,7 @@ public class SimulaUiState {
 
         this.dezenasSelecionadas = builder.dezenasSelecionadas != null
                 ? new ArrayList<>(builder.dezenasSelecionadas)
-                : new ArrayList<>();
+                : new ArrayList<Integer>();
 
         this.equipeSelecionada = builder.equipeSelecionada;
 
@@ -113,8 +117,12 @@ public class SimulaUiState {
         this.duplasLoteca = builder.duplasLoteca;
         this.triplasLoteca = builder.triplasLoteca;
 
-        this.botaoFinalizarVisivel = builder.botaoFinalizarVisivel;
+        this.botaoFinalizarVisivel = builder.botaoCompletarVisivel;
         this.textoBotaoFinalizarResId = builder.textoBotaoFinalizarResId;
+
+        this.botaoCompletarHabilitado = builder.botaoCompletarHabilitado;
+        this.botaoAdicionarHabilitado = builder.botaoAdicionarHabilitado;
+        this.botaoLimparHabilitado = builder.botaoLimparHabilitado;
     }
 
     public static SimulaUiState initial() {
@@ -146,8 +154,11 @@ public class SimulaUiState {
                 .setSimplesLoteca(0)
                 .setDuplasLoteca(0)
                 .setTriplasLoteca(0)
-                .setBotaoFinalizarVisivel(true)
+                .setBotaoCompletarVisivel(true)
                 .setTextoBotaoFinalizarResId(0)
+                .setBotaoCompletarHabilitado(true)
+                .setBotaoAdicionarHabilitado(false)
+                .setBotaoLimparHabilitado(false)
                 .build();
     }
 
@@ -174,9 +185,11 @@ public class SimulaUiState {
     public ComandoCarrinho getComandoCarrinho() {
         return comandoCarrinho;
     }
+
     public ComandoCompletarAposta getComandoCompletarAposta() {
         return comandoCompletarAposta;
     }
+
     public ModalidadeEnum getTipoJogo() {
         return tipoJogo;
     }
@@ -269,6 +282,18 @@ public class SimulaUiState {
         return textoBotaoFinalizarResId;
     }
 
+    public boolean isBotaoCompletarHabilitado() {
+        return botaoCompletarHabilitado;
+    }
+
+    public boolean isBotaoAdicionarHabilitado() {
+        return botaoAdicionarHabilitado;
+    }
+
+    public boolean isBotaoLimparHabilitado() {
+        return botaoLimparHabilitado;
+    }
+
     public static class Builder {
 
         private BarraTituloDTO barraTituloDTO;
@@ -278,6 +303,7 @@ public class SimulaUiState {
         private float velocidadeAnimacao;
 
         private ComandoCarrinho comandoCarrinho;
+        private ComandoCompletarAposta comandoCompletarAposta;
 
         private ModalidadeEnum tipoJogo;
 
@@ -308,11 +334,19 @@ public class SimulaUiState {
         private int duplasLoteca;
         private int triplasLoteca;
 
-        private boolean botaoFinalizarVisivel;
+        private boolean botaoCompletarVisivel;
         private int textoBotaoFinalizarResId;
-        private ComandoCompletarAposta comandoCompletarAposta;
+
+        private boolean botaoCompletarHabilitado;
+        private boolean botaoAdicionarHabilitado;
+        private boolean botaoLimparHabilitado;
 
         public Builder() {
+            this.dezenasSelecionadas = new ArrayList<>();
+            this.botaoCompletarVisivel = true;
+            this.botaoCompletarHabilitado = true;
+            this.botaoAdicionarHabilitado = false;
+            this.botaoLimparHabilitado = false;
         }
 
         public Builder(
@@ -331,7 +365,7 @@ public class SimulaUiState {
 
             this.dezenasSelecionadas = state.dezenasSelecionadas != null
                     ? new ArrayList<>(state.dezenasSelecionadas)
-                    : new ArrayList<>();
+                    : new ArrayList<Integer>();
 
             this.equipeSelecionada = state.equipeSelecionada;
 
@@ -359,8 +393,12 @@ public class SimulaUiState {
             this.duplasLoteca = state.duplasLoteca;
             this.triplasLoteca = state.triplasLoteca;
 
-            this.botaoFinalizarVisivel = state.botaoFinalizarVisivel;
+            this.botaoCompletarVisivel = state.botaoFinalizarVisivel;
             this.textoBotaoFinalizarResId = state.textoBotaoFinalizarResId;
+
+            this.botaoCompletarHabilitado = state.botaoCompletarHabilitado;
+            this.botaoAdicionarHabilitado = state.botaoAdicionarHabilitado;
+            this.botaoLimparHabilitado = state.botaoLimparHabilitado;
         }
 
         public Builder setBarraTituloDTO(
@@ -397,6 +435,7 @@ public class SimulaUiState {
             this.comandoCarrinho = comandoCarrinho;
             return this;
         }
+
         public Builder setComandoCompletarAposta(
                 ComandoCompletarAposta comandoCompletarAposta
         ) {
@@ -553,10 +592,10 @@ public class SimulaUiState {
             return this;
         }
 
-        public Builder setBotaoFinalizarVisivel(
-                boolean botaoFinalizarVisivel
+        public Builder setBotaoCompletarVisivel(
+                boolean botaoCompletarVisivel
         ) {
-            this.botaoFinalizarVisivel = botaoFinalizarVisivel;
+            this.botaoCompletarVisivel = botaoCompletarVisivel;
             return this;
         }
 
@@ -564,6 +603,27 @@ public class SimulaUiState {
                 int textoBotaoFinalizarResId
         ) {
             this.textoBotaoFinalizarResId = textoBotaoFinalizarResId;
+            return this;
+        }
+
+        public Builder setBotaoCompletarHabilitado(
+                boolean botaoCompletarHabilitado
+        ) {
+            this.botaoCompletarHabilitado = botaoCompletarHabilitado;
+            return this;
+        }
+
+        public Builder setBotaoAdicionarHabilitado(
+                boolean botaoAdicionarHabilitado
+        ) {
+            this.botaoAdicionarHabilitado = botaoAdicionarHabilitado;
+            return this;
+        }
+
+        public Builder setBotaoLimparHabilitado(
+                boolean botaoLimparHabilitado
+        ) {
+            this.botaoLimparHabilitado = botaoLimparHabilitado;
             return this;
         }
 

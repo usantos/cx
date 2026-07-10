@@ -224,6 +224,103 @@ public abstract class SimulaUiEvent {
     public static final class ComandoCompletarApostaConsumido extends SimulaUiEvent {
     }
 
+    public static class CartelaAlterada extends SimulaUiEvent {
+
+        private final ModalidadeEnum tipoJogo;
+
+        private final int qtdDezenasSelecionadas;
+        private final int qtdDezenasPossiveisSelecionado;
+
+        private final int qtdTotalSelecionadosSuperSete;
+
+        private final int qtdPartidasSelecionadas;
+        private final int qtdPartidasTotal;
+
+        private final int duplosLoteca;
+        private final int triplosLoteca;
+
+        private final boolean possuiPlacarLotogol;
+        private final boolean telaSelecaoTimeAtivado;
+        private final boolean equipeSelecionadaValida;
+        private final boolean escolhaTimeCoracaoSurpresinha;
+
+        public CartelaAlterada(
+                ModalidadeEnum tipoJogo,
+                int qtdDezenasSelecionadas,
+                int qtdDezenasPossiveisSelecionado,
+                int qtdTotalSelecionadosSuperSete,
+                int qtdPartidasSelecionadas,
+                int qtdPartidasTotal,
+                int duplosLoteca,
+                int triplosLoteca,
+                boolean possuiPlacarLotogol,
+                boolean telaSelecaoTimeAtivado,
+                boolean equipeSelecionadaValida,
+                boolean escolhaTimeCoracaoSurpresinha
+        ) {
+            this.tipoJogo = tipoJogo;
+            this.qtdDezenasSelecionadas = qtdDezenasSelecionadas;
+            this.qtdDezenasPossiveisSelecionado = qtdDezenasPossiveisSelecionado;
+            this.qtdTotalSelecionadosSuperSete = qtdTotalSelecionadosSuperSete;
+            this.qtdPartidasSelecionadas = qtdPartidasSelecionadas;
+            this.qtdPartidasTotal = qtdPartidasTotal;
+            this.duplosLoteca = duplosLoteca;
+            this.triplosLoteca = triplosLoteca;
+            this.possuiPlacarLotogol = possuiPlacarLotogol;
+            this.telaSelecaoTimeAtivado = telaSelecaoTimeAtivado;
+            this.equipeSelecionadaValida = equipeSelecionadaValida;
+            this.escolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
+        }
+
+        public ModalidadeEnum getTipoJogo() {
+            return tipoJogo;
+        }
+
+        public int getQtdDezenasSelecionadas() {
+            return qtdDezenasSelecionadas;
+        }
+
+        public int getQtdDezenasPossiveisSelecionado() {
+            return qtdDezenasPossiveisSelecionado;
+        }
+
+        public int getQtdTotalSelecionadosSuperSete() {
+            return qtdTotalSelecionadosSuperSete;
+        }
+
+        public int getQtdPartidasSelecionadas() {
+            return qtdPartidasSelecionadas;
+        }
+
+        public int getQtdPartidasTotal() {
+            return qtdPartidasTotal;
+        }
+
+        public int getDuplosLoteca() {
+            return duplosLoteca;
+        }
+
+        public int getTriplosLoteca() {
+            return triplosLoteca;
+        }
+
+        public boolean isPossuiPlacarLotogol() {
+            return possuiPlacarLotogol;
+        }
+
+        public boolean isTelaSelecaoTimeAtivado() {
+            return telaSelecaoTimeAtivado;
+        }
+
+        public boolean isEquipeSelecionadaValida() {
+            return equipeSelecionadaValida;
+        }
+
+        public boolean isEscolhaTimeCoracaoSurpresinha() {
+            return escolhaTimeCoracaoSurpresinha;
+        }
+    }
+
     public static final class AdicionarCarrinhoSolicitado extends SimulaUiEvent {
 
         private final IdentificaoDeUmaApostaDas8Modalidades aposta;
