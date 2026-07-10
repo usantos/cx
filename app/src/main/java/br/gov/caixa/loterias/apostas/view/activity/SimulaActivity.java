@@ -55,6 +55,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.ComandoCarrinho;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
@@ -71,6 +72,7 @@ import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.custom.AccordionView;
 import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
@@ -147,6 +149,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private SimularApostaModel model;
     private TextView tvValorAposta;
     private TextView tvValorCarrinho;
+    private LinearLayout containerComoJogar;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -182,7 +185,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                         .get(SimulaViewModel.class);
 
         observeState();
-
+        configurarEventosViewModel();
         viewModel.onEvent(
                 new SimulaUiEvent.TelaInicializada(
                         tipoJogo,
@@ -261,7 +264,27 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         renderComandoCarrinho(
                 state.getComandoCarrinho()
         );
+        renderDialogComoJogar(state);
 
+    }
+
+    private void renderDialogComoJogar(
+            SimulaUiState state
+    ) {
+
+        if (!state.isExibirDialogComoJogar()) {
+            return;
+        }
+
+        DialogUtils.dialogTituloEntendi(
+                this,
+                state.getTitleComoJogar(),
+                state.getMensagemComoJogar()
+        );
+
+        viewModel.onEvent(
+                new SimulaUiEvent.DialogComoJogarConsumido()
+        );
     }
 
     private void renderParametrosAposta(
@@ -415,6 +438,22 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.paginacaoView = findViewById(R.id.paginacaoView);
         this.tvValorAposta = findViewById(R.id.tvValorAposta);
         this.tvValorCarrinho = findViewById(R.id.tvTotalCarrinho);
+        this.containerComoJogar = findViewById(R.id.containerComoJogar);
+    }
+    private void configurarEventosViewModel() {
+
+        if (containerComoJogar != null) {
+            containerComoJogar.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            viewModel.onEvent(
+                                    new SimulaUiEvent.ComoJogarClicado()
+                            );
+                        }
+                    }
+            );
+        }
     }
 
     @Override

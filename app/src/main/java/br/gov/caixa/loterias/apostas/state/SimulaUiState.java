@@ -63,6 +63,9 @@ public class SimulaUiState {
     private final boolean carregandoCarrinho;
     private final boolean exibirCarrinho;
     private final CarrinhoDTO carrinho;
+    private final boolean exibirDialogComoJogar;
+    private final String mensagemComoJogar;
+    private final String titleComoJogar;
 
     public SimulaUiState(
             BarraTituloDTO barraTituloDTO,
@@ -88,6 +91,8 @@ public class SimulaUiState {
                 ? builder.barraTituloDTO
                 : new BarraTituloDTO();
 
+        this.exibirDialogComoJogar = builder.exibirDialogComoJogar;
+
         this.exibirAnimacao = builder.exibirAnimacao;
         this.animacaoRes = builder.animacaoRes;
         this.velocidadeAnimacao = builder.velocidadeAnimacao;
@@ -96,6 +101,7 @@ public class SimulaUiState {
         this.comandoCompletarAposta = builder.comandoCompletarAposta;
 
         this.tipoJogo = builder.tipoJogo;
+        this.titleComoJogar = builder.titleComoJogar;
 
         this.dezenasSelecionadas = builder.dezenasSelecionadas != null
                 ? new ArrayList<>(builder.dezenasSelecionadas)
@@ -155,6 +161,11 @@ public class SimulaUiState {
 
         this.carrinho =
                 builder.carrinho;
+
+        this.mensagemComoJogar =
+                builder.mensagemComoJogar != null
+                        ? builder.mensagemComoJogar
+                        : "";
     }
 
     public static SimulaUiState initial() {
@@ -163,6 +174,7 @@ public class SimulaUiState {
                 .setExibirAnimacao(false)
                 .setAnimacaoRes(0)
                 .setVelocidadeAnimacao(1f)
+                .setExibirDialogComoJogar(false)
                 .setComandoCarrinho(null)
                 .setComandoCompletarAposta(null)
                 .setTipoJogo(null)
@@ -185,6 +197,8 @@ public class SimulaUiState {
                 .setJogosLoteca(0)
                 .setSimplesLoteca(0)
                 .setDuplasLoteca(0)
+                .setMensagemComoJogar("")
+                .setTitleComoJogar("")
                 .setTriplasLoteca(0)
                 .setBotaoCompletarVisivel(true)
                 .setTextoBotaoFinalizarResId(0)
@@ -208,7 +222,9 @@ public class SimulaUiState {
     public BarraTituloDTO getBarraTituloDTO() {
         return barraTituloDTO;
     }
-
+    public boolean isExibirDialogComoJogar() {
+        return exibirDialogComoJogar;
+    }
     public boolean isExibirAnimacao() {
         return exibirAnimacao;
     }
@@ -359,6 +375,12 @@ public class SimulaUiState {
     public boolean isValorGrande() {
         return valorGrande;
     }
+    public String getMensagemComoJogar() {
+        return mensagemComoJogar;
+    }
+    public String getTitleComoJogar() {
+        return titleComoJogar;
+    }
 
     public static class Builder {
 
@@ -366,6 +388,7 @@ public class SimulaUiState {
 
         private boolean exibirAnimacao;
         private int animacaoRes;
+        private boolean exibirDialogComoJogar;
         private float velocidadeAnimacao;
 
         private ComandoCarrinho comandoCarrinho;
@@ -414,6 +437,8 @@ public class SimulaUiState {
 
         private BigDecimal valorAposta;
         private boolean valorGrande;
+        private String mensagemComoJogar;
+        private String titleComoJogar;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<Integer>();
@@ -428,6 +453,8 @@ public class SimulaUiState {
             this.carrinho = null;
             this.valorAposta = BigDecimal.ZERO;
             this.valorGrande = false;
+            this.titleComoJogar = "";
+            this.mensagemComoJogar = "";
         }
 
         public Builder(
@@ -488,6 +515,17 @@ public class SimulaUiState {
 
             this.valorAposta = state.valorAposta;
             this.valorGrande = state.valorGrande;
+            this.exibirDialogComoJogar = state.exibirDialogComoJogar;
+            this.mensagemComoJogar = state.mensagemComoJogar;
+            this.titleComoJogar = state.titleComoJogar;
+        }
+        public Builder setMensagemComoJogar(String mensagemComoJogar) {
+            this.mensagemComoJogar = mensagemComoJogar;
+            return this;
+        }
+        public Builder setTitleComoJogar(String titleComoJogar) {
+            this.titleComoJogar = titleComoJogar;
+            return this;
         }
 
         public Builder setBarraTituloDTO(
@@ -510,6 +548,10 @@ public class SimulaUiState {
                     valorCarrinho != null
                             ? valorCarrinho
                             : BigDecimal.ZERO;
+            return this;
+        }
+        public Builder setExibirDialogComoJogar(boolean exibirDialogComoJogar) {
+            this.exibirDialogComoJogar = exibirDialogComoJogar;
             return this;
         }
 

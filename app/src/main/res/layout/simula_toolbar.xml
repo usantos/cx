@@ -5,14 +5,14 @@
     android:id="@+id/simulaToolbar"
     android:layout_width="match_parent"
     android:layout_height="52dp"
-    android:background="#EEEEEE"
+    android:background="@color/branco"
     android:paddingHorizontal="16dp">
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switchSurpresinha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
+        android:checked="false"
         android:showText="false"
         android:text=""
         android:thumb="@drawable/surpresinha_thumb"
@@ -34,27 +34,36 @@
         app:layout_constraintTop_toTopOf="@id/switchSurpresinha"
         app:layout_constraintBottom_toBottomOf="@id/switchSurpresinha" />
 
-    <TextView
-        android:id="@+id/txtComoJogar"
+    <LinearLayout
+        android:id="@+id/containerComoJogar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/caixa_std_regular"
-        android:text="Como jogar"
-        android:textColor="@color/cinza110"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@id/imgInfo"
-        app:layout_constraintTop_toTopOf="@id/txtTitulo"
-        app:layout_constraintBottom_toBottomOf="@id/txtTitulo" />
-
-    <ImageView
-        android:id="@+id/imgInfo"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_info"
-        app:tint="@color/cinza110"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="4dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/txtComoJogar"
-        app:layout_constraintBottom_toBottomOf="@id/txtComoJogar" />
+        app:layout_constraintTop_toTopOf="@id/txtTitulo"
+        app:layout_constraintBottom_toBottomOf="@id/txtTitulo">
+
+        <TextView
+            android:id="@+id/txtComoJogar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Como jogar"
+            android:textColor="@color/cinza110"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/imgInfo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_info"
+            app:tint="@color/cinza110" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

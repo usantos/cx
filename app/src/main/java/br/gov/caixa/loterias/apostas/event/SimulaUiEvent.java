@@ -341,6 +341,11 @@ public abstract class SimulaUiEvent {
 
     public static class CarregarCarrinho extends SimulaUiEvent {
     }
+    public static final class ComoJogarClicado extends SimulaUiEvent {
+    }
+
+    public static final class DialogComoJogarConsumido extends SimulaUiEvent {
+    }
 
     public static class CarrinhoCarregado extends SimulaUiEvent {
 

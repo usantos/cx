@@ -61,7 +61,9 @@ public class AccordionModel {
                 this.bodyText = "";
         }
     }
-
+    public String getTituloComoJogar(ModalidadeEnum modalidade) {
+        return "Como Jogar: " + ModalidadeEnum.fromString(modalidade);
+    }
     public String getBodyText() {
         return bodyText;
     }

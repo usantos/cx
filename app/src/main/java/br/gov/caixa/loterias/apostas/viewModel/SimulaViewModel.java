@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.state.ComandoCarrinho;
 import br.gov.caixa.loterias.apostas.state.ComandoCompletarAposta;
@@ -45,6 +46,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
     private ModalidadeEnum tipoJogoAtual;
     private ParametroJogoDTO parametroJogoAtual;
+    private boolean isEspecialAtual;
     public SimulaViewModel(
             @NonNull Application application
     ) {
@@ -144,12 +146,73 @@ public class SimulaViewModel extends AndroidViewModel {
             carregarCarrinho();
             return;
         }
+        if (event instanceof SimulaUiEvent.ComoJogarClicado) {
+
+            handleComoJogar();
+
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.DialogComoJogarConsumido) {
+
+            consumirDialogComoJogar();
+
+            return;
+        }
 
         if (event instanceof SimulaUiEvent.LimpezaApostaRenderizada) {
 
-            limparFlagsDeRenderizacao();
+            limparFlagsDeRenderizacao();;
         }
     }
+
+    private void handleComoJogar() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setMensagemComoJogar(
+                                obterTextoComoJogar(tipoJogoAtual,isEspecialAtual)
+                        )
+                        .setTitleComoJogar(obterTitleComoJogar(tipoJogoAtual,isEspecialAtual))
+                        .setExibirDialogComoJogar(true)
+                        .build()
+        );
+    }
+    public static String obterTextoComoJogar(
+            ModalidadeEnum modalidade,
+            boolean especial
+    ) {
+        return new AccordionModel(
+                modalidade,
+                especial
+        ).getBodyText();
+    }
+
+    public static String obterTitleComoJogar(
+            ModalidadeEnum modalidade,
+            boolean especial
+    ) {
+        return new AccordionModel(
+                modalidade,
+                especial
+        ).getTituloComoJogar(modalidade);
+    }
+
+    private void consumirDialogComoJogar() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setExibirDialogComoJogar(false)
+                        .build()
+        );
+    }
+
     private void carregarCarrinho() {
 
         publicarEstadoCarrinho(
@@ -769,6 +832,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         tipoJogoAtual = event.getModalidade();
         parametroJogoAtual = event.getParametroSimulacao();
+        isEspecialAtual = event.isEspecial();
 
         BarraTituloDTO barraTituloDTO =
                 criarBarraTitulo(
