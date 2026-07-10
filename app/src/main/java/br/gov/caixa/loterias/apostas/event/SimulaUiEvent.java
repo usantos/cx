@@ -1,5 +1,8 @@
 package br.gov.caixa.loterias.apostas.event;
 
+import java.math.BigDecimal;
+
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
@@ -39,6 +42,7 @@ public abstract class SimulaUiEvent {
             return parametroSimulacao;
         }
     }
+
     public static final class LimparApostaSolicitado extends SimulaUiEvent {
     }
 
@@ -129,6 +133,7 @@ public abstract class SimulaUiEvent {
             return fragmentCartela;
         }
     }
+
     public static final class AdicionarCarrinhoClicado extends SimulaUiEvent {
 
         private final ModalidadeEnum tipoJogo;
@@ -318,6 +323,35 @@ public abstract class SimulaUiEvent {
 
         public boolean isEscolhaTimeCoracaoSurpresinha() {
             return escolhaTimeCoracaoSurpresinha;
+        }
+    }
+
+    public static class ValorApostaAlterado extends SimulaUiEvent {
+
+        private final BigDecimal valor;
+
+        public ValorApostaAlterado(BigDecimal valor) {
+            this.valor = valor;
+        }
+
+        public BigDecimal getValor() {
+            return valor;
+        }
+    }
+
+    public static class CarregarCarrinho extends SimulaUiEvent {
+    }
+
+    public static class CarrinhoCarregado extends SimulaUiEvent {
+
+        private final CarrinhoDTO carrinho;
+
+        public CarrinhoCarregado(CarrinhoDTO carrinho) {
+            this.carrinho = carrinho;
+        }
+
+        public CarrinhoDTO getCarrinho() {
+            return carrinho;
         }
     }
 

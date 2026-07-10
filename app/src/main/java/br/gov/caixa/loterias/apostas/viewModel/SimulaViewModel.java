@@ -1,30 +1,41 @@
 package br.gov.caixa.loterias.apostas.viewModel;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+
+import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.state.ComandoCarrinho;
 import br.gov.caixa.loterias.apostas.state.ComandoCompletarAposta;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
-public class SimulaViewModel extends ViewModel {
+public class SimulaViewModel extends AndroidViewModel {
 
     private final MutableLiveData<SimulaUiState> uiState =
             new MutableLiveData<>(SimulaUiState.initial());
@@ -34,6 +45,11 @@ public class SimulaViewModel extends ViewModel {
 
     private ModalidadeEnum tipoJogoAtual;
     private ParametroJogoDTO parametroJogoAtual;
+    public SimulaViewModel(
+            @NonNull Application application
+    ) {
+        super(application);
+    }
 
     public LiveData<SimulaUiState> getUiState() {
         return uiState;
@@ -115,11 +131,229 @@ public class SimulaViewModel extends ViewModel {
 
             return;
         }
+        if (event instanceof SimulaUiEvent.ValorApostaAlterado) {
+
+            handleValorApostaAlterado(
+                    (SimulaUiEvent.ValorApostaAlterado) event
+            );
+
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.CarregarCarrinho) {
+            carregarCarrinho();
+            return;
+        }
 
         if (event instanceof SimulaUiEvent.LimpezaApostaRenderizada) {
 
             limparFlagsDeRenderizacao();
         }
+    }
+    private void carregarCarrinho() {
+
+        publicarEstadoCarrinho(
+                CarrinhoSingleton
+                        .getInstance()
+                        .getCarrinho(),
+                true
+        );
+
+        if (LoginSP.isLoginRealizado()) {
+            carregarCarrinhoOnline();
+            return;
+        }
+
+        carregarCarrinhoLocal();
+    }
+
+    private void carregarCarrinhoOnline() {
+
+        ServicoFactoryUtil
+                .getApostaService()
+                .buscaCarrinho(
+                        new RequestListener<CarrinhoDTOResponse>() {
+
+                            @Override
+                            public void onResponse(
+                                    CarrinhoDTOResponse response
+                            ) {
+
+                                CarrinhoDTO carrinho =
+                                        response != null
+                                                ? response.getPayload()
+                                                : null;
+
+                                if (carrinho == null) {
+                                    carrinho = new CarrinhoDTO();
+                                }
+
+                                adicionarApostasLocaisNoCarrinho(
+                                        carrinho
+                                );
+
+                                CarrinhoSingleton
+                                        .getInstance()
+                                        .setCarrinho(carrinho);
+
+                                publicarEstadoCarrinho(
+                                        carrinho,
+                                        false
+                                );
+                            }
+
+                            @Override
+                            public void onErrorResponse(
+                                    VolleyError error
+                            ) {
+
+                                carregarCarrinhoLocal();
+                            }
+                        }
+                );
+    }
+
+    private void carregarCarrinhoLocal() {
+
+        CarrinhoDTO carrinho =
+                new CarrinhoDTO();
+
+        carrinho.setApostas(
+                getApostasLocais()
+        );
+
+        CarrinhoSingleton
+                .getInstance()
+                .setCarrinho(carrinho);
+
+        publicarEstadoCarrinho(
+                carrinho,
+                false
+        );
+    }
+
+    private void adicionarApostasLocaisNoCarrinho(
+            CarrinhoDTO carrinho
+    ) {
+
+        List<IdentificaoDeUmaApostaDas8Modalidades> apostasLocais =
+                getApostasLocais();
+
+        if (apostasLocais == null
+                || apostasLocais.isEmpty()) {
+            return;
+        }
+
+        if (carrinho.getApostas() == null) {
+            carrinho.setApostas(
+                    new ArrayList<IdentificaoDeUmaApostaDas8Modalidades>()
+            );
+        }
+
+        carrinho
+                .getApostas()
+                .addAll(apostasLocais);
+    }
+
+    private List<IdentificaoDeUmaApostaDas8Modalidades> getApostasLocais() {
+
+        DBLoteriasCrud crud =
+                new DBLoteriasCrud(
+                        getApplication()
+                );
+
+        return crud
+                .readAllIdentificaoDeUmaApostaDas8Modalidades();
+    }
+
+    private void publicarEstadoCarrinho(
+            CarrinhoDTO carrinho,
+            boolean carregando
+    ) {
+
+        BigDecimal valorCarrinho =
+                obterValorCarrinho(carrinho);
+
+        int quantidadeApostas =
+                obterQuantidadeApostas(carrinho);
+
+        boolean exibirCarrinho =
+                valorCarrinho.compareTo(BigDecimal.ZERO) > 0;
+
+        uiState.setValue(
+                getCurrentState()
+                        .toBuilder()
+                        .setCarrinho(carrinho)
+                        .setValorCarrinho(valorCarrinho)
+                        .setQuantidadeApostasCarrinho(quantidadeApostas)
+                        .setExibirCarrinho(exibirCarrinho)
+                        .setCarregandoCarrinho(carregando)
+                        .build()
+        );
+    }
+
+    private BigDecimal obterValorCarrinho(
+            CarrinhoDTO carrinho
+    ) {
+
+        if (carrinho == null) {
+            return BigDecimal.ZERO;
+        }
+
+        if (carrinho.getValorTotal() != null
+                && carrinho.getValorTotal().compareTo(BigDecimal.ZERO) > 0) {
+
+            return carrinho.getValorTotal();
+        }
+
+        return somarValorDasApostas(
+                carrinho
+        );
+    }
+
+    private BigDecimal somarValorDasApostas(
+            CarrinhoDTO carrinho
+    ) {
+
+        if (carrinho == null
+                || carrinho.getApostas() == null
+                || carrinho.getApostas().isEmpty()) {
+
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal total =
+                BigDecimal.ZERO;
+
+        for (IdentificaoDeUmaApostaDas8Modalidades aposta
+                : carrinho.getApostas()) {
+
+            if (aposta != null
+                    && aposta.getValor() != null) {
+
+                total =
+                        total.add(
+                                aposta.getValor()
+                        );
+            }
+        }
+
+        return total;
+    }
+
+    private int obterQuantidadeApostas(
+            CarrinhoDTO carrinho
+    ) {
+
+        if (carrinho == null
+                || carrinho.getApostas() == null) {
+
+            return 0;
+        }
+
+        return carrinho
+                .getApostas()
+                .size();
     }
 
     private void handleCartelaAlterada(
@@ -314,6 +548,24 @@ public class SimulaViewModel extends ViewModel {
 
         return event.getQtdDezenasSelecionadas()
                 == event.getQtdDezenasPossiveisSelecionado();
+    }
+    private void handleValorApostaAlterado(
+            SimulaUiEvent.ValorApostaAlterado event
+    ) {
+
+        BigDecimal valor =
+                event.getValor();
+
+        uiState.setValue(
+                getCurrentState()
+                        .toBuilder()
+                        .setValorAposta(valor)
+                        .setValorGrande(
+                                valor != null
+                                        && valor.doubleValue() > 999.99
+                        )
+                        .build()
+        );
     }
 
     private void handleCompletarApostaClicado(
@@ -727,7 +979,8 @@ public class SimulaViewModel extends ViewModel {
                         .setBotaoCompletarHabilitado(true)
                         .setBotaoAdicionarHabilitado(false)
                         .setBotaoLimparHabilitado(false)
-
+                        .setValorAposta(BigDecimal.ZERO)
+                        .setValorGrande(false)
                         .setLimparOpcaoOutrosNumeros(true)
                         .setBotaoCompletarVisivel(true)
                         .setTextoBotaoFinalizarResId(

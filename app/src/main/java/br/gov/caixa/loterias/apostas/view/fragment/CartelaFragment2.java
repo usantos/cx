@@ -57,7 +57,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.ComandoCompletarAposta;
@@ -151,100 +150,126 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     private SimulaViewModel viewModel;
 
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
+
     public CartelaFragment2() {
         // Required empty public constructor
     }
 
-    public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
-        BigDecimal valorEmReais = BigDecimal.ZERO;
+    public void atualizaValorTotalAposta(
+            int numPrognostico,
+            int qtdTeimosinhas
+    ) {
         loadParametroJogo();
+
+        if (parametroJogo == null) {
+            publicarValorAposta(BigDecimal.ZERO);
+            return;
+        }
+
+        if (numPrognostico <= 0) {
+            publicarValorAposta(BigDecimal.ZERO);
+            return;
+        }
+
         if (parametroJogo.getValoresAposta() == null) {
-            DialogUtils.dialogEntendiListener(getActivity(),
+            DialogUtils.dialogEntendiListener(
+                    getActivity(),
                     getString(R.string.nao_concluiu_aposta),
                     new OnDialogBotaoListener() {
                         @Override
-                        public void onButtonClick(DialogInterface dialog, int which) {
-                            Intent intent = IntentUtil.getIntentLimpandoPilhaActivities(getActivity(), PrincipalActivity.class);
+                        public void onButtonClick(
+                                DialogInterface dialog,
+                                int which
+                        ) {
+                            Intent intent =
+                                    IntentUtil.getIntentLimpandoPilhaActivities(
+                                            getActivity(),
+                                            PrincipalActivity.class
+                                    );
+
                             getActivity().startActivity(intent);
                             getActivity().finish();
                         }
-                    });
+                    }
+            );
 
+            publicarValorAposta(BigDecimal.ZERO);
             return;
         }
 
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
-            ParametroValorApostaDTO valorAposta = parametroJogo.getValorApostaBy(numPrognostico, parametroJogo.getTrevos().getQtdMinima());
+        BigDecimal valorCalculado = BigDecimal.ZERO;
 
-            valorEmReais = valorAposta.getValor();
-            if (parentActivity.getQtdConcursos() > 0){
-                valorTotalAposta = valorEmReais.multiply(BigDecimal.valueOf(parentActivity.getQtdConcursos()).movePointLeft(0));
-            } else {
-                valorTotalAposta = valorEmReais;
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
+
+            ParametroValorApostaDTO parametroValorAposta =
+                    parametroJogo.getValorApostaBy(
+                            numPrognostico,
+                            parametroJogo.getTrevos().getQtdMinima()
+                    );
+
+            if (parametroValorAposta != null
+                    && parametroValorAposta.getValor() != null) {
+
+                valorCalculado = parametroValorAposta.getValor();
             }
 
-            parentActivity.atualizaValorAposta(valorAposta);
+            if (parentActivity.getQtdConcursos() > 0) {
+                valorCalculado =
+                        valorCalculado.multiply(
+                                BigDecimal.valueOf(
+                                        parentActivity.getQtdConcursos()
+                                )
+                        );
+            }
 
+            parentActivity.atualizaValorAposta(
+                    parametroValorAposta
+            );
+
+            publicarValorAposta(valorCalculado);
             return;
         }
-        if (numPrognostico != 0) {
-            for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
-                if (parametro.getNumeroPrognosticos() == numPrognostico) {
-                    valorEmReais = parametro.getValor();
-                    break;
-                }
+
+        for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
+            if (parametro.getNumeroPrognosticos() == numPrognostico) {
+                valorCalculado = parametro.getValor();
+                break;
             }
-        } else if (parametroJogo.getValorApostaMinima() != null) {
-            valorEmReais = parametroJogo.getValorApostaMinima();
-        } else if (parametroJogo.getConcurso().getValorApostaMinima() != null) {
-            valorEmReais = parametroJogo.getConcurso().getValorApostaMinima();
         }
 
-        try{
-            valorEmReais = valorEmReais.equals(BigDecimal.ZERO) ? parametroJogo.getValoresAposta().get(0).getValor() : valorEmReais;
-        }catch (Exception e){
-            if (parametroJogo == null) {
-                loadParametroJogo();
+        if (valorCalculado == null
+                || BigDecimal.ZERO.compareTo(valorCalculado) == 0) {
+
+            if (!parametroJogo.getValoresAposta().isEmpty()
+                    && parametroJogo.getValoresAposta().get(0).getValor() != null) {
+
+                valorCalculado =
+                        parametroJogo.getValoresAposta().get(0).getValor();
             }
-            valorEmReais = valorEmReais.equals(BigDecimal.ZERO) ? parametroJogo.getValorApostaMinima() : valorEmReais;
         }
 
-        if (qtdTeimosinhas != 0) {
-            valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas).movePointLeft(0));
+        if (valorCalculado == null) {
+            valorCalculado = BigDecimal.ZERO;
         }
 
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && selecioneOutrosNumeros.isChecked()) {
-            valorEmReais = valorEmReais.multiply(Constantes.DOIS_BIG_DECIMAL);
+        if (qtdTeimosinhas > 0) {
+            valorCalculado =
+                    valorCalculado.multiply(
+                            BigDecimal.valueOf(qtdTeimosinhas)
+                    );
         }
 
-        if(valorEmReais != null) {
-            if (valorEmReais.doubleValue() > 999.99) {
-                if (!mudouTamanhoValor) {
-                    TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, -30);
-                    mudouTamanhoValor = true;
-                }
-            } else {
-                if (mudouTamanhoValor) {
-                    TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, 30);
-                    mudouTamanhoValor = false;
-                }
-            }
-            ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
-            valorAposta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            valorTotalAposta = valorEmReais;
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
+                && selecioneOutrosNumeros != null
+                && selecioneOutrosNumeros.isChecked()) {
+
+            valorCalculado =
+                    valorCalculado.multiply(
+                            Constantes.DOIS_BIG_DECIMAL
+                    );
         }
-        else {
-            DialogUtils.dialogEntendiListener(getActivity(),
-                    getString(R.string.nao_concluiu_aposta),
-                    new OnDialogBotaoListener() {
-                        @Override
-                        public void onButtonClick(DialogInterface dialog, int which) {
-                            Intent intent = IntentUtil.getIntentLimpandoPilhaActivities(getActivity(), PrincipalActivity.class);
-                            getActivity().startActivity(intent);
-                            getActivity().finish();
-                        }
-                    });
-        }
+
+        publicarValorAposta(valorCalculado);
     }
 
     private void loadParametroJogo() {
@@ -275,7 +300,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null
                 && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
             for (int i = 1; i <= parametroJogo.getPrognosticoMaximo(); i++) {
-                if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && i == 100){
+                if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && i == 100) {
                     dezenas.add(new Dezena("" + i, Boolean.FALSE, "00"));
                 } else {
                     dezenas.add(new Dezena("" + i, Boolean.FALSE, "" + i));
@@ -318,8 +343,8 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
         loadParametroJogo();
 
-        if(parentActivity != null && parametroJogo != null){
-            if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)){
+        if (parentActivity != null && parametroJogo != null) {
+            if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
                 configuraBotoesLotecaOuLotogol();
             }
         }
@@ -355,10 +380,14 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
         if (!isEscolhaTimeCoracaoSurpresinha) {
             configuraListaDezenas(view);
-            notificarEstadoCartelaAlterado();
+        }
+
+        if (parentActivity.getAposta() != null) {
+            editaAposta();
+        } else {
+            publicarValorAposta(BigDecimal.ZERO);
             notificarEstadoCartelaAlterado();
         }
-        editaAposta();
     }
 
     public void cartelaFragmentBuilder(Bundle dataBundle) {
@@ -436,9 +465,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         }
 
     }
-    private void adicionarApostaNoCarrinho() {
-        solicitarAdicionarCarrinho();
-    }
+
     private void solicitarAdicionarCarrinho() {
 
         IdentificaoDeUmaApostaDas8Modalidades apostaParaCarrinho = null;
@@ -473,7 +500,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             return ApostaUtils.getApostaSuperSete(
                     parametroJogo,
                     dezenasSelecionadas,
-                    valorTotalAposta,
+                    getValorTotalApostaAtual(),
                     parentActivity.qtdConcursoSelecionado,
                     ListaUtils.pegaListaSuperSete(
                             listaAdaptersSuperSete
@@ -484,46 +511,69 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         return getApostaPreenchida();
     }
 
-    private boolean checaLimiteDiario() {
-        return CarrinhoSingleton.getInstance().getCarrinho() != null &&
-                CarrinhoSingleton.getInstance().getCarrinho().getValorTotal() != null &&
-                SessaoUsuario.getInstance().getParametrosSimulacao() != null &&
-                SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() != null &&
-                valorTotalAposta != null &&
-                ((CarrinhoSingleton.getInstance().getCarrinho().getValorTotal()
-                        .add(valorTotalAposta))
-                        .compareTo(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()) > 0);
-    }
-
     private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
 
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)){
-            return ApostaUtils.getApostaDiaDeSorte(parametroJogo, dezenasSelecionadas,
-                    valorTotalAposta,
-                    parentActivity.qtdConcursoSelecionado, parentActivity.getMesDeSorteCartela());
-        } else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)){
-            return ApostaUtils.getApostaLoteca(parametroJogo, dezenasSelecionadas,
-                    valorTotalAposta,parentActivity.qtdConcursoSelecionado,
-                    partidasSelecionadas);
-        } else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)){
-            return ApostaUtils.getApostaLotogol(parametroJogo, dezenasSelecionadas, valorTotalAposta,
-                    parentActivity.qtdConcursoSelecionado, partidasSelecionadas);
-        } else if(parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)){
-            return ApostaUtils.getApostaTimemania(parametroJogo, dezenasSelecionadas,
-                    valorTotalAposta,parentActivity.qtdConcursoSelecionado,
-                    equipeSelecionada);
+        BigDecimal valorAtual =
+                getValorTotalApostaAtual();
+
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
+
+            return ApostaUtils.getApostaDiaDeSorte(
+                    parametroJogo,
+                    dezenasSelecionadas,
+                    valorAtual,
+                    parentActivity.qtdConcursoSelecionado,
+                    parentActivity.getMesDeSorteCartela()
+            );
+
+        } else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
+
+            return ApostaUtils.getApostaLoteca(
+                    parametroJogo,
+                    dezenasSelecionadas,
+                    valorAtual,
+                    parentActivity.qtdConcursoSelecionado,
+                    partidasSelecionadas
+            );
+
+        } else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
+
+            return ApostaUtils.getApostaLotogol(
+                    parametroJogo,
+                    dezenasSelecionadas,
+                    valorAtual,
+                    parentActivity.qtdConcursoSelecionado,
+                    partidasSelecionadas
+            );
+
+        } else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
+
+            return ApostaUtils.getApostaTimemania(
+                    parametroJogo,
+                    dezenasSelecionadas,
+                    valorAtual,
+                    parentActivity.qtdConcursoSelecionado,
+                    equipeSelecionada
+            );
+
         } else {
-            return ApostaUtils.getApostaPreenchida(parametroJogo, dezenasSelecionadas,
-                    valorTotalAposta, parentActivity.qtdConcursoSelecionado);
+
+            return ApostaUtils.getApostaPreenchida(
+                    parametroJogo,
+                    dezenasSelecionadas,
+                    valorAtual,
+                    parentActivity.qtdConcursoSelecionado
+            );
         }
     }
-    private void zeraLoteca(){
+
+    private void zeraLoteca() {
         limparPartidadasSelecionasLoteca(Boolean.FALSE);
         limparOpcaoOutrosNumerosLayout();
-        notificarEstadoCartelaAlterado();
-        notificarEstadoCartelaAlterado();
+        atualizarValorENotificarEstadoCartela();
         ocutarSalvarAposta();
     }
+
     // METODO DO PROTOCOLO ONCLICK
     @Override
     public void onClick(View view) {
@@ -553,15 +603,15 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 
                 final float scale = parentActivity.getResources().getDisplayMetrics().density;
-                if (relativelayoutParams.height != ((int) (140 * scale + 0.5f))){
+                if (relativelayoutParams.height != ((int) (140 * scale + 0.5f))) {
                     relativelayoutParams.height = (int) (140 * scale + 0.5f);
-                } else  {
+                } else {
                     relativelayoutParams.height = (int) (64 * scale + 0.5f);
                 }
 
                 salvarApostaLayout.setLayoutParams(relativelayoutParams);
 
-                if(!parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
+                if (!parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
                     salvarApostaLayout.findViewById(R.id.btnSalvarAposta).setOnClickListener(this);
                 }
 
@@ -580,7 +630,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                         aposta.setTimeDoCoracao(equipeSelecionada);
                     }
 
-                    if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
+                    if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
                         aposta.setParametroTrevo(new ParametroTrevo());
                     }
 
@@ -597,6 +647,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
         }
     }
+
     @Override
     public void onViewCreated(
             @NonNull View view,
@@ -611,6 +662,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                         this::render
                 );
     }
+
     private void solicitarCompletarAposta() {
 
         if (viewModel == null || parametroJogo == null || parentActivity == null) {
@@ -647,6 +699,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 )
         );
     }
+
     private void solicitarAdicionarCarrinhoPorBotao() {
 
         if (viewModel == null || parametroJogo == null || parentActivity == null) {
@@ -706,6 +759,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 )
         );
     }
+
     private void notificarEstadoCartelaAlterado() {
 
         if (viewModel == null || parametroJogo == null || parentActivity == null) {
@@ -764,6 +818,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 )
         );
     }
+
     private int getIntTextSafe(
             TextView textView
     ) {
@@ -779,6 +834,52 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    private void renderValorAposta(
+            SimulaUiState state
+    ) {
+
+        if (valorAposta == null) {
+            return;
+        }
+
+        BigDecimal valor =
+                state.getValorAposta() != null
+                        ? state.getValorAposta()
+                        : BigDecimal.ZERO;
+
+        if (state.isValorGrande()) {
+
+            if (!mudouTamanhoValor) {
+                TextViewUtils.mudarTamanhoPorPorcentagem(
+                        valorAposta,
+                        -30
+                );
+
+                mudouTamanhoValor = true;
+            }
+
+        } else {
+
+            if (mudouTamanhoValor) {
+                TextViewUtils.mudarTamanhoPorPorcentagem(
+                        valorAposta,
+                        30
+                );
+
+                mudouTamanhoValor = false;
+            }
+        }
+
+        ViewUtils.setMoedaFormatHtml(
+                valor,
+                valorAposta
+        );
+
+        valorAposta.setTextAlignment(
+                View.TEXT_ALIGNMENT_CENTER
+        );
     }
 
     private boolean possuiPlacarLotogol() {
@@ -821,11 +922,12 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             return;
         }
 
-        renderLimpezaAposta(state);
+        renderValorAposta(state);
         renderEstadoBotoes(state);
+        renderLimpezaAposta(state);
         renderCompletarAposta(state);
-
     }
+
     private void renderCompletarAposta(
             SimulaUiState state
     ) {
@@ -933,11 +1035,13 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             consumirComandoCompletarAposta();
         }
     }
+
     private void consumirComandoCompletarAposta() {
         viewModel.onEvent(
                 new SimulaUiEvent.ComandoCompletarApostaConsumido()
         );
     }
+
     private void renderLimpezaAposta(
             SimulaUiState state
     ) {
@@ -980,6 +1084,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             );
         }
     }
+
     private void renderLimparNumerosCartela(
             SimulaUiState state
     ) {
@@ -995,6 +1100,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
         voltaSalvarApostaParaLayoutInicial();
     }
+
     private void renderLimparTimeCoracao() {
 
         if (equipeSelecionada != null) {
@@ -1014,6 +1120,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
         voltaSalvarApostaParaLayoutInicial();
     }
+
     private void renderLimparSuperSete(
             SimulaUiState state
     ) {
@@ -1025,13 +1132,12 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             }
         }
 
-        qtdTotalSelecionadosSuperSete = state.getQtdTotalSelecionadosSuperSete();
+        qtdTotalSelecionadosSuperSete =
+                state.getQtdTotalSelecionadosSuperSete();
 
-        atualizaValorTotalAposta(
-                state.getQtdDezenasPossiveisSelecionado(),
-                state.getQtdConcursoSelecionado()
-        );
+        voltaSalvarApostaParaLayoutInicial();
     }
+
     private void renderLimparLoteca() {
 
         if (parametroJogo != null && parametroJogo.getPartidas() != null) {
@@ -1045,7 +1151,9 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             }
         }
 
-        if (recyclerViewPartida != null && recyclerViewPartida.getAdapter() != null) {
+        if (recyclerViewPartida != null
+                && recyclerViewPartida.getAdapter() != null) {
+
             recyclerViewPartida.getAdapter().notifyDataSetChanged();
         }
 
@@ -1053,8 +1161,9 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             partidasSelecionadas.clear();
         }
 
-        atualizaValorApostaLoteca();
+        voltaSalvarApostaParaLayoutInicial();
     }
+
     private void renderLimparLotogol() {
 
         if (parametroJogo != null && parametroJogo.getPartidas() != null) {
@@ -1079,6 +1188,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             partidasSelecionadas.clear();
         }
     }
+
     private void renderLimparOpcaoOutrosNumeros() {
 
         if (parametroJogo == null) {
@@ -1096,6 +1206,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         opcaoOutrosNumerosLayout.setVisibility(View.GONE);
         selecioneOutrosNumeros.setChecked(false);
     }
+
     private void renderEstadoBotoes(
             SimulaUiState state
     ) {
@@ -1143,8 +1254,47 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         }
     }
 
+    private void publicarValorAposta(
+            BigDecimal valor
+    ) {
+
+        BigDecimal valorSeguro =
+                valor != null
+                        ? valor
+                        : BigDecimal.ZERO;
+
+        valorTotalAposta = valorSeguro;
+
+        if (viewModel == null) {
+            return;
+        }
+
+        viewModel.onEvent(
+                new SimulaUiEvent.ValorApostaAlterado(
+                        valorSeguro
+                )
+        );
+    }
+
+    private BigDecimal getValorTotalApostaAtual() {
+
+        if (viewModel == null
+                || viewModel.getUiState() == null
+                || viewModel.getUiState().getValue() == null
+                || viewModel.getUiState().getValue().getValorAposta() == null) {
+
+            return BigDecimal.ZERO;
+        }
+
+        return viewModel
+                .getUiState()
+                .getValue()
+                .getValorAposta();
+    }
+
+
     private void selecionarTimeAleatorio() {
-        int    randomInt       = 0;
+        int randomInt = 0;
         Random randomGenerator = Utils.getRandom();
         randomInt = randomGenerator.nextInt(listaEquipefiltro.size() - 1);
         equipeSelecionada = listaEquipefiltro.get(randomInt);
@@ -1152,15 +1302,14 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         String nomeTime = String.format("%s-%s", equipeSelecionada.getNome(), equipeSelecionada.getUf());
         informeNomeTime.setText(nomeTime);
         timeCoracaoAdapter.notifyDataSetChanged();
-        notificarEstadoCartelaAlterado();
-        notificarEstadoCartelaAlterado();
+        atualizarValorENotificarEstadoCartela();
         atualizarAdicionarCarinhoCompletarCartela(false);
     }
 
     private void limparOpcaoOutrosNumerosLayout() {
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && opcaoOutrosNumerosLayout.getVisibility() == View.VISIBLE) {
             setVisibilityCheckedNumerosLayout(View.GONE);
-            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+            atualizarValorENotificarEstadoCartela();
         }
     }
 
@@ -1172,7 +1321,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     private void limparTimeSelecionado() {
         if (equipeSelecionada != null) {
             equipeSelecionada.setSelecionado(false);
-            if (informeNomeTime != null){
+            if (informeNomeTime != null) {
                 informeNomeTime.setText(StringUtils.EMPTY);
             }
         }
@@ -1184,50 +1333,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         voltaSalvarApostaParaLayoutInicial();
     }
 
-
-    private void orderAscDezenas() {
-        Integer       menorDezenaAtual = null;
-        List<Integer> listaOrdenadaAsc = new ArrayList<>();
-        while (dezenasSelecionadas.size() > 0) {
-            for (Integer dezena : dezenasSelecionadas) {
-                if (menorDezenaAtual == null) {
-                    menorDezenaAtual = dezena;
-                } else if (menorDezenaAtual > dezena) {
-                    menorDezenaAtual = dezena;
-                }
-            }
-            listaOrdenadaAsc.add(menorDezenaAtual);
-            dezenasSelecionadas.remove(menorDezenaAtual);
-            menorDezenaAtual = null;
-        }
-        dezenasSelecionadas = listaOrdenadaAsc;
-    }
-
-    private void adicionarApostaPreencherNumerosLotomania() {
-        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-            //verifica se foi marcada a opção para gerar outros números
-            if (selecioneOutrosNumeros.isChecked()) {
-                // Gera uma nova aposta com os outros 50 números não selecionados
-
-                if (dezenasSelecionadas != null && dezenasSelecionadas.size() > 0) {
-                    orderAscDezenas();
-                }
-
-                IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
-
-                aposta.setGerarEspelho(true);
-                aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
-                model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloDTO);
-            } else {
-                adicionarApostaNoCarrinho();
-            }
-        } else {
-            preencheNumerosAleatorios();
-            setVisibilityCheckedNumerosLayout(View.VISIBLE);
-            onClickOutrosNumerosLayout();
-        }
-    }
-
     private void onClickOutrosNumerosLayout() {
         opcaoOutrosNumerosLayout.setOnClickListener(view -> {
             if (selecioneOutrosNumeros.isChecked()) {
@@ -1235,18 +1340,8 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             } else {
                 selecioneOutrosNumeros.setChecked(true);
             }
-            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+            atualizarValorENotificarEstadoCartela();
         });
-    }
-
-    private void adicionarApostaPreencherNumerosTimemania() {
-        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && equipeSelecionada != null) {
-            adicionarApostaNoCarrinho();
-        } else if (isEscolhaTimeCoracaoSurpresinha) {
-            parentActivity.adicionarTimeSurpresa(equipeSelecionada);
-        } else {
-            preencheNumerosAleatorios();
-        }
     }
 
     private void preencheNumerosAleatorios() {
@@ -1262,7 +1357,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                         dezenasSelecionadas.clear();
                         dezenasSelecionadas.addAll(list);
                         simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
-                        atualizaBotoeslayout();
+                        atualizarValorENotificarEstadoCartela();
                     }
 
                     @Override
@@ -1284,8 +1379,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                         isEcolhaTimeBtnAtivado = true;
 
                         preencheSuperSete(payload);
-                        atualizaBotoeslayout();
-                        notificarEstadoCartelaAlterado();
+                        atualizarValorENotificarEstadoCartela();
                     }
 
                     @Override
@@ -1315,7 +1409,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     private void preencheSuperSete(List<List<Integer>> numerosSelecionados) {
         int coluna = 0;
         qtdTotalSelecionadosSuperSete = 0;
-        if (matrizSelecionada != null){
+        if (matrizSelecionada != null) {
             matrizSelecionada = null;
         }
         for (SuperSeteAdapter adapter : listaAdaptersSuperSete) {
@@ -1328,9 +1422,9 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
     private boolean validaSelecaoSuperSete() {
         //lista de cima igual aos selecionados e no minimo 1 por coluna
-        Boolean                       mostraSalvar          = false;
-        int                           contColunasComSelecao = 0;
-        ArrayList<ArrayList<Integer>> listaSuperSete        = ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete);
+        Boolean mostraSalvar = false;
+        int contColunasComSelecao = 0;
+        ArrayList<ArrayList<Integer>> listaSuperSete = ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete);
         for (ArrayList<Integer> listaSelecionados : listaSuperSete) {
             if (listaSelecionados.size() > 0) {
                 contColunasComSelecao++;
@@ -1340,12 +1434,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             mostraSalvar = true;
         }
         return mostraSalvar;
-    }
-
-    private void atualizaBotoeslayout() {
-        notificarEstadoCartelaAlterado();
-        notificarEstadoCartelaAlterado();
-        notificarEstadoCartelaAlterado();
     }
 
     private void mostrarCartelaEscolhaTimeCoracao() {
@@ -1361,9 +1449,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         onChangeInformeNomeTime();
         EscudoBO.getInstance().carregaEscudos(getContext(), () -> configurarSelecaoTimeCoracao());
         configurarSelecaoTimeCoracao();
-        notificarEstadoCartelaAlterado();
-        notificarEstadoCartelaAlterado();
-        notificarEstadoCartelaAlterado();
+        atualizarValorENotificarEstadoCartela();
 
     }
 
@@ -1372,11 +1458,11 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 onNomeTimeTextWatchListener()));
     }
 
-    private NomeTimeTextWatcherListener onNomeTimeTextWatchListener(){
+    private NomeTimeTextWatcherListener onNomeTimeTextWatchListener() {
         return new NomeTimeTextWatcherListener() {
             @Override
             public void isValido(boolean isValid) {
-                if (isValid){
+                if (isValid) {
                     aplicaCheckTimeSelecionado();
                 } else {
                     informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -1400,7 +1486,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
     }
 
-    private void configuraBotoesLotecaOuLotogol(){
+    private void configuraBotoesLotecaOuLotogol() {
         botaoCompletar = parentActivity.getBotaoCompletar();
         botaoCompletar.setOnClickListener(this);
         botaoCompletar.setVisibility(View.INVISIBLE);
@@ -1413,16 +1499,52 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         botaoCompletar.setText(ViewUtils.textCaixaSTDBold(getActivity(), textoBotao));
     }
 
+    private void atualizarValorENotificarEstadoCartela() {
+
+        if (parametroJogo == null || parentActivity == null) {
+            return;
+        }
+
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
+
+            atualizaValorApostaLoteca();
+
+        } else {
+
+            int qtdParaCalculo =
+                    obterQtdParaCalculoValor();
+
+            atualizaValorTotalAposta(
+                    qtdParaCalculo,
+                    parentActivity.qtdConcursoSelecionado
+            );
+        }
+
+        notificarEstadoCartelaAlterado();
+    }
+
+    private int obterQtdParaCalculoValor() {
+
+        if (parametroJogo == null || parentActivity == null) {
+            return 0;
+        }
+
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
+            return qtdTotalSelecionadosSuperSete > 0
+                    ? parentActivity.qtdDezenasPossiveisSelecionado
+                    : 0;
+        }
+
+        return dezenasSelecionadas != null && !dezenasSelecionadas.isEmpty()
+                ? parentActivity.qtdDezenasPossiveisSelecionado
+                : 0;
+    }
+
     private void configuraBotoes(
             View fragmentView
     ) {
         valorAposta =
                 parentActivity.getValorApostaCartela();
-
-        atualizaValorTotalAposta(
-                parentActivity.qtdDezenasPossiveisSelecionado,
-                parentActivity.qtdConcursoSelecionado
-        );
 
         botaoCompletar =
                 parentActivity.getBotaoCompletar();
@@ -1478,8 +1600,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         parentActivity.atualizaTextoBotoesQtdSelecionadas();
 
         qtdTotalSelecionadosSuperSete = 0;
-        //parentActivity.qtdDezenasPossiveisSelecionado = parametroJogo.getQuantidadeMinima();
-        atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+        atualizarValorENotificarEstadoCartela();
     }
 
     private boolean mostraLimparSuperSete() {
@@ -1500,24 +1621,13 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         verificaMostraRodape();
     }
 
-    private void verificaMostraRodape(){
+    private void verificaMostraRodape() {
         if (parentActivity.getBotaoLimparAposta().getVisibility() == View.VISIBLE ||
-                parentActivity.getSalvarApostaLayout().getVisibility() == View.VISIBLE){
+                parentActivity.getSalvarApostaLayout().getVisibility() == View.VISIBLE) {
             rodape.setVisibility(View.VISIBLE);
         } else {
             rodape.setVisibility(View.GONE);
         }
-    }
-
-    private void mostrarSalvarAposta() {
-        RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
-
-        salvarApostaLayout.setVisibility(View.VISIBLE);
-        final float scale = parentActivity.getResources().getDisplayMetrics().density;
-        salvarApostaLayout.getLayoutParams().height = (int) (64 * scale + 0.5f);
-        salvarApostaLayout.setOnClickListener(this);
-
-        verificaMostraRodape();
     }
 
     public void atualizaStatusBotaoFinalizar(Boolean isPickerPrognosticos) {
@@ -1526,7 +1636,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 botaoCompletar.setEnabled(false);
             } else {
                 botaoCompletar.setEnabled(true);
-                notificarEstadoCartelaAlterado();
+                atualizarValorENotificarEstadoCartela();
             }
         } else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
             if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado) {
@@ -1549,13 +1659,13 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 preencheSuperSete(matrizSelecionada);
                 matrizSelecionada = null;
                 if (validaSelecaoSuperSete() && qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
-                    notificarEstadoCartelaAlterado();
+                    atualizarValorENotificarEstadoCartela();
                 } else {
                     atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
                 }
             } else {
                 if (validaSelecaoSuperSete() && qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
-                    notificarEstadoCartelaAlterado();
+                    atualizarValorENotificarEstadoCartela();
                 } else {
                     atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
                 }
@@ -1567,13 +1677,13 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
     private void atualizaStatusBotaoFinalizarLoteca(Boolean mostrarBotao) {
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-            int duplo  = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
+            int duplo = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
             int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
 
             if (partidasSelecionadas.size() == parametroJogo.getPartidas().size() && (duplo > 0 || triplo > 0)) {
                 if (mostrarBotao) {
                     botaoCompletar.setEnabled(true);
-                    notificarEstadoCartelaAlterado();
+                    atualizarValorENotificarEstadoCartela();
                 } else {
                     botaoCompletar.setEnabled(false);
                 }
@@ -1590,11 +1700,11 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     private void atualizarAdicionarCarinhoCompletarCartela(Boolean isPickerPrognosticos) {
         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado || isEscolhaTimeCoracaoSurpresinha) {
             if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
-                atualizarBotaoFinalizar(R.string.escolhaOmes);
-            } else if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
-                atualizarBotaoFinalizar(R.string.label_escolha_trevos);
+                atualizarValorENotificarEstadoCartela();
+            } else if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
+                atualizarValorENotificarEstadoCartela();
             } else {
-                notificarEstadoCartelaAlterado();
+                atualizarValorENotificarEstadoCartela();
                 if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
                     if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
                         botaoCompletar.setClickable(true);
@@ -1610,23 +1720,15 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         } else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
             dezenasSelecionadas.clear();
             simularDezenasAdapter.notifyDataSetChanged();
-            notificarEstadoCartelaAlterado();
+            atualizarValorENotificarEstadoCartela();
 
             botaoLimparAposta.setEnabled(false);
         } else {
             if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7) && isPickerPrognosticos) {
                 atualizaSuperSetePrognosticoMaior(ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
             }
-            notificarEstadoCartelaAlterado();
+            atualizarValorENotificarEstadoCartela();
         }
-    }
-
-    private void atualizarBotaoFinalizar(int stringId) {
-//        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
-//        botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(stringId)));
-//        botaoFinalizar.setTextColor(getResources().getColor(corFonteFundoEscuro));
-//        notificarEstadoCartelaAlterado();
-        botaoCompletar.setEnabled(true);
     }
 
     private void configuraListaDezenas(View fragmentView) {
@@ -1654,7 +1756,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 //configurarTimesLoteca();
 
                 fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
-            }else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
+            } else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
                 configuraSuperSete(fragmentView);
             }
         }
@@ -1664,47 +1766,84 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     private OnItemClickListener<DezenaHolder> onItemClickListener() {
         return (OnItemClickListener<DezenaHolder>) (holder, position) -> {
             try {
-                Dezena  dezena           = dezenas.get(position);
+                Dezena dezena = dezenas.get(position);
                 dezena.setSelected(!dezena.isSelected());
-                Integer valorSelecionado = Integer.valueOf(dezena.getValue());
+
+                Integer valorSelecionado =
+                        Integer.valueOf(dezena.getValue());
 
                 if (dezenasSelecionadas.contains(valorSelecionado)) {
+
                     dezenasSelecionadas.remove(valorSelecionado);
+
                     if (dezenasSelecionadas.size() >= parametroJogo.getQuantidadeMinima()) {
-                        parentActivity.qtdDezenasPossiveisSelecionado = dezenasSelecionadas.size();
-                        parentActivity.verificaNovoQtdDezenasMax(dezenasSelecionadas.size());
-                        notificarEstadoCartelaAlterado();
+                        parentActivity.qtdDezenasPossiveisSelecionado =
+                                dezenasSelecionadas.size();
+
+                        parentActivity.verificaNovoQtdDezenasMax(
+                                dezenasSelecionadas.size()
+                        );
                     }
-                    if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && selecioneOutrosNumeros.isChecked()) {
+
+                    if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
+                            && selecioneOutrosNumeros != null
+                            && selecioneOutrosNumeros.isChecked()) {
+
                         selecioneOutrosNumeros.setChecked(false);
                     }
-                    atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
 
                 } else {
-                    int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
-                    if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-                        // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
-                        int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
 
-                        parentActivity.qtdDezenasPossiveisSelecionado = CartelaFragment2Listener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
+                    int maxNumerosParaSelecionar =
+                            parametroJogo.getQuantidadeMaxima();
+
+                    if (dezenasSelecionadas.size()
+                            == parentActivity.qtdDezenasPossiveisSelecionado) {
+
+                        int qtdDezenasPossiveisSelecionadoAtual =
+                                parentActivity.qtdDezenasPossiveisSelecionado;
+
+                        parentActivity.qtdDezenasPossiveisSelecionado =
+                                CartelaFragment2Listener.verificaNovoQtdDezenasMax(
+                                        parentActivity.qtdDezenasPossiveisSelecionado
+                                );
 
                         if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
+
                             parentActivity.qtdDezenasPossiveisSelecionado += 1;
-                            parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
-                            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+
+                            parentActivity.verificaNovoQtdDezenasMax(
+                                    parentActivity.qtdDezenasPossiveisSelecionado
+                            );
+
                             if (parentActivity.getFlagApostaSalva()) {
                                 voltaSalvarApostaParaLayoutInicial();
                             }
+
                             dezenasSelecionadas.add(valorSelecionado);
-                            if 	((qtdDezenasPossiveisSelecionadoAtual == (parentActivity.qtdDezenasPossiveisSelecionado-1)) && (!isAvisou))
-                            {
-                                DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_qtd_max_ultrapassada));
+
+                            if ((qtdDezenasPossiveisSelecionadoAtual
+                                    == parentActivity.qtdDezenasPossiveisSelecionado - 1)
+                                    && !isAvisou) {
+
+                                DialogUtils.dialogEntendi(
+                                        getActivity(),
+                                        getString(R.string.msg_qtd_max_ultrapassada)
+                                );
+
                                 isAvisou = true;
                             }
+
                         } else {
-                            DialogUtils.dialogEntendi(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
+
+                            DialogUtils.dialogEntendi(
+                                    getActivity(),
+                                    getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica)
+                            );
                         }
+
                     } else {
+
                         dezenasSelecionadas.add(valorSelecionado);
                     }
                 }
@@ -1714,16 +1853,21 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 }
 
                 if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
-                    if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-                        setVisibilityCheckedNumerosLayout(View.VISIBLE);
-                    } else {
-                        setVisibilityCheckedNumerosLayout(View.GONE);
-                    }
+                    setVisibilityCheckedNumerosLayout(
+                            dezenasSelecionadas.size()
+                                    == parentActivity.qtdDezenasPossiveisSelecionado
+                                    ? View.VISIBLE
+                                    : View.GONE
+                    );
                 }
 
-                simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
-                notificarEstadoCartelaAlterado();
-            } catch (Exception e){
+                simularDezenasAdapter.atualizaSelecionados(
+                        dezenasSelecionadas
+                );
+
+                atualizarValorENotificarEstadoCartela();
+
+            } catch (Exception e) {
                 Log.d("", e.getLocalizedMessage());
             }
         };
@@ -1746,10 +1890,10 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         for (ExpandableHeightGridView listaNumeros : listaGridsSuperSete) {
             listaNumeros.setVisibility(View.VISIBLE);
             listaNumeros.setOnItemClickListener((adapterView, view, position, l) -> {
-                SuperSeteAdapter   adapter           = ((SuperSeteAdapter) listaNumeros.getAdapter());
-                Dezena             dezena            = adapter.dezenas.get(position);
+                SuperSeteAdapter adapter = ((SuperSeteAdapter) listaNumeros.getAdapter());
+                Dezena dezena = adapter.dezenas.get(position);
                 ArrayList<Integer> listaSelecionados = (ArrayList<Integer>) adapter.dezenasSelecionadas;
-                Integer            valorSelecionado  = Integer.valueOf(dezena.getValue());
+                Integer valorSelecionado = Integer.valueOf(dezena.getValue());
 
                 if (listaSelecionados.contains(valorSelecionado)) {
                     if (listaSelecionados.size() == adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado)) {
@@ -1758,9 +1902,9 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                         if (qtdTotalSelecionadosSuperSete >= parametroJogo.getQuantidadeMinima()) {
                             parentActivity.qtdDezenasPossiveisSelecionado -= 1;
                             parentActivity.verificaNovoQtdDezenasMax(qtdTotalSelecionadosSuperSete);
-                            notificarEstadoCartelaAlterado();
+                            atualizarValorENotificarEstadoCartela();
                         }
-                        atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+                        atualizarValorENotificarEstadoCartela();
                     } else {
                         DialogUtils.dialogEntendi(getActivity(),
                                 getString(R.string.msg_bloqueio_coluna_super_sete_desmarcar).replace(
@@ -1780,28 +1924,27 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                                 if (listaSelecionados.size() < adapter.getQtdColunasMaximas((parentActivity.qtdDezenasPossiveisSelecionado + 1))) {
                                     parentActivity.qtdDezenasPossiveisSelecionado += 1;
                                     parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
-                                    atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+                                    atualizarValorENotificarEstadoCartela();
                                     if (parentActivity.getFlagApostaSalva()) {
                                         voltaSalvarApostaParaLayoutInicial();
                                     }
                                     listaSelecionados.add(valorSelecionado);
                                     qtdTotalSelecionadosSuperSete++;
 
-                                    if 	((qtdTotalSelecionadosSuperSete == (parentActivity.qtdDezenasPossiveisSelecionado)) && (!isAvisou))
-                                    {
+                                    if ((qtdTotalSelecionadosSuperSete == (parentActivity.qtdDezenasPossiveisSelecionado)) && (!isAvisou)) {
                                         DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_qtd_max_ultrapassada));
                                         isAvisou = true;
                                     }
                                 } else {
-                                    DialogUtils.dialogEntendi(getActivity(),getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
+                                    DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
                                             "{qtdColunas}",
                                             String.valueOf(adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado))));
                                 }
                             } else {
-                                DialogUtils.dialogEntendi(getActivity(),getString(R.string.msg_qtd_max_col_super_sete));
+                                DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_qtd_max_col_super_sete));
                             }
                         } else {
-                            DialogUtils.dialogEntendi(getActivity(),getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
+                            DialogUtils.dialogEntendi(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
                         }
                     } else {
                         if (listaSelecionados.size() < adapter.QTD_MAX_POR_COLUNA) {
@@ -1809,21 +1952,19 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                                 listaSelecionados.add(valorSelecionado);
                                 qtdTotalSelecionadosSuperSete++;
                             } else {
-                                DialogUtils.dialogEntendi(getActivity(),getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
+                                DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
                                         "{qtdColunas}",
                                         String.valueOf(adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado))));
                             }
                         } else {
-                            DialogUtils.dialogEntendi(getActivity(),getString(R.string.msg_qtd_max_col_super_sete));
+                            DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_qtd_max_col_super_sete));
 
                         }
 
                     }
                 }
 
-                notificarEstadoCartelaAlterado();
-                notificarEstadoCartelaAlterado();
-                notificarEstadoCartelaAlterado();
+                atualizarValorENotificarEstadoCartela();
                 adapter.notifyDataSetChanged();
             });
         }
@@ -1852,8 +1993,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             listaEquipefiltro.clear();
             listaEquipefiltro.addAll(parametroJogo.getEquipes());
             timeCoracaoAdapter.notifyDataSetChanged();
-            notificarEstadoCartelaAlterado();
-            notificarEstadoCartelaAlterado();
+            atualizarValorENotificarEstadoCartela();
             atualizarAdicionarCarinhoCompletarCartela(false);
             InputUtils.closeKeyboard(getActivity());
         };
@@ -1887,16 +2027,16 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         }
         int somaTotais = 0;
         int valueSimples = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()))));
-        int valueDuplas= Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()))));
-        int valueTriplas= Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()))));
-        somaTotais = valueSimples +valueDuplas + valueTriplas;
+        int valueDuplas = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()))));
+        int valueTriplas = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()))));
+        somaTotais = valueSimples + valueDuplas + valueTriplas;
 
         parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(String.valueOf(somaTotais))));
 
         valorTotalJogos = parentActivity.getLabelValueJogosLoteca();
-        valorTotalSimples= parentActivity.getLabelValueSimplesLoteca();
-        valorTotalDuplas= parentActivity.getLabelValueDuplasLoteca();
-        valorTotalTriplas= parentActivity.getLabelValueTriplasLoteca();
+        valorTotalSimples = parentActivity.getLabelValueSimplesLoteca();
+        valorTotalDuplas = parentActivity.getLabelValueDuplasLoteca();
+        valorTotalTriplas = parentActivity.getLabelValueTriplasLoteca();
 
 
         if (somaTotais >= 14) {
@@ -1906,7 +2046,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             valorTotalJogos.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
             valorTotalSimples.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
         }
-        if (valueDuplas  == 0 && valueTriplas == 0) {
+        if (valueDuplas == 0 && valueTriplas == 0) {
             valorTotalDuplas.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
             valorTotalTriplas.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
         } else {
@@ -1917,7 +2057,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
         Boolean mostraBotao = atualizaValorApostaLoteca();
         atualizaStatusBotaoFinalizarLoteca(mostraBotao);
-        notificarEstadoCartelaAlterado();
+        atualizarValorENotificarEstadoCartela();
     }
 
     private void limparPartidadasSelecionasLoteca(boolean desativado) {
@@ -1938,7 +2078,8 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     }
 
     @Override
-    public void partidaSelecionada() { }
+    public void partidaSelecionada() {
+    }
 
     @Override
     public void atualizarParametrosLotogol(ParametroPartida parametroPartida) {
@@ -1947,9 +2088,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         } else {
             partidasSelecionadas.remove(parametroPartida);
         }
-        notificarEstadoCartelaAlterado();
-        notificarEstadoCartelaAlterado();
-        notificarEstadoCartelaAlterado();
+        atualizarValorENotificarEstadoCartela();
     }
 
     public void setEscolhaTimeCoracaoSurpresinha(boolean escolhaTimeCoracaoSurpresinha) {
@@ -1957,72 +2096,138 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     }
 
     private boolean atualizaValorApostaLoteca() {
-        Boolean mostraBotao = false;
-        Integer duplos      = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
-        Integer triplos     = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
+
+        boolean mostraBotao = false;
+
+        int duplos =
+                getIntTextSafe(
+                        parentActivity.getLabelValueDuplasLoteca()
+                );
+
+        int triplos =
+                getIntTextSafe(
+                        parentActivity.getLabelValueTriplasLoteca()
+                );
+
+        BigDecimal valorCalculado =
+                BigDecimal.ZERO;
 
         if (duplos > 0 || triplos > 0) {
-            for (ParametroValorApostaDTO parametroValorApostaDTO : parametroJogo.getValoresAposta()) {
-                if (parametroValorApostaDTO.getQuantidadeDuplos().equals(duplos) && parametroValorApostaDTO.getQuantidadeTriplos().equals(triplos)) {
-                    valorEmReais = parametroValorApostaDTO.getValor();
+
+            for (ParametroValorApostaDTO parametroValorApostaDTO
+                    : parametroJogo.getValoresAposta()) {
+
+                if (parametroValorApostaDTO.getQuantidadeDuplos().equals(duplos)
+                        && parametroValorApostaDTO.getQuantidadeTriplos().equals(triplos)) {
+
+                    valorCalculado =
+                            parametroValorApostaDTO.getValor();
+
                     mostraBotao = true;
                     break;
                 }
             }
-        } else {
-            valorEmReais = parametroJogo.getValorApostaMinima();
+
+        } else if (parametroJogo.getValorApostaMinima() != null) {
+
+            valorCalculado =
+                    parametroJogo.getValorApostaMinima();
         }
 
-        ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
-        valorTotalAposta = valorEmReais;
+        valorEmReais =
+                valorCalculado != null
+                        ? valorCalculado
+                        : BigDecimal.ZERO;
+
+        publicarValorAposta(valorEmReais);
+
         return mostraBotao;
     }
 
     private void editaAposta() {
-        if (parentActivity.getAposta() != null) {
-            IdentificaoDeUmaApostaDas8Modalidades<List<Integer>>       aposta          = parentActivity.getAposta();
-            IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaSuperSete = parentActivity.getAposta();
 
-            if (parentActivity.getAposta().getModalidade() == ModalidadeEnum.SUPER_7) {
-                qtdTotalSelecionadosSuperSete = getQtdTotalSelecionadosSuperSete(apostaSuperSete.getMatrizNumerosSelecionados());
-                configuraSuperSete(view);
-                matrizSelecionada = new ArrayList<>();
-                matrizSelecionada.addAll(apostaSuperSete.getMatrizNumerosSelecionados());
-                parentActivity.qtdDezenasPossiveisSelecionado = apostaSuperSete.getQuantidadeNumeros();
-                parentActivity.qtdConcursoSelecionado = apostaSuperSete.getQuantidadeTeimosinhas();
-                parentActivity.atualizaTextoBotoesQtdSelecionadas();
-                notificarEstadoCartelaAlterado();
-                ViewUtils.setMoedaFormatHtml(aposta.getValor(), valorAposta);
-                if (mostraLimparSuperSete()) {
-                    botaoLimparAposta.setEnabled(true);
-                } else {
-                    botaoLimparAposta.setEnabled(false);
-                }
-            } else {
-                if (CollectionUtils.isNotEmpty(aposta.getListaNumerosSelecionados())) {
-                    dezenasSelecionadas = aposta.getListaNumerosSelecionados();
-                    if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
-                        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-                            setVisibilityCheckedNumerosLayout(View.VISIBLE);
-                        } else {
-                            setVisibilityCheckedNumerosLayout(View.GONE);
-                        }
-                    }
-                    simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
-                    parentActivity.qtdDezenasPossiveisSelecionado = aposta.getQuantidadeNumeros();
-                    parentActivity.qtdConcursoSelecionado = aposta.getQuantidadeTeimosinhas();
-                    parentActivity.atualizaTextoBotoesQtdSelecionadas();
-                    equipeSelecionada = aposta.getTimeDoCoracao();
-                    if (equipeSelecionada != null) {
-                        isEcolhaTimeBtnAtivado = Boolean.TRUE;
-                    }
-                    notificarEstadoCartelaAlterado();
-                    notificarEstadoCartelaAlterado();
-                    verificaMostraRodape();
-                }
-                ViewUtils.setMoedaFormatHtml(aposta.getValor(), valorAposta);
-            }
+        if (parentActivity.getAposta() == null) {
+            return;
         }
+
+        IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta =
+                parentActivity.getAposta();
+
+        IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaSuperSete =
+                parentActivity.getAposta();
+
+        if (parentActivity.getAposta().getModalidade() == ModalidadeEnum.SUPER_7) {
+
+            qtdTotalSelecionadosSuperSete =
+                    getQtdTotalSelecionadosSuperSete(
+                            apostaSuperSete.getMatrizNumerosSelecionados()
+                    );
+
+            configuraSuperSete(view);
+
+            matrizSelecionada = new ArrayList<>();
+            matrizSelecionada.addAll(
+                    apostaSuperSete.getMatrizNumerosSelecionados()
+            );
+
+            parentActivity.qtdDezenasPossiveisSelecionado =
+                    apostaSuperSete.getQuantidadeNumeros();
+
+            parentActivity.qtdConcursoSelecionado =
+                    apostaSuperSete.getQuantidadeTeimosinhas();
+
+            parentActivity.atualizaTextoBotoesQtdSelecionadas();
+
+            publicarValorAposta(aposta.getValor());
+
+            botaoLimparAposta.setEnabled(
+                    mostraLimparSuperSete()
+            );
+
+            return;
+        }
+
+        if (CollectionUtils.isNotEmpty(aposta.getListaNumerosSelecionados())) {
+
+            dezenasSelecionadas =
+                    aposta.getListaNumerosSelecionados();
+
+            if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
+                setVisibilityCheckedNumerosLayout(
+                        dezenasSelecionadas.size()
+                                == parentActivity.qtdDezenasPossiveisSelecionado
+                                ? View.VISIBLE
+                                : View.GONE
+                );
+            }
+
+            simularDezenasAdapter.atualizaSelecionados(
+                    dezenasSelecionadas
+            );
+
+            parentActivity.qtdDezenasPossiveisSelecionado =
+                    aposta.getQuantidadeNumeros();
+
+            parentActivity.qtdConcursoSelecionado =
+                    aposta.getQuantidadeTeimosinhas();
+
+            parentActivity.atualizaTextoBotoesQtdSelecionadas();
+
+            equipeSelecionada =
+                    aposta.getTimeDoCoracao();
+
+            if (equipeSelecionada != null) {
+                isEcolhaTimeBtnAtivado = true;
+            }
+
+            verificaMostraRodape();
+        }
+
+        publicarValorAposta(
+                aposta.getValor()
+        );
+
+        notificarEstadoCartelaAlterado();
     }
 
     private void timemaniaTimeSelecionadoEdicao() {
@@ -2039,8 +2244,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 }
             }
             timeCoracaoAdapter.notifyDataSetChanged();
-            notificarEstadoCartelaAlterado();
-            notificarEstadoCartelaAlterado();
+            atualizarValorENotificarEstadoCartela();
             atualizarAdicionarCarinhoCompletarCartela(false);
         }
     }

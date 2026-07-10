@@ -1,11 +1,13 @@
 package br.gov.caixa.loterias.apostas.state;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 
 public class SimulaUiState {
 
@@ -53,6 +55,14 @@ public class SimulaUiState {
     private final boolean botaoCompletarHabilitado;
     private final boolean botaoAdicionarHabilitado;
     private final boolean botaoLimparHabilitado;
+
+    private final BigDecimal valorAposta;
+    private final boolean valorGrande;
+    private final BigDecimal valorCarrinho;
+    private final int quantidadeApostasCarrinho;
+    private final boolean carregandoCarrinho;
+    private final boolean exibirCarrinho;
+    private final CarrinhoDTO carrinho;
 
     public SimulaUiState(
             BarraTituloDTO barraTituloDTO,
@@ -123,6 +133,28 @@ public class SimulaUiState {
         this.botaoCompletarHabilitado = builder.botaoCompletarHabilitado;
         this.botaoAdicionarHabilitado = builder.botaoAdicionarHabilitado;
         this.botaoLimparHabilitado = builder.botaoLimparHabilitado;
+
+        this.valorAposta = builder.valorAposta != null
+                ? builder.valorAposta
+                : BigDecimal.ZERO;
+
+        this.valorGrande = builder.valorGrande;
+        this.valorCarrinho =
+                builder.valorCarrinho != null
+                        ? builder.valorCarrinho
+                        : BigDecimal.ZERO;
+
+        this.quantidadeApostasCarrinho =
+                builder.quantidadeApostasCarrinho;
+
+        this.carregandoCarrinho =
+                builder.carregandoCarrinho;
+
+        this.exibirCarrinho =
+                builder.exibirCarrinho;
+
+        this.carrinho =
+                builder.carrinho;
     }
 
     public static SimulaUiState initial() {
@@ -159,6 +191,13 @@ public class SimulaUiState {
                 .setBotaoCompletarHabilitado(true)
                 .setBotaoAdicionarHabilitado(false)
                 .setBotaoLimparHabilitado(false)
+                .setValorCarrinho(BigDecimal.ZERO)
+                .setQuantidadeApostasCarrinho(0)
+                .setCarregandoCarrinho(false)
+                .setExibirCarrinho(false)
+                .setCarrinho(null)
+                .setValorAposta(BigDecimal.ZERO)
+                .setValorGrande(false)
                 .build();
     }
 
@@ -176,6 +215,25 @@ public class SimulaUiState {
 
     public int getAnimacaoRes() {
         return animacaoRes;
+    }
+    public BigDecimal getValorCarrinho() {
+        return valorCarrinho;
+    }
+
+    public int getQuantidadeApostasCarrinho() {
+        return quantidadeApostasCarrinho;
+    }
+
+    public boolean isCarregandoCarrinho() {
+        return carregandoCarrinho;
+    }
+
+    public boolean isExibirCarrinho() {
+        return exibirCarrinho;
+    }
+
+    public CarrinhoDTO getCarrinho() {
+        return carrinho;
     }
 
     public float getVelocidadeAnimacao() {
@@ -294,6 +352,14 @@ public class SimulaUiState {
         return botaoLimparHabilitado;
     }
 
+    public BigDecimal getValorAposta() {
+        return valorAposta;
+    }
+
+    public boolean isValorGrande() {
+        return valorGrande;
+    }
+
     public static class Builder {
 
         private BarraTituloDTO barraTituloDTO;
@@ -340,13 +406,28 @@ public class SimulaUiState {
         private boolean botaoCompletarHabilitado;
         private boolean botaoAdicionarHabilitado;
         private boolean botaoLimparHabilitado;
+        private BigDecimal valorCarrinho;
+        private int quantidadeApostasCarrinho;
+        private boolean carregandoCarrinho;
+        private boolean exibirCarrinho;
+        private CarrinhoDTO carrinho;
+
+        private BigDecimal valorAposta;
+        private boolean valorGrande;
 
         public Builder() {
-            this.dezenasSelecionadas = new ArrayList<>();
+            this.dezenasSelecionadas = new ArrayList<Integer>();
             this.botaoCompletarVisivel = true;
             this.botaoCompletarHabilitado = true;
             this.botaoAdicionarHabilitado = false;
             this.botaoLimparHabilitado = false;
+            this.valorCarrinho = BigDecimal.ZERO;
+            this.quantidadeApostasCarrinho = 0;
+            this.carregandoCarrinho = false;
+            this.exibirCarrinho = false;
+            this.carrinho = null;
+            this.valorAposta = BigDecimal.ZERO;
+            this.valorGrande = false;
         }
 
         public Builder(
@@ -360,6 +441,11 @@ public class SimulaUiState {
 
             this.comandoCarrinho = state.comandoCarrinho;
             this.comandoCompletarAposta = state.comandoCompletarAposta;
+            this.valorCarrinho = state.valorCarrinho;
+            this.quantidadeApostasCarrinho = state.quantidadeApostasCarrinho;
+            this.carregandoCarrinho = state.carregandoCarrinho;
+            this.exibirCarrinho = state.exibirCarrinho;
+            this.carrinho = state.carrinho;
 
             this.tipoJogo = state.tipoJogo;
 
@@ -399,6 +485,9 @@ public class SimulaUiState {
             this.botaoCompletarHabilitado = state.botaoCompletarHabilitado;
             this.botaoAdicionarHabilitado = state.botaoAdicionarHabilitado;
             this.botaoLimparHabilitado = state.botaoLimparHabilitado;
+
+            this.valorAposta = state.valorAposta;
+            this.valorGrande = state.valorGrande;
         }
 
         public Builder setBarraTituloDTO(
@@ -412,6 +501,46 @@ public class SimulaUiState {
                 boolean exibirAnimacao
         ) {
             this.exibirAnimacao = exibirAnimacao;
+            return this;
+        }
+        public Builder setValorCarrinho(
+                BigDecimal valorCarrinho
+        ) {
+            this.valorCarrinho =
+                    valorCarrinho != null
+                            ? valorCarrinho
+                            : BigDecimal.ZERO;
+            return this;
+        }
+
+        public Builder setQuantidadeApostasCarrinho(
+                int quantidadeApostasCarrinho
+        ) {
+            this.quantidadeApostasCarrinho =
+                    quantidadeApostasCarrinho;
+            return this;
+        }
+
+        public Builder setCarregandoCarrinho(
+                boolean carregandoCarrinho
+        ) {
+            this.carregandoCarrinho =
+                    carregandoCarrinho;
+            return this;
+        }
+
+        public Builder setExibirCarrinho(
+                boolean exibirCarrinho
+        ) {
+            this.exibirCarrinho =
+                    exibirCarrinho;
+            return this;
+        }
+
+        public Builder setCarrinho(
+                CarrinhoDTO carrinho
+        ) {
+            this.carrinho = carrinho;
             return this;
         }
 
@@ -624,6 +753,22 @@ public class SimulaUiState {
                 boolean botaoLimparHabilitado
         ) {
             this.botaoLimparHabilitado = botaoLimparHabilitado;
+            return this;
+        }
+
+        public Builder setValorAposta(
+                BigDecimal valorAposta
+        ) {
+            this.valorAposta = valorAposta != null
+                    ? valorAposta
+                    : BigDecimal.ZERO;
+            return this;
+        }
+
+        public Builder setValorGrande(
+                boolean valorGrande
+        ) {
+            this.valorGrande = valorGrande;
             return this;
         }
 
