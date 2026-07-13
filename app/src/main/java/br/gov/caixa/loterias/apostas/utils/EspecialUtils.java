@@ -14,6 +14,24 @@ public class EspecialUtils {
     public static String LOTECA_PAIS_DUAS_LINHAS = "ARG_LOTECA_PAIS_DUAS_LINHAS";
 
 
+    public static Boolean isMega30(ModalidadeEnum modalidade, Integer numeroConcurso, TipoConcursoEnum tipoConcurso) {
+        if (!modalidade.equals(ModalidadeEnum.MEGA_SENA)) {
+            return false;
+        }
+        int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);
+        boolean isEspecial = tipoConcurso != null && tipoConcurso.equals(TipoConcursoEnum.ESPECIAL);
+        return isEspecial && numeroConcurso.equals(mega30);
+    }
+
+    public static Boolean isLotecaPais(ModalidadeEnum modalidade, Integer numeroConcurso, TipoConcursoEnum tipoConcurso) {
+        if (!modalidade.equals(ModalidadeEnum.LOTECA)) {
+            return false;
+        }
+        int lotecaPais = SharedPreferencesUtils.getValorInt(LOTECA_PAIS_VALOR, -1);
+        boolean isEspecial = tipoConcurso != null && tipoConcurso.equals(TipoConcursoEnum.ESPECIAL);
+        return isEspecial && numeroConcurso.equals(lotecaPais);
+    }
+
     public static Boolean isMega30(ModalidadeEnum modalidade, Integer numeroConcurso, Boolean isEspecial) {
         if (!modalidade.equals(ModalidadeEnum.MEGA_SENA)) {
             return false;
@@ -36,7 +54,6 @@ public class EspecialUtils {
         boolean isEspecial = tipoConcurso != null && tipoConcurso.equals(TipoConcursoEnum.ESPECIAL);
         return isEspecial && numeroConcurso.equals(mega30);
     }
-
 
 
     public static Boolean isMega30(Integer numeroConcurso, DTOEnumCharacter tipoConcurso){
