@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.button.MaterialButton;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -1256,9 +1258,18 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         }
 
         if (botaoAdicionar != null) {
+
+            boolean habilitado =
+                    state.isBotaoAdicionarHabilitado();
+
             botaoAdicionar.setEnabled(
-                    state.isBotaoAdicionarHabilitado()
+                    habilitado
             );
+
+            atualizarVisualBotaoAdicionar(
+                    habilitado
+            );
+
         }
 
         if (botaoLimparAposta != null) {
@@ -1306,6 +1317,64 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                         valorSeguro
                 )
         );
+    }
+
+    private void atualizarVisualBotaoAdicionar(boolean habilitado) {
+
+        if (!(botaoAdicionar instanceof MaterialButton)) {
+            return;
+        }
+
+        MaterialButton btn = (MaterialButton) botaoAdicionar;
+
+        if (habilitado) {
+
+            btn.setBackgroundTintList(
+                    ContextCompat.getColorStateList(
+                            requireContext(),
+                            parentActivity.estilo.getCorClara()
+                    )
+            );
+
+            btn.setTextColor(
+                    ContextCompat.getColor(
+                            requireContext(),
+                            parentActivity.estilo.getCorFonteFundoClaro()
+                    )
+            );
+
+            btn.setStrokeColor(
+                    ContextCompat.getColorStateList(
+                            requireContext(),
+                            parentActivity.estilo.getCorEscura()
+                    )
+            );
+
+        } else {
+
+            // volta para o visual original do XML
+
+            btn.setBackgroundTintList(
+                    ContextCompat.getColorStateList(
+                            requireContext(),
+                            R.color.button_rodape
+                    )
+            );
+
+            btn.setTextColor(
+                    ContextCompat.getColorStateList(
+                            requireContext(),
+                            R.color.text_rodape
+                    )
+            );
+
+            btn.setStrokeColor(
+                    ContextCompat.getColorStateList(
+                            requireContext(),
+                            R.color.text_rodape
+                    )
+            );
+        }
     }
 
     private BigDecimal getValorTotalApostaAtual() {

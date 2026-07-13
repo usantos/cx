@@ -144,7 +144,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private Boolean isSurpresinha = false;
     //TODO: MEGA 30 ANOS//
     private boolean isMega30;
-    private EstiloModalidadeMKP estilo;
+    public EstiloModalidadeMKP estilo;
     private SimulaViewModel viewModel;
     private LottieManager lottieManager;
     private SimularApostaModel model;
@@ -1073,6 +1073,41 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         inicializarEstadoTeimosinhas();
         inicializarEstadoQuantidadeNumeros();
         configuraBotoesListeners();
+        configurarCorBtnQuantidadeNumeros();
+    }
+    private void configurarCorBtnQuantidadeNumeros() {
+
+        if (btnQuantidadeNumeros == null) {
+            return;
+        }
+
+        int corTexto = ContextCompat.getColor(
+                this,
+                estilo.getCorFonteFundoClaro()
+        );
+
+        btnQuantidadeNumeros.setBackgroundTintList(
+                ContextCompat.getColorStateList(
+                        this,
+                        estilo.getCorClara()
+                )
+        );
+
+        btnQuantidadeNumeros.setTextColor(corTexto);
+
+        btnQuantidadeNumeros.setStrokeColor(
+                ContextCompat.getColorStateList(
+                        this,
+                        estilo.getCorEscura()
+                )
+        );
+
+        // seta do mesmo tom do texto
+        btnQuantidadeNumeros.setIconTint(
+                android.content.res.ColorStateList.valueOf(
+                        corTexto
+                )
+        );
     }
 
     public void configuraBotoesListeners() {
