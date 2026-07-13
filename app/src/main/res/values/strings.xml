@@ -1673,5 +1673,6 @@
 
     <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
     <string name="txt_como_jogar">Como jogar</string>
+    <string name="added_bet_to_cart">Aposta adicionada ao carrinho com sucesso!</string>
 
 </resources>

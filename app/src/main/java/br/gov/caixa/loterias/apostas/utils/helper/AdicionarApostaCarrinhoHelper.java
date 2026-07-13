@@ -208,7 +208,13 @@ public class AdicionarApostaCarrinhoHelper {
                     Log.d("", e.getLocalizedMessage());
                 }
 
-                activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+                //Aqui adicionar o dialog de ok popup
+
+                DialogUtils.dialogEntendiListener(activity, activity.getString(R.string.added_bet_to_cart), (dialog, which) -> {
+                    Intent intent = new Intent("loterias.tqs");
+                    intent.putExtra("broadcast", "ok");
+                    activity.sendBroadcast(intent);
+                });
             }
 
             @Override
