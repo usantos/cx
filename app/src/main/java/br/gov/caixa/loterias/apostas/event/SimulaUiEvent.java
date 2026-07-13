@@ -343,6 +343,7 @@ public abstract class SimulaUiEvent {
 
     public static class CarregarCarrinho extends SimulaUiEvent {
     }
+
     public static final class ComoJogarClicado extends SimulaUiEvent {
     }
 
@@ -392,7 +393,8 @@ public abstract class SimulaUiEvent {
     }
 
     public static final class ClicarTeimosinhas extends SimulaUiEvent {
-        public ClicarTeimosinhas() {}
+        public ClicarTeimosinhas() {
+        }
     }
 
     public static final class ConfirmarTeimosinha extends SimulaUiEvent {
@@ -408,11 +410,13 @@ public abstract class SimulaUiEvent {
     }
 
     public static final class ConsumirEventoUnico extends SimulaUiEvent {
-        public ConsumirEventoUnico() {}
+        public ConsumirEventoUnico() {
+        }
     }
 
     public static final class ValorApostaAtualizado extends SimulaUiEvent {
-        public ValorApostaAtualizado() {}
+        public ValorApostaAtualizado() {
+        }
     }
 
 
@@ -470,6 +474,7 @@ public abstract class SimulaUiEvent {
 
     public static final class ComandoCarrinhoConsumido extends SimulaUiEvent {
     }
+
     public static class InicializarQuantidadeNumeros extends SimulaUiEvent {
 
         private final List<String> labelsQuantidadeNumeros;
@@ -536,4 +541,12 @@ public abstract class SimulaUiEvent {
 
     public static class ValorApostaQuantidadeNumerosAtualizado extends SimulaUiEvent {
     }
+
+    public static final class CarrinhoClicado
+            extends SimulaUiEvent {
+    }
+    public static final class AbrirCarrinhoConsumido
+            extends SimulaUiEvent {
+    }
+
 }

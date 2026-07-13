@@ -124,7 +124,7 @@
         <View
             android:layout_width="1dp"
             android:layout_height="32dp"
-            android:background="#D9D9D9" />
+            android:background="@color/cinza70" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -156,32 +156,44 @@
         <View
             android:layout_width="1dp"
             android:layout_height="32dp"
-            android:background="#D9D9D9" />
+            android:background="@color/cinza70" />
 
         <FrameLayout
+            android:id="@+id/frameCarrinho"
             android:layout_width="56dp"
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/ivCarrinho"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="36dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_cart" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/tvBadgeCarrinho"-->
-<!--                android:layout_width="14dp"-->
-<!--                android:layout_height="14dp"-->
-<!--                android:layout_gravity="end|center_vertical"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:layout_marginBottom="8dp"-->
-<!--                android:background="@drawable/bg_badge_laranja"-->
-<!--                android:gravity="center"-->
-<!--                android:text="0"-->
-<!--                android:textColor="#FFFFFF"-->
-<!--                android:textSize="8sp"-->
-<!--                android:textStyle="bold" />-->
+            <View
+                android:id="@+id/circuloQuantidade"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="end|top"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_shape_oval"
+                android:backgroundTint="#FDAB01"
+                 />
+
+            <TextView
+                android:id="@+id/tvQuantidadeApostas"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="end|top"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/cinza110"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                 />
 
         </FrameLayout>
 

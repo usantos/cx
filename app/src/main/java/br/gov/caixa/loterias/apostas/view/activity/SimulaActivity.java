@@ -34,12 +34,14 @@ import com.android.volley.VolleyError;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.TutorialSuperSeteActivity;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
@@ -49,6 +51,7 @@ import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -56,7 +59,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
-import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.ComandoCarrinho;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
@@ -73,7 +75,6 @@ import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.custom.AccordionView;
 import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
@@ -151,9 +152,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private TextView tvValorAposta;
     private TextView tvValorCarrinho;
     private LinearLayout containerComoJogar;
-    private MaterialButton btnTeimosinha,btnQuantidadeNumeros;
+    private MaterialButton btnTeimosinha, btnQuantidadeNumeros;
     private List<Integer> qtdPrognosticosQuantidadeNumerosList;
     private TextView textSelecionados;
+    private FrameLayout frameCarrinho;
+    private TextView tvQuantidadeApostas;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -265,7 +269,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 state.getComandoCarrinho()
         );
         renderDialogComoJogar(state);
-
+        renderAbrirCarrinho(state);
     }
 
     private void renderDialogComoJogar(
@@ -340,6 +344,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             );
         }
     }
+
     private void renderQuantidadeNumeros(
             SimulaUiState state
     ) {
@@ -530,7 +535,11 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.btnQuantidadeNumeros = findViewById(R.id.btnQuantidadeNumeros);
         this.btnTeimosinha = findViewById(R.id.btnTeimosinha);
         this.textSelecionados = findViewById(R.id.textSelecionados);
+        this.frameCarrinho = findViewById(R.id.frameCarrinho);
+        this.tvQuantidadeApostas =
+                findViewById(R.id.tvQuantidadeApostas);
     }
+
     private void configurarEventosViewModel() {
 
         if (containerComoJogar != null) {
@@ -618,7 +627,90 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             case R.id.btnTeimosinha:
                 viewModel.onEvent(new SimulaUiEvent.ClicarTeimosinhas());
                 break;
+
+            case R.id.frameCarrinho:
+                viewModel.onEvent(new SimulaUiEvent.CarrinhoClicado());
+                break;
         }
+    }
+
+    private void renderAbrirCarrinho(
+            SimulaUiState state
+    ) {
+
+        if (!state.isAbrirCarrinho()) {
+            return;
+        }
+
+        abrirCarrinho();
+
+        viewModel.onEvent(
+                new SimulaUiEvent.AbrirCarrinhoConsumido()
+        );
+    }
+
+    private void abrirCarrinho() {
+
+        AlertDialogUtils.show(this);
+
+        ServicoFactoryUtil
+                .getApostaService()
+                .buscaCarrinho(
+                        new RequestListener<CarrinhoDTOResponse>() {
+
+                            @Override
+                            public void onResponse(
+                                    CarrinhoDTOResponse response
+                            ) {
+
+                                AlertDialogUtils.dismiss();
+
+                                Bundle args =
+                                        new Bundle();
+
+                                args.putSerializable(
+                                        CarrinhoActivity.CARRINHO,
+                                        (Serializable) response.getPayload()
+                                );
+
+                                startActivity(
+                                        new Intent(
+                                                SimulaActivity.this,
+                                                CarrinhoActivity.class
+                                        ).putExtras(args)
+                                );
+                            }
+
+                            @Override
+                            public void onErrorResponse(
+                                    VolleyError error
+                            ) {
+
+                                AlertDialogUtils.dismiss();
+
+                                if (MensagensNetwork
+                                        .isUnauthorizedError(error)) {
+
+                                    startActivity(
+                                            new Intent(
+                                                    SimulaActivity.this,
+                                                    CarrinhoActivity.class
+                                            ).putExtra(
+                                                    CarrinhoActivity.LER_CARRINHO_LOCAL,
+                                                    true
+                                            )
+                                    );
+
+                                } else {
+
+                                    RedirectNetwork.checkRedirect(
+                                            error,
+                                            SimulaActivity.this
+                                    );
+                                }
+                            }
+                        }
+                );
     }
 
     private void voltaPraEscolhaDeNumeros() {
@@ -731,7 +823,10 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     public Button getBotaoLimparAposta() {
         return botaoLimparAposta;
     }
-    public TextView getTextSelecionados() {return textSelecionados;}
+
+    public TextView getTextSelecionados() {
+        return textSelecionados;
+    }
 
     public Button getBotaoCompletar() {
         return botaoCompletar;
@@ -958,6 +1053,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             }
         }
     }
+
     private void inicializarEstadoQuantidadeNumeros() {
         viewModel.onEvent(
                 new SimulaUiEvent.InicializarQuantidadeNumeros(
@@ -1078,6 +1174,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         configuraBotoesListeners();
         configurarCorBtnQuantidadeNumeros();
     }
+
     private void configurarCorBtnQuantidadeNumeros() {
 
         if (btnQuantidadeNumeros == null) {
@@ -1118,6 +1215,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         surpresinhaTela.setOnClickListener(this);
         btnTeimosinha.setOnClickListener(this);
         btnQuantidadeNumeros.setOnClickListener(this);
+        frameCarrinho.setOnClickListener(this);
     }
 
     private void abrirDialogQuantidadeNumeros(
@@ -1169,6 +1267,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             }
         };
     }
+
     private void atualizarValorApostaPorQuantidadeNumeros(
             SimulaUiState state
     ) {
@@ -1238,6 +1337,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 onTeimosinhaDialogListener()
         );
     }
+
     private void modalTeimosinhas() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
         if (!isEspecial) {
@@ -1336,18 +1436,30 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         typeGameColorLight = lightColor;
         typeGameColorDark = darkColor;
     }
+
     private void renderCarrinho(
             SimulaUiState state
     ) {
 
-        if (tvValorCarrinho == null) {
-            return;
+        if (tvValorCarrinho != null) {
+
+            ViewUtils.setMoedaFormatHtml(
+                    state.getValorCarrinho(),
+                    tvValorCarrinho
+            );
         }
 
-        ViewUtils.setMoedaFormatHtml(
-                state.getValorCarrinho(),
-                getValorCarrinho()
-        );
+        if (tvQuantidadeApostas != null) {
+
+            int quantidade =
+                    state.getQuantidadeApostasCarrinho();
+
+            tvQuantidadeApostas.setText(
+                    quantidade > 999
+                            ? getString(R.string.mais_999)
+                            : String.valueOf(quantidade)
+            );
+        }
     }
 
     @Override

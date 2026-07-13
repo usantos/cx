@@ -228,7 +228,41 @@ public class SimulaViewModel extends AndroidViewModel {
             valorApostaQuantidadeNumerosAtualizado();
             return;
         }
+        if (event instanceof SimulaUiEvent.CarrinhoClicado) {
+            abrirCarrinho();
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.AbrirCarrinhoConsumido) {
+            consumirAbrirCarrinho();
+            return;
+        }
     }
+
+    private void abrirCarrinho() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setAbrirCarrinho(true)
+                        .build()
+        );
+    }
+
+    private void consumirAbrirCarrinho() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setAbrirCarrinho(false)
+                        .build()
+        );
+    }
+
     private void inicializarQuantidadeNumeros(
             SimulaUiEvent.InicializarQuantidadeNumeros event
     ) {

@@ -86,6 +86,7 @@ public class SimulaUiState {
     private final boolean atualizarValorApostaPorQuantidadeNumeros;
     private final boolean resetarTrevosPorQuantidadeNumeros;
     private String textoSelecionados;
+    private final boolean abrirCarrinho;
 
     public SimulaUiState(
             BarraTituloDTO barraTituloDTO,
@@ -236,6 +237,7 @@ public class SimulaUiState {
 
         this.resetarTrevosPorQuantidadeNumeros =
                 builder.resetarTrevosPorQuantidadeNumeros;
+        this.abrirCarrinho = builder.abrirCarrinho;
 
         this.textoSelecionados =
                 builder.textoSelecionados != null
@@ -252,6 +254,7 @@ public class SimulaUiState {
                 .setVelocidadeAnimacao(1f)
                 .setExibirDialogComoJogar(false)
                 .setComandoCarrinho(null)
+                .setAbrirCarrinho(false)
                 .setComandoCompletarAposta(null)
                 .setTipoJogo(null)
                 .setDezenasSelecionadas(new ArrayList<Integer>())
@@ -307,9 +310,11 @@ public class SimulaUiState {
                 .setResetarTrevosPorQuantidadeNumeros(false)
                 .build();
     }
+
     public String getTextoSelecionados() {
         return textoSelecionados;
     }
+
     public boolean isEspecial() {
         return especial;
     }
@@ -328,6 +333,10 @@ public class SimulaUiState {
 
     public boolean isExibirDialogTeimosinha() {
         return exibirDialogTeimosinha;
+    }
+
+    public boolean isAbrirCarrinho() {
+        return abrirCarrinho;
     }
 
     public boolean isExibirDialogSemTeimosinha() {
@@ -624,7 +633,7 @@ public class SimulaUiState {
         private boolean atualizarValorApostaPorQuantidadeNumeros;
         private boolean resetarTrevosPorQuantidadeNumeros;
         private String textoSelecionados = "Selecione os números:";
-
+        private boolean abrirCarrinho;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<Integer>();
@@ -703,6 +712,7 @@ public class SimulaUiState {
             this.limparSuperSete = state.limparSuperSete;
             this.limparLoteca = state.limparLoteca;
             this.limparLotogol = state.limparLotogol;
+            this.abrirCarrinho = state.abrirCarrinho;
             this.limparOpcaoOutrosNumeros = state.limparOpcaoOutrosNumeros;
 
             this.qtdTotalSelecionadosSuperSete = state.qtdTotalSelecionadosSuperSete;
@@ -766,6 +776,7 @@ public class SimulaUiState {
             this.resetarTrevosPorQuantidadeNumeros =
                     state.resetarTrevosPorQuantidadeNumeros;
         }
+
         public Builder setLabelsQuantidadeNumeros(
                 List<String> labelsQuantidadeNumeros
         ) {
@@ -773,6 +784,10 @@ public class SimulaUiState {
                     labelsQuantidadeNumeros != null
                             ? new ArrayList<>(labelsQuantidadeNumeros)
                             : new ArrayList<String>();
+            return this;
+        }
+        public Builder setAbrirCarrinho(boolean abrirCarrinho) {
+            this.abrirCarrinho = abrirCarrinho;
             return this;
         }
 
@@ -793,6 +808,7 @@ public class SimulaUiState {
                     exibirDialogQuantidadeNumeros;
             return this;
         }
+
         public Builder setTextoSelecionados(
                 String textoSelecionados
         ) {
@@ -802,6 +818,7 @@ public class SimulaUiState {
                             : "Selecione os números:";
             return this;
         }
+
         public Builder setExibirAvisoQuantidadeNumerosMaxima(
                 boolean exibirAvisoQuantidadeNumerosMaxima
         ) {
