@@ -19,6 +19,7 @@ import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 
@@ -28,6 +29,7 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
+import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
@@ -43,6 +45,7 @@ import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
+import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
 public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
 
@@ -75,6 +78,7 @@ public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
     private AppCompatCheckBox selcioneEspelhoSurpresinha;
     private ConstraintLayout maisMilionaria, numeroNovoConst;
     private SurpresinhaApostaModel model;
+    private SimulaViewModel viewModel;
 
     public SurpresinhaFragment2() {}
 
@@ -144,7 +148,10 @@ public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
                 }
             }
         }
-
+        viewModel =
+                new ViewModelProvider(
+                        requireActivity()
+                ).get(SimulaViewModel.class);
         Bundle bundle = getArguments();
         if (bundle != null) {
             equipeSelecionada = new Gson().fromJson(bundle.getString("equipeSelecionada"), ParametroEquipe.class);
@@ -154,6 +161,7 @@ public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
         configuraListaDezenas();
         atualizaDezenaAdapter();
         configuraBotoes();
+        configurarListenerAdicionarCarrinho();
 
         if (isLotomania()) {
             layoutEspelhoSurpresinha.setVisibility(View.VISIBLE);
@@ -275,43 +283,10 @@ public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
             atualizaBotoesQtdTrevos();
         }
 
-        Button botaoAdicionarSurpresinhaAoCarrinho =
-                parentActivity.getBotaoAdicionar();
-
-        if (botaoAdicionarSurpresinhaAoCarrinho != null) {
-
-            botaoAdicionarSurpresinhaAoCarrinho.setEnabled(true);
-
-            botaoAdicionarSurpresinhaAoCarrinho.setBackgroundTintList(
-                    ContextCompat.getColorStateList(
-                            parentActivity,
-                            typeGameColorDark
-                    )
+        if (viewModel != null) {
+            viewModel.onEvent(
+                    new SimulaUiEvent.SurpresinhaAberta()
             );
-
-            botaoAdicionarSurpresinhaAoCarrinho.setOnClickListener(this);
-
-            botaoAdicionarSurpresinhaAoCarrinho.setText(
-                    ViewUtils.textCaixaSTDBold(
-                            parentActivity,
-                            getString(R.string.adicionarAoCarrinho)
-                    )
-            );
-
-            botaoAdicionarSurpresinhaAoCarrinho.setTextColor(
-                    ContextCompat.getColor(
-                            parentActivity,
-                            corFonteFundoEscuro
-                    )
-            );
-        }
-
-        if (parentActivity.getBotaoLimparAposta() != null) {
-            parentActivity.getBotaoLimparAposta().setVisibility(View.GONE);
-        }
-
-        if (parentActivity.getSalvarApostaLayout() != null) {
-            parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
         }
 
         btnMenosSurpresinha.setBackgroundTintList(
@@ -322,7 +297,19 @@ public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
                 getCor(corFonteFundoBranco)
         );
     }
+    private void configurarListenerAdicionarCarrinho() {
 
+        if (parentActivity == null) {
+            return;
+        }
+
+        Button botaoAdicionar =
+                parentActivity.getBotaoAdicionar();
+
+        if (botaoAdicionar != null) {
+            botaoAdicionar.setOnClickListener(this);
+        }
+    }
     private void atualizaBotoesQtdSurpresinha() {
         if (qtdSurpresinhas == QUANTIDADE_MINIMA_SURPRESINHAS){
             btnMenosSurpresinha.setBackgroundTintList(getCor(R.color.cinzaescuro));

@@ -252,8 +252,56 @@ public class SimulaViewModel extends AndroidViewModel {
             limparComandoTelaSimula();
             return;
         }
-    }
+        if (event instanceof SimulaUiEvent.SurpresinhaAberta) {
 
+            handleSurpresinhaAberta();
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.SurpresinhaFechada) {
+
+            handleSurpresinhaFechada();
+            return;
+        }
+    }
+    private void handleSurpresinhaAberta() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setSurpresinhaHabilitada(true)
+                        .setMostrarSalvarAposta(false)
+                        .setMostrarBotaoLimparAposta(false)
+                        .setMostrarRodape(false)
+                        .setBotaoLimparHabilitado(false)
+                        .setBotaoCompletarVisivel(false)
+                        .setBotaoCompletarHabilitado(false)
+                        .setBotaoAdicionarHabilitado(true)
+                        .setTextoBotaoFinalizarResId(
+                                R.string.adicionarAoCarrinho
+                        )
+                        .build()
+        );
+    }
+    private void handleSurpresinhaFechada() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setSurpresinhaHabilitada(false)
+                        .setBotaoCompletarVisivel(true)
+                        .setBotaoCompletarHabilitado(true)
+                        .setBotaoAdicionarHabilitado(false)
+                        .setTextoBotaoFinalizarResId(
+                                R.string.completarBotao
+                        )
+                        .build()
+        );
+    }
     private void handleAlterarSurpresinha(
             boolean habilitada
     ) {
@@ -271,16 +319,39 @@ public class SimulaViewModel extends AndroidViewModel {
                             true
                     );
 
-        } else {
+            uiState.setValue(
+                    atual.toBuilder()
+                            .setSurpresinhaHabilitada(true)
+                            .setComandoTelaSimula(comando)
+                            .setMostrarSalvarAposta(false)
+                            .setMostrarBotaoLimparAposta(false)
+                            .setMostrarRodape(false)
+                            .setBotaoLimparHabilitado(false)
+                            .setBotaoCompletarVisivel(false)
+                            .setBotaoCompletarHabilitado(false)
+                            .setBotaoAdicionarHabilitado(true)
+                            .setTextoBotaoFinalizarResId(
+                                    R.string.adicionarAoCarrinho
+                            )
+                            .build()
+            );
 
-            comando =
-                    new ComandoTelaSimula.VoltarCartela();
+            return;
         }
+
+        comando =
+                new ComandoTelaSimula.VoltarCartela();
 
         uiState.setValue(
                 atual.toBuilder()
-                        .setSurpresinhaHabilitada(habilitada)
+                        .setSurpresinhaHabilitada(false)
                         .setComandoTelaSimula(comando)
+                        .setBotaoCompletarVisivel(true)
+                        .setBotaoCompletarHabilitado(true)
+                        .setBotaoAdicionarHabilitado(false)
+                        .setTextoBotaoFinalizarResId(
+                                R.string.completarBotao
+                        )
                         .build()
         );
     }
@@ -865,10 +936,18 @@ public class SimulaViewModel extends AndroidViewModel {
         boolean mostrarRodape =
                 botaoLimparHabilitado || mostrarSalvarAposta;
 
+        int qtdDezenasPossiveis =
+                event.getQtdDezenasPossiveisSelecionado();
+
         String textoSelecionados =
                 montarTextoSelecionados(
                         event.getQtdDezenasSelecionadas(),
-                        event.getQtdDezenasPossiveisSelecionado()
+                        qtdDezenasPossiveis
+                );
+
+        String textoBotaoQuantidadeNumeros =
+                montarTextoQuantidadeNumeros(
+                        qtdDezenasPossiveis
                 );
 
         SimulaUiState atual =
@@ -876,16 +955,40 @@ public class SimulaViewModel extends AndroidViewModel {
 
         uiState.setValue(
                 atual.toBuilder()
-                        .setBotaoCompletarHabilitado(botaoCompletarHabilitado)
-                        .setBotaoAdicionarHabilitado(botaoAdicionarHabilitado)
-                        .setBotaoLimparHabilitado(botaoLimparHabilitado)
-                        .setMostrarBotaoLimparAposta(botaoLimparHabilitado)
-                        .setMostrarSalvarAposta(mostrarSalvarAposta)
-                        .setMostrarRodape(mostrarRodape)
-                        .setTextoSelecionados(textoSelecionados)
+                        .setQtdDezenasPossiveisSelecionado(
+                                qtdDezenasPossiveis
+                        )
+                        .setTextoBotaoPrognosticosSelecionado(
+                                textoBotaoQuantidadeNumeros
+                        )
+                        .setBotaoCompletarHabilitado(
+                                botaoCompletarHabilitado
+                        )
+                        .setBotaoAdicionarHabilitado(
+                                botaoAdicionarHabilitado
+                        )
+                        .setBotaoLimparHabilitado(
+                                botaoLimparHabilitado
+                        )
+                        .setSurpresinhaHabilitada(
+                                atual.isSurpresinhaHabilitada()
+                        )
+                        .setMostrarBotaoLimparAposta(
+                                botaoLimparHabilitado
+                        )
+                        .setMostrarSalvarAposta(
+                                mostrarSalvarAposta
+                        )
+                        .setMostrarRodape(
+                                mostrarRodape
+                        )
+                        .setTextoSelecionados(
+                                textoSelecionados
+                        )
                         .build()
         );
     }
+
     private String montarTextoSelecionados(
             int qtdSelecionados,
             int qtdNecessarios

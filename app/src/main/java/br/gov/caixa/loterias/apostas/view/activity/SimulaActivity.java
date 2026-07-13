@@ -334,6 +334,14 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             );
         }
 
+        if (botaoLimparAposta != null) {
+            botaoLimparAposta.setVisibility(
+                    surpresinhaHabilitada
+                            ? View.GONE
+                            : View.VISIBLE
+            );
+        }
+
         if (textSelecionados != null) {
             textSelecionados.setVisibility(
                     surpresinhaHabilitada
@@ -341,29 +349,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                             : View.VISIBLE
             );
         }
-
-        if (switchSurpresinha == null) {
-            return;
-        }
-
-        if (switchSurpresinha.isChecked() == surpresinhaHabilitada) {
-            return;
-        }
-
-        switchSurpresinha.setOnCheckedChangeListener(null);
-
-        switchSurpresinha.setChecked(
-                surpresinhaHabilitada
-        );
-
-        switchSurpresinha.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> viewModel.onEvent(
-                        new SimulaUiEvent.AlterarSurpresinha(
-                                isChecked
-                        )
-                )
-        );
     }
+
     private void aplicarCorModalidadeNoSwitch() {
 
         if (switchSurpresinha == null || estilo == null) {
@@ -409,6 +396,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                         R.drawable.surpresinha_thumb_unchecked
                 )
         );
+        switchSurpresinha.setThumbTintList(null);
 
         switchSurpresinha.setThumbDrawable(
                 thumb
@@ -1023,14 +1011,31 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         return true;
     }
 
-    // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
     @Override
-    public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
-        //	Verifica condição de aviso caso ultrapasse o numero max por modalidade
-        if (qtdDezenasAtual <= parametroSimulacao.getQuantidadeMaxima()) {
-            atualizaTextoBotoesQtdSelecionadas();
+    public int verificaNovoQtdDezenasMax(
+            int qtdDezenasAtual
+    ) {
+
+        if (parametroSimulacao == null
+                || parametroSimulacao.getQuantidadeMaxima() == null) {
+            return qtdDezenasAtual;
         }
-        return qtdDezenasPossiveisSelecionado;
+
+        int quantidadeMaxima =
+                parametroSimulacao.getQuantidadeMaxima();
+
+        int novaQuantidade =
+                Math.min(
+                        qtdDezenasAtual + 1,
+                        quantidadeMaxima
+                );
+
+        qtdDezenasPossiveisSelecionado =
+                novaQuantidade;
+
+        atualizaTextoBotoesQtdSelecionadas();
+
+        return novaQuantidade;
     }
 
     @Override
