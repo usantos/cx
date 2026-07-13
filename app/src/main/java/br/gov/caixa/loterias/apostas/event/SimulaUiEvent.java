@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.apostas.event;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -347,6 +349,73 @@ public abstract class SimulaUiEvent {
     public static final class DialogComoJogarConsumido extends SimulaUiEvent {
     }
 
+    public static final class InicializarTeimosinhas extends SimulaUiEvent {
+        private final List<String> qntTeimosinhas;
+        private final List<Integer> qntConcursos;
+        private final int qntConcursoSelecionado;
+        private final boolean especial;
+        private final String textoInicialTeimosinha;
+
+        public InicializarTeimosinhas(
+                List<String> qntTeimosinhas,
+                List<Integer> qntConcursos,
+                int qntConcursoSelecionado,
+                boolean especial,
+                String textoInicialTeimosinha
+        ) {
+            this.qntTeimosinhas = qntTeimosinhas != null ? qntTeimosinhas : new ArrayList<String>();
+            this.qntConcursos = qntConcursos != null ? qntConcursos : new ArrayList<Integer>();
+            this.qntConcursoSelecionado = qntConcursoSelecionado;
+            this.especial = especial;
+            this.textoInicialTeimosinha = textoInicialTeimosinha;
+        }
+
+        public List<String> getQntTeimosinhas() {
+            return qntTeimosinhas;
+        }
+
+        public List<Integer> getQntConcursos() {
+            return qntConcursos;
+        }
+
+        public int getQntConcursoSelecionado() {
+            return qntConcursoSelecionado;
+        }
+
+        public boolean isEspecial() {
+            return especial;
+        }
+
+        public String getTextoInicialTeimosinha() {
+            return textoInicialTeimosinha;
+        }
+    }
+
+    public static final class ClicarTeimosinhas extends SimulaUiEvent {
+        public ClicarTeimosinhas() {}
+    }
+
+    public static final class ConfirmarTeimosinha extends SimulaUiEvent {
+        private final int position;
+
+        public ConfirmarTeimosinha(int position) {
+            this.position = position;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+    }
+
+    public static final class ConsumirEventoUnico extends SimulaUiEvent {
+        public ConsumirEventoUnico() {}
+    }
+
+    public static final class ValorApostaAtualizado extends SimulaUiEvent {
+        public ValorApostaAtualizado() {}
+    }
+
+
     public static class CarrinhoCarregado extends SimulaUiEvent {
 
         private final CarrinhoDTO carrinho;
@@ -400,5 +469,71 @@ public abstract class SimulaUiEvent {
     }
 
     public static final class ComandoCarrinhoConsumido extends SimulaUiEvent {
+    }
+    public static class InicializarQuantidadeNumeros extends SimulaUiEvent {
+
+        private final List<String> labelsQuantidadeNumeros;
+        private final List<Integer> qtdPrognosticosQuantidadeNumeros;
+        private final int qtdDezenasSelecionadaInicial;
+
+        public InicializarQuantidadeNumeros(
+                List<String> labelsQuantidadeNumeros,
+                List<Integer> qtdPrognosticosQuantidadeNumeros,
+                int qtdDezenasSelecionadaInicial
+        ) {
+            this.labelsQuantidadeNumeros = labelsQuantidadeNumeros;
+            this.qtdPrognosticosQuantidadeNumeros = qtdPrognosticosQuantidadeNumeros;
+            this.qtdDezenasSelecionadaInicial = qtdDezenasSelecionadaInicial;
+        }
+
+        public List<String> getLabelsQuantidadeNumeros() {
+            return labelsQuantidadeNumeros;
+        }
+
+        public List<Integer> getQtdPrognosticosQuantidadeNumeros() {
+            return qtdPrognosticosQuantidadeNumeros;
+        }
+
+        public int getQtdDezenasSelecionadaInicial() {
+            return qtdDezenasSelecionadaInicial;
+        }
+    }
+
+    public static class ClicarQuantidadeNumeros extends SimulaUiEvent {
+    }
+
+    public static class SelecionarQuantidadeNumeros extends SimulaUiEvent {
+
+        private final int position;
+
+        public SelecionarQuantidadeNumeros(int position) {
+            this.position = position;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+    }
+
+    public static class ConfirmarQuantidadeNumeros extends SimulaUiEvent {
+
+        private final int position;
+
+        public ConfirmarQuantidadeNumeros(int position) {
+            this.position = position;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+    }
+
+    public static class DialogQuantidadeNumerosConsumido extends SimulaUiEvent {
+    }
+
+    public static class AvisoQuantidadeNumerosConsumido extends SimulaUiEvent {
+    }
+
+    public static class ValorApostaQuantidadeNumerosAtualizado extends SimulaUiEvent {
     }
 }

@@ -24,6 +24,7 @@ public class SimulaUiState {
 
     private final List<Integer> dezenasSelecionadas;
     private final ParametroEquipe equipeSelecionada;
+    private final boolean especial;
 
     private final boolean telaSelecaoTimeAtivado;
     private final boolean escolhaTimeCoracaoSurpresinha;
@@ -66,6 +67,24 @@ public class SimulaUiState {
     private final boolean exibirDialogComoJogar;
     private final String mensagemComoJogar;
     private final String titleComoJogar;
+    private final List<String> labelsTeimosinhas;
+    private final List<Integer> concursosTeimosinhas;
+    private final String textoBotaoTeimosinhas;
+    private final boolean exibirDialogTeimosinha;
+    private final boolean exibirDialogSemTeimosinha;
+    private final boolean atualizarValorApostaPorTeimosinha;
+    private final List<String> labelsQuantidadeNumeros;
+    private final List<Integer> qtdPrognosticosQuantidadeNumeros;
+
+    private final boolean exibirDialogQuantidadeNumeros;
+    private final boolean exibirAvisoQuantidadeNumerosMaxima;
+    private final boolean avisouQuantidadeNumerosMaxima;
+
+    private final int posicaoQuantidadeNumerosSelecionada;
+    private final String textoBotaoPrognosticosSelecionado;
+
+    private final boolean atualizarValorApostaPorQuantidadeNumeros;
+    private final boolean resetarTrevosPorQuantidadeNumeros;
 
     public SimulaUiState(
             BarraTituloDTO barraTituloDTO,
@@ -166,6 +185,57 @@ public class SimulaUiState {
                 builder.mensagemComoJogar != null
                         ? builder.mensagemComoJogar
                         : "";
+
+        this.especial = builder.especial;
+
+        this.labelsTeimosinhas = builder.labelsTeimosinhas != null
+                ? new ArrayList<>(builder.labelsTeimosinhas)
+                : new ArrayList<String>();
+
+        this.concursosTeimosinhas = builder.concursosTeimosinhas != null
+                ? new ArrayList<>(builder.concursosTeimosinhas)
+                : new ArrayList<Integer>();
+
+        this.textoBotaoTeimosinhas = builder.textoBotaoTeimosinhas != null
+                ? builder.textoBotaoTeimosinhas
+                : "";
+
+        this.exibirDialogTeimosinha = builder.exibirDialogTeimosinha;
+        this.exibirDialogSemTeimosinha = builder.exibirDialogSemTeimosinha;
+        this.atualizarValorApostaPorTeimosinha = builder.atualizarValorApostaPorTeimosinha;
+        this.labelsQuantidadeNumeros =
+                builder.labelsQuantidadeNumeros != null
+                        ? new ArrayList<>(builder.labelsQuantidadeNumeros)
+                        : new ArrayList<String>();
+
+        this.qtdPrognosticosQuantidadeNumeros =
+                builder.qtdPrognosticosQuantidadeNumeros != null
+                        ? new ArrayList<>(builder.qtdPrognosticosQuantidadeNumeros)
+                        : new ArrayList<Integer>();
+
+        this.exibirDialogQuantidadeNumeros =
+                builder.exibirDialogQuantidadeNumeros;
+
+        this.exibirAvisoQuantidadeNumerosMaxima =
+                builder.exibirAvisoQuantidadeNumerosMaxima;
+
+        this.avisouQuantidadeNumerosMaxima =
+                builder.avisouQuantidadeNumerosMaxima;
+
+        this.posicaoQuantidadeNumerosSelecionada =
+                builder.posicaoQuantidadeNumerosSelecionada;
+
+        this.textoBotaoPrognosticosSelecionado =
+                builder.textoBotaoPrognosticosSelecionado != null
+                        ? builder.textoBotaoPrognosticosSelecionado
+                        : "";
+
+        this.atualizarValorApostaPorQuantidadeNumeros =
+                builder.atualizarValorApostaPorQuantidadeNumeros;
+
+        this.resetarTrevosPorQuantidadeNumeros =
+                builder.resetarTrevosPorQuantidadeNumeros;
+
     }
 
     public static SimulaUiState initial() {
@@ -212,7 +282,51 @@ public class SimulaUiState {
                 .setCarrinho(null)
                 .setValorAposta(BigDecimal.ZERO)
                 .setValorGrande(false)
+                .setEspecial(false)
+                .setLabelsTeimosinhas(new ArrayList<String>())
+                .setConcursosTeimosinhas(new ArrayList<Integer>())
+                .setTextoBotaoTeimosinhas("")
+                .setExibirDialogTeimosinha(false)
+                .setExibirDialogSemTeimosinha(false)
+                .setAtualizarValorApostaPorTeimosinha(false)
+                .setLabelsQuantidadeNumeros(new ArrayList<String>())
+                .setQtdPrognosticosQuantidadeNumeros(new ArrayList<Integer>())
+                .setExibirDialogQuantidadeNumeros(false)
+                .setExibirAvisoQuantidadeNumerosMaxima(false)
+                .setAvisouQuantidadeNumerosMaxima(false)
+                .setPosicaoQuantidadeNumerosSelecionada(0)
+                .setTextoBotaoPrognosticosSelecionado("")
+                .setAtualizarValorApostaPorQuantidadeNumeros(false)
+                .setResetarTrevosPorQuantidadeNumeros(false)
                 .build();
+    }
+
+    public boolean isEspecial() {
+        return especial;
+    }
+
+    public List<String> getLabelsTeimosinhas() {
+        return labelsTeimosinhas;
+    }
+
+    public List<Integer> getConcursosTeimosinhas() {
+        return concursosTeimosinhas;
+    }
+
+    public String getTextoBotaoTeimosinhas() {
+        return textoBotaoTeimosinhas;
+    }
+
+    public boolean isExibirDialogTeimosinha() {
+        return exibirDialogTeimosinha;
+    }
+
+    public boolean isExibirDialogSemTeimosinha() {
+        return exibirDialogSemTeimosinha;
+    }
+
+    public boolean isAtualizarValorApostaPorTeimosinha() {
+        return atualizarValorApostaPorTeimosinha;
     }
 
     public Builder toBuilder() {
@@ -222,9 +336,11 @@ public class SimulaUiState {
     public BarraTituloDTO getBarraTituloDTO() {
         return barraTituloDTO;
     }
+
     public boolean isExibirDialogComoJogar() {
         return exibirDialogComoJogar;
     }
+
     public boolean isExibirAnimacao() {
         return exibirAnimacao;
     }
@@ -232,6 +348,7 @@ public class SimulaUiState {
     public int getAnimacaoRes() {
         return animacaoRes;
     }
+
     public BigDecimal getValorCarrinho() {
         return valorCarrinho;
     }
@@ -375,12 +492,51 @@ public class SimulaUiState {
     public boolean isValorGrande() {
         return valorGrande;
     }
+
     public String getMensagemComoJogar() {
         return mensagemComoJogar;
     }
+
     public String getTitleComoJogar() {
         return titleComoJogar;
     }
+
+    public List<String> getLabelsQuantidadeNumeros() {
+        return labelsQuantidadeNumeros;
+    }
+
+    public List<Integer> getQtdPrognosticosQuantidadeNumeros() {
+        return qtdPrognosticosQuantidadeNumeros;
+    }
+
+    public boolean isExibirDialogQuantidadeNumeros() {
+        return exibirDialogQuantidadeNumeros;
+    }
+
+    public boolean isExibirAvisoQuantidadeNumerosMaxima() {
+        return exibirAvisoQuantidadeNumerosMaxima;
+    }
+
+    public boolean isAvisouQuantidadeNumerosMaxima() {
+        return avisouQuantidadeNumerosMaxima;
+    }
+
+    public int getPosicaoQuantidadeNumerosSelecionada() {
+        return posicaoQuantidadeNumerosSelecionada;
+    }
+
+    public String getTextoBotaoPrognosticosSelecionado() {
+        return textoBotaoPrognosticosSelecionado;
+    }
+
+    public boolean isAtualizarValorApostaPorQuantidadeNumeros() {
+        return atualizarValorApostaPorQuantidadeNumeros;
+    }
+
+    public boolean isResetarTrevosPorQuantidadeNumeros() {
+        return resetarTrevosPorQuantidadeNumeros;
+    }
+
 
     public static class Builder {
 
@@ -439,6 +595,26 @@ public class SimulaUiState {
         private boolean valorGrande;
         private String mensagemComoJogar;
         private String titleComoJogar;
+        private boolean especial;
+        private List<String> labelsTeimosinhas;
+        private List<Integer> concursosTeimosinhas;
+        private String textoBotaoTeimosinhas;
+        private boolean exibirDialogTeimosinha;
+        private boolean exibirDialogSemTeimosinha;
+        private boolean atualizarValorApostaPorTeimosinha;
+        private List<String> labelsQuantidadeNumeros;
+        private List<Integer> qtdPrognosticosQuantidadeNumeros;
+
+        private boolean exibirDialogQuantidadeNumeros;
+        private boolean exibirAvisoQuantidadeNumerosMaxima;
+        private boolean avisouQuantidadeNumerosMaxima;
+
+        private int posicaoQuantidadeNumerosSelecionada;
+        private String textoBotaoPrognosticosSelecionado;
+
+        private boolean atualizarValorApostaPorQuantidadeNumeros;
+        private boolean resetarTrevosPorQuantidadeNumeros;
+
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<Integer>();
@@ -455,6 +631,25 @@ public class SimulaUiState {
             this.valorGrande = false;
             this.titleComoJogar = "";
             this.mensagemComoJogar = "";
+            this.especial = false;
+            this.labelsTeimosinhas = new ArrayList<String>();
+            this.concursosTeimosinhas = new ArrayList<Integer>();
+            this.textoBotaoTeimosinhas = "";
+            this.exibirDialogTeimosinha = false;
+            this.exibirDialogSemTeimosinha = false;
+            this.atualizarValorApostaPorTeimosinha = false;
+            this.labelsQuantidadeNumeros = new ArrayList<String>();
+            this.qtdPrognosticosQuantidadeNumeros = new ArrayList<Integer>();
+
+            this.exibirDialogQuantidadeNumeros = false;
+            this.exibirAvisoQuantidadeNumerosMaxima = false;
+            this.avisouQuantidadeNumerosMaxima = false;
+
+            this.posicaoQuantidadeNumerosSelecionada = 0;
+            this.textoBotaoPrognosticosSelecionado = "";
+
+            this.atualizarValorApostaPorQuantidadeNumeros = false;
+            this.resetarTrevosPorQuantidadeNumeros = false;
         }
 
         public Builder(
@@ -518,11 +713,131 @@ public class SimulaUiState {
             this.exibirDialogComoJogar = state.exibirDialogComoJogar;
             this.mensagemComoJogar = state.mensagemComoJogar;
             this.titleComoJogar = state.titleComoJogar;
+            this.especial = state.especial;
+            this.labelsTeimosinhas = state.labelsTeimosinhas != null
+                    ? new ArrayList<>(state.labelsTeimosinhas)
+                    : new ArrayList<String>();
+            this.concursosTeimosinhas = state.concursosTeimosinhas != null
+                    ? new ArrayList<>(state.concursosTeimosinhas)
+                    : new ArrayList<Integer>();
+            this.textoBotaoTeimosinhas = state.textoBotaoTeimosinhas;
+            this.exibirDialogTeimosinha = state.exibirDialogTeimosinha;
+            this.exibirDialogSemTeimosinha = state.exibirDialogSemTeimosinha;
+            this.atualizarValorApostaPorTeimosinha = state.atualizarValorApostaPorTeimosinha;
+            this.labelsQuantidadeNumeros =
+                    state.labelsQuantidadeNumeros != null
+                            ? new ArrayList<>(state.labelsQuantidadeNumeros)
+                            : new ArrayList<String>();
+
+            this.qtdPrognosticosQuantidadeNumeros =
+                    state.qtdPrognosticosQuantidadeNumeros != null
+                            ? new ArrayList<>(state.qtdPrognosticosQuantidadeNumeros)
+                            : new ArrayList<Integer>();
+
+            this.exibirDialogQuantidadeNumeros =
+                    state.exibirDialogQuantidadeNumeros;
+
+            this.exibirAvisoQuantidadeNumerosMaxima =
+                    state.exibirAvisoQuantidadeNumerosMaxima;
+
+            this.avisouQuantidadeNumerosMaxima =
+                    state.avisouQuantidadeNumerosMaxima;
+
+            this.posicaoQuantidadeNumerosSelecionada =
+                    state.posicaoQuantidadeNumerosSelecionada;
+
+            this.textoBotaoPrognosticosSelecionado =
+                    state.textoBotaoPrognosticosSelecionado;
+
+            this.atualizarValorApostaPorQuantidadeNumeros =
+                    state.atualizarValorApostaPorQuantidadeNumeros;
+
+            this.resetarTrevosPorQuantidadeNumeros =
+                    state.resetarTrevosPorQuantidadeNumeros;
         }
+        public Builder setLabelsQuantidadeNumeros(
+                List<String> labelsQuantidadeNumeros
+        ) {
+            this.labelsQuantidadeNumeros =
+                    labelsQuantidadeNumeros != null
+                            ? new ArrayList<>(labelsQuantidadeNumeros)
+                            : new ArrayList<String>();
+            return this;
+        }
+
+        public Builder setQtdPrognosticosQuantidadeNumeros(
+                List<Integer> qtdPrognosticosQuantidadeNumeros
+        ) {
+            this.qtdPrognosticosQuantidadeNumeros =
+                    qtdPrognosticosQuantidadeNumeros != null
+                            ? new ArrayList<>(qtdPrognosticosQuantidadeNumeros)
+                            : new ArrayList<Integer>();
+            return this;
+        }
+
+        public Builder setExibirDialogQuantidadeNumeros(
+                boolean exibirDialogQuantidadeNumeros
+        ) {
+            this.exibirDialogQuantidadeNumeros =
+                    exibirDialogQuantidadeNumeros;
+            return this;
+        }
+
+        public Builder setExibirAvisoQuantidadeNumerosMaxima(
+                boolean exibirAvisoQuantidadeNumerosMaxima
+        ) {
+            this.exibirAvisoQuantidadeNumerosMaxima =
+                    exibirAvisoQuantidadeNumerosMaxima;
+            return this;
+        }
+
+        public Builder setAvisouQuantidadeNumerosMaxima(
+                boolean avisouQuantidadeNumerosMaxima
+        ) {
+            this.avisouQuantidadeNumerosMaxima =
+                    avisouQuantidadeNumerosMaxima;
+            return this;
+        }
+
+        public Builder setPosicaoQuantidadeNumerosSelecionada(
+                int posicaoQuantidadeNumerosSelecionada
+        ) {
+            this.posicaoQuantidadeNumerosSelecionada =
+                    posicaoQuantidadeNumerosSelecionada;
+            return this;
+        }
+
+        public Builder setTextoBotaoPrognosticosSelecionado(
+                String textoBotaoPrognosticosSelecionado
+        ) {
+            this.textoBotaoPrognosticosSelecionado =
+                    textoBotaoPrognosticosSelecionado != null
+                            ? textoBotaoPrognosticosSelecionado
+                            : "";
+            return this;
+        }
+
+        public Builder setAtualizarValorApostaPorQuantidadeNumeros(
+                boolean atualizarValorApostaPorQuantidadeNumeros
+        ) {
+            this.atualizarValorApostaPorQuantidadeNumeros =
+                    atualizarValorApostaPorQuantidadeNumeros;
+            return this;
+        }
+
+        public Builder setResetarTrevosPorQuantidadeNumeros(
+                boolean resetarTrevosPorQuantidadeNumeros
+        ) {
+            this.resetarTrevosPorQuantidadeNumeros =
+                    resetarTrevosPorQuantidadeNumeros;
+            return this;
+        }
+
         public Builder setMensagemComoJogar(String mensagemComoJogar) {
             this.mensagemComoJogar = mensagemComoJogar;
             return this;
         }
+
         public Builder setTitleComoJogar(String titleComoJogar) {
             this.titleComoJogar = titleComoJogar;
             return this;
@@ -541,6 +856,7 @@ public class SimulaUiState {
             this.exibirAnimacao = exibirAnimacao;
             return this;
         }
+
         public Builder setValorCarrinho(
                 BigDecimal valorCarrinho
         ) {
@@ -550,6 +866,7 @@ public class SimulaUiState {
                             : BigDecimal.ZERO;
             return this;
         }
+
         public Builder setExibirDialogComoJogar(boolean exibirDialogComoJogar) {
             this.exibirDialogComoJogar = exibirDialogComoJogar;
             return this;
@@ -583,6 +900,47 @@ public class SimulaUiState {
                 CarrinhoDTO carrinho
         ) {
             this.carrinho = carrinho;
+            return this;
+        }
+
+        public Builder setEspecial(boolean especial) {
+            this.especial = especial;
+            return this;
+        }
+
+        public Builder setLabelsTeimosinhas(List<String> labelsTeimosinhas) {
+            this.labelsTeimosinhas = labelsTeimosinhas != null
+                    ? new ArrayList<>(labelsTeimosinhas)
+                    : new ArrayList<String>();
+            return this;
+        }
+
+        public Builder setConcursosTeimosinhas(List<Integer> concursosTeimosinhas) {
+            this.concursosTeimosinhas = concursosTeimosinhas != null
+                    ? new ArrayList<>(concursosTeimosinhas)
+                    : new ArrayList<Integer>();
+            return this;
+        }
+
+        public Builder setTextoBotaoTeimosinhas(String textoBotaoTeimosinhas) {
+            this.textoBotaoTeimosinhas = textoBotaoTeimosinhas != null
+                    ? textoBotaoTeimosinhas
+                    : "";
+            return this;
+        }
+
+        public Builder setExibirDialogTeimosinha(boolean exibirDialogTeimosinha) {
+            this.exibirDialogTeimosinha = exibirDialogTeimosinha;
+            return this;
+        }
+
+        public Builder setExibirDialogSemTeimosinha(boolean exibirDialogSemTeimosinha) {
+            this.exibirDialogSemTeimosinha = exibirDialogSemTeimosinha;
+            return this;
+        }
+
+        public Builder setAtualizarValorApostaPorTeimosinha(boolean atualizarValorApostaPorTeimosinha) {
+            this.atualizarValorApostaPorTeimosinha = atualizarValorApostaPorTeimosinha;
             return this;
         }
 

@@ -8,31 +8,40 @@
     android:background="@color/branco"
     android:paddingHorizontal="16dp">
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switchSurpresinha"
+
+    <LinearLayout
+        android:id="@+id/containerSurpresinha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="false"
-        android:showText="false"
-        android:text=""
-        android:thumb="@drawable/surpresinha_thumb"
-        android:track="@drawable/surpresinha_track"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/txtTitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/caixa_std_regular"
-        android:text="Surpresinha"
-        android:textColor="@color/cinza110"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@id/switchSurpresinha"
-        app:layout_constraintTop_toTopOf="@id/switchSurpresinha"
-        app:layout_constraintBottom_toBottomOf="@id/switchSurpresinha" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchSurpresinha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:showText="false"
+            android:text=""
+            android:thumb="@drawable/surpresinha_thumb"
+            android:track="@drawable/surpresinha_track" />
+
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Surpresinha"
+            android:textColor="@color/cinza110"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/containerComoJogar"
@@ -44,8 +53,8 @@
         android:padding="4dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/txtTitulo"
-        app:layout_constraintBottom_toBottomOf="@id/txtTitulo">
+        app:layout_constraintTop_toTopOf="@id/containerSurpresinha"
+        app:layout_constraintBottom_toBottomOf="@id/containerSurpresinha">
 
         <TextView
             android:id="@+id/txtComoJogar"

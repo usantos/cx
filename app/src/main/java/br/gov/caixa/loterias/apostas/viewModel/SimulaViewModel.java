@@ -164,6 +164,339 @@ public class SimulaViewModel extends AndroidViewModel {
 
             limparFlagsDeRenderizacao();;
         }
+        if (event instanceof SimulaUiEvent.InicializarTeimosinhas) {
+            inicializarTeimosinhas((SimulaUiEvent.InicializarTeimosinhas) event);
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ClicarTeimosinhas) {
+            clicarTeimosinhas();
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ConfirmarTeimosinha) {
+            confirmarTeimosinha((SimulaUiEvent.ConfirmarTeimosinha) event);
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ConsumirEventoUnico) {
+            consumirEventoUnico();
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ValorApostaAtualizado) {
+            valorApostaAtualizado();
+            return;
+        }
+        if (event instanceof SimulaUiEvent.InicializarQuantidadeNumeros) {
+            inicializarQuantidadeNumeros(
+                    (SimulaUiEvent.InicializarQuantidadeNumeros) event
+            );
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ClicarQuantidadeNumeros) {
+            clicarQuantidadeNumeros();
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.SelecionarQuantidadeNumeros) {
+            selecionarQuantidadeNumeros(
+                    (SimulaUiEvent.SelecionarQuantidadeNumeros) event
+            );
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ConfirmarQuantidadeNumeros) {
+            confirmarQuantidadeNumeros(
+                    (SimulaUiEvent.ConfirmarQuantidadeNumeros) event
+            );
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.DialogQuantidadeNumerosConsumido) {
+            consumirDialogQuantidadeNumeros();
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.AvisoQuantidadeNumerosConsumido) {
+            consumirAvisoQuantidadeNumeros();
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ValorApostaQuantidadeNumerosAtualizado) {
+            valorApostaQuantidadeNumerosAtualizado();
+            return;
+        }
+    }
+    private void inicializarQuantidadeNumeros(
+            SimulaUiEvent.InicializarQuantidadeNumeros event
+    ) {
+        SimulaUiState state = getState();
+
+        int qtdSelecionada =
+                event.getQtdDezenasSelecionadaInicial();
+
+        String textoBotao =
+                montarTextoQuantidadeNumeros(qtdSelecionada);
+
+        uiState.setValue(
+                state.toBuilder()
+                        .setLabelsQuantidadeNumeros(
+                                event.getLabelsQuantidadeNumeros()
+                        )
+                        .setQtdPrognosticosQuantidadeNumeros(
+                                event.getQtdPrognosticosQuantidadeNumeros()
+                        )
+                        .setQtdDezenasPossiveisSelecionado(qtdSelecionada)
+                        .setTextoBotaoPrognosticosSelecionado(textoBotao)
+                        .setPosicaoQuantidadeNumerosSelecionada(0)
+                        .setExibirDialogQuantidadeNumeros(false)
+                        .setExibirAvisoQuantidadeNumerosMaxima(false)
+                        .setAtualizarValorApostaPorQuantidadeNumeros(false)
+                        .setResetarTrevosPorQuantidadeNumeros(false)
+                        .build()
+        );
+    }
+
+    private void clicarQuantidadeNumeros() {
+        SimulaUiState state = getState();
+
+        uiState.setValue(
+                state.toBuilder()
+                        .setExibirDialogQuantidadeNumeros(true)
+                        .setExibirAvisoQuantidadeNumerosMaxima(false)
+                        .setAtualizarValorApostaPorQuantidadeNumeros(false)
+                        .setResetarTrevosPorQuantidadeNumeros(false)
+                        .build()
+        );
+    }
+
+    private void selecionarQuantidadeNumeros(
+            SimulaUiEvent.SelecionarQuantidadeNumeros event
+    ) {
+        aplicarQuantidadeNumerosSelecionada(
+                event.getPosition(),
+                false
+        );
+    }
+
+    private void confirmarQuantidadeNumeros(
+            SimulaUiEvent.ConfirmarQuantidadeNumeros event
+    ) {
+        aplicarQuantidadeNumerosSelecionada(
+                event.getPosition(),
+                true
+        );
+    }
+
+    private void aplicarQuantidadeNumerosSelecionada(
+            int position,
+            boolean confirmar
+    ) {
+        SimulaUiState state = getState();
+
+        List<Integer> prognosticos =
+                state.getQtdPrognosticosQuantidadeNumeros();
+
+        if (prognosticos == null || prognosticos.isEmpty()) {
+            return;
+        }
+
+        int posicaoValida = position;
+
+        if (posicaoValida < 0 || posicaoValida >= prognosticos.size()) {
+            posicaoValida = state.getPosicaoQuantidadeNumerosSelecionada();
+        }
+
+        if (posicaoValida < 0 || posicaoValida >= prognosticos.size()) {
+            return;
+        }
+
+        Integer qtdPrognosticos =
+                prognosticos.get(posicaoValida);
+
+        if (qtdPrognosticos == null) {
+            return;
+        }
+
+        String textoBotao =
+                montarTextoQuantidadeNumeros(qtdPrognosticos);
+
+        boolean deveExibirAviso =
+                posicaoValida >= 1
+                        && !state.isAvisouQuantidadeNumerosMaxima();
+
+        SimulaUiState.Builder builder =
+                state.toBuilder()
+                        .setPosicaoQuantidadeNumerosSelecionada(posicaoValida)
+                        .setQtdDezenasPossiveisSelecionado(qtdPrognosticos)
+                        .setTextoBotaoPrognosticosSelecionado(textoBotao)
+                        .setExibirAvisoQuantidadeNumerosMaxima(deveExibirAviso)
+                        .setAvisouQuantidadeNumerosMaxima(
+                                state.isAvisouQuantidadeNumerosMaxima()
+                                        || deveExibirAviso
+                        );
+
+        if (confirmar) {
+            builder
+                    .setExibirDialogQuantidadeNumeros(false)
+                    .setAtualizarValorApostaPorQuantidadeNumeros(true)
+                    .setResetarTrevosPorQuantidadeNumeros(
+                            tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA
+                    );
+        }
+
+        uiState.setValue(
+                builder.build()
+        );
+    }
+
+    private String montarTextoQuantidadeNumeros(
+            int qtdPrognosticos
+    ) {
+        return qtdPrognosticos
+                + getApplication()
+                .getString(R.string.espaco_numeros);
+    }
+
+    private void consumirDialogQuantidadeNumeros() {
+        SimulaUiState state = getState();
+
+        uiState.setValue(
+                state.toBuilder()
+                        .setExibirDialogQuantidadeNumeros(false)
+                        .build()
+        );
+    }
+
+    private void consumirAvisoQuantidadeNumeros() {
+        SimulaUiState state = getState();
+
+        uiState.setValue(
+                state.toBuilder()
+                        .setExibirAvisoQuantidadeNumerosMaxima(false)
+                        .build()
+        );
+    }
+
+    private void valorApostaQuantidadeNumerosAtualizado() {
+        SimulaUiState state = getState();
+
+        uiState.setValue(
+                state.toBuilder()
+                        .setAtualizarValorApostaPorQuantidadeNumeros(false)
+                        .setResetarTrevosPorQuantidadeNumeros(false)
+                        .build()
+        );
+    }
+
+    private void inicializarTeimosinhas(SimulaUiEvent.InicializarTeimosinhas event) {
+        SimulaUiState state = getState();
+
+        String textoBotao = event.getTextoInicialTeimosinha();
+
+        List<String> labels = event.getQntTeimosinhas();
+        List<Integer> concursos = event.getQntConcursos();
+
+        if (event.getQntConcursoSelecionado() != 0 && labels != null && concursos != null) {
+            for (int i = 0; i < concursos.size(); i++) {
+                if (concursos.get(i) == event.getQntConcursoSelecionado() && i < labels.size()) {
+                    textoBotao = labels.get(i);
+                    break;
+                }
+            }
+        }
+
+        uiState.setValue(
+                state.toBuilder()
+                        .setLabelsTeimosinhas(labels)
+                        .setConcursosTeimosinhas(concursos)
+                        .setQtdConcursoSelecionado(event.getQntConcursoSelecionado())
+                        .setEspecial(event.isEspecial())
+                        .setTextoBotaoTeimosinhas(textoBotao)
+                        .setExibirDialogTeimosinha(false)
+                        .setExibirDialogSemTeimosinha(false)
+                        .setAtualizarValorApostaPorTeimosinha(false)
+                        .build()
+        );
+    }
+
+    private void clicarTeimosinhas() {
+        SimulaUiState state = getState();
+
+        if (state.isEspecial()) {
+            uiState.setValue(
+                    state.toBuilder()
+                            .setExibirDialogTeimosinha(false)
+                            .setExibirDialogSemTeimosinha(true)
+                            .setAtualizarValorApostaPorTeimosinha(false)
+                            .build()
+            );
+            return;
+        }
+
+        uiState.setValue(
+                state.toBuilder()
+                        .setExibirDialogTeimosinha(true)
+                        .setExibirDialogSemTeimosinha(false)
+                        .setAtualizarValorApostaPorTeimosinha(false)
+                        .build()
+        );
+    }
+
+    private void confirmarTeimosinha(SimulaUiEvent.ConfirmarTeimosinha event) {
+        SimulaUiState state = getState();
+
+        int position = event.getPosition();
+
+        if (state.getConcursosTeimosinhas() == null || position < 0 || position >= state.getConcursosTeimosinhas().size()) {
+            return;
+        }
+
+        int qtdConcursoSelecionado = state.getConcursosTeimosinhas().get(position);
+
+        String textoBotao = state.getTextoBotaoTeimosinhas();
+
+        if (state.getLabelsTeimosinhas() != null && position < state.getLabelsTeimosinhas().size()) {
+            textoBotao = state.getLabelsTeimosinhas().get(position);
+        }
+
+        uiState.setValue(
+                state.toBuilder()
+                        .setQtdConcursoSelecionado(qtdConcursoSelecionado)
+                        .setTextoBotaoTeimosinhas(textoBotao)
+                        .setExibirDialogTeimosinha(false)
+                        .setExibirDialogSemTeimosinha(false)
+                        .setAtualizarValorApostaPorTeimosinha(true)
+                        .build()
+        );
+    }
+
+    private void consumirEventoUnico() {
+        SimulaUiState state = getState();
+
+        uiState.setValue(
+                state.toBuilder()
+                        .setExibirDialogTeimosinha(false)
+                        .setExibirDialogSemTeimosinha(false)
+                        .build()
+        );
+    }
+
+    private void valorApostaAtualizado() {
+        SimulaUiState state = getState();
+
+        uiState.setValue(
+                state.toBuilder()
+                        .setAtualizarValorApostaPorTeimosinha(false)
+                        .build()
+        );
+    }
+
+    private SimulaUiState getState() {
+        SimulaUiState state = uiState.getValue();
+        return state != null ? state : SimulaUiState.initial();
     }
 
     private void handleComoJogar() {
@@ -881,6 +1214,8 @@ public class SimulaViewModel extends AndroidViewModel {
                                 : 0;
             }
         }
+        BigDecimal valorInicialAposta =
+                obterValorInicialAposta();
 
         SimulaUiState atual =
                 getCurrentState();
@@ -892,6 +1227,10 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setExibirAnimacao(exibirAnimacao)
                         .setAnimacaoRes(animacaoRes)
                         .setVelocidadeAnimacao(velocidadeAnimacao)
+                        .setValorAposta(valorInicialAposta)
+                        .setValorGrande(
+                                valorInicialAposta.doubleValue() > 999.99
+                        )
                         .setComandoCarrinho(null)
                         .setDezenasSelecionadas(new ArrayList<Integer>())
                         .setQtdDezenasPossiveisSelecionado(qtdMinima)
@@ -1043,8 +1382,12 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoCompletarHabilitado(true)
                         .setBotaoAdicionarHabilitado(false)
                         .setBotaoLimparHabilitado(false)
-                        .setValorAposta(BigDecimal.ZERO)
-                        .setValorGrande(false)
+                        .setValorAposta(
+                                obterValorInicialAposta()
+                        )
+                        .setValorGrande(
+                                obterValorInicialAposta().doubleValue() > 999.99
+                        )
                         .setLimparOpcaoOutrosNumeros(true)
                         .setBotaoCompletarVisivel(true)
                         .setTextoBotaoFinalizarResId(
@@ -1105,6 +1448,50 @@ public class SimulaViewModel extends AndroidViewModel {
         uiState.setValue(
                 builder.build()
         );
+    }
+    private BigDecimal obterValorInicialAposta() {
+
+        if (parametroJogoAtual == null) {
+            return BigDecimal.ZERO;
+        }
+
+        int qtdMinima =
+                getQuantidadeMinimaSafe();
+
+        if (qtdMinima <= 0) {
+            return BigDecimal.ZERO;
+        }
+
+        if (parametroJogoAtual.getValoresAposta() == null
+                || parametroJogoAtual.getValoresAposta().isEmpty()) {
+
+            if (parametroJogoAtual.getValorApostaMinima() != null) {
+                return parametroJogoAtual.getValorApostaMinima();
+            }
+
+            return BigDecimal.ZERO;
+        }
+
+        for (br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO parametro
+                : parametroJogoAtual.getValoresAposta()) {
+
+            if (parametro == null) {
+                continue;
+            }
+
+            if (parametro.getNumeroPrognosticos() != null
+                    && parametro.getNumeroPrognosticos() == qtdMinima
+                    && parametro.getValor() != null) {
+
+                return parametro.getValor();
+            }
+        }
+
+        if (parametroJogoAtual.getValorApostaMinima() != null) {
+            return parametroJogoAtual.getValorApostaMinima();
+        }
+
+        return BigDecimal.ZERO;
     }
 
     private void limparFlagsDeRenderizacao() {

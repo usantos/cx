@@ -361,17 +361,20 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnQuantidadeNumeros"
                 android:layout_width="wrap_content"
-                android:minWidth="100dp"
                 android:layout_height="40dp"
+                android:minWidth="100dp"
                 android:text="6 números"
                 android:textAllCaps="false"
                 android:padding="4dp"
                 android:fontFamily="@font/caixa_std_regular"
-                android:textColor="@android:color/white"
+                android:textColor="@color/cinza110"
+                app:backgroundTint="@android:color/white"
+                app:strokeColor="@color/cinza"
+                app:strokeWidth="1dp"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_arrow_down"
                 app:iconGravity="textEnd"
-                app:iconTint="@android:color/white"/>
+                app:iconTint="@color/cinza110" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnTeimosinha"

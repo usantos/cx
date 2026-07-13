@@ -31,6 +31,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
@@ -150,7 +151,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private TextView tvValorAposta;
     private TextView tvValorCarrinho;
     private LinearLayout containerComoJogar;
-
+    private MaterialButton btnTeimosinha,btnQuantidadeNumeros;
+    private List<Integer> qtdPrognosticosQuantidadeNumerosList;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,24 +170,22 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         setViews();
 
+        viewModel = new ViewModelProvider(this).get(SimulaViewModel.class);
+        observeState();
+        configurarEventosViewModel();
+
         estilo = new EstiloModalidadeMKP(tipoJogo);
+
         zerarApostas();
+
         if (aposta != null) {
             mesDeSorteCartela = aposta.getMesDeSorte();
         }
 
-        //Tutorial permanente
         if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.SUPER_SETE_TUTORIAL)) {
             startActivity(new Intent(this, TutorialSuperSeteActivity.class));
         }
 
-
-        viewModel =
-                new ViewModelProvider(this)
-                        .get(SimulaViewModel.class);
-
-        observeState();
-        configurarEventosViewModel();
         viewModel.onEvent(
                 new SimulaUiEvent.TelaInicializada(
                         tipoJogo,
@@ -193,10 +193,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                         parametroSimulacao
                 )
         );
-        viewModel.onEvent(
-                new SimulaUiEvent.CarregarCarrinho()
-        );
 
+        viewModel.onEvent(new SimulaUiEvent.CarregarCarrinho());
     }
 
     @Override
@@ -259,6 +257,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             );
         }
         renderParametrosAposta(state);
+        renderQuantidadeNumeros(state);
         renderCarrinho(state);
 
         renderComandoCarrinho(
@@ -292,6 +291,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     ) {
         qtdDezenasPossiveisSelecionado = state.getQtdDezenasPossiveisSelecionado();
         qtdConcursoSelecionado = state.getQtdConcursoSelecionado();
+        textoBotaoTeimosinhas = state.getTextoBotaoTeimosinhas();
 
         if (qtdNumerosButton != null) {
             qtdNumerosButton.setText(
@@ -302,12 +302,99 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             );
         }
 
-        if (qtdConcursosButton != null) {
+        if (btnTeimosinha != null) {
             if (qtdConcursoSelecionado == 0) {
-                qtdConcursosButton.setText(R.string.label_sem_teimosinha);
+                btnTeimosinha.setText(R.string.label_sem_teimosinha);
+            } else if (textoBotaoTeimosinhas != null && !textoBotaoTeimosinhas.trim().isEmpty()) {
+                btnTeimosinha.setText(textoBotaoTeimosinhas);
             } else {
-                qtdConcursosButton.setText(textoBotaoTeimosinhas);
+                btnTeimosinha.setText(R.string.label_sem_teimosinha);
             }
+        }
+
+        if (state.isExibirDialogTeimosinha()) {
+            abrirDialogTeimosinhas(state);
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.ConsumirEventoUnico()
+            );
+        }
+
+        if (state.isExibirDialogSemTeimosinha()) {
+            DialogUtils.dialogEntendi(
+                    SimulaActivity.this,
+                    getString(R.string.nao_teimosinhas)
+            );
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.ConsumirEventoUnico()
+            );
+        }
+
+        if (state.isAtualizarValorApostaPorTeimosinha()) {
+            atualizarValorApostaPorTeimosinha();
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.ValorApostaAtualizado()
+            );
+        }
+    }
+    private void renderQuantidadeNumeros(
+            SimulaUiState state
+    ) {
+        qtdDezenasPossiveisSelecionado =
+                state.getQtdDezenasPossiveisSelecionado();
+
+        textoBotaoPrognosticosSelecionado =
+                state.getTextoBotaoPrognosticosSelecionado();
+
+        String textoQuantidadeNumeros;
+
+        if (textoBotaoPrognosticosSelecionado != null
+                && !textoBotaoPrognosticosSelecionado.trim().isEmpty()) {
+
+            textoQuantidadeNumeros = textoBotaoPrognosticosSelecionado;
+
+        } else {
+            textoQuantidadeNumeros = format(
+                    getResources().getString(R.string.percent_d_numeros),
+                    qtdDezenasPossiveisSelecionado
+            );
+        }
+
+        if (qtdNumerosButton != null) {
+            qtdNumerosButton.setText(textoQuantidadeNumeros);
+        }
+
+        if (btnQuantidadeNumeros != null) {
+            btnQuantidadeNumeros.setText(textoQuantidadeNumeros);
+        }
+
+        if (state.isExibirDialogQuantidadeNumeros()) {
+            abrirDialogQuantidadeNumeros(state);
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.DialogQuantidadeNumerosConsumido()
+            );
+        }
+
+        if (state.isExibirAvisoQuantidadeNumerosMaxima()) {
+            DialogUtils.dialogEntendi(
+                    SimulaActivity.this,
+                    getString(R.string.msg_qtd_max_ultrapassada)
+            );
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.AvisoQuantidadeNumerosConsumido()
+            );
+        }
+
+        if (state.isAtualizarValorApostaPorQuantidadeNumeros()) {
+            atualizarValorApostaPorQuantidadeNumeros(state);
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.ValorApostaQuantidadeNumerosAtualizado()
+            );
         }
     }
 
@@ -439,6 +526,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.tvValorAposta = findViewById(R.id.tvValorAposta);
         this.tvValorCarrinho = findViewById(R.id.tvTotalCarrinho);
         this.containerComoJogar = findViewById(R.id.containerComoJogar);
+        this.btnQuantidadeNumeros = findViewById(R.id.btnQuantidadeNumeros);
+        this.btnTeimosinha = findViewById(R.id.btnTeimosinha);
     }
     private void configurarEventosViewModel() {
 
@@ -467,6 +556,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     public void zerarApostas() {
         qtdNumerosList = new ArrayList<>();
+        qtdPrognosticosQuantidadeNumerosList = new ArrayList<>();
         qtdConcursosList = new ArrayList<>();
         textoBotaoTeimosinhas = getString(R.string.label_sem_teimosinha);
         mesDeSorteCartela = null;
@@ -491,11 +581,10 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         Drawable drawableQtdNumeros = imageQtdNumerosButton.getDrawable();
         ViewUtils.setColorDrawable(this, drawableQtdNumeros, estilo.getCorFonteFundoEscuro());
 
-        textoBotaoPrognosticosSelecionado = qtdNumerosButton.getText().toString();
-        if ((qtdConcursosList != null)) {
-            qtdConcursosButton.setText(textoBotaoTeimosinhas);
+        if (imageQtdConcursosButton != null) {
+            Drawable drawableQtdConcursos = imageQtdConcursosButton.getDrawable();
+            ViewUtils.setColorDrawable(this, drawableQtdConcursos, estilo.getCorFonteFundoEscuro());
         }
-        qtdConcursosButton.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
         Drawable drawableQtdConcursos = imageQtdConcursosButton.getDrawable();
         ViewUtils.setColorDrawable(this, drawableQtdConcursos, estilo.getCorFonteFundoEscuro());
     }
@@ -520,12 +609,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 }
                 break;
 
-            case R.id.qtdNumerosButton:
-                modalNumeros();
+            case R.id.btnQuantidadeNumeros:
+                viewModel.onEvent(new SimulaUiEvent.ClicarQuantidadeNumeros());
                 break;
 
-            case R.id.qtdConcursosButton:
-                modalTeimosinhas();
+            case R.id.btnTeimosinha:
+                viewModel.onEvent(new SimulaUiEvent.ClicarTeimosinhas());
                 break;
         }
     }
@@ -817,30 +906,79 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private void configuraParametrosJogo() {
         if (parametroSimulacao != null && parametroSimulacao.getValoresAposta() != null) {
             for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
+
                 if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-                    if (parametro.getNumeroTrevos().equals(parametroSimulacao.getTrevos().getQtdMinima())) {
-                        qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos()
-                                + getResources().getString(R.string.espaco_numeros_por_espaco)
-                                + ViewUtils.getMoedaFormat(parametro.getValor()));
+                    if (parametro.getNumeroTrevos() != null
+                            && parametroSimulacao.getTrevos() != null
+                            && parametroSimulacao.getTrevos().getQtdMinima() != null
+                            && parametro.getNumeroTrevos().equals(parametroSimulacao.getTrevos().getQtdMinima())) {
+
+                        qtdNumerosList.add(
+                                getResources().getString(R.string.string_vazia)
+                                        + parametro.getNumeroPrognosticos()
+                                        + getResources().getString(R.string.espaco_numeros_por_espaco)
+                                        + ViewUtils.getMoedaFormat(parametro.getValor())
+                        );
+
+                        qtdPrognosticosQuantidadeNumerosList.add(
+                                parametro.getNumeroPrognosticos()
+                        );
                     }
                 } else {
-                    qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos()
-                            + getResources().getString(R.string.espaco_numeros_por_espaco)
-                            + ViewUtils.getMoedaFormat(parametro.getValor()));
+                    qtdNumerosList.add(
+                            getResources().getString(R.string.string_vazia)
+                                    + parametro.getNumeroPrognosticos()
+                                    + getResources().getString(R.string.espaco_numeros_por_espaco)
+                                    + ViewUtils.getMoedaFormat(parametro.getValor())
+                    );
+
+                    qtdPrognosticosQuantidadeNumerosList.add(
+                            parametro.getNumeroPrognosticos()
+                    );
                 }
             }
+
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
                     if (numeroTeimosinha == 0) {
                         qtdConcursosList.add("Nenhuma");
                     } else if (numeroTeimosinha == 1) {
-                        qtdConcursosList.add("" + numeroTeimosinha + getResources().getString(R.string.espaco_concurso));
+                        qtdConcursosList.add(
+                                "" + numeroTeimosinha + getResources().getString(R.string.espaco_concurso)
+                        );
                     } else {
-                        qtdConcursosList.add("" + numeroTeimosinha + getResources().getString(R.string.espaco_concursos));
+                        qtdConcursosList.add(
+                                "" + numeroTeimosinha + getResources().getString(R.string.espaco_concursos)
+                        );
                     }
                 }
             }
         }
+    }
+    private void inicializarEstadoQuantidadeNumeros() {
+        viewModel.onEvent(
+                new SimulaUiEvent.InicializarQuantidadeNumeros(
+                        qtdNumerosList,
+                        qtdPrognosticosQuantidadeNumerosList,
+                        qtdDezenasPossiveisSelecionado
+                )
+        );
+    }
+
+    private void inicializarEstadoTeimosinhas() {
+        List<Integer> qntConcursos = new ArrayList<>();
+
+        if (parametroSimulacao != null && parametroSimulacao.getTeimosinhas() != null) {
+            qntConcursos.addAll(parametroSimulacao.getTeimosinhas());
+        }
+
+        viewModel.onEvent(new SimulaUiEvent.InicializarTeimosinhas(
+                qtdConcursosList,
+                qntConcursos,
+                qtdConcursoSelecionado,
+                isEspecial,
+                getString(R.string.label_sem_teimosinha)
+        ));
     }
 
     private void configuraFragments() {
@@ -932,107 +1070,111 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         } else {
             surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
         }
-
+        inicializarEstadoTeimosinhas();
+        inicializarEstadoQuantidadeNumeros();
         configuraBotoesListeners();
     }
 
     public void configuraBotoesListeners() {
         simularTelaAposta.setOnClickListener(this);
         surpresinhaTela.setOnClickListener(this);
-        qtdNumerosButton.setOnClickListener(this);
-        qtdConcursosButton.setOnClickListener(this);
+        btnTeimosinha.setOnClickListener(this);
+        btnQuantidadeNumeros.setOnClickListener(this);
     }
 
-    private void modalNumeros() {
-        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));
-        if (parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
-            DialogUtils.showDialogListItens(SimulaActivity.this,
-                    getResources().getString(R.string.quant_de_numeros),
-                    getResources().getString(R.string.valores_para_apostas_com_2_trevos),
-                    qtdNumerosList,
-                    "Confirmar",
-                    "Cancelar",
-                    onNumerosDialogListener());
-        } else {
-            DialogUtils.showDialogListItens(SimulaActivity.this,
-                    getResources().getString(R.string.quant_de_numeros),
-                    null,
-                    qtdNumerosList,
-                    "Confirmar",
-                    "Cancelar",
-                    onNumerosDialogListener());
+    private void abrirDialogQuantidadeNumeros(
+            SimulaUiState state
+    ) {
+        AppCenterManager.registraEvento(
+                getResources().getString(R.string.evento_entrou_selecao_prognosticos)
+        );
 
+        String subtitulo = null;
+
+        if (parametroSimulacao != null
+                && parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
+
+            subtitulo = getResources().getString(
+                    R.string.valores_para_apostas_com_2_trevos
+            );
         }
+
+        DialogUtils.showDialogListItens(
+                SimulaActivity.this,
+                getResources().getString(R.string.quant_de_numeros),
+                subtitulo,
+                state.getLabelsQuantidadeNumeros(),
+                "Confirmar",
+                "Cancelar",
+                onQuantidadeNumerosDialogListener()
+        );
     }
 
-    private OnDialogListener onNumerosDialogListener() {
+    private OnDialogListener onQuantidadeNumerosDialogListener() {
         return new OnDialogListener() {
             @Override
             public void itemSelecionado(int position) {
-                String itemValue = (String) qtdNumerosList.get(position);
-                if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-                    String stringNumero;
-                    if (itemValue.startsWith("1")) {
-                        stringNumero = itemValue.substring(0, 2);
-                    } else {
-                        stringNumero = itemValue.substring(0, 1);
-                    }
-                    ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(Integer.valueOf(stringNumero), 2);
-
-                    if (valorAposta != null) {
-                        textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
-                        qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
-                    }
-                    if ((position >= 1) && (!isAvisou)) {
-//                        ViewUtils.alertTitleButton(SimulaActivity.this,
-//                                R.string.label_atencao,
-//                                getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
-
-                        DialogUtils.dialogEntendi(
-                                SimulaActivity.this,
-                                getString(R.string.msg_qtd_max_ultrapassada)
-                        );
-
-                        isAvisou = true;
-                    }
-                } else {
-                    textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
-                    qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
-                }
-                if ((position >= 1) && (!isAvisou)) {
-//                    ViewUtils.alertTitleButton(SimulaActivity.this,
-//                            R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
-                    DialogUtils.dialogEntendi(
-                            SimulaActivity.this,
-                            getString(R.string.msg_qtd_max_ultrapassada)
-                    );
-                    isAvisou = true;
-                }
+                viewModel.onEvent(
+                        new SimulaUiEvent.SelecionarQuantidadeNumeros(position)
+                );
             }
 
             @Override
             public void ok(int position) {
-                qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
-
-                if (isFragmentCartela()) {
-                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                    cartelaFragment.atualizaStatusBotaoFinalizar(true);
-                } else if (isFragmentMeses()) {
-                    voltaPraEscolhaDeNumeros();
-                } else {
-                    if (surpresinhaFragment.getParametroJogo() != null) {
-                        surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-                            surpresinhaFragment.resetQtdTrevos();
-                        }
-                    }
-                }
+                viewModel.onEvent(
+                        new SimulaUiEvent.ConfirmarQuantidadeNumeros(position)
+                );
             }
 
             @Override
             public void cancelar() {
             }
         };
+    }
+    private void atualizarValorApostaPorQuantidadeNumeros(
+            SimulaUiState state
+    ) {
+        qtdDezenasPossiveisSelecionado =
+                state.getQtdDezenasPossiveisSelecionado();
+
+        textoBotaoPrognosticosSelecionado =
+                state.getTextoBotaoPrognosticosSelecionado();
+
+        if (qtdNumerosButton != null) {
+            qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
+        }
+
+        if (btnQuantidadeNumeros != null) {
+            btnQuantidadeNumeros.setText(textoBotaoPrognosticosSelecionado);
+        }
+
+        if (isFragmentCartela()) {
+            cartelaFragment.atualizaValorTotalAposta(
+                    qtdDezenasPossiveisSelecionado,
+                    qtdConcursoSelecionado
+            );
+
+            cartelaFragment.atualizaStatusBotaoFinalizar(true);
+            return;
+        }
+
+        if (isFragmentMeses()) {
+            voltaPraEscolhaDeNumeros();
+            return;
+        }
+
+        if (surpresinhaFragment != null
+                && surpresinhaFragment.getParametroJogo() != null) {
+
+            surpresinhaFragment.atualizaValorTotalAposta(
+                    qtdDezenasPossiveisSelecionado,
+                    qtdConcursoSelecionado
+            );
+
+            if (state.isResetarTrevosPorQuantidadeNumeros()) {
+                surpresinhaFragment.resetQtdTrevos();
+            }
+        }
     }
 
     private boolean isFragmentMeses() {
@@ -1044,6 +1186,20 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     //TODO//
+    private void abrirDialogTeimosinhas(SimulaUiState state) {
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
+
+        DialogUtils.showDialogListItensNovo(
+                SimulaActivity.this,
+                getResources().getString(R.string.teimosinhas_maiusculo),
+                null,
+                getString(R.string.teimosinhas_descricao),
+                state.getLabelsTeimosinhas(),
+                "Confirmar",
+                "Cancelar",
+                onTeimosinhaDialogListener()
+        );
+    }
     private void modalTeimosinhas() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
         if (!isEspecial) {
@@ -1070,32 +1226,43 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
             @Override
             public void ok(int position) {
-                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
-                textoBotaoTeimosinhas = qtdConcursosList.get(position);
-                if (qtdConcursoSelecionado == 0) {
-                    qtdConcursosButton.setText(R.string.label_sem_teimosinha);
-                } else {
-                    qtdConcursosButton.setText(textoBotaoTeimosinhas);
-                }
-
-                if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
-                    if (surpresinhaFragment.getParametroJogo() != null) {
-                        surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                    }
-                } else if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment) {
-                    if (trevosFragment != null && trevosFragment.getParametroValorApostaSelecionado() != null) {
-                        atualizaValorAposta(trevosFragment.getParametroValorApostaSelecionado());
-                    }
-                } else {
-                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                }
+                viewModel.onEvent(
+                        new SimulaUiEvent.ConfirmarTeimosinha(position)
+                );
             }
 
             @Override
             public void cancelar() {
-
             }
         };
+    }
+
+    private void atualizarValorApostaPorTeimosinha() {
+        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
+            if (surpresinhaFragment.getParametroJogo() != null) {
+                surpresinhaFragment.atualizaValorTotalAposta(
+                        qtdDezenasPossiveisSelecionado,
+                        qtdConcursoSelecionado
+                );
+            }
+            return;
+        }
+
+        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment) {
+            if (trevosFragment != null && trevosFragment.getParametroValorApostaSelecionado() != null) {
+                atualizaValorAposta(
+                        trevosFragment.getParametroValorApostaSelecionado()
+                );
+            }
+            return;
+        }
+
+        if (cartelaFragment != null) {
+            cartelaFragment.atualizaValorTotalAposta(
+                    qtdDezenasPossiveisSelecionado,
+                    qtdConcursoSelecionado
+            );
+        }
     }
 
     private void abrirTelaCartela(boolean surpresinha) {

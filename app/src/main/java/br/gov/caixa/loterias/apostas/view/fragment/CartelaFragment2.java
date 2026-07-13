@@ -385,9 +385,41 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         if (parentActivity.getAposta() != null) {
             editaAposta();
         } else {
-            publicarValorAposta(BigDecimal.ZERO);
+            inicializarValorApostaMinima();
             notificarEstadoCartelaAlterado();
         }
+    }
+    private void inicializarValorApostaMinima() {
+
+        if (parametroJogo == null || parentActivity == null) {
+            publicarValorAposta(BigDecimal.ZERO);
+            return;
+        }
+
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
+            atualizaValorApostaLoteca();
+            return;
+        }
+
+        int qtdMinima =
+                parentActivity.qtdDezenasPossiveisSelecionado > 0
+                        ? parentActivity.qtdDezenasPossiveisSelecionado
+                        : getQuantidadeMinimaSafe();
+
+        atualizaValorTotalAposta(
+                qtdMinima,
+                parentActivity.qtdConcursoSelecionado
+        );
+    }
+
+    private int getQuantidadeMinimaSafe() {
+
+        if (parametroJogo == null
+                || parametroJogo.getQuantidadeMinima() == null) {
+            return 0;
+        }
+
+        return parametroJogo.getQuantidadeMinima();
     }
 
     public void cartelaFragmentBuilder(Bundle dataBundle) {
@@ -1529,15 +1561,11 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             return 0;
         }
 
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-            return qtdTotalSelecionadosSuperSete > 0
-                    ? parentActivity.qtdDezenasPossiveisSelecionado
-                    : 0;
+        if (parentActivity.qtdDezenasPossiveisSelecionado > 0) {
+            return parentActivity.qtdDezenasPossiveisSelecionado;
         }
 
-        return dezenasSelecionadas != null && !dezenasSelecionadas.isEmpty()
-                ? parentActivity.qtdDezenasPossiveisSelecionado
-                : 0;
+        return getQuantidadeMinimaSafe();
     }
 
     private void configuraBotoes(
