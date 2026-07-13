@@ -279,7 +279,7 @@
     <string name="label_digite_aposta_realizada">_Digitar_ sua aposta realizada</string>
 
     <!-- Minhas apostas -->
-    <string name="label_aqui_voce_pode_acompanhar">Aqui você pode acompanhar todas as apostas que já realizou no aplicativo. Boa sorte!</string>
+    <string name="label_aqui_voce_pode_acompanhar">Aqui você pode acompanhar todas suas apostas realizadas nos últimos 6 meses. Boa sorte!</string>
     <string name="label_ver_resultados">Ver resultados</string>
     <string name="label_historico_de_apostas">Histórico de apostas</string>
     <string name="label_para_a_sorte_todo_mundo">O próximo ganhador pode ser você. Já pensou?</string>
