@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
@@ -8,12 +9,35 @@ public class EspecialUtils {
     public static String MEGA_LINHA = "ARG_30_ANOS_LINHA";
     public static String MEGA_DUAS_LINHAS = "ARG_30_ANOS_DUAS_LINHAS";
     public static String MEGA_VALOR = "ARG_30_ANOS_VALOR";
+    public static String LOTECA_PAIS_VALOR = "ARG_LOTECA_PAIS_VALOR";
+    public static String LOTECA_PAIS_LINHA = "ARG_LOTECA_PAIS_LINHA";
+    public static String LOTECA_PAIS_DUAS_LINHAS = "ARG_LOTECA_PAIS_DUAS_LINHAS";
+
+
+    public static Boolean isMega30(ModalidadeEnum modalidade, Integer numeroConcurso, Boolean isEspecial) {
+        if (!modalidade.equals(ModalidadeEnum.MEGA_SENA)) {
+            return false;
+        }
+        int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);
+        return isEspecial && numeroConcurso.equals(mega30);
+    }
+
+    public static Boolean isLotecaPais(ModalidadeEnum modalidade, Integer numeroConcurso, Boolean isEspecial) {
+        if (!modalidade.equals(ModalidadeEnum.LOTECA)) {
+            return false;
+        }
+        int lotecaPais = SharedPreferencesUtils.getValorInt(LOTECA_PAIS_VALOR, -1);
+        return isEspecial && numeroConcurso.equals(lotecaPais);
+    }
+
 
     public static Boolean isMega30(Integer numeroConcurso, TipoConcursoEnum tipoConcurso){
         int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);
         boolean isEspecial = tipoConcurso != null && tipoConcurso.equals(TipoConcursoEnum.ESPECIAL);
         return isEspecial && numeroConcurso.equals(mega30);
     }
+
+
 
     public static Boolean isMega30(Integer numeroConcurso, DTOEnumCharacter tipoConcurso){
         int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);

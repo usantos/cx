@@ -675,6 +675,13 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             //TODO: MEGA 30 ANOS//
             boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
             EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
+
+            //TODO: LOTECA PAIS//
+            EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(),
+                    data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(),
+                    data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+            //boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+            //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
             AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                     v,
                     relativeContentPrincipal,

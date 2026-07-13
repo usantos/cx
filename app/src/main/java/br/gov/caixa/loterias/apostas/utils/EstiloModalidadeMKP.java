@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
 public class EstiloModalidadeMKP {
 
@@ -41,6 +42,49 @@ public class EstiloModalidadeMKP {
             imagemSubCabecalho = R.drawable.rodape_mega_trinta_anos_inferior;
         }
     }
+
+    public static EstiloModalidadeMKP createModalidadeConcursoEsp(ModalidadeEnum modalidade, Integer numeroConcurso, TipoConcursoEnum tipoConcursoEnum) {
+
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+
+        if (EspecialUtils.isMega30(modalidade, numeroConcurso, tipoConcursoEnum)) {
+            estilo.aplicarMega30Anos();
+        }
+        if (EspecialUtils.isLotecaPais(modalidade, numeroConcurso, tipoConcursoEnum)) {
+            estilo.aplicarLotecaPais();
+        }
+
+        return estilo;
+    }
+
+    public static EstiloModalidadeMKP createModalidadeConcursoEsp(ModalidadeEnum modalidade, Integer numeroConcurso, Boolean isEspecial) {
+
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+
+        if (EspecialUtils.isMega30(modalidade, numeroConcurso, isEspecial)) {
+            estilo.aplicarMega30Anos();
+        }
+        if (EspecialUtils.isLotecaPais(modalidade, numeroConcurso, isEspecial)) {
+            estilo.aplicarLotecaPais();
+        }
+
+        return estilo;
+    }
+
+    private void aplicarMega30Anos() {
+        imagemEspecialCarrossel = R.drawable.cabecalho_mega_trinta_anos_carrossel;
+        imagemEspecialDetalhes = R.drawable.cabecalho_mega_trinta_anos_detalhe;
+        imagemSubCabecalho = R.drawable.rodape_mega_trinta_anos_inferior;
+        imagemEspecialQuadrada = R.drawable.mega_30_quadrado;
+    }
+
+    private void aplicarLotecaPais() {
+        imagemEspecialCarrossel = R.drawable.cabecalho_mega_trinta_anos_carrossel;
+        imagemEspecialDetalhes = R.drawable.cabecalho_mega_trinta_anos_detalhe;
+        imagemSubCabecalho = R.drawable.rodape_mega_trinta_anos_inferior;
+        imagemEspecialQuadrada = R.drawable.mega_30_quadrado;
+    }
+
 
     private void createEstilo(ModalidadeEnum modalidade){
         switch (modalidade) {

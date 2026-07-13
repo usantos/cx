@@ -148,10 +148,21 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                         ConfiguracaoAppSingleton.getInstance().setRapidaoHabilitado(false);
                         ConfiguracaoAppSingleton.getInstance().setUrlBaseApostador(result.getPayload().getMapa().getUrlBaseApostador());
                         ConfiguracaoAppSingleton.getInstance().setGrupoDeCpfsApostador(result.getPayload().getMapa().getGrupoDeCpfsApostador());
+
                         if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_VALOR,result.getPayload().getMapa().getConcursoMega30Anos());
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_LINHA,getString(R.string.mega_sena_30_anos));
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_DUAS_LINHAS,getString(R.string.mega_sena_30_anos_duas_linhas));
+                        }
+
+                        //TODO: LOTECA PAIS//
+                        //if(result.getPayload().getMapa().getConcursoLotecaPais() != null && !result.getPayload().getMapa().getConcursoLotecaPais().toString().isEmpty()){
+                        //MOCK
+                        if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
+                            //SharedPreferencesUtils.setValor(EspecialUtils.PAIS_VALOR, result.getPayload().getMapa().getConcursoLotecaPais());
+                            SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_VALOR, 4459);
+                            SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_LINHA, getString(R.string.loteca_pais));
+                            SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, getString(R.string.loteca_pais_duas_linhas));
                         }
                     }
                 }
