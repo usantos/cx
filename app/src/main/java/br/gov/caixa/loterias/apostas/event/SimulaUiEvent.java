@@ -548,5 +548,21 @@ public abstract class SimulaUiEvent {
     public static final class AbrirCarrinhoConsumido
             extends SimulaUiEvent {
     }
+    public static final class AlterarSurpresinha extends SimulaUiEvent {
+
+        private final boolean habilitada;
+
+        public AlterarSurpresinha(
+                boolean habilitada
+        ) {
+            this.habilitada = habilitada;
+        }
+
+        public boolean isHabilitada() {
+            return habilitada;
+        }
+    }
+    public static final class ComandoTelaSimulaConsumido extends SimulaUiEvent {
+    }
 
 }

@@ -27,6 +27,7 @@
             android:checked="false"
             android:showText="false"
             android:text=""
+            app:useMaterialThemeColors="false"
             android:thumb="@drawable/surpresinha_thumb"
             android:track="@drawable/surpresinha_track" />
 

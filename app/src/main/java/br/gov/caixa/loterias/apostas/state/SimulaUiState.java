@@ -87,6 +87,8 @@ public class SimulaUiState {
     private final boolean resetarTrevosPorQuantidadeNumeros;
     private String textoSelecionados;
     private final boolean abrirCarrinho;
+    private final ComandoTelaSimula comandoTelaSimula;
+    private final boolean surpresinhaHabilitada;
 
     public SimulaUiState(
             BarraTituloDTO barraTituloDTO,
@@ -113,6 +115,11 @@ public class SimulaUiState {
                 : new BarraTituloDTO();
 
         this.exibirDialogComoJogar = builder.exibirDialogComoJogar;
+        this.comandoTelaSimula =
+                builder.comandoTelaSimula;
+
+        this.surpresinhaHabilitada =
+                builder.surpresinhaHabilitada;
 
         this.exibirAnimacao = builder.exibirAnimacao;
         this.animacaoRes = builder.animacaoRes;
@@ -255,6 +262,8 @@ public class SimulaUiState {
                 .setExibirDialogComoJogar(false)
                 .setComandoCarrinho(null)
                 .setAbrirCarrinho(false)
+                .setComandoTelaSimula(null)
+                .setSurpresinhaHabilitada(false)
                 .setComandoCompletarAposta(null)
                 .setTipoJogo(null)
                 .setDezenasSelecionadas(new ArrayList<Integer>())
@@ -318,6 +327,14 @@ public class SimulaUiState {
     public boolean isEspecial() {
         return especial;
     }
+    public ComandoTelaSimula getComandoTelaSimula() {
+        return comandoTelaSimula;
+    }
+
+    public boolean isSurpresinhaHabilitada() {
+        return surpresinhaHabilitada;
+    }
+
 
     public List<String> getLabelsTeimosinhas() {
         return labelsTeimosinhas;
@@ -634,6 +651,8 @@ public class SimulaUiState {
         private boolean resetarTrevosPorQuantidadeNumeros;
         private String textoSelecionados = "Selecione os números:";
         private boolean abrirCarrinho;
+        private boolean surpresinhaHabilitada;
+        private ComandoTelaSimula comandoTelaSimula;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<Integer>();
@@ -666,6 +685,8 @@ public class SimulaUiState {
 
             this.posicaoQuantidadeNumerosSelecionada = 0;
             this.textoBotaoPrognosticosSelecionado = "";
+            this.comandoTelaSimula = null;
+            this.surpresinhaHabilitada = false;
 
             this.atualizarValorApostaPorQuantidadeNumeros = false;
             this.resetarTrevosPorQuantidadeNumeros = false;
@@ -683,6 +704,8 @@ public class SimulaUiState {
             this.comandoCarrinho = state.comandoCarrinho;
             this.comandoCompletarAposta = state.comandoCompletarAposta;
             this.valorCarrinho = state.valorCarrinho;
+            this.comandoTelaSimula = state.comandoTelaSimula;
+            this.surpresinhaHabilitada = state.surpresinhaHabilitada;
             this.quantidadeApostasCarrinho = state.quantidadeApostasCarrinho;
             this.carregandoCarrinho = state.carregandoCarrinho;
             this.exibirCarrinho = state.exibirCarrinho;
@@ -786,6 +809,20 @@ public class SimulaUiState {
                             : new ArrayList<String>();
             return this;
         }
+        public Builder setComandoTelaSimula(
+                ComandoTelaSimula comandoTelaSimula
+        ) {
+            this.comandoTelaSimula = comandoTelaSimula;
+            return this;
+        }
+
+        public Builder setSurpresinhaHabilitada(
+                boolean surpresinhaHabilitada
+        ) {
+            this.surpresinhaHabilitada = surpresinhaHabilitada;
+            return this;
+        }
+
         public Builder setAbrirCarrinho(boolean abrirCarrinho) {
             this.abrirCarrinho = abrirCarrinho;
             return this;

@@ -48,6 +48,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloBolaoFragment;
 
@@ -254,6 +255,9 @@ public class FragmentUtils {
 
 	public static SurpresinhaFragment getSurpresinhaFragment() {
 		return SurpresinhaFragment.newInstance();
+	}
+	public static SurpresinhaFragment2 getSurpresinhaFragment2() {
+		return SurpresinhaFragment2.newInstance();
 	}
 
 	public static ApostasConfirmadasFragment getApostasConfirmadasFragment(boolean isHistorico, ConfigConsultaDTO configConsulta) {

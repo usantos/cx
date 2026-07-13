@@ -5,7 +5,13 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.InsetDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -25,6 +31,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -32,6 +39,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
@@ -61,6 +69,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.ComandoCarrinho;
+import br.gov.caixa.loterias.apostas.state.ComandoTelaSimula;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -80,7 +89,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
@@ -117,7 +126,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     // Fragments
     private FragmentManager fragmentManager;
     private CartelaFragment2 cartelaFragment;
-    private SurpresinhaFragment surpresinhaFragment;
+    private SurpresinhaFragment2 surpresinhaFragment;
     private PaginacaoFragment paginacaoFragment;
     private TrevosFragment trevosFragment;
     private RodapeSimulacaoApostaFragment rodapeFragment;
@@ -157,6 +166,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private TextView textSelecionados;
     private FrameLayout frameCarrinho;
     private TextView tvQuantidadeApostas;
+    private SwitchMaterial switchSurpresinha;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -217,6 +227,40 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             lottieManager.pause();
         }
     }
+    private void setViews() {
+        this.toolBarLoteca = findViewById(R.id.toolBarLoteca);
+        this.simularTelaAposta = findViewById(R.id.simularTelaAposta);
+        this.surpresinhaTela = findViewById(R.id.surpresinhaTela);
+        this.qtdNumerosButton = findViewById(R.id.qtdNumerosButton);
+        this.qtdConcursosButton = findViewById(R.id.qtdConcursosButton);
+        this.botaoLimparAposta = findViewById(R.id.btnLimpar);
+        this.botaoCompletar = findViewById(R.id.btnCompletar);
+        this.botaoAdicionar = findViewById(R.id.btnAdicionarCarrinho);
+        this.labelValueJogosLoteca = findViewById(R.id.labelValueJogosLoteca);
+        this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
+        this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
+        this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
+        this.textoSalveEstaAposta = findViewById(R.id.textoSalveEstaAposta);
+        this.toolBarSimularAposta = findViewById(R.id.toolBarSimularAposta);
+        this.salvarApostaLayout = findViewById(R.id.salvarApostaLayout);
+        this.btnSalvarAposta = findViewById(R.id.btnSalvarAposta);
+        this.editNomeAposta = findViewById(R.id.editNomeAposta);
+        this.iconStarSalvar = findViewById(R.id.iconStarSalvar);
+        this.imageQtdNumerosButton = findViewById(R.id.imageQtdNumerosButton);
+        this.imageQtdConcursosButton = findViewById(R.id.imageQtdConcursosButton);
+        this.paginacaoView = findViewById(R.id.paginacaoView);
+        this.tvValorAposta = findViewById(R.id.tvValorAposta);
+        this.tvValorCarrinho = findViewById(R.id.tvTotalCarrinho);
+        this.containerComoJogar = findViewById(R.id.containerComoJogar);
+        this.btnQuantidadeNumeros = findViewById(R.id.btnQuantidadeNumeros);
+        this.btnTeimosinha = findViewById(R.id.btnTeimosinha);
+        this.textSelecionados = findViewById(R.id.textSelecionados);
+        this.frameCarrinho = findViewById(R.id.frameCarrinho);
+        this.tvQuantidadeApostas =
+                findViewById(R.id.tvQuantidadeApostas);
+        this.switchSurpresinha =
+                findViewById(R.id.switchSurpresinha);
+    }
 
     private void observeState() {
 
@@ -270,6 +314,274 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         );
         renderDialogComoJogar(state);
         renderAbrirCarrinho(state);
+        renderComandoTelaSimula(state);
+        renderSwitchSurpresinha(state);
+    }
+    private void renderSwitchSurpresinha(
+            SimulaUiState state
+    ) {
+
+        boolean surpresinhaHabilitada =
+                state.isSurpresinhaHabilitada();
+
+        aplicarCorModalidadeNoSwitch();
+
+        if (botaoCompletar != null) {
+            botaoCompletar.setVisibility(
+                    surpresinhaHabilitada
+                            ? View.GONE
+                            : View.VISIBLE
+            );
+        }
+
+        if (textSelecionados != null) {
+            textSelecionados.setVisibility(
+                    surpresinhaHabilitada
+                            ? View.GONE
+                            : View.VISIBLE
+            );
+        }
+
+        if (switchSurpresinha == null) {
+            return;
+        }
+
+        if (switchSurpresinha.isChecked() == surpresinhaHabilitada) {
+            return;
+        }
+
+        switchSurpresinha.setOnCheckedChangeListener(null);
+
+        switchSurpresinha.setChecked(
+                surpresinhaHabilitada
+        );
+
+        switchSurpresinha.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> viewModel.onEvent(
+                        new SimulaUiEvent.AlterarSurpresinha(
+                                isChecked
+                        )
+                )
+        );
+    }
+    private void aplicarCorModalidadeNoSwitch() {
+
+        if (switchSurpresinha == null || estilo == null) {
+            return;
+        }
+
+        switchSurpresinha.setUseMaterialThemeColors(false);
+
+        ColorStateList trackTint =
+                new ColorStateList(
+                        new int[][]{
+                                new int[]{android.R.attr.state_checked},
+                                new int[]{}
+                        },
+                        new int[]{
+                                ContextCompat.getColor(
+                                        this,
+                                        estilo.getCorClara()
+                                ),
+                                ContextCompat.getColor(
+                                        this,
+                                        R.color.cinza70
+                                )
+                        }
+                );
+
+        switchSurpresinha.setTrackTintList(
+                trackTint
+        );
+
+        StateListDrawable thumb =
+                new StateListDrawable();
+
+        thumb.addState(
+                new int[]{android.R.attr.state_checked},
+                criarThumbChecked()
+        );
+
+        thumb.addState(
+                new int[]{},
+                AppCompatResources.getDrawable(
+                        this,
+                        R.drawable.surpresinha_thumb_unchecked
+                )
+        );
+
+        switchSurpresinha.setThumbDrawable(
+                thumb
+        );
+    }
+
+    private Drawable criarThumbChecked() {
+
+        LayerDrawable drawable =
+                (LayerDrawable) AppCompatResources.getDrawable(
+                        this,
+                        R.drawable.surpresinha_thumb_checked
+                ).mutate();
+
+        GradientDrawable circle =
+                (GradientDrawable) drawable.getDrawable(0);
+
+        circle.setColor(
+                ContextCompat.getColor(
+                        this,
+                        estilo.getCorEscura()
+                )
+        );
+
+        return drawable;
+    }
+
+    private void renderComandoTelaSimula(
+            SimulaUiState state
+    ) {
+
+        if (state.getComandoTelaSimula() == null) {
+            return;
+        }
+
+        if (state.getComandoTelaSimula()
+                instanceof ComandoTelaSimula.AbrirSurpresinha) {
+
+            ComandoTelaSimula.AbrirSurpresinha comando =
+                    (ComandoTelaSimula.AbrirSurpresinha)
+                            state.getComandoTelaSimula();
+
+            executarAbrirSurpresinha(
+                    comando
+            );
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.ComandoTelaSimulaConsumido()
+            );
+
+            return;
+        }
+
+        if (state.getComandoTelaSimula()
+                instanceof ComandoTelaSimula.VoltarCartela) {
+
+            executarVoltarCartela();
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.ComandoTelaSimulaConsumido()
+            );
+        }
+    }
+    private void executarVoltarCartela() {
+
+        if (cartelaFragment == null) {
+            return;
+        }
+
+        cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
+
+        abrirTelaCartela(false);
+
+        if (temPaginacao()
+                && paginacaoView != null) {
+
+            paginacaoView.setVisibility(
+                    View.VISIBLE
+            );
+        }
+
+        if (imageQtdNumerosButton != null) {
+            imageQtdNumerosButton.setVisibility(
+                    View.VISIBLE
+            );
+        }
+
+        if (qtdNumerosButton != null) {
+            qtdNumerosButton.setVisibility(
+                    View.VISIBLE
+            );
+        }
+    }
+    private void abrirTelaSurpresinha() {
+
+        FragmentUtils.startFragmentAllowingStateLoss(
+                fragmentManager,
+                R.id.fragmentSimularApostas,
+                surpresinhaFragment
+        );
+
+        if (simularTelaAposta != null) {
+
+            if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
+
+                Drawable icNumeros =
+                        ContextCompat.getDrawable(
+                                this,
+                                R.drawable.icon_seleciona2
+                        );
+
+                ViewUtils.setColorDrawable(
+                        this,
+                        icNumeros,
+                        estilo.getCorFonteFundoClaro()
+                );
+
+                simularTelaAposta.setBackground(
+                        icNumeros
+                );
+
+            } else {
+
+                simularTelaAposta.setBackgroundResource(
+                        R.drawable.icon_seleciona2
+                );
+            }
+        }
+
+        if (surpresinhaTela != null) {
+            surpresinhaTela.setBackgroundResource(
+                    R.drawable.icon_surpresinha2
+            );
+        }
+    }
+
+    private void executarAbrirSurpresinha(
+            ComandoTelaSimula.AbrirSurpresinha comando
+    ) {
+
+        if (surpresinhaFragment == null) {
+            return;
+        }
+
+        surpresinhaFragment.setArguments(
+                new Bundle()
+        );
+
+        abrirTelaSurpresinha();
+
+        if (comando.isEsconderPaginacao()
+                && temPaginacao()
+                && paginacaoView != null) {
+
+            paginacaoView.setVisibility(
+                    View.GONE
+            );
+        }
+
+        if (comando.isEsconderQuantidadeNumeros()) {
+
+            if (imageQtdNumerosButton != null) {
+                imageQtdNumerosButton.setVisibility(
+                        View.GONE
+                );
+            }
+
+            if (qtdNumerosButton != null) {
+                qtdNumerosButton.setVisibility(
+                        View.GONE
+                );
+            }
+        }
     }
 
     private void renderDialogComoJogar(
@@ -507,39 +819,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         }
     }
 
-    private void setViews() {
-        this.toolBarLoteca = findViewById(R.id.toolBarLoteca);
-        this.simularTelaAposta = findViewById(R.id.simularTelaAposta);
-        this.surpresinhaTela = findViewById(R.id.surpresinhaTela);
-        this.qtdNumerosButton = findViewById(R.id.qtdNumerosButton);
-        this.qtdConcursosButton = findViewById(R.id.qtdConcursosButton);
-        this.botaoLimparAposta = findViewById(R.id.btnLimpar);
-        this.botaoCompletar = findViewById(R.id.btnCompletar);
-        this.botaoAdicionar = findViewById(R.id.btnAdicionarCarrinho);
-        this.labelValueJogosLoteca = findViewById(R.id.labelValueJogosLoteca);
-        this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
-        this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
-        this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
-        this.textoSalveEstaAposta = findViewById(R.id.textoSalveEstaAposta);
-        this.toolBarSimularAposta = findViewById(R.id.toolBarSimularAposta);
-        this.salvarApostaLayout = findViewById(R.id.salvarApostaLayout);
-        this.btnSalvarAposta = findViewById(R.id.btnSalvarAposta);
-        this.editNomeAposta = findViewById(R.id.editNomeAposta);
-        this.iconStarSalvar = findViewById(R.id.iconStarSalvar);
-        this.imageQtdNumerosButton = findViewById(R.id.imageQtdNumerosButton);
-        this.imageQtdConcursosButton = findViewById(R.id.imageQtdConcursosButton);
-        this.paginacaoView = findViewById(R.id.paginacaoView);
-        this.tvValorAposta = findViewById(R.id.tvValorAposta);
-        this.tvValorCarrinho = findViewById(R.id.tvTotalCarrinho);
-        this.containerComoJogar = findViewById(R.id.containerComoJogar);
-        this.btnQuantidadeNumeros = findViewById(R.id.btnQuantidadeNumeros);
-        this.btnTeimosinha = findViewById(R.id.btnTeimosinha);
-        this.textSelecionados = findViewById(R.id.textSelecionados);
-        this.frameCarrinho = findViewById(R.id.frameCarrinho);
-        this.tvQuantidadeApostas =
-                findViewById(R.id.tvQuantidadeApostas);
-    }
-
     private void configurarEventosViewModel() {
 
         if (containerComoJogar != null) {
@@ -605,19 +884,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         switch (v.getId()) {
             case R.id.simularTelaAposta:
                 voltaPraEscolhaDeNumeros();
-                break;
-            case R.id.surpresinhaTela:
-                surpresinhaFragment.setArguments(new Bundle());
-                abrirTelaSurprezinha();
-                if (temPaginacao()) {
-                    paginacaoView.setVisibility(View.GONE);
-                }
-
-                if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-                    imageQtdNumerosButton.setVisibility(View.GONE);
-                    qtdNumerosButton.setVisibility(View.GONE);
-
-                }
                 break;
 
             case R.id.btnQuantidadeNumeros:
@@ -772,7 +1038,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         Bundle bundle = new Bundle();
         bundle.putString(getResources().getString(R.string.extra_equipe_selecionada), (new Gson()).toJson(equipeSelecionada));
         surpresinhaFragment.setArguments(bundle);
-        abrirTelaSurprezinha();
+        abrirTelaSurpresinha();
     }
 
     @Override
@@ -988,19 +1254,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         }
     }
 
-    private void abrirTelaSurprezinha() {
-        FragmentUtils.startFragmentAllowingStateLoss(fragmentManager, R.id.fragmentSimularApostas, surpresinhaFragment);
-        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-            Drawable ic_numeros = ContextCompat.getDrawable(this, R.drawable.icon_seleciona2);
-            ViewUtils.setColorDrawable(this, ic_numeros, estilo.getCorFonteFundoClaro());
-            simularTelaAposta.setBackground(ic_numeros);
-            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
-        } else {
-            simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
-        }
-    }
-
     private void configuraParametrosJogo() {
         if (parametroSimulacao != null && parametroSimulacao.getValoresAposta() != null) {
             for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
@@ -1087,7 +1340,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         cartelaFragment.setArguments(bundle);
 
-        surpresinhaFragment = FragmentUtils.getSurpresinhaFragment();
+        surpresinhaFragment = FragmentUtils.getSurpresinhaFragment2();
 
         rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(), R.id.id_fg_rodape, new BigDecimal(0), new BigDecimal(0));
 
@@ -1152,9 +1405,11 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         bundle.putString(getResources().getString(R.string.extra_data_sorteio_atual), dataSorteioAtual);
         bundle.putSerializable(getResources().getString(R.string.extra_type_game_color_light), typeGameColorLight);
         bundle.putSerializable(getResources().getString(R.string.extra_type_game_color_Dark), typeGameColorDark);
-        bundle.putSerializable(COR_FONTE_FUNDO_BRANCO, estilo.getCorLetraLista());
-        bundle.putSerializable(COR_FONTE_FUNDO_CLARO, estilo.getCorFonteFundoClaro());
-        bundle.putSerializable(COR_FONTE_FUNDO_ESCURO, estilo.getCorFonteFundoEscuro());
+        bundle.putInt("typeGameColorLight", typeGameColorLight);
+        bundle.putInt("typeGameColorDark", typeGameColorDark);
+        bundle.putInt(COR_FONTE_FUNDO_BRANCO, estilo.getCorLetraLista());
+        bundle.putInt(COR_FONTE_FUNDO_CLARO, estilo.getCorFonteFundoClaro());
+        bundle.putInt(COR_FONTE_FUNDO_ESCURO, estilo.getCorFonteFundoEscuro());
 
         cartelaFragment.cartelaFragmentBuilder(bundle);
         surpresinhaFragment.surpresinhaFragmentBuilder(bundle);
@@ -1212,10 +1467,19 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     public void configuraBotoesListeners() {
         simularTelaAposta.setOnClickListener(this);
-        surpresinhaTela.setOnClickListener(this);
         btnTeimosinha.setOnClickListener(this);
         btnQuantidadeNumeros.setOnClickListener(this);
         frameCarrinho.setOnClickListener(this);
+        switchSurpresinha.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+
+                    viewModel.onEvent(
+                            new SimulaUiEvent.AlterarSurpresinha(
+                                    isChecked
+                            )
+                    );
+                }
+        );
     }
 
     private void abrirDialogQuantidadeNumeros(
@@ -1376,7 +1640,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     private void atualizarValorApostaPorTeimosinha() {
-        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
+        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment2) {
             if (surpresinhaFragment.getParametroJogo() != null) {
                 surpresinhaFragment.atualizaValorTotalAposta(
                         qtdDezenasPossiveisSelecionado,

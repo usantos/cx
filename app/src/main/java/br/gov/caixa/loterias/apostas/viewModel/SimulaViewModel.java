@@ -32,6 +32,7 @@ import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.state.ComandoCarrinho;
 import br.gov.caixa.loterias.apostas.state.ComandoCompletarAposta;
+import br.gov.caixa.loterias.apostas.state.ComandoTelaSimula;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
@@ -237,8 +238,64 @@ public class SimulaViewModel extends AndroidViewModel {
             consumirAbrirCarrinho();
             return;
         }
+        if (event instanceof SimulaUiEvent.AlterarSurpresinha) {
+
+            handleAlterarSurpresinha(
+                    ((SimulaUiEvent.AlterarSurpresinha) event)
+                            .isHabilitada()
+            );
+
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ComandoTelaSimulaConsumido) {
+            limparComandoTelaSimula();
+            return;
+        }
     }
 
+    private void handleAlterarSurpresinha(
+            boolean habilitada
+    ) {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        ComandoTelaSimula comando;
+
+        if (habilitada) {
+
+            comando =
+                    new ComandoTelaSimula.AbrirSurpresinha(
+                            tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA,
+                            true
+                    );
+
+        } else {
+
+            comando =
+                    new ComandoTelaSimula.VoltarCartela();
+        }
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setSurpresinhaHabilitada(habilitada)
+                        .setComandoTelaSimula(comando)
+                        .build()
+        );
+    }
+
+    private void limparComandoTelaSimula() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setComandoTelaSimula(null)
+                        .build()
+        );
+    }
     private void abrirCarrinho() {
 
         SimulaUiState atual =
@@ -1289,6 +1346,8 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setValorGrande(
                                 valorInicialAposta.doubleValue() > 999.99
                         )
+                        .setSurpresinhaHabilitada(false)
+                        .setComandoTelaSimula(null)
                         .setComandoCarrinho(null)
                         .setDezenasSelecionadas(new ArrayList<Integer>())
                         .setQtdDezenasPossiveisSelecionado(qtdMinima)
