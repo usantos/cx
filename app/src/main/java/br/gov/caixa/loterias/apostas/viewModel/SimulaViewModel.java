@@ -1235,7 +1235,10 @@ public class SimulaViewModel extends AndroidViewModel {
             }
         }
         BigDecimal valorInicialAposta =
-                obterValorInicialAposta();
+                obterValorApostaPorParametros(
+                        qtdMinima,
+                        qtdConcurso
+                );
 
         SimulaUiState atual =
                 getCurrentState();
@@ -1394,6 +1397,20 @@ public class SimulaViewModel extends AndroidViewModel {
                         ? tipoJogoAtual
                         : state.getTipoJogo();
 
+        int qtdNumerosAtual =
+                state.getQtdDezenasPossiveisSelecionado() > 0
+                        ? state.getQtdDezenasPossiveisSelecionado()
+                        : getQuantidadeMinimaSafe();
+
+        int qtdConcursoAtual =
+                state.getQtdConcursoSelecionado();
+
+        BigDecimal valorApostaAtual =
+                obterValorApostaPorParametros(
+                        qtdNumerosAtual,
+                        qtdConcursoAtual
+                );
+
         SimulaUiState.Builder builder =
                 state.toBuilder()
                         .setMostrarSalvarAposta(false)
@@ -1403,11 +1420,9 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoCompletarHabilitado(true)
                         .setBotaoAdicionarHabilitado(false)
                         .setBotaoLimparHabilitado(false)
-                        .setValorAposta(
-                                obterValorInicialAposta()
-                        )
+                        .setValorAposta(valorApostaAtual)
                         .setValorGrande(
-                                obterValorInicialAposta().doubleValue() > 999.99
+                                isValorGrande(valorApostaAtual)
                         )
                         .setLimparOpcaoOutrosNumeros(true)
                         .setBotaoCompletarVisivel(true)
@@ -1445,13 +1460,10 @@ public class SimulaViewModel extends AndroidViewModel {
 
         } else if (tipoJogo == ModalidadeEnum.SUPER_7) {
 
-            int qtdMinima =
-                    getQuantidadeMinimaSafe();
-
             builder
                     .setLimparSuperSete(true)
                     .setQtdTotalSelecionadosSuperSete(0)
-                    .setQtdDezenasPossiveisSelecionado(qtdMinima)
+                    .setQtdDezenasPossiveisSelecionado(qtdNumerosAtual)
                     .setMostrarBotaoLimparAposta(false)
                     .setMostrarSalvarAposta(false)
                     .setTextoBotaoFinalizarResId(R.string.completarCartela);
@@ -1470,49 +1482,107 @@ public class SimulaViewModel extends AndroidViewModel {
                 builder.build()
         );
     }
-    private BigDecimal obterValorInicialAposta() {
+    private BigDecimal obterValorApostaPorParametros(
+            int qtdPrognosticos,
+            int qtdConcursos
+    ) {
 
         if (parametroJogoAtual == null) {
             return BigDecimal.ZERO;
         }
 
+        if (qtdPrognosticos <= 0) {
+            qtdPrognosticos = getQuantidadeMinimaSafe();
+        }
+
+        BigDecimal valorBase =
+                BigDecimal.ZERO;
+
+        if (parametroJogoAtual.getValoresAposta() != null
+                && !parametroJogoAtual.getValoresAposta().isEmpty()) {
+
+            if (tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA
+                    && parametroJogoAtual.getTrevos() != null
+                    && parametroJogoAtual.getTrevos().getQtdMinima() != null) {
+
+                br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO valorAposta =
+                        parametroJogoAtual.getValorApostaBy(
+                                qtdPrognosticos,
+                                parametroJogoAtual.getTrevos().getQtdMinima()
+                        );
+
+                if (valorAposta != null
+                        && valorAposta.getValor() != null) {
+
+                    valorBase = valorAposta.getValor();
+                }
+
+            } else {
+
+                for (br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO parametro
+                        : parametroJogoAtual.getValoresAposta()) {
+
+                    if (parametro == null) {
+                        continue;
+                    }
+
+                    if (parametro.getNumeroPrognosticos() != null
+                            && parametro.getNumeroPrognosticos() == qtdPrognosticos
+                            && parametro.getValor() != null) {
+
+                        valorBase = parametro.getValor();
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (valorBase.compareTo(BigDecimal.ZERO) == 0
+                && parametroJogoAtual.getValorApostaMinima() != null) {
+
+            valorBase = parametroJogoAtual.getValorApostaMinima();
+        }
+
+        if (qtdConcursos > 0) {
+            valorBase =
+                    valorBase.multiply(
+                            BigDecimal.valueOf(qtdConcursos)
+                    );
+        }
+
+        return valorBase;
+    }
+    private boolean isValorGrande(
+            BigDecimal valor
+    ) {
+
+        return valor != null
+                && valor.doubleValue() > 999.99;
+    }
+    private BigDecimal obterValorInicialAposta() {
+
         int qtdMinima =
                 getQuantidadeMinimaSafe();
 
-        if (qtdMinima <= 0) {
-            return BigDecimal.ZERO;
+        int qtdConcursoInicial = 0;
+
+        if (parametroJogoAtual != null
+                && parametroJogoAtual.getTeimosinhas() != null
+                && !parametroJogoAtual.getTeimosinhas().isEmpty()) {
+
+            Integer primeiraTeimosinha =
+                    parametroJogoAtual.getTeimosinhas().get(0);
+
+            qtdConcursoInicial =
+                    primeiraTeimosinha != null
+                            ? primeiraTeimosinha
+                            : 0;
         }
 
-        if (parametroJogoAtual.getValoresAposta() == null
-                || parametroJogoAtual.getValoresAposta().isEmpty()) {
-
-            if (parametroJogoAtual.getValorApostaMinima() != null) {
-                return parametroJogoAtual.getValorApostaMinima();
-            }
-
-            return BigDecimal.ZERO;
-        }
-
-        for (br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO parametro
-                : parametroJogoAtual.getValoresAposta()) {
-
-            if (parametro == null) {
-                continue;
-            }
-
-            if (parametro.getNumeroPrognosticos() != null
-                    && parametro.getNumeroPrognosticos() == qtdMinima
-                    && parametro.getValor() != null) {
-
-                return parametro.getValor();
-            }
-        }
-
-        if (parametroJogoAtual.getValorApostaMinima() != null) {
-            return parametroJogoAtual.getValorApostaMinima();
-        }
-
-        return BigDecimal.ZERO;
+        return obterValorApostaPorParametros(
+                qtdMinima,
+                qtdConcursoInicial
+        );
     }
 
     private void limparFlagsDeRenderizacao() {
