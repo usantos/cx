@@ -76,6 +76,7 @@ public class EstiloModalidadeMKP {
         imagemEspecialDetalhes = R.drawable.cabecalho_mega_trinta_anos_detalhe;
         imagemSubCabecalho = R.drawable.rodape_mega_trinta_anos_inferior;
         imagemEspecialQuadrada = R.drawable.mega_30_quadrado;
+        imagemEspecialDupla = R.drawable.mega_virada_dupla;
     }
 
     private void aplicarLotecaPais() {
@@ -83,6 +84,7 @@ public class EstiloModalidadeMKP {
         imagemEspecialDetalhes = R.drawable.cabecalho_mega_trinta_anos_detalhe;
         imagemSubCabecalho = R.drawable.rodape_mega_trinta_anos_inferior;
         imagemEspecialQuadrada = R.drawable.mega_30_quadrado;
+        imagemEspecialDupla = R.drawable.mega_virada_dupla;
     }
 
 

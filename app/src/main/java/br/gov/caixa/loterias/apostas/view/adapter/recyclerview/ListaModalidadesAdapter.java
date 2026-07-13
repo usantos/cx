@@ -90,8 +90,13 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		ModalidadeDisponivelCota itemModalidade = listModalidadeComSemTodas.get(position);
 		ModalidadeEnum modalidade = itemModalidade.getModalidade();
 		//TODO: MEGA 30 ANOS//
-		Boolean isMega30 = EspecialUtils.isMega30(itemModalidade.getConcurso(),itemModalidade.getTipoConcurso());
-		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(itemModalidade.getModalidade(),isMega30);
+		Boolean isMega30 = EspecialUtils.isMega30(itemModalidade.getModalidade(), itemModalidade.getConcurso(),itemModalidade.getTipoConcurso());
+		//TODO: LOTECA PAIS//
+		Boolean isLotecaPais = EspecialUtils.isLotecaPais(itemModalidade.getModalidade(), itemModalidade.getConcurso(),itemModalidade.getTipoConcurso());
+		//EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(itemModalidade.getModalidade(),isMega30);
+		EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(itemModalidade.getModalidade(),
+				itemModalidade.getConcurso(), itemModalidade.getTipoConcurso());
+
 		boolean isEspecial;
 		if (itemModalidade.getTipoConcurso() != null && itemModalidade.getTipoConcurso().equals(TipoConcursoEnum.ESPECIAL)) {
 			isEspecial = true;
@@ -111,14 +116,16 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 			} else {
 				if (isEspecial) {
 					if(isMega30) {
-						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(estilo, true)));
+						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(estilo)));
 						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase()));
-					}
-					else {
+					} else if(isLotecaPais) {
+						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(estilo)));
+						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase()));
+					} else {
 						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(estilo, false)));
 						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
 					}
-					} else {
+				} else {
 					holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, estilo.getCorClara()));
 					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
 				}
@@ -223,6 +230,14 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		if (isMega30) {
 			return R.drawable.mega_30_quadrado;
 		}
+
+		if (estilo.getImagemEspecialQuadrada() != -1) {
+			return estilo.getImagemEspecialQuadrada();
+		} else {
+			return R.color.branco;
+		}
+	}
+	private int fundoImagemEspecial(EstiloModalidadeMKP estilo) {
 
 		if (estilo.getImagemEspecialQuadrada() != -1) {
 			return estilo.getImagemEspecialQuadrada();

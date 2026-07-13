@@ -48,6 +48,25 @@ public class EspecialUtils {
         return isEspecial && numeroConcurso.equals(lotecaPais);
     }
 
+    public static Boolean isMega30(ModalidadeEnum modalidade, Integer numeroConcurso, DTOEnumCharacter tipoConcurso){
+        if (!modalidade.equals(ModalidadeEnum.MEGA_SENA)) {
+            return false;
+        }
+        int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);
+        boolean isEspecial = tipoConcurso != null && tipoConcurso.getValor() != null &&
+                tipoConcurso.getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor());
+        return isEspecial && numeroConcurso.equals(mega30);
+    }
+
+    public static Boolean isLotecaPais(ModalidadeEnum modalidade, Integer numeroConcurso, DTOEnumCharacter tipoConcurso){
+        if (!modalidade.equals(ModalidadeEnum.LOTECA)) {
+            return false;
+        }
+        int lotecaPais = SharedPreferencesUtils.getValorInt(LOTECA_PAIS_VALOR, -1);
+        boolean isEspecial = tipoConcurso != null && tipoConcurso.getValor() != null &&
+                tipoConcurso.getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor());
+        return isEspecial && numeroConcurso.equals(lotecaPais);
+    }
 
     public static Boolean isMega30(Integer numeroConcurso, TipoConcursoEnum tipoConcurso){
         int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);

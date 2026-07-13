@@ -60,6 +60,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private EstiloModalidadeMKP estiloModalidadeMKP;
 	private TipoApostaLinhaView tipoApostaLinhaView;
 	private Boolean isMega30 = false;
+	private Boolean isLotecaPais = false;
 
 	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity, ApostasConfirmadasFragment fragment) {
 		super(view);
@@ -94,10 +95,13 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 	@Override
 	public void bind(ApostaDTO aposta, int position) {
-		if(aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
-			isMega30 = EspecialUtils.isMega30(aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
-		}
-		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade(), isMega30);
+		//if(aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
+		//	isMega30 = EspecialUtils.isMega30(aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
+		//}
+		isMega30 = EspecialUtils.isMega30(aposta.getModalidade(), aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso().getDescricao().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.toString()));
+		isLotecaPais = EspecialUtils.isLotecaPais(aposta.getModalidade(), aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso().getDescricao().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.toString()));
+		//estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade(), isMega30);
+		estiloModalidadeMKP = EstiloModalidadeMKP.createModalidadeConcursoEsp(aposta.getModalidade(), aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso().getDescricao().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.toString()));
 
 		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorClara());
 
@@ -106,6 +110,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		this.modalidadeTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
 		if (isMega30) {
 			modalidadeTxt.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, ""));
+		} else if (isLotecaPais) {
+			modalidadeTxt.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, ""));
 		} else {
 			this.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
 		}
