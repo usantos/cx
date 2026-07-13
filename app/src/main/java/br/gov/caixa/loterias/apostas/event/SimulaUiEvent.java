@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -569,6 +570,59 @@ public abstract class SimulaUiEvent {
     public static final class SurpresinhaFechada
             extends SimulaUiEvent {
     }
+    public static class FavoritarApostaClicado extends SimulaUiEvent {
+    }
+
+    public static class DialogFavoritarApostaConsumido extends SimulaUiEvent {
+    }
+    public static class SalvarApostaFavoritaSolicitado
+            extends SimulaUiEvent {
+
+        private final ApostaFavoritaDTO apostaFavorita;
+        private final String nomeAposta;
+        private final Object numerosSelecionados;
+
+        public SalvarApostaFavoritaSolicitado(
+                ApostaFavoritaDTO apostaFavorita,
+                String nomeAposta,
+                Object numerosSelecionados
+        ) {
+            this.apostaFavorita = apostaFavorita;
+            this.nomeAposta = nomeAposta;
+            this.numerosSelecionados = numerosSelecionados;
+        }
+
+        public ApostaFavoritaDTO getApostaFavorita() {
+            return apostaFavorita;
+        }
+
+        public String getNomeAposta() {
+            return nomeAposta;
+        }
+
+        public Object getNumerosSelecionados() {
+            return numerosSelecionados;
+        }
+    }
+    public static class ConfirmarSalvarApostaFavorita
+            extends SimulaUiEvent {
+
+        private final ApostaFavoritaDTO apostaFavorita;
+
+        public ConfirmarSalvarApostaFavorita(
+                ApostaFavoritaDTO apostaFavorita
+        ) {
+            this.apostaFavorita = apostaFavorita;
+        }
+
+        public ApostaFavoritaDTO getApostaFavorita() {
+            return apostaFavorita;
+        }
+    }
+    public static class ComandoFavoritarApostaConsumido
+            extends SimulaUiEvent {
+    }
+
     public static final class ComandoTelaSimulaConsumido extends SimulaUiEvent {
     }
 

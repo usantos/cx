@@ -110,7 +110,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     //TODO: MEGA 30 ANOS//
     private int numero_concurso;
     private ConstraintLayout toolBarLoteca;
-    private Button qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoCompletar, botaoAdicionar;
+    private Button qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoCompletar, botaoAdicionar, btnFavoritar;
     private AppCompatImageView simularTelaAposta, surpresinhaTela;
     private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
             labelValueTriplasLoteca, textoSalveEstaAposta;
@@ -260,6 +260,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 findViewById(R.id.tvQuantidadeApostas);
         this.switchSurpresinha =
                 findViewById(R.id.switchSurpresinha);
+        this.btnFavoritar = findViewById(R.id.favoritar_aposta);
     }
 
     private void observeState() {
@@ -885,6 +886,13 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             case R.id.frameCarrinho:
                 viewModel.onEvent(new SimulaUiEvent.CarrinhoClicado());
                 break;
+
+            case R.id.favoritar_aposta: {
+                viewModel.onEvent(
+                        new SimulaUiEvent.FavoritarApostaClicado()
+                );
+            }
+            break;
         }
     }
 
@@ -1101,6 +1109,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     public Button getBotaoCompletar() {
         return botaoCompletar;
+    }
+    public Button getBotaoFavoritar() {
+        return btnFavoritar;
     }
 
     public Button getBotaoAdicionar() {

@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -90,6 +91,7 @@ import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
@@ -140,7 +142,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     public BigDecimal valorTotalAposta;
     public int typeGameColorLight, typeGameColorDark;
     public int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
-    public Button botaoCompletar, botaoAdicionar, botaoLimparAposta;
+    public Button botaoCompletar, botaoAdicionar, botaoLimparAposta, botaoFavoritar;
     public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
     public ListaDezenaRecyclerView simularDezenasAdapter;
     public String dataSorteioAtual;
@@ -631,6 +633,12 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             }
             break;
 
+            case R.id.favoritar_aposta: {
+                viewModel.onEvent(
+                        new SimulaUiEvent.FavoritarApostaClicado()
+                );
+            }
+            break;
 
             case R.id.salvarApostaLayout: {
                 RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
@@ -964,6 +972,60 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         renderTextoSelecionados(state);
         renderLimpezaAposta(state);
         renderCompletarAposta(state);
+        renderDialogFavoritarAposta(state);
+    }
+
+    private void renderDialogFavoritarAposta(
+            SimulaUiState state
+    ) {
+
+        if (!state.isExibirDialogFavoritarAposta()) {
+            return;
+        }
+
+        Dialog dialog =
+                DialogUtils.buildDialogFavoritar(
+                        requireContext(),
+                        getString(R.string.favoritar_carrinho),
+                        new OnDialogFavoritarListener() {
+
+                            @Override
+                            public void Confirmar(
+                                    String nome,
+                                    boolean manterSurpresinhas
+                            ) {
+
+                                if (TextUtils.isEmpty(nome)) {
+
+                                    DialogUtils.dialogEntendi(
+                                            getContext(),
+                                            getString(
+                                                    R.string.msg_favor_inserir_nome_aposta
+                                            )
+                                    );
+
+                                    return;
+                                }
+
+                                solicitarSalvarApostaFavorita(
+                                        nome
+                                );
+                            }
+
+                            @Override
+                            public void Cancelar() {
+                            }
+                        },
+                        false
+                );
+
+        if (dialog != null) {
+            dialog.show();
+        }
+
+        viewModel.onEvent(
+                new SimulaUiEvent.DialogFavoritarApostaConsumido()
+        );
     }
     private void renderTextoSelecionados(
             SimulaUiState state
@@ -1091,7 +1153,64 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 new SimulaUiEvent.ComandoCompletarApostaConsumido()
         );
     }
+    private void solicitarSalvarApostaFavorita(
+            String nome
+    ) {
 
+        ApostaFavoritaDTO apostaFavorita =
+                criarApostaFavoritaDTO();
+
+        Object numerosSelecionados =
+                obterNumerosSelecionadosFavoritos();
+
+        viewModel.onEvent(
+                new SimulaUiEvent.SalvarApostaFavoritaSolicitado(
+                        apostaFavorita,
+                        nome,
+                        numerosSelecionados
+                )
+        );
+    }
+    private ApostaFavoritaDTO criarApostaFavoritaDTO() {
+
+        ApostaFavoritaDTO aposta =
+                new ApostaFavoritaDTO();
+
+        if (parametroJogo.isTipoJogo(
+                ModalidadeEnum.TIMEMANIA
+        ) && equipeSelecionada != null) {
+
+            aposta.setTimeDoCoracao(
+                    equipeSelecionada
+            );
+        }
+
+        if (parametroJogo.isTipoJogo(
+                ModalidadeEnum.MAIS_MILIONARIA
+        )) {
+
+            aposta.setParametroTrevo(
+                    new ParametroTrevo()
+            );
+        }
+
+        return aposta;
+    }
+    private Object obterNumerosSelecionadosFavoritos() {
+
+        if (parametroJogo.isTipoJogo(
+                ModalidadeEnum.SUPER_7
+        )) {
+
+            return ListaUtils.pegaListaSuperSete(
+                    listaAdaptersSuperSete
+            );
+        }
+
+        return new ArrayList<>(
+                dezenasSelecionadas
+        );
+    }
     private void renderLimpezaAposta(
             SimulaUiState state
     ) {
@@ -1261,23 +1380,42 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             SimulaUiState state
     ) {
 
+        boolean mostrarFavoritar =
+                state.isMostrarSalvarAposta();
+
+        if (botaoFavoritar != null) {
+
+            botaoFavoritar.setVisibility(
+                    mostrarFavoritar
+                            ? View.VISIBLE
+                            : View.GONE
+            );
+        }
+
         if (botaoCompletar != null) {
 
-            boolean surpresinhaHabilitada =
-                    state.isSurpresinhaHabilitada();
+            if (mostrarFavoritar) {
 
-            botaoCompletar.setEnabled(
-                    !surpresinhaHabilitada
-                            && state.isBotaoCompletarHabilitado()
-            );
+                botaoCompletar.setVisibility(
+                        View.GONE
+                );
 
-            botaoCompletar.setVisibility(
-                    surpresinhaHabilitada
-                            ? View.GONE
-                            : state.isBotaoFinalizarVisivel()
-                            ? View.VISIBLE
-                            : View.INVISIBLE
-            );
+            } else {
+
+                boolean surpresinhaHabilitada =
+                        state.isSurpresinhaHabilitada();
+
+                botaoCompletar.setEnabled(
+                        !surpresinhaHabilitada
+                                && state.isBotaoCompletarHabilitado()
+                );
+
+                botaoCompletar.setVisibility(
+                        surpresinhaHabilitada
+                                ? View.GONE
+                                : View.VISIBLE
+                );
+            }
         }
 
         if (botaoAdicionar != null) {
@@ -1690,6 +1828,9 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 parentActivity.getBotaoCompletar();
 
         botaoCompletar.setOnClickListener(this);
+
+        botaoFavoritar = parentActivity.getBotaoFavoritar();
+        botaoFavoritar.setOnClickListener(this);
 
         botaoAdicionar =
                 parentActivity.getBotaoAdicionar();

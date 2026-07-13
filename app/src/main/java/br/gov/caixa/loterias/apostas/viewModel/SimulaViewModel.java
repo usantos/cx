@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.viewModel;
 
+import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
+
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -7,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
@@ -20,9 +23,12 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
@@ -32,9 +38,11 @@ import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.state.ComandoCarrinho;
 import br.gov.caixa.loterias.apostas.state.ComandoCompletarAposta;
+import br.gov.caixa.loterias.apostas.state.ComandoFavoritarAposta;
 import br.gov.caixa.loterias.apostas.state.ComandoTelaSimula;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
+import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class SimulaViewModel extends AndroidViewModel {
@@ -263,6 +271,283 @@ public class SimulaViewModel extends AndroidViewModel {
             handleSurpresinhaFechada();
             return;
         }
+        if (event instanceof SimulaUiEvent.FavoritarApostaClicado) {
+            abrirDialogFavoritarAposta();
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.DialogFavoritarApostaConsumido) {
+            consumirDialogFavoritarAposta();
+            return;
+        }
+        if (event instanceof SimulaUiEvent.SalvarApostaFavoritaSolicitado) {
+            handleSalvarApostaFavoritaSolicitado(
+                    (SimulaUiEvent.SalvarApostaFavoritaSolicitado) event
+            );
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ConfirmarSalvarApostaFavorita) {
+            salvarApostaFavorita(
+                    ((SimulaUiEvent.ConfirmarSalvarApostaFavorita) event)
+                            .getApostaFavorita()
+            );
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ComandoFavoritarApostaConsumido) {
+            limparComandoFavoritarAposta();
+            return;
+        }
+    }
+    private void handleSalvarApostaFavoritaSolicitado(
+            SimulaUiEvent.SalvarApostaFavoritaSolicitado event
+    ) {
+
+        ApostaFavoritaDTO apostaFavorita =
+                event.getApostaFavorita();
+
+        if (apostaFavorita == null || parametroJogoAtual == null) {
+            return;
+        }
+
+        prepararApostaFavorita(
+                apostaFavorita,
+                event.getNomeAposta(),
+                event.getNumerosSelecionados()
+        );
+
+        validarApostaFavorita(
+                apostaFavorita
+        );
+    }
+    private void prepararApostaFavorita(
+            ApostaFavoritaDTO apostaFavorita,
+            String nomeAposta,
+            Object numerosSelecionados
+    ) {
+
+        if (parametroJogoAtual != null
+                && parametroJogoAtual.getConcurso() != null
+                && parametroJogoAtual.getConcurso().getModalidadeDetalhada() != null) {
+
+            DTOEnumInteger modalidade =
+                    new DTOEnumInteger();
+
+            modalidade.setDescricao(
+                    parametroJogoAtual
+                            .getConcurso()
+                            .getModalidadeDetalhada()
+                            .getDescricao()
+            );
+
+            modalidade.setValor(
+                    parametroJogoAtual
+                            .getConcurso()
+                            .getModalidadeDetalhada()
+                            .getValor()
+            );
+
+            apostaFavorita.setModalidade(
+                    modalidade
+            );
+        }
+
+        if (nomeAposta != null) {
+
+            String nomeTratado =
+                    nomeAposta.trim();
+
+            if (nomeTratado.length() > 25) {
+                apostaFavorita.setNome(
+                        nomeTratado.substring(
+                                0,
+                                25
+                        )
+                );
+            } else {
+                apostaFavorita.setNome(
+                        nomeTratado
+                );
+            }
+
+        } else {
+            apostaFavorita.setNome("");
+        }
+
+        apostaFavorita.setNumerosSelecionados(
+                numerosSelecionados
+        );
+
+        apostaFavorita.setId(
+                Constantes.ZERO_LONG
+        );
+    }
+    private void validarApostaFavorita(
+            final ApostaFavoritaDTO apostaFavorita
+    ) {
+
+        publicarCarregandoFavoritar(
+                true
+        );
+
+        ServicoFactoryUtil
+                .getDadosCorporativoService()
+                .validarApostaFavorita(
+                        apostaFavorita,
+                        new RequestListener<NetworkResponse>() {
+
+                            @Override
+                            public void onResponse(
+                                    NetworkResponse response
+                            ) {
+                                salvarApostaFavorita(
+                                        apostaFavorita
+                                );
+                            }
+
+                            @Override
+                            public void onErrorResponse(
+                                    VolleyError error
+                            ) {
+
+                                publicarCarregandoFavoritar(
+                                        false
+                                );
+
+                                if (isErroNegocial(error)) {
+
+                                    publicarComandoFavoritar(
+                                            new ComandoFavoritarAposta
+                                                    .ConfirmarValidacaoNegocial(
+                                                    apostaFavorita,
+                                                    MensagensNetwork
+                                                            .getErrorMessage(error)
+                                            )
+                                    );
+
+                                    return;
+                                }
+
+                                publicarComandoFavoritar(
+                                        new ComandoFavoritarAposta
+                                                .RedirecionarErro(
+                                                error
+                                        )
+                                );
+                            }
+                        }
+                );
+    }
+    private void salvarApostaFavorita(
+            final ApostaFavoritaDTO apostaFavorita
+    ) {
+
+        publicarCarregandoFavoritar(
+                true
+        );
+
+        ServicoFactoryUtil
+                .getDadosCorporativoService()
+                .salvarApostaFavorita(
+                        apostaFavorita,
+                        new RequestListener<NetworkResponse>() {
+
+                            @Override
+                            public void onResponse(
+                                    NetworkResponse response
+                            ) {
+
+                                publicarCarregandoFavoritar(
+                                        false
+                                );
+
+                                publicarComandoFavoritar(
+                                        new ComandoFavoritarAposta.Sucesso()
+                                );
+                            }
+
+                            @Override
+                            public void onErrorResponse(
+                                    VolleyError error
+                            ) {
+
+                                publicarCarregandoFavoritar(
+                                        false
+                                );
+
+                                publicarComandoFavoritar(
+                                        new ComandoFavoritarAposta
+                                                .RedirecionarErro(
+                                                error
+                                        )
+                                );
+                            }
+                        }
+                );
+    }
+    private void publicarCarregandoFavoritar(
+            boolean carregando
+    ) {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setCarregandoFavoritarAposta(
+                                carregando
+                        )
+                        .build()
+        );
+    }
+    private void publicarComandoFavoritar(
+            ComandoFavoritarAposta comando
+    ) {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setComandoFavoritarAposta(
+                                comando
+                        )
+                        .build()
+        );
+    }
+    private void limparComandoFavoritarAposta() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setComandoFavoritarAposta(null)
+                        .build()
+        );
+    }
+    private void abrirDialogFavoritarAposta() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setExibirDialogFavoritarAposta(true)
+                        .build()
+        );
+    }
+    private void consumirDialogFavoritarAposta() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setExibirDialogFavoritarAposta(false)
+                        .build()
+        );
     }
     private void handleSurpresinhaAberta() {
 

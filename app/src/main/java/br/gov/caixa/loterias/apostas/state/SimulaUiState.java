@@ -14,6 +14,8 @@ public class SimulaUiState {
     private final BarraTituloDTO barraTituloDTO;
 
     private final boolean exibirAnimacao;
+    private final boolean carregandoFavoritarAposta;
+    private final ComandoFavoritarAposta comandoFavoritarAposta;
     private final int animacaoRes;
     private final float velocidadeAnimacao;
 
@@ -89,6 +91,7 @@ public class SimulaUiState {
     private final boolean abrirCarrinho;
     private final ComandoTelaSimula comandoTelaSimula;
     private final boolean surpresinhaHabilitada;
+    private final boolean exibirDialogFavoritarAposta;
 
     public SimulaUiState(
             BarraTituloDTO barraTituloDTO,
@@ -130,6 +133,9 @@ public class SimulaUiState {
 
         this.tipoJogo = builder.tipoJogo;
         this.titleComoJogar = builder.titleComoJogar;
+        this.exibirDialogFavoritarAposta = builder.exibirDialogFavoritarAposta;
+        this.carregandoFavoritarAposta = builder.carregandoFavoritarAposta;
+        this.comandoFavoritarAposta = builder.comandoFavoritarAposta;
 
         this.dezenasSelecionadas = builder.dezenasSelecionadas != null
                 ? new ArrayList<>(builder.dezenasSelecionadas)
@@ -260,8 +266,11 @@ public class SimulaUiState {
                 .setAnimacaoRes(0)
                 .setVelocidadeAnimacao(1f)
                 .setExibirDialogComoJogar(false)
+                .setExibirDialogFavoritarAposta(false)
                 .setComandoCarrinho(null)
                 .setAbrirCarrinho(false)
+                .setCarregandoFavoritarAposta(false)
+                .setComandoFavoritarAposta(null)
                 .setComandoTelaSimula(null)
                 .setSurpresinhaHabilitada(false)
                 .setComandoCompletarAposta(null)
@@ -335,6 +344,9 @@ public class SimulaUiState {
         return surpresinhaHabilitada;
     }
 
+    public boolean isExibirDialogFavoritarAposta() {
+        return exibirDialogFavoritarAposta;
+    }
 
     public List<String> getLabelsTeimosinhas() {
         return labelsTeimosinhas;
@@ -411,6 +423,14 @@ public class SimulaUiState {
     public ComandoCarrinho getComandoCarrinho() {
         return comandoCarrinho;
     }
+    public boolean isCarregandoFavoritarAposta() {
+        return carregandoFavoritarAposta;
+    }
+
+    public ComandoFavoritarAposta getComandoFavoritarAposta() {
+        return comandoFavoritarAposta;
+    }
+
 
     public ComandoCompletarAposta getComandoCompletarAposta() {
         return comandoCompletarAposta;
@@ -653,6 +673,9 @@ public class SimulaUiState {
         private boolean abrirCarrinho;
         private boolean surpresinhaHabilitada;
         private ComandoTelaSimula comandoTelaSimula;
+        private boolean exibirDialogFavoritarAposta;
+        private boolean carregandoFavoritarAposta;
+        private ComandoFavoritarAposta comandoFavoritarAposta;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<Integer>();
@@ -687,6 +710,7 @@ public class SimulaUiState {
             this.textoBotaoPrognosticosSelecionado = "";
             this.comandoTelaSimula = null;
             this.surpresinhaHabilitada = false;
+            this.exibirDialogFavoritarAposta = false;
 
             this.atualizarValorApostaPorQuantidadeNumeros = false;
             this.resetarTrevosPorQuantidadeNumeros = false;
@@ -699,6 +723,8 @@ public class SimulaUiState {
 
             this.exibirAnimacao = state.exibirAnimacao;
             this.animacaoRes = state.animacaoRes;
+            this.exibirDialogFavoritarAposta = state.isExibirDialogFavoritarAposta();
+
             this.velocidadeAnimacao = state.velocidadeAnimacao;
 
             this.comandoCarrinho = state.comandoCarrinho;
@@ -822,12 +848,33 @@ public class SimulaUiState {
             this.surpresinhaHabilitada = surpresinhaHabilitada;
             return this;
         }
+        public Builder setCarregandoFavoritarAposta(
+                boolean carregandoFavoritarAposta
+        ) {
+            this.carregandoFavoritarAposta =
+                    carregandoFavoritarAposta;
+            return this;
+        }
+
+        public Builder setComandoFavoritarAposta(
+                ComandoFavoritarAposta comandoFavoritarAposta
+        ) {
+            this.comandoFavoritarAposta =
+                    comandoFavoritarAposta;
+            return this;
+        }
 
         public Builder setAbrirCarrinho(boolean abrirCarrinho) {
             this.abrirCarrinho = abrirCarrinho;
             return this;
         }
-
+        public Builder setExibirDialogFavoritarAposta(
+                boolean exibirDialogFavoritarAposta
+        ) {
+            this.exibirDialogFavoritarAposta =
+                    exibirDialogFavoritarAposta;
+            return this;
+        }
         public Builder setQtdPrognosticosQuantidadeNumeros(
                 List<Integer> qtdPrognosticosQuantidadeNumeros
         ) {
