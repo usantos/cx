@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -204,16 +205,15 @@ public class AdicionarApostaCarrinhoHelper {
                     AlertDialogUtils.dismiss();
                     AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
                     CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
+                    CarrinhoSingleton.getInstance().getCarrinho().setValorTotal(result.getPayload().getValorTotal());
                 } catch (Exception e){
                     Log.d("", e.getLocalizedMessage());
                 }
 
-                //Aqui adicionar o dialog de ok popup
-
                 DialogUtils.dialogEntendiListener(activity, activity.getString(R.string.added_bet_to_cart), (dialog, which) -> {
-                    Intent intent = new Intent("loterias.tqs");
-                    intent.putExtra("broadcast", "ok");
-                    activity.sendBroadcast(intent);
+                    if (activity instanceof MinhasApostasActivity) {
+                        ((MinhasApostasActivity) activity).ok();
+                    }
                 });
             }
 
