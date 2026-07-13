@@ -153,6 +153,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private LinearLayout containerComoJogar;
     private MaterialButton btnTeimosinha,btnQuantidadeNumeros;
     private List<Integer> qtdPrognosticosQuantidadeNumerosList;
+    private TextView textSelecionados;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -528,6 +529,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.containerComoJogar = findViewById(R.id.containerComoJogar);
         this.btnQuantidadeNumeros = findViewById(R.id.btnQuantidadeNumeros);
         this.btnTeimosinha = findViewById(R.id.btnTeimosinha);
+        this.textSelecionados = findViewById(R.id.textSelecionados);
     }
     private void configurarEventosViewModel() {
 
@@ -729,6 +731,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     public Button getBotaoLimparAposta() {
         return botaoLimparAposta;
     }
+    public TextView getTextSelecionados() {return textSelecionados;}
 
     public Button getBotaoCompletar() {
         return botaoCompletar;

@@ -152,6 +152,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     private SimulaViewModel viewModel;
 
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
+    private TextView textSelecionados;
 
     public CartelaFragment2() {
         // Required empty public constructor
@@ -958,8 +959,21 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
         renderValorAposta(state);
         renderEstadoBotoes(state);
+        renderTextoSelecionados(state);
         renderLimpezaAposta(state);
         renderCompletarAposta(state);
+    }
+    private void renderTextoSelecionados(
+            SimulaUiState state
+    ) {
+
+        if (textSelecionados == null) {
+            return;
+        }
+
+        textSelecionados.setText(
+                state.getTextoSelecionados()
+        );
     }
 
     private void renderCompletarAposta(
@@ -1650,6 +1664,8 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
         botaoAdicionar =
                 parentActivity.getBotaoAdicionar();
+
+        textSelecionados = parentActivity.getTextSelecionados();
 
         botaoAdicionar.setOnClickListener(this);
 

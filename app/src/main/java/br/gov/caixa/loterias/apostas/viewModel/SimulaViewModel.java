@@ -774,6 +774,12 @@ public class SimulaViewModel extends AndroidViewModel {
         boolean mostrarRodape =
                 botaoLimparHabilitado || mostrarSalvarAposta;
 
+        String textoSelecionados =
+                montarTextoSelecionados(
+                        event.getQtdDezenasSelecionadas(),
+                        event.getQtdDezenasPossiveisSelecionado()
+                );
+
         SimulaUiState atual =
                 getCurrentState();
 
@@ -785,10 +791,24 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setMostrarBotaoLimparAposta(botaoLimparHabilitado)
                         .setMostrarSalvarAposta(mostrarSalvarAposta)
                         .setMostrarRodape(mostrarRodape)
+                        .setTextoSelecionados(textoSelecionados)
                         .build()
         );
     }
+    private String montarTextoSelecionados(
+            int qtdSelecionados,
+            int qtdNecessarios
+    ) {
 
+        if (qtdSelecionados <= 0) {
+            return "Selecione os números:";
+        }
+
+        return "Selecionados: "
+                + qtdSelecionados
+                + "/"
+                + qtdNecessarios;
+    }
     private boolean calcularBotaoLimparHabilitado(
             SimulaUiEvent.CartelaAlterada event
     ) {
@@ -1228,6 +1248,7 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setAnimacaoRes(animacaoRes)
                         .setVelocidadeAnimacao(velocidadeAnimacao)
                         .setValorAposta(valorInicialAposta)
+                        .setTextoSelecionados("Selecione os números:")
                         .setValorGrande(
                                 valorInicialAposta.doubleValue() > 999.99
                         )
@@ -1378,7 +1399,7 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setMostrarSalvarAposta(false)
                         .setMostrarRodape(false)
                         .setMostrarBotaoLimparAposta(false)
-
+                        .setTextoSelecionados("Selecione os números:")
                         .setBotaoCompletarHabilitado(true)
                         .setBotaoAdicionarHabilitado(false)
                         .setBotaoLimparHabilitado(false)
