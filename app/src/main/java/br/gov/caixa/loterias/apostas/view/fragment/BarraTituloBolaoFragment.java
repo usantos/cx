@@ -76,7 +76,8 @@ public class BarraTituloBolaoFragment extends Fragment {
             modalidade = new Gson().fromJson(getArguments().getString(ARG_MODALIDADE), ModalidadeEnum.class);
             corBackground = getArguments().getInt(ARG_COR_BACK);
             corBackgroundPremio = getArguments().getInt(ARG_COR_BACK_PREMIO);
-            estilo = new EstiloModalidadeMKP(modalidade);
+            //estilo = new EstiloModalidadeMKP(modalidade);
+            estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(modalidade, Integer.valueOf(concurso), isEspecial);
         }
     }
 

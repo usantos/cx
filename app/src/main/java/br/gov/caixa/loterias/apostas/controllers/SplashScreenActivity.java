@@ -160,7 +160,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                         //MOCK
                         if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
                             //SharedPreferencesUtils.setValor(EspecialUtils.PAIS_VALOR, result.getPayload().getMapa().getConcursoLotecaPais());
-                            SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_VALOR, 4459);
+                            SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_VALOR, 4461);
                             SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_LINHA, getString(R.string.loteca_pais));
                             SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, getString(R.string.loteca_pais_duas_linhas));
                         }

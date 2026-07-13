@@ -257,8 +257,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, cotasDisponiveis.get(0).isLotericaFavorita());
             selectFiltroLoterica();
         } else {
-            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
             boolean isEspecial = tipoConcurso == TipoConcursoEnum.ESPECIAL;
+
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+            //EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(modalidade,  parametroJogo.getConcurso().getNumero(), isEspecial);
+
             FragmentUtils.startFragmentBarraTituloBolao(
                     getSupportFragmentManager(),
                     R.id.barra_titulo_mkp,
