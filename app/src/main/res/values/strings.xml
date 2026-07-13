@@ -1352,6 +1352,8 @@
     <string name="naoExcluir">Não excluir</string>
     <string name="excluir">Excluir</string>
     <string name="favoritar_carrinho">Favoritar carrinho</string>
+    <string name="favoritar_aposta">Favoritar aposta</string>
+    <string name="exemplo_aposta">Ex: Aposta do João</string>
     <string name="suaTitularidade">O cartão de crédito adicionado deve ser de sua titularidade</string>
 
     <!-- Confirmar Cartão - CVV -->

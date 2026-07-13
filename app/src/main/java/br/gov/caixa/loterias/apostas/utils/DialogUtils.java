@@ -415,6 +415,87 @@ public class DialogUtils {
 
         return dialog;
     }
+    public static Dialog buildDialogFavoritar(
+            Context context,
+            String titulo,
+            String hintInput,
+            OnDialogFavoritarListener listener,
+            boolean manterSurpresinhas
+    )
+    {
+        if (isContextInvalido(context)) {
+            return null;
+        }
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.layout_dialog_favoritar);
+
+        dialog.setCancelable(false);
+
+        TextView       tituloDialog  = dialog.findViewById(R.id.titulo_dialog_favoritar);
+        tituloDialog.setText(titulo);
+
+        EditText editTextFavoritar = dialog.findViewById(R.id.edit_dialog_favoritar);
+
+        LinearLayout layoutManterSurpresinhas = dialog.findViewById(R.id.layout_manter_surpresinhas);
+        CheckBox checkManterSurpresinhas = dialog.findViewById(R.id.check_manter_surpresinhas);
+
+        Button btnConfirmar = dialog.findViewById(R.id.btn_positivo);
+        Button btnCancelar = dialog.findViewById(R.id.btn_negativo);
+
+        layoutManterSurpresinhas.setVisibility(manterSurpresinhas ? View.VISIBLE : View.GONE);
+
+        ViewCompat.setAccessibilityHeading(tituloDialog,true);
+        tituloDialog.setFocusableInTouchMode(true);
+        tituloDialog.requestFocus();
+
+        btnConfirmar.setOnClickListener(v -> {
+            String text = editTextFavoritar.getText().toString();
+            boolean isChecked = checkManterSurpresinhas.isChecked();
+
+            if(listener != null) {
+                listener.Confirmar(text, isChecked);
+            }
+            dialog.dismiss();
+        });
+
+        btnCancelar.setOnClickListener(v -> {
+            if(listener !=null){
+                listener.Cancelar();
+            }
+            dialog.dismiss();
+        });
+
+        dialog.setOnDismissListener( dialogInterface -> {
+            editTextFavoritar.setText("");
+            checkManterSurpresinhas.setChecked(false);
+        });
+
+        layoutManterSurpresinhas.setOnClickListener(v ->
+                checkManterSurpresinhas.toggle()
+        );
+
+        dialog.setOnShowListener(dialogInterface -> {
+            if (tituloDialog.getVisibility() == View.VISIBLE){
+                tituloDialog.post(() -> {
+                    tituloDialog.performAccessibilityAction(
+                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
+                            null
+                    );
+                });
+            }
+
+            if (dialog.getWindow() != null) {
+                int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+                int dialogWidth = (int) (screenWidth * LARGURA_DIALOG_PADRAO);
+
+                dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+            }
+        });
+
+        return dialog;
+    }
 
 
     /*

@@ -986,7 +986,8 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         Dialog dialog =
                 DialogUtils.buildDialogFavoritar(
                         requireContext(),
-                        getString(R.string.favoritar_carrinho),
+                        getString(R.string.favoritar_aposta),
+                        getString(R.string.exemplo_aposta),
                         new OnDialogFavoritarListener() {
 
                             @Override
