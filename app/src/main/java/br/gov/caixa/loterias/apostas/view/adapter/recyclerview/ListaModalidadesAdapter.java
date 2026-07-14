@@ -120,7 +120,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase()));
 					} else if(isLotecaPais) {
 						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(estilo)));
-						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase()));
+						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS,"").toLowerCase()));
 					} else {
 						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(estilo, false)));
 						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
@@ -148,11 +148,12 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 				if (isEspecial) {
 					if(isMega30){
 						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase()));
-					}
-					else {
+					} else if (isLotecaPais) {
+						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS,"").toLowerCase()));
+					} else {
 						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
 					}
-					} else {
+				} else {
 					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
 				}
 				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, R.color.branco));

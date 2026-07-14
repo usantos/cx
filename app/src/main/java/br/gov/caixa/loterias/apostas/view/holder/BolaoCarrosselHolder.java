@@ -193,8 +193,12 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			if (isEspecial(bolao.getTipoConcurso())){
 				//modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 				if (bolao.getModalidade() == ModalidadeEnum.LOTECA) {
-					modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
+					if (isLotecaPais) {
+						modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, ""));
+					} else {
+						modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
 					//TextViewUtils.mudarTamanhoPorPorcentagem(modalidade, -20f);
+					}
 				}else {
 					modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 				}

@@ -68,7 +68,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 			isEspecial = getArguments().getBoolean(ARG_ESPECIAL);
 			modalidade = new Gson().fromJson(getArguments().getString(ARG_MODALIDADE), ModalidadeEnum.class);
 			isMega30 = EspecialUtils.isMega30(modalidade, Integer.valueOf(concurso), isEspecial);
-			isLotecaPais = EspecialUtils.isMega30(modalidade, Integer.valueOf(concurso), isEspecial);
+			isLotecaPais = EspecialUtils.isLotecaPais(modalidade, Integer.valueOf(concurso), isEspecial);
 			//estilo = new EstiloModalidadeMKP(modalidade,isMega30);
 			estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(modalidade,
 					Integer.valueOf(concurso), isEspecial);

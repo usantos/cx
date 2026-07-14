@@ -76,15 +76,17 @@ public class EstiloModalidadeMKP {
         imagemEspecialDetalhes = R.drawable.cabecalho_mega_trinta_anos_detalhe;
         imagemSubCabecalho = R.drawable.rodape_mega_trinta_anos_inferior;
         imagemEspecialQuadrada = R.drawable.mega_30_quadrado;
+        imagemEspecialSimples = R.drawable.mega_virada_simples;
         imagemEspecialDupla = R.drawable.mega_virada_dupla;
     }
 
     private void aplicarLotecaPais() {
-        imagemEspecialCarrossel = R.drawable.cabecalho_mega_trinta_anos_carrossel;
-        imagemEspecialDetalhes = R.drawable.cabecalho_mega_trinta_anos_detalhe;
+        imagemEspecialCarrossel = R.drawable.cabecalho_loteca_pais_carrossel;
+        imagemEspecialDetalhes = R.drawable.cabecalho_loteca_pais_detalhe_simples;
         imagemSubCabecalho = R.drawable.rodape_mega_trinta_anos_inferior;
-        imagemEspecialQuadrada = R.drawable.mega_30_quadrado;
-        imagemEspecialDupla = R.drawable.mega_virada_dupla;
+        imagemEspecialQuadrada = R.drawable.loteca_pais_quadrado;
+        imagemEspecialSimples = R.drawable.cabecalho_loteca_pais_detalhe_simples;
+        imagemEspecialDupla = R.drawable.loteca_pais_dupla;
     }
 
 
