@@ -92,6 +92,7 @@ public class SimulaUiState {
     private final ComandoTelaSimula comandoTelaSimula;
     private final boolean surpresinhaHabilitada;
     private final boolean exibirDialogFavoritarAposta;
+    private final boolean apostaFavoritada;
 
     public SimulaUiState(
             BarraTituloDTO barraTituloDTO,
@@ -136,6 +137,7 @@ public class SimulaUiState {
         this.exibirDialogFavoritarAposta = builder.exibirDialogFavoritarAposta;
         this.carregandoFavoritarAposta = builder.carregandoFavoritarAposta;
         this.comandoFavoritarAposta = builder.comandoFavoritarAposta;
+        this.apostaFavoritada = builder.apostaFavoritada;
 
         this.dezenasSelecionadas = builder.dezenasSelecionadas != null
                 ? new ArrayList<>(builder.dezenasSelecionadas)
@@ -267,6 +269,7 @@ public class SimulaUiState {
                 .setVelocidadeAnimacao(1f)
                 .setExibirDialogComoJogar(false)
                 .setExibirDialogFavoritarAposta(false)
+                .setApostaFavoritada(false)
                 .setComandoCarrinho(null)
                 .setAbrirCarrinho(false)
                 .setCarregandoFavoritarAposta(false)
@@ -402,6 +405,9 @@ public class SimulaUiState {
 
     public int getQuantidadeApostasCarrinho() {
         return quantidadeApostasCarrinho;
+    }
+    public boolean isApostaFavoritada() {
+        return apostaFavoritada;
     }
 
     public boolean isCarregandoCarrinho() {
@@ -676,6 +682,7 @@ public class SimulaUiState {
         private boolean exibirDialogFavoritarAposta;
         private boolean carregandoFavoritarAposta;
         private ComandoFavoritarAposta comandoFavoritarAposta;
+        private boolean apostaFavoritada;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<Integer>();
@@ -711,6 +718,7 @@ public class SimulaUiState {
             this.comandoTelaSimula = null;
             this.surpresinhaHabilitada = false;
             this.exibirDialogFavoritarAposta = false;
+            this.apostaFavoritada = false;
 
             this.atualizarValorApostaPorQuantidadeNumeros = false;
             this.resetarTrevosPorQuantidadeNumeros = false;
@@ -824,6 +832,7 @@ public class SimulaUiState {
 
             this.resetarTrevosPorQuantidadeNumeros =
                     state.resetarTrevosPorQuantidadeNumeros;
+            this.apostaFavoritada = state.apostaFavoritada;
         }
 
         public Builder setLabelsQuantidadeNumeros(
@@ -902,7 +911,10 @@ public class SimulaUiState {
                             : "Selecione os números:";
             return this;
         }
-
+        public Builder setApostaFavoritada(boolean apostaFavoritada) {
+            this.apostaFavoritada = apostaFavoritada;
+            return this;
+        }
         public Builder setExibirAvisoQuantidadeNumerosMaxima(
                 boolean exibirAvisoQuantidadeNumerosMaxima
         ) {

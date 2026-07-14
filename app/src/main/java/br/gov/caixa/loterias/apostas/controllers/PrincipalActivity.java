@@ -989,7 +989,16 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
             activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
             startActivity(activity);
-        } else {
+        } else if (modalidade == ModalidadeEnum.LOTECA) {
+            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
+            activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
+            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+            //TODO: MEGA 30 ANOS//
+            activity.putExtra(getString(R.string.numero_concurso), numeroConcurso);
+            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
+            startActivity(activity);
+        }
+        else {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
 
             Intent activity = new Intent(PrincipalActivity.this, SimulaActivity.class);

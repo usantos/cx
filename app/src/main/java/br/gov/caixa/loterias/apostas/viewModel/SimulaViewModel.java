@@ -462,6 +462,16 @@ public class SimulaViewModel extends AndroidViewModel {
                                         false
                                 );
 
+
+                                SimulaUiState atual = getCurrentState();
+
+                                uiState.setValue(
+                                        atual.toBuilder()
+                                                .setApostaFavoritada(true)
+                                                .build()
+                                );
+
+
                                 publicarComandoFavoritar(
                                         new ComandoFavoritarAposta.Sucesso()
                                 );

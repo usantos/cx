@@ -142,13 +142,14 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     public BigDecimal valorTotalAposta;
     public int typeGameColorLight, typeGameColorDark;
     public int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
-    public Button botaoCompletar, botaoAdicionar, botaoLimparAposta, botaoFavoritar;
+    public Button botaoCompletar, botaoAdicionar, botaoLimparAposta;
     public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
     public ListaDezenaRecyclerView simularDezenasAdapter;
     public String dataSorteioAtual;
 
     private SimularApostaModel model;
     private CartelaModel cartelaModel;
+    private MaterialButton botaoFavoritar;
     private View rodape;
     private boolean mudouTamanhoValor = false;
     private SimulaViewModel viewModel;
@@ -973,6 +974,32 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         renderLimpezaAposta(state);
         renderCompletarAposta(state);
         renderDialogFavoritarAposta(state);
+        renderFavorito(state);
+    }
+    private void renderFavorito(
+            SimulaUiState state
+    ) {
+
+        if (state.isApostaFavoritada()) {
+
+            botaoFavoritar.setIconResource(
+                    R.drawable.ic_favoritado_simula
+            );
+
+            botaoFavoritar.setText(
+                    "Aposta favoritada"
+            );
+
+        } else {
+
+            botaoFavoritar.setIconResource(
+                    R.drawable.ic_star_simula
+            );
+
+            botaoFavoritar.setText(
+                    "Favoritar aposta"
+            );
+        }
     }
 
     private void renderDialogFavoritarAposta(

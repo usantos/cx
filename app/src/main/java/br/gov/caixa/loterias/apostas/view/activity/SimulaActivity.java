@@ -6,10 +6,8 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
@@ -31,7 +29,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -110,7 +107,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     //TODO: MEGA 30 ANOS//
     private int numero_concurso;
     private ConstraintLayout toolBarLoteca;
-    private Button qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoCompletar, botaoAdicionar, btnFavoritar;
+    private Button qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoCompletar, botaoAdicionar;
     private AppCompatImageView simularTelaAposta, surpresinhaTela;
     private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
             labelValueTriplasLoteca, textoSalveEstaAposta;
@@ -161,7 +158,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private TextView tvValorAposta;
     private TextView tvValorCarrinho;
     private LinearLayout containerComoJogar;
-    private MaterialButton btnTeimosinha, btnQuantidadeNumeros;
+    private MaterialButton btnTeimosinha, btnQuantidadeNumeros, btnFavoritar;
     private List<Integer> qtdPrognosticosQuantidadeNumerosList;
     private TextView textSelecionados;
     private FrameLayout frameCarrinho;
@@ -184,6 +181,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         estilo = new EstiloModalidadeMKP(tipoJogo, isMega30);
 
         setViews();
+        configurarSwitchSurpresinha();
 
         viewModel = new ViewModelProvider(this).get(SimulaViewModel.class);
         observeState();
@@ -262,6 +260,55 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 findViewById(R.id.switchSurpresinha);
         this.btnFavoritar = findViewById(R.id.favoritar_aposta);
     }
+    private void configurarSwitchSurpresinha() {
+
+        if (switchSurpresinha == null || estilo == null) {
+            return;
+        }
+
+        switchSurpresinha.setUseMaterialThemeColors(false);
+
+        ColorStateList trackTint =
+                new ColorStateList(
+                        new int[][]{
+                                new int[]{android.R.attr.state_checked},
+                                new int[]{}
+                        },
+                        new int[]{
+                                ContextCompat.getColor(
+                                        this,
+                                        estilo.getCorClara()
+                                ),
+                                ContextCompat.getColor(
+                                        this,
+                                        R.color.cinza70
+                                )
+                        }
+                );
+
+        switchSurpresinha.setTrackTintList(trackTint);
+
+        StateListDrawable thumb =
+                new StateListDrawable();
+
+        thumb.addState(
+                new int[]{android.R.attr.state_checked},
+                criarThumbChecked()
+        );
+
+        thumb.addState(
+                new int[]{},
+                AppCompatResources.getDrawable(
+                        this,
+                        R.drawable.surpresinha_thumb_unchecked
+                )
+        );
+
+        switchSurpresinha.setThumbTintList(null);
+        switchSurpresinha.setThumbDrawable(thumb);
+
+        switchSurpresinha.jumpDrawablesToCurrentState();
+    }
 
     private void observeState() {
 
@@ -325,8 +372,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         boolean surpresinhaHabilitada =
                 state.isSurpresinhaHabilitada();
 
-        aplicarCorModalidadeNoSwitch();
-
         if (botaoCompletar != null) {
             botaoCompletar.setVisibility(
                     surpresinhaHabilitada
@@ -350,58 +395,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                             : View.VISIBLE
             );
         }
-    }
-
-    private void aplicarCorModalidadeNoSwitch() {
-
-        if (switchSurpresinha == null || estilo == null) {
-            return;
-        }
-
-        switchSurpresinha.setUseMaterialThemeColors(false);
-
-        ColorStateList trackTint =
-                new ColorStateList(
-                        new int[][]{
-                                new int[]{android.R.attr.state_checked},
-                                new int[]{}
-                        },
-                        new int[]{
-                                ContextCompat.getColor(
-                                        this,
-                                        estilo.getCorClara()
-                                ),
-                                ContextCompat.getColor(
-                                        this,
-                                        R.color.cinza70
-                                )
-                        }
-                );
-
-        switchSurpresinha.setTrackTintList(
-                trackTint
-        );
-
-        StateListDrawable thumb =
-                new StateListDrawable();
-
-        thumb.addState(
-                new int[]{android.R.attr.state_checked},
-                criarThumbChecked()
-        );
-
-        thumb.addState(
-                new int[]{},
-                AppCompatResources.getDrawable(
-                        this,
-                        R.drawable.surpresinha_thumb_unchecked
-                )
-        );
-        switchSurpresinha.setThumbTintList(null);
-
-        switchSurpresinha.setThumbDrawable(
-                thumb
-        );
     }
 
     private Drawable criarThumbChecked() {
@@ -1110,7 +1103,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     public Button getBotaoCompletar() {
         return botaoCompletar;
     }
-    public Button getBotaoFavoritar() {
+    public MaterialButton getBotaoFavoritar() {
         return btnFavoritar;
     }
 
