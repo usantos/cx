@@ -632,9 +632,14 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             break;
 
             case R.id.favoritar_aposta: {
-                viewModel.onEvent(
-                        new SimulaUiEvent.FavoritarApostaClicado()
-                );
+                if (!DadosUsuarioBO.checarUsuarioLogado(parentActivity)) {
+                    AlertDialogExperimenteLogarSingleton.show(getActivity(), false, null);
+                }
+                else {
+                    viewModel.onEvent(
+                            new SimulaUiEvent.FavoritarApostaClicado()
+                    );
+                }
             }
             break;
 
