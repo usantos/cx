@@ -36,7 +36,6 @@ public class SimulaUiState {
 
     private final boolean mostrarBotaoLimparAposta;
     private final boolean mostrarSalvarAposta;
-    private final boolean mostrarRodape;
 
     private final boolean limparNumerosCartela;
     private final boolean limparTimeCoracao;
@@ -53,8 +52,6 @@ public class SimulaUiState {
     private final int triplasLoteca;
 
     private final boolean botaoFinalizarVisivel;
-    private final int textoBotaoFinalizarResId;
-
     private final boolean botaoCompletarHabilitado;
     private final boolean botaoAdicionarHabilitado;
     private final boolean botaoLimparHabilitado;
@@ -93,6 +90,7 @@ public class SimulaUiState {
     private final boolean surpresinhaHabilitada;
     private final boolean exibirDialogFavoritarAposta;
     private final boolean apostaFavoritada;
+    private EtapaAposta etapaAposta;
 
     public SimulaUiState(
             BarraTituloDTO barraTituloDTO,
@@ -153,7 +151,6 @@ public class SimulaUiState {
 
         this.mostrarBotaoLimparAposta = builder.mostrarBotaoLimparAposta;
         this.mostrarSalvarAposta = builder.mostrarSalvarAposta;
-        this.mostrarRodape = builder.mostrarRodape;
 
         this.limparNumerosCartela = builder.limparNumerosCartela;
         this.limparTimeCoracao = builder.limparTimeCoracao;
@@ -170,7 +167,6 @@ public class SimulaUiState {
         this.triplasLoteca = builder.triplasLoteca;
 
         this.botaoFinalizarVisivel = builder.botaoCompletarVisivel;
-        this.textoBotaoFinalizarResId = builder.textoBotaoFinalizarResId;
 
         this.botaoCompletarHabilitado = builder.botaoCompletarHabilitado;
         this.botaoAdicionarHabilitado = builder.botaoAdicionarHabilitado;
@@ -270,6 +266,7 @@ public class SimulaUiState {
                 .setExibirDialogComoJogar(false)
                 .setExibirDialogFavoritarAposta(false)
                 .setApostaFavoritada(false)
+                .setEtapaAposta(EtapaAposta.NUMEROS)
                 .setComandoCarrinho(null)
                 .setAbrirCarrinho(false)
                 .setCarregandoFavoritarAposta(false)
@@ -287,7 +284,6 @@ public class SimulaUiState {
                 .setTextoSelecionados("Selecione os números:")
                 .setMostrarBotaoLimparAposta(false)
                 .setMostrarSalvarAposta(false)
-                .setMostrarRodape(false)
                 .setLimparNumerosCartela(false)
                 .setLimparTimeCoracao(false)
                 .setLimparSuperSete(false)
@@ -302,7 +298,6 @@ public class SimulaUiState {
                 .setTitleComoJogar("")
                 .setTriplasLoteca(0)
                 .setBotaoCompletarVisivel(true)
-                .setTextoBotaoFinalizarResId(0)
                 .setBotaoCompletarHabilitado(true)
                 .setBotaoAdicionarHabilitado(false)
                 .setBotaoLimparHabilitado(false)
@@ -398,7 +393,9 @@ public class SimulaUiState {
     public int getAnimacaoRes() {
         return animacaoRes;
     }
-
+    public EtapaAposta getEtapaAposta() {
+        return etapaAposta;
+    }
     public BigDecimal getValorCarrinho() {
         return valorCarrinho;
     }
@@ -478,10 +475,6 @@ public class SimulaUiState {
         return mostrarSalvarAposta;
     }
 
-    public boolean isMostrarRodape() {
-        return mostrarRodape;
-    }
-
     public boolean isLimparNumerosCartela() {
         return limparNumerosCartela;
     }
@@ -528,10 +521,6 @@ public class SimulaUiState {
 
     public boolean isBotaoFinalizarVisivel() {
         return botaoFinalizarVisivel;
-    }
-
-    public int getTextoBotaoFinalizarResId() {
-        return textoBotaoFinalizarResId;
     }
 
     public boolean isBotaoCompletarHabilitado() {
@@ -624,7 +613,6 @@ public class SimulaUiState {
 
         private boolean mostrarBotaoLimparAposta;
         private boolean mostrarSalvarAposta;
-        private boolean mostrarRodape;
 
         private boolean limparNumerosCartela;
         private boolean limparTimeCoracao;
@@ -641,7 +629,6 @@ public class SimulaUiState {
         private int triplasLoteca;
 
         private boolean botaoCompletarVisivel;
-        private int textoBotaoFinalizarResId;
 
         private boolean botaoCompletarHabilitado;
         private boolean botaoAdicionarHabilitado;
@@ -679,6 +666,7 @@ public class SimulaUiState {
         private boolean abrirCarrinho;
         private boolean surpresinhaHabilitada;
         private ComandoTelaSimula comandoTelaSimula;
+        private EtapaAposta etapaAposta;
         private boolean exibirDialogFavoritarAposta;
         private boolean carregandoFavoritarAposta;
         private ComandoFavoritarAposta comandoFavoritarAposta;
@@ -719,7 +707,7 @@ public class SimulaUiState {
             this.surpresinhaHabilitada = false;
             this.exibirDialogFavoritarAposta = false;
             this.apostaFavoritada = false;
-
+            this.etapaAposta = EtapaAposta.NUMEROS;
             this.atualizarValorApostaPorQuantidadeNumeros = false;
             this.resetarTrevosPorQuantidadeNumeros = false;
         }
@@ -745,7 +733,7 @@ public class SimulaUiState {
             this.exibirCarrinho = state.exibirCarrinho;
             this.textoSelecionados = state.textoSelecionados;
             this.carrinho = state.carrinho;
-
+            this.etapaAposta = state.etapaAposta;
             this.tipoJogo = state.tipoJogo;
 
             this.dezenasSelecionadas = state.dezenasSelecionadas != null
@@ -762,7 +750,6 @@ public class SimulaUiState {
 
             this.mostrarBotaoLimparAposta = state.mostrarBotaoLimparAposta;
             this.mostrarSalvarAposta = state.mostrarSalvarAposta;
-            this.mostrarRodape = state.mostrarRodape;
 
             this.limparNumerosCartela = state.limparNumerosCartela;
             this.limparTimeCoracao = state.limparTimeCoracao;
@@ -780,7 +767,6 @@ public class SimulaUiState {
             this.triplasLoteca = state.triplasLoteca;
 
             this.botaoCompletarVisivel = state.botaoFinalizarVisivel;
-            this.textoBotaoFinalizarResId = state.textoBotaoFinalizarResId;
 
             this.botaoCompletarHabilitado = state.botaoCompletarHabilitado;
             this.botaoAdicionarHabilitado = state.botaoAdicionarHabilitado;
@@ -954,6 +940,10 @@ public class SimulaUiState {
         ) {
             this.atualizarValorApostaPorQuantidadeNumeros =
                     atualizarValorApostaPorQuantidadeNumeros;
+            return this;
+        }
+        public Builder setEtapaAposta(EtapaAposta etapaAposta) {
+            this.etapaAposta = etapaAposta;
             return this;
         }
 
@@ -1169,13 +1159,6 @@ public class SimulaUiState {
             return this;
         }
 
-        public Builder setMostrarRodape(
-                boolean mostrarRodape
-        ) {
-            this.mostrarRodape = mostrarRodape;
-            return this;
-        }
-
         public Builder setLimparNumerosCartela(
                 boolean limparNumerosCartela
         ) {
@@ -1260,12 +1243,6 @@ public class SimulaUiState {
             return this;
         }
 
-        public Builder setTextoBotaoFinalizarResId(
-                int textoBotaoFinalizarResId
-        ) {
-            this.textoBotaoFinalizarResId = textoBotaoFinalizarResId;
-            return this;
-        }
 
         public Builder setBotaoCompletarHabilitado(
                 boolean botaoCompletarHabilitado

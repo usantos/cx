@@ -83,7 +83,7 @@ import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment2;
-import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
@@ -107,7 +107,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     //TODO: MEGA 30 ANOS//
     private int numero_concurso;
     private ConstraintLayout toolBarLoteca;
-    private Button qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoCompletar, botaoAdicionar;
+    private Button qtdNumerosButton, botaoLimparAposta, botaoCompletar, botaoAdicionar, btnNextStep;
     private AppCompatImageView simularTelaAposta, surpresinhaTela;
     private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
             labelValueTriplasLoteca, textoSalveEstaAposta;
@@ -230,7 +230,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.simularTelaAposta = findViewById(R.id.simularTelaAposta);
         this.surpresinhaTela = findViewById(R.id.surpresinhaTela);
         this.qtdNumerosButton = findViewById(R.id.qtdNumerosButton);
-        this.qtdConcursosButton = findViewById(R.id.qtdConcursosButton);
         this.botaoLimparAposta = findViewById(R.id.btnLimpar);
         this.botaoCompletar = findViewById(R.id.btnCompletar);
         this.botaoAdicionar = findViewById(R.id.btnAdicionarCarrinho);
@@ -259,6 +258,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.switchSurpresinha =
                 findViewById(R.id.switchSurpresinha);
         this.btnFavoritar = findViewById(R.id.favoritar_aposta);
+        this.btnNextStep = findViewById(R.id.btnNextStep);
     }
     private void configurarSwitchSurpresinha() {
 
@@ -1221,7 +1221,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha) {
-        FragmentUtils.startMesesFragment(fragmentManager, R.id.fragmentSimularApostas, tipoJogo,
+        FragmentUtils.startMesesFragment2(fragmentManager, R.id.fragmentSimularApostas, tipoJogo,
                 parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
 
         if (surpresinha) {
@@ -1588,7 +1588,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     private boolean isFragmentMeses() {
-        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof MesesFragment;
+        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof MesesFragment2;
     }
 
     public boolean isFragmentCartela() {
@@ -1610,25 +1610,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 onTeimosinhaDialogListener()
         );
     }
-
-    private void modalTeimosinhas() {
-        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
-        if (!isEspecial) {
-            DialogUtils.showDialogListItensNovo(
-                    SimulaActivity.this,
-                    getResources().getString(R.string.teimosinhas_maiusculo),
-                    null,
-                    getString(R.string.teimosinhas_descricao),
-                    qtdConcursosList,
-                    "Confirmar",
-                    "Cancelar",
-                    onTeimosinhaDialogListener()
-            );
-        } else {
-            DialogUtils.dialogEntendi(SimulaActivity.this, getString(R.string.nao_teimosinhas));
-        }
-    }
-
     private OnDialogListener onTeimosinhaDialogListener() {
         return new OnDialogListener() {
             @Override

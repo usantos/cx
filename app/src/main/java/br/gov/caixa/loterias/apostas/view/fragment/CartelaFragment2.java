@@ -150,7 +150,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     private SimularApostaModel model;
     private CartelaModel cartelaModel;
     private MaterialButton botaoFavoritar;
-    private View rodape;
     private boolean mudouTamanhoValor = false;
     private SimulaViewModel viewModel;
 
@@ -444,7 +443,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cartela_novo, container, false);
-        rodape = view.findViewById(R.id.rodape_espacamento);
         return view;
     }
 
@@ -1476,14 +1474,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                             : View.GONE
             );
         }
-
-        if (rodape != null) {
-            rodape.setVisibility(
-                    state.isMostrarRodape()
-                            ? View.VISIBLE
-                            : View.GONE
-            );
-        }
     }
 
     private void publicarValorAposta(
@@ -1929,16 +1919,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
         salvarApostaLayout.setVisibility(View.GONE);
-        verificaMostraRodape();
-    }
-
-    private void verificaMostraRodape() {
-        if (parentActivity.getBotaoLimparAposta().getVisibility() == View.VISIBLE ||
-                parentActivity.getSalvarApostaLayout().getVisibility() == View.VISIBLE) {
-            rodape.setVisibility(View.VISIBLE);
-        } else {
-            rodape.setVisibility(View.GONE);
-        }
     }
 
     public void atualizaStatusBotaoFinalizar(Boolean isPickerPrognosticos) {
@@ -2613,7 +2593,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 isEcolhaTimeBtnAtivado = true;
             }
 
-            verificaMostraRodape();
         }
 
         publicarValorAposta(

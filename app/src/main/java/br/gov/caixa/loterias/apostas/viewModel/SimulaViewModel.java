@@ -40,6 +40,7 @@ import br.gov.caixa.loterias.apostas.state.ComandoCarrinho;
 import br.gov.caixa.loterias.apostas.state.ComandoCompletarAposta;
 import br.gov.caixa.loterias.apostas.state.ComandoFavoritarAposta;
 import br.gov.caixa.loterias.apostas.state.ComandoTelaSimula;
+import br.gov.caixa.loterias.apostas.state.EtapaAposta;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
@@ -171,7 +172,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         if (event instanceof SimulaUiEvent.LimpezaApostaRenderizada) {
 
-            limparFlagsDeRenderizacao();;
+            limparFlagsDeRenderizacao();
         }
         if (event instanceof SimulaUiEvent.InicializarTeimosinhas) {
             inicializarTeimosinhas((SimulaUiEvent.InicializarTeimosinhas) event);
@@ -300,6 +301,7 @@ public class SimulaViewModel extends AndroidViewModel {
             return;
         }
     }
+
     private void handleSalvarApostaFavoritaSolicitado(
             SimulaUiEvent.SalvarApostaFavoritaSolicitado event
     ) {
@@ -569,14 +571,10 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setSurpresinhaHabilitada(true)
                         .setMostrarSalvarAposta(false)
                         .setMostrarBotaoLimparAposta(false)
-                        .setMostrarRodape(false)
                         .setBotaoLimparHabilitado(false)
                         .setBotaoCompletarVisivel(false)
                         .setBotaoCompletarHabilitado(false)
                         .setBotaoAdicionarHabilitado(true)
-                        .setTextoBotaoFinalizarResId(
-                                R.string.adicionarAoCarrinho
-                        )
                         .build()
         );
     }
@@ -591,9 +589,6 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoCompletarVisivel(true)
                         .setBotaoCompletarHabilitado(true)
                         .setBotaoAdicionarHabilitado(false)
-                        .setTextoBotaoFinalizarResId(
-                                R.string.completarBotao
-                        )
                         .build()
         );
     }
@@ -620,14 +615,10 @@ public class SimulaViewModel extends AndroidViewModel {
                             .setComandoTelaSimula(comando)
                             .setMostrarSalvarAposta(false)
                             .setMostrarBotaoLimparAposta(false)
-                            .setMostrarRodape(false)
                             .setBotaoLimparHabilitado(false)
                             .setBotaoCompletarVisivel(false)
                             .setBotaoCompletarHabilitado(false)
                             .setBotaoAdicionarHabilitado(true)
-                            .setTextoBotaoFinalizarResId(
-                                    R.string.adicionarAoCarrinho
-                            )
                             .build()
             );
 
@@ -644,9 +635,6 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoCompletarVisivel(true)
                         .setBotaoCompletarHabilitado(true)
                         .setBotaoAdicionarHabilitado(false)
-                        .setTextoBotaoFinalizarResId(
-                                R.string.completarBotao
-                        )
                         .build()
         );
     }
@@ -1213,20 +1201,24 @@ public class SimulaViewModel extends AndroidViewModel {
             SimulaUiEvent.CartelaAlterada event
     ) {
 
+        ResultadoFluxoAposta fluxo =
+                resolverFluxoAposta(event);
+
         boolean botaoLimparHabilitado =
-                calcularBotaoLimparHabilitado(event);
-
-        boolean botaoAdicionarHabilitado =
-                calcularBotaoAdicionarHabilitado(event);
-
-        boolean botaoCompletarHabilitado =
-                calcularBotaoCompletarHabilitado(
+                calcularBotaoLimparHabilitadoPorFluxo(
                         event,
-                        botaoAdicionarHabilitado
+                        fluxo
                 );
 
+        boolean botaoAdicionarHabilitado =
+                fluxo.apostaPronta;
+
+        boolean botaoCompletarHabilitado =
+                !fluxo.apostaPronta;
+
         boolean mostrarSalvarAposta =
-                calcularMostrarSalvarAposta(event);
+                fluxo.apostaPronta
+                        && podeMostrarSalvarAposta(event.getTipoJogo());
 
         boolean mostrarRodape =
                 botaoLimparHabilitado || mostrarSalvarAposta;
@@ -1250,6 +1242,9 @@ public class SimulaViewModel extends AndroidViewModel {
 
         uiState.setValue(
                 atual.toBuilder()
+                        .setEtapaAposta(
+                                fluxo.etapa
+                        )
                         .setQtdDezenasPossiveisSelecionado(
                                 qtdDezenasPossiveis
                         )
@@ -1265,17 +1260,11 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoLimparHabilitado(
                                 botaoLimparHabilitado
                         )
-                        .setSurpresinhaHabilitada(
-                                atual.isSurpresinhaHabilitada()
-                        )
                         .setMostrarBotaoLimparAposta(
                                 botaoLimparHabilitado
                         )
                         .setMostrarSalvarAposta(
                                 mostrarSalvarAposta
-                        )
-                        .setMostrarRodape(
-                                mostrarRodape
                         )
                         .setTextoSelecionados(
                                 textoSelecionados
@@ -1283,6 +1272,63 @@ public class SimulaViewModel extends AndroidViewModel {
                         .build()
         );
     }
+    private boolean calcularBotaoLimparHabilitadoPorFluxo(
+            SimulaUiEvent.CartelaAlterada event,
+            ResultadoFluxoAposta fluxo
+    ) {
+
+        ModalidadeEnum tipoJogo =
+                event.getTipoJogo();
+
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA
+                && fluxo.etapa == EtapaAposta.TIME_CORACAO) {
+
+            return event.isEquipeSelecionadaValida();
+        }
+
+        if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE
+                && fluxo.etapa == EtapaAposta.MES_SORTE) {
+
+            return false;
+        }
+
+        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA
+                && fluxo.etapa == EtapaAposta.TREVOS) {
+
+            return false;
+        }
+
+        if (tipoJogo == ModalidadeEnum.LOTECA) {
+            return event.getQtdPartidasSelecionadas() > 0;
+        }
+
+        if (tipoJogo == ModalidadeEnum.LOTOGOL) {
+            return event.isPossuiPlacarLotogol();
+        }
+
+        if (tipoJogo == ModalidadeEnum.SUPER_7) {
+            return event.getQtdTotalSelecionadosSuperSete() > 0;
+        }
+
+        return event.getQtdDezenasSelecionadas() > 0;
+    }
+
+
+    private boolean podeMostrarSalvarAposta(
+            ModalidadeEnum tipoJogo
+    ) {
+
+        if (tipoJogo == ModalidadeEnum.LOTECA
+                || tipoJogo == ModalidadeEnum.LOTOGOL
+                || tipoJogo == ModalidadeEnum.DIA_DE_SORTE
+                || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
+
+            return false;
+        }
+
+        return true;
+    }
+
 
     private String montarTextoSelecionados(
             int qtdSelecionados,
@@ -1298,162 +1344,7 @@ public class SimulaViewModel extends AndroidViewModel {
                 + "/"
                 + qtdNecessarios;
     }
-    private boolean calcularBotaoLimparHabilitado(
-            SimulaUiEvent.CartelaAlterada event
-    ) {
 
-        ModalidadeEnum tipoJogo =
-                event.getTipoJogo();
-
-        if (tipoJogo == ModalidadeEnum.LOTECA) {
-            return event.getQtdPartidasSelecionadas() > 0;
-        }
-
-        if (tipoJogo == ModalidadeEnum.LOTOGOL) {
-            return event.isPossuiPlacarLotogol();
-        }
-
-        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-
-            if (event.isTelaSelecaoTimeAtivado()) {
-                return event.isEquipeSelecionadaValida();
-            }
-
-            return event.getQtdDezenasSelecionadas() > 0;
-        }
-
-        if (tipoJogo == ModalidadeEnum.SUPER_7) {
-            return event.getQtdTotalSelecionadosSuperSete() > 0;
-        }
-
-        return event.getQtdDezenasSelecionadas() > 0;
-    }
-
-    private boolean calcularBotaoAdicionarHabilitado(
-            SimulaUiEvent.CartelaAlterada event
-    ) {
-
-        ModalidadeEnum tipoJogo =
-                event.getTipoJogo();
-
-        if (event.isEscolhaTimeCoracaoSurpresinha()) {
-            return event.isEquipeSelecionadaValida();
-        }
-
-        if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE
-                || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-
-            return false;
-        }
-
-        if (tipoJogo == ModalidadeEnum.SUPER_7) {
-
-            return event.getQtdTotalSelecionadosSuperSete()
-                    == event.getQtdDezenasPossiveisSelecionado();
-        }
-
-        if (tipoJogo == ModalidadeEnum.LOTECA) {
-
-            boolean partidasCompletas =
-                    event.getQtdPartidasSelecionadas()
-                            == event.getQtdPartidasTotal();
-
-            boolean possuiDuploOuTriplo =
-                    event.getDuplosLoteca() > 0
-                            || event.getTriplosLoteca() > 0;
-
-            return partidasCompletas && possuiDuploOuTriplo;
-        }
-
-        if (tipoJogo == ModalidadeEnum.LOTOGOL) {
-
-            return event.getQtdPartidasSelecionadas()
-                    == event.getQtdPartidasTotal();
-        }
-
-        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-
-            boolean dezenasCompletas =
-                    event.getQtdDezenasSelecionadas()
-                            == event.getQtdDezenasPossiveisSelecionado();
-
-            return dezenasCompletas
-                    && event.isTelaSelecaoTimeAtivado()
-                    && event.isEquipeSelecionadaValida();
-        }
-
-        return event.getQtdDezenasSelecionadas()
-                == event.getQtdDezenasPossiveisSelecionado();
-    }
-
-    private boolean calcularBotaoCompletarHabilitado(
-            SimulaUiEvent.CartelaAlterada event,
-            boolean botaoAdicionarHabilitado
-    ) {
-
-        ModalidadeEnum tipoJogo =
-                event.getTipoJogo();
-
-        if (botaoAdicionarHabilitado) {
-            return false;
-        }
-
-        if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE
-                || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-
-            return event.getQtdDezenasSelecionadas()
-                    == event.getQtdDezenasPossiveisSelecionado();
-        }
-
-        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-
-            boolean dezenasCompletas =
-                    event.getQtdDezenasSelecionadas()
-                            == event.getQtdDezenasPossiveisSelecionado();
-
-            if (dezenasCompletas && !event.isTelaSelecaoTimeAtivado()) {
-                return true;
-            }
-
-            if (event.isTelaSelecaoTimeAtivado()
-                    && !event.isEquipeSelecionadaValida()) {
-                return true;
-            }
-
-            return !dezenasCompletas;
-        }
-
-        return true;
-    }
-
-    private boolean calcularMostrarSalvarAposta(
-            SimulaUiEvent.CartelaAlterada event
-    ) {
-
-        ModalidadeEnum tipoJogo =
-                event.getTipoJogo();
-
-        if (tipoJogo == ModalidadeEnum.LOTECA
-                || tipoJogo == ModalidadeEnum.LOTOGOL
-                || tipoJogo == ModalidadeEnum.DIA_DE_SORTE
-                || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-
-            return false;
-        }
-
-        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-            return event.isTelaSelecaoTimeAtivado()
-                    && event.isEquipeSelecionadaValida();
-        }
-
-        if (tipoJogo == ModalidadeEnum.SUPER_7) {
-            return event.getQtdTotalSelecionadosSuperSete()
-                    == event.getQtdDezenasPossiveisSelecionado();
-        }
-
-        return event.getQtdDezenasSelecionadas()
-                == event.getQtdDezenasPossiveisSelecionado();
-    }
     private void handleValorApostaAlterado(
             SimulaUiEvent.ValorApostaAlterado event
     ) {
@@ -1472,49 +1363,43 @@ public class SimulaViewModel extends AndroidViewModel {
                         .build()
         );
     }
+    private boolean isNumerosCompletos(
+            int qtdSelecionadas,
+            int qtdPossiveis
+    ) {
+
+        return qtdSelecionadas == qtdPossiveis;
+    }
 
     private void handleCompletarApostaClicado(
             SimulaUiEvent.CompletarApostaClicado event
     ) {
 
-        ModalidadeEnum tipoJogo = event.getTipoJogo();
+        ModalidadeEnum tipoJogo =
+                event.getTipoJogo();
+
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
+
+            handleCompletarTimemania(event);
+            return;
+        }
+
+        if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE) {
+
+            handleCompletarDiaDeSorte(event);
+            return;
+        }
+
+        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
+
+            handleCompletarMaisMilionaria(event);
+            return;
+        }
 
         if (tipoJogo == ModalidadeEnum.SUPER_7) {
 
             publicarComandoCompletar(
                     new ComandoCompletarAposta.PreencherSuperSete()
-            );
-
-            return;
-        }
-
-        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-
-            boolean apostaCompleta =
-                    event.getQtdDezenasSelecionadas()
-                            == event.getQtdDezenasPossiveisSelecionado();
-
-            if (apostaCompleta && !event.isTelaSelecaoTimeAtivado()) {
-
-                publicarComandoCompletar(
-                        new ComandoCompletarAposta.MostrarEscolhaTimeCoracao()
-                );
-
-                return;
-            }
-
-            if (event.isTelaSelecaoTimeAtivado()
-                    && !event.isEquipeSelecionadaValida()) {
-
-                publicarComandoCompletar(
-                        new ComandoCompletarAposta.SelecionarTimeAleatorio()
-                );
-
-                return;
-            }
-
-            publicarComandoCompletar(
-                    new ComandoCompletarAposta.PreencherNumerosAleatorios()
             );
 
             return;
@@ -1529,7 +1414,21 @@ public class SimulaViewModel extends AndroidViewModel {
             return;
         }
 
-        if (tipoJogo == ModalidadeEnum.LOTOGOL) {
+        publicarComandoCompletar(
+                new ComandoCompletarAposta.PreencherNumerosAleatorios()
+        );
+    }
+    private void handleCompletarTimemania(
+            SimulaUiEvent.CompletarApostaClicado event
+    ) {
+
+        boolean numerosCompletos =
+                isNumerosCompletos(
+                        event.getQtdDezenasSelecionadas(),
+                        event.getQtdDezenasPossiveisSelecionado()
+                );
+
+        if (!numerosCompletos) {
 
             publicarComandoCompletar(
                     new ComandoCompletarAposta.PreencherNumerosAleatorios()
@@ -1538,8 +1437,98 @@ public class SimulaViewModel extends AndroidViewModel {
             return;
         }
 
+        if (!event.isTelaSelecaoTimeAtivado()) {
+
+            atualizarEtapaAposta(
+                    EtapaAposta.TIME_CORACAO
+            );
+
+            publicarComandoCompletar(
+                    new ComandoCompletarAposta.MostrarEscolhaTimeCoracao()
+            );
+
+            return;
+        }
+
+        if (!event.isEquipeSelecionadaValida()) {
+
+            publicarComandoCompletar(
+                    new ComandoCompletarAposta.SelecionarTimeAleatorio()
+            );
+
+            return;
+        }
+
+        atualizarEtapaAposta(
+                EtapaAposta.PRONTA
+        );
+    }
+    private void handleCompletarDiaDeSorte(
+            SimulaUiEvent.CompletarApostaClicado event
+    ) {
+
+        boolean numerosCompletos =
+                isNumerosCompletos(
+                        event.getQtdDezenasSelecionadas(),
+                        event.getQtdDezenasPossiveisSelecionado()
+                );
+
+        if (!numerosCompletos) {
+
+            publicarComandoCompletar(
+                    new ComandoCompletarAposta.PreencherNumerosAleatorios()
+            );
+
+            return;
+        }
+
+        atualizarEtapaAposta(
+                EtapaAposta.MES_SORTE
+        );
+
         publicarComandoCompletar(
-                new ComandoCompletarAposta.PreencherNumerosAleatorios()
+                new ComandoCompletarAposta.AbrirMesDeSorte()
+        );
+    }
+    private void handleCompletarMaisMilionaria(
+            SimulaUiEvent.CompletarApostaClicado event
+    ) {
+
+        boolean numerosCompletos =
+                isNumerosCompletos(
+                        event.getQtdDezenasSelecionadas(),
+                        event.getQtdDezenasPossiveisSelecionado()
+                );
+
+        if (!numerosCompletos) {
+
+            publicarComandoCompletar(
+                    new ComandoCompletarAposta.PreencherNumerosAleatorios()
+            );
+
+            return;
+        }
+
+        atualizarEtapaAposta(
+                EtapaAposta.TREVOS
+        );
+
+        publicarComandoCompletar(
+                new ComandoCompletarAposta.AbrirTrevos()
+        );
+    }
+
+    private void atualizarEtapaAposta(
+            EtapaAposta etapaAposta
+    ) {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setEtapaAposta(etapaAposta)
+                        .build()
         );
     }
 
@@ -1547,7 +1536,8 @@ public class SimulaViewModel extends AndroidViewModel {
             SimulaUiEvent.AdicionarCarrinhoClicado event
     ) {
 
-        ModalidadeEnum tipoJogo = event.getTipoJogo();
+        ModalidadeEnum tipoJogo =
+                event.getTipoJogo();
 
         if (event.isEscolhaTimeCoracaoSurpresinha()) {
 
@@ -1558,19 +1548,94 @@ public class SimulaViewModel extends AndroidViewModel {
             return;
         }
 
-        if (!isApostaProntaParaAdicionar(event)) {
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
 
-//            publicarComandoCompletar(
-//                    new ComandoCompletarAposta.MostrarMensagem(
-//                            R.string.completarCartela
-//                    )
-//            );
+            handleAdicionarCarrinhoTimemania(event);
+            return;
+        }
+
+        if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE) {
+
+            handleAdicionarCarrinhoDiaDeSorte(event);
+            return;
+        }
+
+        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
+
+            handleAdicionarCarrinhoMaisMilionaria(event);
+            return;
+        }
+
+        if (!isApostaProntaParaAdicionar(event)) {
+            return;
+        }
+
+        habilitarModoAdicionar();
+
+        publicarComandoCompletar(
+                new ComandoCompletarAposta.ApostaProntaParaAdicionar(false)
+        );
+    }
+    private void handleAdicionarCarrinhoTimemania(
+            SimulaUiEvent.AdicionarCarrinhoClicado event
+    ) {
+
+        boolean numerosCompletos =
+                isNumerosCompletos(
+                        event.getQtdDezenasSelecionadas(),
+                        event.getQtdDezenasPossiveisSelecionado()
+                );
+
+        if (!numerosCompletos) {
+            return;
+        }
+
+        if (!event.isTelaSelecaoTimeAtivado()) {
+
+            atualizarEtapaAposta(
+                    EtapaAposta.TIME_CORACAO
+            );
+
+            publicarComandoCompletar(
+                    new ComandoCompletarAposta.MostrarEscolhaTimeCoracao()
+            );
 
             return;
         }
 
-        if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE
-                && event.isFragmentCartela()) {
+        if (!event.isEquipeSelecionadaValida()) {
+            return;
+        }
+
+        atualizarEtapaAposta(
+                EtapaAposta.PRONTA
+        );
+
+        habilitarModoAdicionar();
+
+        publicarComandoCompletar(
+                new ComandoCompletarAposta.ApostaProntaParaAdicionar(false)
+        );
+    }
+    private void handleAdicionarCarrinhoDiaDeSorte(
+            SimulaUiEvent.AdicionarCarrinhoClicado event
+    ) {
+
+        boolean numerosCompletos =
+                isNumerosCompletos(
+                        event.getQtdDezenasSelecionadas(),
+                        event.getQtdDezenasPossiveisSelecionado()
+                );
+
+        if (!numerosCompletos) {
+            return;
+        }
+
+        if (event.isFragmentCartela()) {
+
+            atualizarEtapaAposta(
+                    EtapaAposta.MES_SORTE
+            );
 
             publicarComandoCompletar(
                     new ComandoCompletarAposta.AbrirMesDeSorte()
@@ -1579,8 +1644,35 @@ public class SimulaViewModel extends AndroidViewModel {
             return;
         }
 
-        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA
-                && event.isFragmentCartela()) {
+        atualizarEtapaAposta(
+                EtapaAposta.PRONTA
+        );
+
+        habilitarModoAdicionar();
+
+        publicarComandoCompletar(
+                new ComandoCompletarAposta.ApostaProntaParaAdicionar(false)
+        );
+    }
+    private void handleAdicionarCarrinhoMaisMilionaria(
+            SimulaUiEvent.AdicionarCarrinhoClicado event
+    ) {
+
+        boolean numerosCompletos =
+                isNumerosCompletos(
+                        event.getQtdDezenasSelecionadas(),
+                        event.getQtdDezenasPossiveisSelecionado()
+                );
+
+        if (!numerosCompletos) {
+            return;
+        }
+
+        if (event.isFragmentCartela()) {
+
+            atualizarEtapaAposta(
+                    EtapaAposta.TREVOS
+            );
 
             publicarComandoCompletar(
                     new ComandoCompletarAposta.AbrirTrevos()
@@ -1588,18 +1680,53 @@ public class SimulaViewModel extends AndroidViewModel {
 
             return;
         }
+
+        atualizarEtapaAposta(
+                EtapaAposta.PRONTA
+        );
+
         habilitarModoAdicionar();
+
         publicarComandoCompletar(
                 new ComandoCompletarAposta.ApostaProntaParaAdicionar(false)
         );
     }
+
     private boolean isApostaProntaParaAdicionar(
             SimulaUiEvent.AdicionarCarrinhoClicado event
     ) {
 
-        ModalidadeEnum tipoJogo = event.getTipoJogo();
+        ModalidadeEnum tipoJogo =
+                event.getTipoJogo();
+
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
+
+            boolean numerosCompletos =
+                    isNumerosCompletos(
+                            event.getQtdDezenasSelecionadas(),
+                            event.getQtdDezenasPossiveisSelecionado()
+                    );
+
+            return numerosCompletos
+                    && event.isTelaSelecaoTimeAtivado()
+                    && event.isEquipeSelecionadaValida();
+        }
+
+        if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE
+                || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
+
+            boolean numerosCompletos =
+                    isNumerosCompletos(
+                            event.getQtdDezenasSelecionadas(),
+                            event.getQtdDezenasPossiveisSelecionado()
+                    );
+
+            return numerosCompletos
+                    && !event.isFragmentCartela();
+        }
 
         if (tipoJogo == ModalidadeEnum.SUPER_7) {
+
             return event.getQtdTotalSelecionadosSuperSete()
                     == event.getQtdDezenasPossiveisSelecionado();
         }
@@ -1618,18 +1745,9 @@ public class SimulaViewModel extends AndroidViewModel {
         }
 
         if (tipoJogo == ModalidadeEnum.LOTOGOL) {
+
             return event.getQtdPartidasSelecionadas()
                     == event.getQtdPartidasTotal();
-        }
-
-        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-
-            boolean dezenasCompletas =
-                    event.getQtdDezenasSelecionadas()
-                            == event.getQtdDezenasPossiveisSelecionado();
-
-            return dezenasCompletas
-                    && event.isEquipeSelecionadaValida();
         }
 
         return event.getQtdDezenasSelecionadas()
@@ -1755,9 +1873,7 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoAdicionarHabilitado(false)
                         .setBotaoLimparHabilitado(false)
                         .setMostrarSalvarAposta(false)
-                        .setMostrarRodape(false)
                         .setBotaoCompletarVisivel(true)
-                        .setTextoBotaoFinalizarResId(R.string.completarBotao)
                         .build()
         );
     }
@@ -1905,7 +2021,6 @@ public class SimulaViewModel extends AndroidViewModel {
         SimulaUiState.Builder builder =
                 state.toBuilder()
                         .setMostrarSalvarAposta(false)
-                        .setMostrarRodape(false)
                         .setMostrarBotaoLimparAposta(false)
                         .setTextoSelecionados("Selecione os números:")
                         .setBotaoCompletarHabilitado(true)
@@ -1916,10 +2031,7 @@ public class SimulaViewModel extends AndroidViewModel {
                                 isValorGrande(valorApostaAtual)
                         )
                         .setLimparOpcaoOutrosNumeros(true)
-                        .setBotaoCompletarVisivel(true)
-                        .setTextoBotaoFinalizarResId(
-                                R.string.completarBotao
-                        );
+                        .setBotaoCompletarVisivel(true);
 
         if (tipoJogo == ModalidadeEnum.LOTECA) {
 
@@ -1929,25 +2041,50 @@ public class SimulaViewModel extends AndroidViewModel {
                     .setSimplesLoteca(0)
                     .setDuplasLoteca(0)
                     .setTriplasLoteca(0)
-                    .setBotaoCompletarVisivel(false)
-                    .setTextoBotaoFinalizarResId(R.string.label_selecionar_times_aleatoriamente);
+                    .setBotaoCompletarVisivel(false);
 
         } else if (tipoJogo == ModalidadeEnum.LOTOGOL) {
 
             builder
                     .setLimparLotogol(true)
-                    .setBotaoCompletarVisivel(false)
-                    .setTextoBotaoFinalizarResId(R.string.label_complete_placar_aleatoriamente);
+                    .setBotaoCompletarVisivel(false);
 
-        } else if (tipoJogo == ModalidadeEnum.TIMEMANIA
-                && state.isTelaSelecaoTimeAtivado()) {
+        }  else if (tipoJogo == ModalidadeEnum.TIMEMANIA
+        && state.getEtapaAposta() == EtapaAposta.TIME_CORACAO) {
 
-            builder
-                    .setEquipeSelecionada(null)
-                    .setLimparTimeCoracao(true)
-                    .setMostrarBotaoLimparAposta(false)
-                    .setMostrarSalvarAposta(false)
-                    .setTextoBotaoFinalizarResId(R.string.adicionarAoCarrinho);
+        builder
+                .setEquipeSelecionada(null)
+                .setLimparTimeCoracao(true)
+                .setBotaoAdicionarHabilitado(false)
+                .setBotaoCompletarHabilitado(true)
+                .setMostrarBotaoLimparAposta(false)
+                .setMostrarSalvarAposta(false)
+                .setEtapaAposta(EtapaAposta.TIME_CORACAO)
+                ;
+
+    } else if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE
+        && state.getEtapaAposta() == EtapaAposta.MES_SORTE) {
+
+        builder
+                .setLimparOpcaoOutrosNumeros(true)
+                .setBotaoAdicionarHabilitado(false)
+                .setBotaoCompletarHabilitado(true)
+                .setMostrarBotaoLimparAposta(false)
+                .setMostrarSalvarAposta(false)
+                .setEtapaAposta(EtapaAposta.MES_SORTE)
+                ;
+
+    } else if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA
+        && state.getEtapaAposta() == EtapaAposta.TREVOS) {
+
+        builder
+                .setLimparOpcaoOutrosNumeros(true)
+                .setBotaoAdicionarHabilitado(false)
+                .setBotaoCompletarHabilitado(true)
+                .setMostrarBotaoLimparAposta(false)
+                .setMostrarSalvarAposta(false)
+                .setEtapaAposta(EtapaAposta.TREVOS)
+                ;
 
         } else if (tipoJogo == ModalidadeEnum.SUPER_7) {
 
@@ -1956,8 +2093,7 @@ public class SimulaViewModel extends AndroidViewModel {
                     .setQtdTotalSelecionadosSuperSete(0)
                     .setQtdDezenasPossiveisSelecionado(qtdNumerosAtual)
                     .setMostrarBotaoLimparAposta(false)
-                    .setMostrarSalvarAposta(false)
-                    .setTextoBotaoFinalizarResId(R.string.completarCartela);
+                    .setMostrarSalvarAposta(false);
 
         } else {
 
@@ -1965,8 +2101,7 @@ public class SimulaViewModel extends AndroidViewModel {
                     .setDezenasSelecionadas(new ArrayList<Integer>())
                     .setLimparNumerosCartela(true)
                     .setMostrarBotaoLimparAposta(false)
-                    .setMostrarSalvarAposta(false)
-                    .setTextoBotaoFinalizarResId(R.string.completarBotao);
+                    .setMostrarSalvarAposta(false);
         }
 
         uiState.setValue(
@@ -2050,31 +2185,7 @@ public class SimulaViewModel extends AndroidViewModel {
         return valor != null
                 && valor.doubleValue() > 999.99;
     }
-    private BigDecimal obterValorInicialAposta() {
 
-        int qtdMinima =
-                getQuantidadeMinimaSafe();
-
-        int qtdConcursoInicial = 0;
-
-        if (parametroJogoAtual != null
-                && parametroJogoAtual.getTeimosinhas() != null
-                && !parametroJogoAtual.getTeimosinhas().isEmpty()) {
-
-            Integer primeiraTeimosinha =
-                    parametroJogoAtual.getTeimosinhas().get(0);
-
-            qtdConcursoInicial =
-                    primeiraTeimosinha != null
-                            ? primeiraTeimosinha
-                            : 0;
-        }
-
-        return obterValorApostaPorParametros(
-                qtdMinima,
-                qtdConcursoInicial
-        );
-    }
 
     private void limparFlagsDeRenderizacao() {
 
@@ -2222,6 +2333,179 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoAdicionarHabilitado(true)
                         .setBotaoLimparHabilitado(true)
                         .build()
+        );
+    }
+    private static class ResultadoFluxoAposta {
+
+        private final EtapaAposta etapa;
+        private final boolean numerosCompletos;
+        private final boolean etapaComplementarAtiva;
+        private final boolean etapaComplementarValida;
+        private final boolean apostaPronta;
+        private final boolean possuiEtapaComplementar;
+
+        ResultadoFluxoAposta(
+                EtapaAposta etapa,
+                boolean numerosCompletos,
+                boolean etapaComplementarAtiva,
+                boolean etapaComplementarValida,
+                boolean apostaPronta,
+                boolean possuiEtapaComplementar
+        ) {
+
+            this.etapa = etapa;
+            this.numerosCompletos = numerosCompletos;
+            this.etapaComplementarAtiva = etapaComplementarAtiva;
+            this.etapaComplementarValida = etapaComplementarValida;
+            this.apostaPronta = apostaPronta;
+            this.possuiEtapaComplementar = possuiEtapaComplementar;
+        }
+    }
+    private EtapaAposta resolverEtapaComComplemento(
+            boolean numerosCompletos,
+            boolean etapaComplementarAtiva,
+            boolean etapaComplementarValida,
+            EtapaAposta etapaComplementar
+    ) {
+
+        if (!numerosCompletos) {
+            return EtapaAposta.NUMEROS;
+        }
+
+        if (!etapaComplementarAtiva) {
+            return EtapaAposta.NUMEROS;
+        }
+
+        if (!etapaComplementarValida) {
+            return etapaComplementar;
+        }
+
+        return EtapaAposta.PRONTA;
+    }
+    private boolean isSelecaoPrincipalCompleta(
+            SimulaUiEvent.CartelaAlterada event
+    ) {
+
+        ModalidadeEnum tipoJogo =
+                event.getTipoJogo();
+
+        if (tipoJogo == ModalidadeEnum.SUPER_7) {
+
+            return event.getQtdTotalSelecionadosSuperSete()
+                    == event.getQtdDezenasPossiveisSelecionado();
+        }
+
+        if (tipoJogo == ModalidadeEnum.LOTECA) {
+
+            boolean partidasCompletas =
+                    event.getQtdPartidasSelecionadas()
+                            == event.getQtdPartidasTotal();
+
+            boolean possuiDuploOuTriplo =
+                    event.getDuplosLoteca() > 0
+                            || event.getTriplosLoteca() > 0;
+
+            return partidasCompletas && possuiDuploOuTriplo;
+        }
+
+        if (tipoJogo == ModalidadeEnum.LOTOGOL) {
+
+            return event.getQtdPartidasSelecionadas()
+                    == event.getQtdPartidasTotal();
+        }
+
+        return event.getQtdDezenasSelecionadas()
+                == event.getQtdDezenasPossiveisSelecionado();
+    }
+    private ResultadoFluxoAposta resolverFluxoAposta(
+            SimulaUiEvent.CartelaAlterada event
+    ) {
+
+        ModalidadeEnum tipoJogo =
+                event.getTipoJogo();
+
+        boolean numerosCompletos =
+                isSelecaoPrincipalCompleta(event);
+
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
+
+            boolean etapaAtiva =
+                    event.isTelaSelecaoTimeAtivado();
+
+            boolean etapaValida =
+                    event.isEquipeSelecionadaValida();
+
+            EtapaAposta etapa =
+                    resolverEtapaComComplemento(
+                            numerosCompletos,
+                            etapaAtiva,
+                            etapaValida,
+                            EtapaAposta.TIME_CORACAO
+                    );
+
+            return new ResultadoFluxoAposta(
+                    etapa,
+                    numerosCompletos,
+                    etapaAtiva,
+                    etapaValida,
+                    etapa == EtapaAposta.PRONTA,
+                    true
+            );
+        }
+
+        if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE) {
+
+            EtapaAposta etapaAtual =
+                    getCurrentState().getEtapaAposta();
+
+            boolean estaNaEtapaMes =
+                    etapaAtual == EtapaAposta.MES_SORTE;
+
+            return new ResultadoFluxoAposta(
+                    estaNaEtapaMes
+                            ? EtapaAposta.MES_SORTE
+                            : numerosCompletos
+                            ? EtapaAposta.MES_SORTE
+                            : EtapaAposta.NUMEROS,
+                    numerosCompletos,
+                    estaNaEtapaMes,
+                    false,
+                    false,
+                    true
+            );
+        }
+
+        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
+
+            EtapaAposta etapaAtual =
+                    getCurrentState().getEtapaAposta();
+
+            boolean estaNaEtapaTrevos =
+                    etapaAtual == EtapaAposta.TREVOS;
+
+            return new ResultadoFluxoAposta(
+                    estaNaEtapaTrevos
+                            ? EtapaAposta.TREVOS
+                            : numerosCompletos
+                            ? EtapaAposta.TREVOS
+                            : EtapaAposta.NUMEROS,
+                    numerosCompletos,
+                    estaNaEtapaTrevos,
+                    false,
+                    false,
+                    true
+            );
+        }
+
+        return new ResultadoFluxoAposta(
+                numerosCompletos
+                        ? EtapaAposta.PRONTA
+                        : EtapaAposta.NUMEROS,
+                numerosCompletos,
+                false,
+                false,
+                numerosCompletos,
+                false
         );
     }
 }

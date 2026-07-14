@@ -73,21 +73,39 @@
 
     </LinearLayout>
 
-    <!-- Adicionar ao carrinho -->
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnAdicionarCarrinho"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="@string/adicionar_ao_carrinho"
-        android:textColor="@color/text_rodape"
-        android:textAllCaps="false"
-        android:enabled="false"
-        android:fontFamily="@font/caixa_std_regular"
-        android:backgroundTint="@color/button_rodape"
-        app:strokeColor="@color/text_rodape"
-        app:strokeWidth="1dp"
-        app:cornerRadius="4dp"/>
+        android:layout_height="40dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAdicionarCarrinho"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/adicionar_ao_carrinho"
+            android:textColor="@color/text_rodape"
+            android:textAllCaps="false"
+            android:enabled="false"
+            android:fontFamily="@font/caixa_std_regular"
+            android:backgroundTint="@color/button_rodape"
+            app:strokeColor="@color/text_rodape"
+            app:strokeWidth="1dp"
+            app:cornerRadius="4dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNextStep"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:text="Escolher"
+            android:textColor="@color/text_rodape"
+            android:textAllCaps="false"
+            android:fontFamily="@font/caixa_std_regular"
+            android:backgroundTint="@color/button_rodape"
+            app:strokeColor="@color/text_rodape"
+            app:strokeWidth="1dp"
+            app:cornerRadius="4dp"/>
+
+    </FrameLayout>
 
     <!-- Rodapé -->
 

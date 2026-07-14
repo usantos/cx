@@ -7,7 +7,13 @@ public abstract class ComandoCompletarAposta {
 
     public static final class PreencherNumerosAleatorios extends ComandoCompletarAposta {
     }
+    public static final class SelecionarMesSorteAleatorio
+            extends ComandoCompletarAposta {
+    }
 
+    public static final class SelecionarTrevosAleatorios
+            extends ComandoCompletarAposta {
+    }
     public static final class PreencherSuperSete extends ComandoCompletarAposta {
     }
 
