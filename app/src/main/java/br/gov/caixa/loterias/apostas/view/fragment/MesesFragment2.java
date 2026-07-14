@@ -1,12 +1,10 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,13 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.MesesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
@@ -124,7 +118,7 @@ public class MesesFragment2 extends Fragment {
             limparTodosMeses();
             mesesAdapter.notifyDataSetChanged();
             gerenciarStatusBotoes(false);
-            parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
+//            parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
             limparMesDeSorte();
         });
     }
@@ -151,44 +145,44 @@ public class MesesFragment2 extends Fragment {
     }
 
     private void mostrarSalvarAposta() {
-        if (dezenasSelecionadas != null && getItemSelecionado() != null) {
-            if(parentActivity.getFlagApostaSalva()){
-                parentActivity.getSalvarApostaLayout().setBackgroundResource(R.color.cinza);
-                parentActivity.getTextoSalveEstaAposta().setText(R.string.tituloSalvarAposta);
-                parentActivity.getIconStarSalvar().setBackgroundResource(R.drawable.icon_favoritar);
-            }
-            parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
-            tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 64);
-            parentActivity.getSalvarApostaLayout().setOnClickListener(v -> {
-                if(!DadosUsuarioBO.checarUsuarioLogado(getActivity())){
-                    RedirectNetwork.connectKeycloak(getActivity(), null);
-                }
-                tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 140);
-                parentActivity.getSalvarApostaLayout().setOnClickListener(null);
-            });
-
-            parentActivity.getSalvarApostaLayout().findViewById(R.id.btnSalvarAposta).setOnClickListener(v -> {
-                EditText nomeAposta = parentActivity.getEditNomeAposta();
-
-                if (!TextUtils.isEmpty(nomeAposta.getText().toString())) {
-                    ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
-                    aposta.setMesDeSorte(getItemSelecionado());
-                    parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
-                } else {
-                    DialogUtils.dialogEntendi(
-                            getActivity(),
-                            getString(R.string.msg_favor_inserir_nome_aposta)
-                    );
-                }
-            });
-        }
+//        if (dezenasSelecionadas != null && getItemSelecionado() != null) {
+//            if(parentActivity.getFlagApostaSalva()){
+////                parentActivity.getSalvarApostaLayout().setBackgroundResource(R.color.cinza);
+//                parentActivity.getTextoSalveEstaAposta().setText(R.string.tituloSalvarAposta);
+//                parentActivity.getIconStarSalvar().setBackgroundResource(R.drawable.icon_favoritar);
+//            }
+//            parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
+//            tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 64);
+//            parentActivity.getSalvarApostaLayout().setOnClickListener(v -> {
+//                if(!DadosUsuarioBO.checarUsuarioLogado(getActivity())){
+//                    RedirectNetwork.connectKeycloak(getActivity(), null);
+//                }
+//                tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 140);
+//                parentActivity.getSalvarApostaLayout().setOnClickListener(null);
+//            });
+//
+//            parentActivity.getSalvarApostaLayout().findViewById(R.id.btnSalvarAposta).setOnClickListener(v -> {
+//                EditText nomeAposta = parentActivity.getEditNomeAposta();
+//
+//                if (!TextUtils.isEmpty(nomeAposta.getText().toString())) {
+//                    ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
+//                    aposta.setMesDeSorte(getItemSelecionado());
+//                    parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
+//                } else {
+//                    DialogUtils.dialogEntendi(
+//                            getActivity(),
+//                            getString(R.string.msg_favor_inserir_nome_aposta)
+//                    );
+//                }
+//            });
+//        }
 
     }
 
     private void tamanhoBotaoSalvarAposta(ViewGroup.LayoutParams layoutParams, int i) {
         float scale = parentActivity.getResources().getDisplayMetrics().density;
         layoutParams.height = (int) (i * scale + 0.5f);
-        parentActivity.getSalvarApostaLayout().setLayoutParams(layoutParams);
+//        parentActivity.getSalvarApostaLayout().setLayoutParams(layoutParams);
     }
 
     private void statusBotao(Button button, int background, int border, int textColor, boolean habilitado) {

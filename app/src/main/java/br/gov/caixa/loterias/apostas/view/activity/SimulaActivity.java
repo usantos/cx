@@ -12,10 +12,8 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -85,18 +83,17 @@ import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnPaginacaoListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener2;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnTrevosListener, OnPaginacaoListener {
+public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnTrevosListener2, OnPaginacaoListener {
 
     public static String COR_FONTE_FUNDO_BRANCO = "COR_FONTE_FUNDO_BRANCO";
     public static String COR_FONTE_FUNDO_CLARO = "COR_FONTE_FUNDO_CLARO";
@@ -126,7 +123,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private SurpresinhaFragment2 surpresinhaFragment;
     private PaginacaoFragment paginacaoFragment;
     private TrevosFragment trevosFragment;
-    private RodapeSimulacaoApostaFragment rodapeFragment;
 
     private int typeGameColorLight;
     private int typeGameColorDark;
@@ -239,7 +235,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
         this.textoSalveEstaAposta = findViewById(R.id.textoSalveEstaAposta);
         this.toolBarSimularAposta = findViewById(R.id.toolBarSimularAposta);
-        this.salvarApostaLayout = findViewById(R.id.salvarApostaLayout);
         this.btnSalvarAposta = findViewById(R.id.btnSalvarAposta);
         this.editNomeAposta = findViewById(R.id.editNomeAposta);
         this.iconStarSalvar = findViewById(R.id.iconStarSalvar);
@@ -1123,10 +1118,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         return tvValorCarrinho;
     }
 
-    public RelativeLayout getSalvarApostaLayout() {
-        return salvarApostaLayout;
-    }
-
     public EditText getEditNomeAposta() {
         return editNomeAposta;
     }
@@ -1209,7 +1200,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
                 AlertDialogUtils.dismiss();
 
-                atualizaLayoutSalverAposta();
+                atualizaLayoutSalvarAposta();
             }
 
             @Override
@@ -1350,8 +1341,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         cartelaFragment.setArguments(bundle);
 
         surpresinhaFragment = FragmentUtils.getSurpresinhaFragment2();
-
-        rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(), R.id.id_fg_rodape, new BigDecimal(0), new BigDecimal(0));
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -1733,12 +1722,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     @Override
     public void atualizaValorAposta(ParametroValorApostaDTO valorAposta) {
-        BigDecimal valorEmReais = valorAposta.getValor();
-        if (qtdConcursoSelecionado != 0) {
-            valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdConcursoSelecionado).movePointLeft(0));
-        }
 
-        rodapeFragment.atualizaValorBolao(valorEmReais);
     }
 
     @Override
@@ -1747,8 +1731,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     @Override
-    public RelativeLayout getButtonSalvar() {
-        return salvarApostaLayout;
+    public MaterialButton getButtonSalvar() {
+        return btnFavoritar;
     }
 
     @Override
@@ -1766,24 +1750,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     @Override
-    public void atualizaLayoutSalverAposta() {
-        RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
-
-        salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
-        ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
-
-        final float scale = getResources().getDisplayMetrics().density;
-        relativelayoutParams.height = (int) (64 * scale + 0.5f);
-
-        salvarApostaLayout.setLayoutParams(relativelayoutParams);
-
-        TextView tituloSalvarAposta = getTextoSalveEstaAposta();
-        tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
-        tituloSalvarAposta.setGravity(Gravity.CENTER);
-
-        ImageView starSalvarApostaImageView = getIconStarSalvar();
-        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
-
+    public void atualizaLayoutSalvarAposta() {
         flagApostaSalva = true;
     }
 

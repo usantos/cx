@@ -607,7 +607,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         limparPartidadasSelecionasLoteca(Boolean.FALSE);
         limparOpcaoOutrosNumerosLayout();
         atualizarValorENotificarEstadoCartela();
-        ocutarSalvarAposta();
     }
 
     // METODO DO PROTOCOLO ONCLICK
@@ -636,30 +635,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 viewModel.onEvent(
                         new SimulaUiEvent.FavoritarApostaClicado()
                 );
-            }
-            break;
-
-            case R.id.salvarApostaLayout: {
-                RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
-
-                ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
-
-                final float scale = parentActivity.getResources().getDisplayMetrics().density;
-                if (relativelayoutParams.height != ((int) (140 * scale + 0.5f))) {
-                    relativelayoutParams.height = (int) (140 * scale + 0.5f);
-                } else {
-                    relativelayoutParams.height = (int) (64 * scale + 0.5f);
-                }
-
-                salvarApostaLayout.setLayoutParams(relativelayoutParams);
-
-                if (!parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
-                    salvarApostaLayout.findViewById(R.id.btnSalvarAposta).setOnClickListener(this);
-                }
-
-                if (!DadosUsuarioBO.checarUsuarioLogado(parentActivity)) {
-                    AlertDialogExperimenteLogarSingleton.show(getActivity(), false, null);
-                }
             }
             break;
 
@@ -1293,7 +1268,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
         }
 
-        voltaSalvarApostaParaLayoutInicial();
     }
 
     private void renderLimparTimeCoracao() {
@@ -1313,7 +1287,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             timeCoracaoAdapter.notifyDataSetChanged();
         }
 
-        voltaSalvarApostaParaLayoutInicial();
     }
 
     private void renderLimparSuperSete(
@@ -1330,7 +1303,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         qtdTotalSelecionadosSuperSete =
                 state.getQtdTotalSelecionadosSuperSete();
 
-        voltaSalvarApostaParaLayoutInicial();
     }
 
     private void renderLimparLoteca() {
@@ -1356,7 +1328,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             partidasSelecionadas.clear();
         }
 
-        voltaSalvarApostaParaLayoutInicial();
     }
 
     private void renderLimparLotogol() {
@@ -1465,15 +1436,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             );
         }
 
-        if (parentActivity != null
-                && parentActivity.getSalvarApostaLayout() != null) {
-
-            parentActivity.getSalvarApostaLayout().setVisibility(
-                    state.isMostrarSalvarAposta()
-                            ? View.VISIBLE
-                            : View.GONE
-            );
-        }
     }
 
     private void publicarValorAposta(
@@ -1610,7 +1572,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             timeCoracaoAdapter.notifyDataSetChanged();
         }
 
-        voltaSalvarApostaParaLayoutInicial();
     }
 
     private void onClickOutrosNumerosLayout() {
@@ -1865,31 +1826,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         notificarEstadoCartelaAlterado();
     }
 
-    public void voltaSalvarApostaParaLayoutInicial() {
-        RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
-
-        salvarApostaLayout.setBackgroundResource(R.color.cinzaescuro);
-        TextView tituloSalvarAposta = parentActivity.getTextoSalveEstaAposta();
-
-        tituloSalvarAposta.setText(R.string.label_salve_esta_aposta_carinha);
-
-        ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
-
-        final float scale = parentActivity.getResources().getDisplayMetrics().density;
-        relativelayoutParams.height = (int) (64 * scale + 0.5f);
-
-        salvarApostaLayout.setLayoutParams(relativelayoutParams);
-
-        ImageView starSalvarApostaImageView = parentActivity.getIconStarSalvar();
-        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritar);
-
-        salvarApostaLayout.setOnClickListener(this);
-
-        EditText nomeAposta = parentActivity.getEditNomeAposta();
-        nomeAposta.setText("");
-        salvarApostaLayout.setVisibility(View.GONE);
-    }
-
     private void limpaNumerosSuperSete() {
         if (listaGridsSuperSete != null) {
             for (ExpandableHeightGridView grid : listaGridsSuperSete) {
@@ -1915,11 +1851,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         return false;
     }
 
-    private void ocutarSalvarAposta() {
-        RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
-
-        salvarApostaLayout.setVisibility(View.GONE);
-    }
 
     public void atualizaStatusBotaoFinalizar(Boolean isPickerPrognosticos) {
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
@@ -2002,8 +1933,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 //                        botaoCompletar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
                     } else {
                         botaoCompletar.setClickable(false);
-//                        botaoCompletar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.azulclaro));
-                        parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
+
                     }
                 }
             }
@@ -2229,7 +2159,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         dezena.setSelected(true);
 
         if (parentActivity.getFlagApostaSalva()) {
-            voltaSalvarApostaParaLayoutInicial();
+//            voltaSalvarApostaParaLayoutInicial();
         }
     }
     private void atualizarVisibilidadeOutrosNumeros() {
@@ -2299,7 +2229,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                                     parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
                                     atualizarValorENotificarEstadoCartela();
                                     if (parentActivity.getFlagApostaSalva()) {
-                                        voltaSalvarApostaParaLayoutInicial();
+//                                        voltaSalvarApostaParaLayoutInicial();
                                     }
                                     listaSelecionados.add(valorSelecionado);
                                     qtdTotalSelecionadosSuperSete++;
@@ -2445,7 +2375,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         recyclerViewPartida.getAdapter().notifyDataSetChanged();
         partidasSelecionadas.clear();
         parentActivity.zerarApostasLoteca();
-        ocutarSalvarAposta();
         atualizaValorApostaLoteca();
         botaoCompletar.setEnabled(false);
     }
