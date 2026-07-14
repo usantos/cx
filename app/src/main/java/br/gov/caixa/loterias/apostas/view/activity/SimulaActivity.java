@@ -875,12 +875,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 viewModel.onEvent(new SimulaUiEvent.CarrinhoClicado());
                 break;
 
-            case R.id.favoritar_aposta: {
-                viewModel.onEvent(
-                        new SimulaUiEvent.FavoritarApostaClicado()
-                );
-            }
-            break;
         }
     }
 

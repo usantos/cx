@@ -266,6 +266,7 @@ public class SimulaUiState {
                 .setExibirDialogComoJogar(false)
                 .setExibirDialogFavoritarAposta(false)
                 .setApostaFavoritada(false)
+                .setMostrarSalvarAposta(false)
                 .setEtapaAposta(EtapaAposta.NUMEROS)
                 .setComandoCarrinho(null)
                 .setAbrirCarrinho(false)

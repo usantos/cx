@@ -1378,7 +1378,8 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     ) {
 
         boolean mostrarFavoritar =
-                state.isMostrarSalvarAposta();
+                state.isMostrarSalvarAposta()
+                        || state.isApostaFavoritada();
 
         if (botaoFavoritar != null) {
 

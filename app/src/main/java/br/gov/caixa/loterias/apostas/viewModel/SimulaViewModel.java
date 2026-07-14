@@ -470,6 +470,7 @@ public class SimulaViewModel extends AndroidViewModel {
                                 uiState.setValue(
                                         atual.toBuilder()
                                                 .setApostaFavoritada(true)
+                                                .setMostrarSalvarAposta(true)
                                                 .build()
                                 );
 
@@ -1203,6 +1204,16 @@ public class SimulaViewModel extends AndroidViewModel {
 
         ResultadoFluxoAposta fluxo =
                 resolverFluxoAposta(event);
+        SimulaUiState atual = getCurrentState();
+
+        boolean apostaFavoritada =
+                atual.isApostaFavoritada();
+
+//        if (!event.getDezenasSelecionadas()
+//                .equals(atual.getDezenasSelecionadas())) {
+//
+//            apostaFavoritada = false;
+//        }
 
         boolean botaoLimparHabilitado =
                 calcularBotaoLimparHabilitadoPorFluxo(
@@ -1218,10 +1229,14 @@ public class SimulaViewModel extends AndroidViewModel {
 
         boolean mostrarSalvarAposta =
                 fluxo.apostaPronta
-                        && podeMostrarSalvarAposta(event.getTipoJogo());
+                        && podeMostrarSalvarAposta(
+                        event.getTipoJogo()
+                );
 
-        boolean mostrarRodape =
-                botaoLimparHabilitado || mostrarSalvarAposta;
+        if (!fluxo.apostaPronta) {
+            apostaFavoritada = false;
+        }
+
 
         int qtdDezenasPossiveis =
                 event.getQtdDezenasPossiveisSelecionado();
@@ -1236,9 +1251,6 @@ public class SimulaViewModel extends AndroidViewModel {
                 montarTextoQuantidadeNumeros(
                         qtdDezenasPossiveis
                 );
-
-        SimulaUiState atual =
-                getCurrentState();
 
         uiState.setValue(
                 atual.toBuilder()
@@ -1260,11 +1272,10 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoLimparHabilitado(
                                 botaoLimparHabilitado
                         )
+                        .setApostaFavoritada(apostaFavoritada)
+                        .setMostrarSalvarAposta(mostrarSalvarAposta)
                         .setMostrarBotaoLimparAposta(
                                 botaoLimparHabilitado
-                        )
-                        .setMostrarSalvarAposta(
-                                mostrarSalvarAposta
                         )
                         .setTextoSelecionados(
                                 textoSelecionados
@@ -2026,6 +2037,9 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoCompletarHabilitado(true)
                         .setBotaoAdicionarHabilitado(false)
                         .setBotaoLimparHabilitado(false)
+                        .setApostaFavoritada(false)
+                        .setMostrarSalvarAposta(false)
+                        .setMostrarBotaoLimparAposta(false)
                         .setValorAposta(valorApostaAtual)
                         .setValorGrande(
                                 isValorGrande(valorApostaAtual)
