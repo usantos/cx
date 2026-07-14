@@ -43,6 +43,8 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 	private ModalidadeEnum modalidade;
 	//TODO: MEGA 30 ANOS//
 	private boolean isMega30 = false ;
+	//TODO: LOTECA PAIS//
+	private boolean isLotecaPais = false ;
 	private EstiloModalidadeMKP estilo;
 
 	public BarraTitutoSimulacaoFragment() {}
@@ -69,8 +71,12 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 			isEspecial = getArguments().getBoolean(ARG_ESPECIAL);
 			modalidade = new Gson().fromJson(getArguments().getString(ARG_MODALIDADE), ModalidadeEnum.class);
 			corBackground = getArguments().getInt(ARG_COR_BACK);
-			isMega30 = EspecialUtils.isMega30(Integer.valueOf(concurso), isEspecial);
-			estilo = new EstiloModalidadeMKP(modalidade, isMega30);
+			isMega30 = EspecialUtils.isMega30(modalidade, Integer.valueOf(concurso), isEspecial);
+			isLotecaPais = EspecialUtils.isLotecaPais(modalidade, Integer.valueOf(concurso), isEspecial);
+			//TODO: LOTECA PAIS//
+			//estilo = new EstiloModalidadeMKP(modalidade, isMega30);
+			estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(modalidade,
+					Integer.valueOf(concurso), isEspecial);
 			showBackground = getArguments().getBoolean(ARG_SHOW_BG);
 		}
 	}
@@ -94,7 +100,10 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 
 		setClickListener();
 
-		isMega30 = EspecialUtils.isMega30(concurso,isEspecial);
+		//TODO: LOTECA PAIS//
+		isMega30 = EspecialUtils.isMega30(modalidade, Integer.valueOf(concurso), isEspecial);
+		isLotecaPais = EspecialUtils.isLotecaPais(modalidade, Integer.valueOf(concurso), isEspecial);
+
 		preencheDados();
 		aplicaEstilo();
 		aplicaEstiloFonte();
@@ -129,7 +138,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialSimples()));
 		}
 
-		if ((isEspecial && showBackground || isMega30) && estilo.getImagemEspecialDetalhes() > 0) {
+		if (((isEspecial && showBackground) || isMega30 || isLotecaPais) && estilo.getImagemEspecialDetalhes() > 0) {
 			background.setBackground(AppCompatResources.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
 		}
 
@@ -142,9 +151,13 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 				TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -20f);
 			} else if (isMega30) {
 				tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, "Mega-Sena 30 anos"));
+			} else if (isLotecaPais) {
+				tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, ""));
 			} else {
 				if (isMega30) {
-					tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase());
+					tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, "").toLowerCase());
+				} else if (isLotecaPais) {
+					tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS,"").toLowerCase());
 				} else {
 					if (modalidade == ModalidadeEnum.LOTECA) {
 						tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());

@@ -257,8 +257,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, cotasDisponiveis.get(0).isLotericaFavorita());
             selectFiltroLoterica();
         } else {
-            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
             boolean isEspecial = tipoConcurso == TipoConcursoEnum.ESPECIAL;
+
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+            //EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(modalidade,  parametroJogo.getConcurso().getNumero(), isEspecial);
+
             FragmentUtils.startFragmentBarraTituloBolao(
                     getSupportFragmentManager(),
                     R.id.barra_titulo_mkp,
@@ -410,17 +413,17 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 }
 
                 //Animação Copa da Loteca
-                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.LOTECA) {
-                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.copa_loteca_3);
-                    lottieManager.setSpeed(1.75f);
-                    lottieManager.start();
-                }
-                //Animação Quina de São João
-                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.QUINA) {
-                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.quina_sao_joao_1);
-                    lottieManager.setSpeed(1.5f);
-                    lottieManager.start();
-                }
+//                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.LOTECA) {
+//                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.copa_loteca_3);
+//                    lottieManager.setSpeed(1.75f);
+//                    lottieManager.start();
+//                }
+//                //Animação Quina de São João
+//                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.QUINA) {
+//                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.quina_sao_joao_1);
+//                    lottieManager.setSpeed(1.5f);
+//                    lottieManager.start();
+//                }
 
             }
 

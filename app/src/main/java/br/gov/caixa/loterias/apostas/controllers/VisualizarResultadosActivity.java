@@ -347,6 +347,9 @@ public class VisualizarResultadosActivity extends LoteriasBaseAppActivity {
                     isEspecial = true;
                 }
 
+                //TODO: LOTECA PAIS//
+                estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(ModalidadeEnum.toString(txtModalidade), response.getPayload().getConcurso().getNumero(), isEspecial);
+
                 configuraRetornoRequisicao(response);
             }
 

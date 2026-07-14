@@ -148,13 +148,17 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		setIsRecyclable(false);
 		//TODO: MEGA 30 ANOS//
 		boolean isMega30 = EspecialUtils.isMega30(modalidade.getConcurso().getNumero(), modalidade.getConcurso().getTipoConcurso());
-		estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
+		//TODO: LOTECA PAIS//
+		boolean isLotecaPais = EspecialUtils.isLotecaPais(modalidade.getTipoModalidade(), modalidade.getConcurso().getNumero(), modalidade.getConcurso().getTipoConcurso());
+		//estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
+		estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(modalidade.getTipoModalidade(),
+				modalidade.getConcurso().getNumero(),
+				modalidade.getConcurso().getTipoConcurso());
 
 		this.game.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorFonteFundoClaro()));
 
 		if (modalidade.getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA)) {
-			//TODO: MEGA 30 ANOS//
-			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
+			//EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
 			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
 			this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
 			this.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
@@ -178,8 +182,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		}
 
 		if (modalidade.getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
-			//TODO: MEGA 30 ANOS//
-			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
+			//EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
 			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
 			this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
 			this.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
@@ -203,9 +206,12 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo))) {
 			//TODO: MEGA 30 ANOS//
-			if(isMega30){
+			if(isMega30) {
 				this.tvNomeEspeciais.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, "Mega-Sena\n30 anos"));
-			}else{
+				//TODO: LOTECA PAIS//
+			} else if (isLotecaPais) {
+				this.tvNomeEspeciais.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, "Loteca \nPais"));
+			} else {
 				this.game.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
 				this.tvNomeEspeciais.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
 			}
@@ -246,7 +252,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		}
 
 		if (modalidade.getConcurso().getEstimativa() != null &&
-			modalidade.getConcurso().getEstimativa().compareTo(BigDecimal.ZERO) != 0) {
+				modalidade.getConcurso().getEstimativa().compareTo(BigDecimal.ZERO) != 0) {
 			BigDecimal estimativa = modalidade.getConcurso().getEstimativa();
 			String estimativaNumerico = ViewUtils.getMoedaFormatComCentavos(estimativa, 2);
 			String estimativaPorExtenso = ViewUtils.getMoedaFormatPorExtenso(estimativa);
@@ -260,7 +266,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				valorAcumuladoPorExtenso.setVisibility(View.GONE);
 			}
 			this.premioEstimadoConcurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold,
-																											   modalidade.getConcurso().getNumero())));
+					modalidade.getConcurso().getNumero())));
 			this.premioEstimadoConcurso.setVisibility(View.VISIBLE);
 		} else {
 			this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
@@ -384,7 +390,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 						String tempoRestante;
 						if (days > 0) {
 							tempoRestante = days + (days == 1 ? " dia" : " dias") +
-							(hours > 0 ? " e " +hours + (hours == 1 ? " hora" : " horas") : "");
+									(hours > 0 ? " e " +hours + (hours == 1 ? " hora" : " horas") : "");
 						} else if (hours > 0) {
 							tempoRestante = hours + (hours == 1 ? " hora" : " horas") + " e " + minutes + (minutes == 1 ? " minuto" : " minutos");
 						} else if (minutes > 0) {
@@ -488,11 +494,11 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	}
 
 	public void animacaoAbrirResultados(Context context,
-										 RelativeLayout linearLayoutTopResultados,
-										 LinearLayout linearLayoutResultadosApostas,
-										 int position,
-										 RelativeLayout setaEsquerdaAcaoRelativeLayout,
-										 RelativeLayout setaDireitaAcaoRelativeLayout) {
+										RelativeLayout linearLayoutTopResultados,
+										LinearLayout linearLayoutResultadosApostas,
+										int position,
+										RelativeLayout setaEsquerdaAcaoRelativeLayout,
+										RelativeLayout setaDireitaAcaoRelativeLayout) {
 		AnimacoesResultados animacoesResultados = new AnimacoesResultados(
 				linearLayoutTopResultados, linearLayoutResultadosApostas,
 				context,
@@ -561,23 +567,23 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		switch (v.getId()){
 			case R.id.setaEsquerdaAcaoRelativeLayout:
 				listener.callWebserviceResultadoConcurso(this.relativeLayoutTopResultados,
-									 this.linearLayoutResultadosApostas,
-									 ApostaDTO.lowerCaseFromString(modalidade.getTipoModalidade()),
-									 modalidade.getConcurso().getNumero() - 1,
-									 position,
-									 this.setaEsquerdaAcaoRelativeLayout,
-									 this.setaDireitaAcaoRelativeLayout,
-									 false, this);
+						this.linearLayoutResultadosApostas,
+						ApostaDTO.lowerCaseFromString(modalidade.getTipoModalidade()),
+						modalidade.getConcurso().getNumero() - 1,
+						position,
+						this.setaEsquerdaAcaoRelativeLayout,
+						this.setaDireitaAcaoRelativeLayout,
+						false, this);
 				break;
 			case R.id.setaDireitaAcaoRelativeLayout:
 				listener.callWebserviceResultadoConcurso(this.relativeLayoutTopResultados,
-									 this.linearLayoutResultadosApostas,
-									 ApostaDTO.lowerCaseFromString(modalidade.getTipoModalidade()),
-									 modalidade.getConcurso().getNumero() + 1,
-									 position,
-									 this.setaEsquerdaAcaoRelativeLayout,
-									 this.setaDireitaAcaoRelativeLayout,
-									 false, this);
+						this.linearLayoutResultadosApostas,
+						ApostaDTO.lowerCaseFromString(modalidade.getTipoModalidade()),
+						modalidade.getConcurso().getNumero() + 1,
+						position,
+						this.setaEsquerdaAcaoRelativeLayout,
+						this.setaDireitaAcaoRelativeLayout,
+						false, this);
 				break;
 			case R.id.relativeLayoutTopResultados:
 			case R.id.imgSetaResultado:
@@ -585,23 +591,23 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				if (this.linearLayoutResultadosApostas.getHeight() == 0) {
 					if (modalidade.getResultadoConcursoDTO() == null) {
 						listener.callWebserviceResultadoConcurso(this.relativeLayoutTopResultados,
-														this.linearLayoutResultadosApostas,
-														ApostaDTO.lowerCaseFromString(modalidade.getTipoModalidade()),
-														modalidade.getConcurso().getNumero(), position,
-														this.setaEsquerdaAcaoRelativeLayout,
-														this.setaDireitaAcaoRelativeLayout,
-														true, this);
+								this.linearLayoutResultadosApostas,
+								ApostaDTO.lowerCaseFromString(modalidade.getTipoModalidade()),
+								modalidade.getConcurso().getNumero(), position,
+								this.setaEsquerdaAcaoRelativeLayout,
+								this.setaDireitaAcaoRelativeLayout,
+								true, this);
 						//imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_cima_resultado));
 						//imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_cima_resultado, estilo.getCorFonteFundoEscuro()));
 						imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_x_bold, estilo.getCorFonteFundoEscuro()));
 
 					} else {
 						animacaoAbrirResultados(itemView.getContext(),
-												this.relativeLayoutTopResultados,
-												this.linearLayoutResultadosApostas,
-												position,
-												this.setaEsquerdaAcaoRelativeLayout,
-												this.setaDireitaAcaoRelativeLayout);
+								this.relativeLayoutTopResultados,
+								this.linearLayoutResultadosApostas,
+								position,
+								this.setaEsquerdaAcaoRelativeLayout,
+								this.setaDireitaAcaoRelativeLayout);
 						//imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_cima_resultado));
 						//imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_cima_resultado, estilo.getCorFonteFundoEscuro()));
 						imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_x_bold, estilo.getCorFonteFundoEscuro()));
@@ -610,10 +616,10 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				} else {
 					modalidade.setResultadosAberto(false);
 					animacaoFecharResultados(itemView.getContext(),
-											 this.relativeLayoutTopResultados,
-											 this.linearLayoutResultadosApostas,
-											 this.setaEsquerdaAcaoRelativeLayout,
-											 this.setaDireitaAcaoRelativeLayout);
+							this.relativeLayoutTopResultados,
+							this.linearLayoutResultadosApostas,
+							this.setaEsquerdaAcaoRelativeLayout,
+							this.setaDireitaAcaoRelativeLayout);
 					//imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_baixo_resultado));
 					//imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo_resultado, estilo.getCorFonteFundoEscuro()));
 					imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo, estilo.getCorFonteFundoEscuro()));
@@ -626,9 +632,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private void verificaTempoExtraAposEncerramento() {
 
 		Long tempoExtraRestanteAposEncerrmento = EncerramentoUtil.
-												 tempoExtraRestanteAposEncerramento(modalidade.getTipoModalidade(),
-														 modalidade.getConcurso().getTipoConcurso(),
-														 modalidade.getConcurso().getNumero());
+				tempoExtraRestanteAposEncerramento(modalidade.getTipoModalidade(),
+						modalidade.getConcurso().getTipoConcurso(),
+						modalidade.getConcurso().getNumero());
 		if (tempoExtraRestanteAposEncerrmento != null) {
 			startTimerPosEncerramento(tempoExtraRestanteAposEncerrmento);
 		}
@@ -638,7 +644,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 		linearRelogio.setVisibility(View.GONE);
 		clTimer30Min.setVisibility(View.VISIBLE);
-		if (!BuildConfig.FLAVOR.equals("prd")) {
+		if (!(BuildConfig.FLAVOR.equals("prd") ||  BuildConfig.FLAVOR.equals("net"))) {
 			ModalidadeDisponivelCota modalidadeDisponivelCota = EncerramentoUtil.
 					getModalidadeDisponivelCota(modalidade.getTipoModalidade(),
 							modalidade.getConcurso().getTipoConcurso(),

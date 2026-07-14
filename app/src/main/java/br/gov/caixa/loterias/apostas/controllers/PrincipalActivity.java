@@ -2,10 +2,8 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -82,7 +80,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerNotificarCotasExpiradasSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
@@ -95,6 +92,8 @@ import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ComboUtil;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
@@ -259,7 +258,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         relativeLayoutContentRepassados.setOnClickListener(view -> clickRelativeLayoutContentRepassados());
 
-        if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+        if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
             relativeLayoutContentRapidao.setOnClickListener(view -> {clickRelativeLayoutContentRapidao();});
         }else{
             relativeLayoutContentRapidao.setVisibility(View.GONE);
@@ -456,7 +455,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
-        //Não apager (utilizado pra testes)
+        //Não apagar (utilizado pra testes)
         //EncerramentoUtil.mockApagaModalidadeNosParametroJogo(
         //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
         EncerramentoUtil.verificaSeCriaCardTemporario();
@@ -465,7 +464,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             refezParametrosSimulacao = true;
         }
 
-        if (ConfiguracaoAppSingleton.getInstance().isComboApostasHabilitado() && refezParametrosSimulacao) {
+        if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.COMBO_APOSTAS.get(), ConfiguracoesDefaultEnum.COMBO_APOSTAS.asBoolean()) && refezParametrosSimulacao) {
             new ComboModel(this).buscaCombos(new OnSilceListener() {
                 @Override
                 public void success(Object payload) {
@@ -673,8 +672,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             actionApresentarTrevo.setEnabled(false);
             atalhoRapidoLoterias.setVisibility(View.VISIBLE);
             //TODO: MEGA 30 ANOS//
-            boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
-            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
+            //TODO: LOTECA PAIS//
+            EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(),
+                    data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(),
+                    data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+            //boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+            //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
             AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                     v,
                     relativeContentPrincipal,
@@ -700,7 +703,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private OnAnimacaoViewListener onAnimacaoAcessoRapido() {
         return () -> {
-            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+            if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(),ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean()) &&
                     temBolaoModalidadeDisponivel(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade())){
                 buttonHomeBolao.setVisibility(View.VISIBLE);
             }
@@ -712,8 +715,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         relativeContentPrincipal.setEnabled(true);
         actionApresentarTrevo.setEnabled(false);
         //TODO: MEGA 30 ANOS//
-        boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
-        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
+        //TODO: LOTECA PAIS//
+        EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(),
+                data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(),
+                data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+        //boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+        //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,
@@ -805,19 +812,27 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
 
         //TODO: MEGA 30 ANOS//
-        boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
+        //TODO: LOTECA PAIS//
+        //boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
                 //TODO: MEGA 30 ANOS//
-                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
+                //TODO: LOTECA PAIS//
+                EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(adapterPosition).getTipoModalidade(),
+                                                data.get(adapterPosition).getConcurso().getNumero(),
+                                                data.get(adapterPosition).getConcurso().getTipoConcurso());                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 buttonHomeBet.setTag(adapterPosition);
                 buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
                 buttonHomeBolao.setVisibility(View.GONE);
             } else {
                 //TODO: MEGA 30 ANOS//
-                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
+                //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
+                //TODO: LOTECA PAIS//
+                EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(adapterPosition).getTipoModalidade(),
+                                                data.get(adapterPosition).getConcurso().getNumero(),
+                                                data.get(adapterPosition).getConcurso().getTipoConcurso());
                 if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
                     buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
                 } else {
@@ -834,7 +849,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                         ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
             }
 
-            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+            if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(),ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean()) &&
                     temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
 
                 buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
@@ -914,6 +929,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
         //TODO: MEGA 30 ANOS//
+        //TODO: LOTECA PAIS//
         int numeroConcurso = parametroJogo.getConcurso().getNumero();
 
         //
@@ -958,6 +974,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
             //TODO: MEGA 30 ANOS//
+            //TODO: LOTECA PAIS//
             activity.putExtra(getString(R.string.numero_concurso), numeroConcurso);
             activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
             startActivity(activity);
@@ -974,7 +991,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     protected void clickRelativeLayoutContentRapidao() {
         //AnimacaoFecharMenuRapido(relativeContentPrincipal);
         showMenu();
-        if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+        if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
             redirecionaRapidao();
         }
     }
@@ -1023,7 +1040,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 startActivity(new Intent(PrincipalActivity.this, SelecaoModalidadesResultados.class));
                 break;
             case MENU_RAPIDAO:
-                if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+                if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
                     redirecionaRapidao();
                 }
                 break;
