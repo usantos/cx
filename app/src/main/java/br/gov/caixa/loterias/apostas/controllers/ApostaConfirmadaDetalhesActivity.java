@@ -64,11 +64,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResp
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -175,7 +176,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         setupToolbar();
         setaMetodos();
 
-        if(ConfiguracaoAppSingleton.getInstance().isMicroServico() && resultadoConcurso != null){
+        if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean()) && resultadoConcurso != null){
             apresentaBySituacao(aposta.getSituacao());
         } else {
             getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
@@ -251,7 +252,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         }
 
         if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
-            if(!ConfiguracaoAppSingleton.getInstance().isMicroServico() || aposta.getSituacao().getDescricao().contains("Aposta não conferida")) {
+            if(!SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean()) || aposta.getSituacao().getDescricao().contains("Aposta não conferida")) {
                 isBuscandoSituacaoSilce = true;
                 ConferirResultadoHelper.conferirResultadoHandler = this;
                 ConferirResultadoHelper.conferirResultado(aposta.getId(), this);

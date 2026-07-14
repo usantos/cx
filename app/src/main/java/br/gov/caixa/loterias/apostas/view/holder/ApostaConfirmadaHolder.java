@@ -25,12 +25,13 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
@@ -129,7 +130,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		preencheTeimosinha(aposta);
 		montaTipoApostaLinha(aposta, estiloModalidadeMKP.getCorLetraLista());
 
-		if (!ConfiguracaoAppSingleton.getInstance().isMicroServico() && !NovaApiUtils.isPossoBuscarNovaAPI() && ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial()) && isEfetivada(aposta)){
+		if (!SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean()) && !NovaApiUtils.isPossoBuscarNovaAPI() && ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial()) && isEfetivada(aposta)){
 			fragment.conferirResultado(position, aposta, this);
 		}
 	}
@@ -194,7 +195,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 		this.showProgressBarSituacao(false);
 
-		if (ConfiguracaoAppSingleton.getInstance().isNovaApi() &&
+		if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_NOVA_API.get(), ConfiguracoesDefaultEnum.IS_NOVA_API.asBoolean()) &&
 			aposta.getSituacao().getValor() == 4L) {
 			reloadImg.setVisibility(View.VISIBLE);
 		}
@@ -205,7 +206,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 
 		if(parametroJogo != null && !ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial())){
-			if (ConfiguracaoAppSingleton.getInstance().isNovaApi() || ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+			if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_NOVA_API.get(), ConfiguracoesDefaultEnum.IS_NOVA_API.asBoolean())
+					|| SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean())){
 				descricaoStatus = ApostaUtils.descricaoCorrigida(aposta.getSituacao());
 			}else {
 				descricaoStatus = SituacaoAposta.EnumSituacaoAposta.CONCURSO_NAO_APURADO.getDescricao().toLowerCase();
