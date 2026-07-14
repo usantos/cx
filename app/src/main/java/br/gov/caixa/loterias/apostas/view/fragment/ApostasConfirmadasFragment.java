@@ -64,17 +64,19 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginad
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ApostaConfirmadaModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -306,9 +308,12 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         } else {
             if (NovaApiUtils.isPossoBuscarNovaAPI()) {
                 requestApostasNovaApi();
-            } else if (ConfiguracaoAppSingleton.getInstance() != null
-                    && ConfiguracaoAppSingleton.getInstance().isMicroServico() != null
-                    && ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+            } else if (Boolean.TRUE.equals(
+                            SharedPreferencesUtils.getValorBoolean(
+                            ConfiguracoesEnum.IS_MICRO_SERVICO.get(),
+                            ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean()
+                    ))
+            ){
                 requestApostasMicroServico();
             }else {
                 requesteApostasSilce();
@@ -634,7 +639,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     public void onResponse(ComprovanteApostaDTOResponse result) {
                         AlertDialogUtils.dismiss();
                         ComprovanteApostaDTO comprovante = result.getPayload();
-                        if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+                        if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean())){
                             comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
                         }
 

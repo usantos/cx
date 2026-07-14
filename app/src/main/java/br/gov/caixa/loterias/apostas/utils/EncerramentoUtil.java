@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.utils;
 import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -14,7 +13,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSingleton;
 
 public class EncerramentoUtil {
@@ -62,7 +60,7 @@ public class EncerramentoUtil {
                                                            Integer concurso) {
 
         //Verifica se Bolao Habilitado
-        if (!ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()) {
+        if (checkBolaoHabilitado()) {
             return null;
         }
 
@@ -101,7 +99,7 @@ public class EncerramentoUtil {
     public static void verificaSeCriaCardTemporario() {
 
         //Verifica se Bolao Habilitado
-        if (!ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()) {
+        if (checkBolaoHabilitado()) {
             return;
         }
 
@@ -132,6 +130,11 @@ public class EncerramentoUtil {
             }
         }
     }
+
+    private static boolean checkBolaoHabilitado() {
+        return !SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(), ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean());
+    }
+
     private static void criarCardTemporario(ModalidadeDisponivelCota modalidadeDC) {
 
         ConcursoDTO concursoDTO = new ConcursoDTO();

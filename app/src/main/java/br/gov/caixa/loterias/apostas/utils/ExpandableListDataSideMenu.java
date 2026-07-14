@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
-
 /**
  * Created by cedesbr450 on 24/01/18.
  */
@@ -18,7 +16,7 @@ public class ExpandableListDataSideMenu {
 
         List<DrawerEnum> minhaArea = new ArrayList<>();
         minhaArea.add(DrawerEnum.MENU_DADOS_PESSOAIS);
-        if (ConfiguracaoAppSingleton.getInstance().isMostraMenuAposta()) {
+        if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.MOSTRA_MENU_APOSTA.get(), ConfiguracoesDefaultEnum.MOSTRA_MENU_APOSTAS.asBoolean())) {
             minhaArea.add(DrawerEnum.MENU_MINHAS_APOSTAS);
         }
         minhaArea.add(DrawerEnum.MENU_COMPRAS);
@@ -33,7 +31,7 @@ public class ExpandableListDataSideMenu {
 
         expandableListDetail.put(DrawerEnum.MENU_MINHA_AREA, minhaArea);
         expandableListDetail.put(DrawerEnum.MENU_RESULTADOS, new ArrayList<>());
-        if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+        if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
             expandableListDetail.put(DrawerEnum.MENU_RAPIDAO, new ArrayList<>());
         }
         expandableListDetail.put(DrawerEnum.MENU_COFERIR_BILHETE, new ArrayList<>());
