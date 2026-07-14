@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
@@ -212,7 +211,7 @@ public class AdicionarApostaCarrinhoHelper {
 
                 DialogUtils.dialogEntendiListener(activity, activity.getString(R.string.added_bet_to_cart), (dialog, which) -> {
                     if (activity instanceof MinhasApostasActivity) {
-                        ((MinhasApostasActivity) activity).ok();
+                        ((MinhasApostasActivity) activity).outDialogEntendiListener();
                     }
                 });
             }
