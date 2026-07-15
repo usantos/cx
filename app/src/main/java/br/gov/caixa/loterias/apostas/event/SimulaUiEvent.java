@@ -10,6 +10,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 
 public abstract class SimulaUiEvent {
@@ -635,6 +636,53 @@ public abstract class SimulaUiEvent {
     }
     public static final class ToggleOutrosNumeros
             extends SimulaUiEvent {
+    }
+    public static class TrevosAlterados
+            extends SimulaUiEvent {
+
+        private final int quantidadeTrevosSelecionados;
+        private final int quantidadeTrevosNecessaria;
+        private final ParametroValorApostaDTO valorAposta;
+
+        public TrevosAlterados(
+                int quantidadeTrevosSelecionados,
+                int quantidadeTrevosNecessaria,
+                ParametroValorApostaDTO valorAposta
+        ) {
+            this.quantidadeTrevosSelecionados =
+                    quantidadeTrevosSelecionados;
+            this.quantidadeTrevosNecessaria =
+                    quantidadeTrevosNecessaria;
+            this.valorAposta = valorAposta;
+        }
+
+        public int getQuantidadeTrevosSelecionados() {
+            return quantidadeTrevosSelecionados;
+        }
+
+        public int getQuantidadeTrevosNecessaria() {
+            return quantidadeTrevosNecessaria;
+        }
+
+        public ParametroValorApostaDTO getValorAposta() {
+            return valorAposta;
+        }
+    }
+
+    public static class QuantidadeTrevosAlterada
+            extends SimulaUiEvent {
+
+        private final ParametroValorApostaDTO valorSelecionado;
+
+        public QuantidadeTrevosAlterada(
+                ParametroValorApostaDTO valorSelecionado
+        ) {
+            this.valorSelecionado = valorSelecionado;
+        }
+
+        public ParametroValorApostaDTO getValorSelecionado() {
+            return valorSelecionado;
+        }
     }
 
 }

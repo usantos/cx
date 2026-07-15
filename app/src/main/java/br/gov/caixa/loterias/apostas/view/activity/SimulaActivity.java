@@ -39,7 +39,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,11 +80,10 @@ import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
-import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment2;
+import br.gov.caixa.loterias.apostas.view.fragment.SimulaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
-import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment2;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
@@ -121,7 +119,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     // Fragments
     private FragmentManager fragmentManager;
-    private CartelaFragment2 cartelaFragment;
+    private SimulaFragment cartelaFragment;
     private SurpresinhaFragment2 surpresinhaFragment;
     private PaginacaoFragment paginacaoFragment;
     private TrevosFragment2 trevosFragment;
@@ -1357,7 +1355,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     private void configuraFragments() {
         fragmentManager = getSupportFragmentManager();
-        cartelaFragment = new CartelaFragment2();
+        cartelaFragment = new SimulaFragment();
         Bundle bundle = new Bundle();
 
         cartelaFragment.setArguments(bundle);
@@ -1603,7 +1601,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     public boolean isFragmentCartela() {
-        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment2;
+        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SimulaFragment;
     }
 
     //TODO//

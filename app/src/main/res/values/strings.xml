@@ -28,10 +28,12 @@
     <string name="escolhaOmes">_Escolha_\no m\u00eas de sorte</string>
     <string name="adicionarAoCarrinho">_Adicionar_\nao carrinho de apostas</string>
     <string name="limparAposta">Limpar aposta</string>
+    <string name="label_limpar">Limpar</string>
     <string name="limparCarrinho">Limpar carrinho</string>
 
     <string name="completarCartela">_Completar_\ncom números aleatórios</string>
     <string name="completarBotao">Completar aleatoriamente</string>
+    <string name="completar">Completar</string>
 
     <string name="surpresinhaTitulo">Surpresinha</string>
     <string name="surpresinhaInfo">Na Surpresinha os números ficam\nmascarados até a efetivação da compra.</string>

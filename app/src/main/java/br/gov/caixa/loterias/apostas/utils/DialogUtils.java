@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -442,6 +443,9 @@ public class DialogUtils {
 
         Button btnConfirmar = dialog.findViewById(R.id.btn_positivo);
         Button btnCancelar = dialog.findViewById(R.id.btn_negativo);
+        if (!TextUtils.isEmpty(hintInput)) {
+            editTextFavoritar.setHint(hintInput);
+        }
 
         layoutManterSurpresinhas.setVisibility(manterSurpresinhas ? View.VISIBLE : View.GONE);
 

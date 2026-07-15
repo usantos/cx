@@ -304,6 +304,38 @@ public class SimulaViewModel extends AndroidViewModel {
             limparComandoFavoritarAposta();
             return;
         }
+        if (event instanceof SimulaUiEvent.TrevosAlterados) {
+            handleTrevosAlterados(
+                    (SimulaUiEvent.TrevosAlterados) event
+            );
+            return;
+        }
+    }
+    private void handleTrevosAlterados(
+            SimulaUiEvent.TrevosAlterados event
+    ) {
+
+        boolean apostaCompleta =
+                event.getQuantidadeTrevosSelecionados()
+                        >= event.getQuantidadeTrevosNecessaria();
+
+        uiState.setValue(
+                getCurrentState()
+                        .toBuilder()
+                        .setBotaoAdicionarHabilitado(
+                                apostaCompleta
+                        )
+                        .setBotaoCompletarHabilitado(
+                                !apostaCompleta
+                        )
+                        .setValorAposta(
+                                event.getValorAposta().getValor()
+                        )
+                        .setMostrarBotaoLimparAposta(
+                                event.getQuantidadeTrevosSelecionados() > 0
+                        )
+                        .build()
+        );
     }
 
     private void handleSalvarApostaFavoritaSolicitado(

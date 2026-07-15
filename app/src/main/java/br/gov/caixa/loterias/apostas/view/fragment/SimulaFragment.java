@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -16,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -97,7 +97,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class CartelaFragment2 extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
+public class SimulaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
     private SensorManager mSensorManager;
     private BigDecimal valorEmReais = BigDecimal.ZERO;
@@ -156,7 +156,7 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     private TextView textSelecionados;
 
-    public CartelaFragment2() {
+    public SimulaFragment() {
         // Required empty public constructor
     }
 
@@ -1549,9 +1549,11 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             // volta para o visual original do XML
 
             btn.setBackgroundTintList(
-                    ContextCompat.getColorStateList(
-                            requireContext(),
-                            R.color.button_rodape
+                    ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.disabled
+                            )
                     )
             );
 
@@ -1563,9 +1565,11 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             );
 
             btn.setStrokeColor(
-                    ContextCompat.getColorStateList(
-                            requireContext(),
-                            R.color.text_rodape
+                    ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.cinza70
+                            )
                     )
             );
         }

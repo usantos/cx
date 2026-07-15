@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -59,6 +61,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener2;
+import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
 public class TrevosFragment2 extends Fragment implements OnItemClickListener<DezenaHolder> {
     private static final String ARG_APOSTA = "ARG_APOSTA";
@@ -80,12 +83,14 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     private View view;
 
     private TrevoModel model;
+    private SimulaViewModel viewModel;
 
-    private TrevosFragment2(){}
+    private TrevosFragment2() {
+    }
 
     public static TrevosFragment2 newInstance(IdentificaoDeUmaApostaDas8Modalidades aposta,
                                               ParametroJogoDTO parametro,
-                                              ArrayList<Integer> dezenasSelecionadas){
+                                              ArrayList<Integer> dezenasSelecionadas) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_APOSTA, aposta);
         args.putSerializable(ARG_PARAMENTRO, parametro);
@@ -101,7 +106,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         super.onAttach(context);
         try {
             listener = (OnTrevosListener2) context;
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("TREVO", "A classe precisa implementar OnTrevoListener");
         }
     }
@@ -109,12 +114,13 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null){
+        if (getArguments() != null) {
             aposta = (IdentificaoDeUmaApostaDas8Modalidades) getArguments().getSerializable(ARG_APOSTA);
             parametro = (ParametroJogoDTO) getArguments().getSerializable(ARG_PARAMENTRO);
             String json = getArguments().getString(ARG_SELECIONADOS);
-            if (json != null && !json.isEmpty()){
-                dezenasSelecionadas = new Gson().fromJson(json, new TypeToken<List<Integer>>() {}.getType());
+            if (json != null && !json.isEmpty()) {
+                dezenasSelecionadas = new Gson().fromJson(json, new TypeToken<List<Integer>>() {
+                }.getType());
             }
         }
     }
@@ -131,7 +137,11 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     }
 
     private void init() {
-        textoBotaoTrevosSelecionado = parametro.getTrevos().getQtdMinima() + getString(R.string.espaco_em_branco) +getString(R.string.trevos);
+        viewModel = new ViewModelProvider(
+                requireActivity()
+        ).get(SimulaViewModel.class);
+
+        textoBotaoTrevosSelecionado = parametro.getTrevos().getQtdMinima() + getString(R.string.espaco_em_branco) + getString(R.string.trevos);
         listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
 
         configIncialButtons();
@@ -140,11 +150,11 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         valorApostaSelecionado = valoresApostas.get(0);
 
         DezenaConfig dezenaConfig = new DezenaConfig(false, R.color.milionaria_escuro_mkp,
-                                                     R.layout.item_dezena_trevo,
-                                                     new ShapeConfig(R.drawable.ic_item_trevo,
-																	 R.drawable.ic_item_trevo_selecionado,
-																	 R.color.milionaria_escuro_mkp, R.color.milionaria_escuro_mkp),
-                                                     true);
+                R.layout.item_dezena_trevo,
+                new ShapeConfig(R.drawable.ic_item_trevo,
+                        R.drawable.ic_item_trevo_selecionado,
+                        R.color.milionaria_escuro_mkp, R.color.milionaria_escuro_mkp),
+                true);
         adappter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, dezenaConfig, this);
         listaTrevos.setAdapter(adappter);
         RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA);
@@ -155,18 +165,23 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     }
 
     private void editAposta() {
-        if (aposta != null){
+        if (aposta != null) {
             trevoSelecionadoList = AppUtils.converteListaInteiros(aposta.getTrevosSelecionados());
             adappter.atualizaSelecionados(trevoSelecionadoList);
-            atualizaStatusBotao();
-            checaMostraBotaoLimpar();
+            viewModel.onEvent(
+                    new SimulaUiEvent.TrevosAlterados(
+                            trevoSelecionadoList.size(),
+                            valorApostaSelecionado.getNumeroTrevos(),
+                            valorApostaSelecionado
+                    )
+            );
         }
     }
 
     private List<Dezena> getListaDezenas() {
-        if (dezenaList == null || dezenaList.size() != parametro.getTrevos().getQtdPrognostico()){
+        if (dezenaList == null || dezenaList.size() != parametro.getTrevos().getQtdPrognostico()) {
             dezenaList = new ArrayList<>();
-            for (int numero = 1; numero <= parametro.getTrevos().getQtdPrognostico(); numero++){
+            for (int numero = 1; numero <= parametro.getTrevos().getQtdPrognostico(); numero++) {
                 Dezena dezena = new Dezena(String.valueOf(numero), Boolean.FALSE, String.valueOf(numero));
                 dezenaList.add(dezena);
             }
@@ -185,7 +200,6 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         listener.getButtonLimpar().setOnClickListener(onLimparClickListener());
         listener.getButtonLimpar().setVisibility(View.GONE);
 
-        listener.btnSalvarAposta().setOnClickListener(onSalverApostaClickListener());
     }
 
     private View.OnClickListener onSalverApostaClickListener() {
@@ -195,7 +209,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
                 validarApostaFav(getApostaFavoritaDTO());
 
             } else {
-             DialogUtils.dialogEntendi(
+                DialogUtils.dialogEntendi(
                         getActivity(),
                         getString(R.string.msg_favor_inserir_nome_aposta)
                 );
@@ -213,7 +227,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                if(isErroNegocial(error)){
+                if (isErroNegocial(error)) {
                     DialogUtils.dialogSim(
                             getActivity(),
                             MensagensNetwork.getErrorMessage(error),
@@ -233,7 +247,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     }
 
     private void salvarAposta(ApostaFavoritaDTO aposta) {
-        if(!AlertDialogUtils.isShow()){
+        if (!AlertDialogUtils.isShow()) {
             AlertDialogUtils.show(getContext());
         }
         ServicoFactoryUtil.getDadosCorporativoService().salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
@@ -243,7 +257,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
                 AlertDialogUtils.dismiss();
 
-               listener.atualizaLayoutSalvarAposta();
+                listener.atualizaLayoutSalvarAposta();
             }
 
             @Override
@@ -255,7 +269,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         });
     }
 
-    private ApostaFavoritaDTO getApostaFavoritaDTO(){
+    private ApostaFavoritaDTO getApostaFavoritaDTO() {
         ApostaFavoritaDTO apostaFavorita = new ApostaFavoritaDTO();
 
         DTOEnumInteger modalidade = new DTOEnumInteger();
@@ -265,8 +279,8 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
         String nomeAposta = listener.nomeApostaFavorita();
 
-        if (nomeAposta != null){
-            if(nomeAposta.length() > 25){
+        if (nomeAposta != null) {
+            if (nomeAposta.length() > 25) {
                 apostaFavorita.setNome(nomeAposta.substring(0, 25));
             } else {
                 apostaFavorita.setNome(nomeAposta);
@@ -274,13 +288,13 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         } else {
             apostaFavorita.setNome("");
         }
-        if(dezenasSelecionadas == null || dezenasSelecionadas.isEmpty()){
+        if (dezenasSelecionadas == null || dezenasSelecionadas.isEmpty()) {
             dezenasSelecionadas = new ArrayList<>();
-            for (Dezena d : dezenaList){
+            for (Dezena d : dezenaList) {
                 dezenasSelecionadas.add(Integer.valueOf(d.getValue()));
             }
             apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
-        }else {
+        } else {
             apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
         }
 
@@ -298,17 +312,29 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     private View.OnClickListener onLimparClickListener() {
         return v -> {
             trevoSelecionadoList.clear();
+
+            adappter.atualizaSelecionados(
+                    trevoSelecionadoList
+            );
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.TrevosAlterados(
+                            0,
+                            valorApostaSelecionado.getNumeroTrevos(),
+                            valorApostaSelecionado
+                    )
+            );
+
             adappter.atualizaSelecionados(trevoSelecionadoList);
             listener.getButtonLimpar().setVisibility(View.INVISIBLE);
-            atualizaStatusBotao();
         };
     }
 
     private View.OnClickListener onFinalizarClickListener() {
         return v -> {
-            if (listener.getButtonFinalizar().getText().toString().contains("Completar")){
+            if (listener.getButtonFinalizar().getText().toString().contains("Completar")) {
                 completarTrevosAleatoriamente();
-            }else {
+            } else {
                 addApostaCarrinho();
             }
         };
@@ -316,34 +342,39 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
     private void addApostaCarrinho() {
         BigDecimal valorAposta = BigDecimal.ZERO;
-        if (listener.getQtdConcursos() > 0){
+        if (listener.getQtdConcursos() > 0) {
             valorAposta = valorApostaSelecionado.getValor().multiply(BigDecimal.valueOf(listener.getQtdConcursos()).movePointLeft(0));
         } else {
             valorAposta = valorApostaSelecionado.getValor();
         }
         List<Integer> numerosSelecionadosOrdenados = ListaUtils.orderAscDezenas((List<Integer>) dezenasSelecionadas);
 
-     trevoSelecionadoList = ListaUtils.orderAscDezenas(trevoSelecionadoList);
+        trevoSelecionadoList = ListaUtils.orderAscDezenas(trevoSelecionadoList);
 
 
         IdentificaoDeUmaApostaDas8Modalidades apostaMaisMilionaria = ApostaUtils.getApostaMaisMilionaria(parametro, numerosSelecionadosOrdenados,
-                                                                                                         valorAposta,
-                                                                                                         listener.getQtdConcursos(), trevoSelecionadoList);
+                valorAposta,
+                listener.getQtdConcursos(), trevoSelecionadoList);
         model.adidionaApostaNoCarrinho(apostaMaisMilionaria);
     }
 
     private void completarTrevosAleatoriamente() {
         AlertDialogUtils.show(getContext());
         model.preencheNumerosAleatorios(valorApostaSelecionado.getNumeroTrevos(), trevoSelecionadoList,
-                                        parametro.getTrevos().getQtdMaxima(), new OnSilceListener<List<Integer>>() {
+                parametro.getTrevos().getQtdMaxima(), new OnSilceListener<List<Integer>>() {
                     @Override
                     public void success(List<Integer> list) {
                         AlertDialogUtils.dismiss();
                         trevoSelecionadoList.clear();
                         trevoSelecionadoList.addAll(list);
                         adappter.atualizaSelecionados(list);
-                        atualizaStatusBotao();
-                        checaMostraBotaoLimpar();
+                        viewModel.onEvent(
+                                new SimulaUiEvent.TrevosAlterados(
+                                        trevoSelecionadoList.size(),
+                                        valorApostaSelecionado.getNumeroTrevos(),
+                                        valorApostaSelecionado
+                                )
+                        );
                     }
 
                     @Override
@@ -356,11 +387,11 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     @NotNull
     private View.OnClickListener onQtdTrevosClickListener() {
         return v -> {
-            String subtitulo = getStringFormatada(R.string.para_aposta_com_x_numeros, "x",String.valueOf(dezenasSelecionadas.size()));
+            String subtitulo = getStringFormatada(R.string.para_aposta_com_x_numeros, "x", String.valueOf(dezenasSelecionadas.size()));
 
             valoresApostas = parametro.getValoresTrevoByNumero(dezenasSelecionadas.size());
 
-            List<String>                  list = getListStringvaloresTrevos(valoresApostas);
+            List<String> list = getListStringvaloresTrevos(valoresApostas);
 
             DialogUtils.showDialogListItens(
                     getContext(),
@@ -381,8 +412,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
             public void itemSelecionado(int position) {
                 valorApostaSelecionado = valoresApostas.get(position);
                 textoBotaoTrevosSelecionado = valorApostaSelecionado.getNumeroTrevos() + getString(R.string.espaco_em_branco) + getString(R.string.trevos);
-                if 	((position) > 0 && (!isAvisou))
-                {
+                if ((position) > 0 && (!isAvisou)) {
                     DialogUtils.dialogEntendi(
                             getActivity(),
                             getString(R.string.msg_qtd_max_ultrapassada_milionaria)
@@ -396,18 +426,21 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
             public void ok(int position) {
                 listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
                 int ultimoValor = valoresApostas.size() - 1;
-                if (valoresApostas.get(ultimoValor).equals(valorApostaSelecionado)){
+                if (valoresApostas.get(ultimoValor).equals(valorApostaSelecionado)) {
                     trevoSelecionadoList = new ArrayList<>();
-                    for (int numero = 1; numero <= parametro.getTrevos().getQtdPrognostico(); numero++){
+                    for (int numero = 1; numero <= parametro.getTrevos().getQtdPrognostico(); numero++) {
                         trevoSelecionadoList.add(numero);
-                     }
+                    }
                     adappter.atualizaSelecionados(trevoSelecionadoList);
                     listaTrevos.setAdapter(adappter);
-                 }
-                listener.atualizaValorAposta(valorApostaSelecionado);
-                atualizaStatusBotao();
-                checaMostraBotaoLimpar();
-                if (trevoSelecionadoList.size() > valorApostaSelecionado.getNumeroTrevos()){
+                }
+//                listener.atualizaValorAposta(valorApostaSelecionado);
+                viewModel.onEvent(
+                        new SimulaUiEvent.ValorApostaAlterado(
+                                valorApostaSelecionado.getValor()
+                        )
+                );
+                if (trevoSelecionadoList.size() > valorApostaSelecionado.getNumeroTrevos()) {
                     listener.getButtonFinalizar().setText(ViewUtils.textCaixaSTDBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
                     listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaescuro));
                     trevoSelecionadoList = new ArrayList<>();
@@ -423,17 +456,17 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         };
     }
 
-    private List<String> getListStringvaloresTrevos(List<ParametroValorApostaDTO> listaValores){
+    private List<String> getListStringvaloresTrevos(List<ParametroValorApostaDTO> listaValores) {
         List<String> valores = new ArrayList<>();
-        for (ParametroValorApostaDTO valorAposta : listaValores){
+        for (ParametroValorApostaDTO valorAposta : listaValores) {
             valores.add(valorAposta.getNumeroTrevos() + " " + getString(R.string.trevos_por)
-                                + " " + ViewUtils.getMoedaFormat(valorAposta.getValor()));
+                    + " " + ViewUtils.getMoedaFormat(valorAposta.getValor()));
         }
 
         return valores;
     }
 
-    private String getStringFormatada(int idString, String target, String replace){
+    private String getStringFormatada(int idString, String target, String replace) {
         String s = getString(idString).replace(target, replace);
         SpannableStringBuilder string = ViewUtils.textCaixaSTDBold(getActivity(), s);
 
@@ -449,11 +482,11 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     public void itemClick(DezenaHolder holder, int position) {
         Dezena dezena = dezenaList.get(position);
         dezena.setSelected(!dezena.isSelected());
-        if (dezena.isSelected()){
+        if (dezena.isSelected()) {
             Integer numero = Integer.valueOf(dezena.getValue());
             if (!trevoSelecionadoList.contains(numero)) {
                 trevoSelecionadoList.add(numero);
-                if ((trevoSelecionadoList.size() > 2) && (!isAvisou))  {
+                if ((trevoSelecionadoList.size() > 2) && (!isAvisou)) {
                     DialogUtils.dialogEntendi(
                             getActivity(),
                             getString(R.string.msg_qtd_max_ultrapassada_milionaria)
@@ -461,47 +494,35 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
                     isAvisou = true;
                 }
             }
-        }else {
+        } else {
             Integer numero = Integer.valueOf(dezena.getValue());
             if (trevoSelecionadoList.contains(numero)) {
                 trevoSelecionadoList.remove(numero);
             }
         }
         holder.atualizaDezena(dezena);
-        checaQuantidadeTrevos();
-        atualizaStatusBotao();
-        checaMostraBotaoLimpar();
-    }
-
-    private void checaMostraBotaoLimpar() {
-        if (trevoSelecionadoList.size() > 0){
-            listener.getButtonLimpar().setVisibility(View.VISIBLE);
-        }else {
-            listener.getButtonLimpar().setVisibility(View.GONE);
-        }
+//        checaQuantidadeTrevos();
+//        atualizaStatusBotao();
+        viewModel.onEvent(
+                new SimulaUiEvent.TrevosAlterados(
+                        trevoSelecionadoList.size(),
+                        valorApostaSelecionado.getNumeroTrevos(),
+                        valorApostaSelecionado
+                )
+        );
     }
 
     private void checaQuantidadeTrevos() {
-        if (trevoSelecionadoList.size() >= parametro.getTrevos().getQtdMinima()){
-            textoBotaoTrevosSelecionado = trevoSelecionadoList.size() + getString(R.string.espaco_em_branco) +getString(R.string.trevos);
+        if (trevoSelecionadoList.size() >= parametro.getTrevos().getQtdMinima()) {
+            textoBotaoTrevosSelecionado = trevoSelecionadoList.size() + getString(R.string.espaco_em_branco) + getString(R.string.trevos);
             listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
 
             valorApostaSelecionado = parametro.getValorApostaBy(dezenasSelecionadas.size(), trevoSelecionadoList.size());
-            listener.atualizaValorAposta(valorApostaSelecionado);
-        }
-    }
-
-    private void atualizaStatusBotao() {
-        if (trevoSelecionadoList.size() >= valorApostaSelecionado.getNumeroTrevos()){
-            listener.getButtonFinalizar().setText(ViewUtils.textCaixaSTDBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
-            listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.milionaria_escuro_mkp));
-
-            listener.getButtonSalvar().setVisibility(View.VISIBLE);
-        }else {
-            listener.getButtonFinalizar().setText(ViewUtils.textCaixaSTDBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
-            listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaescuro));
-
-            listener.getButtonSalvar().setVisibility(View.GONE);
+            viewModel.onEvent(
+                    new SimulaUiEvent.ValorApostaAlterado(
+                            valorApostaSelecionado.getValor()
+                    )
+            );
         }
     }
 
