@@ -81,7 +81,7 @@ public class EstiloModalidadeMKP {
     }
 
     private void aplicarLotecaPais() {
-        imagemEspecialCarrossel = R.drawable.cabecalho_loteca_pais_carrossel;
+        imagemEspecialCarrossel = R.drawable.cabecalho_loteca_pais_carrossel_alta;
         imagemEspecialDetalhes = R.drawable.cabecalho_loteca_pais_detalhe_simples;
         imagemSubCabecalho = R.drawable.rodape_mega_trinta_anos_inferior;
         imagemEspecialQuadrada = R.drawable.loteca_pais_quadrado;

@@ -151,7 +151,8 @@ public class BarraTituloBolaoFragment extends Fragment {
                 //TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -10);
                 tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
             } else if (EspecialUtils.isLotecaPais(modalidade, Integer.valueOf(concurso), isEspecial)) {
-                tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, ""));
+                //tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, ""));
+                tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, ""));
             } else {
                 tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
             }

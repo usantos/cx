@@ -124,8 +124,11 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         //contentResultadoPremiado.getPremioInfoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
         contentResultadoPremiado.getPremioInfoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorEscura()));
         String descricaoModalidade = "";
-        if (EspecialUtils.isMega30(detalhesPremioDTO.getAposta().getConcursoAlvo(), detalhesPremioDTO.getAposta().getTipoConcurso())){
+        if (EspecialUtils.isMega30(detalhesPremioDTO.getAposta().getModalidade(), detalhesPremioDTO.getAposta().getConcursoAlvo(), detalhesPremioDTO.getAposta().getTipoConcurso())) {
             descricaoModalidade = SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_LINHA, "");
+            contentResultadoPremiado.getTituloModalidadeTextView().setTextSize(20);
+        } else if (EspecialUtils.isLotecaPais(detalhesPremioDTO.getAposta().getModalidade(), detalhesPremioDTO.getAposta().getConcursoAlvo(), detalhesPremioDTO.getAposta().getTipoConcurso())) {
+            descricaoModalidade = SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, "");
             contentResultadoPremiado.getTituloModalidadeTextView().setTextSize(20);
         } else {
             descricaoModalidade = ViewUtils.getNomeModalidadePorAposta(detalhesPremioDTO.getAposta()).toLowerCase();

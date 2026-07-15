@@ -726,13 +726,14 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     }
 
     private void setupToolbar() {
-        if (isEspecial(aposta.getTipoConcurso().getValor()) && aposta.getModalidade() == ModalidadeEnum.MEGA_SENA) {
+        if (isEspecial(aposta.getTipoConcurso().getValor()) && (aposta.getModalidade() == ModalidadeEnum.MEGA_SENA || aposta.getModalidade() == ModalidadeEnum.LOTECA)) {
 //            toolbar.setBackgroundResource(R.drawable.cabecalho_mega_virada_detalhes_aposta);
             if(isMega30 || isLotecaPais) {
                 //toolbar.setBackgroundResource(R.drawable.cabecalho_mega_trinta_anos_detalhe);
                 toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
             } else {
-                toolbar.setBackgroundResource(R.drawable.mega_virada_simples);
+                //toolbar.setBackgroundResource(R.drawable.mega_virada_simples);
+                toolbar.setBackgroundResource(estiloMKP.getImagemEspecialSimples());
             }
         } else if (isEspecial(aposta.getTipoConcurso().getValor()) && estiloMKP.getImagemEspecialDetalhes() > 0) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
