@@ -210,7 +210,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				this.tvNomeEspeciais.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, "Mega-Sena\n30 anos"));
 				//TODO: LOTECA PAIS//
 			} else if (isLotecaPais) {
-				this.tvNomeEspeciais.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, "Loteca \nPais"));
+				this.tvNomeEspeciais.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, ""));
 			} else {
 				this.game.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
 				this.tvNomeEspeciais.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
