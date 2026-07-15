@@ -52,6 +52,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloBolaoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment2;
 
 public class FragmentUtils {
 
@@ -255,6 +256,12 @@ public class FragmentUtils {
 	public static TrevosFragment startTrevosFragment(FragmentManager fm, int id, IdentificaoDeUmaApostaDas8Modalidades aposta,
 													 ParametroJogoDTO parametroSimulacao, ArrayList<Integer> dezenasSelecionadas) {
 		TrevosFragment frag = TrevosFragment.newInstance(aposta, parametroSimulacao, dezenasSelecionadas);
+		startFragmentAllowingStateLoss(fm, id, frag);
+		return frag;
+	}
+	public static TrevosFragment2 startTrevosFragment2(FragmentManager fm, int id, IdentificaoDeUmaApostaDas8Modalidades aposta,
+													 ParametroJogoDTO parametroSimulacao, ArrayList<Integer> dezenasSelecionadas) {
+		TrevosFragment2 frag = TrevosFragment2.newInstance(aposta, parametroSimulacao, dezenasSelecionadas);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}

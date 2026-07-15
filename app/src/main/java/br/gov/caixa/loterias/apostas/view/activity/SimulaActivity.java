@@ -86,6 +86,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment2;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
@@ -123,7 +124,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private CartelaFragment2 cartelaFragment;
     private SurpresinhaFragment2 surpresinhaFragment;
     private PaginacaoFragment paginacaoFragment;
-    private TrevosFragment trevosFragment;
+    private TrevosFragment2 trevosFragment;
 
     private int typeGameColorLight;
     private int typeGameColorDark;
@@ -1244,7 +1245,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     public void trevosFragment(List<Integer> dezenasSelecionadas) {
-        trevosFragment = FragmentUtils.startTrevosFragment(fragmentManager, R.id.fragmentSimularApostas,
+        trevosFragment = FragmentUtils.startTrevosFragment2(fragmentManager, R.id.fragmentSimularApostas,
                 aposta, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
         Paginacao paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), dezenasSelecionadas.size(), R.color.milionaria_escuro_mkp);
         paginacaoFragment.atualizaPaginacao(paginacao);
@@ -1650,7 +1651,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment) {
+        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment2) {
             if (trevosFragment != null && trevosFragment.getParametroValorApostaSelecionado() != null) {
                 atualizaValorAposta(
                         trevosFragment.getParametroValorApostaSelecionado()

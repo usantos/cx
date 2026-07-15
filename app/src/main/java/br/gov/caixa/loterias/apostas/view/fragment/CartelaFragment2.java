@@ -548,7 +548,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 );
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-
             return ApostaUtils.getApostaSuperSete(
                     parametroJogo,
                     dezenasSelecionadas,
@@ -560,7 +559,27 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             );
         }
 
-        return getApostaPreenchida();
+        IdentificaoDeUmaApostaDas8Modalidades aposta =
+                getApostaPreenchida();
+
+        SimulaUiState state =
+                viewModel.getUiState().getValue();
+
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
+                && state != null
+                && state.isOpcaoOutrosNumerosSelecionada()) {
+
+            aposta.setGerarEspelho(true);
+
+            if (aposta.getValor() != null) {
+                aposta.setValor(
+                        aposta.getValor()
+                                .divide(Constantes.DOIS_BIG_DECIMAL)
+                );
+            }
+        }
+
+        return aposta;
     }
 
     private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
