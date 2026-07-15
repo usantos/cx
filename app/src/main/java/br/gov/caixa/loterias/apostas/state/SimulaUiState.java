@@ -91,6 +91,8 @@ public class SimulaUiState {
     private final boolean exibirDialogFavoritarAposta;
     private final boolean apostaFavoritada;
     private EtapaAposta etapaAposta;
+    private final boolean exibirOpcaoOutrosNumeros;
+    private final boolean opcaoOutrosNumerosSelecionada;
 
     public SimulaUiState(
             BarraTituloDTO barraTituloDTO,
@@ -119,6 +121,12 @@ public class SimulaUiState {
         this.exibirDialogComoJogar = builder.exibirDialogComoJogar;
         this.comandoTelaSimula =
                 builder.comandoTelaSimula;
+
+        this.exibirOpcaoOutrosNumeros =
+                builder.exibirOpcaoOutrosNumeros;
+
+        this.opcaoOutrosNumerosSelecionada =
+                builder.opcaoOutrosNumerosSelecionada;
 
         this.surpresinhaHabilitada =
                 builder.surpresinhaHabilitada;
@@ -423,6 +431,13 @@ public class SimulaUiState {
     public float getVelocidadeAnimacao() {
         return velocidadeAnimacao;
     }
+    public boolean isExibirOpcaoOutrosNumeros() {
+        return exibirOpcaoOutrosNumeros;
+    }
+
+    public boolean isOpcaoOutrosNumerosSelecionada() {
+        return opcaoOutrosNumerosSelecionada;
+    }
 
     public ComandoCarrinho getComandoCarrinho() {
         return comandoCarrinho;
@@ -660,6 +675,8 @@ public class SimulaUiState {
 
         private int posicaoQuantidadeNumerosSelecionada;
         private String textoBotaoPrognosticosSelecionado;
+        private boolean exibirOpcaoOutrosNumeros;
+        private boolean opcaoOutrosNumerosSelecionada;
 
         private boolean atualizarValorApostaPorQuantidadeNumeros;
         private boolean resetarTrevosPorQuantidadeNumeros;
@@ -748,6 +765,11 @@ public class SimulaUiState {
 
             this.qtdDezenasPossiveisSelecionado = state.qtdDezenasPossiveisSelecionado;
             this.qtdConcursoSelecionado = state.qtdConcursoSelecionado;
+            this.exibirOpcaoOutrosNumeros =
+                    state.exibirOpcaoOutrosNumeros;
+
+            this.opcaoOutrosNumerosSelecionada =
+                    state.opcaoOutrosNumerosSelecionada;
 
             this.mostrarBotaoLimparAposta = state.mostrarBotaoLimparAposta;
             this.mostrarSalvarAposta = state.mostrarSalvarAposta;
@@ -1028,6 +1050,15 @@ public class SimulaUiState {
 
         public Builder setEspecial(boolean especial) {
             this.especial = especial;
+            return this;
+        }
+        public Builder setExibirOpcaoOutrosNumeros(boolean value) {
+            this.exibirOpcaoOutrosNumeros = value;
+            return this;
+        }
+
+        public Builder setOpcaoOutrosNumerosSelecionada(boolean value) {
+            this.opcaoOutrosNumerosSelecionada = value;
             return this;
         }
 

@@ -118,6 +118,10 @@ public class SimulaViewModel extends AndroidViewModel {
 
             return;
         }
+        if (event instanceof SimulaUiEvent.ToggleOutrosNumeros) {
+            toggleOutrosNumeros();
+            return;
+        }
 
         if (event instanceof SimulaUiEvent.AdicionarCarrinhoClicado) {
 
@@ -321,6 +325,22 @@ public class SimulaViewModel extends AndroidViewModel {
 
         validarApostaFavorita(
                 apostaFavorita
+        );
+    }
+    private void toggleOutrosNumeros() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        boolean novoValor =
+                !atual.isOpcaoOutrosNumerosSelecionada();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setOpcaoOutrosNumerosSelecionada(
+                                novoValor
+                        )
+                        .build()
         );
     }
     private void prepararApostaFavorita(
@@ -1280,6 +1300,12 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setTextoSelecionados(
                                 textoSelecionados
                         )
+                        .setExibirOpcaoOutrosNumeros(
+                                event.isExibirOpcaoOutrosNumeros()
+                        )
+                        .setOpcaoOutrosNumerosSelecionada(
+                                event.isOpcaoOutrosNumerosSelecionada()
+                        )
                         .build()
         );
     }
@@ -2038,6 +2064,8 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoAdicionarHabilitado(false)
                         .setBotaoLimparHabilitado(false)
                         .setApostaFavoritada(false)
+                        .setOpcaoOutrosNumerosSelecionada(false)
+                        .setExibirOpcaoOutrosNumeros(false)
                         .setMostrarSalvarAposta(false)
                         .setMostrarBotaoLimparAposta(false)
                         .setValorAposta(valorApostaAtual)

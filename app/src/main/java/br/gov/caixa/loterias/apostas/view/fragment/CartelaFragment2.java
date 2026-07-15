@@ -125,8 +125,8 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     private AppCompatCheckBox selecioneOutrosNumeros;
     private View view;
     private EditText informeNomeTime;
-    private RelativeLayout opcaoOutrosNumerosLayout, rlColunasSuperSete;
-    private LinearLayout selecioneTimeCoracaoLayout;
+    private RelativeLayout rlColunasSuperSete;
+    private LinearLayout selecioneTimeCoracaoLayout,opcaoOutrosNumerosLayout;
     private RecyclerView mGridTimeCoracao;
     private RecyclerView listaDezenas;
     private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
@@ -264,9 +264,12 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                     );
         }
 
+        SimulaUiState state =
+                viewModel.getUiState().getValue();
+
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
-                && selecioneOutrosNumeros != null
-                && selecioneOutrosNumeros.isChecked()) {
+                && state != null
+                && state.isOpcaoOutrosNumerosSelecionada()) {
 
             valorCalculado =
                     valorCalculado.multiply(
@@ -355,16 +358,29 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         }
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
-            opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);
-            selecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.selcioneOutrosNumeros);
-            TextView infoSelecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.infoSelecioneOutrosNumeros);
-            infoSelecioneOutrosNumeros.setText(ViewUtils.fromHtml(Constantes.INFO_OUTROS_50_NUMEROS));
+
+            opcaoOutrosNumerosLayout =
+                    parentActivity.findViewById(
+                            R.id.opcaoOutrosNumerosLayout
+                    );
+
+            selecioneOutrosNumeros =
+                    parentActivity.findViewById(
+                            R.id.selcioneOutrosNumeros
+                    );
+
+            TextView infoSelecioneOutrosNumeros =
+                    parentActivity.findViewById(
+                            R.id.infoSelecioneOutrosNumeros
+                    );
+
+            infoSelecioneOutrosNumeros.setText(
+                    ViewUtils.fromHtml(
+                            Constantes.INFO_OUTROS_50_NUMEROS
+                    )
+            );
+
             onClickOutrosNumerosLayout();
-            if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-                setVisibilityCheckedNumerosLayout(View.VISIBLE);
-            } else {
-                setVisibilityCheckedNumerosLayout(View.GONE);
-            }
         }
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
@@ -823,6 +839,15 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                 equipeSelecionada != null
                         && equipeSelecionada.isSelecionado();
 
+        boolean exibirOutrosNumeros =
+                parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
+                        && dezenasSelecionadas.size()
+                        == qtdDezenasPossiveisParaEstado;
+
+        boolean outrosNumerosSelecionado =
+                selecioneOutrosNumeros != null
+                        && selecioneOutrosNumeros.isChecked();
+
         viewModel.onEvent(
                 new SimulaUiEvent.CartelaAlterada(
                         parametroJogo.getConcurso().getModalidade(),
@@ -838,7 +863,10 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                         possuiPlacarLotogol,
                         isTelaSelecaoTimeAtivado,
                         equipeSelecionadaValida,
-                        isEscolhaTimeCoracaoSurpresinha
+                        isEscolhaTimeCoracaoSurpresinha,
+                        outrosNumerosSelecionado,
+                        exibirOutrosNumeros
+
                 )
         );
     }
@@ -1581,12 +1609,13 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
     }
 
     private void onClickOutrosNumerosLayout() {
-        opcaoOutrosNumerosLayout.setOnClickListener(view -> {
-            if (selecioneOutrosNumeros.isChecked()) {
-                selecioneOutrosNumeros.setChecked(false);
-            } else {
-                selecioneOutrosNumeros.setChecked(true);
-            }
+
+        opcaoOutrosNumerosLayout.setOnClickListener(v -> {
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.ToggleOutrosNumeros()
+            );
+
             atualizarValorENotificarEstadoCartela();
         });
     }
@@ -2039,9 +2068,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
                     isEcolhaTimeBtnAtivado = true;
                 }
 
-                if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
-                    atualizarVisibilidadeOutrosNumeros();
-                }
 
                 if (simularDezenasAdapter != null) {
                     simularDezenasAdapter.atualizaSelecionados(
@@ -2086,12 +2112,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
 
         parentActivity.atualizaTextoBotoesQtdSelecionadas();
 
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
-                && selecioneOutrosNumeros != null
-                && selecioneOutrosNumeros.isChecked()) {
-
-            selecioneOutrosNumeros.setChecked(false);
-        }
     }
     private void tentarAdicionarDezenaSelecionada(
             Dezena dezena,
@@ -2167,19 +2187,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
         if (parentActivity.getFlagApostaSalva()) {
 //            voltaSalvarApostaParaLayoutInicial();
         }
-    }
-    private void atualizarVisibilidadeOutrosNumeros() {
-
-        if (opcaoOutrosNumerosLayout == null) {
-            return;
-        }
-
-        setVisibilityCheckedNumerosLayout(
-                dezenasSelecionadas.size()
-                        == parentActivity.qtdDezenasPossiveisSelecionado
-                        ? View.VISIBLE
-                        : View.GONE
-        );
     }
 
     private void configurarTimesLoteca() {
@@ -2500,14 +2507,6 @@ public class CartelaFragment2 extends Fragment implements OnClickListener, Locat
             dezenasSelecionadas =
                     aposta.getListaNumerosSelecionados();
 
-            if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
-                setVisibilityCheckedNumerosLayout(
-                        dezenasSelecionadas.size()
-                                == parentActivity.qtdDezenasPossiveisSelecionado
-                                ? View.VISIBLE
-                                : View.GONE
-                );
-            }
 
             simularDezenasAdapter.atualizaSelecionados(
                     dezenasSelecionadas

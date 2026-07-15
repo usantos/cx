@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -160,6 +161,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private FrameLayout frameCarrinho;
     private TextView tvQuantidadeApostas;
     private SwitchMaterial switchSurpresinha;
+    private LinearLayout opcaoOutrosNumerosLayout;
+    private AppCompatCheckBox selecioneOutrosNumeros;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -254,6 +257,29 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 findViewById(R.id.switchSurpresinha);
         this.btnFavoritar = findViewById(R.id.favoritar_aposta);
         this.btnNextStep = findViewById(R.id.btnNextStep);
+        this.opcaoOutrosNumerosLayout =
+                findViewById(R.id.opcaoOutrosNumerosLayout);
+        this.selecioneOutrosNumeros = findViewById(R.id.selcioneOutrosNumeros);
+
+        opcaoOutrosNumerosLayout.setVisibility(View.GONE);
+    }
+    private void renderOpcaoOutrosNumeros(
+            SimulaUiState state
+    ) {
+        if (opcaoOutrosNumerosLayout == null
+                || selecioneOutrosNumeros == null) {
+            return;
+        }
+
+        opcaoOutrosNumerosLayout.setVisibility(
+                state.isExibirOpcaoOutrosNumeros()
+                        ? View.VISIBLE
+                        : View.GONE
+        );
+
+        selecioneOutrosNumeros.setChecked(
+                state.isOpcaoOutrosNumerosSelecionada()
+        );
     }
     private void configurarSwitchSurpresinha() {
 
@@ -359,6 +385,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         renderAbrirCarrinho(state);
         renderComandoTelaSimula(state);
         renderSwitchSurpresinha(state);
+        renderOpcaoOutrosNumeros(state);
     }
     private void renderSwitchSurpresinha(
             SimulaUiState state

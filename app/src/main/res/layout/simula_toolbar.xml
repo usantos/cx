@@ -39,7 +39,7 @@
             android:fontFamily="@font/caixa_std_regular"
             android:text="Surpresinha"
             android:textColor="@color/cinza110"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 

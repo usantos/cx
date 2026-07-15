@@ -235,6 +235,8 @@ public abstract class SimulaUiEvent {
     public static class CartelaAlterada extends SimulaUiEvent {
 
         private final ModalidadeEnum tipoJogo;
+        private final boolean opcaoOutrosNumerosSelecionada;
+        private final boolean exibirOpcaoOutrosNumeros;
 
         private final int qtdDezenasSelecionadas;
         private final int qtdDezenasPossiveisSelecionado;
@@ -264,7 +266,9 @@ public abstract class SimulaUiEvent {
                 boolean possuiPlacarLotogol,
                 boolean telaSelecaoTimeAtivado,
                 boolean equipeSelecionadaValida,
-                boolean escolhaTimeCoracaoSurpresinha
+                boolean escolhaTimeCoracaoSurpresinha,
+                boolean opcaoOutrosNumerosSelecionada,
+                boolean exibirOpcaoOutrosNumeros
         ) {
             this.tipoJogo = tipoJogo;
             this.qtdDezenasSelecionadas = qtdDezenasSelecionadas;
@@ -278,11 +282,15 @@ public abstract class SimulaUiEvent {
             this.telaSelecaoTimeAtivado = telaSelecaoTimeAtivado;
             this.equipeSelecionadaValida = equipeSelecionadaValida;
             this.escolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
+            this.opcaoOutrosNumerosSelecionada = opcaoOutrosNumerosSelecionada;
+            this.exibirOpcaoOutrosNumeros = exibirOpcaoOutrosNumeros;
         }
 
         public ModalidadeEnum getTipoJogo() {
             return tipoJogo;
         }
+        public Boolean isExibirOpcaoOutrosNumeros(){return exibirOpcaoOutrosNumeros;}
+        public Boolean isOpcaoOutrosNumerosSelecionada(){return opcaoOutrosNumerosSelecionada;};
 
         public int getQtdDezenasSelecionadas() {
             return qtdDezenasSelecionadas;
@@ -624,6 +632,9 @@ public abstract class SimulaUiEvent {
     }
 
     public static final class ComandoTelaSimulaConsumido extends SimulaUiEvent {
+    }
+    public static final class ToggleOutrosNumeros
+            extends SimulaUiEvent {
     }
 
 }
