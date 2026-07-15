@@ -137,6 +137,21 @@ public abstract class SimulaUiEvent {
             return fragmentCartela;
         }
     }
+    public static final class NextStepClicado
+            extends SimulaUiEvent {
+
+        private final ModalidadeEnum tipoJogo;
+
+        public NextStepClicado(
+                ModalidadeEnum tipoJogo
+        ) {
+            this.tipoJogo = tipoJogo;
+        }
+
+        public ModalidadeEnum getTipoJogo() {
+            return tipoJogo;
+        }
+    }
 
     public static final class AdicionarCarrinhoClicado extends SimulaUiEvent {
 
@@ -254,6 +269,7 @@ public abstract class SimulaUiEvent {
         private final boolean telaSelecaoTimeAtivado;
         private final boolean equipeSelecionadaValida;
         private final boolean escolhaTimeCoracaoSurpresinha;
+        private boolean etapaComplementarCompleta;
 
         public CartelaAlterada(
                 ModalidadeEnum tipoJogo,
@@ -269,7 +285,8 @@ public abstract class SimulaUiEvent {
                 boolean equipeSelecionadaValida,
                 boolean escolhaTimeCoracaoSurpresinha,
                 boolean opcaoOutrosNumerosSelecionada,
-                boolean exibirOpcaoOutrosNumeros
+                boolean exibirOpcaoOutrosNumeros,
+                boolean etapaComplementarCompleta
         ) {
             this.tipoJogo = tipoJogo;
             this.qtdDezenasSelecionadas = qtdDezenasSelecionadas;
@@ -285,7 +302,9 @@ public abstract class SimulaUiEvent {
             this.escolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
             this.opcaoOutrosNumerosSelecionada = opcaoOutrosNumerosSelecionada;
             this.exibirOpcaoOutrosNumeros = exibirOpcaoOutrosNumeros;
+            this.etapaComplementarCompleta = etapaComplementarCompleta;
         }
+        public Boolean isEtapaComplementarCompleta(){return etapaComplementarCompleta;}
 
         public ModalidadeEnum getTipoJogo() {
             return tipoJogo;
@@ -651,9 +670,12 @@ public abstract class SimulaUiEvent {
         ) {
             this.quantidadeTrevosSelecionados =
                     quantidadeTrevosSelecionados;
+
             this.quantidadeTrevosNecessaria =
                     quantidadeTrevosNecessaria;
-            this.valorAposta = valorAposta;
+
+            this.valorAposta =
+                    valorAposta;
         }
 
         public int getQuantidadeTrevosSelecionados() {
@@ -677,11 +699,27 @@ public abstract class SimulaUiEvent {
         public QuantidadeTrevosAlterada(
                 ParametroValorApostaDTO valorSelecionado
         ) {
-            this.valorSelecionado = valorSelecionado;
+            this.valorSelecionado =
+                    valorSelecionado;
         }
 
         public ParametroValorApostaDTO getValorSelecionado() {
             return valorSelecionado;
+        }
+    }
+    public static final class MesSorteAlterado
+            extends SimulaUiEvent {
+
+        private final boolean mesSelecionado;
+
+        public MesSorteAlterado(
+                boolean mesSelecionado
+        ) {
+            this.mesSelecionado = mesSelecionado;
+        }
+
+        public boolean isMesSelecionado() {
+            return mesSelecionado;
         }
     }
 

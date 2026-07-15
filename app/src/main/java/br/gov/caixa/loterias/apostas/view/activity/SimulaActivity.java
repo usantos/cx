@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
 import static java.lang.String.format;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
@@ -65,6 +66,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.ComandoCarrinho;
 import br.gov.caixa.loterias.apostas.state.ComandoTelaSimula;
+import br.gov.caixa.loterias.apostas.state.EtapaAposta;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -104,7 +106,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     //TODO: MEGA 30 ANOS//
     private int numero_concurso;
     private ConstraintLayout toolBarLoteca;
-    private Button qtdNumerosButton, botaoLimparAposta, botaoCompletar, botaoAdicionar, btnNextStep;
+    private Button qtdNumerosButton, botaoLimparAposta, botaoCompletar, botaoAdicionar, botaoNextStep;
     private AppCompatImageView simularTelaAposta, surpresinhaTela;
     private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
             labelValueTriplasLoteca, textoSalveEstaAposta;
@@ -154,7 +156,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private TextView tvValorAposta;
     private TextView tvValorCarrinho;
     private LinearLayout containerComoJogar;
-    private MaterialButton btnTeimosinha, btnQuantidadeNumeros, btnFavoritar;
+    private MaterialButton btnTeimosinha, btnQuantidadeNumeros, botaoFavoritar;
     private List<Integer> qtdPrognosticosQuantidadeNumerosList;
     private TextView textSelecionados;
     private FrameLayout frameCarrinho;
@@ -254,8 +256,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 findViewById(R.id.tvQuantidadeApostas);
         this.switchSurpresinha =
                 findViewById(R.id.switchSurpresinha);
-        this.btnFavoritar = findViewById(R.id.favoritar_aposta);
-        this.btnNextStep = findViewById(R.id.btnNextStep);
+        this.botaoFavoritar = findViewById(R.id.favoritar_aposta);
+        this.botaoNextStep = findViewById(R.id.btnNextStep);
         this.opcaoOutrosNumerosLayout =
                 findViewById(R.id.opcaoOutrosNumerosLayout);
         this.selecioneOutrosNumeros = findViewById(R.id.selcioneOutrosNumeros);
@@ -385,6 +387,164 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         renderComandoTelaSimula(state);
         renderSwitchSurpresinha(state);
         renderOpcaoOutrosNumeros(state);
+        renderEstadoBotoes(state);
+    }
+    private void renderEstadoBotoes(
+            SimulaUiState state
+    ) {
+
+        boolean mostrarFavoritar =
+                state.isMostrarSalvarAposta()
+                        || state.isApostaFavoritada();
+
+        if (botaoFavoritar != null) {
+
+            botaoFavoritar.setVisibility(
+                    mostrarFavoritar
+                            ? View.VISIBLE
+                            : View.GONE
+            );
+        }
+        if (botaoNextStep != null
+                && botaoAdicionar != null) {
+
+            boolean modalidadeComSegundaEtapa =
+                    state.getTipoJogo() == ModalidadeEnum.MAIS_MILIONARIA
+                            || state.getTipoJogo() == ModalidadeEnum.DIA_DE_SORTE
+                            || state.getTipoJogo() == ModalidadeEnum.TIMEMANIA;
+
+            boolean etapaNumeros =
+                    state.getEtapaAposta() == null
+                            || state.getEtapaAposta() == EtapaAposta.NUMEROS;
+
+            boolean mostrarNextStep =
+                    modalidadeComSegundaEtapa
+                            && etapaNumeros;
+
+            botaoNextStep.setVisibility(
+                    mostrarNextStep
+                            ? View.VISIBLE
+                            : View.GONE
+            );
+
+            botaoNextStep.setEnabled(
+                    state.isBotaoNextStepHabilitado()
+            );
+
+            botaoAdicionar.setVisibility(
+                    mostrarNextStep
+                            ? View.GONE
+                            : View.VISIBLE
+            );
+        }
+
+        if (botaoCompletar != null) {
+
+            if (mostrarFavoritar) {
+
+                botaoCompletar.setVisibility(
+                        View.GONE
+                );
+
+            } else {
+
+                boolean surpresinhaHabilitada =
+                        state.isSurpresinhaHabilitada();
+
+                botaoCompletar.setEnabled(
+                        !surpresinhaHabilitada
+                                && state.isBotaoCompletarHabilitado()
+                );
+
+                botaoCompletar.setVisibility(
+                        surpresinhaHabilitada
+                                ? View.GONE
+                                : View.VISIBLE
+                );
+            }
+        }
+
+        if (botaoAdicionar != null) {
+
+            boolean habilitado =
+                    state.isBotaoAdicionarHabilitado();
+
+            botaoAdicionar.setEnabled(
+                    habilitado
+            );
+
+            atualizarVisualBotaoAdicionar(
+                    habilitado
+            );
+
+        }
+
+        if (botaoLimparAposta != null) {
+            botaoLimparAposta.setEnabled(
+                    state.isBotaoLimparHabilitado()
+            );
+        }
+    }
+    private void atualizarVisualBotaoAdicionar(boolean habilitado) {
+
+        if (!(botaoAdicionar instanceof MaterialButton)) {
+            return;
+        }
+
+        MaterialButton btn = (MaterialButton) botaoAdicionar;
+
+        if (habilitado) {
+
+            btn.setBackgroundTintList(
+                    ContextCompat.getColorStateList(
+                            this,
+                            estilo.getCorClara()
+                    )
+            );
+
+            btn.setTextColor(
+                    ContextCompat.getColor(
+                            this,
+                            estilo.getCorFonteFundoClaro()
+                    )
+            );
+
+            btn.setStrokeColor(
+                    ContextCompat.getColorStateList(
+                            this,
+                            estilo.getCorEscura()
+                    )
+            );
+
+        } else {
+
+            // volta para o visual original do XML
+
+            btn.setBackgroundTintList(
+                    ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                    this,
+                                    R.color.disabled
+                            )
+                    )
+            );
+
+            btn.setTextColor(
+                    ContextCompat.getColorStateList(
+                            this,
+                            R.color.text_rodape
+                    )
+            );
+
+            btn.setStrokeColor(
+                    ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                    this,
+                                    R.color.cinza70
+                            )
+                    )
+            );
+        }
     }
     private void renderSwitchSurpresinha(
             SimulaUiState state
@@ -1119,12 +1279,13 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         return botaoCompletar;
     }
     public MaterialButton getBotaoFavoritar() {
-        return btnFavoritar;
+        return botaoFavoritar;
     }
 
     public Button getBotaoAdicionar() {
         return botaoAdicionar;
     }
+    public Button getBotaoNextStep(){return botaoNextStep;}
 
     public TextView getTextoSalveEstaAposta() {
         return textoSalveEstaAposta;
@@ -1752,7 +1913,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     @Override
     public MaterialButton getButtonSalvar() {
-        return btnFavoritar;
+        return botaoFavoritar;
     }
 
     @Override

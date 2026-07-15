@@ -54,6 +54,7 @@ public class SimulaUiState {
     private final boolean botaoFinalizarVisivel;
     private final boolean botaoCompletarHabilitado;
     private final boolean botaoAdicionarHabilitado;
+    private final boolean botaoNextStepHabilitado;
     private final boolean botaoLimparHabilitado;
 
     private final BigDecimal valorAposta;
@@ -178,6 +179,7 @@ public class SimulaUiState {
 
         this.botaoCompletarHabilitado = builder.botaoCompletarHabilitado;
         this.botaoAdicionarHabilitado = builder.botaoAdicionarHabilitado;
+        this.botaoNextStepHabilitado = builder.botaoNextStepHabilitado;
         this.botaoLimparHabilitado = builder.botaoLimparHabilitado;
 
         this.valorAposta = builder.valorAposta != null
@@ -309,6 +311,7 @@ public class SimulaUiState {
                 .setBotaoCompletarVisivel(true)
                 .setBotaoCompletarHabilitado(true)
                 .setBotaoAdicionarHabilitado(false)
+                .setBotaoNextStepHabilitado(false)
                 .setBotaoLimparHabilitado(false)
                 .setValorCarrinho(BigDecimal.ZERO)
                 .setQuantidadeApostasCarrinho(0)
@@ -546,6 +549,7 @@ public class SimulaUiState {
     public boolean isBotaoAdicionarHabilitado() {
         return botaoAdicionarHabilitado;
     }
+    public boolean isBotaoNextStepHabilitado(){return botaoNextStepHabilitado;}
 
     public boolean isBotaoLimparHabilitado() {
         return botaoLimparHabilitado;
@@ -648,6 +652,7 @@ public class SimulaUiState {
 
         private boolean botaoCompletarHabilitado;
         private boolean botaoAdicionarHabilitado;
+        private boolean botaoNextStepHabilitado;
         private boolean botaoLimparHabilitado;
         private BigDecimal valorCarrinho;
         private int quantidadeApostasCarrinho;
@@ -695,6 +700,7 @@ public class SimulaUiState {
             this.botaoCompletarVisivel = true;
             this.botaoCompletarHabilitado = true;
             this.botaoAdicionarHabilitado = false;
+            this.botaoNextStepHabilitado = false;
             this.botaoLimparHabilitado = false;
             this.valorCarrinho = BigDecimal.ZERO;
             this.quantidadeApostasCarrinho = 0;
@@ -793,6 +799,7 @@ public class SimulaUiState {
 
             this.botaoCompletarHabilitado = state.botaoCompletarHabilitado;
             this.botaoAdicionarHabilitado = state.botaoAdicionarHabilitado;
+            this.botaoNextStepHabilitado = state.botaoNextStepHabilitado;
             this.botaoLimparHabilitado = state.botaoLimparHabilitado;
 
             this.valorAposta = state.valorAposta;
@@ -1289,6 +1296,13 @@ public class SimulaUiState {
             this.botaoAdicionarHabilitado = botaoAdicionarHabilitado;
             return this;
         }
+        public Builder setBotaoNextStepHabilitado(
+                boolean botaoNextStepHabilitado
+        ) {
+            this.botaoNextStepHabilitado = botaoNextStepHabilitado;
+            return this;
+        }
+
 
         public Builder setBotaoLimparHabilitado(
                 boolean botaoLimparHabilitado

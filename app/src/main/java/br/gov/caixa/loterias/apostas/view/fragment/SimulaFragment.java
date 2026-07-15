@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -63,6 +61,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.ComandoCompletarAposta;
+import br.gov.caixa.loterias.apostas.state.EtapaAposta;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -142,7 +141,7 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
     public BigDecimal valorTotalAposta;
     public int typeGameColorLight, typeGameColorDark;
     public int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
-    public Button botaoCompletar, botaoAdicionar, botaoLimparAposta;
+    public Button botaoCompletar, botaoAdicionar, botaoLimparAposta, botaoNextStep;
     public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
     public ListaDezenaRecyclerView simularDezenasAdapter;
     public String dataSorteioAtual;
@@ -654,6 +653,17 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
             }
             break;
 
+            case R.id.btnNextStep:
+
+                viewModel.onEvent(
+                        new SimulaUiEvent.NextStepClicado(
+                                parametroJogo.getConcurso()
+                                        .getModalidade()
+                        )
+                );
+
+                break;
+
             case R.id.btnAdicionarCarrinho: {
                 solicitarAdicionarCarrinhoPorBotao();
             }
@@ -867,6 +877,9 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
                 selecioneOutrosNumeros != null
                         && selecioneOutrosNumeros.isChecked();
 
+        boolean etapaComplementarCompleta =
+                calcularEtapaComplementarCompleta();
+
         viewModel.onEvent(
                 new SimulaUiEvent.CartelaAlterada(
                         parametroJogo.getConcurso().getModalidade(),
@@ -884,10 +897,41 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
                         equipeSelecionadaValida,
                         isEscolhaTimeCoracaoSurpresinha,
                         outrosNumerosSelecionado,
-                        exibirOutrosNumeros
-
+                        exibirOutrosNumeros,
+                        etapaComplementarCompleta
                 )
         );
+    }
+    private boolean calcularEtapaComplementarCompleta() {
+        if (parametroJogo == null) {
+            return false;
+        }
+
+        SimulaUiState state =
+                viewModel != null
+                        ? viewModel.getUiState().getValue()
+                        : null;
+
+        if (state == null) {
+            return false;
+        }
+
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
+            return equipeSelecionada != null
+                    && equipeSelecionada.isSelecionado();
+        }
+
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
+            return parentActivity != null
+                    && parentActivity.getMesDeSorteCartela() != null;
+        }
+
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
+            return state.getEtapaAposta() == EtapaAposta.TREVOS
+                    && state.isBotaoAdicionarHabilitado();
+        }
+
+        return false;
     }
 
     private int getIntTextSafe(
@@ -994,7 +1038,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
         }
 
         renderValorAposta(state);
-        renderEstadoBotoes(state);
         renderTextoSelecionados(state);
         renderLimpezaAposta(state);
         renderCompletarAposta(state);
@@ -1425,72 +1468,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
         selecioneOutrosNumeros.setChecked(false);
     }
 
-    private void renderEstadoBotoes(
-            SimulaUiState state
-    ) {
-
-        boolean mostrarFavoritar =
-                state.isMostrarSalvarAposta()
-                        || state.isApostaFavoritada();
-
-        if (botaoFavoritar != null) {
-
-            botaoFavoritar.setVisibility(
-                    mostrarFavoritar
-                            ? View.VISIBLE
-                            : View.GONE
-            );
-        }
-
-        if (botaoCompletar != null) {
-
-            if (mostrarFavoritar) {
-
-                botaoCompletar.setVisibility(
-                        View.GONE
-                );
-
-            } else {
-
-                boolean surpresinhaHabilitada =
-                        state.isSurpresinhaHabilitada();
-
-                botaoCompletar.setEnabled(
-                        !surpresinhaHabilitada
-                                && state.isBotaoCompletarHabilitado()
-                );
-
-                botaoCompletar.setVisibility(
-                        surpresinhaHabilitada
-                                ? View.GONE
-                                : View.VISIBLE
-                );
-            }
-        }
-
-        if (botaoAdicionar != null) {
-
-            boolean habilitado =
-                    state.isBotaoAdicionarHabilitado();
-
-            botaoAdicionar.setEnabled(
-                    habilitado
-            );
-
-            atualizarVisualBotaoAdicionar(
-                    habilitado
-            );
-
-        }
-
-        if (botaoLimparAposta != null) {
-            botaoLimparAposta.setEnabled(
-                    state.isBotaoLimparHabilitado()
-            );
-        }
-
-    }
-
     private void publicarValorAposta(
             BigDecimal valor
     ) {
@@ -1511,68 +1488,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
                         valorSeguro
                 )
         );
-    }
-
-    private void atualizarVisualBotaoAdicionar(boolean habilitado) {
-
-        if (!(botaoAdicionar instanceof MaterialButton)) {
-            return;
-        }
-
-        MaterialButton btn = (MaterialButton) botaoAdicionar;
-
-        if (habilitado) {
-
-            btn.setBackgroundTintList(
-                    ContextCompat.getColorStateList(
-                            requireContext(),
-                            parentActivity.estilo.getCorClara()
-                    )
-            );
-
-            btn.setTextColor(
-                    ContextCompat.getColor(
-                            requireContext(),
-                            parentActivity.estilo.getCorFonteFundoClaro()
-                    )
-            );
-
-            btn.setStrokeColor(
-                    ContextCompat.getColorStateList(
-                            requireContext(),
-                            parentActivity.estilo.getCorEscura()
-                    )
-            );
-
-        } else {
-
-            // volta para o visual original do XML
-
-            btn.setBackgroundTintList(
-                    ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.disabled
-                            )
-                    )
-            );
-
-            btn.setTextColor(
-                    ContextCompat.getColorStateList(
-                            requireContext(),
-                            R.color.text_rodape
-                    )
-            );
-
-            btn.setStrokeColor(
-                    ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.cinza70
-                            )
-                    )
-            );
-        }
     }
 
     private BigDecimal getValorTotalApostaAtual() {
@@ -1639,7 +1554,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
                     new SimulaUiEvent.ToggleOutrosNumeros()
             );
 
-            atualizarValorENotificarEstadoCartela();
         });
     }
 
@@ -1880,6 +1794,9 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
                 parentActivity.getBotaoLimparAposta();
 
         botaoLimparAposta.setOnClickListener(this);
+
+        botaoNextStep = parentActivity.getBotaoNextStep();
+        botaoNextStep.setOnClickListener(this);
 
         notificarEstadoCartelaAlterado();
     }

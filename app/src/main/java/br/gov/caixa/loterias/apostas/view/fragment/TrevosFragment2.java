@@ -79,7 +79,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     private ParametroValorApostaDTO valorApostaSelecionado;
     private List<Dezena> dezenaList;
     private List<Integer> trevoSelecionadoList = new ArrayList<>();
-    private ListaDezenaRecyclerView adappter;
+    private ListaDezenaRecyclerView adapter;
     private View view;
 
     private TrevoModel model;
@@ -142,21 +142,24 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         ).get(SimulaViewModel.class);
 
         textoBotaoTrevosSelecionado = parametro.getTrevos().getQtdMinima() + getString(R.string.espaco_em_branco) + getString(R.string.trevos);
-        listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
 
         configIncialButtons();
 
         valoresApostas = parametro.getValoresTrevoByNumero(dezenasSelecionadas.size());
         valorApostaSelecionado = valoresApostas.get(0);
-
+        viewModel.onEvent(
+                new SimulaUiEvent.QuantidadeTrevosAlterada(
+                        valorApostaSelecionado
+                )
+        );
         DezenaConfig dezenaConfig = new DezenaConfig(false, R.color.milionaria_escuro_mkp,
                 R.layout.item_dezena_trevo,
                 new ShapeConfig(R.drawable.ic_item_trevo,
                         R.drawable.ic_item_trevo_selecionado,
                         R.color.milionaria_escuro_mkp, R.color.milionaria_escuro_mkp),
                 true);
-        adappter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, dezenaConfig, this);
-        listaTrevos.setAdapter(adappter);
+        adapter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, dezenaConfig, this);
+        listaTrevos.setAdapter(adapter);
         RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA);
         listaTrevos.setLayoutManager(layot);
 
@@ -167,7 +170,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     private void editAposta() {
         if (aposta != null) {
             trevoSelecionadoList = AppUtils.converteListaInteiros(aposta.getTrevosSelecionados());
-            adappter.atualizaSelecionados(trevoSelecionadoList);
+            adapter.atualizaSelecionados(trevoSelecionadoList);
             viewModel.onEvent(
                     new SimulaUiEvent.TrevosAlterados(
                             trevoSelecionadoList.size(),
@@ -191,15 +194,8 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
     private void configIncialButtons() {
         listener.getButtonQtdTrevos().setOnClickListener(onQtdTrevosClickListener());
-
-        SpannableStringBuilder stringBotao = ViewUtils.textCaixaSTDBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente));
-        listener.getButtonFinalizar().setText(stringBotao);
-        listener.getButtonFinalizar().setBackgroundColor(getResources().getColor(R.color.cinzaescuro));
         listener.getButtonFinalizar().setOnClickListener(onFinalizarClickListener());
-
         listener.getButtonLimpar().setOnClickListener(onLimparClickListener());
-        listener.getButtonLimpar().setVisibility(View.GONE);
-
     }
 
     private View.OnClickListener onSalverApostaClickListener() {
@@ -313,7 +309,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         return v -> {
             trevoSelecionadoList.clear();
 
-            adappter.atualizaSelecionados(
+            adapter.atualizaSelecionados(
                     trevoSelecionadoList
             );
 
@@ -325,8 +321,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
                     )
             );
 
-            adappter.atualizaSelecionados(trevoSelecionadoList);
-            listener.getButtonLimpar().setVisibility(View.INVISIBLE);
+            adapter.atualizaSelecionados(trevoSelecionadoList);
         };
     }
 
@@ -367,7 +362,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
                         AlertDialogUtils.dismiss();
                         trevoSelecionadoList.clear();
                         trevoSelecionadoList.addAll(list);
-                        adappter.atualizaSelecionados(list);
+                        adapter.atualizaSelecionados(list);
                         viewModel.onEvent(
                                 new SimulaUiEvent.TrevosAlterados(
                                         trevoSelecionadoList.size(),
@@ -424,15 +419,19 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
             @Override
             public void ok(int position) {
-                listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
+                viewModel.onEvent(
+                        new SimulaUiEvent.QuantidadeTrevosAlterada(
+                                valorApostaSelecionado
+                        )
+                );
                 int ultimoValor = valoresApostas.size() - 1;
                 if (valoresApostas.get(ultimoValor).equals(valorApostaSelecionado)) {
                     trevoSelecionadoList = new ArrayList<>();
                     for (int numero = 1; numero <= parametro.getTrevos().getQtdPrognostico(); numero++) {
                         trevoSelecionadoList.add(numero);
                     }
-                    adappter.atualizaSelecionados(trevoSelecionadoList);
-                    listaTrevos.setAdapter(adappter);
+                    adapter.atualizaSelecionados(trevoSelecionadoList);
+                    listaTrevos.setAdapter(adapter);
                 }
 //                listener.atualizaValorAposta(valorApostaSelecionado);
                 viewModel.onEvent(
@@ -441,11 +440,11 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
                         )
                 );
                 if (trevoSelecionadoList.size() > valorApostaSelecionado.getNumeroTrevos()) {
-                    listener.getButtonFinalizar().setText(ViewUtils.textCaixaSTDBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
-                    listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaescuro));
+//                    listener.getButtonFinalizar().setText(ViewUtils.textCaixaSTDBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
+//                    listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaescuro));
                     trevoSelecionadoList = new ArrayList<>();
-                    adappter.atualizaSelecionados(trevoSelecionadoList);
-                    listaTrevos.setAdapter(adappter);
+                    adapter.atualizaSelecionados(trevoSelecionadoList);
+                    listaTrevos.setAdapter(adapter);
                 }
             }
 
@@ -512,19 +511,6 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         );
     }
 
-    private void checaQuantidadeTrevos() {
-        if (trevoSelecionadoList.size() >= parametro.getTrevos().getQtdMinima()) {
-            textoBotaoTrevosSelecionado = trevoSelecionadoList.size() + getString(R.string.espaco_em_branco) + getString(R.string.trevos);
-            listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
-
-            valorApostaSelecionado = parametro.getValorApostaBy(dezenasSelecionadas.size(), trevoSelecionadoList.size());
-            viewModel.onEvent(
-                    new SimulaUiEvent.ValorApostaAlterado(
-                            valorApostaSelecionado.getValor()
-                    )
-            );
-        }
-    }
 
     public ParametroValorApostaDTO getParametroValorApostaSelecionado() {
         return valorApostaSelecionado;
