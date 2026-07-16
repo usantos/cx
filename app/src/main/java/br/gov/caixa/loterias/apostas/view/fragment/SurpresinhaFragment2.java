@@ -47,7 +47,7 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
+public class SurpresinhaFragment2 extends Fragment {
 
     private static final int QUANTIDADE_MINIMA_SURPRESINHAS = 1;
 
@@ -161,7 +161,6 @@ public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
         configuraListaDezenas();
         atualizaDezenaAdapter();
         configuraBotoes();
-        configurarListenerAdicionarCarrinho();
 
         if (isLotomania()) {
             layoutEspelhoSurpresinha.setVisibility(View.VISIBLE);
@@ -297,19 +296,7 @@ public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
                 getCor(corFonteFundoBranco)
         );
     }
-    private void configurarListenerAdicionarCarrinho() {
 
-        if (parentActivity == null) {
-            return;
-        }
-
-        Button botaoAdicionar =
-                parentActivity.getBotaoAdicionar();
-
-        if (botaoAdicionar != null) {
-            botaoAdicionar.setOnClickListener(this);
-        }
-    }
     private void atualizaBotoesQtdSurpresinha() {
         if (qtdSurpresinhas == QUANTIDADE_MINIMA_SURPRESINHAS){
             btnMenosSurpresinha.setBackgroundTintList(getCor(R.color.cinzaescuro));
@@ -429,18 +416,6 @@ public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
 
     private boolean isLotomania() {
         return tipoJogo == ModalidadeEnum.LOTOMANIA;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnAdicionarCarrinho: {
-                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
-                    adicionarSurpresinhaNoCarrinho();
-                //}
-            }
-            break;
-        }
     }
 
     public void setEquipeSelecionada(ParametroEquipe equipeSelecionada) {
@@ -594,5 +569,8 @@ public class SurpresinhaFragment2 extends Fragment implements OnClickListener {
         qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
         btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
         btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.milionaria_escuro_mkp));
+    }
+    public void onAdicionarRodapeClicado() {
+        adicionarSurpresinhaNoCarrinho();
     }
 }

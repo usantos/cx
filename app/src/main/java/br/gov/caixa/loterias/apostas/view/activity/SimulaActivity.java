@@ -1402,6 +1402,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
             return;
         }
+        if (isFragmentSurpresinha()
+                && surpresinhaFragment != null) {
+
+            surpresinhaFragment.onAdicionarRodapeClicado();
+            return;
+        }
 
         viewModel.onEvent(
                 new SimulaUiEvent.AdicionarCarrinhoClicado(
@@ -2152,6 +2158,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         return fragmentManager.findFragmentById(
                 R.id.fragmentSimularApostas
         ) instanceof TrevosFragment2;
+    }
+
+    private boolean isFragmentSurpresinha() {
+        return fragmentManager.findFragmentById(
+                R.id.fragmentSimularApostas
+        ) instanceof SurpresinhaFragment2;
     }
 
     private void atualizarValorApostaPorTeimosinha() {
