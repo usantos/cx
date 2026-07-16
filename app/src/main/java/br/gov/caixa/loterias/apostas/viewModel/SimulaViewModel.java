@@ -492,7 +492,6 @@ public class SimulaViewModel extends AndroidViewModel {
     private void handleQuantidadeTrevosAlterada(
             SimulaUiEvent.QuantidadeTrevosAlterada event
     ) {
-
         if (event == null || event.getValorSelecionado() == null) {
             return;
         }
@@ -518,36 +517,17 @@ public class SimulaViewModel extends AndroidViewModel {
 
         uiState.setValue(
                 atual.toBuilder()
-                        .setEtapaAposta(
-                                EtapaAposta.TREVOS
-                        )
-                        .setBotaoNextStepHabilitado(
-                                false
-                        )
-                        .setBotaoAdicionarHabilitado(
-                                false
-                        )
-                        .setBotaoCompletarHabilitado(
-                                true
-                        )
-                        .setBotaoLimparHabilitado(
-                                false
-                        )
-                        .setMostrarBotaoLimparAposta(
-                                false
-                        )
-                        .setMostrarSalvarAposta(
-                                false
-                        )
-                        .setApostaFavoritada(
-                                false
-                        )
-                        .setValorAposta(
-                                valorAposta
-                        )
-                        .setValorGrande(
-                                isValorGrande(valorAposta)
-                        )
+                        .setEtapaAposta(EtapaAposta.TREVOS)
+                        .setBotaoNextStepHabilitado(false)
+                        .setBotaoAdicionarHabilitado(false)
+                        .setBotaoCompletarHabilitado(true)
+                        .setBotaoCompletarVisivel(true)
+                        .setBotaoLimparHabilitado(false)
+                        .setMostrarBotaoLimparAposta(false)
+                        .setMostrarSalvarAposta(false)
+                        .setApostaFavoritada(false)
+                        .setValorAposta(valorAposta)
+                        .setValorGrande(isValorGrande(valorAposta))
                         .setTextoSelecionados(
                                 montarTextoTrevosSelecionados(
                                         0,
@@ -562,6 +542,7 @@ public class SimulaViewModel extends AndroidViewModel {
                         .build()
         );
     }
+
     private String montarTextoTrevosSelecionados(
             int quantidadeSelecionada,
             int quantidadeNecessaria
@@ -1516,18 +1497,14 @@ public class SimulaViewModel extends AndroidViewModel {
 
         ResultadoFluxoAposta fluxo =
                 resolverFluxoAposta(event);
-        Log.d(
-                "HANDLE_CARTELA",
-                "etapa antes="
-                        + getCurrentState().getEtapaAposta()
-        );
+
         ModalidadeEnum tipoJogo =
                 event.getTipoJogo();
 
         EtapaAposta etapa =
-                fluxo.etapa != null
-                        ? fluxo.etapa
-                        : EtapaAposta.NUMEROS;
+                atual.getEtapaAposta() != null
+                        ? atual.getEtapaAposta()
+                        : fluxo.etapa;
 
         boolean possuiEtapaComplementar =
                 possuiEtapaComplementar(tipoJogo);
@@ -1676,11 +1653,6 @@ public class SimulaViewModel extends AndroidViewModel {
                 montarTextoQuantidadeNumeros(
                         qtdDezenasPossiveis
                 );
-        Log.d(
-                "HANDLE_CARTELA",
-                "etapa enviada="
-                        + etapa
-        );
 
         uiState.setValue(
                 atual.toBuilder()

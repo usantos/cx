@@ -210,6 +210,7 @@ public class SimulaUiState {
                         : "";
 
         this.especial = builder.especial;
+        this.etapaAposta = builder.etapaAposta;
 
         this.labelsTeimosinhas = builder.labelsTeimosinhas != null
                 ? new ArrayList<>(builder.labelsTeimosinhas)

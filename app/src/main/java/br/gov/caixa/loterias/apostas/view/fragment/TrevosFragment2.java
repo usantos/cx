@@ -143,7 +143,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
         textoBotaoTrevosSelecionado = parametro.getTrevos().getQtdMinima() + getString(R.string.espaco_em_branco) + getString(R.string.trevos);
 
-        configIncialButtons();
+        configButtons();
 
         valoresApostas = parametro.getValoresTrevoByNumero(dezenasSelecionadas.size());
         valorApostaSelecionado = valoresApostas.get(0);
@@ -192,10 +192,10 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         return dezenaList;
     }
 
-    private void configIncialButtons() {
-        listener.getButtonQtdTrevos().setOnClickListener(onQtdTrevosClickListener());
-        listener.getButtonFinalizar().setOnClickListener(onFinalizarClickListener());
-        listener.getButtonLimpar().setOnClickListener(onLimparClickListener());
+    private void configButtons() {
+        listener.getButtonQtdTrevos().setOnClickListener(
+                onQtdTrevosClickListener()
+        );
     }
 
     private View.OnClickListener onSalverApostaClickListener() {
@@ -240,6 +240,61 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
             }
         });
+    }
+
+    public void onAdicionarRodapeClicado() {
+        if (!isApostaTrevosCompleta()) {
+            return;
+        }
+
+        addApostaCarrinho();
+
+        if (viewModel != null) {
+            viewModel.onEvent(
+                    new SimulaUiEvent.CarregarCarrinho()
+            );
+        }
+    }
+
+    public void onCompletarRodapeClicado() {
+        completarTrevosAleatoriamente();
+    }
+
+    public void onLimparRodapeClicado() {
+        limparTrevosSelecionados();
+    }
+
+    private boolean isApostaTrevosCompleta() {
+        if (valorApostaSelecionado == null
+                || valorApostaSelecionado.getNumeroTrevos() == null) {
+            return false;
+        }
+
+        return trevoSelecionadoList != null
+                && trevoSelecionadoList.size()
+                >= valorApostaSelecionado.getNumeroTrevos();
+    }
+
+    private void limparTrevosSelecionados() {
+        if (trevoSelecionadoList != null) {
+            trevoSelecionadoList.clear();
+        }
+
+        if (adapter != null) {
+            adapter.atualizaSelecionados(
+                    trevoSelecionadoList
+            );
+        }
+
+        if (viewModel != null && valorApostaSelecionado != null) {
+            viewModel.onEvent(
+                    new SimulaUiEvent.TrevosAlterados(
+                            0,
+                            valorApostaSelecionado.getNumeroTrevos(),
+                            valorApostaSelecionado
+                    )
+            );
+        }
     }
 
     private void salvarAposta(ApostaFavoritaDTO aposta) {

@@ -7,11 +7,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +43,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -60,9 +57,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.ComandoCompletarAposta;
-import br.gov.caixa.loterias.apostas.state.EtapaAposta;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
@@ -93,7 +88,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class SimulaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
+public class SimulaFragment extends Fragment implements LocateAdapterListener, LotogolListener {
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
     private SensorManager mSensorManager;
     private BigDecimal valorEmReais = BigDecimal.ZERO;
@@ -648,78 +643,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
         limparPartidadasSelecionasLoteca(Boolean.FALSE);
         limparOpcaoOutrosNumerosLayout();
         atualizarValorENotificarEstadoCartela();
-    }
-
-    // METODO DO PROTOCOLO ONCLICK
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-            case R.id.btnCompletar: {
-                solicitarCompletarAposta();
-            }
-            break;
-
-            case R.id.btnNextStep:
-
-                viewModel.onEvent(
-                        new SimulaUiEvent.NextStepClicado(
-                                parametroJogo.getConcurso()
-                                        .getModalidade()
-                        )
-                );
-
-                break;
-
-            case R.id.btnAdicionarCarrinho: {
-                solicitarAdicionarCarrinhoPorBotao();
-            }
-            break;
-
-            case R.id.btnLimpar: {
-                viewModel.onEvent(
-                        new SimulaUiEvent.LimparApostaSolicitado()
-                );
-            }
-            break;
-
-            case R.id.favoritar_aposta: {
-                if (!DadosUsuarioBO.checarUsuarioLogado(parentActivity)) {
-                    AlertDialogExperimenteLogarSingleton.show(getActivity(), false, null);
-                }
-                else {
-                    viewModel.onEvent(
-                            new SimulaUiEvent.FavoritarApostaClicado()
-                    );
-                }
-            }
-            break;
-
-            case R.id.btnSalvarAposta: {
-                EditText nomeAposta = parentActivity.getEditNomeAposta();
-
-                if (!TextUtils.isEmpty(nomeAposta.getText().toString())) {
-                    ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
-                    if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA) && equipeSelecionada != null) {
-                        aposta.setTimeDoCoracao(equipeSelecionada);
-                    }
-
-                    if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
-                        aposta.setParametroTrevo(new ParametroTrevo());
-                    }
-
-                    if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-                        parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
-                    } else {
-                        parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
-
-                    }
-                } else {
-                    DialogUtils.dialogEntendi(getContext(), getString(R.string.msg_favor_inserir_nome_aposta));
-                }
-            }
-
-        }
     }
 
     @Override
@@ -1538,7 +1461,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
 
     private void configuraBotoesLotecaOuLotogol() {
         botaoCompletar = parentActivity.getBotaoCompletar();
-        botaoCompletar.setOnClickListener(this);
         botaoCompletar.setVisibility(View.INVISIBLE);
         String textoBotao;
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
