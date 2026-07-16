@@ -149,6 +149,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 				icTrevoBolao.setVisibility(View.GONE);
 				headerEspeciais.setVisibility(View.VISIBLE);
 				headerEspeciais.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getImagemEspecialCarrossel()));
+				if (isLotecaPais) {
+					headerEspeciais.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cabecalho_loteca_pais_carrossel));
+				}
 			} else {
 				cabecalhoFiltrado.setBackgroundColor(corClara);
 				trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
@@ -194,7 +197,8 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 				//modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 				if (bolao.getModalidade() == ModalidadeEnum.LOTECA) {
 					if (isLotecaPais) {
-						modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, ""));
+						//modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, ""));
+						modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, ""));
 					} else {
 						modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
 					//TextViewUtils.mudarTamanhoPorPorcentagem(modalidade, -20f);
