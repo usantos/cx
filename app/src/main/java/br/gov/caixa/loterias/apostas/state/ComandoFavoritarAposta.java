@@ -20,7 +20,7 @@ public abstract class ComandoFavoritarAposta {
             this.mensagem = mensagem;
         }
 
-        public ApostaFavoritaDTO getAposta() {
+        public ApostaFavoritaDTO getApostaFavorita() {
             return aposta;
         }
 

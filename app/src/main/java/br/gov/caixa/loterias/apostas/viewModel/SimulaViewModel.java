@@ -338,7 +338,6 @@ public class SimulaViewModel extends AndroidViewModel {
     private void handleMesSorteAlterado(
             SimulaUiEvent.MesSorteAlterado event
     ) {
-
         if (event == null) {
             return;
         }
@@ -351,32 +350,21 @@ public class SimulaViewModel extends AndroidViewModel {
 
         uiState.setValue(
                 atual.toBuilder()
-                        .setEtapaAposta(
-                                EtapaAposta.MES_SORTE
-                        )
+                        .setEtapaAposta(EtapaAposta.MES_SORTE)
                         .setBotaoNextStepHabilitado(false)
-                        .setBotaoAdicionarHabilitado(
-                                mesSelecionado
-                        )
-                        .setBotaoCompletarHabilitado(
-                                !mesSelecionado
-                        )
-                        .setBotaoLimparHabilitado(
-                                mesSelecionado
-                        )
-                        .setMostrarBotaoLimparAposta(
-                                mesSelecionado
-                        )
-                        .setMostrarSalvarAposta(
-                                mesSelecionado
-                        )
+                        .setBotaoAdicionarHabilitado(mesSelecionado)
+                        .setBotaoCompletarHabilitado(!mesSelecionado)
+                        .setBotaoCompletarVisivel(!mesSelecionado)
+                        .setBotaoLimparHabilitado(mesSelecionado)
+                        .setMostrarBotaoLimparAposta(mesSelecionado)
+                        .setMostrarSalvarAposta(mesSelecionado)
                         .setApostaFavoritada(
-                                mesSelecionado
-                                        && atual.isApostaFavoritada()
+                                mesSelecionado && atual.isApostaFavoritada()
                         )
                         .build()
         );
     }
+
     private void handleNextStepClicado(
             SimulaUiEvent.NextStepClicado event
     ) {
@@ -419,9 +407,19 @@ public class SimulaViewModel extends AndroidViewModel {
             EtapaAposta etapa,
             ComandoCompletarAposta comando
     ) {
-
         SimulaUiState atual =
                 getCurrentState();
+
+        String textoSelecionados =
+                atual.getTextoSelecionados();
+
+        if (etapa == EtapaAposta.TREVOS) {
+            textoSelecionados = "Selecione os trevos:";
+        } else if (etapa == EtapaAposta.MES_SORTE) {
+            textoSelecionados = "Selecione o mês da sorte:";
+        } else if (etapa == EtapaAposta.TIME_CORACAO) {
+            textoSelecionados = "Selecione o time do coração:";
+        }
 
         uiState.setValue(
                 atual.toBuilder()
@@ -429,10 +427,12 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setBotaoNextStepHabilitado(false)
                         .setBotaoAdicionarHabilitado(false)
                         .setBotaoCompletarHabilitado(true)
+                        .setBotaoCompletarVisivel(true)
                         .setBotaoLimparHabilitado(false)
                         .setMostrarBotaoLimparAposta(false)
                         .setMostrarSalvarAposta(false)
                         .setApostaFavoritada(false)
+                        .setTextoSelecionados(textoSelecionados)
                         .setComandoCompletarAposta(comando)
                         .build()
         );
@@ -440,7 +440,6 @@ public class SimulaViewModel extends AndroidViewModel {
     private void handleTrevosAlterados(
             SimulaUiEvent.TrevosAlterados event
     ) {
-
         if (event == null || event.getValorAposta() == null) {
             return;
         }
@@ -467,37 +466,19 @@ public class SimulaViewModel extends AndroidViewModel {
 
         uiState.setValue(
                 atual.toBuilder()
-                        .setEtapaAposta(
-                                EtapaAposta.TREVOS
-                        )
-                        .setBotaoNextStepHabilitado(
-                                false
-                        )
-                        .setBotaoAdicionarHabilitado(
-                                apostaCompleta
-                        )
-                        .setBotaoCompletarHabilitado(
-                                !apostaCompleta
-                        )
-                        .setBotaoLimparHabilitado(
-                                possuiTrevosSelecionados
-                        )
-                        .setMostrarBotaoLimparAposta(
-                                possuiTrevosSelecionados
-                        )
-                        .setMostrarSalvarAposta(
-                                apostaCompleta
-                        )
+                        .setEtapaAposta(EtapaAposta.TREVOS)
+                        .setBotaoNextStepHabilitado(false)
+                        .setBotaoAdicionarHabilitado(apostaCompleta)
+                        .setBotaoCompletarHabilitado(!apostaCompleta)
+                        .setBotaoCompletarVisivel(!apostaCompleta)
+                        .setBotaoLimparHabilitado(possuiTrevosSelecionados)
+                        .setMostrarBotaoLimparAposta(possuiTrevosSelecionados)
+                        .setMostrarSalvarAposta(apostaCompleta)
                         .setApostaFavoritada(
-                                apostaCompleta
-                                        && atual.isApostaFavoritada()
+                                apostaCompleta && atual.isApostaFavoritada()
                         )
-                        .setValorAposta(
-                                valorAposta
-                        )
-                        .setValorGrande(
-                                isValorGrande(valorAposta)
-                        )
+                        .setValorAposta(valorAposta)
+                        .setValorGrande(isValorGrande(valorAposta))
                         .setTextoSelecionados(
                                 montarTextoTrevosSelecionados(
                                         quantidadeSelecionada,
@@ -1679,11 +1660,17 @@ public class SimulaViewModel extends AndroidViewModel {
         int qtdDezenasPossiveis =
                 event.getQtdDezenasPossiveisSelecionado();
 
-        String textoSelecionados =
-                montarTextoSelecionados(
-                        event.getQtdDezenasSelecionadas(),
-                        qtdDezenasPossiveis
-                );
+        String textoSelecionados;
+
+        if (preservarEstadoComplementar) {
+            textoSelecionados = atual.getTextoSelecionados();
+        } else {
+            textoSelecionados =
+                    montarTextoSelecionados(
+                            event.getQtdDezenasSelecionadas(),
+                            qtdDezenasPossiveis
+                    );
+        }
 
         String textoBotaoQuantidadeNumeros =
                 montarTextoQuantidadeNumeros(
@@ -2831,6 +2818,7 @@ public class SimulaViewModel extends AndroidViewModel {
     private ResultadoFluxoAposta resolverFluxoAposta(
             SimulaUiEvent.CartelaAlterada event
     ) {
+        SimulaUiState atual = getCurrentState();
 
         ModalidadeEnum tipoJogo =
                 event.getTipoJogo();
@@ -2897,12 +2885,8 @@ public class SimulaViewModel extends AndroidViewModel {
         }
 
         if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-
             boolean estaNaEtapaTrevos =
                     etapaAtual == EtapaAposta.TREVOS;
-
-            boolean trevosCompletos =
-                    event.isEtapaComplementarCompleta();
 
             return new ResultadoFluxoAposta(
                     estaNaEtapaTrevos
@@ -2910,8 +2894,8 @@ public class SimulaViewModel extends AndroidViewModel {
                             : EtapaAposta.NUMEROS,
                     numerosCompletos,
                     estaNaEtapaTrevos,
-                    trevosCompletos,
-                    numerosCompletos && trevosCompletos,
+                    atual.isBotaoAdicionarHabilitado(),
+                    numerosCompletos && atual.isBotaoAdicionarHabilitado(),
                     true
             );
         }

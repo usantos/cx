@@ -269,7 +269,7 @@ public abstract class SimulaUiEvent {
         private final boolean telaSelecaoTimeAtivado;
         private final boolean equipeSelecionadaValida;
         private final boolean escolhaTimeCoracaoSurpresinha;
-        private boolean etapaComplementarCompleta;
+        private boolean etapaComplementarCompleta = false;
 
         public CartelaAlterada(
                 ModalidadeEnum tipoJogo,

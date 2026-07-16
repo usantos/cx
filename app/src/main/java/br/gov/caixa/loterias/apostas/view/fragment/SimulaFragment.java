@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -72,7 +71,6 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
-import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
@@ -90,7 +88,6 @@ import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
@@ -108,7 +105,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
 
     private List<Dezena> dezenas = new ArrayList<>();
     private List<Integer> dezenasSelecionadas = new ArrayList<>();
-    private List<Integer> dezenasApostaEspelho = new ArrayList<>();
     private List<List<Integer>> matrizSelecionada;
     private List<ParametroEquipe> listaEquipefiltro;
     private HashSet<ParametroPartida> partidasSelecionadas;
@@ -149,11 +145,9 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
     private SimularApostaModel model;
     private CartelaModel cartelaModel;
     private MaterialButton botaoFavoritar;
-    private boolean mudouTamanhoValor = false;
     private SimulaViewModel viewModel;
 
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
-    private TextView textSelecionados;
 
     public SimulaFragment() {
         // Required empty public constructor
@@ -389,7 +383,7 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
             svSuperSete.setVisibility(View.VISIBLE);
         }
 
-        configuraBotoes(view);
+        notificarEstadoCartelaAlterado();
         // Chama a tela de escolha de time
         if (isEscolhaTimeCoracaoSurpresinha) {
             mostrarCartelaEscolhaTimeCoracao();
@@ -408,6 +402,19 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
             inicializarValorApostaMinima();
             notificarEstadoCartelaAlterado();
         }
+    }
+    public void onCompletarRodapeClicado() {
+        solicitarCompletarAposta();
+    }
+
+    public void onAdicionarRodapeClicado() {
+        solicitarAdicionarCarrinhoPorBotao();
+    }
+
+    public void onSalvarFavoritoRodapeConfirmado(
+            String nome
+    ) {
+        solicitarSalvarApostaFavorita(nome);
     }
     private void inicializarValorApostaMinima() {
 
@@ -550,7 +557,7 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
             return ApostaUtils.getApostaSuperSete(
                     parametroJogo,
                     dezenasSelecionadas,
-                    getValorTotalApostaAtual(),
+                    parentActivity.getValorTotalApostaAtual(),
                     parentActivity.qtdConcursoSelecionado,
                     ListaUtils.pegaListaSuperSete(
                             listaAdaptersSuperSete
@@ -584,7 +591,7 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
     private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
 
         BigDecimal valorAtual =
-                getValorTotalApostaAtual();
+                parentActivity.getValorTotalApostaAtual();
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
 
@@ -907,15 +914,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
             return false;
         }
 
-        SimulaUiState state =
-                viewModel != null
-                        ? viewModel.getUiState().getValue()
-                        : null;
-
-        if (state == null) {
-            return false;
-        }
-
         if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
             return equipeSelecionada != null
                     && equipeSelecionada.isSelecionado();
@@ -924,11 +922,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
         if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
             return parentActivity != null
                     && parentActivity.getMesDeSorteCartela() != null;
-        }
-
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
-            return state.getEtapaAposta() == EtapaAposta.TREVOS
-                    && state.isBotaoAdicionarHabilitado();
         }
 
         return false;
@@ -949,52 +942,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
         } catch (Exception e) {
             return 0;
         }
-    }
-
-    private void renderValorAposta(
-            SimulaUiState state
-    ) {
-
-        if (valorAposta == null) {
-            return;
-        }
-
-        BigDecimal valor =
-                state.getValorAposta() != null
-                        ? state.getValorAposta()
-                        : BigDecimal.ZERO;
-
-        if (state.isValorGrande()) {
-
-            if (!mudouTamanhoValor) {
-                TextViewUtils.mudarTamanhoPorPorcentagem(
-                        valorAposta,
-                        -30
-                );
-
-                mudouTamanhoValor = true;
-            }
-
-        } else {
-
-            if (mudouTamanhoValor) {
-                TextViewUtils.mudarTamanhoPorPorcentagem(
-                        valorAposta,
-                        30
-                );
-
-                mudouTamanhoValor = false;
-            }
-        }
-
-        ViewUtils.setMoedaFormatHtml(
-                valor,
-                valorAposta
-        );
-
-        valorAposta.setTextAlignment(
-                View.TEXT_ALIGNMENT_CENTER
-        );
     }
 
     private boolean possuiPlacarLotogol() {
@@ -1037,103 +984,8 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
             return;
         }
 
-        renderValorAposta(state);
-        renderTextoSelecionados(state);
         renderLimpezaAposta(state);
         renderCompletarAposta(state);
-        renderDialogFavoritarAposta(state);
-        renderFavorito(state);
-    }
-    private void renderFavorito(
-            SimulaUiState state
-    ) {
-
-        if (state.isApostaFavoritada()) {
-
-            botaoFavoritar.setIconResource(
-                    R.drawable.ic_favoritado_simula
-            );
-
-            botaoFavoritar.setText(
-                    "Aposta favoritada"
-            );
-
-        } else {
-
-            botaoFavoritar.setIconResource(
-                    R.drawable.ic_star_simula
-            );
-
-            botaoFavoritar.setText(
-                    "Favoritar aposta"
-            );
-        }
-    }
-
-    private void renderDialogFavoritarAposta(
-            SimulaUiState state
-    ) {
-
-        if (!state.isExibirDialogFavoritarAposta()) {
-            return;
-        }
-
-        Dialog dialog =
-                DialogUtils.buildDialogFavoritar(
-                        requireContext(),
-                        getString(R.string.favoritar_aposta),
-                        getString(R.string.exemplo_aposta),
-                        new OnDialogFavoritarListener() {
-
-                            @Override
-                            public void Confirmar(
-                                    String nome,
-                                    boolean manterSurpresinhas
-                            ) {
-
-                                if (TextUtils.isEmpty(nome)) {
-
-                                    DialogUtils.dialogEntendi(
-                                            getContext(),
-                                            getString(
-                                                    R.string.msg_favor_inserir_nome_aposta
-                                            )
-                                    );
-
-                                    return;
-                                }
-
-                                solicitarSalvarApostaFavorita(
-                                        nome
-                                );
-                            }
-
-                            @Override
-                            public void Cancelar() {
-                            }
-                        },
-                        false
-                );
-
-        if (dialog != null) {
-            dialog.show();
-        }
-
-        viewModel.onEvent(
-                new SimulaUiEvent.DialogFavoritarApostaConsumido()
-        );
-    }
-    private void renderTextoSelecionados(
-            SimulaUiState state
-    ) {
-
-        if (textSelecionados == null) {
-            return;
-        }
-
-        textSelecionados.setText(
-                state.getTextoSelecionados()
-        );
     }
 
     private void renderCompletarAposta(
@@ -1490,21 +1342,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
         );
     }
 
-    private BigDecimal getValorTotalApostaAtual() {
-
-        if (viewModel == null
-                || viewModel.getUiState() == null
-                || viewModel.getUiState().getValue() == null
-                || viewModel.getUiState().getValue().getValorAposta() == null) {
-
-            return BigDecimal.ZERO;
-        }
-
-        return viewModel
-                .getUiState()
-                .getValue()
-                .getValorAposta();
-    }
 
 
     private void selecionarTimeAleatorio() {
@@ -1754,51 +1591,6 @@ public class SimulaFragment extends Fragment implements OnClickListener, LocateA
         notificarEstadoCartelaAlterado(
                 parentActivity.qtdDezenasPossiveisSelecionado
         );
-    }
-
-    private int obterQtdParaCalculoValor() {
-
-        if (parametroJogo == null || parentActivity == null) {
-            return 0;
-        }
-
-        if (parentActivity.qtdDezenasPossiveisSelecionado > 0) {
-            return parentActivity.qtdDezenasPossiveisSelecionado;
-        }
-
-        return getQuantidadeMinimaSafe();
-    }
-
-    private void configuraBotoes(
-            View fragmentView
-    ) {
-        valorAposta =
-                parentActivity.getValorApostaCartela();
-
-        botaoCompletar =
-                parentActivity.getBotaoCompletar();
-
-        botaoCompletar.setOnClickListener(this);
-
-        botaoFavoritar = parentActivity.getBotaoFavoritar();
-        botaoFavoritar.setOnClickListener(this);
-
-        botaoAdicionar =
-                parentActivity.getBotaoAdicionar();
-
-        textSelecionados = parentActivity.getTextSelecionados();
-
-        botaoAdicionar.setOnClickListener(this);
-
-        botaoLimparAposta =
-                parentActivity.getBotaoLimparAposta();
-
-        botaoLimparAposta.setOnClickListener(this);
-
-        botaoNextStep = parentActivity.getBotaoNextStep();
-        botaoNextStep.setOnClickListener(this);
-
-        notificarEstadoCartelaAlterado();
     }
 
     private void limpaNumerosSuperSete() {
