@@ -503,7 +503,6 @@ public class SurpresinhaFragment2 extends Fragment {
         }
         atualizarButtonColor();
         parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
-        parentActivity.atualizaTextoBotoesQtdSelecionadas();
         if 	((getQtdNumeros > (6)) && (!isAvisouN))
         {
            DialogUtils.dialogEntendi(
@@ -524,7 +523,6 @@ public class SurpresinhaFragment2 extends Fragment {
         }
         atualizarButtonColor();
         parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
-        parentActivity.atualizaTextoBotoesQtdSelecionadas();
     }
 
     protected void atualizarButtonColor() {

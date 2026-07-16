@@ -1,9 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
-
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
@@ -13,7 +10,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -32,23 +28,19 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
-import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.TrevoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
@@ -57,7 +49,6 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecycl
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener2;
@@ -198,50 +189,6 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         );
     }
 
-    private View.OnClickListener onSalverApostaClickListener() {
-        return v -> {
-            if (!listener.nomeApostaFavorita().isEmpty()) {
-
-                validarApostaFav(getApostaFavoritaDTO());
-
-            } else {
-                DialogUtils.dialogEntendi(
-                        getActivity(),
-                        getString(R.string.msg_favor_inserir_nome_aposta)
-                );
-            }
-        };
-    }
-
-    private void validarApostaFav(ApostaFavoritaDTO apostaFavorita) {
-        ServicoFactoryUtil.getDadosCorporativoService().validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
-            @Override
-            public void onResponse(NetworkResponse response) {
-                salvarAposta(apostaFavorita);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                if (isErroNegocial(error)) {
-                    DialogUtils.dialogSim(
-                            getActivity(),
-                            MensagensNetwork.getErrorMessage(error),
-                            new OnDialogBotaoListener() {
-                                @Override
-                                public void onButtonClick(DialogInterface dialog, int which) {
-                                    salvarAposta(apostaFavorita);
-                                }
-                            }
-                    );
-                } else {
-                    RedirectNetwork.checkRedirect(error, getActivity());
-                }
-
-            }
-        });
-    }
-
     public void onAdicionarRodapeClicado() {
         if (!isApostaTrevosCompleta()) {
             return;
@@ -318,76 +265,6 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
             }
         });
-    }
-
-    private ApostaFavoritaDTO getApostaFavoritaDTO() {
-        ApostaFavoritaDTO apostaFavorita = new ApostaFavoritaDTO();
-
-        DTOEnumInteger modalidade = new DTOEnumInteger();
-        modalidade.setDescricao(parametro.getConcurso().getModalidadeDetalhada().getDescricao());
-        modalidade.setValor(parametro.getConcurso().getModalidadeDetalhada().getValor());
-        apostaFavorita.setModalidade(modalidade);
-
-        String nomeAposta = listener.nomeApostaFavorita();
-
-        if (nomeAposta != null) {
-            if (nomeAposta.length() > 25) {
-                apostaFavorita.setNome(nomeAposta.substring(0, 25));
-            } else {
-                apostaFavorita.setNome(nomeAposta);
-            }
-        } else {
-            apostaFavorita.setNome("");
-        }
-        if (dezenasSelecionadas == null || dezenasSelecionadas.isEmpty()) {
-            dezenasSelecionadas = new ArrayList<>();
-            for (Dezena d : dezenaList) {
-                dezenasSelecionadas.add(Integer.valueOf(d.getValue()));
-            }
-            apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
-        } else {
-            apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
-        }
-
-
-        apostaFavorita.setId(Constantes.ZERO_LONG);
-
-        apostaFavorita.setParametroTrevo(new ParametroTrevo());
-        apostaFavorita.getParametroTrevo().setTrevosSelecionados(trevoSelecionadoList);
-
-
-        return apostaFavorita;
-
-    }
-
-    private View.OnClickListener onLimparClickListener() {
-        return v -> {
-            trevoSelecionadoList.clear();
-
-            adapter.atualizaSelecionados(
-                    trevoSelecionadoList
-            );
-
-            viewModel.onEvent(
-                    new SimulaUiEvent.TrevosAlterados(
-                            0,
-                            valorApostaSelecionado.getNumeroTrevos(),
-                            valorApostaSelecionado
-                    )
-            );
-
-            adapter.atualizaSelecionados(trevoSelecionadoList);
-        };
-    }
-
-    private View.OnClickListener onFinalizarClickListener() {
-        return v -> {
-            if (listener.getButtonFinalizar().getText().toString().contains("Completar")) {
-                completarTrevosAleatoriamente();
-            } else {
-                addApostaCarrinho();
-            }
-        };
     }
 
     private void addApostaCarrinho() {

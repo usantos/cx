@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
 import static java.lang.String.format;
-import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -18,24 +17,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatCheckBox;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -57,9 +50,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
@@ -113,15 +104,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     //TODO: MEGA 30 ANOS//
     private int numero_concurso;
     private ConstraintLayout toolBarLoteca;
-    private Button qtdNumerosButton, botaoLimparAposta, botaoCompletar, botaoAdicionar, botaoNextStep;
-    private AppCompatImageView simularTelaAposta, surpresinhaTela;
-    private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
-            labelValueTriplasLoteca, textoSalveEstaAposta;
-    private LinearLayout toolBarSimularAposta;
-    private RelativeLayout salvarApostaLayout;
-    private ImageButton btnSalvarAposta;
-    private EditText editNomeAposta;
-    private ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton, imageQtdConcursosButton;
+    private Button botaoLimparAposta, botaoCompletar, botaoAdicionar, botaoNextStep;
+    private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca;
     private FrameLayout paginacaoView;
 
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
@@ -146,15 +130,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private ParametroMesDeSorte mesDeSorteSurpresinha;
     private Boolean isEspecial = false;
     private DadosCorporativosSilceBO dadosCorporativosSilceBO;
-    private boolean isAvisou = false;
 
     //mocks
     public int qtdDezenasPossiveisSelecionado;
     public int qtdConcursoSelecionado;
-    private int posicaoDialogTeimosinhas;
     private Boolean flagApostaSalva = false;
 
-    private Boolean isSurpresinha = false;
     //TODO: MEGA 30 ANOS//
     private boolean isMega30;
     public EstiloModalidadeMKP estilo;
@@ -208,13 +189,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             startActivity(new Intent(this, TutorialSuperSeteActivity.class));
         }
 
-        viewModel.onEvent(
-                new SimulaUiEvent.TelaInicializada(
-                        tipoJogo,
-                        isEspecial,
-                        parametroSimulacao
-                )
-        );
+        viewModel.onEvent(new SimulaUiEvent.TelaInicializada(tipoJogo, isEspecial, parametroSimulacao));
 
         viewModel.onEvent(new SimulaUiEvent.CarregarCarrinho());
     }
@@ -234,11 +209,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             lottieManager.pause();
         }
     }
+
     private void setViews() {
         this.toolBarLoteca = findViewById(R.id.toolBarLoteca);
-        this.simularTelaAposta = findViewById(R.id.simularTelaAposta);
-        this.surpresinhaTela = findViewById(R.id.surpresinhaTela);
-        this.qtdNumerosButton = findViewById(R.id.qtdNumerosButton);
         this.botaoLimparAposta = findViewById(R.id.btnLimpar);
         this.botaoCompletar = findViewById(R.id.btnCompletar);
         this.botaoAdicionar = findViewById(R.id.btnAdicionarCarrinho);
@@ -246,13 +219,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
         this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
         this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
-        this.textoSalveEstaAposta = findViewById(R.id.textoSalveEstaAposta);
-        this.toolBarSimularAposta = findViewById(R.id.toolBarSimularAposta);
-        this.btnSalvarAposta = findViewById(R.id.btnSalvarAposta);
-        this.editNomeAposta = findViewById(R.id.editNomeAposta);
-        this.iconStarSalvar = findViewById(R.id.iconStarSalvar);
-        this.imageQtdNumerosButton = findViewById(R.id.imageQtdNumerosButton);
-        this.imageQtdConcursosButton = findViewById(R.id.imageQtdConcursosButton);
         this.paginacaoView = findViewById(R.id.paginacaoView);
         this.tvValorAposta = findViewById(R.id.tvValorAposta);
         this.tvValorCarrinho = findViewById(R.id.tvTotalCarrinho);
@@ -261,36 +227,26 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.btnTeimosinha = findViewById(R.id.btnTeimosinha);
         this.textSelecionados = findViewById(R.id.textSelecionados);
         this.frameCarrinho = findViewById(R.id.frameCarrinho);
-        this.tvQuantidadeApostas =
-                findViewById(R.id.tvQuantidadeApostas);
-        this.switchSurpresinha =
-                findViewById(R.id.switchSurpresinha);
+        this.tvQuantidadeApostas = findViewById(R.id.tvQuantidadeApostas);
+        this.switchSurpresinha = findViewById(R.id.switchSurpresinha);
         this.botaoFavoritar = findViewById(R.id.favoritar_aposta);
         this.botaoNextStep = findViewById(R.id.btnNextStep);
-        this.opcaoOutrosNumerosLayout =
-                findViewById(R.id.opcaoOutrosNumerosLayout);
+        this.opcaoOutrosNumerosLayout = findViewById(R.id.opcaoOutrosNumerosLayout);
         this.selecioneOutrosNumeros = findViewById(R.id.selcioneOutrosNumeros);
 
         opcaoOutrosNumerosLayout.setVisibility(View.GONE);
     }
-    private void renderOpcaoOutrosNumeros(
-            SimulaUiState state
-    ) {
-        if (opcaoOutrosNumerosLayout == null
-                || selecioneOutrosNumeros == null) {
+
+    private void renderOpcaoOutrosNumeros(SimulaUiState state) {
+        if (opcaoOutrosNumerosLayout == null || selecioneOutrosNumeros == null) {
             return;
         }
 
-        opcaoOutrosNumerosLayout.setVisibility(
-                state.isExibirOpcaoOutrosNumeros()
-                        ? View.VISIBLE
-                        : View.GONE
-        );
+        opcaoOutrosNumerosLayout.setVisibility(state.isExibirOpcaoOutrosNumeros() ? View.VISIBLE : View.GONE);
 
-        selecioneOutrosNumeros.setChecked(
-                state.isOpcaoOutrosNumerosSelecionada()
-        );
+        selecioneOutrosNumeros.setChecked(state.isOpcaoOutrosNumerosSelecionada());
     }
+
     private void configurarSwitchSurpresinha() {
 
         if (switchSurpresinha == null || estilo == null) {
@@ -299,41 +255,15 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         switchSurpresinha.setUseMaterialThemeColors(false);
 
-        ColorStateList trackTint =
-                new ColorStateList(
-                        new int[][]{
-                                new int[]{android.R.attr.state_checked},
-                                new int[]{}
-                        },
-                        new int[]{
-                                ContextCompat.getColor(
-                                        this,
-                                        estilo.getCorClara()
-                                ),
-                                ContextCompat.getColor(
-                                        this,
-                                        R.color.cinza70
-                                )
-                        }
-                );
+        ColorStateList trackTint = new ColorStateList(new int[][]{new int[]{android.R.attr.state_checked}, new int[]{}}, new int[]{ContextCompat.getColor(this, estilo.getCorClara()), ContextCompat.getColor(this, R.color.cinza70)});
 
         switchSurpresinha.setTrackTintList(trackTint);
 
-        StateListDrawable thumb =
-                new StateListDrawable();
+        StateListDrawable thumb = new StateListDrawable();
 
-        thumb.addState(
-                new int[]{android.R.attr.state_checked},
-                criarThumbChecked()
-        );
+        thumb.addState(new int[]{android.R.attr.state_checked}, criarThumbChecked());
 
-        thumb.addState(
-                new int[]{},
-                AppCompatResources.getDrawable(
-                        this,
-                        R.drawable.surpresinha_thumb_unchecked
-                )
-        );
+        thumb.addState(new int[]{}, AppCompatResources.getDrawable(this, R.drawable.surpresinha_thumb_unchecked));
 
         switchSurpresinha.setThumbTintList(null);
         switchSurpresinha.setThumbDrawable(thumb);
@@ -343,17 +273,10 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     private void observeState() {
 
-        viewModel
-                .getUiState()
-                .observe(
-                        this,
-                        this::render
-                );
+        viewModel.getUiState().observe(this, this::render);
     }
 
-    private void renderAnimacao(
-            SimulaUiState state
-    ) {
+    private void renderAnimacao(SimulaUiState state) {
         if (!state.isExibirAnimacao()) {
             return;
         }
@@ -362,60 +285,40 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             lottieManager.destroy();
         }
 
-        lottieManager = new LottieManager(
-                this,
-                state.getAnimacaoRes()
-        );
+        lottieManager = new LottieManager(this, state.getAnimacaoRes());
 
-        lottieManager.setSpeed(
-                state.getVelocidadeAnimacao()
-        );
+        lottieManager.setSpeed(state.getVelocidadeAnimacao());
 
         lottieManager.start();
     }
-    private void renderFavorito(
-            SimulaUiState state
-    ) {
+
+    private void renderFavorito(SimulaUiState state) {
 
         if (state.isApostaFavoritada()) {
 
-            botaoFavoritar.setIconResource(
-                    R.drawable.ic_favoritado_simula
-            );
+            botaoFavoritar.setIconResource(R.drawable.ic_favoritado_simula);
 
-            botaoFavoritar.setText(
-                    "Aposta favoritada"
-            );
+            botaoFavoritar.setText("Aposta favoritada");
 
         } else {
 
-            botaoFavoritar.setIconResource(
-                    R.drawable.ic_star_simula
-            );
+            botaoFavoritar.setIconResource(R.drawable.ic_star_simula);
 
-            botaoFavoritar.setText(
-                    "Favoritar aposta"
-            );
+            botaoFavoritar.setText("Favoritar aposta");
         }
     }
 
-    private void render(
-            SimulaUiState state
-    ) {
+    private void render(SimulaUiState state) {
         renderAnimacao(state);
         barraTituloDTO = state.getBarraTituloDTO();
         if (barraTituloDTO != null) {
-            renderCabecalho(
-                    barraTituloDTO
-            );
+            renderCabecalho(barraTituloDTO);
         }
         renderParametrosAposta(state);
         renderQuantidadeNumeros(state);
         renderCarrinho(state);
 
-        renderComandoCarrinho(
-                state.getComandoCarrinho()
-        );
+        renderComandoCarrinho(state.getComandoCarrinho());
         renderDialogComoJogar(state);
         renderAbrirCarrinho(state);
         renderComandoTelaSimula(state);
@@ -428,160 +331,100 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         renderDialogFavoritarAposta(state);
         renderComandoFavoritarAposta(state);
     }
-    private void renderComandoFavoritarAposta(
-            SimulaUiState state
-    ) {
-        ComandoFavoritarAposta comando =
-                state.getComandoFavoritarAposta();
+
+    private void renderComandoFavoritarAposta(SimulaUiState state) {
+        ComandoFavoritarAposta comando = state.getComandoFavoritarAposta();
 
         if (comando == null) {
             return;
         }
 
         if (comando instanceof ComandoFavoritarAposta.Sucesso) {
-            AppCenterManager.registraEvento(
-                    getResources().getString(
-                            R.string.evento_efetuou_adicao_aposta_favorita_sucesso
-                    )
-            );
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
 
             atualizaLayoutSalvarAposta();
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ComandoFavoritarApostaConsumido()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ComandoFavoritarApostaConsumido());
             return;
         }
 
         if (comando instanceof ComandoFavoritarAposta.ConfirmarValidacaoNegocial) {
-            ComandoFavoritarAposta.ConfirmarValidacaoNegocial confirmar =
-                    (ComandoFavoritarAposta.ConfirmarValidacaoNegocial) comando;
+            ComandoFavoritarAposta.ConfirmarValidacaoNegocial confirmar = (ComandoFavoritarAposta.ConfirmarValidacaoNegocial) comando;
 
-            DialogUtils.dialogSim(
-                    this,
-                    confirmar.getMensagem(),
-                    new OnDialogBotaoListener() {
-                        @Override
-                        public void onButtonClick(
-                                DialogInterface dialog,
-                                int which
-                        ) {
-                            viewModel.onEvent(
-                                    new SimulaUiEvent.ConfirmarSalvarApostaFavorita(
-                                            confirmar.getApostaFavorita()
-                                    )
-                            );
-                        }
-                    }
-            );
+            DialogUtils.dialogSim(this, confirmar.getMensagem(), new OnDialogBotaoListener() {
+                @Override
+                public void onButtonClick(DialogInterface dialog, int which) {
+                    viewModel.onEvent(new SimulaUiEvent.ConfirmarSalvarApostaFavorita(confirmar.getApostaFavorita()));
+                }
+            });
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ComandoFavoritarApostaConsumido()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ComandoFavoritarApostaConsumido());
             return;
         }
 
         if (comando instanceof ComandoFavoritarAposta.RedirecionarErro) {
-            ComandoFavoritarAposta.RedirecionarErro erro =
-                    (ComandoFavoritarAposta.RedirecionarErro) comando;
+            ComandoFavoritarAposta.RedirecionarErro erro = (ComandoFavoritarAposta.RedirecionarErro) comando;
 
-            RedirectNetwork.checkRedirect(
-                    erro.getError(),
-                    this
-            );
+            RedirectNetwork.checkRedirect(erro.getError(), this);
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ComandoFavoritarApostaConsumido()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ComandoFavoritarApostaConsumido());
         }
     }
-    private void solicitarSalvarFavoritoDoFragmentAtual(
-            String nome
-    ) {
+
+    private void solicitarSalvarFavoritoDoFragmentAtual(String nome) {
         if (cartelaFragment != null && isFragmentCartela()) {
             cartelaFragment.onSalvarFavoritoRodapeConfirmado(nome);
             return;
         }
 
-        if (trevosFragment != null
-                && fragmentManager.findFragmentById(
-                R.id.fragmentSimularApostas
-        ) instanceof TrevosFragment2) {
+        if (trevosFragment != null && fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment2) {
             // Se o TrevosFragment2 tiver payload próprio no futuro,
             // ele deve expor método semelhante.
             return;
         }
 
-        if (fragmentManager.findFragmentById(
-                R.id.fragmentSimularApostas
-        ) instanceof MesesFragment2) {
+        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof MesesFragment2) {
             // MesesFragment2 também deve expor payload se salvar direto dessa etapa.
             return;
         }
     }
-    private void renderDialogFavoritarAposta(
-            SimulaUiState state
-    ) {
+
+    private void renderDialogFavoritarAposta(SimulaUiState state) {
         if (!state.isExibirDialogFavoritarAposta()) {
             return;
         }
 
-        Dialog dialog =
-                DialogUtils.buildDialogFavoritar(
-                        this,
-                        getString(R.string.favoritar_aposta),
-                        getString(R.string.exemplo_aposta),
-                        new OnDialogFavoritarListener() {
-                            @Override
-                            public void Confirmar(
-                                    String nome,
-                                    boolean manterSurpresinhas
-                            ) {
-                                if (TextUtils.isEmpty(nome)) {
-                                    DialogUtils.dialogEntendi(
-                                            SimulaActivity.this,
-                                            getString(
-                                                    R.string.msg_favor_inserir_nome_aposta
-                                            )
-                                    );
-                                    return;
-                                }
+        Dialog dialog = DialogUtils.buildDialogFavoritar(this, getString(R.string.favoritar_aposta), getString(R.string.exemplo_aposta), new OnDialogFavoritarListener() {
+            @Override
+            public void Confirmar(String nome, boolean manterSurpresinhas) {
+                if (TextUtils.isEmpty(nome)) {
+                    DialogUtils.dialogEntendi(SimulaActivity.this, getString(R.string.msg_favor_inserir_nome_aposta));
+                    return;
+                }
 
-                                solicitarSalvarFavoritoDoFragmentAtual(nome);
-                            }
+                solicitarSalvarFavoritoDoFragmentAtual(nome);
+            }
 
-                            @Override
-                            public void Cancelar() {
-                            }
-                        },
-                        false
-                );
+            @Override
+            public void Cancelar() {
+            }
+        }, false);
 
         if (dialog != null) {
             dialog.show();
         }
 
-        viewModel.onEvent(
-                new SimulaUiEvent.DialogFavoritarApostaConsumido()
-        );
+        viewModel.onEvent(new SimulaUiEvent.DialogFavoritarApostaConsumido());
     }
 
-    private void renderValorAposta(
-            SimulaUiState state
-    ) {
+    private void renderValorAposta(SimulaUiState state) {
 
-        BigDecimal valor =
-                state.getValorAposta() != null
-                        ? state.getValorAposta()
-                        : BigDecimal.ZERO;
+        BigDecimal valor = state.getValorAposta() != null ? state.getValorAposta() : BigDecimal.ZERO;
 
         if (state.isValorGrande()) {
 
             if (!mudouTamanhoValor) {
-                TextViewUtils.mudarTamanhoPorPorcentagem(
-                        tvValorAposta,
-                        -30
-                );
+                TextViewUtils.mudarTamanhoPorPorcentagem(tvValorAposta, -30);
 
                 mudouTamanhoValor = true;
             }
@@ -589,288 +432,155 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         } else {
 
             if (mudouTamanhoValor) {
-                TextViewUtils.mudarTamanhoPorPorcentagem(
-                        tvValorAposta,
-                        30
-                );
+                TextViewUtils.mudarTamanhoPorPorcentagem(tvValorAposta, 30);
 
                 mudouTamanhoValor = false;
             }
         }
 
-        ViewUtils.setMoedaFormatHtml(
-                valor,
-                tvValorAposta
-        );
+        ViewUtils.setMoedaFormatHtml(valor, tvValorAposta);
 
     }
-    private void renderTextoSelecionados(
-            SimulaUiState state
-    ) {
+
+    private void renderTextoSelecionados(SimulaUiState state) {
 
         if (textSelecionados == null) {
             return;
         }
 
-        textSelecionados.setText(
-                state.getTextoSelecionados()
-        );
+        textSelecionados.setText(state.getTextoSelecionados());
     }
-    private void renderEstadoBotoes(
-            SimulaUiState state
-    ) {
-        boolean modalidadeComSegundaEtapa =
-                state.getTipoJogo() == ModalidadeEnum.MAIS_MILIONARIA
-                        || state.getTipoJogo() == ModalidadeEnum.DIA_DE_SORTE
-                        || state.getTipoJogo() == ModalidadeEnum.TIMEMANIA;
 
-        EtapaAposta etapaAtual =
-                state.getEtapaAposta() != null
-                        ? state.getEtapaAposta()
-                        : EtapaAposta.NUMEROS;
+    private void renderEstadoBotoes(SimulaUiState state) {
+        boolean modalidadeComSegundaEtapa = state.getTipoJogo() == ModalidadeEnum.MAIS_MILIONARIA || state.getTipoJogo() == ModalidadeEnum.DIA_DE_SORTE || state.getTipoJogo() == ModalidadeEnum.TIMEMANIA;
 
-        boolean etapaNumeros =
-                etapaAtual == EtapaAposta.NUMEROS;
+        EtapaAposta etapaAtual = state.getEtapaAposta() != null ? state.getEtapaAposta() : EtapaAposta.NUMEROS;
 
-        boolean etapaComplementar =
-                etapaAtual == EtapaAposta.TREVOS
-                        || etapaAtual == EtapaAposta.MES_SORTE
-                        || etapaAtual == EtapaAposta.TIME_CORACAO;
+        boolean etapaNumeros = etapaAtual == EtapaAposta.NUMEROS;
 
-        boolean mostrarNextStep =
-                modalidadeComSegundaEtapa
-                        && etapaNumeros;
+        boolean etapaComplementar = etapaAtual == EtapaAposta.TREVOS || etapaAtual == EtapaAposta.MES_SORTE || etapaAtual == EtapaAposta.TIME_CORACAO;
 
-        boolean mostrarAdicionar =
-                !mostrarNextStep;
+        boolean mostrarNextStep = modalidadeComSegundaEtapa && etapaNumeros;
 
-        boolean mostrarFavoritar =
-                state.isMostrarSalvarAposta()
-                        || state.isApostaFavoritada();
+        boolean mostrarAdicionar = !mostrarNextStep;
 
-        Log.d(
-                "RENDER_ETAPA",
-                "etapa=" + state.getEtapaAposta()
-                        + " next=" + state.isBotaoNextStepHabilitado()
-                        + " add=" + state.isBotaoAdicionarHabilitado()
-        );
+        boolean mostrarFavoritar = state.isMostrarSalvarAposta() || state.isApostaFavoritada();
+
+        Log.d("RENDER_ETAPA", "etapa=" + state.getEtapaAposta() + " next=" + state.isBotaoNextStepHabilitado() + " add=" + state.isBotaoAdicionarHabilitado());
 
         if (botaoNextStep != null) {
-            botaoNextStep.setVisibility(
-                    mostrarNextStep
-                            ? View.VISIBLE
-                            : View.GONE
-            );
+            botaoNextStep.setVisibility(mostrarNextStep ? View.VISIBLE : View.GONE);
 
-            botaoNextStep.setEnabled(
-                    state.isBotaoNextStepHabilitado()
-            );
+            botaoNextStep.setEnabled(state.isBotaoNextStepHabilitado());
 
             if (botaoNextStep instanceof MaterialButton) {
-                visualModalidadeBotao(
-                        state.isBotaoNextStepHabilitado(),
-                        (MaterialButton) botaoNextStep
-                );
+                visualModalidadeBotao(state.isBotaoNextStepHabilitado(), (MaterialButton) botaoNextStep);
             }
         }
 
         if (botaoAdicionar != null) {
-            botaoAdicionar.setVisibility(
-                    mostrarAdicionar
-                            ? View.VISIBLE
-                            : View.GONE
-            );
+            botaoAdicionar.setVisibility(mostrarAdicionar ? View.VISIBLE : View.GONE);
 
-            botaoAdicionar.setEnabled(
-                    state.isBotaoAdicionarHabilitado()
-            );
+            botaoAdicionar.setEnabled(state.isBotaoAdicionarHabilitado());
 
             if (botaoAdicionar instanceof MaterialButton) {
-                visualModalidadeBotao(
-                        state.isBotaoAdicionarHabilitado(),
-                        (MaterialButton) botaoAdicionar
-                );
+                visualModalidadeBotao(state.isBotaoAdicionarHabilitado(), (MaterialButton) botaoAdicionar);
             }
         }
 
         if (botaoFavoritar != null) {
-            botaoFavoritar.setVisibility(
-                    mostrarFavoritar
-                            ? View.VISIBLE
-                            : View.GONE
-            );
+            botaoFavoritar.setVisibility(mostrarFavoritar ? View.VISIBLE : View.GONE);
         }
 
         if (botaoCompletar != null) {
-            boolean surpresinhaHabilitada =
-                    state.isSurpresinhaHabilitada();
+            boolean surpresinhaHabilitada = state.isSurpresinhaHabilitada();
 
-            boolean mostrarCompletar =
-                    state.isBotaoFinalizarVisivel()
-                            && !mostrarFavoritar
-                            && !surpresinhaHabilitada;
+            boolean mostrarCompletar = state.isBotaoFinalizarVisivel() && !mostrarFavoritar && !surpresinhaHabilitada;
 
-            botaoCompletar.setVisibility(
-                    mostrarCompletar
-                            ? View.VISIBLE
-                            : View.GONE
-            );
+            botaoCompletar.setVisibility(mostrarCompletar ? View.VISIBLE : View.GONE);
 
-            botaoCompletar.setEnabled(
-                    state.isBotaoCompletarHabilitado()
-            );
+            botaoCompletar.setEnabled(state.isBotaoCompletarHabilitado());
         }
 
         if (botaoLimparAposta != null) {
-            botaoLimparAposta.setEnabled(
-                    state.isBotaoLimparHabilitado()
-            );
+            botaoLimparAposta.setEnabled(state.isBotaoLimparHabilitado());
         }
     }
 
     private void visualModalidadeBotao(boolean habilitado, MaterialButton button) {
         if (habilitado) {
 
-            button.setBackgroundTintList(
-                    ContextCompat.getColorStateList(
-                            this,
-                            estilo.getCorClara()
-                    )
-            );
+            button.setBackgroundTintList(ContextCompat.getColorStateList(this, estilo.getCorClara()));
 
-            button.setTextColor(
-                    ContextCompat.getColor(
-                            this,
-                            estilo.getCorFonteFundoClaro()
-                    )
-            );
+            button.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
 
-            button.setStrokeColor(
-                    ContextCompat.getColorStateList(
-                            this,
-                            estilo.getCorEscura()
-                    )
-            );
+            button.setStrokeColor(ContextCompat.getColorStateList(this, estilo.getCorEscura()));
 
         } else {
 
             // volta para o visual original do XML
 
-            button.setBackgroundTintList(
-                    ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                    this,
-                                    R.color.disabled
-                            )
-                    )
-            );
+            button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.disabled)));
 
-            button.setTextColor(
-                    ContextCompat.getColorStateList(
-                            this,
-                            R.color.text_rodape
-                    )
-            );
+            button.setTextColor(ContextCompat.getColorStateList(this, R.color.text_rodape));
 
-            button.setStrokeColor(
-                    ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                    this,
-                                    R.color.cinza70
-                            )
-                    )
-            );
+            button.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.cinza70)));
         }
     }
-    private void renderSwitchSurpresinha(
-            SimulaUiState state
-    ) {
 
-        boolean surpresinhaHabilitada =
-                state.isSurpresinhaHabilitada();
+    private void renderSwitchSurpresinha(SimulaUiState state) {
+
+        boolean surpresinhaHabilitada = state.isSurpresinhaHabilitada();
 
         if (botaoCompletar != null) {
-            botaoCompletar.setVisibility(
-                    surpresinhaHabilitada
-                            ? View.GONE
-                            : View.VISIBLE
-            );
+            botaoCompletar.setVisibility(surpresinhaHabilitada ? View.GONE : View.VISIBLE);
         }
 
         if (botaoLimparAposta != null) {
-            botaoLimparAposta.setVisibility(
-                    surpresinhaHabilitada
-                            ? View.GONE
-                            : View.VISIBLE
-            );
+            botaoLimparAposta.setVisibility(surpresinhaHabilitada ? View.GONE : View.VISIBLE);
         }
 
         if (textSelecionados != null) {
-            textSelecionados.setVisibility(
-                    surpresinhaHabilitada
-                            ? View.GONE
-                            : View.VISIBLE
-            );
+            textSelecionados.setVisibility(surpresinhaHabilitada ? View.GONE : View.VISIBLE);
         }
     }
 
     private Drawable criarThumbChecked() {
 
-        LayerDrawable drawable =
-                (LayerDrawable) AppCompatResources.getDrawable(
-                        this,
-                        R.drawable.surpresinha_thumb_checked
-                ).mutate();
+        LayerDrawable drawable = (LayerDrawable) AppCompatResources.getDrawable(this, R.drawable.surpresinha_thumb_checked).mutate();
 
-        GradientDrawable circle =
-                (GradientDrawable) drawable.getDrawable(0);
+        GradientDrawable circle = (GradientDrawable) drawable.getDrawable(0);
 
-        circle.setColor(
-                ContextCompat.getColor(
-                        this,
-                        estilo.getCorEscura()
-                )
-        );
+        circle.setColor(ContextCompat.getColor(this, estilo.getCorEscura()));
 
         return drawable;
     }
 
-    private void renderComandoTelaSimula(
-            SimulaUiState state
-    ) {
+    private void renderComandoTelaSimula(SimulaUiState state) {
 
         if (state.getComandoTelaSimula() == null) {
             return;
         }
 
-        if (state.getComandoTelaSimula()
-                instanceof ComandoTelaSimula.AbrirSurpresinha) {
+        if (state.getComandoTelaSimula() instanceof ComandoTelaSimula.AbrirSurpresinha) {
 
-            ComandoTelaSimula.AbrirSurpresinha comando =
-                    (ComandoTelaSimula.AbrirSurpresinha)
-                            state.getComandoTelaSimula();
+            ComandoTelaSimula.AbrirSurpresinha comando = (ComandoTelaSimula.AbrirSurpresinha) state.getComandoTelaSimula();
 
-            executarAbrirSurpresinha(
-                    comando
-            );
+            executarAbrirSurpresinha(comando);
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ComandoTelaSimulaConsumido()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ComandoTelaSimulaConsumido());
 
             return;
         }
 
-        if (state.getComandoTelaSimula()
-                instanceof ComandoTelaSimula.VoltarCartela) {
+        if (state.getComandoTelaSimula() instanceof ComandoTelaSimula.VoltarCartela) {
 
             executarVoltarCartela();
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ComandoTelaSimulaConsumido()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ComandoTelaSimulaConsumido());
         }
     }
+
     private void executarVoltarCartela() {
 
         if (cartelaFragment == null) {
@@ -879,144 +589,51 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
 
-        abrirTelaCartela(false);
+        abrirTelaCartela();
 
-        if (temPaginacao()
-                && paginacaoView != null) {
+        if (temPaginacao() && paginacaoView != null) {
 
-            paginacaoView.setVisibility(
-                    View.VISIBLE
-            );
-        }
-
-        if (imageQtdNumerosButton != null) {
-            imageQtdNumerosButton.setVisibility(
-                    View.VISIBLE
-            );
-        }
-
-        if (qtdNumerosButton != null) {
-            qtdNumerosButton.setVisibility(
-                    View.VISIBLE
-            );
+            paginacaoView.setVisibility(View.VISIBLE);
         }
     }
+
     private void abrirTelaSurpresinha() {
 
-        FragmentUtils.startFragmentAllowingStateLoss(
-                fragmentManager,
-                R.id.fragmentSimularApostas,
-                surpresinhaFragment
-        );
+        FragmentUtils.startFragmentAllowingStateLoss(fragmentManager, R.id.fragmentSimularApostas, surpresinhaFragment);
 
-        if (simularTelaAposta != null) {
-
-            if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-
-                Drawable icNumeros =
-                        ContextCompat.getDrawable(
-                                this,
-                                R.drawable.icon_seleciona2
-                        );
-
-                ViewUtils.setColorDrawable(
-                        this,
-                        icNumeros,
-                        estilo.getCorFonteFundoClaro()
-                );
-
-                simularTelaAposta.setBackground(
-                        icNumeros
-                );
-
-            } else {
-
-                simularTelaAposta.setBackgroundResource(
-                        R.drawable.icon_seleciona2
-                );
-            }
-        }
-
-        if (surpresinhaTela != null) {
-            surpresinhaTela.setBackgroundResource(
-                    R.drawable.icon_surpresinha2
-            );
-        }
     }
 
-    private void executarAbrirSurpresinha(
-            ComandoTelaSimula.AbrirSurpresinha comando
-    ) {
+    private void executarAbrirSurpresinha(ComandoTelaSimula.AbrirSurpresinha comando) {
 
         if (surpresinhaFragment == null) {
             return;
         }
 
-        surpresinhaFragment.setArguments(
-                new Bundle()
-        );
+        surpresinhaFragment.setArguments(new Bundle());
 
         abrirTelaSurpresinha();
 
-        if (comando.isEsconderPaginacao()
-                && temPaginacao()
-                && paginacaoView != null) {
+        if (comando.isEsconderPaginacao() && temPaginacao() && paginacaoView != null) {
 
-            paginacaoView.setVisibility(
-                    View.GONE
-            );
-        }
-
-        if (comando.isEsconderQuantidadeNumeros()) {
-
-            if (imageQtdNumerosButton != null) {
-                imageQtdNumerosButton.setVisibility(
-                        View.GONE
-                );
-            }
-
-            if (qtdNumerosButton != null) {
-                qtdNumerosButton.setVisibility(
-                        View.GONE
-                );
-            }
+            paginacaoView.setVisibility(View.GONE);
         }
     }
 
-    private void renderDialogComoJogar(
-            SimulaUiState state
-    ) {
+    private void renderDialogComoJogar(SimulaUiState state) {
 
         if (!state.isExibirDialogComoJogar()) {
             return;
         }
 
-        DialogUtils.dialogTituloEntendi(
-                this,
-                state.getTitleComoJogar(),
-                state.getMensagemComoJogar()
-        );
+        DialogUtils.dialogTituloEntendi(this, state.getTitleComoJogar(), state.getMensagemComoJogar());
 
-        viewModel.onEvent(
-                new SimulaUiEvent.DialogComoJogarConsumido()
-        );
+        viewModel.onEvent(new SimulaUiEvent.DialogComoJogarConsumido());
     }
 
-    private void renderParametrosAposta(
-            SimulaUiState state
-    ) {
+    private void renderParametrosAposta(SimulaUiState state) {
         qtdDezenasPossiveisSelecionado = state.getQtdDezenasPossiveisSelecionado();
         qtdConcursoSelecionado = state.getQtdConcursoSelecionado();
         textoBotaoTeimosinhas = state.getTextoBotaoTeimosinhas();
-
-        if (qtdNumerosButton != null) {
-            qtdNumerosButton.setText(
-                    format(
-                            getResources().getString(R.string.percent_d_numeros),
-                            qtdDezenasPossiveisSelecionado
-                    )
-            );
-        }
 
         if (btnTeimosinha != null) {
             if (qtdConcursoSelecionado == 0) {
@@ -1031,56 +648,35 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         if (state.isExibirDialogTeimosinha()) {
             abrirDialogTeimosinhas(state);
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ConsumirEventoUnico()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ConsumirEventoUnico());
         }
 
         if (state.isExibirDialogSemTeimosinha()) {
-            DialogUtils.dialogEntendi(
-                    SimulaActivity.this,
-                    getString(R.string.nao_teimosinhas)
-            );
+            DialogUtils.dialogEntendi(SimulaActivity.this, getString(R.string.nao_teimosinhas));
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ConsumirEventoUnico()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ConsumirEventoUnico());
         }
 
         if (state.isAtualizarValorApostaPorTeimosinha()) {
             atualizarValorApostaPorTeimosinha();
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ValorApostaAtualizado()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ValorApostaAtualizado());
         }
     }
 
-    private void renderQuantidadeNumeros(
-            SimulaUiState state
-    ) {
-        qtdDezenasPossiveisSelecionado =
-                state.getQtdDezenasPossiveisSelecionado();
+    private void renderQuantidadeNumeros(SimulaUiState state) {
+        qtdDezenasPossiveisSelecionado = state.getQtdDezenasPossiveisSelecionado();
 
-        textoBotaoPrognosticosSelecionado =
-                state.getTextoBotaoPrognosticosSelecionado();
+        textoBotaoPrognosticosSelecionado = state.getTextoBotaoPrognosticosSelecionado();
 
         String textoQuantidadeNumeros;
 
-        if (textoBotaoPrognosticosSelecionado != null
-                && !textoBotaoPrognosticosSelecionado.trim().isEmpty()) {
+        if (textoBotaoPrognosticosSelecionado != null && !textoBotaoPrognosticosSelecionado.trim().isEmpty()) {
 
             textoQuantidadeNumeros = textoBotaoPrognosticosSelecionado;
 
         } else {
-            textoQuantidadeNumeros = format(
-                    getResources().getString(R.string.percent_d_numeros),
-                    qtdDezenasPossiveisSelecionado
-            );
-        }
-
-        if (qtdNumerosButton != null) {
-            qtdNumerosButton.setText(textoQuantidadeNumeros);
+            textoQuantidadeNumeros = format(getResources().getString(R.string.percent_d_numeros), qtdDezenasPossiveisSelecionado);
         }
 
         if (btnQuantidadeNumeros != null) {
@@ -1090,34 +686,23 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         if (state.isExibirDialogQuantidadeNumeros()) {
             abrirDialogQuantidadeNumeros(state);
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.DialogQuantidadeNumerosConsumido()
-            );
+            viewModel.onEvent(new SimulaUiEvent.DialogQuantidadeNumerosConsumido());
         }
 
         if (state.isExibirAvisoQuantidadeNumerosMaxima()) {
-            DialogUtils.dialogEntendi(
-                    SimulaActivity.this,
-                    getString(R.string.msg_qtd_max_ultrapassada)
-            );
+            DialogUtils.dialogEntendi(SimulaActivity.this, getString(R.string.msg_qtd_max_ultrapassada));
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.AvisoQuantidadeNumerosConsumido()
-            );
+            viewModel.onEvent(new SimulaUiEvent.AvisoQuantidadeNumerosConsumido());
         }
 
         if (state.isAtualizarValorApostaPorQuantidadeNumeros()) {
             atualizarValorApostaPorQuantidadeNumeros(state);
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ValorApostaQuantidadeNumerosAtualizado()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ValorApostaQuantidadeNumerosAtualizado());
         }
     }
 
-    private void renderComandoCarrinho(
-            ComandoCarrinho comando
-    ) {
+    private void renderComandoCarrinho(ComandoCarrinho comando) {
 
         if (comando == null) {
             return;
@@ -1125,76 +710,42 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         if (comando instanceof ComandoCarrinho.MostrarConfirmacaoLimiteDiario) {
 
-            DialogUtils.dialogSim(
-                    this,
-                    getString(R.string.MA014),
-                    new OnDialogBotaoListener() {
-                        @Override
-                        public void onButtonClick(
-                                DialogInterface dialog,
-                                int which
-                        ) {
-                            viewModel.onEvent(
-                                    new SimulaUiEvent.ConfirmarAdicionarCarrinho()
-                            );
-                        }
-                    }
-            );
+            DialogUtils.dialogSim(this, getString(R.string.MA014), new OnDialogBotaoListener() {
+                @Override
+                public void onButtonClick(DialogInterface dialog, int which) {
+                    viewModel.onEvent(new SimulaUiEvent.ConfirmarAdicionarCarrinho());
+                }
+            });
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ComandoCarrinhoConsumido()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ComandoCarrinhoConsumido());
 
             return;
         }
 
         if (comando instanceof ComandoCarrinho.ExecutarAdicionarCarrinho) {
 
-            ComandoCarrinho.ExecutarAdicionarCarrinho add =
-                    (ComandoCarrinho.ExecutarAdicionarCarrinho) comando;
+            ComandoCarrinho.ExecutarAdicionarCarrinho add = (ComandoCarrinho.ExecutarAdicionarCarrinho) comando;
 
-            model.adicionaApostaNoCarrinho(
-                    this,
-                    add.getAposta(),
-                    add.getBarraTituloDTO()
-            );
+            model.adicionaApostaNoCarrinho(this, add.getAposta(), add.getBarraTituloDTO());
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ComandoCarrinhoConsumido()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ComandoCarrinhoConsumido());
 
             return;
         }
 
         if (comando instanceof ComandoCarrinho.AdicionarTimeSurpresa) {
 
-            ComandoCarrinho.AdicionarTimeSurpresa timeSurpresa =
-                    (ComandoCarrinho.AdicionarTimeSurpresa) comando;
+            ComandoCarrinho.AdicionarTimeSurpresa timeSurpresa = (ComandoCarrinho.AdicionarTimeSurpresa) comando;
 
-            adicionarTimeSurpresa(
-                    timeSurpresa.getEquipeSelecionada()
-            );
+            adicionarTimeSurpresa(timeSurpresa.getEquipeSelecionada());
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.ComandoCarrinhoConsumido()
-            );
+            viewModel.onEvent(new SimulaUiEvent.ComandoCarrinhoConsumido());
         }
     }
 
-    private void renderCabecalho(
-            BarraTituloDTO cabecalho
-    ) {
+    private void renderCabecalho(BarraTituloDTO cabecalho) {
 
-        FragmentUtils.startCabecalhoSimulacao(
-                getSupportFragmentManager(),
-                R.id.id_fg_barra_titulo,
-                tipoJogo,
-                cabecalho.getNumeroConcurso(),
-                cabecalho.getDataSorteio(),
-                cabecalho.isEspecial(),
-                getCorBackgroundBarraTitulo(),
-                true
-        );
+        FragmentUtils.startCabecalhoSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo, tipoJogo, cabecalho.getNumeroConcurso(), cabecalho.getDataSorteio(), cabecalho.isEspecial(), getCorBackgroundBarraTitulo(), true);
     }
 
     private int getCorBackgroundBarraTitulo() {
@@ -1221,16 +772,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private void configurarEventosViewModel() {
 
         if (containerComoJogar != null) {
-            containerComoJogar.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            viewModel.onEvent(
-                                    new SimulaUiEvent.ComoJogarClicado()
-                            );
-                        }
-                    }
-            );
+            containerComoJogar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewModel.onEvent(new SimulaUiEvent.ComoJogarClicado());
+                }
+            });
         }
     }
 
@@ -1264,20 +811,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         setColorValuesLoteca();
     }
 
-    public void atualizaTextoBotoesQtdSelecionadas() {
-        qtdNumerosButton.setText(format(getResources().getString(R.string.percent_d_numeros), qtdDezenasPossiveisSelecionado));
-        qtdNumerosButton.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
-        Drawable drawableQtdNumeros = imageQtdNumerosButton.getDrawable();
-        ViewUtils.setColorDrawable(this, drawableQtdNumeros, estilo.getCorFonteFundoEscuro());
-
-        if (imageQtdConcursosButton != null) {
-            Drawable drawableQtdConcursos = imageQtdConcursosButton.getDrawable();
-            ViewUtils.setColorDrawable(this, drawableQtdConcursos, estilo.getCorFonteFundoEscuro());
-        }
-        Drawable drawableQtdConcursos = imageQtdConcursosButton.getDrawable();
-        ViewUtils.setColorDrawable(this, drawableQtdConcursos, estilo.getCorFonteFundoEscuro());
-    }
-
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.simularTelaAposta:
@@ -1307,21 +840,13 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             case R.id.btnLimpar:
                 if (isFragmentTrevos() && trevosFragment != null) {
                     trevosFragment.onLimparRodapeClicado();
-                } else if(isFragmentMeses() && mesesFragment != null){
+                } else if (isFragmentMeses() && mesesFragment != null) {
                     mesesFragment.onLimparRodapeClicado();
-                }
-                else
-                    viewModel.onEvent(
-                        new SimulaUiEvent.LimparApostaSolicitado()
-                );
+                } else viewModel.onEvent(new SimulaUiEvent.LimparApostaSolicitado());
                 break;
 
             case R.id.btnNextStep:
-                viewModel.onEvent(
-                        new SimulaUiEvent.NextStepClicado(
-                                tipoJogo
-                        )
-                );
+                viewModel.onEvent(new SimulaUiEvent.NextStepClicado(tipoJogo));
                 break;
 
             case R.id.favoritar_aposta:
@@ -1329,13 +854,13 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 break;
         }
     }
+
     private void executarCompletarRodape() {
         if (cartelaFragment != null && isFragmentCartela()) {
             cartelaFragment.onCompletarRodapeClicado();
             return;
         }
-        if (isFragmentMeses()
-                && mesesFragment != null) {
+        if (isFragmentMeses() && mesesFragment != null) {
 
             mesesFragment.onCompletarRodapeClicado();
             return;
@@ -1347,21 +872,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         }
 
 
-        viewModel.onEvent(
-                new SimulaUiEvent.CompletarApostaClicado(
-                        tipoJogo,
-                        0,
-                        qtdDezenasPossiveisSelecionado,
-                        0,
-                        0,
-                        0,
-                        false,
-                        false,
-                        false,
-                        false,
-                        isFragmentCartela()
-                )
-        );
+        viewModel.onEvent(new SimulaUiEvent.CompletarApostaClicado(tipoJogo, 0, qtdDezenasPossiveisSelecionado, 0, 0, 0, false, false, false, false, isFragmentCartela()));
     }
 
     private void executarAdicionarRodape() {
@@ -1369,8 +880,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             cartelaFragment.onAdicionarRodapeClicado();
             return;
         }
-        if (isFragmentMeses()
-                && mesesFragment != null) {
+        if (isFragmentMeses() && mesesFragment != null) {
 
             mesesFragment.onAdicionarRodapeClicado();
             return;
@@ -1383,48 +893,18 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         if (isFragmentMeses()) {
 
-            viewModel.onEvent(
-                    new SimulaUiEvent.AdicionarCarrinhoClicado(
-                            tipoJogo,
-                            qtdDezenasPossiveisSelecionado,
-                            qtdDezenasPossiveisSelecionado,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            false,
-                            false,
-                            false, // <- NÃO é cartela
-                            false
-                    )
-            );
+            viewModel.onEvent(new SimulaUiEvent.AdicionarCarrinhoClicado(tipoJogo, qtdDezenasPossiveisSelecionado, qtdDezenasPossiveisSelecionado, 0, 0, 0, 0, 0, false, false, false, // <- NÃO é cartela
+                    false));
 
             return;
         }
-        if (isFragmentSurpresinha()
-                && surpresinhaFragment != null) {
+        if (isFragmentSurpresinha() && surpresinhaFragment != null) {
 
             surpresinhaFragment.onAdicionarRodapeClicado();
             return;
         }
 
-        viewModel.onEvent(
-                new SimulaUiEvent.AdicionarCarrinhoClicado(
-                        tipoJogo,
-                        qtdDezenasPossiveisSelecionado,
-                        qtdDezenasPossiveisSelecionado,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        false,
-                        false,
-                        true,
-                        false
-                )
-        );
+        viewModel.onEvent(new SimulaUiEvent.AdicionarCarrinhoClicado(tipoJogo, qtdDezenasPossiveisSelecionado, qtdDezenasPossiveisSelecionado, 0, 0, 0, 0, 0, false, false, true, false));
     }
 
     private void executarFavoritarRodape() {
@@ -1433,15 +913,11 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        viewModel.onEvent(
-                new SimulaUiEvent.FavoritarApostaClicado()
-        );
+        viewModel.onEvent(new SimulaUiEvent.FavoritarApostaClicado());
     }
 
 
-    private void renderAbrirCarrinho(
-            SimulaUiState state
-    ) {
+    private void renderAbrirCarrinho(SimulaUiState state) {
 
         if (!state.isAbrirCarrinho()) {
             return;
@@ -1449,73 +925,42 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         abrirCarrinho();
 
-        viewModel.onEvent(
-                new SimulaUiEvent.AbrirCarrinhoConsumido()
-        );
+        viewModel.onEvent(new SimulaUiEvent.AbrirCarrinhoConsumido());
     }
 
     private void abrirCarrinho() {
 
         AlertDialogUtils.show(this);
 
-        ServicoFactoryUtil
-                .getApostaService()
-                .buscaCarrinho(
-                        new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 
-                            @Override
-                            public void onResponse(
-                                    CarrinhoDTOResponse response
-                            ) {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
 
-                                AlertDialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
 
-                                Bundle args =
-                                        new Bundle();
+                Bundle args = new Bundle();
 
-                                args.putSerializable(
-                                        CarrinhoActivity.CARRINHO,
-                                        (Serializable) response.getPayload()
-                                );
+                args.putSerializable(CarrinhoActivity.CARRINHO, (Serializable) response.getPayload());
 
-                                startActivity(
-                                        new Intent(
-                                                SimulaActivity.this,
-                                                CarrinhoActivity.class
-                                        ).putExtras(args)
-                                );
-                            }
+                startActivity(new Intent(SimulaActivity.this, CarrinhoActivity.class).putExtras(args));
+            }
 
-                            @Override
-                            public void onErrorResponse(
-                                    VolleyError error
-                            ) {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-                                AlertDialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
 
-                                if (MensagensNetwork
-                                        .isUnauthorizedError(error)) {
+                if (MensagensNetwork.isUnauthorizedError(error)) {
 
-                                    startActivity(
-                                            new Intent(
-                                                    SimulaActivity.this,
-                                                    CarrinhoActivity.class
-                                            ).putExtra(
-                                                    CarrinhoActivity.LER_CARRINHO_LOCAL,
-                                                    true
-                                            )
-                                    );
+                    startActivity(new Intent(SimulaActivity.this, CarrinhoActivity.class).putExtra(CarrinhoActivity.LER_CARRINHO_LOCAL, true));
 
-                                } else {
+                } else {
 
-                                    RedirectNetwork.checkRedirect(
-                                            error,
-                                            SimulaActivity.this
-                                    );
-                                }
-                            }
-                        }
-                );
+                    RedirectNetwork.checkRedirect(error, SimulaActivity.this);
+                }
+            }
+        });
     }
 
     private void voltaPraEscolhaDeNumeros() {
@@ -1523,23 +968,16 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             paginacaoView.setVisibility(View.VISIBLE);
         }
         resetaCartela();
-        imageQtdNumerosButton.setVisibility(View.VISIBLE);
-        qtdNumerosButton.setVisibility(View.VISIBLE);
     }
 
     private boolean temPaginacao() {
-        return parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)
-                || parametroSimulacao.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)
-                || parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA)
-                && paginacaoFragment != null;
+        return parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA) || parametroSimulacao.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) || parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA) && paginacaoFragment != null;
     }
 
     private void resetaCartela() {
         cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
-        abrirTelaCartela(false);
+        abrirTelaCartela();
         if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-            qtdNumerosButton.setOnClickListener(this);
-            qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
             botaoCompletar.setOnClickListener(this);
             botaoAdicionar.setOnClickListener(this);
             botaoLimparAposta.setOnClickListener(this);
@@ -1563,28 +1001,17 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     @Override
-    public int verificaNovoQtdDezenasMax(
-            int qtdDezenasAtual
-    ) {
+    public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
 
-        if (parametroSimulacao == null
-                || parametroSimulacao.getQuantidadeMaxima() == null) {
+        if (parametroSimulacao == null || parametroSimulacao.getQuantidadeMaxima() == null) {
             return qtdDezenasAtual;
         }
 
-        int quantidadeMaxima =
-                parametroSimulacao.getQuantidadeMaxima();
+        int quantidadeMaxima = parametroSimulacao.getQuantidadeMaxima();
 
-        int novaQuantidade =
-                Math.min(
-                        qtdDezenasAtual + 1,
-                        quantidadeMaxima
-                );
+        int novaQuantidade = Math.min(qtdDezenasAtual + 1, quantidadeMaxima);
 
-        qtdDezenasPossiveisSelecionado =
-                novaQuantidade;
-
-        atualizaTextoBotoesQtdSelecionadas();
+        qtdDezenasPossiveisSelecionado = novaQuantidade;
 
         return novaQuantidade;
     }
@@ -1600,7 +1027,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     @Override
     public void escolherOutroTimeSurpresinha() {
         cartelaFragment.setEscolhaTimeCoracaoSurpresinha(true);
-        abrirTelaCartela(true);
+        abrirTelaCartela();
     }
 
     public void setColorValuesLoteca() {
@@ -1646,40 +1073,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         return botaoLimparAposta;
     }
 
-    public TextView getTextSelecionados() {
-        return textSelecionados;
-    }
-
     public Button getBotaoCompletar() {
         return botaoCompletar;
-    }
-    public MaterialButton getBotaoFavoritar() {
-        return botaoFavoritar;
-    }
-
-    public Button getBotaoAdicionar() {
-        return botaoAdicionar;
-    }
-    public Button getBotaoNextStep(){return botaoNextStep;}
-
-    public TextView getTextoSalveEstaAposta() {
-        return textoSalveEstaAposta;
     }
 
     public TextView getValorApostaCartela() {
         return tvValorAposta;
-    }
-
-    public TextView getValorCarrinho() {
-        return tvValorCarrinho;
-    }
-
-    public EditText getEditNomeAposta() {
-        return editNomeAposta;
-    }
-
-    public ImageView getIconStarSalvar() {
-        return iconStarSalvar;
     }
 
     public IdentificaoDeUmaApostaDas8Modalidades getAposta() {
@@ -1692,56 +1091,22 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     public BigDecimal getValorTotalApostaAtual() {
 
-        if (viewModel == null
-                || viewModel.getUiState() == null
-                || viewModel.getUiState().getValue() == null
-                || viewModel.getUiState().getValue().getValorAposta() == null) {
+        if (viewModel == null || viewModel.getUiState() == null || viewModel.getUiState().getValue() == null || viewModel.getUiState().getValue().getValorAposta() == null) {
 
             return BigDecimal.ZERO;
         }
 
-        return viewModel
-                .getUiState()
-                .getValue()
-                .getValorAposta();
-    }
-
-    private void salvarAposta(ApostaFavoritaDTO aposta) {
-        if (!AlertDialogUtils.isShow()) {
-            AlertDialogUtils.show(this);
-        }
-
-        ServicoFactoryUtil.getDadosCorporativoService().salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
-            @Override
-            public void onResponse(NetworkResponse response) {
-                AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
-                AlertDialogUtils.dismiss();
-
-                atualizaLayoutSalvarAposta();
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, SimulaActivity.this);
-            }
-        });
+        return viewModel.getUiState().getValue().getValorAposta();
     }
 
     public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha) {
-        mesesFragment = FragmentUtils.startMesesFragment2(fragmentManager, R.id.fragmentSimularApostas, tipoJogo,
-                parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
+        mesesFragment = FragmentUtils.startMesesFragment2(fragmentManager, R.id.fragmentSimularApostas, tipoJogo, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
 
-        if (surpresinha) {
-            simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
-        }
         proximaPagina();
     }
 
     public void trevosFragment(List<Integer> dezenasSelecionadas) {
-        trevosFragment = FragmentUtils.startTrevosFragment2(fragmentManager, R.id.fragmentSimularApostas,
-                aposta, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
+        trevosFragment = FragmentUtils.startTrevosFragment2(fragmentManager, R.id.fragmentSimularApostas, aposta, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
         Paginacao paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), dezenasSelecionadas.size(), R.color.milionaria_escuro_mkp);
         paginacaoFragment.atualizaPaginacao(paginacao);
         proximaPagina();
@@ -1776,33 +1141,16 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
 
                 if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-                    if (parametro.getNumeroTrevos() != null
-                            && parametroSimulacao.getTrevos() != null
-                            && parametroSimulacao.getTrevos().getQtdMinima() != null
-                            && parametro.getNumeroTrevos().equals(parametroSimulacao.getTrevos().getQtdMinima())) {
+                    if (parametro.getNumeroTrevos() != null && parametroSimulacao.getTrevos() != null && parametroSimulacao.getTrevos().getQtdMinima() != null && parametro.getNumeroTrevos().equals(parametroSimulacao.getTrevos().getQtdMinima())) {
 
-                        qtdNumerosList.add(
-                                getResources().getString(R.string.string_vazia)
-                                        + parametro.getNumeroPrognosticos()
-                                        + getResources().getString(R.string.espaco_numeros_por_espaco)
-                                        + ViewUtils.getMoedaFormat(parametro.getValor())
-                        );
+                        qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros_por_espaco) + ViewUtils.getMoedaFormat(parametro.getValor()));
 
-                        qtdPrognosticosQuantidadeNumerosList.add(
-                                parametro.getNumeroPrognosticos()
-                        );
+                        qtdPrognosticosQuantidadeNumerosList.add(parametro.getNumeroPrognosticos());
                     }
                 } else {
-                    qtdNumerosList.add(
-                            getResources().getString(R.string.string_vazia)
-                                    + parametro.getNumeroPrognosticos()
-                                    + getResources().getString(R.string.espaco_numeros_por_espaco)
-                                    + ViewUtils.getMoedaFormat(parametro.getValor())
-                    );
+                    qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros_por_espaco) + ViewUtils.getMoedaFormat(parametro.getValor()));
 
-                    qtdPrognosticosQuantidadeNumerosList.add(
-                            parametro.getNumeroPrognosticos()
-                    );
+                    qtdPrognosticosQuantidadeNumerosList.add(parametro.getNumeroPrognosticos());
                 }
             }
 
@@ -1811,13 +1159,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                     if (numeroTeimosinha == 0) {
                         qtdConcursosList.add("Nenhuma");
                     } else if (numeroTeimosinha == 1) {
-                        qtdConcursosList.add(
-                                "" + numeroTeimosinha + getResources().getString(R.string.espaco_concurso)
-                        );
+                        qtdConcursosList.add(numeroTeimosinha + getResources().getString(R.string.espaco_concurso));
                     } else {
-                        qtdConcursosList.add(
-                                "" + numeroTeimosinha + getResources().getString(R.string.espaco_concursos)
-                        );
+                        qtdConcursosList.add(numeroTeimosinha + getResources().getString(R.string.espaco_concursos));
                     }
                 }
             }
@@ -1825,13 +1169,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     private void inicializarEstadoQuantidadeNumeros() {
-        viewModel.onEvent(
-                new SimulaUiEvent.InicializarQuantidadeNumeros(
-                        qtdNumerosList,
-                        qtdPrognosticosQuantidadeNumerosList,
-                        qtdDezenasPossiveisSelecionado
-                )
-        );
+        viewModel.onEvent(new SimulaUiEvent.InicializarQuantidadeNumeros(qtdNumerosList, qtdPrognosticosQuantidadeNumerosList, qtdDezenasPossiveisSelecionado));
     }
 
     private void inicializarEstadoTeimosinhas() {
@@ -1841,13 +1179,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             qntConcursos.addAll(parametroSimulacao.getTeimosinhas());
         }
 
-        viewModel.onEvent(new SimulaUiEvent.InicializarTeimosinhas(
-                qtdConcursosList,
-                qntConcursos,
-                qtdConcursoSelecionado,
-                isEspecial,
-                getString(R.string.label_sem_teimosinha)
-        ));
+        viewModel.onEvent(new SimulaUiEvent.InicializarTeimosinhas(qtdConcursosList, qntConcursos, qtdConcursoSelecionado, isEspecial, getString(R.string.label_sem_teimosinha)));
     }
 
     private void configuraFragments() {
@@ -1929,16 +1261,11 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         cartelaFragment.cartelaFragmentBuilder(bundle);
         surpresinhaFragment.surpresinhaFragmentBuilder(bundle);
 
-        atualizaTextoBotoesQtdSelecionadas();
-
-        simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
         if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
             Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
             ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-            surpresinhaTela.setBackground(ic_surpresinha);
-        } else {
-            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
         }
+
         inicializarEstadoTeimosinhas();
         inicializarEstadoQuantidadeNumeros();
         configuraBotoesListeners();
@@ -1951,37 +1278,19 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        int corTexto = ContextCompat.getColor(
-                this,
-                estilo.getCorFonteFundoClaro()
-        );
+        int corTexto = ContextCompat.getColor(this, estilo.getCorFonteFundoClaro());
 
-        btnQuantidadeNumeros.setBackgroundTintList(
-                ContextCompat.getColorStateList(
-                        this,
-                        estilo.getCorClara()
-                )
-        );
+        btnQuantidadeNumeros.setBackgroundTintList(ContextCompat.getColorStateList(this, estilo.getCorClara()));
 
         btnQuantidadeNumeros.setTextColor(corTexto);
 
-        btnQuantidadeNumeros.setStrokeColor(
-                ContextCompat.getColorStateList(
-                        this,
-                        estilo.getCorEscura()
-                )
-        );
+        btnQuantidadeNumeros.setStrokeColor(ContextCompat.getColorStateList(this, estilo.getCorEscura()));
 
         // seta do mesmo tom do texto
-        btnQuantidadeNumeros.setIconTint(
-                android.content.res.ColorStateList.valueOf(
-                        corTexto
-                )
-        );
+        btnQuantidadeNumeros.setIconTint(android.content.res.ColorStateList.valueOf(corTexto));
     }
 
     public void configuraBotoesListeners() {
-        simularTelaAposta.setOnClickListener(this);
         btnTeimosinha.setOnClickListener(this);
         btnQuantidadeNumeros.setOnClickListener(this);
         frameCarrinho.setOnClickListener(this);
@@ -2006,59 +1315,34 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             botaoNextStep.setOnClickListener(this);
         }
 
-        switchSurpresinha.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> {
-                    viewModel.onEvent(
-                            new SimulaUiEvent.AlterarSurpresinha(
-                                    isChecked
-                            )
-                    );
-                }
-        );
+        switchSurpresinha.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            viewModel.onEvent(new SimulaUiEvent.AlterarSurpresinha(isChecked));
+        });
     }
 
-    private void abrirDialogQuantidadeNumeros(
-            SimulaUiState state
-    ) {
-        AppCenterManager.registraEvento(
-                getResources().getString(R.string.evento_entrou_selecao_prognosticos)
-        );
+    private void abrirDialogQuantidadeNumeros(SimulaUiState state) {
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));
 
         String subtitulo = null;
 
-        if (parametroSimulacao != null
-                && parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
+        if (parametroSimulacao != null && parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
 
-            subtitulo = getResources().getString(
-                    R.string.valores_para_apostas_com_2_trevos
-            );
+            subtitulo = getResources().getString(R.string.valores_para_apostas_com_2_trevos);
         }
 
-        DialogUtils.showDialogListItens(
-                SimulaActivity.this,
-                getResources().getString(R.string.quant_de_numeros),
-                subtitulo,
-                state.getLabelsQuantidadeNumeros(),
-                "Confirmar",
-                "Cancelar",
-                onQuantidadeNumerosDialogListener()
-        );
+        DialogUtils.showDialogListItens(SimulaActivity.this, getResources().getString(R.string.quant_de_numeros), subtitulo, state.getLabelsQuantidadeNumeros(), "Confirmar", "Cancelar", onQuantidadeNumerosDialogListener());
     }
 
     private OnDialogListener onQuantidadeNumerosDialogListener() {
         return new OnDialogListener() {
             @Override
             public void itemSelecionado(int position) {
-                viewModel.onEvent(
-                        new SimulaUiEvent.SelecionarQuantidadeNumeros(position)
-                );
+                viewModel.onEvent(new SimulaUiEvent.SelecionarQuantidadeNumeros(position));
             }
 
             @Override
             public void ok(int position) {
-                viewModel.onEvent(
-                        new SimulaUiEvent.ConfirmarQuantidadeNumeros(position)
-                );
+                viewModel.onEvent(new SimulaUiEvent.ConfirmarQuantidadeNumeros(position));
             }
 
             @Override
@@ -2067,28 +1351,17 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         };
     }
 
-    private void atualizarValorApostaPorQuantidadeNumeros(
-            SimulaUiState state
-    ) {
-        qtdDezenasPossiveisSelecionado =
-                state.getQtdDezenasPossiveisSelecionado();
+    private void atualizarValorApostaPorQuantidadeNumeros(SimulaUiState state) {
+        qtdDezenasPossiveisSelecionado = state.getQtdDezenasPossiveisSelecionado();
 
-        textoBotaoPrognosticosSelecionado =
-                state.getTextoBotaoPrognosticosSelecionado();
-
-        if (qtdNumerosButton != null) {
-            qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
-        }
+        textoBotaoPrognosticosSelecionado = state.getTextoBotaoPrognosticosSelecionado();
 
         if (btnQuantidadeNumeros != null) {
             btnQuantidadeNumeros.setText(textoBotaoPrognosticosSelecionado);
         }
 
         if (isFragmentCartela()) {
-            cartelaFragment.atualizaValorTotalAposta(
-                    qtdDezenasPossiveisSelecionado,
-                    qtdConcursoSelecionado
-            );
+            cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
 
             cartelaFragment.atualizaStatusBotaoFinalizar(true);
             return;
@@ -2099,13 +1372,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        if (surpresinhaFragment != null
-                && surpresinhaFragment.getParametroJogo() != null) {
+        if (surpresinhaFragment != null && surpresinhaFragment.getParametroJogo() != null) {
 
-            surpresinhaFragment.atualizaValorTotalAposta(
-                    qtdDezenasPossiveisSelecionado,
-                    qtdConcursoSelecionado
-            );
+            surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
 
             if (state.isResetarTrevosPorQuantidadeNumeros()) {
                 surpresinhaFragment.resetQtdTrevos();
@@ -2125,17 +1394,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private void abrirDialogTeimosinhas(SimulaUiState state) {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
 
-        DialogUtils.showDialogListItensNovo(
-                SimulaActivity.this,
-                getResources().getString(R.string.teimosinhas_maiusculo),
-                null,
-                getString(R.string.teimosinhas_descricao),
-                state.getLabelsTeimosinhas(),
-                "Confirmar",
-                "Cancelar",
-                onTeimosinhaDialogListener()
-        );
+        DialogUtils.showDialogListItensNovo(SimulaActivity.this, getResources().getString(R.string.teimosinhas_maiusculo), null, getString(R.string.teimosinhas_descricao), state.getLabelsTeimosinhas(), "Confirmar", "Cancelar", onTeimosinhaDialogListener());
     }
+
     private OnDialogListener onTeimosinhaDialogListener() {
         return new OnDialogListener() {
             @Override
@@ -2144,9 +1405,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
             @Override
             public void ok(int position) {
-                viewModel.onEvent(
-                        new SimulaUiEvent.ConfirmarTeimosinha(position)
-                );
+                viewModel.onEvent(new SimulaUiEvent.ConfirmarTeimosinha(position));
             }
 
             @Override
@@ -2154,62 +1413,37 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             }
         };
     }
+
     private boolean isFragmentTrevos() {
-        return fragmentManager.findFragmentById(
-                R.id.fragmentSimularApostas
-        ) instanceof TrevosFragment2;
+        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment2;
     }
 
     private boolean isFragmentSurpresinha() {
-        return fragmentManager.findFragmentById(
-                R.id.fragmentSimularApostas
-        ) instanceof SurpresinhaFragment2;
+        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment2;
     }
 
     private void atualizarValorApostaPorTeimosinha() {
         if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment2) {
             if (surpresinhaFragment.getParametroJogo() != null) {
-                surpresinhaFragment.atualizaValorTotalAposta(
-                        qtdDezenasPossiveisSelecionado,
-                        qtdConcursoSelecionado
-                );
+                surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
             }
             return;
         }
 
         if (isFragmentTrevos()) {
             if (trevosFragment != null && trevosFragment.getParametroValorApostaSelecionado() != null) {
-                atualizaValorAposta(
-                        trevosFragment.getParametroValorApostaSelecionado()
-                );
+                atualizaValorAposta(trevosFragment.getParametroValorApostaSelecionado());
             }
             return;
         }
 
         if (cartelaFragment != null) {
-            cartelaFragment.atualizaValorTotalAposta(
-                    qtdDezenasPossiveisSelecionado,
-                    qtdConcursoSelecionado
-            );
+            cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
         }
     }
 
-    private void abrirTelaCartela(boolean surpresinha) {
+    private void abrirTelaCartela() {
         fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
-
-        if (surpresinha) {
-            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
-            simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-        } else {
-            simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
-            if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-                Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
-                ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-                surpresinhaTela.setBackground(ic_surpresinha);
-            } else {
-                surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
-            }
-        }
     }
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
@@ -2217,57 +1451,39 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             getWindow().setStatusBarColor(ContextCompat.getColor(this, lightColor));
         }
 
-        toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
-        if (isEspecial && !isMega30 && estilo.getImagemSubCabecalho() > 0) {
-            toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, estilo.getImagemSubCabecalho()));
-        }
-        toolBarSimularAposta.setVisibility(visibilityToolBarSimularAposta);
         toolBarLoteca.setVisibility(visibilityToolBarLoteca);
 
         typeGameColorLight = lightColor;
         typeGameColorDark = darkColor;
     }
 
-    private void renderCarrinho(
-            SimulaUiState state
-    ) {
+    private void renderCarrinho(SimulaUiState state) {
 
         if (tvValorCarrinho != null) {
 
-            ViewUtils.setMoedaFormatHtml(
-                    state.getValorCarrinho(),
-                    tvValorCarrinho
-            );
+            ViewUtils.setMoedaFormatHtml(state.getValorCarrinho(), tvValorCarrinho);
         }
 
         if (tvQuantidadeApostas != null) {
 
-            int quantidade =
-                    state.getQuantidadeApostasCarrinho();
+            int quantidade = state.getQuantidadeApostasCarrinho();
 
-            tvQuantidadeApostas.setText(
-                    quantidade > 999
-                            ? getString(R.string.mais_999)
-                            : String.valueOf(quantidade)
-            );
+            tvQuantidadeApostas.setText(quantidade > 999 ? getString(R.string.mais_999) : String.valueOf(quantidade));
         }
     }
 
     @Override
     public Button getButtonQtdTrevos() {
-        return qtdNumerosButton;
+        return btnQuantidadeNumeros;
     }
 
-    public BarraTituloDTO getBarraTituloDTO(){return barraTituloDTO;}
+    public BarraTituloDTO getBarraTituloDTO() {
+        return barraTituloDTO;
+    }
 
     @Override
     public Button getButtonFinalizar() {
         return botaoCompletar;
-    }
-
-    @Override
-    public Button getButtonLimpar() {
-        return botaoLimparAposta;
     }
 
     @Override
@@ -2278,25 +1494,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     @Override
     public int getQtdConcursos() {
         return qtdConcursoSelecionado;
-    }
-
-    @Override
-    public MaterialButton getButtonSalvar() {
-        return botaoFavoritar;
-    }
-
-    @Override
-    public String nomeApostaFavorita() {
-        if (editNomeAposta != null) {
-            return editNomeAposta.getText().toString();
-        }
-
-        return "";
-    }
-
-    @Override
-    public ImageButton btnSalvarAposta() {
-        return btnSalvarAposta;
     }
 
     @Override

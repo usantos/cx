@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
@@ -269,7 +268,7 @@ public abstract class SimulaUiEvent {
         private final boolean telaSelecaoTimeAtivado;
         private final boolean equipeSelecionadaValida;
         private final boolean escolhaTimeCoracaoSurpresinha;
-        private boolean etapaComplementarCompleta = false;
+        private boolean etapaComplementarCompleta;
 
         public CartelaAlterada(
                 ModalidadeEnum tipoJogo,
@@ -310,7 +309,7 @@ public abstract class SimulaUiEvent {
             return tipoJogo;
         }
         public Boolean isExibirOpcaoOutrosNumeros(){return exibirOpcaoOutrosNumeros;}
-        public Boolean isOpcaoOutrosNumerosSelecionada(){return opcaoOutrosNumerosSelecionada;};
+        public Boolean isOpcaoOutrosNumerosSelecionada(){return opcaoOutrosNumerosSelecionada;}
 
         public int getQtdDezenasSelecionadas() {
             return qtdDezenasSelecionadas;
@@ -448,19 +447,6 @@ public abstract class SimulaUiEvent {
         }
     }
 
-
-    public static class CarrinhoCarregado extends SimulaUiEvent {
-
-        private final CarrinhoDTO carrinho;
-
-        public CarrinhoCarregado(CarrinhoDTO carrinho) {
-            this.carrinho = carrinho;
-        }
-
-        public CarrinhoDTO getCarrinho() {
-            return carrinho;
-        }
-    }
 
     public static final class AdicionarCarrinhoSolicitado extends SimulaUiEvent {
 

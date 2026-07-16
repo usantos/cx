@@ -116,7 +116,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private View view;
     private EditText informeNomeTime;
     private RelativeLayout rlColunasSuperSete;
-    private LinearLayout selecioneTimeCoracaoLayout,opcaoOutrosNumerosLayout;
+    private LinearLayout selecioneTimeCoracaoLayout, opcaoOutrosNumerosLayout;
     private RecyclerView mGridTimeCoracao;
     private RecyclerView listaDezenas;
     private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
@@ -132,14 +132,13 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     public BigDecimal valorTotalAposta;
     public int typeGameColorLight, typeGameColorDark;
     public int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
-    public Button botaoCompletar, botaoAdicionar, botaoLimparAposta, botaoNextStep;
+    public Button botaoCompletar, botaoLimparAposta;
     public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
     public ListaDezenaRecyclerView simularDezenasAdapter;
     public String dataSorteioAtual;
 
     private SimularApostaModel model;
     private CartelaModel cartelaModel;
-    private MaterialButton botaoFavoritar;
     private SimulaViewModel viewModel;
 
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
@@ -398,6 +397,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             notificarEstadoCartelaAlterado();
         }
     }
+
     public void onCompletarRodapeClicado() {
         solicitarCompletarAposta();
     }
@@ -411,6 +411,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     ) {
         solicitarSalvarApostaFavorita(nome);
     }
+
     private void inicializarValorApostaMinima() {
 
         if (parametroJogo == null || parentActivity == null) {
@@ -832,6 +833,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 )
         );
     }
+
     private boolean calcularEtapaComplementarCompleta() {
         if (parametroJogo == null) {
             return false;
@@ -1024,6 +1026,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 new SimulaUiEvent.ComandoCompletarApostaConsumido()
         );
     }
+
     private void solicitarSalvarApostaFavorita(
             String nome
     ) {
@@ -1042,6 +1045,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 )
         );
     }
+
     private ApostaFavoritaDTO criarApostaFavoritaDTO() {
 
         ApostaFavoritaDTO aposta =
@@ -1067,6 +1071,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         return aposta;
     }
+
     private Object obterNumerosSelecionadosFavoritos() {
 
         if (parametroJogo.isTipoJogo(
@@ -1082,6 +1087,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 dezenasSelecionadas
         );
     }
+
     private void renderLimpezaAposta(
             SimulaUiState state
     ) {
@@ -1264,7 +1270,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 )
         );
     }
-
 
 
     private void selecionarTimeAleatorio() {
@@ -1504,6 +1509,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 qtdPossivelParaEstado
         );
     }
+
     private void notificarEstadoCartelaAlterado() {
 
         if (parentActivity == null) {
@@ -1523,7 +1529,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
         botaoLimparAposta.setEnabled(false);
         parentActivity.qtdDezenasPossiveisSelecionado = parametroJogo.getQuantidadeMinima() != null ? parametroJogo.getQuantidadeMinima() : 0;
-        parentActivity.atualizaTextoBotoesQtdSelecionadas();
 
         qtdTotalSelecionadosSuperSete = 0;
         atualizarValorENotificarEstadoCartela();
@@ -1739,6 +1744,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             }
         };
     }
+
     private void removerDezenaSelecionada(
             Dezena dezena,
             Integer valorSelecionado
@@ -1764,9 +1770,8 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         parentActivity.qtdDezenasPossiveisSelecionado =
                 novaQuantidadePossivel;
 
-        parentActivity.atualizaTextoBotoesQtdSelecionadas();
-
     }
+
     private void tentarAdicionarDezenaSelecionada(
             Dezena dezena,
             Integer valorSelecionado
@@ -1827,6 +1832,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 )
         );
     }
+
     private void adicionarDezena(
             Dezena dezena,
             Integer valorSelecionado
@@ -2145,8 +2151,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             parentActivity.qtdConcursoSelecionado =
                     apostaSuperSete.getQuantidadeTeimosinhas();
 
-            parentActivity.atualizaTextoBotoesQtdSelecionadas();
-
             publicarValorAposta(aposta.getValor());
 
             botaoLimparAposta.setEnabled(
@@ -2171,8 +2175,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             parentActivity.qtdConcursoSelecionado =
                     aposta.getQuantidadeTeimosinhas();
-
-            parentActivity.atualizaTextoBotoesQtdSelecionadas();
 
             equipeSelecionada =
                     aposta.getTimeDoCoracao();
