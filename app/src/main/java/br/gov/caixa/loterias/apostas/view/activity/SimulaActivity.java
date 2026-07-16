@@ -132,6 +132,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private SurpresinhaFragment2 surpresinhaFragment;
     private PaginacaoFragment paginacaoFragment;
     private TrevosFragment2 trevosFragment;
+    private MesesFragment2 mesesFragment;
 
     private int typeGameColorLight;
     private int typeGameColorDark;
@@ -172,6 +173,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private LinearLayout opcaoOutrosNumerosLayout;
     private AppCompatCheckBox selecioneOutrosNumeros;
     private boolean mudouTamanhoValor = false;
+    private BarraTituloDTO barraTituloDTO;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -401,10 +403,10 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             SimulaUiState state
     ) {
         renderAnimacao(state);
-
-        if (state.getBarraTituloDTO() != null) {
+        barraTituloDTO = state.getBarraTituloDTO();
+        if (barraTituloDTO != null) {
             renderCabecalho(
-                    state.getBarraTituloDTO()
+                    barraTituloDTO
             );
         }
         renderParametrosAposta(state);
@@ -1305,7 +1307,10 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             case R.id.btnLimpar:
                 if (isFragmentTrevos() && trevosFragment != null) {
                     trevosFragment.onLimparRodapeClicado();
-                } else
+                } else if(isFragmentMeses() && mesesFragment != null){
+                    mesesFragment.onLimparRodapeClicado();
+                }
+                else
                     viewModel.onEvent(
                         new SimulaUiEvent.LimparApostaSolicitado()
                 );
@@ -1327,6 +1332,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private void executarCompletarRodape() {
         if (cartelaFragment != null && isFragmentCartela()) {
             cartelaFragment.onCompletarRodapeClicado();
+            return;
+        }
+        if (isFragmentMeses()
+                && mesesFragment != null) {
+
+            mesesFragment.onCompletarRodapeClicado();
             return;
         }
 
@@ -1358,6 +1369,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             cartelaFragment.onAdicionarRodapeClicado();
             return;
         }
+        if (isFragmentMeses()
+                && mesesFragment != null) {
+
+            mesesFragment.onAdicionarRodapeClicado();
+            return;
+        }
 
         if (isFragmentTrevos() && trevosFragment != null) {
             trevosFragment.onAdicionarRodapeClicado();
@@ -1365,6 +1382,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         }
 
         if (isFragmentMeses()) {
+
             viewModel.onEvent(
                     new SimulaUiEvent.AdicionarCarrinhoClicado(
                             tipoJogo,
@@ -1377,10 +1395,11 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                             0,
                             false,
                             false,
-                            true,
+                            false, // <- NÃO é cartela
                             false
                     )
             );
+
             return;
         }
 
@@ -1681,61 +1700,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                 .getValorAposta();
     }
 
-    public void salvarAposta(final ApostaFavoritaDTO apostaFavorita, String nomeAposta, T dezenasSelecionadas) {
-
-        AlertDialogUtils.show(this);
-
-        DTOEnumInteger modalidade = new DTOEnumInteger();
-        modalidade.setDescricao(parametroSimulacao.getConcurso().getModalidadeDetalhada().getDescricao());
-        modalidade.setValor(parametroSimulacao.getConcurso().getModalidadeDetalhada().getValor());
-        apostaFavorita.setModalidade(modalidade);
-
-        if (nomeAposta != null) {
-            if (nomeAposta.length() > 25) {
-                apostaFavorita.setNome(nomeAposta.substring(0, 25));
-            } else {
-                apostaFavorita.setNome(nomeAposta);
-            }
-        } else {
-            apostaFavorita.setNome("");
-        }
-        apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
-        apostaFavorita.setId(Constantes.ZERO_LONG);
-
-        ServicoFactoryUtil.getDadosCorporativoService().validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
-            @Override
-            public void onResponse(NetworkResponse response) {
-                salvarAposta(apostaFavorita);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                AlertDialogUtils.dismiss();
-                if (isErroNegocial(error)) {
-//                    ViewUtils.alertTitleButtonYesOrNotListener(
-//                            SimulaActivity.this,
-//                            MensagensNetwork.getErrorMessage(error),
-//                            (dialogInterface, i) ->
-//                    );
-
-                    DialogUtils.dialogSim(
-                            SimulaActivity.this,
-                            MensagensNetwork.getErrorMessage(error),
-                            new OnDialogBotaoListener() {
-                                @Override
-                                public void onButtonClick(DialogInterface dialog, int which) {
-                                    salvarAposta(apostaFavorita);
-                                }
-                            }
-                    );
-                } else {
-                    RedirectNetwork.checkRedirect(error, SimulaActivity.this);
-                }
-            }
-        });
-    }
-
     private void salvarAposta(ApostaFavoritaDTO aposta) {
         if (!AlertDialogUtils.isShow()) {
             AlertDialogUtils.show(this);
@@ -1759,7 +1723,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha) {
-        FragmentUtils.startMesesFragment2(fragmentManager, R.id.fragmentSimularApostas, tipoJogo,
+        mesesFragment = FragmentUtils.startMesesFragment2(fragmentManager, R.id.fragmentSimularApostas, tipoJogo,
                 parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
 
         if (surpresinha) {
@@ -2281,6 +2245,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     public Button getButtonQtdTrevos() {
         return qtdNumerosButton;
     }
+
+    public BarraTituloDTO getBarraTituloDTO(){return barraTituloDTO;}
 
     @Override
     public Button getButtonFinalizar() {
