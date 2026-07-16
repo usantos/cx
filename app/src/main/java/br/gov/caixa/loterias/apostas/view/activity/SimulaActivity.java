@@ -44,7 +44,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.TutorialSuperSeteActivity;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
-import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -73,14 +72,12 @@ import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
-import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment2;
-import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SimulaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment2;
@@ -88,12 +85,11 @@ import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnPaginacaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener2;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnTrevosListener2, OnPaginacaoListener {
+public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnTrevosListener2 {
 
     public static String COR_FONTE_FUNDO_BRANCO = "COR_FONTE_FUNDO_BRANCO";
     public static String COR_FONTE_FUNDO_CLARO = "COR_FONTE_FUNDO_CLARO";
@@ -106,7 +102,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private ConstraintLayout toolBarLoteca;
     private Button botaoLimparAposta, botaoCompletar, botaoAdicionar, botaoNextStep;
     private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca;
-    private FrameLayout paginacaoView;
 
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
@@ -114,7 +109,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private FragmentManager fragmentManager;
     private SimulaFragment cartelaFragment;
     private SurpresinhaFragment2 surpresinhaFragment;
-    private PaginacaoFragment paginacaoFragment;
+
     private TrevosFragment2 trevosFragment;
     private MesesFragment2 mesesFragment;
 
@@ -219,7 +214,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
         this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
         this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
-        this.paginacaoView = findViewById(R.id.paginacaoView);
         this.tvValorAposta = findViewById(R.id.tvValorAposta);
         this.tvValorCarrinho = findViewById(R.id.tvTotalCarrinho);
         this.containerComoJogar = findViewById(R.id.containerComoJogar);
@@ -591,10 +585,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         abrirTelaCartela();
 
-        if (temPaginacao() && paginacaoView != null) {
-
-            paginacaoView.setVisibility(View.VISIBLE);
-        }
     }
 
     private void abrirTelaSurpresinha() {
@@ -613,10 +603,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         abrirTelaSurpresinha();
 
-        if (comando.isEsconderPaginacao() && temPaginacao() && paginacaoView != null) {
-
-            paginacaoView.setVisibility(View.GONE);
-        }
     }
 
     private void renderDialogComoJogar(SimulaUiState state) {
@@ -784,10 +770,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        Paginacao paginacao = getPaginacao();
-        if (paginacao != null && isFragmentCartela() && !parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-            voltaPagina();
-        }
     }
 
     public void zerarApostas() {
@@ -964,14 +946,11 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     private void voltaPraEscolhaDeNumeros() {
-        if (temPaginacao()) {
-            paginacaoView.setVisibility(View.VISIBLE);
-        }
         resetaCartela();
     }
 
     private boolean temPaginacao() {
-        return parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA) || parametroSimulacao.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) || parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA) && paginacaoFragment != null;
+        return parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA) || parametroSimulacao.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) || parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA);
     }
 
     private void resetaCartela() {
@@ -981,12 +960,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             botaoCompletar.setOnClickListener(this);
             botaoAdicionar.setOnClickListener(this);
             botaoLimparAposta.setOnClickListener(this);
-            voltaPagina();
         }
 
-        if (parametroSimulacao.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
-            voltaPagina();
-        }
     }
 
     public ParametroJogoDTO getParametroSimulacao() {
@@ -1101,15 +1076,10 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha) {
         mesesFragment = FragmentUtils.startMesesFragment2(fragmentManager, R.id.fragmentSimularApostas, tipoJogo, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
-
-        proximaPagina();
     }
 
     public void trevosFragment(List<Integer> dezenasSelecionadas) {
         trevosFragment = FragmentUtils.startTrevosFragment2(fragmentManager, R.id.fragmentSimularApostas, aposta, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
-        Paginacao paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), dezenasSelecionadas.size(), R.color.milionaria_escuro_mkp);
-        paginacaoFragment.atualizaPaginacao(paginacao);
-        proximaPagina();
     }
 
     public ParametroMesDeSorte getMesDeSorteCartela() {
@@ -1194,14 +1164,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
-
-        if (getPaginacao() != null) {
-            paginacaoFragment = FragmentUtils.startPaginacaoFragment(getSupportFragmentManager(), paginacaoFragment, R.id.paginacaoView);
-        } else {
-            if (paginacaoView != null) {
-                paginacaoView.setVisibility(View.GONE);
-            }
-        }
     }
 
     private void configuraActivity() {
@@ -1499,36 +1461,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     @Override
     public void atualizaLayoutSalvarAposta() {
         flagApostaSalva = true;
-    }
-
-    @Override
-    public Paginacao getPaginacao() {
-        Paginacao paginacao = null;
-        if (parametroSimulacao != null && parametroSimulacao.getConcurso() != null && parametroSimulacao.getConcurso().getModalidade() != null) {
-            switch (parametroSimulacao.getConcurso().getModalidade()) {
-                case MAIS_MILIONARIA:
-                    paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), 0, R.color.milionaria_claro_mkp);
-                    break;
-                case TIMEMANIA:
-                    paginacao = PaginacaoUtils.getPaginacaoTimemania(getApplicationContext(), R.color.timemania_letra_mkp);
-                    break;
-                case DIA_DE_SORTE:
-                    paginacao = PaginacaoUtils.getPaginacaoDiaDeSorte(getApplicationContext(), R.color.dia_sorte_letra_mkp);
-                    break;
-            }
-        }
-
-        return paginacao;
-    }
-
-    @Override
-    public void proximaPagina() {
-        paginacaoFragment.proximaPagina();
-    }
-
-    @Override
-    public void voltaPagina() {
-        paginacaoFragment.voltaPagina();
     }
 
     @Override

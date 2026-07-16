@@ -986,7 +986,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             mostrarCartelaEscolhaTimeCoracao();
             timemaniaTimeSelecionadoEdicao();
-            parentActivity.proximaPagina();
 
             consumirComandoCompletarAposta();
             return;
