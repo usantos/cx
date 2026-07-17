@@ -20,7 +20,7 @@
             android:layout_height="56dp">
 
             <ImageView
-                android:id="@+id/imgTrevoResultado"
+                android:id="@+id/ivTrevoResultado"
                 android:layout_width="22sp"
                 android:layout_height="22dp"
                 android:layout_gravity="center_vertical"
@@ -52,14 +52,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/topoResultadoPremioLinearLayout"
+        android:id="@+id/clTopoResultadoPremio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mega_verde_escuro_mkp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/idPodeComemorar"
+            android:id="@+id/tvPodeComemorar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -71,7 +71,7 @@
             android:fontFamily="@font/caixa_std_regular"/>
 
         <TextView
-            android:id="@+id/valorPremioTituloTextView"
+            android:id="@+id/tvPremioTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -253,7 +253,7 @@
         </LinearLayout>
 
         <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
-            android:id="@+id/tipo_aposta_linha_compras"
+            android:id="@+id/talvHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"

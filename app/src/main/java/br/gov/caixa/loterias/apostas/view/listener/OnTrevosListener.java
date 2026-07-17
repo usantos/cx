@@ -2,7 +2,8 @@ package br.gov.caixa.loterias.apostas.view.listener;
 
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 
@@ -18,11 +19,11 @@ public interface OnTrevosListener {
 
 	int getQtdConcursos();
 
-	RelativeLayout getButtonSalvar();
+	ConstraintLayout getButtonSalvar();
 
 	String nomeApostaFavorita();
 
 	ImageButton btnSalvarAposta();
 
-	void atualizaLayoutSalverAposta();
+	void atualizaLayoutSalvarAposta();
 }

@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -18,22 +18,22 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 
-public class BarraTitutoComboFragment extends Fragment {
+public class BarraTituloComboFragment extends Fragment {
 	private static final String ARG_MODALIDADE = "ARG_MODALIDADE";
 	private static final String ARG_COR_BACK = "AR_COR_BACK";
 
 	private  View view;
 	private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio;
 	private ConstraintLayout background;
-	private AppCompatImageView btnVoltar, btnDuvida;
+	private ImageButton btnVoltar, btnDuvida;
 	private int corBackground;
 	private ModalidadeEnum modalidade;
 	private EstiloModalidadeMKP estilo;
 
-	public BarraTitutoComboFragment() {}
+	public BarraTituloComboFragment() {}
 
-	public static BarraTitutoComboFragment newInstance(ModalidadeEnum modalidade, int corBackground) {
-		BarraTitutoComboFragment fragment = new BarraTitutoComboFragment();
+	public static BarraTituloComboFragment newInstance(ModalidadeEnum modalidade, int corBackground) {
+		BarraTituloComboFragment fragment = new BarraTituloComboFragment();
 		Bundle                  args     = new Bundle();
 		args.putString(ARG_MODALIDADE, new Gson().toJson(modalidade));
 		args.putInt(ARG_COR_BACK, corBackground);
