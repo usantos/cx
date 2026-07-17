@@ -1018,7 +1018,20 @@ public class SimulaViewModel extends AndroidViewModel {
         if (preservarEstadoComplementar) {
             textoSelecionados = atual.getTextoSelecionados();
         } else {
-            textoSelecionados = montarTextoSelecionados(event.getQtdDezenasSelecionadas(), qtdDezenasPossiveis);
+            int quantidadeSelecionadaTexto;
+
+            if (tipoJogo == ModalidadeEnum.SUPER_7) {
+                quantidadeSelecionadaTexto =
+                        event.getQtdTotalSelecionadosSuperSete();
+            } else {
+                quantidadeSelecionadaTexto =
+                        event.getQtdDezenasSelecionadas();
+            }
+
+            textoSelecionados = montarTextoSelecionados(
+                    quantidadeSelecionadaTexto,
+                    qtdDezenasPossiveis
+            );
         }
 
         String textoBotaoQuantidadeNumeros = montarTextoQuantidadeNumeros(qtdDezenasPossiveis);
