@@ -1,13 +1,13 @@
-package br.gov.caixa.loterias.apostas.state;
+package br.gov.caixa.loterias.apostas.effect;
 
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 
-public abstract class ComandoFavoritarAposta {
+public abstract class FavoritarApostaEffect {
 
     public static class ConfirmarValidacaoNegocial
-            extends ComandoFavoritarAposta {
+            extends FavoritarApostaEffect {
 
         private final ApostaFavoritaDTO aposta;
         private final String mensagem;
@@ -30,11 +30,11 @@ public abstract class ComandoFavoritarAposta {
     }
 
     public static class Sucesso
-            extends ComandoFavoritarAposta {
+            extends FavoritarApostaEffect {
     }
 
     public static class RedirecionarErro
-            extends ComandoFavoritarAposta {
+            extends FavoritarApostaEffect {
 
         private final VolleyError error;
 

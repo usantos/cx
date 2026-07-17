@@ -1,11 +1,11 @@
-package br.gov.caixa.loterias.apostas.state;
+package br.gov.caixa.loterias.apostas.effect;
 
-public abstract class ComandoTelaSimula {
+public abstract class ScreenSimulaEffect {
 
-    private ComandoTelaSimula() {
+    private ScreenSimulaEffect() {
     }
 
-    public static final class AbrirSurpresinha extends ComandoTelaSimula {
+    public static final class AbrirSurpresinha extends ScreenSimulaEffect {
 
         private final boolean esconderQuantidadeNumeros;
         private final boolean esconderPaginacao;
@@ -27,6 +27,6 @@ public abstract class ComandoTelaSimula {
         }
     }
     public static final class VoltarCartela
-            extends ComandoTelaSimula {
+            extends ScreenSimulaEffect {
     }
 }

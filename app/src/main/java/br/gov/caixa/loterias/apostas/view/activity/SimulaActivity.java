@@ -13,7 +13,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -41,6 +40,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.TutorialSuperSeteActivity;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
@@ -57,13 +57,15 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
-import br.gov.caixa.loterias.apostas.state.ComandoCarrinho;
-import br.gov.caixa.loterias.apostas.state.ComandoFavoritarAposta;
-import br.gov.caixa.loterias.apostas.state.ComandoTelaSimula;
-import br.gov.caixa.loterias.apostas.state.EtapaAposta;
+import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
+import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
+import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
+import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
@@ -140,7 +142,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private TextView tvValorAposta;
     private TextView tvValorCarrinho;
     private LinearLayout containerComoJogar;
-    private MaterialButton btnTeimosinha, btnQuantidadeNumeros, botaoFavoritar;
+    private MaterialButton btnTeimosinha, btnQuantidadeNumeros, btnQuantidadeTrevos, botaoFavoritar;
     private List<Integer> qtdPrognosticosQuantidadeNumerosList;
     private TextView textSelecionados;
     private FrameLayout frameCarrinho;
@@ -149,7 +151,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private LinearLayout opcaoOutrosNumerosLayout;
     private AppCompatCheckBox selecioneOutrosNumeros;
     private boolean mudouTamanhoValor = false;
-    private BarraTituloDTO barraTituloDTO;
+    String numeroConcurso;
+    public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
+    private TextView textInfoEtapa;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +165,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         model = new SimularApostaModel(this);
         dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
+        numeroConcurso = parametroSimulacao.getConcurso().getNumero().toString();
 
         isMega30 = EspecialUtils.isMega30(numero_concurso, isEspecial);
         estilo = new EstiloModalidadeMKP(tipoJogo, isMega30);
@@ -218,6 +223,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.tvValorCarrinho = findViewById(R.id.tvTotalCarrinho);
         this.containerComoJogar = findViewById(R.id.containerComoJogar);
         this.btnQuantidadeNumeros = findViewById(R.id.btnQuantidadeNumeros);
+        this.btnQuantidadeTrevos = findViewById(R.id.btnQuantidadeTrevos);
         this.btnTeimosinha = findViewById(R.id.btnTeimosinha);
         this.textSelecionados = findViewById(R.id.textSelecionados);
         this.frameCarrinho = findViewById(R.id.frameCarrinho);
@@ -227,7 +233,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         this.botaoNextStep = findViewById(R.id.btnNextStep);
         this.opcaoOutrosNumerosLayout = findViewById(R.id.opcaoOutrosNumerosLayout);
         this.selecioneOutrosNumeros = findViewById(R.id.selcioneOutrosNumeros);
-
+        textInfoEtapa = findViewById(R.id.textInfoEtapa);
         opcaoOutrosNumerosLayout.setVisibility(View.GONE);
     }
 
@@ -266,24 +272,48 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     private void observeState() {
-
         viewModel.getUiState().observe(this, this::render);
+        viewModel.getUiState().observe(this,this::triggerAnalytics);
     }
 
-    private void renderAnimacao(SimulaUiState state) {
-        if (!state.isExibirAnimacao()) {
+    private void renderAnimacao(
+            SimulaUiState state
+    ) {
+        AnimacaoEffect comando =
+                state.getComandoAnimacao();
+
+        if (comando == null) {
             return;
         }
 
-        if (lottieManager != null) {
-            lottieManager.destroy();
+        if (comando instanceof
+                AnimacaoEffect.Exibir) {
+
+            AnimacaoEffect.Exibir exibir =
+                    (AnimacaoEffect.Exibir)
+                            comando;
+
+            if (lottieManager != null) {
+                lottieManager.destroy();
+            }
+
+            lottieManager =
+                    new LottieManager(
+                            this,
+                            exibir.getAnimacaoRes()
+                    );
+
+            lottieManager.setSpeed(
+                    exibir.getVelocidade()
+            );
+
+            lottieManager.start();
         }
 
-        lottieManager = new LottieManager(this, state.getAnimacaoRes());
-
-        lottieManager.setSpeed(state.getVelocidadeAnimacao());
-
-        lottieManager.start();
+        viewModel.onEvent(
+                new SimulaUiEvent
+                        .ComandoAnimacaoConsumido()
+        );
     }
 
     private void renderFavorito(SimulaUiState state) {
@@ -324,16 +354,86 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         renderValorAposta(state);
         renderDialogFavoritarAposta(state);
         renderComandoFavoritarAposta(state);
+        renderInfoEtapa(state);
+    }
+    private void renderInfoEtapa(
+            SimulaUiState state
+    ) {
+        if (textInfoEtapa == null) {
+            return;
+        }
+
+        textInfoEtapa.setVisibility(
+                state.getExibirInfoEtapa()
+                        ? View.VISIBLE
+                        : View.GONE
+        );
+
+        textInfoEtapa.setText(
+                state.getTextoInfoEtapa()
+        );
     }
 
-    private void renderComandoFavoritarAposta(SimulaUiState state) {
-        ComandoFavoritarAposta comando = state.getComandoFavoritarAposta();
+    private void triggerAnalytics(
+            SimulaUiState state
+    ) {
+
+        AnalyticsEffect comando =
+                state.getComandoAnalytics();
 
         if (comando == null) {
             return;
         }
 
-        if (comando instanceof ComandoFavoritarAposta.Sucesso) {
+        if (comando
+                instanceof AnalyticsEffect
+                .QuantidadeNumerosConfirmada) {
+
+            AnalyticsEffect.QuantidadeNumerosConfirmada c =
+                    (AnalyticsEffect.QuantidadeNumerosConfirmada)
+                            comando;
+
+            AnalyticsHelper.getInstance().logSelectContent(
+                    AnalyticsHelper.Tela.MONTAR_APOSTA,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                    AnalyticsHelper.ContentCategoryParams.CONFIG,
+                    c.getModalidade(),
+                    c.getValorSelecionado()
+            );
+        }
+
+        else if (comando
+                instanceof AnalyticsEffect
+                .TeimosinhaConfirmada) {
+
+            AnalyticsEffect.TeimosinhaConfirmada c =
+                    (AnalyticsEffect.TeimosinhaConfirmada)
+                            comando;
+
+            AnalyticsHelper.getInstance().logSelectContent(
+                    AnalyticsHelper.Tela.MONTAR_APOSTA,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                    AnalyticsHelper.ContentCategoryParams.CONFIG,
+                    c.getModalidade(),
+                    c.getValorSelecionado()
+            );
+        }
+
+        viewModel.onEvent(
+                new SimulaUiEvent.ComandoAnalyticsConsumido()
+        );
+    }
+
+    private void renderComandoFavoritarAposta(SimulaUiState state) {
+        FavoritarApostaEffect comando = state.getComandoFavoritarAposta();
+
+        if (comando == null) {
+            return;
+        }
+
+        if (comando instanceof FavoritarApostaEffect.Sucesso) {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
 
             atualizaLayoutSalvarAposta();
@@ -342,8 +442,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        if (comando instanceof ComandoFavoritarAposta.ConfirmarValidacaoNegocial) {
-            ComandoFavoritarAposta.ConfirmarValidacaoNegocial confirmar = (ComandoFavoritarAposta.ConfirmarValidacaoNegocial) comando;
+        if (comando instanceof FavoritarApostaEffect.ConfirmarValidacaoNegocial) {
+            FavoritarApostaEffect.ConfirmarValidacaoNegocial confirmar = (FavoritarApostaEffect.ConfirmarValidacaoNegocial) comando;
 
             DialogUtils.dialogSim(this, confirmar.getMensagem(), new OnDialogBotaoListener() {
                 @Override
@@ -356,8 +456,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        if (comando instanceof ComandoFavoritarAposta.RedirecionarErro) {
-            ComandoFavoritarAposta.RedirecionarErro erro = (ComandoFavoritarAposta.RedirecionarErro) comando;
+        if (comando instanceof FavoritarApostaEffect.RedirecionarErro) {
+            FavoritarApostaEffect.RedirecionarErro erro = (FavoritarApostaEffect.RedirecionarErro) comando;
 
             RedirectNetwork.checkRedirect(erro.getError(), this);
 
@@ -460,7 +560,48 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         boolean mostrarFavoritar = state.isMostrarSalvarAposta() || state.isApostaFavoritada();
 
-        Log.d("RENDER_ETAPA", "etapa=" + state.getEtapaAposta() + " next=" + state.isBotaoNextStepHabilitado() + " add=" + state.isBotaoAdicionarHabilitado());
+
+        boolean mostrarBtnQuantidadeTrevos =
+                state.getTipoJogo() == ModalidadeEnum.MAIS_MILIONARIA
+                        && etapaAtual == EtapaAposta.TREVOS;
+
+        boolean mostrarBtnQuantidadeNumeros =
+                !mostrarBtnQuantidadeTrevos;
+
+        int corIcon = ContextCompat.getColor(this, estilo.getCorFonteFundoClaro());
+
+
+        if (btnQuantidadeNumeros != null) {
+
+            btnQuantidadeNumeros.setVisibility(
+                    mostrarBtnQuantidadeNumeros
+                            ? View.VISIBLE
+                            : View.GONE
+            );
+
+
+            visualModalidadeBotao(
+                    true,
+                    btnQuantidadeNumeros
+            );
+            btnQuantidadeNumeros.setIconTint(android.content.res.ColorStateList.valueOf(corIcon));
+        }
+
+        if (btnQuantidadeTrevos != null) {
+
+            btnQuantidadeTrevos.setVisibility(
+                    mostrarBtnQuantidadeTrevos
+                            ? View.VISIBLE
+                            : View.GONE
+            );
+
+            visualModalidadeBotao(
+                    true,
+                    btnQuantidadeTrevos
+            );
+            btnQuantidadeTrevos.setIconTint(android.content.res.ColorStateList.valueOf(corIcon));
+        }
+
 
         if (botaoNextStep != null) {
             botaoNextStep.setVisibility(mostrarNextStep ? View.VISIBLE : View.GONE);
@@ -556,9 +697,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        if (state.getComandoTelaSimula() instanceof ComandoTelaSimula.AbrirSurpresinha) {
+        if (state.getComandoTelaSimula() instanceof ScreenSimulaEffect.AbrirSurpresinha) {
 
-            ComandoTelaSimula.AbrirSurpresinha comando = (ComandoTelaSimula.AbrirSurpresinha) state.getComandoTelaSimula();
+            ScreenSimulaEffect.AbrirSurpresinha comando = (ScreenSimulaEffect.AbrirSurpresinha) state.getComandoTelaSimula();
 
             executarAbrirSurpresinha(comando);
 
@@ -567,7 +708,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        if (state.getComandoTelaSimula() instanceof ComandoTelaSimula.VoltarCartela) {
+        if (state.getComandoTelaSimula() instanceof ScreenSimulaEffect.VoltarCartela) {
 
             executarVoltarCartela();
 
@@ -593,7 +734,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     }
 
-    private void executarAbrirSurpresinha(ComandoTelaSimula.AbrirSurpresinha comando) {
+    private void executarAbrirSurpresinha(ScreenSimulaEffect.AbrirSurpresinha comando) {
 
         if (surpresinhaFragment == null) {
             return;
@@ -669,6 +810,11 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             btnQuantidadeNumeros.setText(textoQuantidadeNumeros);
         }
 
+        if (btnQuantidadeTrevos != null
+                && state.getEtapaAposta() == EtapaAposta.TREVOS) {
+            btnQuantidadeTrevos.setText(textoQuantidadeNumeros);
+        }
+
         if (state.isExibirDialogQuantidadeNumeros()) {
             abrirDialogQuantidadeNumeros(state);
 
@@ -688,13 +834,13 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         }
     }
 
-    private void renderComandoCarrinho(ComandoCarrinho comando) {
+    private void renderComandoCarrinho(CarrinhoEffect comando) {
 
         if (comando == null) {
             return;
         }
 
-        if (comando instanceof ComandoCarrinho.MostrarConfirmacaoLimiteDiario) {
+        if (comando instanceof CarrinhoEffect.MostrarConfirmacaoLimiteDiario) {
 
             DialogUtils.dialogSim(this, getString(R.string.MA014), new OnDialogBotaoListener() {
                 @Override
@@ -708,9 +854,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        if (comando instanceof ComandoCarrinho.ExecutarAdicionarCarrinho) {
+        if (comando instanceof CarrinhoEffect.ExecutarAdicionarCarrinhoEffect) {
 
-            ComandoCarrinho.ExecutarAdicionarCarrinho add = (ComandoCarrinho.ExecutarAdicionarCarrinho) comando;
+            CarrinhoEffect.ExecutarAdicionarCarrinhoEffect add = (CarrinhoEffect.ExecutarAdicionarCarrinhoEffect) comando;
 
             model.adicionaApostaNoCarrinho(this, add.getAposta(), add.getBarraTituloDTO());
 
@@ -719,9 +865,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        if (comando instanceof ComandoCarrinho.AdicionarTimeSurpresa) {
+        if (comando instanceof CarrinhoEffect.AdicionarTimeSurpresa) {
 
-            ComandoCarrinho.AdicionarTimeSurpresa timeSurpresa = (ComandoCarrinho.AdicionarTimeSurpresa) comando;
+            CarrinhoEffect.AdicionarTimeSurpresa timeSurpresa = (CarrinhoEffect.AdicionarTimeSurpresa) comando;
 
             adicionarTimeSurpresa(timeSurpresa.getEquipeSelecionada());
 
@@ -770,6 +916,13 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     @Override
     protected void onResume() {
         super.onResume();
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                AnalyticsHelper.Tela.MONTAR_APOSTA,
+                ModalidadeEnum.fromString(tipoJogo),
+                numeroConcurso
+        );
     }
 
     public void zerarApostas() {
@@ -1231,25 +1384,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         inicializarEstadoTeimosinhas();
         inicializarEstadoQuantidadeNumeros();
         configuraBotoesListeners();
-        configurarCorBtnQuantidadeNumeros();
-    }
-
-    private void configurarCorBtnQuantidadeNumeros() {
-
-        if (btnQuantidadeNumeros == null) {
-            return;
-        }
-
-        int corTexto = ContextCompat.getColor(this, estilo.getCorFonteFundoClaro());
-
-        btnQuantidadeNumeros.setBackgroundTintList(ContextCompat.getColorStateList(this, estilo.getCorClara()));
-
-        btnQuantidadeNumeros.setTextColor(corTexto);
-
-        btnQuantidadeNumeros.setStrokeColor(ContextCompat.getColorStateList(this, estilo.getCorEscura()));
-
-        // seta do mesmo tom do texto
-        btnQuantidadeNumeros.setIconTint(android.content.res.ColorStateList.valueOf(corTexto));
     }
 
     public void configuraBotoesListeners() {
@@ -1436,7 +1570,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     @Override
     public Button getButtonQtdTrevos() {
-        return btnQuantidadeNumeros;
+        return btnQuantidadeTrevos;
     }
 
     public BarraTituloDTO getBarraTituloDTO() {

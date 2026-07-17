@@ -1,4 +1,4 @@
-package br.gov.caixa.loterias.apostas.state;
+package br.gov.caixa.loterias.apostas.utils;
 
 public enum EtapaAposta {
     NUMEROS,

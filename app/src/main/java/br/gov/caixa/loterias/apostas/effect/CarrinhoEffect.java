@@ -1,20 +1,20 @@
-package br.gov.caixa.loterias.apostas.state;
+package br.gov.caixa.loterias.apostas.effect;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 
-public abstract class ComandoCarrinho {
+public abstract class CarrinhoEffect {
 
-    private ComandoCarrinho() {
+    private CarrinhoEffect() {
     }
 
-    public static final class ExecutarAdicionarCarrinho extends ComandoCarrinho {
+    public static final class ExecutarAdicionarCarrinhoEffect extends CarrinhoEffect {
 
         private final IdentificaoDeUmaApostaDas8Modalidades aposta;
         private final BarraTituloDTO barraTituloDTO;
 
-        public ExecutarAdicionarCarrinho(
+        public ExecutarAdicionarCarrinhoEffect(
                 IdentificaoDeUmaApostaDas8Modalidades aposta,
                 BarraTituloDTO barraTituloDTO
         ) {
@@ -31,10 +31,10 @@ public abstract class ComandoCarrinho {
         }
     }
 
-    public static final class MostrarConfirmacaoLimiteDiario extends ComandoCarrinho {
+    public static final class MostrarConfirmacaoLimiteDiario extends CarrinhoEffect {
     }
 
-    public static final class AdicionarTimeSurpresa extends ComandoCarrinho {
+    public static final class AdicionarTimeSurpresa extends CarrinhoEffect {
 
         private final ParametroEquipe equipeSelecionada;
 

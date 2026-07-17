@@ -4,23 +4,26 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
+import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
+import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
+import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
+import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
+import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 
 public class SimulaUiState {
 
     private final BarraTituloDTO barraTituloDTO;
 
-    private final boolean exibirAnimacao;
-    private final boolean carregandoFavoritarAposta;
-    private final ComandoFavoritarAposta comandoFavoritarAposta;
-    private final int animacaoRes;
-    private final float velocidadeAnimacao;
+    private final FavoritarApostaEffect favoritarApostaEffect;
 
-    private final ComandoCarrinho comandoCarrinho;
-    private final ComandoCompletarAposta comandoCompletarAposta;
+    private final CarrinhoEffect carrinhoEffect;
+    private final CompletarApostaEffect completarApostaEffect;
 
     private final ModalidadeEnum tipoJogo;
 
@@ -85,32 +88,19 @@ public class SimulaUiState {
 
     private final boolean atualizarValorApostaPorQuantidadeNumeros;
     private final boolean resetarTrevosPorQuantidadeNumeros;
-    private String textoSelecionados;
+    private final String textoSelecionados;
     private final boolean abrirCarrinho;
-    private final ComandoTelaSimula comandoTelaSimula;
+    private final ScreenSimulaEffect screenSimulaEffect;
     private final boolean surpresinhaHabilitada;
     private final boolean exibirDialogFavoritarAposta;
     private final boolean apostaFavoritada;
-    private EtapaAposta etapaAposta;
+    private final EtapaAposta etapaAposta;
     private final boolean exibirOpcaoOutrosNumeros;
     private final boolean opcaoOutrosNumerosSelecionada;
-
-    public SimulaUiState(
-            BarraTituloDTO barraTituloDTO,
-            boolean exibirAnimacao,
-            int animacaoRes,
-            float velocidadeAnimacao,
-            ComandoCarrinho comandoCarrinho
-    ) {
-        this(
-                new Builder()
-                        .setBarraTituloDTO(barraTituloDTO)
-                        .setExibirAnimacao(exibirAnimacao)
-                        .setAnimacaoRes(animacaoRes)
-                        .setVelocidadeAnimacao(velocidadeAnimacao)
-                        .setComandoCarrinho(comandoCarrinho)
-        );
-    }
+    private final AnalyticsEffect analyticsEffect;
+    private final boolean exibirInfoEtapa;
+    private final String textoInfoEtapa;
+    private final AnimacaoEffect animacaoEffect;
 
     private SimulaUiState(
             Builder builder
@@ -120,8 +110,9 @@ public class SimulaUiState {
                 : new BarraTituloDTO();
 
         this.exibirDialogComoJogar = builder.exibirDialogComoJogar;
-        this.comandoTelaSimula =
-                builder.comandoTelaSimula;
+        this.screenSimulaEffect =
+                builder.screenSimulaEffect;
+        this.analyticsEffect = builder.analyticsEffect;
 
         this.exibirOpcaoOutrosNumeros =
                 builder.exibirOpcaoOutrosNumeros;
@@ -132,23 +123,20 @@ public class SimulaUiState {
         this.surpresinhaHabilitada =
                 builder.surpresinhaHabilitada;
 
-        this.exibirAnimacao = builder.exibirAnimacao;
-        this.animacaoRes = builder.animacaoRes;
-        this.velocidadeAnimacao = builder.velocidadeAnimacao;
 
-        this.comandoCarrinho = builder.comandoCarrinho;
-        this.comandoCompletarAposta = builder.comandoCompletarAposta;
+        this.carrinhoEffect = builder.carrinhoEffect;
+        this.completarApostaEffect = builder.completarApostaEffect;
 
         this.tipoJogo = builder.tipoJogo;
         this.titleComoJogar = builder.titleComoJogar;
         this.exibirDialogFavoritarAposta = builder.exibirDialogFavoritarAposta;
-        this.carregandoFavoritarAposta = builder.carregandoFavoritarAposta;
-        this.comandoFavoritarAposta = builder.comandoFavoritarAposta;
+        this.favoritarApostaEffect = builder.favoritarApostaEffect;
         this.apostaFavoritada = builder.apostaFavoritada;
+        this.animacaoEffect = builder.animacaoEffect;
 
         this.dezenasSelecionadas = builder.dezenasSelecionadas != null
                 ? new ArrayList<>(builder.dezenasSelecionadas)
-                : new ArrayList<Integer>();
+                : new ArrayList<>();
 
         this.equipeSelecionada = builder.equipeSelecionada;
 
@@ -214,11 +202,11 @@ public class SimulaUiState {
 
         this.labelsTeimosinhas = builder.labelsTeimosinhas != null
                 ? new ArrayList<>(builder.labelsTeimosinhas)
-                : new ArrayList<String>();
+                : new ArrayList<>();
 
         this.concursosTeimosinhas = builder.concursosTeimosinhas != null
                 ? new ArrayList<>(builder.concursosTeimosinhas)
-                : new ArrayList<Integer>();
+                : new ArrayList<>();
 
         this.textoBotaoTeimosinhas = builder.textoBotaoTeimosinhas != null
                 ? builder.textoBotaoTeimosinhas
@@ -230,7 +218,7 @@ public class SimulaUiState {
         this.labelsQuantidadeNumeros =
                 builder.labelsQuantidadeNumeros != null
                         ? new ArrayList<>(builder.labelsQuantidadeNumeros)
-                        : new ArrayList<String>();
+                        : new ArrayList<>();
 
         this.qtdPrognosticosQuantidadeNumeros =
                 builder.qtdPrognosticosQuantidadeNumeros != null
@@ -260,6 +248,8 @@ public class SimulaUiState {
         this.resetarTrevosPorQuantidadeNumeros =
                 builder.resetarTrevosPorQuantidadeNumeros;
         this.abrirCarrinho = builder.abrirCarrinho;
+        this.exibirInfoEtapa = builder.exibirInfoEtapa;
+        this.textoInfoEtapa = builder.textoInfoEtapa;
 
         this.textoSelecionados =
                 builder.textoSelecionados != null
@@ -271,9 +261,6 @@ public class SimulaUiState {
     public static SimulaUiState initial() {
         return new Builder()
                 .setBarraTituloDTO(new BarraTituloDTO())
-                .setExibirAnimacao(false)
-                .setAnimacaoRes(0)
-                .setVelocidadeAnimacao(1f)
                 .setExibirDialogComoJogar(false)
                 .setExibirDialogFavoritarAposta(false)
                 .setApostaFavoritada(false)
@@ -281,7 +268,6 @@ public class SimulaUiState {
                 .setEtapaAposta(EtapaAposta.NUMEROS)
                 .setComandoCarrinho(null)
                 .setAbrirCarrinho(false)
-                .setCarregandoFavoritarAposta(false)
                 .setComandoFavoritarAposta(null)
                 .setComandoTelaSimula(null)
                 .setSurpresinhaHabilitada(false)
@@ -347,8 +333,8 @@ public class SimulaUiState {
     public boolean isEspecial() {
         return especial;
     }
-    public ComandoTelaSimula getComandoTelaSimula() {
-        return comandoTelaSimula;
+    public ScreenSimulaEffect getComandoTelaSimula() {
+        return screenSimulaEffect;
     }
 
     public boolean isSurpresinhaHabilitada() {
@@ -394,17 +380,15 @@ public class SimulaUiState {
     public BarraTituloDTO getBarraTituloDTO() {
         return barraTituloDTO;
     }
+    public String getTextoInfoEtapa(){ return textoInfoEtapa;}
+    public Boolean getExibirInfoEtapa(){return exibirInfoEtapa;}
 
     public boolean isExibirDialogComoJogar() {
         return exibirDialogComoJogar;
     }
 
-    public boolean isExibirAnimacao() {
-        return exibirAnimacao;
-    }
-
-    public int getAnimacaoRes() {
-        return animacaoRes;
+    public AnalyticsEffect getComandoAnalytics() {
+        return analyticsEffect;
     }
     public EtapaAposta getEtapaAposta() {
         return etapaAposta;
@@ -420,21 +404,10 @@ public class SimulaUiState {
         return apostaFavoritada;
     }
 
-    public boolean isCarregandoCarrinho() {
-        return carregandoCarrinho;
-    }
-
-    public boolean isExibirCarrinho() {
-        return exibirCarrinho;
-    }
-
     public CarrinhoDTO getCarrinho() {
         return carrinho;
     }
 
-    public float getVelocidadeAnimacao() {
-        return velocidadeAnimacao;
-    }
     public boolean isExibirOpcaoOutrosNumeros() {
         return exibirOpcaoOutrosNumeros;
     }
@@ -443,20 +416,16 @@ public class SimulaUiState {
         return opcaoOutrosNumerosSelecionada;
     }
 
-    public ComandoCarrinho getComandoCarrinho() {
-        return comandoCarrinho;
+    public CarrinhoEffect getComandoCarrinho() {
+        return carrinhoEffect;
     }
-    public boolean isCarregandoFavoritarAposta() {
-        return carregandoFavoritarAposta;
-    }
-
-    public ComandoFavoritarAposta getComandoFavoritarAposta() {
-        return comandoFavoritarAposta;
+    public FavoritarApostaEffect getComandoFavoritarAposta() {
+        return favoritarApostaEffect;
     }
 
 
-    public ComandoCompletarAposta getComandoCompletarAposta() {
-        return comandoCompletarAposta;
+    public CompletarApostaEffect getComandoCompletarAposta() {
+        return completarApostaEffect;
     }
 
     public ModalidadeEnum getTipoJogo() {
@@ -607,19 +576,19 @@ public class SimulaUiState {
     public boolean isResetarTrevosPorQuantidadeNumeros() {
         return resetarTrevosPorQuantidadeNumeros;
     }
+    public AnimacaoEffect getComandoAnimacao(){
+        return animacaoEffect;
+    }
 
 
     public static class Builder {
 
         private BarraTituloDTO barraTituloDTO;
 
-        private boolean exibirAnimacao;
-        private int animacaoRes;
         private boolean exibirDialogComoJogar;
-        private float velocidadeAnimacao;
 
-        private ComandoCarrinho comandoCarrinho;
-        private ComandoCompletarAposta comandoCompletarAposta;
+        private CarrinhoEffect carrinhoEffect;
+        private CompletarApostaEffect completarApostaEffect;
 
         private ModalidadeEnum tipoJogo;
 
@@ -689,15 +658,18 @@ public class SimulaUiState {
         private String textoSelecionados = "Selecione os números:";
         private boolean abrirCarrinho;
         private boolean surpresinhaHabilitada;
-        private ComandoTelaSimula comandoTelaSimula;
+        private ScreenSimulaEffect screenSimulaEffect;
         private EtapaAposta etapaAposta;
         private boolean exibirDialogFavoritarAposta;
-        private boolean carregandoFavoritarAposta;
-        private ComandoFavoritarAposta comandoFavoritarAposta;
+        private FavoritarApostaEffect favoritarApostaEffect;
         private boolean apostaFavoritada;
+        private AnalyticsEffect analyticsEffect;
+        private boolean exibirInfoEtapa;
+        private String textoInfoEtapa;
+        private AnimacaoEffect animacaoEffect;
 
         public Builder() {
-            this.dezenasSelecionadas = new ArrayList<Integer>();
+            this.dezenasSelecionadas = new ArrayList<>();
             this.botaoCompletarVisivel = true;
             this.botaoCompletarHabilitado = true;
             this.botaoAdicionarHabilitado = false;
@@ -713,14 +685,14 @@ public class SimulaUiState {
             this.titleComoJogar = "";
             this.mensagemComoJogar = "";
             this.especial = false;
-            this.labelsTeimosinhas = new ArrayList<String>();
-            this.concursosTeimosinhas = new ArrayList<Integer>();
+            this.labelsTeimosinhas = new ArrayList<>();
+            this.concursosTeimosinhas = new ArrayList<>();
             this.textoBotaoTeimosinhas = "";
             this.exibirDialogTeimosinha = false;
             this.exibirDialogSemTeimosinha = false;
             this.atualizarValorApostaPorTeimosinha = false;
-            this.labelsQuantidadeNumeros = new ArrayList<String>();
-            this.qtdPrognosticosQuantidadeNumeros = new ArrayList<Integer>();
+            this.labelsQuantidadeNumeros = new ArrayList<>();
+            this.qtdPrognosticosQuantidadeNumeros = new ArrayList<>();
 
             this.exibirDialogQuantidadeNumeros = false;
             this.exibirAvisoQuantidadeNumerosMaxima = false;
@@ -728,30 +700,28 @@ public class SimulaUiState {
 
             this.posicaoQuantidadeNumerosSelecionada = 0;
             this.textoBotaoPrognosticosSelecionado = "";
-            this.comandoTelaSimula = null;
+            this.screenSimulaEffect = null;
             this.surpresinhaHabilitada = false;
             this.exibirDialogFavoritarAposta = false;
             this.apostaFavoritada = false;
             this.etapaAposta = EtapaAposta.NUMEROS;
             this.atualizarValorApostaPorQuantidadeNumeros = false;
             this.resetarTrevosPorQuantidadeNumeros = false;
+            this.analyticsEffect = null;
+            this.exibirInfoEtapa = false;
+            this.textoInfoEtapa = "1/2";
         }
 
         public Builder(
                 SimulaUiState state
         ) {
             this.barraTituloDTO = state.barraTituloDTO;
-
-            this.exibirAnimacao = state.exibirAnimacao;
-            this.animacaoRes = state.animacaoRes;
             this.exibirDialogFavoritarAposta = state.isExibirDialogFavoritarAposta();
-
-            this.velocidadeAnimacao = state.velocidadeAnimacao;
-
-            this.comandoCarrinho = state.comandoCarrinho;
-            this.comandoCompletarAposta = state.comandoCompletarAposta;
+            this.carrinhoEffect = state.carrinhoEffect;
+            this.completarApostaEffect = state.completarApostaEffect;
             this.valorCarrinho = state.valorCarrinho;
-            this.comandoTelaSimula = state.comandoTelaSimula;
+            this.screenSimulaEffect = state.screenSimulaEffect;
+            this.analyticsEffect = state.analyticsEffect;
             this.surpresinhaHabilitada = state.surpresinhaHabilitada;
             this.quantidadeApostasCarrinho = state.quantidadeApostasCarrinho;
             this.carregandoCarrinho = state.carregandoCarrinho;
@@ -811,10 +781,10 @@ public class SimulaUiState {
             this.especial = state.especial;
             this.labelsTeimosinhas = state.labelsTeimosinhas != null
                     ? new ArrayList<>(state.labelsTeimosinhas)
-                    : new ArrayList<String>();
+                    : new ArrayList<>();
             this.concursosTeimosinhas = state.concursosTeimosinhas != null
                     ? new ArrayList<>(state.concursosTeimosinhas)
-                    : new ArrayList<Integer>();
+                    : new ArrayList<>();
             this.textoBotaoTeimosinhas = state.textoBotaoTeimosinhas;
             this.exibirDialogTeimosinha = state.exibirDialogTeimosinha;
             this.exibirDialogSemTeimosinha = state.exibirDialogSemTeimosinha;
@@ -822,7 +792,7 @@ public class SimulaUiState {
             this.labelsQuantidadeNumeros =
                     state.labelsQuantidadeNumeros != null
                             ? new ArrayList<>(state.labelsQuantidadeNumeros)
-                            : new ArrayList<String>();
+                            : new ArrayList<>();
 
             this.qtdPrognosticosQuantidadeNumeros =
                     state.qtdPrognosticosQuantidadeNumeros != null
@@ -850,6 +820,9 @@ public class SimulaUiState {
             this.resetarTrevosPorQuantidadeNumeros =
                     state.resetarTrevosPorQuantidadeNumeros;
             this.apostaFavoritada = state.apostaFavoritada;
+            this.exibirInfoEtapa = state.exibirInfoEtapa;
+            this.textoInfoEtapa = state.textoInfoEtapa;
+            this.animacaoEffect = state.animacaoEffect;
         }
 
         public Builder setLabelsQuantidadeNumeros(
@@ -858,13 +831,13 @@ public class SimulaUiState {
             this.labelsQuantidadeNumeros =
                     labelsQuantidadeNumeros != null
                             ? new ArrayList<>(labelsQuantidadeNumeros)
-                            : new ArrayList<String>();
+                            : new ArrayList<>();
             return this;
         }
         public Builder setComandoTelaSimula(
-                ComandoTelaSimula comandoTelaSimula
+                ScreenSimulaEffect screenSimulaEffect
         ) {
-            this.comandoTelaSimula = comandoTelaSimula;
+            this.screenSimulaEffect = screenSimulaEffect;
             return this;
         }
 
@@ -874,21 +847,24 @@ public class SimulaUiState {
             this.surpresinhaHabilitada = surpresinhaHabilitada;
             return this;
         }
-        public Builder setCarregandoFavoritarAposta(
-                boolean carregandoFavoritarAposta
+
+        public Builder setComandoFavoritarAposta(
+                FavoritarApostaEffect favoritarApostaEffect
         ) {
-            this.carregandoFavoritarAposta =
-                    carregandoFavoritarAposta;
+            this.favoritarApostaEffect =
+                    favoritarApostaEffect;
+            return this;
+        }
+        public Builder setExibirInfoEtapa(boolean exibirInfoEtapa) {
+            this.exibirInfoEtapa = exibirInfoEtapa;
             return this;
         }
 
-        public Builder setComandoFavoritarAposta(
-                ComandoFavoritarAposta comandoFavoritarAposta
-        ) {
-            this.comandoFavoritarAposta =
-                    comandoFavoritarAposta;
+        public Builder setTextoInfoEtapa(String textoInfoEtapa) {
+            this.textoInfoEtapa = textoInfoEtapa;
             return this;
         }
+
 
         public Builder setAbrirCarrinho(boolean abrirCarrinho) {
             this.abrirCarrinho = abrirCarrinho;
@@ -901,13 +877,19 @@ public class SimulaUiState {
                     exibirDialogFavoritarAposta;
             return this;
         }
+        public Builder setComandoAnalytics(
+                AnalyticsEffect analyticsEffect
+        ) {
+            this.analyticsEffect = analyticsEffect;
+            return this;
+        }
         public Builder setQtdPrognosticosQuantidadeNumeros(
                 List<Integer> qtdPrognosticosQuantidadeNumeros
         ) {
             this.qtdPrognosticosQuantidadeNumeros =
                     qtdPrognosticosQuantidadeNumeros != null
                             ? new ArrayList<>(qtdPrognosticosQuantidadeNumeros)
-                            : new ArrayList<Integer>();
+                            : new ArrayList<>();
             return this;
         }
 
@@ -1003,12 +985,6 @@ public class SimulaUiState {
             return this;
         }
 
-        public Builder setExibirAnimacao(
-                boolean exibirAnimacao
-        ) {
-            this.exibirAnimacao = exibirAnimacao;
-            return this;
-        }
 
         public Builder setValorCarrinho(
                 BigDecimal valorCarrinho
@@ -1073,14 +1049,14 @@ public class SimulaUiState {
         public Builder setLabelsTeimosinhas(List<String> labelsTeimosinhas) {
             this.labelsTeimosinhas = labelsTeimosinhas != null
                     ? new ArrayList<>(labelsTeimosinhas)
-                    : new ArrayList<String>();
+                    : new ArrayList<>();
             return this;
         }
 
         public Builder setConcursosTeimosinhas(List<Integer> concursosTeimosinhas) {
             this.concursosTeimosinhas = concursosTeimosinhas != null
                     ? new ArrayList<>(concursosTeimosinhas)
-                    : new ArrayList<Integer>();
+                    : new ArrayList<>();
             return this;
         }
 
@@ -1106,31 +1082,17 @@ public class SimulaUiState {
             return this;
         }
 
-        public Builder setAnimacaoRes(
-                int animacaoRes
-        ) {
-            this.animacaoRes = animacaoRes;
-            return this;
-        }
-
-        public Builder setVelocidadeAnimacao(
-                float velocidadeAnimacao
-        ) {
-            this.velocidadeAnimacao = velocidadeAnimacao;
-            return this;
-        }
-
         public Builder setComandoCarrinho(
-                ComandoCarrinho comandoCarrinho
+                CarrinhoEffect carrinhoEffect
         ) {
-            this.comandoCarrinho = comandoCarrinho;
+            this.carrinhoEffect = carrinhoEffect;
             return this;
         }
 
         public Builder setComandoCompletarAposta(
-                ComandoCompletarAposta comandoCompletarAposta
+                CompletarApostaEffect completarApostaEffect
         ) {
-            this.comandoCompletarAposta = comandoCompletarAposta;
+            this.completarApostaEffect = completarApostaEffect;
             return this;
         }
 
@@ -1146,7 +1108,7 @@ public class SimulaUiState {
         ) {
             this.dezenasSelecionadas = dezenasSelecionadas != null
                     ? new ArrayList<>(dezenasSelecionadas)
-                    : new ArrayList<Integer>();
+                    : new ArrayList<>();
             return this;
         }
 
@@ -1189,6 +1151,12 @@ public class SimulaUiState {
                 boolean mostrarBotaoLimparAposta
         ) {
             this.mostrarBotaoLimparAposta = mostrarBotaoLimparAposta;
+            return this;
+        }
+        public Builder setComandoAnimacao(
+                AnimacaoEffect animacaoEffect
+        ) {
+            this.animacaoEffect = animacaoEffect;
             return this;
         }
 

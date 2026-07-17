@@ -547,6 +547,13 @@ public abstract class SimulaUiEvent {
             return position;
         }
     }
+    public static class ComandoAnalyticsConsumido
+            extends SimulaUiEvent {
+    }
+    public static class ComandoAnimacaoConsumido
+            extends SimulaUiEvent {
+    }
+
 
     public static class DialogQuantidadeNumerosConsumido extends SimulaUiEvent {
     }

@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
-import com.google.android.material.button.MaterialButton;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -56,7 +55,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
-import br.gov.caixa.loterias.apostas.state.ComandoCompletarAposta;
+import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
@@ -92,7 +91,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
     private SensorManager mSensorManager;
     private BigDecimal valorEmReais = BigDecimal.ZERO;
-    private LotecaAdapter lotecaAdapter;
 
     private final SensorEventListener mSensorListener = new LoteriasSensorEventListener(0.00f,
             SensorManager.GRAVITY_EARTH,
@@ -115,14 +113,12 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private AppCompatCheckBox selecioneOutrosNumeros;
     private View view;
     private EditText informeNomeTime;
-    private RelativeLayout rlColunasSuperSete;
     private LinearLayout selecioneTimeCoracaoLayout, opcaoOutrosNumerosLayout;
     private RecyclerView mGridTimeCoracao;
     private RecyclerView listaDezenas;
     private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
     private ArrayList<SuperSeteAdapter> listaAdaptersSuperSete;
     private ExpandableHeightRecyclerView recyclerViewPartida;
-    private ScrollView svSuperSete;
     private int qtdTotalSelecionadosSuperSete = 0;
 
     private boolean isEcolhaTimeBtnAtivado;
@@ -371,8 +367,8 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-            rlColunasSuperSete = view.findViewById(R.id.rl_colunas_super_7);
-            svSuperSete = view.findViewById(R.id.sv_super_sete);
+            RelativeLayout rlColunasSuperSete = view.findViewById(R.id.rl_colunas_super_7);
+            ScrollView svSuperSete = view.findViewById(R.id.sv_super_sete);
             rlColunasSuperSete.setVisibility(View.VISIBLE);
             svSuperSete.setVisibility(View.VISIBLE);
         }
@@ -449,11 +445,11 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         if (dataBundle != null) {
             dataSorteioAtual = dataBundle.getString("dataSorteioAtual");
 
-            typeGameColorLight = (int) dataBundle.get("typeGameColorLight");
-            typeGameColorDark = (int) dataBundle.get("typeGameColorDark");
-            corFonteFundoBranco = (int) dataBundle.get(SimulaActivity.COR_FONTE_FUNDO_BRANCO);
-            corFonteFundoClaro = (int) dataBundle.get(SimulaActivity.COR_FONTE_FUNDO_CLARO);
-            corFonteFundoEscuro = (int) dataBundle.get(SimulaActivity.COR_FONTE_FUNDO_ESCURO);
+            typeGameColorLight = dataBundle.getInt("typeGameColorLight");
+            typeGameColorDark = dataBundle.getInt("typeGameColorDark");
+            corFonteFundoBranco = dataBundle.getInt(SimulaActivity.COR_FONTE_FUNDO_BRANCO);
+            corFonteFundoClaro = dataBundle.getInt(SimulaActivity.COR_FONTE_FUNDO_CLARO);
+            corFonteFundoEscuro = dataBundle.getInt(SimulaActivity.COR_FONTE_FUNDO_ESCURO);
         }
     }
 
@@ -641,7 +637,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     }
 
     private void zeraLoteca() {
-        limparPartidadasSelecionasLoteca(Boolean.FALSE);
+        limparPartidadasSelecionasLoteca();
         limparOpcaoOutrosNumerosLayout();
         atualizarValorENotificarEstadoCartela();
     }
@@ -922,7 +918,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (state.getComandoCompletarAposta()
-                instanceof ComandoCompletarAposta.PreencherNumerosAleatorios) {
+                instanceof CompletarApostaEffect.PreencherNumerosAleatorios) {
 
             preencheNumerosAleatorios();
             consumirComandoCompletarAposta();
@@ -930,7 +926,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (state.getComandoCompletarAposta()
-                instanceof ComandoCompletarAposta.PreencherSuperSete) {
+                instanceof CompletarApostaEffect.PreencherSuperSete) {
 
             preencheNumerosAleatoriosSuperSete(
                     ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete)
@@ -941,10 +937,10 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (state.getComandoCompletarAposta()
-                instanceof ComandoCompletarAposta.ApostaProntaParaAdicionar) {
+                instanceof CompletarApostaEffect.ApostaEffectProntaParaAdicionar) {
 
-            ComandoCompletarAposta.ApostaProntaParaAdicionar comando =
-                    (ComandoCompletarAposta.ApostaProntaParaAdicionar)
+            CompletarApostaEffect.ApostaEffectProntaParaAdicionar comando =
+                    (CompletarApostaEffect.ApostaEffectProntaParaAdicionar)
                             state.getComandoCompletarAposta();
 
             consumirComandoCompletarAposta();
@@ -959,7 +955,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (state.getComandoCompletarAposta()
-                instanceof ComandoCompletarAposta.AbrirMesDeSorte) {
+                instanceof CompletarApostaEffect.AbrirMesDeSorte) {
 
             parentActivity.mesDeSorteFragment(
                     dezenasSelecionadas,
@@ -971,7 +967,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (state.getComandoCompletarAposta()
-                instanceof ComandoCompletarAposta.AbrirTrevos) {
+                instanceof CompletarApostaEffect.AbrirTrevos) {
 
             parentActivity.trevosFragment(
                     dezenasSelecionadas
@@ -982,7 +978,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (state.getComandoCompletarAposta()
-                instanceof ComandoCompletarAposta.MostrarEscolhaTimeCoracao) {
+                instanceof CompletarApostaEffect.MostrarEscolhaTimeCoracao) {
 
             mostrarCartelaEscolhaTimeCoracao();
             timemaniaTimeSelecionadoEdicao();
@@ -992,7 +988,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (state.getComandoCompletarAposta()
-                instanceof ComandoCompletarAposta.SelecionarTimeAleatorio) {
+                instanceof CompletarApostaEffect.SelecionarTimeAleatorio) {
 
             selecionarTimeAleatorio();
 
@@ -1001,7 +997,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (state.getComandoCompletarAposta()
-                instanceof ComandoCompletarAposta.AdicionarTimeSurpresa) {
+                instanceof CompletarApostaEffect.AdicionarTimeSurpresa) {
 
             parentActivity.adicionarTimeSurpresa(
                     equipeSelecionada
@@ -1012,7 +1008,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (state.getComandoCompletarAposta()
-                instanceof ComandoCompletarAposta.ZerarLoteca) {
+                instanceof CompletarApostaEffect.ZerarLoteca) {
 
             zeraLoteca();
 
@@ -1403,7 +1399,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         int contColunasComSelecao = 0;
         ArrayList<ArrayList<Integer>> listaSuperSete = ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete);
         for (ArrayList<Integer> listaSelecionados : listaSuperSete) {
-            if (listaSelecionados.size() > 0) {
+            if (!listaSelecionados.isEmpty()) {
                 contColunasComSelecao++;
             }
         }
@@ -1424,7 +1420,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         preencherVisibilidaeGridView(View.VISIBLE, View.VISIBLE, View.GONE, View.GONE);
         informeNomeTime = selecioneTimeCoracaoLayout.findViewById(R.id.informe_nome_time);
         onChangeInformeNomeTime();
-        EscudoBO.getInstance().carregaEscudos(getContext(), () -> configurarSelecaoTimeCoracao());
+        EscudoBO.getInstance().carregaEscudos(getContext(), this::configurarSelecaoTimeCoracao);
         configurarSelecaoTimeCoracao();
         atualizarValorENotificarEstadoCartela();
 
@@ -1843,13 +1839,11 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         dezena.setSelected(true);
 
-        if (parentActivity.getFlagApostaSalva()) {
-//            voltaSalvarApostaParaLayoutInicial();
-        }
+        //            voltaSalvarApostaParaLayoutInicial();
     }
 
     private void configurarTimesLoteca() {
-        lotecaAdapter = new LotecaAdapter(parametroJogo, this);
+        LotecaAdapter lotecaAdapter = new LotecaAdapter(parametroJogo, this);
         recyclerViewPartida.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewPartida.setAdapter(lotecaAdapter);
         recyclerViewPartida.setExpanded(true);
@@ -2035,12 +2029,12 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         atualizarValorENotificarEstadoCartela();
     }
 
-    private void limparPartidadasSelecionasLoteca(boolean desativado) {
+    private void limparPartidadasSelecionasLoteca() {
         for (ParametroPartida partida : parametroJogo.getPartidas()) {
-            partida.setEmpate(desativado);
-            partida.getEquipe1().setSelecionado(desativado);
-            partida.getEquipe2().setSelecionado(desativado);
-            partida.setSelecionado(desativado);
+            partida.setEmpate(Boolean.FALSE);
+            partida.getEquipe1().setSelecionado(Boolean.FALSE);
+            partida.getEquipe2().setSelecionado(Boolean.FALSE);
+            partida.setSelecionado(Boolean.FALSE);
             partida.setQtdItensSelecionadosAnterior(0);
             partida.setQtdItensSelecionados(0);
         }
