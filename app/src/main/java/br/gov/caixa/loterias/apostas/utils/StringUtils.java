@@ -99,6 +99,10 @@ public class StringUtils {
         String cotaText = (cota <= 1) ? "cota disponível" : "cotas disponíveis";
         return "_"+cota+"_ "+cotaText+" de _"+total+"_";
     }
+    public static String getCotaListaColapsada(int cota, int total) {
+        String cotaText = (cota <= 1) ? " cota " : " cotas ";
+        return "Restam "+cota+" de "+total+cotaText;
+    }
 
     public static String transformToHorahMinuto(String hh_mm_ss) {
         return hh_mm_ss.substring(0,2) + "h" +

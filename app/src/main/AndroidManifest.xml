@@ -54,6 +54,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/trevo" />
+        <meta-data
+            android:name="google_analytics_automatic_screen_reporting_enabled"
+            android:value="false"/>
         <activity
             android:name=".controllers.QueroNaoQueroActivity"
             android:exported="false"
@@ -448,7 +451,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".controllers.ResultadoApostaConfirmadaActivity"
+            android:name=".view.activity.ResultadoApostaConfirmadaActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait" />
         <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity" />

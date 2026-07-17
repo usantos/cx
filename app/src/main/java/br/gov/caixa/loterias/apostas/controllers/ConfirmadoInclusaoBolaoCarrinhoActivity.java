@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -53,6 +54,37 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         setMetodos();
         startFragments();
         aplicaEstilo();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(modalidade == null || valorAposta == null || concurso == null){
+            return;
+        }
+
+        AnalyticsHelper.getInstance().logViewScreenApostaValor(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.BOLAO,
+                AnalyticsHelper.Tela.BOLAO_CART,
+                ModalidadeEnum.fromString(modalidade),
+                ViewUtils.getMoedaFormat(valorAposta),
+                concurso
+        );
+
+        AnalyticsHelper.getInstance().logOperationSuccess(
+                AnalyticsHelper.StatusParams.SUCESSSO,
+                AnalyticsHelper.Tela.BOLAO_CART,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.BOLAO,
+                ModalidadeEnum.fromString(modalidade),
+                concurso,
+                ViewUtils.getMoedaFormat(valorAposta),
+                true,
+                AnalyticsHelper.AnalyticsFields.BOLAO
+        );
+
     }
 
     private void aplicaEstilo() {

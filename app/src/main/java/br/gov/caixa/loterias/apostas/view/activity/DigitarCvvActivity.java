@@ -36,8 +36,30 @@ public class DigitarCvvActivity extends LoteriasBaseAppActivity {
 	private CartaoCreditoConfig cartaoNovo;
 	private MeioPagamentoConfig config;
 	private boolean isAmex;
+	private boolean cvvConfirmado = false;
+
 	private EditText cvv1, cvv2, cvv3, cvv4;
 	private Button btnConfirmarCvv;
+
+	private final TextWatcher cvvWatcher = new TextWatcher() {
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+			moveFoco();
+			enableDisableButton();
+			if (cvvCompleto() && btnConfirmarCvv.isEnabled() && !cvvConfirmado) {
+				cvvConfirmado = true;
+				btnConfirmarCvv.post(() -> btnConfirmarCvv.performClick());
+			} else if (!cvvCompleto()) {
+				cvvConfirmado = false;
+			}
+		}
+	};
 
 	private CartaoCreditoVersoFragment fragment;
 
@@ -58,6 +80,12 @@ public class DigitarCvvActivity extends LoteriasBaseAppActivity {
 		configButton();
 
 		fragment = FragmentUtils.startCartaoCreditoVerso(getSupportFragmentManager(), R.id.containerCartaoVerso, getNomeMetodoPagamento(), "");
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		cvvConfirmado = false;
 	}
 
 	private String getNomeMetodoPagamento() {
@@ -124,32 +152,28 @@ public class DigitarCvvActivity extends LoteriasBaseAppActivity {
 		cvv3 = findViewById(R.id.cvv_digit3);
 		cvv4 = findViewById(R.id.cvv_digit4);
 
-		cvv1.requestFocus();
-
 		//Digitou muda o foco para proximo
-		mudaFocoProximo(cvv1, cvv2);
-		mudaFocoProximo(cvv2, cvv3);
-		mudaFocoProximo(cvv3, cvv3);
-		if (isAmex) {
-			cvv4.setVisibility(View.VISIBLE);
-			mudaFocoProximo(cvv3, cvv4);
-			mudaFocoProximo(cvv4, cvv4);
+		cvv1.addTextChangedListener(cvvWatcher);
+		cvv2.addTextChangedListener(cvvWatcher);
+		cvv3.addTextChangedListener(cvvWatcher);
+		if (isAmex) cvv4.addTextChangedListener(cvvWatcher);
+	}
+
+	private void moveFoco() {
+		if (cvv1.hasFocus() && cvv1.length() == 1) {
+			cvv2.requestFocus();
+		} else if (cvv2.hasFocus() && cvv2.length() == 1) {
+			cvv3.requestFocus();
+		} else if (isAmex && cvv3.hasFocus() && cvv3.length() == 1) {
+			cvv4.requestFocus();
 		}
 	}
 
-	private void mudaFocoProximo(EditText currentEditText, EditText nextEditText) {
-		currentEditText.addTextChangedListener(new TextWatcher() {
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (currentEditText.getText().toString().length() == 1) { //size as per your requirement
-					nextEditText.requestFocus();
-				}
-			}
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-			public void afterTextChanged(Editable s) {
-				enableDisableButton();
-			}
-		});
+	private boolean cvvCompleto() {
+		return cvv1.length() == 1 &&
+				cvv2.length() == 1 &&
+				cvv3.length() == 1 &&
+				(!isAmex || cvv4.length() == 1);
 	}
 
 	private void configButton() {
@@ -173,15 +197,8 @@ public class DigitarCvvActivity extends LoteriasBaseAppActivity {
 	}
 
 	private void enableDisableButton() {
-		if (cvv1.getText().length() > 0 && cvv2.getText().length() > 0 &&
-			cvv3.getText().length() > 0 &&
-			(isAmex && cvv4.getText().length() > 0 ? true : (!isAmex ? true : false))) {
-
-		btnConfirmarCvv.setEnabled(true);
-		btnConfirmarCvv.setBackground(getDrawable(R.drawable.button_rounded_verdeazul));
-	} else {
-			btnConfirmarCvv.setEnabled(false);
-			btnConfirmarCvv.setBackground(getDrawable(R.color.cinzaDisable));
-		}
+		boolean enabled = cvvCompleto();
+		btnConfirmarCvv.setEnabled(enabled);
+		btnConfirmarCvv.setBackground(getDrawable(enabled ? R.drawable.button_rounded_verdeazul : R.color.cinzaDisable));
 	}
 }

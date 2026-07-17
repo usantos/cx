@@ -13,6 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:importantForAccessibility="yes"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -28,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/valorDessaAposta"
+            android:importantForAccessibility="no"
             android:textAlignment="center"
             android:textColor="@color/azulescuro"
             android:textSize="12sp"
@@ -46,6 +49,7 @@
             android:fontFamily="@font/caixa_std_bold"
             tools:text="R$ 4,50"
             android:padding="2dp"
+            android:importantForAccessibility="no"
             android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toTopOf="@id/gl_divisao"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,6 +62,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
+        android:contentDescription="@string/carrinho_apostas"
+        android:importantForAccessibility="yes"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -77,6 +83,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/icon_carrinho"
+            android:importantForAccessibility="no"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/gl_divisa"
@@ -125,6 +132,7 @@
             android:text="@string/carrinhoDeApostas"
             android:textAlignment="center"
             android:textColor="@color/azulescuro"
+            android:importantForAccessibility="no"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintStart_toStartOf="parent"
@@ -134,29 +142,39 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-    <TextView
-        android:id="@+id/valorAtualCarrinho"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_valor_carrinho"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="R$ 00,00"
-        android:textColor="#3964A4"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/caixa_std_bold"
+        android:importantForAccessibility="yes"
+        android:focusable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/tv_valor_atual_carrinho"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/valor_atual_do_carrinho"
-        android:fontFamily="@font/caixa_std_regular"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/valorAtualCarrinho"/>
+        <TextView
+            android:id="@+id/valorAtualCarrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R$ 0,00"
+            android:textColor="#3964A4"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_valor_atual_carrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/valor_atual_do_carrinho"
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/valorAtualCarrinho"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

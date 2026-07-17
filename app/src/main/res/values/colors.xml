@@ -17,10 +17,13 @@
     <color name="black_overlay">#66000000</color>
     <color name="blackText">#22292E</color>
     <color name="branco">#ffffff</color>
+    <color name="lightRed">#FEF3F4</color>
     <color name="laranja">#d87b00</color>
     <color name="branco_transparente">#99ffffff</color>
     <color name="cinza">#48586c</color>
+    <color name="grafite">#637A97</color>
     <color name="linhaDivisa">#d0e0e3</color>
+    <color name="linhaLoteca">#AFCACF</color>
     <color name="fundoApostas">#f7fafa</color>
     <color name="disabled">#f7fafa</color>
     <color name="cinza2">#d4dfe2</color>
@@ -225,6 +228,7 @@
     <color name="timemania_letra_mkp">#038141</color>
     <color name="loteca_claro_mkp">#ED1C24</color>
     <color name="loteca_escuro_mkp">#C61017</color>
+    <color name="loteca_numbers">#8C2424</color>
     <color name="mega_verde_opaco_mkp">#0F885C</color>
     <color name="bolao_azul_subtitulo">#095A9C</color>
     <color name="cor_bola_unselected">#ADC0C4</color>
