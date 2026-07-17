@@ -341,6 +341,17 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         model.removeAposta(position);
         if (model.isListaVazia()) {
             buscaServicos();
+            adapterModalidades.selecionaOPrimeiro();
+            adapterModalidades.limpaSelecaoModalidades();
+            listTipoAposta.get(0).setSelect(true);
+            desativaIncluirAposta();
+            filtrarModalidade();
+            textFiltroSelecionado.requestFocus();
+
+
+            textFiltroSelecionado.setText(listTipoAposta.get(0).getTitulo());
+            String descricao = getString(R.string.selecione_modalidade) + ":Botão:" + listTipoAposta.get(0).getTitulo() + "Selecionada";
+            conteudoFiltro.setContentDescription(descricao);
         }
         favoritasAdapter.notifyItemRemoved(position);
         favoritasAdapter.notifyItemRangeChanged(position, model.getApostaList().size());
