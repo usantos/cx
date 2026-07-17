@@ -187,18 +187,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             startActivity(new Intent(this,TutorialSuperSeteActivity.class));
         }
 
-//        //Animação Copa da Loteca
-//        if (tipoJogo == ModalidadeEnum.LOTECA && isEspecial) {
-//            lottieManager = new LottieManager(this, R.raw.copa_loteca_3);
-//            lottieManager.setSpeed(1.75f);
-//            lottieManager.start();
-//        }
-//        //Animação Quina de São João
-//        if (tipoJogo == ModalidadeEnum.QUINA && isEspecial) {
-//            lottieManager = new LottieManager(this, R.raw.quina_sao_joao_1);
-//            lottieManager.setSpeed(1.5f);
-//            lottieManager.start();
-//        }
+        //Animação Lotofacil da Independencia
+        if (tipoJogo == ModalidadeEnum.LOTOFACIL && isEspecial) {
+            lottieManager = new LottieManager(this, R.raw.lotofacil_independencia);
+            lottieManager.setSpeed(0.60f);
+            lottieManager.start();
+        }
     }
 
     @Override

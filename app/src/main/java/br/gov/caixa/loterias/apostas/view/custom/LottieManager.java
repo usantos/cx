@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import br.gov.caixa.loterias.apostas.R;
 
@@ -201,11 +199,11 @@ public class LottieManager {
                 .setMessage(R.string.animacao_msg)
                 .setPositiveButton("Sim", (DialogInterface dialog, int which) -> {
                     setPopupShow(rawRes, true);
-                    setAnimationDisable(rawRes, true);
+                    setAnimationDisable(rawRes, false);
                 })
                 .setNegativeButton("Não", (DialogInterface dialog, int which) -> {
                     setPopupShow(rawRes, true);
-                    setAnimationDisable(rawRes, false);
+                    setAnimationDisable(rawRes, true);
                 })
                 .setCancelable(false)
                 .show();
