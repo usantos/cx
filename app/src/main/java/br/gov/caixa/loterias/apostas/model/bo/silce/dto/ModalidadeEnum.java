@@ -137,6 +137,7 @@ public enum ModalidadeEnum implements Serializable {
     }
 
     public static ModalidadeEnum fromInteger( Integer valor) {
+        if (valor == null) return null;
         switch (valor) {
             case 2:
                 return ModalidadeEnum.MEGA_SENA;

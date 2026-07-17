@@ -154,9 +154,9 @@ public class MesesFragment extends Fragment {
     private void mostrarSalvarAposta() {
         if (dezenasSelecionadas != null && getItemSelecionado() != null) {
             if(parentActivity.getFlagApostaSalva()){
-                parentActivity.getSalvarApostaLayout().setBackgroundResource(R.color.cinza);
+                parentActivity.getSalvarApostaLayout().setBackgroundResource(R.drawable.bg_salvar_aposta);
                 parentActivity.getTextoSalveEstaAposta().setText(R.string.tituloSalvarAposta);
-                parentActivity.getIconStarSalvar().setBackgroundResource(R.drawable.icon_favoritar);
+                parentActivity.getIconStarSalvar().setBackgroundResource(R.drawable.icon_favoritar_novo);
             }
             parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
             tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 64);

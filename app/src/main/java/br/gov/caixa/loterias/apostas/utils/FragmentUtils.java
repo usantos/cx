@@ -26,8 +26,8 @@ import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoComboFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoSimulacaoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloComboFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloSimulacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ConfirmacaoChavePixResgateFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
@@ -138,9 +138,9 @@ public class FragmentUtils {
 		return frag;
 	}
 
-	public static BarraTitutoSimulacaoFragment startFragmentBarraTituloSimulacao(FragmentManager fm, int id, ModalidadeEnum modalidade,
+	public static BarraTituloSimulacaoFragment startFragmentBarraTituloSimulacao(FragmentManager fm, int id, ModalidadeEnum modalidade,
 																				 String concurso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
-		BarraTitutoSimulacaoFragment frag = BarraTitutoSimulacaoFragment.newInstance(modalidade, concurso, sorteio, especial, corBackground, showBGEspecial);
+		BarraTituloSimulacaoFragment frag = BarraTituloSimulacaoFragment.newInstance(modalidade, concurso, sorteio, especial, corBackground, showBGEspecial);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}
@@ -158,9 +158,9 @@ public class FragmentUtils {
 		return frag;
 	}
 
-	public static BarraTitutoComboFragment startFragmentBarraTituloCombo(FragmentManager fm, int id, ModalidadeEnum modalidade,
+	public static BarraTituloComboFragment startFragmentBarraTituloCombo(FragmentManager fm, int id, ModalidadeEnum modalidade,
 																		 int corBackground) {
-		BarraTitutoComboFragment frag = BarraTitutoComboFragment.newInstance(modalidade, corBackground);
+		BarraTituloComboFragment frag = BarraTituloComboFragment.newInstance(modalidade, corBackground);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}

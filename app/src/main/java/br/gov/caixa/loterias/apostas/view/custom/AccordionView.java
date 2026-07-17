@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.transition.TransitionManager;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.widget.ImageViewCompat;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -53,8 +57,37 @@ public class AccordionView extends ConstraintLayout {
         if (model == null) return;
 
         model.setExpanded(!model.isExpanded());
+        setExpandedDescription();
 
         applyState();
+    }
+
+    private void setExpandedDescription(){
+        ViewCompat.setAccessibilityDelegate(header, new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                    @NonNull View host,
+                    @NonNull AccessibilityNodeInfoCompat info
+            ) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+                info.setContentDescription("Como Jogar");
+                info.setClassName(Button.class.getName());
+                info.setClickable(true);
+
+                // ação correta
+                if (model.isExpanded()) {
+                    info.addAction(
+                            AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_COLLAPSE
+                    );
+                    info.setStateDescription("Expandido");
+                } else {
+                    info.addAction(
+                            AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_EXPAND
+                    );
+                    info.setStateDescription("Recolhido");
+                }
+            }
+        });
     }
 
     public void bind(AccordionModel model) {
@@ -69,6 +102,7 @@ public class AccordionView extends ConstraintLayout {
             header.setBackground(AppCompatResources.getDrawable(getContext(), estilo.getImagemSubCabecalho()));
         }
 
+        setExpandedDescription();
         body.setBackgroundColor(getContext().getColor(R.color.cinzaCx));
 
         tvBody.setText(model.getBodyText());
