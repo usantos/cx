@@ -38,7 +38,6 @@ public class MesesFragment2 extends Fragment {
 
     private ExpandableHeightGridView mesesGridView;
 
-    private ModalidadeEnum modalidadeEnum;
     private ParametroJogoDTO parametroJogoDTO;
     private ArrayList<Integer> dezenasSelecionadas;
 
@@ -51,12 +50,10 @@ public class MesesFragment2 extends Fragment {
 
     private MesesFragment2(){}
 
-    public static MesesFragment2 newInstance(ModalidadeEnum modalidade,
-                                            ParametroJogoDTO parametroJogoDTO,
+    public static MesesFragment2 newInstance(ParametroJogoDTO parametroJogoDTO,
                                             ArrayList<Integer> dezenasSelecionadas){
         MesesFragment2 fragment  = new MesesFragment2();
         Bundle        args      = new Bundle();
-        args.putSerializable(ARG_MODADLIDADE, modalidade);
         args.putSerializable(ARG_PARAMENTRO, parametroJogoDTO);
         args.putString(ARG_DEZENAS, String.valueOf(dezenasSelecionadas));
         fragment.setArguments(args);
@@ -67,10 +64,9 @@ public class MesesFragment2 extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null){
-            modalidadeEnum = (ModalidadeEnum) getArguments().getSerializable(ARG_MODADLIDADE);
             parametroJogoDTO = (ParametroJogoDTO) getArguments().getSerializable(ARG_PARAMENTRO);
             String json = getArguments().getString(ARG_DEZENAS);
-            if(json!= null && json.length() > 0){
+            if(json!= null && !json.isEmpty()){
                 dezenasSelecionadas = new Gson().fromJson(json, new TypeToken<List<Integer>>() {}.getType());
             } else {
                 dezenasSelecionadas = new ArrayList<>();
@@ -92,14 +88,7 @@ public class MesesFragment2 extends Fragment {
         viewModel = new ViewModelProvider(
                 requireActivity()
         ).get(SimulaViewModel.class);
-
-        switch (modalidadeEnum) {
-            case DIA_DE_SORTE:
-                setTelaDiaSorte();
-                break;
-            default:
-                break;
-        }
+        setTelaDiaSorte();
     }
 
     @Override
@@ -108,15 +97,8 @@ public class MesesFragment2 extends Fragment {
     }
 
     private void setTelaDiaSorte() {
-        //parentActivity.getQtdNumerosButton().setOnClickListener(null);
-
-//        parentActivity.getBotaoAdicionarCompletarCartela().setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getString(R.string.adicionarAoCarrinho)));
-        if (dezenasSelecionadas == null) {
-            parentActivity.getBotaoLimparAposta().setVisibility(View.VISIBLE);
-        }
         initRecyclerView();
         setMesDeSorte();
-
         acaoBotaoLimpar();
     }
 

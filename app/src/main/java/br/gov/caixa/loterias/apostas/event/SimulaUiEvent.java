@@ -269,6 +269,7 @@ public abstract class SimulaUiEvent {
         private final boolean equipeSelecionadaValida;
         private final boolean escolhaTimeCoracaoSurpresinha;
         private boolean etapaComplementarCompleta;
+        private List<Integer> dezenasSelecionadas;
 
         public CartelaAlterada(
                 ModalidadeEnum tipoJogo,
@@ -285,7 +286,8 @@ public abstract class SimulaUiEvent {
                 boolean escolhaTimeCoracaoSurpresinha,
                 boolean opcaoOutrosNumerosSelecionada,
                 boolean exibirOpcaoOutrosNumeros,
-                boolean etapaComplementarCompleta
+                boolean etapaComplementarCompleta,
+                List<Integer> dezenasSelecionadas
         ) {
             this.tipoJogo = tipoJogo;
             this.qtdDezenasSelecionadas = qtdDezenasSelecionadas;
@@ -302,12 +304,14 @@ public abstract class SimulaUiEvent {
             this.opcaoOutrosNumerosSelecionada = opcaoOutrosNumerosSelecionada;
             this.exibirOpcaoOutrosNumeros = exibirOpcaoOutrosNumeros;
             this.etapaComplementarCompleta = etapaComplementarCompleta;
+            this.dezenasSelecionadas = dezenasSelecionadas;
         }
         public Boolean isEtapaComplementarCompleta(){return etapaComplementarCompleta;}
 
         public ModalidadeEnum getTipoJogo() {
             return tipoJogo;
         }
+        public List<Integer> getDezenasSelecionadas(){return dezenasSelecionadas;}
         public Boolean isExibirOpcaoOutrosNumeros(){return exibirOpcaoOutrosNumeros;}
         public Boolean isOpcaoOutrosNumerosSelecionada(){return opcaoOutrosNumerosSelecionada;}
 

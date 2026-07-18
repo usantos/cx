@@ -273,7 +273,7 @@ public class SimulaUiState {
                 .setSurpresinhaHabilitada(false)
                 .setComandoCompletarAposta(null)
                 .setTipoJogo(null)
-                .setDezenasSelecionadas(new ArrayList<Integer>())
+                .setDezenasSelecionadas(new ArrayList<>())
                 .setEquipeSelecionada(null)
                 .setTelaSelecaoTimeAtivado(false)
                 .setEscolhaTimeCoracaoSurpresinha(false)
@@ -693,7 +693,7 @@ public class SimulaUiState {
             this.atualizarValorApostaPorTeimosinha = false;
             this.labelsQuantidadeNumeros = new ArrayList<>();
             this.qtdPrognosticosQuantidadeNumeros = new ArrayList<>();
-
+            this.qtdConcursoSelecionado = 0;
             this.exibirDialogQuantidadeNumeros = false;
             this.exibirAvisoQuantidadeNumerosMaxima = false;
             this.avisouQuantidadeNumerosMaxima = false;

@@ -87,11 +87,10 @@ import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener2;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnTrevosListener2 {
+public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
 
     public static String COR_FONTE_FUNDO_BRANCO = "COR_FONTE_FUNDO_BRANCO";
     public static String COR_FONTE_FUNDO_CLARO = "COR_FONTE_FUNDO_CLARO";
@@ -126,12 +125,10 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
     private Boolean isEspecial = false;
-    private DadosCorporativosSilceBO dadosCorporativosSilceBO;
 
     //mocks
     public int qtdDezenasPossiveisSelecionado;
     public int qtdConcursoSelecionado;
-    private Boolean flagApostaSalva = false;
 
     //TODO: MEGA 30 ANOS//
     private boolean isMega30;
@@ -163,7 +160,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     protected void init() {
         model = new SimularApostaModel(this);
-        dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
+        DadosCorporativosSilceBO dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
         numeroConcurso = parametroSimulacao.getConcurso().getNumero().toString();
 
@@ -322,13 +319,13 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
             botaoFavoritar.setIconResource(R.drawable.ic_favoritado_simula);
 
-            botaoFavoritar.setText("Aposta favoritada");
+            botaoFavoritar.setText(getString(R.string.aposta_favoritada));
 
         } else {
 
             botaoFavoritar.setIconResource(R.drawable.ic_star_simula);
 
-            botaoFavoritar.setText("Favoritar aposta");
+            botaoFavoritar.setText(getString(R.string.favoritar_aposta));
         }
     }
 
@@ -435,9 +432,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         if (comando instanceof FavoritarApostaEffect.Sucesso) {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
-
-            atualizaLayoutSalvarAposta();
-
             viewModel.onEvent(new SimulaUiEvent.ComandoFavoritarApostaConsumido());
             return;
         }
@@ -445,12 +439,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         if (comando instanceof FavoritarApostaEffect.ConfirmarValidacaoNegocial) {
             FavoritarApostaEffect.ConfirmarValidacaoNegocial confirmar = (FavoritarApostaEffect.ConfirmarValidacaoNegocial) comando;
 
-            DialogUtils.dialogSim(this, confirmar.getMensagem(), new OnDialogBotaoListener() {
-                @Override
-                public void onButtonClick(DialogInterface dialog, int which) {
-                    viewModel.onEvent(new SimulaUiEvent.ConfirmarSalvarApostaFavorita(confirmar.getApostaFavorita()));
-                }
-            });
+            DialogUtils.dialogSim(this, confirmar.getMensagem(), (dialog, which) -> viewModel.onEvent(new SimulaUiEvent.ConfirmarSalvarApostaFavorita(confirmar.getApostaFavorita())));
 
             viewModel.onEvent(new SimulaUiEvent.ComandoFavoritarApostaConsumido());
             return;
@@ -479,7 +468,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof MesesFragment2) {
             // MesesFragment2 também deve expor payload se salvar direto dessa etapa.
-            return;
         }
     }
 
@@ -551,8 +539,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         EtapaAposta etapaAtual = state.getEtapaAposta() != null ? state.getEtapaAposta() : EtapaAposta.NUMEROS;
 
         boolean etapaNumeros = etapaAtual == EtapaAposta.NUMEROS;
-
-        boolean etapaComplementar = etapaAtual == EtapaAposta.TREVOS || etapaAtual == EtapaAposta.MES_SORTE || etapaAtual == EtapaAposta.TIME_CORACAO;
 
         boolean mostrarNextStep = modalidadeComSegundaEtapa && etapaNumeros;
 
@@ -692,12 +678,13 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     private void renderComandoTelaSimula(SimulaUiState state) {
+        ScreenSimulaEffect effect = state.getComandoTelaSimula();
 
-        if (state.getComandoTelaSimula() == null) {
+        if (effect == null) {
             return;
         }
 
-        if (state.getComandoTelaSimula() instanceof ScreenSimulaEffect.AbrirSurpresinha) {
+        if (effect instanceof ScreenSimulaEffect.AbrirSurpresinha) {
 
             ScreenSimulaEffect.AbrirSurpresinha comando = (ScreenSimulaEffect.AbrirSurpresinha) state.getComandoTelaSimula();
 
@@ -708,30 +695,42 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        if (state.getComandoTelaSimula() instanceof ScreenSimulaEffect.VoltarCartela) {
+        if (effect instanceof ScreenSimulaEffect.VoltarEtapa) {
 
-            executarVoltarCartela();
+            ScreenSimulaEffect.VoltarEtapa voltarEtapa =
+                    (ScreenSimulaEffect.VoltarEtapa) effect;
 
-            viewModel.onEvent(new SimulaUiEvent.ComandoTelaSimulaConsumido());
+            renderEtapaAtual(voltarEtapa.getEtapa(),state);
         }
     }
 
-    private void executarVoltarCartela() {
+    private void renderEtapaAtual(
+            EtapaAposta etapa,
+            SimulaUiState state
+    ) {
 
-        if (cartelaFragment == null) {
-            return;
+        switch (etapa) {
+
+            case TREVOS:
+                trevosFragment(state.getDezenasSelecionadas());
+                break;
+
+            case MES_SORTE:
+                mesDeSorteFragment(state.getDezenasSelecionadas());
+                break;
+
+            case TIME_CORACAO:
+//                mostrarTimeCoracaoFragment();
+                break;
+
+            default:
+                abrirTelaCartela();
+                break;
         }
-
-        cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
-
-        abrirTelaCartela();
-
     }
 
     private void abrirTelaSurpresinha() {
-
         FragmentUtils.startFragmentAllowingStateLoss(fragmentManager, R.id.fragmentSimularApostas, surpresinhaFragment);
-
     }
 
     private void executarAbrirSurpresinha(ScreenSimulaEffect.AbrirSurpresinha comando) {
@@ -1213,10 +1212,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         return aposta;
     }
 
-    public Boolean getFlagApostaSalva() {
-        return flagApostaSalva;
-    }
-
     public BigDecimal getValorTotalApostaAtual() {
 
         if (viewModel == null || viewModel.getUiState() == null || viewModel.getUiState().getValue() == null || viewModel.getUiState().getValue().getValorAposta() == null) {
@@ -1227,12 +1222,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         return viewModel.getUiState().getValue().getValorAposta();
     }
 
-    public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha) {
-        mesesFragment = FragmentUtils.startMesesFragment2(fragmentManager, R.id.fragmentSimularApostas, tipoJogo, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
+    public void mesDeSorteFragment(List<Integer> dezenasSelecionadas) {
+        mesesFragment = FragmentUtils.startMesesFragment2(fragmentManager, R.id.fragmentSimularApostas, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
     }
 
     public void trevosFragment(List<Integer> dezenasSelecionadas) {
-        trevosFragment = FragmentUtils.startTrevosFragment2(fragmentManager, R.id.fragmentSimularApostas, aposta, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
+        trevosFragment = FragmentUtils.startTrevosFragment2(fragmentManager, R.id.fragmentSimularApostas, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
     }
 
     public ParametroMesDeSorte getMesDeSorteCartela() {
@@ -1526,12 +1521,12 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             return;
         }
 
-        if (isFragmentTrevos()) {
-            if (trevosFragment != null && trevosFragment.getParametroValorApostaSelecionado() != null) {
-                atualizaValorAposta(trevosFragment.getParametroValorApostaSelecionado());
-            }
-            return;
-        }
+//        if (isFragmentTrevos()) {
+//            if (trevosFragment != null && trevosFragment.getParametroValorApostaSelecionado() != null) {
+//                atualizaValorAposta(trevosFragment.getParametroValorApostaSelecionado());
+//            }
+//            return;
+//        }
 
         if (cartelaFragment != null) {
             cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
@@ -1568,34 +1563,10 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         }
     }
 
-    @Override
-    public Button getButtonQtdTrevos() {
-        return btnQuantidadeTrevos;
-    }
-
     public BarraTituloDTO getBarraTituloDTO() {
         return barraTituloDTO;
     }
 
-    @Override
-    public Button getButtonFinalizar() {
-        return botaoCompletar;
-    }
-
-    @Override
-    public void atualizaValorAposta(ParametroValorApostaDTO valorAposta) {
-
-    }
-
-    @Override
-    public int getQtdConcursos() {
-        return qtdConcursoSelecionado;
-    }
-
-    @Override
-    public void atualizaLayoutSalvarAposta() {
-        flagApostaSalva = true;
-    }
 
     @Override
     public void onBackPressed() {

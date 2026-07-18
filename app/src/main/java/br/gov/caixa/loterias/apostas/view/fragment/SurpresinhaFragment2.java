@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,7 +41,6 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
-import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
 public class SurpresinhaFragment2 extends Fragment {
@@ -51,15 +49,16 @@ public class SurpresinhaFragment2 extends Fragment {
 
     private TextView valorAposta;
     private SimulaActivity parentActivity;
-    private SurpresinhaFragmentListener surpresinhaFragmentListener;
     private ParametroEquipe equipeSelecionada = null;
     private ModalidadeEnum tipoJogo;
     private ParametroJogoDTO parametroJogo;
-    private int typeGameColorLight, typeGameColorDark, qtdSurpresinhas = 1, qtdTrevos, getQtdNumeros;
-    private int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
+    private int typeGameColorLight;
+    private int qtdSurpresinhas = 1;
+    private int qtdTrevos;
+    private int getQtdNumeros;
+    private int corFonteFundoBranco;
     private SurpresinhaGridViewAdapter simularDezenasAdapter;
     private BigDecimal valorTotalAposta;
-    private boolean isAvisouS = false;
     private boolean isAvisouT = false;
     private boolean isAvisouN = false;
     private View view;
@@ -217,20 +216,10 @@ public class SurpresinhaFragment2 extends Fragment {
             return;
         }
 
-        typeGameColorLight =
-                (int) dataBundle.get("typeGameColorLight");
+        typeGameColorLight = dataBundle.getInt("typeGameColorLight");
 
-        typeGameColorDark =
-                (int) dataBundle.get("typeGameColorDark");
+        corFonteFundoBranco = dataBundle.getInt(SimulaActivity.COR_FONTE_FUNDO_BRANCO);
 
-        corFonteFundoBranco =
-                (int) dataBundle.get(SimulaActivity.COR_FONTE_FUNDO_BRANCO);
-
-        corFonteFundoClaro =
-                (int) dataBundle.get(SimulaActivity.COR_FONTE_FUNDO_CLARO);
-
-        corFonteFundoEscuro =
-                (int) dataBundle.get(SimulaActivity.COR_FONTE_FUNDO_ESCURO);
     }
 
     private void identificarTipoJogo() {
@@ -238,21 +227,8 @@ public class SurpresinhaFragment2 extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        try {
-            surpresinhaFragmentListener = (SurpresinhaFragmentListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement SurpresinhaFragmentListener");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
-
-        surpresinhaFragmentListener = null;
     }
 
     // METODOS DE CONFIGURACOES
@@ -420,10 +396,6 @@ public class SurpresinhaFragment2 extends Fragment {
         this.equipeSelecionada = equipeSelecionada;
     }
 
-    public BigDecimal getValorTotalAposta() {
-        return valorTotalAposta;
-    }
-
     public ParametroJogoDTO getParametroJogo() {
         return parametroJogo;
     }
@@ -432,7 +404,7 @@ public class SurpresinhaFragment2 extends Fragment {
         if (isTimemania()) {
             parentActivity.escolherOutroTimeSurpresinha();
         } else if (isDiaDeSorte()) {
-            parentActivity.mesDeSorteFragment(null, true);
+            parentActivity.mesDeSorteFragment(null);
         }
 
     }

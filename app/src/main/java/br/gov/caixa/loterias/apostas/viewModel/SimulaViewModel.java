@@ -382,42 +382,132 @@ public class SimulaViewModel extends AndroidViewModel {
                 ).build());
     }
 
-    private void handleTrevosAlterados(SimulaUiEvent.TrevosAlterados event) {
+    private void handleTrevosAlterados(
+            SimulaUiEvent.TrevosAlterados event
+    ) {
         if (event == null || event.getValorAposta() == null) {
             return;
         }
 
-        int quantidadeSelecionada = event.getQuantidadeTrevosSelecionados();
+        int quantidadeSelecionada =
+                event.getQuantidadeTrevosSelecionados();
 
-        int quantidadeNecessaria = event.getQuantidadeTrevosNecessaria();
+        int quantidadeNecessaria =
+                event.getQuantidadeTrevosNecessaria();
 
-        boolean possuiTrevosSelecionados = quantidadeSelecionada > 0;
+        boolean possuiTrevosSelecionados =
+                quantidadeSelecionada > 0;
 
-        boolean apostaCompleta = quantidadeSelecionada >= quantidadeNecessaria;
+        boolean apostaCompleta =
+                quantidadeSelecionada >= quantidadeNecessaria;
 
-        BigDecimal valorAposta = event.getValorAposta().getValor() != null ? event.getValorAposta().getValor() : BigDecimal.ZERO;
+        BigDecimal valorAposta =
+                aplicarQuantidadeConcursos(
+                        event.getValorAposta().getValor()
+                );
 
         SimulaUiState atual = getCurrentState();
 
-        uiState.setValue(atual.toBuilder().setEtapaAposta(EtapaAposta.TREVOS).setBotaoNextStepHabilitado(false).setBotaoAdicionarHabilitado(apostaCompleta).setBotaoCompletarHabilitado(!apostaCompleta).setBotaoCompletarVisivel(!apostaCompleta).setBotaoLimparHabilitado(possuiTrevosSelecionados).setMostrarBotaoLimparAposta(possuiTrevosSelecionados).setMostrarSalvarAposta(apostaCompleta).setApostaFavoritada(apostaCompleta && atual.isApostaFavoritada()).setValorAposta(valorAposta).setValorGrande(isValorGrande(valorAposta)).setTextoSelecionados(montarTextoTrevosSelecionados(quantidadeSelecionada, quantidadeNecessaria)).build());
+        uiState.setValue(
+                atual.toBuilder()
+                        .setEtapaAposta(EtapaAposta.TREVOS)
+                        .setBotaoAdicionarHabilitado(
+                                apostaCompleta
+                        )
+                        .setBotaoCompletarHabilitado(
+                                !apostaCompleta
+                        )
+                        .setBotaoCompletarVisivel(
+                                !apostaCompleta
+                        )
+                        .setBotaoLimparHabilitado(
+                                possuiTrevosSelecionados
+                        )
+                        .setMostrarBotaoLimparAposta(
+                                possuiTrevosSelecionados
+                        )
+                        .setMostrarSalvarAposta(
+                                apostaCompleta
+                        )
+                        .setValorAposta(valorAposta)
+                        .setValorGrande(
+                                isValorGrande(valorAposta)
+                        )
+                        .setTextoSelecionados(
+                                montarTextoTrevosSelecionados(
+                                        quantidadeSelecionada,
+                                        quantidadeNecessaria
+                                )
+                        )
+                        .build()
+        );
     }
 
-    private void handleQuantidadeTrevosAlterada(SimulaUiEvent.QuantidadeTrevosAlterada event) {
+    private void handleQuantidadeTrevosAlterada(
+            SimulaUiEvent.QuantidadeTrevosAlterada event
+    ) {
         if (event == null || event.getValorSelecionado() == null) {
             return;
         }
 
-        ParametroValorApostaDTO valorSelecionado = event.getValorSelecionado();
+        ParametroValorApostaDTO valorSelecionado =
+                event.getValorSelecionado();
 
-        BigDecimal valorAposta = valorSelecionado.getValor() != null ? valorSelecionado.getValor() : BigDecimal.ZERO;
+        BigDecimal valorAposta =
+                aplicarQuantidadeConcursos(
+                        valorSelecionado.getValor()
+                );
 
-        Integer numeroTrevos = valorSelecionado.getNumeroTrevos();
+        Integer numeroTrevos =
+                valorSelecionado.getNumeroTrevos();
 
-        int quantidadeTrevos = numeroTrevos != null ? numeroTrevos : 0;
+        int quantidadeTrevos =
+                numeroTrevos != null
+                        ? numeroTrevos
+                        : 0;
 
         SimulaUiState atual = getCurrentState();
 
-        uiState.setValue(atual.toBuilder().setEtapaAposta(EtapaAposta.TREVOS).setBotaoNextStepHabilitado(false).setBotaoAdicionarHabilitado(false).setBotaoCompletarHabilitado(true).setBotaoCompletarVisivel(true).setBotaoLimparHabilitado(false).setMostrarBotaoLimparAposta(false).setMostrarSalvarAposta(false).setApostaFavoritada(false).setValorAposta(valorAposta).setValorGrande(isValorGrande(valorAposta)).setTextoSelecionados(montarTextoTrevosSelecionados(0, quantidadeTrevos)).setTextoBotaoPrognosticosSelecionado(montarTextoBotaoTrevos(quantidadeTrevos)).build());
+        uiState.setValue(
+                atual.toBuilder()
+                        .setEtapaAposta(EtapaAposta.TREVOS)
+                        .setValorAposta(valorAposta)
+                        .setValorGrande(isValorGrande(valorAposta))
+                        .setTextoSelecionados(
+                                montarTextoTrevosSelecionados(
+                                        0,
+                                        quantidadeTrevos
+                                )
+                        )
+                        .setTextoBotaoPrognosticosSelecionado(
+                                montarTextoBotaoTrevos(
+                                        quantidadeTrevos
+                                )
+                        )
+                        .build()
+        );
+    }
+
+    private BigDecimal aplicarQuantidadeConcursos(
+            BigDecimal valorBase
+    ) {
+        BigDecimal valorSeguro =
+                valorBase != null
+                        ? valorBase
+                        : BigDecimal.ZERO;
+
+        SimulaUiState atual = getCurrentState();
+
+        int qtdConcursos =
+                atual.getQtdConcursoSelecionado();
+
+        if (qtdConcursos > 0) {
+            return valorSeguro.multiply(
+                    BigDecimal.valueOf(qtdConcursos)
+            );
+        }
+
+        return valorSeguro;
     }
 
     private String montarTextoTrevosSelecionados(int quantidadeSelecionada, int quantidadeNecessaria) {
@@ -571,14 +661,32 @@ public class SimulaViewModel extends AndroidViewModel {
 
         SimulaUiState atual = getCurrentState();
 
-        uiState.setValue(atual.toBuilder().setSurpresinhaHabilitada(true).setMostrarSalvarAposta(false).setMostrarBotaoLimparAposta(false).setBotaoLimparHabilitado(false).setBotaoCompletarVisivel(false).setBotaoCompletarHabilitado(false).setBotaoAdicionarHabilitado(true).build());
+        uiState.setValue(
+                atual.toBuilder()
+                .setSurpresinhaHabilitada(true)
+                .setMostrarSalvarAposta(false)
+                .setMostrarBotaoLimparAposta(false)
+                .setBotaoLimparHabilitado(false)
+                .setBotaoCompletarVisivel(false)
+                .setBotaoCompletarHabilitado(false)
+                .setBotaoAdicionarHabilitado(true)
+                .build()
+        );
     }
 
     private void handleSurpresinhaFechada() {
 
         SimulaUiState atual = getCurrentState();
 
-        uiState.setValue(atual.toBuilder().setSurpresinhaHabilitada(false).setBotaoCompletarVisivel(true).setBotaoCompletarHabilitado(true).setBotaoAdicionarHabilitado(false).build());
+        uiState.setValue(
+                atual
+                .toBuilder()
+                .setSurpresinhaHabilitada(false)
+                .setBotaoCompletarVisivel(true)
+                .setBotaoCompletarHabilitado(true)
+                .setBotaoAdicionarHabilitado(false)
+                .build()
+        );
     }
 
     private void handleAlterarSurpresinha(boolean habilitada) {
@@ -591,14 +699,33 @@ public class SimulaViewModel extends AndroidViewModel {
 
             comando = new ScreenSimulaEffect.AbrirSurpresinha(tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA, true);
 
-            uiState.setValue(atual.toBuilder().setSurpresinhaHabilitada(true).setComandoTelaSimula(comando).setMostrarSalvarAposta(false).setMostrarBotaoLimparAposta(false).setBotaoLimparHabilitado(false).setBotaoCompletarVisivel(false).setBotaoCompletarHabilitado(false).setBotaoAdicionarHabilitado(true).build());
+            uiState.setValue(atual.toBuilder()
+                    .setSurpresinhaHabilitada(true)
+                    .setComandoTelaSimula(comando)
+                    .setMostrarSalvarAposta(false)
+                    .setMostrarBotaoLimparAposta(false)
+                    .setBotaoLimparHabilitado(false)
+                    .setBotaoCompletarVisivel(false)
+                    .setBotaoCompletarHabilitado(false)
+                    .setBotaoAdicionarHabilitado(true)
+                    .build()
+            );
 
             return;
         }
 
-        comando = new ScreenSimulaEffect.VoltarCartela();
+        comando = new ScreenSimulaEffect.VoltarEtapa(
+                atual.getEtapaAposta()
+        );
 
-        uiState.setValue(atual.toBuilder().setSurpresinhaHabilitada(false).setComandoTelaSimula(comando).setBotaoCompletarVisivel(true).setBotaoCompletarHabilitado(true).setBotaoAdicionarHabilitado(false).build());
+        uiState.setValue(atual.toBuilder()
+                .setSurpresinhaHabilitada(false)
+                .setComandoTelaSimula(comando)
+                .setBotaoCompletarVisivel(true)
+                .setBotaoCompletarHabilitado(true)
+                .setBotaoAdicionarHabilitado(false)
+                .build()
+        );
     }
 
     private void limparComandoTelaSimula() {
@@ -629,7 +756,18 @@ public class SimulaViewModel extends AndroidViewModel {
 
         String textoBotao = montarTextoQuantidadeNumeros(qtdSelecionada);
 
-        uiState.setValue(state.toBuilder().setLabelsQuantidadeNumeros(event.getLabelsQuantidadeNumeros()).setQtdPrognosticosQuantidadeNumeros(event.getQtdPrognosticosQuantidadeNumeros()).setQtdDezenasPossiveisSelecionado(qtdSelecionada).setTextoBotaoPrognosticosSelecionado(textoBotao).setPosicaoQuantidadeNumerosSelecionada(0).setExibirDialogQuantidadeNumeros(false).setExibirAvisoQuantidadeNumerosMaxima(false).setAtualizarValorApostaPorQuantidadeNumeros(false).setResetarTrevosPorQuantidadeNumeros(false).build());
+        uiState.setValue(state.toBuilder()
+                .setLabelsQuantidadeNumeros(event.getLabelsQuantidadeNumeros())
+                .setQtdPrognosticosQuantidadeNumeros(event.getQtdPrognosticosQuantidadeNumeros())
+                .setQtdDezenasPossiveisSelecionado(qtdSelecionada)
+                .setTextoBotaoPrognosticosSelecionado(textoBotao)
+                .setPosicaoQuantidadeNumerosSelecionada(0)
+                .setExibirDialogQuantidadeNumeros(false)
+                .setExibirAvisoQuantidadeNumerosMaxima(false)
+                .setAtualizarValorApostaPorQuantidadeNumeros(false)
+                .setResetarTrevosPorQuantidadeNumeros(false)
+                .build()
+        );
     }
 
     private void clicarQuantidadeNumeros() {
@@ -1096,9 +1234,26 @@ public class SimulaViewModel extends AndroidViewModel {
                         tipoJogo,
                         etapa
                 );
+        List<Integer> dezenas = event.getDezenasSelecionadas();
 
-        uiState.setValue(atual.toBuilder().setEtapaAposta(etapa).setQtdDezenasPossiveisSelecionado(qtdDezenasPossiveis).setTextoBotaoPrognosticosSelecionado(textoBotaoQuantidadeNumeros).setBotaoNextStepHabilitado(botaoNextStepHabilitado).setBotaoAdicionarHabilitado(botaoAdicionarHabilitado).setBotaoCompletarHabilitado(botaoCompletarHabilitado).setBotaoLimparHabilitado(botaoLimparHabilitado).setMostrarBotaoLimparAposta(botaoLimparHabilitado).setMostrarSalvarAposta(mostrarSalvarAposta).setApostaFavoritada(apostaFavoritada).setTextoSelecionados(textoSelecionados).setExibirOpcaoOutrosNumeros(event.isExibirOpcaoOutrosNumeros()).setOpcaoOutrosNumerosSelecionada(event.isOpcaoOutrosNumerosSelecionada()).setExibirInfoEtapa(exibirInfoEtapa)
-                .setTextoInfoEtapa(textoInfoEtapa).build());
+        uiState.setValue(atual.toBuilder().
+                setEtapaAposta(etapa)
+                .setQtdDezenasPossiveisSelecionado(qtdDezenasPossiveis)
+                .setTextoBotaoPrognosticosSelecionado(textoBotaoQuantidadeNumeros)
+                .setBotaoNextStepHabilitado(botaoNextStepHabilitado)
+                .setBotaoAdicionarHabilitado(botaoAdicionarHabilitado)
+                .setBotaoCompletarHabilitado(botaoCompletarHabilitado)
+                .setBotaoLimparHabilitado(botaoLimparHabilitado)
+                .setMostrarBotaoLimparAposta(botaoLimparHabilitado)
+                .setMostrarSalvarAposta(mostrarSalvarAposta)
+                .setApostaFavoritada(apostaFavoritada)
+                .setTextoSelecionados(textoSelecionados)
+                .setExibirOpcaoOutrosNumeros(event.isExibirOpcaoOutrosNumeros())
+                .setOpcaoOutrosNumerosSelecionada(event.isOpcaoOutrosNumerosSelecionada())
+                .setExibirInfoEtapa(exibirInfoEtapa)
+                .setTextoInfoEtapa(textoInfoEtapa)
+                        .setDezenasSelecionadas(dezenas)
+                .build());
     }
 
     private boolean calcularBotaoLimparHabilitadoPorFluxo(SimulaUiEvent.CartelaAlterada event, ResultadoFluxoAposta fluxo) {
@@ -1459,7 +1614,8 @@ public class SimulaViewModel extends AndroidViewModel {
                         setSurpresinhaHabilitada(false).
                         setComandoTelaSimula(null).
                         setComandoCarrinho(null).
-                        setDezenasSelecionadas(new ArrayList<Integer>()).
+                        setDezenasSelecionadas(new ArrayList<>()).
+                        setQtdConcursoSelecionado(0).
                         setQtdDezenasPossiveisSelecionado(qtdMinima).
                         setQtdConcursoSelecionado(qtdConcurso).
                         setMostrarBotaoLimparAposta(false).
@@ -1590,22 +1746,10 @@ public class SimulaViewModel extends AndroidViewModel {
 
         } else {
 
-            builder.setDezenasSelecionadas(new ArrayList<Integer>()).setLimparNumerosCartela(true).setMostrarBotaoLimparAposta(false).setMostrarSalvarAposta(false);
+            builder.setDezenasSelecionadas(new ArrayList<>()).setLimparNumerosCartela(true).setMostrarBotaoLimparAposta(false).setMostrarSalvarAposta(false);
         }
 
         uiState.setValue(builder.build());
-    }
-
-    private boolean deveHabilitarNextStep(SimulaUiEvent.CartelaAlterada event, EtapaAposta etapa) {
-        switch (event.getTipoJogo()) {
-            case MAIS_MILIONARIA:
-            case DIA_DE_SORTE:
-            case TIMEMANIA:
-                return etapa == EtapaAposta.NUMEROS && event.getQtdDezenasSelecionadas() == event.getQtdDezenasPossiveisSelecionado();
-
-            default:
-                return false;
-        }
     }
 
     private BigDecimal obterValorApostaPorParametros(int qtdPrognosticos, int qtdConcursos) {
@@ -1793,22 +1937,6 @@ public class SimulaViewModel extends AndroidViewModel {
         }
     }
 
-    private EtapaAposta resolverEtapaComComplemento(boolean numerosCompletos, boolean etapaComplementarAtiva, boolean etapaComplementarValida, EtapaAposta etapaComplementar) {
-
-        if (!numerosCompletos) {
-            return EtapaAposta.NUMEROS;
-        }
-
-        if (!etapaComplementarAtiva) {
-            return EtapaAposta.NUMEROS;
-        }
-
-        if (!etapaComplementarValida) {
-            return etapaComplementar;
-        }
-
-        return EtapaAposta.PRONTA;
-    }
 
     private boolean isSelecaoPrincipalCompleta(SimulaUiEvent.CartelaAlterada event) {
 

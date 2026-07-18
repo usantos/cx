@@ -670,6 +670,7 @@
     <string name="numeros_proibidos">Números proibidos</string>
     <string name="apostas_favoritas">Apostas favoritas</string>
     <string name="aposta_favorita">Aposta Favorita</string>
+    <string name="aposta_favoritada">Aposta Favoritada</string>
     <string name="resgatar">Resgatar</string>
     <string name="resgatar_premio_mp">Resgatar prêmio</string>
     <string name="excelente">Excelente :)</string>

@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -40,6 +40,7 @@ import java.util.Random;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
+import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
@@ -55,7 +56,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
-import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
@@ -81,8 +81,6 @@ import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
@@ -90,7 +88,6 @@ import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 public class SimulaFragment extends Fragment implements LocateAdapterListener, LotogolListener {
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
     private SensorManager mSensorManager;
-    private BigDecimal valorEmReais = BigDecimal.ZERO;
 
     private final SensorEventListener mSensorListener = new LoteriasSensorEventListener(0.00f,
             SensorManager.GRAVITY_EARTH,
@@ -138,6 +135,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private SimulaViewModel viewModel;
 
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
+    private Context context;
 
     public SimulaFragment() {
         // Required empty public constructor
@@ -159,25 +157,22 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             return;
         }
 
+        SimulaUiState state =
+                viewModel.getUiState().getValue();
+
         if (parametroJogo.getValoresAposta() == null) {
             DialogUtils.dialogEntendiListener(
                     getActivity(),
                     getString(R.string.nao_concluiu_aposta),
-                    new OnDialogBotaoListener() {
-                        @Override
-                        public void onButtonClick(
-                                DialogInterface dialog,
-                                int which
-                        ) {
-                            Intent intent =
-                                    IntentUtil.getIntentLimpandoPilhaActivities(
-                                            getActivity(),
-                                            PrincipalActivity.class
-                                    );
+                    (dialog, which) -> {
+                        Intent intent =
+                                IntentUtil.getIntentLimpandoPilhaActivities(
+                                        getActivity(),
+                                        PrincipalActivity.class
+                                );
 
-                            getActivity().startActivity(intent);
-                            getActivity().finish();
-                        }
+                        getActivity().startActivity(intent);
+                        getActivity().finish();
                     }
             );
 
@@ -201,18 +196,15 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 valorCalculado = parametroValorAposta.getValor();
             }
 
-            if (parentActivity.getQtdConcursos() > 0) {
+            if (state.getQtdConcursoSelecionado() > 0) {
                 valorCalculado =
                         valorCalculado.multiply(
                                 BigDecimal.valueOf(
-                                        parentActivity.getQtdConcursos()
+                                        state.getQtdConcursoSelecionado()
                                 )
                         );
             }
 
-            parentActivity.atualizaValorAposta(
-                    parametroValorAposta
-            );
 
             publicarValorAposta(valorCalculado);
             return;
@@ -247,9 +239,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     );
         }
 
-        SimulaUiState state =
-                viewModel.getUiState().getValue();
-
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
                 && state != null
                 && state.isOpcaoOutrosNumerosSelecionada()) {
@@ -273,7 +262,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager = (SensorManager) this.context.getSystemService(Context.SENSOR_SERVICE);
         mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         viewModel =
                 new ViewModelProvider(
@@ -288,7 +277,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             parametroJogo = parentActivity.getParametroSimulacao();
         }
 
-        if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null
+        if (parametroJogo != null && dezenas.isEmpty() && parametroJogo.getPrognosticoMaximo() != null
                 && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
             for (int i = 1; i <= parametroJogo.getPrognosticoMaximo(); i++) {
                 if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && i == 100) {
@@ -299,7 +288,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             }
         }
 
-        if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null && !(tipoJogo == ModalidadeEnum.SUPER_7)) {
+        if (parametroJogo != null && dezenas.isEmpty() && parametroJogo.getPrognosticoMaximo() != null && !(tipoJogo == ModalidadeEnum.SUPER_7)) {
             dezenas = VolanteUtils.getDezenas(tipoJogo, parametroJogo.getPrognosticoMaximo());
         }
 
@@ -473,19 +462,20 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        this.context = context;
         try {
             CartelaFragment2Listener = (CartelaFragmentListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement CartelaFragment2Listener");
+            throw new ClassCastException(context + " must implement CartelaFragment2Listener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-
+        this.context = null;
         CartelaFragment2Listener = null;
     }
 
@@ -495,23 +485,22 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
     }
 
-    private void preencherVisibilidaeGridView(int visibilidadeEscolhaTimeCoracao, int visibilidadeSelecioneTimeCoracao, int visibilidadeEscolhaLoteca,
-                                              int visibilidadeDezanas) {
+    private void preencherVisibilidadeGridView() {
         if (mGridTimeCoracao != null) {
-            mGridTimeCoracao.setVisibility(visibilidadeEscolhaTimeCoracao);
+            mGridTimeCoracao.setVisibility(View.VISIBLE);
         }
 
         if (selecioneTimeCoracaoLayout != null) {
-            selecioneTimeCoracaoLayout.setVisibility(visibilidadeSelecioneTimeCoracao);
+            selecioneTimeCoracaoLayout.setVisibility(View.VISIBLE);
         }
 
         if (recyclerViewPartida != null) {
-            recyclerViewPartida.setVisibility(visibilidadeEscolhaLoteca);
+            recyclerViewPartida.setVisibility(View.GONE);
 
         }
 
         if (listaDezenas != null) {
-            listaDezenas.setVisibility(visibilidadeDezanas);
+            listaDezenas.setVisibility(View.GONE);
         }
 
     }
@@ -825,7 +814,8 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         isEscolhaTimeCoracaoSurpresinha,
                         outrosNumerosSelecionado,
                         exibirOutrosNumeros,
-                        etapaComplementarCompleta
+                        etapaComplementarCompleta,
+                        dezenasSelecionadas
                 )
         );
     }
@@ -958,8 +948,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 instanceof CompletarApostaEffect.AbrirMesDeSorte) {
 
             parentActivity.mesDeSorteFragment(
-                    dezenasSelecionadas,
-                    false
+                    dezenasSelecionadas
             );
 
             consumirComandoCompletarAposta();
@@ -1268,7 +1257,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
 
     private void selecionarTimeAleatorio() {
-        int randomInt = 0;
+        int randomInt;
         Random randomGenerator = Utils.getRandom();
         randomInt = randomGenerator.nextInt(listaEquipefiltro.size() - 1);
         equipeSelecionada = listaEquipefiltro.get(randomInt);
@@ -1282,13 +1271,13 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
     private void limparOpcaoOutrosNumerosLayout() {
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && opcaoOutrosNumerosLayout.getVisibility() == View.VISIBLE) {
-            setVisibilityCheckedNumerosLayout(View.GONE);
+            setVisibilityCheckedNumerosLayout();
             atualizarValorENotificarEstadoCartela();
         }
     }
 
-    private void setVisibilityCheckedNumerosLayout(int visibility) {
-        opcaoOutrosNumerosLayout.setVisibility(visibility);
+    private void setVisibilityCheckedNumerosLayout() {
+        opcaoOutrosNumerosLayout.setVisibility(View.GONE);
         selecioneOutrosNumeros.setChecked(Boolean.FALSE);
     }
 
@@ -1308,13 +1297,9 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
     private void onClickOutrosNumerosLayout() {
 
-        opcaoOutrosNumerosLayout.setOnClickListener(v -> {
-
-            viewModel.onEvent(
-                    new SimulaUiEvent.ToggleOutrosNumeros()
-            );
-
-        });
+        opcaoOutrosNumerosLayout.setOnClickListener(v -> viewModel.onEvent(
+                new SimulaUiEvent.ToggleOutrosNumeros()
+        ));
     }
 
     private void preencheNumerosAleatorios() {
@@ -1362,13 +1347,11 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 });
     }
 
-    private ArrayList<ArrayList<Integer>> atualizaSuperSetePrognosticoMaior(ArrayList<ArrayList<Integer>> listaInteiros) {
+    private void atualizaSuperSetePrognosticoMaior(ArrayList<ArrayList<Integer>> listaInteiros) {
         if (parentActivity.qtdDezenasPossiveisSelecionado < getQtdTotalSelecionadosSuperSete(listaInteiros)) {
             qtdTotalSelecionadosSuperSete = 0;
-            listaInteiros = new ArrayList<>();
             limpaNumerosSuperSete();
         }
-        return listaInteiros;
     }
 
     private int getQtdTotalSelecionadosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros) {
@@ -1395,7 +1378,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
     private boolean validaSelecaoSuperSete() {
         //lista de cima igual aos selecionados e no minimo 1 por coluna
-        Boolean mostraSalvar = false;
+        boolean mostraSalvar = false;
         int contColunasComSelecao = 0;
         ArrayList<ArrayList<Integer>> listaSuperSete = ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete);
         for (ArrayList<Integer> listaSelecionados : listaSuperSete) {
@@ -1417,10 +1400,10 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         isTelaSelecaoTimeAtivado = true;
         selecioneTimeCoracaoLayout = view.findViewById(R.id.selecioneTimeCoracao);
         mGridTimeCoracao = view.findViewById(R.id.gridTimes);
-        preencherVisibilidaeGridView(View.VISIBLE, View.VISIBLE, View.GONE, View.GONE);
+        preencherVisibilidadeGridView();
         informeNomeTime = selecioneTimeCoracaoLayout.findViewById(R.id.informe_nome_time);
         onChangeInformeNomeTime();
-        EscudoBO.getInstance().carregaEscudos(getContext(), this::configurarSelecaoTimeCoracao);
+        EscudoBO.getInstance().carregaEscudos(context, this::configurarSelecaoTimeCoracao);
         configurarSelecaoTimeCoracao();
         atualizarValorENotificarEstadoCartela();
 
@@ -1532,7 +1515,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private boolean mostraLimparSuperSete() {
         if (listaGridsSuperSete != null) {
             for (ExpandableHeightGridView grid : listaGridsSuperSete) {
-                if (((SuperSeteAdapter) grid.getAdapter()).dezenasSelecionadas.size() > 0) {
+                if (!((SuperSeteAdapter) grid.getAdapter()).dezenasSelecionadas.isEmpty()) {
                     return true;
                 }
             }
@@ -1550,36 +1533,16 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 atualizarValorENotificarEstadoCartela();
             }
         } else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-            if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado) {
-//                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
-
-                if (mGridTimeCoracao != null) {
-//                    botaoCompletar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.label_selecionar_time_aleatoriamente)));
-//                    botaoCompletar.setTextColor(getResources().getColor(R.color.branco));
-//                    botaoCompletar.setBackgroundColor(getContext().getResources().getColor(R.color.cinza));
-                } else {
-//                    botaoCompletar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.label_escolha_time_coracao)));
-//                    botaoCompletar.setTextColor(getResources().getColor(corFonteFundoEscuro));
-//                    botaoCompletar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
-                }
-            } else {
                 atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
-            }
         } else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
             if (matrizSelecionada != null) {
                 preencheSuperSete(matrizSelecionada);
                 matrizSelecionada = null;
-                if (validaSelecaoSuperSete() && qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
-                    atualizarValorENotificarEstadoCartela();
-                } else {
-                    atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
-                }
+            }
+            if (validaSelecaoSuperSete() && qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
+                atualizarValorENotificarEstadoCartela();
             } else {
-                if (validaSelecaoSuperSete() && qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
-                    atualizarValorENotificarEstadoCartela();
-                } else {
-                    atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
-                }
+                atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
             }
         } else {
             atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
@@ -1601,9 +1564,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             } else {
                 botaoCompletar.setEnabled(false);
-//                botaoCompletar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
-//                botaoCompletar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_times_aleatoriamente)));
-//                botaoCompletar.setTextColor(getResources().getColor(R.color.branco));
             }
         }
     }
@@ -1617,13 +1577,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             } else {
                 atualizarValorENotificarEstadoCartela();
                 if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-                    if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
-                        botaoCompletar.setClickable(true);
-//                        botaoCompletar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
-                    } else {
-                        botaoCompletar.setClickable(false);
-
-                    }
+                    botaoCompletar.setClickable(equipeSelecionada != null && equipeSelecionada.isSelecionado());
                 }
             }
 
@@ -1645,24 +1599,17 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
         recyclerViewPartida = fragmentView.findViewById(R.id.recyclerViewPartida);
 
-        if (dezenas != null && dezenas.size() > 0 && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-            //simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, dezenasSelecionadas,
-            //													typeGameColorDark, onItemClickListener());
+        if (dezenas != null && !dezenas.isEmpty() && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
             simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, dezenasSelecionadas,
                     corFonteFundoBranco, onItemClickListener());
             listaDezenas.setAdapter(simularDezenasAdapter);
 
-            RecyclerView.LayoutManager layoutDezenas = new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA);
+            RecyclerView.LayoutManager layoutDezenas = new GridLayoutManager(context, QUANTIDADE_COLUNA_LISTA);
             listaDezenas.setLayoutManager(layoutDezenas);
             listaDezenas.setNestedScrollingEnabled(false);
         } else {
             if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-                EscudoBO.getInstance().carregaEscudos(getContext(), new OnEscudoListener() {
-                    @Override
-                    public void aposCarregarEscudos() {
-                        configurarTimesLoteca();
-                    }
-                });
+                EscudoBO.getInstance().carregaEscudos(context, this::configurarTimesLoteca);
                 //configurarTimesLoteca();
 
                 fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
@@ -1675,7 +1622,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     @NotNull
     private OnItemClickListener<DezenaHolder> onItemClickListener() {
 
-        return (OnItemClickListener<DezenaHolder>) (holder, position) -> {
+        return (holder, position) -> {
             try {
                 if (parametroJogo == null
                         || parentActivity == null
@@ -1756,14 +1703,11 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         ? parametroJogo.getQuantidadeMinima()
                         : 0;
 
-        int novaQuantidadePossivel =
+        parentActivity.qtdDezenasPossiveisSelecionado =
                 Math.max(
                         dezenasSelecionadas.size(),
                         quantidadeMinima
                 );
-
-        parentActivity.qtdDezenasPossiveisSelecionado =
-                novaQuantidadePossivel;
 
     }
 
@@ -1793,13 +1737,10 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         if (quantidadePossivelAtual < quantidadeMaxima) {
 
-            int novaQuantidadePossivel =
+            parentActivity.qtdDezenasPossiveisSelecionado =
                     CartelaFragment2Listener.verificaNovoQtdDezenasMax(
                             quantidadePossivelAtual
                     );
-
-            parentActivity.qtdDezenasPossiveisSelecionado =
-                    novaQuantidadePossivel;
 
             adicionarDezena(
                     dezena,
@@ -1889,14 +1830,11 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         parentActivity.qtdDezenasPossiveisSelecionado = CartelaFragment2Listener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
 
                         if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
-                            if (listaSelecionados.size() < adapter.QTD_MAX_POR_COLUNA) {
+                            if (listaSelecionados.size() < SuperSeteAdapter.QTD_MAX_POR_COLUNA) {
                                 if (listaSelecionados.size() < adapter.getQtdColunasMaximas((parentActivity.qtdDezenasPossiveisSelecionado + 1))) {
                                     parentActivity.qtdDezenasPossiveisSelecionado += 1;
                                     parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
                                     atualizarValorENotificarEstadoCartela();
-                                    if (parentActivity.getFlagApostaSalva()) {
-//                                        voltaSalvarApostaParaLayoutInicial();
-                                    }
                                     listaSelecionados.add(valorSelecionado);
                                     qtdTotalSelecionadosSuperSete++;
 
@@ -1916,7 +1854,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                             DialogUtils.dialogEntendi(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
                         }
                     } else {
-                        if (listaSelecionados.size() < adapter.QTD_MAX_POR_COLUNA) {
+                        if (listaSelecionados.size() < SuperSeteAdapter.QTD_MAX_POR_COLUNA) {
                             if (listaSelecionados.size() < adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado)) {
                                 listaSelecionados.add(valorSelecionado);
                                 qtdTotalSelecionadosSuperSete++;
@@ -1945,7 +1883,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private void configurarSelecaoTimeCoracao() {
         listaEquipefiltro = new ArrayList<>(parametroJogo.getEquipes());
         timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), listaEquipefiltro, onTimeSelecionadoListener());
-        mGridTimeCoracao.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        mGridTimeCoracao.setLayoutManager(new GridLayoutManager(context, 3));
         mGridTimeCoracao.setAdapter(timeCoracaoAdapter);
     }
 
@@ -1970,8 +1908,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
     @Override
     public void clickEquipeLoteca(ParametroPartida parametroPartida) {
-        BigDecimal ultimoValor = valorEmReais;
-
         if (parametroPartida.isSelecionado()) {
             if (parametroPartida.getQtdItensSelecionados() == 1) {
                 parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) + 1));
@@ -1994,7 +1930,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) - 1));
             partidasSelecionadas.remove(parametroPartida);
         }
-        int somaTotais = 0;
+        int somaTotais;
         int valueSimples = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()))));
         int valueDuplas = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()))));
         int valueTriplas = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()))));
@@ -2009,18 +1945,18 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
 
         if (somaTotais >= 14) {
-            valorTotalJogos.setTextColor(getResources().getColor(R.color.verdeazul));
-            valorTotalSimples.setTextColor(getResources().getColor(R.color.verdeazul));
+            valorTotalJogos.setTextColor(ContextCompat.getColor(context,R.color.verdeazul));
+            valorTotalSimples.setTextColor(ContextCompat.getColor(context,R.color.verdeazul));
         } else {
-            valorTotalJogos.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
-            valorTotalSimples.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
+            valorTotalJogos.setTextColor(ContextCompat.getColor(context,R.color.loteca_claro_mkp));
+            valorTotalSimples.setTextColor(ContextCompat.getColor(context,R.color.loteca_claro_mkp));
         }
         if (valueDuplas == 0 && valueTriplas == 0) {
-            valorTotalDuplas.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
-            valorTotalTriplas.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
+            valorTotalDuplas.setTextColor(ContextCompat.getColor(context,R.color.loteca_claro_mkp));
+            valorTotalTriplas.setTextColor(ContextCompat.getColor(context,R.color.loteca_claro_mkp));
         } else {
-            valorTotalDuplas.setTextColor(getResources().getColor(R.color.verdeazul));
-            valorTotalTriplas.setTextColor(getResources().getColor(R.color.verdeazul));
+            valorTotalDuplas.setTextColor(ContextCompat.getColor(context,R.color.verdeazul));
+            valorTotalTriplas.setTextColor(ContextCompat.getColor(context,R.color.verdeazul));
         }
 
 
@@ -2102,10 +2038,9 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     parametroJogo.getValorApostaMinima();
         }
 
-        valorEmReais =
-                valorCalculado != null
-                        ? valorCalculado
-                        : BigDecimal.ZERO;
+        BigDecimal valorEmReais = valorCalculado != null
+                ? valorCalculado
+                : BigDecimal.ZERO;
 
         publicarValorAposta(valorEmReais);
 
@@ -2118,10 +2053,10 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             return;
         }
 
-        IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta =
+        IdentificaoDeUmaApostaDas8Modalidades aposta =
                 parentActivity.getAposta();
 
-        IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaSuperSete =
+        IdentificaoDeUmaApostaDas8Modalidades apostaSuperSete =
                 parentActivity.getAposta();
 
         if (parentActivity.getAposta().getModalidade() == ModalidadeEnum.SUPER_7) {

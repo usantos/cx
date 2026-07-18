@@ -247,9 +247,9 @@ public class FragmentUtils {
 		startFragmentAllowingStateLoss(fm,id, fragment);
 		return fragment;
 	}
-	public static MesesFragment2 startMesesFragment2(FragmentManager fm, int id, ModalidadeEnum modalidadeEnum,
+	public static MesesFragment2 startMesesFragment2(FragmentManager fm, int id,
 													 ParametroJogoDTO parametro, ArrayList<Integer> selecionados) {
-		MesesFragment2 fragment = MesesFragment2.newInstance(modalidadeEnum, parametro, selecionados);
+		MesesFragment2 fragment = MesesFragment2.newInstance(parametro, selecionados);
 		startFragmentAllowingStateLoss(fm,id, fragment);
 		return fragment;
 	}
@@ -259,9 +259,9 @@ public class FragmentUtils {
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}
-	public static TrevosFragment2 startTrevosFragment2(FragmentManager fm, int id, IdentificaoDeUmaApostaDas8Modalidades aposta,
+	public static TrevosFragment2 startTrevosFragment2(FragmentManager fm, int id,
 													 ParametroJogoDTO parametroSimulacao, ArrayList<Integer> dezenasSelecionadas) {
-		TrevosFragment2 frag = TrevosFragment2.newInstance(aposta, parametroSimulacao, dezenasSelecionadas);
+		TrevosFragment2 frag = TrevosFragment2.newInstance(parametroSimulacao, dezenasSelecionadas);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}

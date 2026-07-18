@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.effect;
 
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
+
 public abstract class ScreenSimulaEffect {
 
     private ScreenSimulaEffect() {
@@ -18,15 +20,18 @@ public abstract class ScreenSimulaEffect {
             this.esconderPaginacao = esconderPaginacao;
         }
 
-        public boolean isEsconderQuantidadeNumeros() {
-            return esconderQuantidadeNumeros;
+    }
+    public static final class VoltarEtapa
+            extends ScreenSimulaEffect {
+
+        private final EtapaAposta etapa;
+
+        public VoltarEtapa(EtapaAposta etapa) {
+            this.etapa = etapa;
         }
 
-        public boolean isEsconderPaginacao() {
-            return esconderPaginacao;
+        public EtapaAposta getEtapa() {
+            return etapa;
         }
-    }
-    public static final class VoltarCartela
-            extends ScreenSimulaEffect {
     }
 }
