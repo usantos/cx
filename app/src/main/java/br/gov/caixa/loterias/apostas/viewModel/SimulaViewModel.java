@@ -21,7 +21,12 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
 import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
+import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
+import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
+import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
+import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -38,15 +43,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
-import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
-import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
-import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
-import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
-import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class SimulaViewModel extends AndroidViewModel {

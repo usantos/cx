@@ -13,6 +13,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -700,7 +701,16 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             ScreenSimulaEffect.VoltarEtapa voltarEtapa =
                     (ScreenSimulaEffect.VoltarEtapa) effect;
 
-            renderEtapaAtual(voltarEtapa.getEtapa(),state);
+            renderEtapaAtual(
+                    voltarEtapa.getEtapa(),
+                    state
+            );
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.ComandoTelaSimulaConsumido()
+            );
+
+            return;
         }
     }
 
