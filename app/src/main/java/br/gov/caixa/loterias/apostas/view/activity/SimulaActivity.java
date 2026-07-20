@@ -86,7 +86,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class SimulaActivity<T> extends LoteriasBaseAppActivity implements CartelaFragmentListener, SurpresinhaFragmentListener {
+public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFragmentListener, SurpresinhaFragmentListener {
 
     public static String COR_FONTE_FUNDO_BRANCO = "COR_FONTE_FUNDO_BRANCO";
     public static String COR_FONTE_FUNDO_CLARO = "COR_FONTE_FUNDO_CLARO";
