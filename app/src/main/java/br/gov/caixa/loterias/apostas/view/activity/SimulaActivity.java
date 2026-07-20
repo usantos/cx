@@ -3,14 +3,12 @@ package br.gov.caixa.loterias.apostas.view.activity;
 import static java.lang.String.format;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -32,7 +31,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +81,6 @@ import br.gov.caixa.loterias.apostas.view.fragment.SimulaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment2;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
@@ -155,6 +152,22 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simula_aposta);
         init();
+        getOnBackPressedDispatcher().addCallback(
+                this,
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+
+                        InputUtils.closeKeyboard(
+                                SimulaActivity.this
+                        );
+
+                        setEnabled(false);
+                        getOnBackPressedDispatcher()
+                                .onBackPressed();
+                    }
+                }
+        );
     }
 
     protected void init() {
@@ -689,14 +702,33 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
 
     private Drawable criarThumbChecked() {
 
-        LayerDrawable drawable = (LayerDrawable) AppCompatResources.getDrawable(this, R.drawable.surpresinha_thumb_checked).mutate();
+        Drawable drawableBase =
+                AppCompatResources.getDrawable(
+                        this,
+                        R.drawable.surpresinha_thumb_checked
+                );
 
-        GradientDrawable circle = (GradientDrawable) drawable.getDrawable(0);
+        if (!(drawableBase instanceof LayerDrawable)) {
+            return new GradientDrawable();
+        }
 
-        circle.setColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+        LayerDrawable drawable =
+                (LayerDrawable) drawableBase.mutate();
+
+        Drawable layer = drawable.getDrawable(0);
+
+        if (layer instanceof GradientDrawable) {
+            ((GradientDrawable) layer).setColor(
+                    ContextCompat.getColor(
+                            this,
+                            estilo.getCorEscura()
+                    )
+            );
+        }
 
         return drawable;
     }
+
     private void renderAvisoQuantidadeTrevos(
             SimulaUiState state
     ) {
@@ -726,9 +758,8 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
 
         if (effect instanceof ScreenSimulaEffect.AbrirSurpresinha) {
 
-            ScreenSimulaEffect.AbrirSurpresinha comando = (ScreenSimulaEffect.AbrirSurpresinha) state.getComandoTelaSimula();
 
-            executarAbrirSurpresinha(comando);
+            executarAbrirSurpresinha();
 
             viewModel.onEvent(new SimulaUiEvent.ComandoTelaSimulaConsumido());
 
@@ -801,7 +832,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
         FragmentUtils.startFragmentAllowingStateLoss(fragmentManager, R.id.fragmentSimularApostas, surpresinhaFragment);
     }
 
-    private void executarAbrirSurpresinha(ScreenSimulaEffect.AbrirSurpresinha comando) {
+    private void executarAbrirSurpresinha() {
 
         if (surpresinhaFragment == null) {
             return;
@@ -909,12 +940,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
 
         if (comando instanceof CarrinhoEffect.MostrarConfirmacaoLimiteDiario) {
 
-            DialogUtils.dialogSim(this, getString(R.string.MA014), new OnDialogBotaoListener() {
-                @Override
-                public void onButtonClick(DialogInterface dialog, int which) {
-                    viewModel.onEvent(new SimulaUiEvent.ConfirmarAdicionarCarrinho());
-                }
-            });
+            DialogUtils.dialogSim(this, getString(R.string.MA014), (dialog, which) -> viewModel.onEvent(new SimulaUiEvent.ConfirmarAdicionarCarrinho()));
 
             viewModel.onEvent(new SimulaUiEvent.ComandoCarrinhoConsumido());
 
@@ -1099,7 +1125,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
 
                 Bundle args = new Bundle();
 
-                args.putSerializable(CarrinhoActivity.CARRINHO, (Serializable) response.getPayload());
+                args.putSerializable(CarrinhoActivity.CARRINHO, response.getPayload());
 
                 startActivity(new Intent(SimulaActivity.this, CarrinhoActivity.class).putExtras(args));
             }
@@ -1172,10 +1198,10 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
     }
 
     public void setColorValuesLoteca() {
-        this.labelValueJogosLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
-        this.labelValueSimplesLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
-        this.labelValueDuplasLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
-        this.labelValueTriplasLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
+        this.labelValueJogosLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
+        this.labelValueSimplesLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
+        this.labelValueDuplasLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
+        this.labelValueTriplasLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
     }
 
     public void setLabelValueJogosLoteca(String labelValueJogosLoteca) {
@@ -1385,11 +1411,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
         cartelaFragment.cartelaFragmentBuilder(bundle);
         surpresinhaFragment.surpresinhaFragmentBuilder(bundle);
 
-        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
-            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-        }
-
         inicializarEstadoTeimosinhas();
         inicializarEstadoQuantidadeNumeros();
         configuraBotoesListeners();
@@ -1460,9 +1481,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
             );
         }
 
-        switchSurpresinha.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            viewModel.onEvent(new SimulaUiEvent.AlterarSurpresinha(isChecked));
-        });
+        switchSurpresinha.setOnCheckedChangeListener((buttonView, isChecked) -> viewModel.onEvent(new SimulaUiEvent.AlterarSurpresinha(isChecked)));
     }
 
     private void abrirDialogQuantidadeNumeros(SimulaUiState state) {
@@ -1627,9 +1646,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
     }
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, lightColor));
-        }
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, lightColor));
 
         toolBarLoteca.setVisibility(visibilityToolBarLoteca);
 
@@ -1656,10 +1673,4 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements Cartel
         return barraTituloDTO;
     }
 
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        InputUtils.closeKeyboard(this);
-    }
 }
