@@ -1784,8 +1784,9 @@ public class SimulaViewModel extends AndroidViewModel {
     }
 
 
-    private void handleTelaInicializada(SimulaUiEvent.TelaInicializada event) {
-
+    private void handleTelaInicializada(
+            SimulaUiEvent.TelaInicializada event
+    ) {
         tipoJogoAtual = event.getModalidade();
         parametroJogoAtual = event.getParametroSimulacao();
         isEspecialAtual = event.isEspecial();
@@ -1797,15 +1798,11 @@ public class SimulaViewModel extends AndroidViewModel {
         float velocidadeAnimacao = 1f;
 
         if (event.isEspecial()) {
-
             if (tipoJogoAtual == ModalidadeEnum.LOTECA) {
-
                 exibirAnimacao = true;
                 animacaoRes = R.raw.copa_loteca_3;
                 velocidadeAnimacao = 1.75f;
-
             } else if (tipoJogoAtual == ModalidadeEnum.QUINA) {
-
                 exibirAnimacao = true;
                 animacaoRes = R.raw.quina_sao_joao_1;
                 velocidadeAnimacao = 1.5f;
@@ -1816,7 +1813,6 @@ public class SimulaViewModel extends AndroidViewModel {
         int qtdConcurso = 0;
 
         if (parametroJogoAtual != null) {
-
             if (parametroJogoAtual.getQuantidadeMinima() != null) {
                 qtdMinima = parametroJogoAtual.getQuantidadeMinima();
             }
@@ -1830,7 +1826,6 @@ public class SimulaViewModel extends AndroidViewModel {
         }
         BigDecimal valorInicialAposta = obterValorApostaPorParametros(qtdMinima, qtdConcurso);
 
-        SimulaUiState atual = getCurrentState();
         AnimacaoEffect animacaoEffect = null;
 
         if (exibirAnimacao) {
@@ -1841,30 +1836,75 @@ public class SimulaViewModel extends AndroidViewModel {
                     );
         }
 
+        SimulaUiState atual =
+                getCurrentState();
+
+        String textoBotaoQuantidadeNumeros =
+                qtdMinima > 0
+                        ? montarTextoQuantidadeNumeros(qtdMinima)
+                        : atual.getTextoBotaoPrognosticosSelecionado();
+
         uiState.setValue(
                 atual.toBuilder()
                         .setBarraTituloDTO(barraTituloDTO)
                         .setTipoJogo(tipoJogoAtual)
-                        .setComandoAnimacao(
-                                animacaoEffect
-                        ).
-                        setValorAposta(valorInicialAposta).
-                        setEtapaAposta(EtapaAposta.NUMEROS).
-                        setTextoSelecionados("Selecione os números:").
-                        setValorGrande(valorInicialAposta.doubleValue() > 999.99).
-                        setSurpresinhaHabilitada(false).
-                        setComandoTelaSimula(null).
-                        setComandoCarrinho(null).
-                        setDezenasSelecionadas(new ArrayList<>()).
-                        setQtdConcursoSelecionado(0).
-                        setQtdDezenasPossiveisSelecionado(qtdMinima).
-                        setQtdConcursoSelecionado(qtdConcurso).
-                        setMostrarBotaoLimparAposta(false).
-                        setBotaoCompletarHabilitado(true).
-                        setBotaoAdicionarHabilitado(false).
-                        setBotaoLimparHabilitado(false).
-                        setMostrarSalvarAposta(false).
-                        setBotaoCompletarVisivel(true)
+                        .setEspecial(event.isEspecial())
+                        .setComandoAnimacao(animacaoEffect)
+                        .setComandoTelaSimula(null)
+                        .setComandoCarrinho(null)
+                        .setComandoCompletarAposta(null)
+                        .setComandoFavoritarAposta(null)
+                        .setComandoAnalytics(null)
+                        .setValorAposta(valorInicialAposta)
+                        .setValorGrande(
+                                isValorGrande(valorInicialAposta)
+                        )
+                        .setEtapaAposta(EtapaAposta.NUMEROS)
+                        .setSurpresinhaHabilitada(false)
+                        .setDezenasSelecionadas(new ArrayList<>())
+                        .setEquipeSelecionada(null)
+                        .setTelaSelecaoTimeAtivado(false)
+                        .setEscolhaTimeCoracaoSurpresinha(false)
+                        .setQtdDezenasPossiveisSelecionado(qtdMinima)
+                        .setQtdConcursoSelecionado(qtdConcurso)
+                        .setTextoSelecionados("Selecione os números:")
+                        .setTextoBotaoPrognosticosSelecionado(
+                                textoBotaoQuantidadeNumeros
+                        )
+                        .setBotaoCompletarVisivel(true)
+                        .setBotaoCompletarHabilitado(true)
+                        .setBotaoAdicionarHabilitado(false)
+                        .setBotaoNextStepHabilitado(false)
+                        .setBotaoLimparHabilitado(false)
+                        .setMostrarBotaoLimparAposta(false)
+                        .setMostrarSalvarAposta(false)
+                        .setApostaFavoritada(false)
+                        .setExibirOpcaoOutrosNumeros(false)
+                        .setOpcaoOutrosNumerosSelecionada(false)
+                        .setLimparNumerosCartela(false)
+                        .setLimparTimeCoracao(false)
+                        .setLimparSuperSete(false)
+                        .setLimparLoteca(false)
+                        .setLimparLotogol(false)
+                        .setLimparOpcaoOutrosNumeros(false)
+                        .setQtdTotalSelecionadosSuperSete(0)
+                        .setJogosLoteca(0)
+                        .setSimplesLoteca(0)
+                        .setDuplasLoteca(0)
+                        .setTriplasLoteca(0)
+                        .setExibirDialogComoJogar(false)
+                        .setMensagemComoJogar("")
+                        .setTitleComoJogar("")
+                        .setExibirDialogFavoritarAposta(false)
+                        .setExibirDialogTeimosinha(false)
+                        .setExibirDialogSemTeimosinha(false)
+                        .setAtualizarValorApostaPorTeimosinha(false)
+                        .setExibirDialogQuantidadeNumeros(false)
+                        .setExibirAvisoQuantidadeNumerosMaxima(false)
+                        .setAtualizarValorApostaPorQuantidadeNumeros(false)
+                        .setResetarTrevosPorQuantidadeNumeros(false)
+                        .setPosicaoQuantidadeNumerosSelecionada(0)
+                        .setAbrirCarrinho(false)
                         .setExibirInfoEtapa(
                                 possuiEtapaComplementar(tipoJogoAtual)
                         )
@@ -1873,7 +1913,14 @@ public class SimulaViewModel extends AndroidViewModel {
                                         tipoJogoAtual,
                                         EtapaAposta.NUMEROS
                                 )
-                        ).build());
+                        )
+                        .setExibirDialogQuantidadeTrevos(false)
+                        .setExibirAvisoTrevosMaximo(false)
+                        .setPosicaoTrevosSelecionada(0)
+                        .setValorTrevosSelecionado(null)
+                        .setSubtituloTrevos("")
+                        .build()
+        );
     }
 
     private void handleAdicionarCarrinhoSolicitado(SimulaUiEvent.AdicionarCarrinhoSolicitado event) {
@@ -2214,21 +2261,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
 
-            boolean estaNaEtapaTime = etapaAtual == EtapaAposta.TIME_CORACAO || event.isTelaSelecaoTimeAtivado();
-
-            boolean timeValido = event.isEquipeSelecionadaValida();
-
-            EtapaAposta etapa;
-
-            if (!numerosCompletos) {
-                etapa = EtapaAposta.NUMEROS;
-            } else if (!estaNaEtapaTime) {
-                etapa = EtapaAposta.NUMEROS;
-            } else if (!timeValido) {
-                etapa = EtapaAposta.TIME_CORACAO;
-            } else {
-                etapa = EtapaAposta.PRONTA;
-            }
+            EtapaAposta etapa = getEtapaAposta(event, etapaAtual, numerosCompletos);
 
             return new ResultadoFluxoAposta(etapa, numerosCompletos, etapa == EtapaAposta.PRONTA);
         }
@@ -2249,5 +2282,25 @@ public class SimulaViewModel extends AndroidViewModel {
         }
 
         return new ResultadoFluxoAposta(numerosCompletos ? EtapaAposta.PRONTA : EtapaAposta.NUMEROS, numerosCompletos, numerosCompletos);
+    }
+
+    @NonNull
+    private static EtapaAposta getEtapaAposta(SimulaUiEvent.CartelaAlterada event, EtapaAposta etapaAtual, boolean numerosCompletos) {
+        boolean estaNaEtapaTime = etapaAtual == EtapaAposta.TIME_CORACAO || event.isTelaSelecaoTimeAtivado();
+
+        boolean timeValido = event.isEquipeSelecionadaValida();
+
+        EtapaAposta etapa;
+
+        if (!numerosCompletos) {
+            etapa = EtapaAposta.NUMEROS;
+        } else if (!estaNaEtapaTime) {
+            etapa = EtapaAposta.NUMEROS;
+        } else if (!timeValido) {
+            etapa = EtapaAposta.TIME_CORACAO;
+        } else {
+            etapa = EtapaAposta.PRONTA;
+        }
+        return etapa;
     }
 }
