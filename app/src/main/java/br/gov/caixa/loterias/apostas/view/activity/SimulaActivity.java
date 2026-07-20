@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -90,7 +89,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
+public class SimulaActivity<T> extends LoteriasBaseAppActivity implements CartelaFragmentListener, SurpresinhaFragmentListener {
 
     public static String COR_FONTE_FUNDO_BRANCO = "COR_FONTE_FUNDO_BRANCO";
     public static String COR_FONTE_FUNDO_CLARO = "COR_FONTE_FUNDO_CLARO";
@@ -1014,65 +1013,6 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         setColorValuesLoteca();
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.simularTelaAposta:
-                voltaPraEscolhaDeNumeros();
-                break;
-
-            case R.id.btnQuantidadeNumeros:
-                viewModel.onEvent(new SimulaUiEvent.ClicarQuantidadeNumeros());
-                break;
-
-            case R.id.btnQuantidadeTrevos:
-
-                if (isFragmentTrevos()
-                        && trevosFragment != null) {
-
-                    viewModel.onEvent(
-                            new SimulaUiEvent.ClicarQuantidadeTrevos(
-                                    parametroSimulacao,
-                                    trevosFragment.getQuantidadeNumeros()
-                            )
-                    );
-                }
-
-                break;
-
-            case R.id.btnTeimosinha:
-                viewModel.onEvent(new SimulaUiEvent.ClicarTeimosinhas());
-                break;
-
-            case R.id.frameCarrinho:
-                viewModel.onEvent(new SimulaUiEvent.CarrinhoClicado());
-                break;
-
-            case R.id.btnCompletar:
-                executarCompletarRodape();
-                break;
-
-            case R.id.btnAdicionarCarrinho:
-                executarAdicionarRodape();
-                break;
-
-            case R.id.btnLimpar:
-                if (isFragmentTrevos() && trevosFragment != null) {
-                    trevosFragment.onLimparRodapeClicado();
-                } else if (isFragmentMeses() && mesesFragment != null) {
-                    mesesFragment.onLimparRodapeClicado();
-                } else viewModel.onEvent(new SimulaUiEvent.LimparApostaSolicitado());
-                break;
-
-            case R.id.btnNextStep:
-                viewModel.onEvent(new SimulaUiEvent.NextStepClicado(tipoJogo));
-                break;
-
-            case R.id.favoritar_aposta:
-                executarFavoritarRodape();
-                break;
-        }
-    }
-
     private void executarCompletarRodape() {
         if (cartelaFragment != null && isFragmentCartela()) {
             cartelaFragment.onCompletarRodapeClicado();
@@ -1185,19 +1125,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         resetaCartela();
     }
 
-    private boolean temPaginacao() {
-        return parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA) || parametroSimulacao.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) || parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA);
-    }
-
     private void resetaCartela() {
         cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
         abrirTelaCartela();
-        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-            botaoCompletar.setOnClickListener(this);
-            botaoAdicionar.setOnClickListener(this);
-            botaoLimparAposta.setOnClickListener(this);
-        }
-
     }
 
     public ParametroJogoDTO getParametroSimulacao() {
@@ -1466,31 +1396,68 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
     }
 
     public void configuraBotoesListeners() {
-        btnTeimosinha.setOnClickListener(this);
-        btnQuantidadeNumeros.setOnClickListener(this);
-        frameCarrinho.setOnClickListener(this);
+        btnTeimosinha.setOnClickListener(
+                v -> viewModel.onEvent(new SimulaUiEvent.ClicarTeimosinhas())
+        );
+
+        btnQuantidadeNumeros.setOnClickListener(
+                v -> viewModel.onEvent(new SimulaUiEvent.ClicarQuantidadeNumeros())
+        );
+
+        frameCarrinho.setOnClickListener(
+                v -> viewModel.onEvent(new SimulaUiEvent.CarrinhoClicado())
+        );
 
         if (botaoCompletar != null) {
-            botaoCompletar.setOnClickListener(this);
+            botaoCompletar.setOnClickListener(
+                    v -> executarCompletarRodape()
+            );
         }
 
         if (botaoAdicionar != null) {
-            botaoAdicionar.setOnClickListener(this);
+            botaoAdicionar.setOnClickListener(
+                    v -> executarAdicionarRodape()
+            );
         }
 
         if (botaoLimparAposta != null) {
-            botaoLimparAposta.setOnClickListener(this);
+            botaoLimparAposta.setOnClickListener(
+                    v -> {
+                        if (isFragmentTrevos() && trevosFragment != null) {
+                            trevosFragment.onLimparRodapeClicado();
+                        } else if (isFragmentMeses() && mesesFragment != null) {
+                            mesesFragment.onLimparRodapeClicado();
+                        } else viewModel.onEvent(new SimulaUiEvent.LimparApostaSolicitado());
+                    }
+            );
         }
 
         if (botaoFavoritar != null) {
-            botaoFavoritar.setOnClickListener(this);
+            botaoFavoritar.setOnClickListener(
+                    v -> executarFavoritarRodape()
+            );
         }
 
         if (botaoNextStep != null) {
-            botaoNextStep.setOnClickListener(this);
+            botaoNextStep.setOnClickListener(
+                    v -> viewModel.onEvent(new SimulaUiEvent.NextStepClicado(tipoJogo))
+            );
         }
         if (btnQuantidadeTrevos != null) {
-            btnQuantidadeTrevos.setOnClickListener(this);
+            btnQuantidadeTrevos.setOnClickListener(
+                    v -> {
+                        if (isFragmentTrevos()
+                                && trevosFragment != null) {
+
+                            viewModel.onEvent(
+                                    new SimulaUiEvent.ClicarQuantidadeTrevos(
+                                            parametroSimulacao,
+                                            trevosFragment.getQuantidadeNumeros()
+                                    )
+                            );
+                        }
+                    }
+            );
         }
 
         switchSurpresinha.setOnCheckedChangeListener((buttonView, isChecked) -> {
