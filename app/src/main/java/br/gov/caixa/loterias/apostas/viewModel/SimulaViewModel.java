@@ -48,6 +48,7 @@ import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class SimulaViewModel extends AndroidViewModel {
 
@@ -297,6 +298,31 @@ public class SimulaViewModel extends AndroidViewModel {
             handleTrevosAlterados((SimulaUiEvent.TrevosAlterados) event);
             return;
         }
+        if (event instanceof SimulaUiEvent.ClicarQuantidadeTrevos) {
+            clicarQuantidadeTrevos(
+                    (SimulaUiEvent.ClicarQuantidadeTrevos) event
+            );
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.SelecionarQuantidadeTrevos) {
+            selecionarQuantidadeTrevos(
+                    (SimulaUiEvent.SelecionarQuantidadeTrevos) event
+            );
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.ConfirmarQuantidadeTrevos) {
+            confirmarQuantidadeTrevos(
+                    (SimulaUiEvent.ConfirmarQuantidadeTrevos) event
+            );
+            return;
+        }
+
+        if (event instanceof SimulaUiEvent.DialogQuantidadeTrevosConsumido) {
+            consumirDialogQuantidadeTrevos();
+            return;
+        }
         if (event instanceof SimulaUiEvent.ComandoAnalyticsConsumido) {
             limparComandoAnalytics();
             return;
@@ -307,7 +333,72 @@ public class SimulaViewModel extends AndroidViewModel {
             limparComandoAnimacao();
             return;
         }
+        if (event instanceof
+                SimulaUiEvent.AvisoTrevosMaximoConsumido) {
+
+            consumirAvisoTrevosMaximo();
+            return;
+        }
     }
+    private void consumirAvisoTrevosMaximo() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setExibirAvisoTrevosMaximo(false)
+                        .build()
+        );
+    }
+    private void selecionarQuantidadeTrevos(
+            SimulaUiEvent.SelecionarQuantidadeTrevos event
+    ) {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        List<ParametroValorApostaDTO> valores =
+                atual.getValoresTrevos();
+
+        int position =
+                event.getPosition();
+
+        if (valores == null
+                || position < 0
+                || position >= valores.size()) {
+            return;
+        }
+
+        boolean deveAvisar =
+                position > 0
+                        && !atual.isAvisouTrevosMaximo();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setPosicaoTrevosSelecionada(position)
+                        .setExibirAvisoTrevosMaximo(
+                                deveAvisar
+                        )
+                        .setAvisouTrevosMaximo(
+                                atual.isAvisouTrevosMaximo()
+                                        || deveAvisar
+                        )
+                        .build()
+        );
+    }
+
+    private void consumirDialogQuantidadeTrevos() {
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setExibirDialogQuantidadeTrevos(false)
+                        .build()
+        );
+    }
+
     private void limparComandoAnimacao() {
 
         SimulaUiState atual =
@@ -482,6 +573,160 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setTextoBotaoPrognosticosSelecionado(
                                 montarTextoBotaoTrevos(
                                         quantidadeTrevos
+                                )
+                        )
+                        .build()
+        );
+    }
+    private void clicarQuantidadeTrevos(
+            SimulaUiEvent.ClicarQuantidadeTrevos event
+    ) {
+        if (event == null
+                || event.getParametro() == null) {
+            return;
+        }
+
+        List<ParametroValorApostaDTO> valores =
+                event.getParametro()
+                        .getValoresTrevoByNumero(
+                                event.getQuantidadeNumeros()
+                        );
+
+        if (valores == null || valores.isEmpty()) {
+            return;
+        }
+
+        List<String> labels =
+                montarLabelsTrevos(valores);
+
+        String subtitulo =
+                getApplication()
+                        .getString(R.string.para_aposta_com_x_numeros)
+                        .replace(
+                                "x",
+                                String.valueOf(
+                                        event.getQuantidadeNumeros()
+                                )
+                        );
+
+        uiState.setValue(
+                getCurrentState()
+                        .toBuilder()
+                        .setValoresTrevos(valores)
+                        .setLabelsQuantidadeTrevos(labels)
+                        .setSubtituloTrevos(subtitulo)
+                        .setExibirDialogQuantidadeTrevos(true)
+                        .build()
+        );
+    }
+    private List<String> montarLabelsTrevos(
+            List<ParametroValorApostaDTO> valores
+    ) {
+        List<String> labels =
+                new ArrayList<>();
+
+        if (valores == null) {
+            return labels;
+        }
+
+        for (ParametroValorApostaDTO valor : valores) {
+            if (valor == null) {
+                continue;
+            }
+
+            Integer numeroTrevos =
+                    valor.getNumeroTrevos();
+
+            BigDecimal valorAposta =
+                    valor.getValor() != null
+                            ? valor.getValor()
+                            : BigDecimal.ZERO;
+
+            labels.add(
+                    numeroTrevos
+                            + " "
+                            + getApplication()
+                            .getString(R.string.trevos_por)
+                            + " "
+                            + ViewUtils.getMoedaFormat(valorAposta)
+            );
+        }
+
+        return labels;
+    }
+
+    private void confirmarQuantidadeTrevos(
+            SimulaUiEvent.ConfirmarQuantidadeTrevos event
+    ) {
+        if (event == null) {
+            return;
+        }
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        List<ParametroValorApostaDTO> valores =
+                atual.getValoresTrevos();
+
+        if (valores == null || valores.isEmpty()) {
+            return;
+        }
+
+        int position =
+                event.getPosition();
+
+        if (position < 0 || position >= valores.size()) {
+            position =
+                    atual.getPosicaoTrevosSelecionada();
+        }
+
+        if (position < 0 || position >= valores.size()) {
+            return;
+        }
+
+        ParametroValorApostaDTO selecionado =
+                valores.get(position);
+
+        if (selecionado == null) {
+            return;
+        }
+
+        BigDecimal valorAposta =
+                aplicarQuantidadeConcursos(
+                        selecionado.getValor()
+                );
+
+        Integer numeroTrevos =
+                selecionado.getNumeroTrevos();
+
+        int quantidadeTrevos =
+                numeroTrevos != null
+                        ? numeroTrevos
+                        : 0;
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setPosicaoTrevosSelecionada(position)
+                        .setValorTrevosSelecionado(selecionado)
+                        .setExibirDialogQuantidadeTrevos(false)
+                        .setEtapaAposta(EtapaAposta.TREVOS)
+                        .setValorAposta(valorAposta)
+                        .setValorGrande(isValorGrande(valorAposta))
+                        .setTextoSelecionados(
+                                montarTextoTrevosSelecionados(
+                                        0,
+                                        quantidadeTrevos
+                                )
+                        )
+                        .setTextoBotaoPrognosticosSelecionado(
+                                montarTextoBotaoTrevos(
+                                        quantidadeTrevos
+                                )
+                        )
+                        .setComandoTelaSimula(
+                                new ScreenSimulaEffect
+                                        .AtualizarQuantidadeTrevos(
+                                        selecionado
                                 )
                         )
                         .build()
@@ -1293,11 +1538,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
     private boolean podeMostrarSalvarAposta(ModalidadeEnum tipoJogo) {
 
-        if (tipoJogo == ModalidadeEnum.LOTECA || tipoJogo == ModalidadeEnum.LOTOGOL) {
-            return false;
-        }
-
-        return true;
+        return tipoJogo != ModalidadeEnum.LOTECA && tipoJogo != ModalidadeEnum.LOTOGOL;
     }
 
 
@@ -1394,11 +1635,11 @@ public class SimulaViewModel extends AndroidViewModel {
         }
     }
 
-    private void atualizarEtapaAposta(EtapaAposta etapaAposta) {
+    private void atualizarEtapaAposta() {
 
         SimulaUiState atual = getCurrentState();
 
-        uiState.setValue(atual.toBuilder().setBotaoNextStepHabilitado(false).setEtapaAposta(etapaAposta).build());
+        uiState.setValue(atual.toBuilder().setBotaoNextStepHabilitado(false).setEtapaAposta(EtapaAposta.PRONTA).build());
     }
 
     private void handleAdicionarCarrinhoClicado(SimulaUiEvent.AdicionarCarrinhoClicado event) {
@@ -1447,7 +1688,7 @@ public class SimulaViewModel extends AndroidViewModel {
             return;
         }
 
-        atualizarEtapaAposta(EtapaAposta.PRONTA);
+        atualizarEtapaAposta();
 
         habilitarModoAdicionar();
 
@@ -1462,7 +1703,7 @@ public class SimulaViewModel extends AndroidViewModel {
             return;
         }
 
-        atualizarEtapaAposta(EtapaAposta.PRONTA);
+        atualizarEtapaAposta();
 
         habilitarModoAdicionar();
 
@@ -1477,7 +1718,7 @@ public class SimulaViewModel extends AndroidViewModel {
             return;
         }
 
-        atualizarEtapaAposta(EtapaAposta.PRONTA);
+        atualizarEtapaAposta();
 
         habilitarModoAdicionar();
 
@@ -1921,19 +2162,13 @@ public class SimulaViewModel extends AndroidViewModel {
 
         private final EtapaAposta etapa;
         private final boolean numerosCompletos;
-        private final boolean etapaComplementarAtiva;
-        private final boolean etapaComplementarValida;
         private final boolean apostaPronta;
-        private final boolean possuiEtapaComplementar;
 
-        ResultadoFluxoAposta(EtapaAposta etapa, boolean numerosCompletos, boolean etapaComplementarAtiva, boolean etapaComplementarValida, boolean apostaPronta, boolean possuiEtapaComplementar) {
+        ResultadoFluxoAposta(EtapaAposta etapa, boolean numerosCompletos, boolean apostaPronta) {
 
             this.etapa = etapa;
             this.numerosCompletos = numerosCompletos;
-            this.etapaComplementarAtiva = etapaComplementarAtiva;
-            this.etapaComplementarValida = etapaComplementarValida;
             this.apostaPronta = apostaPronta;
-            this.possuiEtapaComplementar = possuiEtapaComplementar;
         }
     }
 
@@ -1995,7 +2230,7 @@ public class SimulaViewModel extends AndroidViewModel {
                 etapa = EtapaAposta.PRONTA;
             }
 
-            return new ResultadoFluxoAposta(etapa, numerosCompletos, estaNaEtapaTime, timeValido, etapa == EtapaAposta.PRONTA, true);
+            return new ResultadoFluxoAposta(etapa, numerosCompletos, etapa == EtapaAposta.PRONTA);
         }
 
         if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE) {
@@ -2004,15 +2239,15 @@ public class SimulaViewModel extends AndroidViewModel {
 
             boolean mesCompleto = event.isEtapaComplementarCompleta();
 
-            return new ResultadoFluxoAposta(estaNaEtapaMes ? EtapaAposta.MES_SORTE : EtapaAposta.NUMEROS, numerosCompletos, estaNaEtapaMes, mesCompleto, numerosCompletos && mesCompleto, true);
+            return new ResultadoFluxoAposta(estaNaEtapaMes ? EtapaAposta.MES_SORTE : EtapaAposta.NUMEROS, numerosCompletos, numerosCompletos && mesCompleto);
         }
 
         if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
             boolean estaNaEtapaTrevos = etapaAtual == EtapaAposta.TREVOS;
 
-            return new ResultadoFluxoAposta(estaNaEtapaTrevos ? EtapaAposta.TREVOS : EtapaAposta.NUMEROS, numerosCompletos, estaNaEtapaTrevos, atual.isBotaoAdicionarHabilitado(), numerosCompletos && atual.isBotaoAdicionarHabilitado(), true);
+            return new ResultadoFluxoAposta(estaNaEtapaTrevos ? EtapaAposta.TREVOS : EtapaAposta.NUMEROS, numerosCompletos, numerosCompletos && atual.isBotaoAdicionarHabilitado());
         }
 
-        return new ResultadoFluxoAposta(numerosCompletos ? EtapaAposta.PRONTA : EtapaAposta.NUMEROS, numerosCompletos, false, false, numerosCompletos, false);
+        return new ResultadoFluxoAposta(numerosCompletos ? EtapaAposta.PRONTA : EtapaAposta.NUMEROS, numerosCompletos, numerosCompletos);
     }
 }

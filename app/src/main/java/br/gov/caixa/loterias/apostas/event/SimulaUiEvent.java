@@ -629,6 +629,62 @@ public abstract class SimulaUiEvent {
             return numerosSelecionados;
         }
     }
+    public static class ClicarQuantidadeTrevos
+            extends SimulaUiEvent {
+
+        private final ParametroJogoDTO parametro;
+        private final int quantidadeNumeros;
+
+        public ClicarQuantidadeTrevos(
+                ParametroJogoDTO parametro,
+                int quantidadeNumeros
+        ) {
+            this.parametro = parametro;
+            this.quantidadeNumeros = quantidadeNumeros;
+        }
+
+        public ParametroJogoDTO getParametro() {
+            return parametro;
+        }
+
+        public int getQuantidadeNumeros() {
+            return quantidadeNumeros;
+        }
+    }
+    public static class ConfirmarQuantidadeTrevos
+            extends SimulaUiEvent {
+
+        private final int position;
+
+        public ConfirmarQuantidadeTrevos(
+                int position
+        ) {
+            this.position = position;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+    }
+    public static class SelecionarQuantidadeTrevos
+            extends SimulaUiEvent {
+
+        private final int position;
+
+        public SelecionarQuantidadeTrevos(
+                int position
+        ) {
+            this.position = position;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+    }
+
+    public static class DialogQuantidadeTrevosConsumido
+            extends SimulaUiEvent {
+    }
     public static class ConfirmarSalvarApostaFavorita
             extends SimulaUiEvent {
 
@@ -650,6 +706,10 @@ public abstract class SimulaUiEvent {
 
     public static final class ComandoTelaSimulaConsumido extends SimulaUiEvent {
     }
+    public static class AvisoTrevosMaximoConsumido
+            extends SimulaUiEvent {
+    }
+
     public static final class ToggleOutrosNumeros
             extends SimulaUiEvent {
     }

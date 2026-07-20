@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.effect;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 
 public abstract class ScreenSimulaEffect {
@@ -21,6 +22,22 @@ public abstract class ScreenSimulaEffect {
         }
 
     }
+    public static final class AtualizarQuantidadeTrevos
+            extends ScreenSimulaEffect {
+
+        private final ParametroValorApostaDTO valorSelecionado;
+
+        public AtualizarQuantidadeTrevos(
+                ParametroValorApostaDTO valorSelecionado
+        ) {
+            this.valorSelecionado = valorSelecionado;
+        }
+
+        public ParametroValorApostaDTO getValorSelecionado() {
+            return valorSelecionado;
+        }
+    }
+
     public static final class VoltarEtapa
             extends ScreenSimulaEffect {
 

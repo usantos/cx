@@ -1168,7 +1168,7 @@
     <string name="voce_escolheu_x_numeros">Você escolheu _x_ números</string>
     <string name="subtitulo_trevos">Agora escolha de 2 a 6 trevos \npara marcar nesta aposta</string>
     <string name="trevos">trevos</string>
-    <string name="para_aposta_com_x_numeros">Para a aposta com _x_ números</string>
+    <string name="para_aposta_com_x_numeros">Para a aposta com x números</string>
     <string name="quant_de_trevos">Quant. de trevos</string>
     <string name="trevos_por"> trevos por </string>
     <string name="completar_trevos_aleatoriamente">_Completar_\n Trevos aleatoriamente</string>

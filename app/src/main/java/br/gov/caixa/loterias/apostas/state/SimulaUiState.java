@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
 import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
@@ -101,6 +102,14 @@ public class SimulaUiState {
     private final boolean exibirInfoEtapa;
     private final String textoInfoEtapa;
     private final AnimacaoEffect animacaoEffect;
+    private final boolean exibirDialogQuantidadeTrevos;
+    private final List<String> labelsQuantidadeTrevos;
+    private final List<ParametroValorApostaDTO> valoresTrevos;
+    private final int posicaoTrevosSelecionada;
+    private final String subtituloTrevos;
+    private final ParametroValorApostaDTO valorTrevosSelecionado;
+    private final boolean exibirAvisoTrevosMaximo;
+    private final boolean avisouTrevosMaximo;
 
     private SimulaUiState(
             Builder builder
@@ -122,6 +131,9 @@ public class SimulaUiState {
 
         this.surpresinhaHabilitada =
                 builder.surpresinhaHabilitada;
+
+        this.exibirAvisoTrevosMaximo = builder.exibirAvisoTrevosMaximo;
+        this.avisouTrevosMaximo = builder.avisouTrevosMaximo;
 
 
         this.carrinhoEffect = builder.carrinhoEffect;
@@ -223,7 +235,7 @@ public class SimulaUiState {
         this.qtdPrognosticosQuantidadeNumeros =
                 builder.qtdPrognosticosQuantidadeNumeros != null
                         ? new ArrayList<>(builder.qtdPrognosticosQuantidadeNumeros)
-                        : new ArrayList<Integer>();
+                        : new ArrayList<>();
 
         this.exibirDialogQuantidadeNumeros =
                 builder.exibirDialogQuantidadeNumeros;
@@ -255,6 +267,30 @@ public class SimulaUiState {
                 builder.textoSelecionados != null
                         ? builder.textoSelecionados
                         : "Selecione os números:";
+
+        this.exibirDialogQuantidadeTrevos =
+                builder.exibirDialogQuantidadeTrevos;
+
+        this.labelsQuantidadeTrevos =
+                builder.labelsQuantidadeTrevos != null
+                        ? new ArrayList<>(builder.labelsQuantidadeTrevos)
+                        : new ArrayList<>();
+
+        this.valoresTrevos =
+                builder.valoresTrevos != null
+                        ? new ArrayList<>(builder.valoresTrevos)
+                        : new ArrayList<>();
+
+        this.posicaoTrevosSelecionada =
+                builder.posicaoTrevosSelecionada;
+
+        this.subtituloTrevos =
+                builder.subtituloTrevos != null
+                        ? builder.subtituloTrevos
+                        : "";
+
+        this.valorTrevosSelecionado =
+                builder.valorTrevosSelecionado;
 
     }
 
@@ -308,14 +344,14 @@ public class SimulaUiState {
                 .setValorAposta(BigDecimal.ZERO)
                 .setValorGrande(false)
                 .setEspecial(false)
-                .setLabelsTeimosinhas(new ArrayList<String>())
-                .setConcursosTeimosinhas(new ArrayList<Integer>())
+                .setLabelsTeimosinhas(new ArrayList<>())
+                .setConcursosTeimosinhas(new ArrayList<>())
                 .setTextoBotaoTeimosinhas("")
                 .setExibirDialogTeimosinha(false)
                 .setExibirDialogSemTeimosinha(false)
                 .setAtualizarValorApostaPorTeimosinha(false)
-                .setLabelsQuantidadeNumeros(new ArrayList<String>())
-                .setQtdPrognosticosQuantidadeNumeros(new ArrayList<Integer>())
+                .setLabelsQuantidadeNumeros(new ArrayList<>())
+                .setQtdPrognosticosQuantidadeNumeros(new ArrayList<>())
                 .setExibirDialogQuantidadeNumeros(false)
                 .setExibirAvisoQuantidadeNumerosMaxima(false)
                 .setAvisouQuantidadeNumerosMaxima(false)
@@ -323,11 +359,40 @@ public class SimulaUiState {
                 .setTextoBotaoPrognosticosSelecionado("")
                 .setAtualizarValorApostaPorQuantidadeNumeros(false)
                 .setResetarTrevosPorQuantidadeNumeros(false)
+                .setExibirDialogQuantidadeTrevos(false)
+                .setLabelsQuantidadeTrevos(new ArrayList<>())
+                .setValoresTrevos(new ArrayList<>())
+                .setPosicaoTrevosSelecionada(0)
+                .setSubtituloTrevos("")
+                .setValorTrevosSelecionado(null)
                 .build();
     }
 
     public String getTextoSelecionados() {
         return textoSelecionados;
+    }
+    public boolean isExibirDialogQuantidadeTrevos() {
+        return exibirDialogQuantidadeTrevos;
+    }
+
+    public List<String> getLabelsQuantidadeTrevos() {
+        return new ArrayList<>(labelsQuantidadeTrevos);
+    }
+
+    public List<ParametroValorApostaDTO> getValoresTrevos() {
+        return new ArrayList<>(valoresTrevos);
+    }
+
+    public int getPosicaoTrevosSelecionada() {
+        return posicaoTrevosSelecionada;
+    }
+
+    public String getSubtituloTrevos() {
+        return subtituloTrevos;
+    }
+
+    public ParametroValorApostaDTO getValorTrevosSelecionado() {
+        return valorTrevosSelecionado;
     }
 
     public boolean isEspecial() {
@@ -576,6 +641,12 @@ public class SimulaUiState {
     public boolean isResetarTrevosPorQuantidadeNumeros() {
         return resetarTrevosPorQuantidadeNumeros;
     }
+    public boolean isExibirAvisoTrevosMaximo(){
+        return exibirAvisoTrevosMaximo;
+    }
+    public boolean isAvisouTrevosMaximo(){
+        return avisouTrevosMaximo;
+    }
     public AnimacaoEffect getComandoAnimacao(){
         return animacaoEffect;
     }
@@ -667,6 +738,14 @@ public class SimulaUiState {
         private boolean exibirInfoEtapa;
         private String textoInfoEtapa;
         private AnimacaoEffect animacaoEffect;
+        private boolean exibirDialogQuantidadeTrevos;
+        private List<String> labelsQuantidadeTrevos;
+        private List<ParametroValorApostaDTO> valoresTrevos;
+        private int posicaoTrevosSelecionada;
+        private String subtituloTrevos;
+        private ParametroValorApostaDTO valorTrevosSelecionado;
+        private boolean exibirAvisoTrevosMaximo;
+        private boolean avisouTrevosMaximo;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<>();
@@ -710,6 +789,14 @@ public class SimulaUiState {
             this.analyticsEffect = null;
             this.exibirInfoEtapa = false;
             this.textoInfoEtapa = "1/2";
+            this.exibirDialogQuantidadeTrevos = false;
+            this.labelsQuantidadeTrevos = new ArrayList<>();
+            this.valoresTrevos = new ArrayList<>();
+            this.posicaoTrevosSelecionada = 0;
+            this.subtituloTrevos = "";
+            this.valorTrevosSelecionado = null;
+            this.exibirAvisoTrevosMaximo = false;
+            this.avisouTrevosMaximo = false;
         }
 
         public Builder(
@@ -733,7 +820,7 @@ public class SimulaUiState {
 
             this.dezenasSelecionadas = state.dezenasSelecionadas != null
                     ? new ArrayList<>(state.dezenasSelecionadas)
-                    : new ArrayList<Integer>();
+                    : new ArrayList<>();
 
             this.equipeSelecionada = state.equipeSelecionada;
 
@@ -797,7 +884,7 @@ public class SimulaUiState {
             this.qtdPrognosticosQuantidadeNumeros =
                     state.qtdPrognosticosQuantidadeNumeros != null
                             ? new ArrayList<>(state.qtdPrognosticosQuantidadeNumeros)
-                            : new ArrayList<Integer>();
+                            : new ArrayList<>();
 
             this.exibirDialogQuantidadeNumeros =
                     state.exibirDialogQuantidadeNumeros;
@@ -823,6 +910,29 @@ public class SimulaUiState {
             this.exibirInfoEtapa = state.exibirInfoEtapa;
             this.textoInfoEtapa = state.textoInfoEtapa;
             this.animacaoEffect = state.animacaoEffect;
+            this.exibirDialogQuantidadeTrevos =
+                    state.exibirDialogQuantidadeTrevos;
+
+            this.labelsQuantidadeTrevos =
+                    state.labelsQuantidadeTrevos != null
+                            ? new ArrayList<>(state.labelsQuantidadeTrevos)
+                            : new ArrayList<>();
+
+            this.valoresTrevos =
+                    state.valoresTrevos != null
+                            ? new ArrayList<>(state.valoresTrevos)
+                            : new ArrayList<>();
+
+            this.posicaoTrevosSelecionada =
+                    state.posicaoTrevosSelecionada;
+
+            this.subtituloTrevos =
+                    state.subtituloTrevos;
+
+            this.valorTrevosSelecionado =
+                    state.valorTrevosSelecionado;
+            this.exibirAvisoTrevosMaximo = state.exibirAvisoTrevosMaximo;
+            this.avisouTrevosMaximo = state.avisouTrevosMaximo;
         }
 
         public Builder setLabelsQuantidadeNumeros(
@@ -840,7 +950,75 @@ public class SimulaUiState {
             this.screenSimulaEffect = screenSimulaEffect;
             return this;
         }
+        public Builder setExibirDialogQuantidadeTrevos(
+                boolean exibirDialogQuantidadeTrevos
+        ) {
+            this.exibirDialogQuantidadeTrevos =
+                    exibirDialogQuantidadeTrevos;
+            return this;
+        }
+        public Builder setExibirAvisoTrevosMaximo(
+                boolean exibirAvisoTrevosMaximo
+        ) {
+            this.exibirAvisoTrevosMaximo =
+                    exibirAvisoTrevosMaximo;
+            return this;
+        }
 
+        public Builder setAvisouTrevosMaximo(
+                boolean avisouTrevosMaximo
+        ) {
+            this.avisouTrevosMaximo =
+                    avisouTrevosMaximo;
+            return this;
+        }
+
+
+        public Builder setLabelsQuantidadeTrevos(
+                List<String> labelsQuantidadeTrevos
+        ) {
+            this.labelsQuantidadeTrevos =
+                    labelsQuantidadeTrevos != null
+                            ? new ArrayList<>(labelsQuantidadeTrevos)
+                            : new ArrayList<>();
+            return this;
+        }
+
+        public Builder setValoresTrevos(
+                List<ParametroValorApostaDTO> valoresTrevos
+        ) {
+            this.valoresTrevos =
+                    valoresTrevos != null
+                            ? new ArrayList<>(valoresTrevos)
+                            : new ArrayList<>();
+            return this;
+        }
+
+        public Builder setPosicaoTrevosSelecionada(
+                int posicaoTrevosSelecionada
+        ) {
+            this.posicaoTrevosSelecionada =
+                    posicaoTrevosSelecionada;
+            return this;
+        }
+
+        public Builder setSubtituloTrevos(
+                String subtituloTrevos
+        ) {
+            this.subtituloTrevos =
+                    subtituloTrevos != null
+                            ? subtituloTrevos
+                            : "";
+            return this;
+        }
+
+        public Builder setValorTrevosSelecionado(
+                ParametroValorApostaDTO valorTrevosSelecionado
+        ) {
+            this.valorTrevosSelecionado =
+                    valorTrevosSelecionado;
+            return this;
+        }
         public Builder setSurpresinhaHabilitada(
                 boolean surpresinhaHabilitada
         ) {

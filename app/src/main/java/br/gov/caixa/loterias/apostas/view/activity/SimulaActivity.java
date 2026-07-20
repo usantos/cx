@@ -13,7 +13,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -41,9 +40,13 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.TutorialSuperSeteActivity;
+import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
+import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
+import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
+import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
+import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
@@ -58,11 +61,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
-import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
-import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
-import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
-import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
-import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -73,6 +71,7 @@ import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
@@ -271,7 +270,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
     private void observeState() {
         viewModel.getUiState().observe(this, this::render);
-        viewModel.getUiState().observe(this,this::triggerAnalytics);
+        viewModel.getUiState().observe(this, this::triggerAnalytics);
     }
 
     private void renderAnimacao(
@@ -353,6 +352,30 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         renderDialogFavoritarAposta(state);
         renderComandoFavoritarAposta(state);
         renderInfoEtapa(state);
+        renderQuantidadeTrevos(state);
+        renderAvisoQuantidadeTrevos(state);
+    }
+    private void renderQuantidadeTrevos(
+            SimulaUiState state
+    ) {
+
+        if (!state.isExibirDialogQuantidadeTrevos()) {
+            return;
+        }
+
+        DialogUtils.showDialogListItens(
+                this,
+                getString(R.string.quant_de_trevos),
+                state.getSubtituloTrevos(),
+                state.getLabelsQuantidadeTrevos(),
+                "Confirmar",
+                "Cancelar",
+                onQuantidadeTrevosDialogListener()
+        );
+
+        viewModel.onEvent(
+                new SimulaUiEvent.DialogQuantidadeTrevosConsumido()
+        );
     }
     private void renderInfoEtapa(
             SimulaUiState state
@@ -399,9 +422,7 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
                     c.getModalidade(),
                     c.getValorSelecionado()
             );
-        }
-
-        else if (comando
+        } else if (comando
                 instanceof AnalyticsEffect
                 .TeimosinhaConfirmada) {
 
@@ -677,7 +698,26 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         return drawable;
     }
+    private void renderAvisoQuantidadeTrevos(
+            SimulaUiState state
+    ) {
 
+        if (!state.isExibirAvisoTrevosMaximo()) {
+            return;
+        }
+
+        DialogUtils.dialogEntendi(
+                this,
+                getString(
+                        R.string.msg_qtd_max_ultrapassada_milionaria
+                )
+        );
+
+        viewModel.onEvent(
+                new SimulaUiEvent
+                        .AvisoTrevosMaximoConsumido()
+        );
+    }
     private void renderComandoTelaSimula(SimulaUiState state) {
         ScreenSimulaEffect effect = state.getComandoTelaSimula();
 
@@ -692,6 +732,25 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
             executarAbrirSurpresinha(comando);
 
             viewModel.onEvent(new SimulaUiEvent.ComandoTelaSimulaConsumido());
+
+            return;
+        }
+        if (effect instanceof ScreenSimulaEffect.AtualizarQuantidadeTrevos) {
+
+            ScreenSimulaEffect.AtualizarQuantidadeTrevos comando =
+                    (ScreenSimulaEffect.AtualizarQuantidadeTrevos) effect;
+
+            if (isFragmentTrevos()
+                    && trevosFragment != null) {
+
+                trevosFragment.atualizarQuantidadeTrevos(
+                        comando.getValorSelecionado()
+                );
+            }
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.ComandoTelaSimulaConsumido()
+            );
 
             return;
         }
@@ -963,6 +1022,21 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
             case R.id.btnQuantidadeNumeros:
                 viewModel.onEvent(new SimulaUiEvent.ClicarQuantidadeNumeros());
+                break;
+
+            case R.id.btnQuantidadeTrevos:
+
+                if (isFragmentTrevos()
+                        && trevosFragment != null) {
+
+                    viewModel.onEvent(
+                            new SimulaUiEvent.ClicarQuantidadeTrevos(
+                                    parametroSimulacao,
+                                    trevosFragment.getQuantidadeNumeros()
+                            )
+                    );
+                }
+
                 break;
 
             case R.id.btnTeimosinha:
@@ -1415,6 +1489,9 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
         if (botaoNextStep != null) {
             botaoNextStep.setOnClickListener(this);
         }
+        if (btnQuantidadeTrevos != null) {
+            btnQuantidadeTrevos.setOnClickListener(this);
+        }
 
         switchSurpresinha.setOnCheckedChangeListener((buttonView, isChecked) -> {
             viewModel.onEvent(new SimulaUiEvent.AlterarSurpresinha(isChecked));
@@ -1433,7 +1510,42 @@ public class SimulaActivity<T> extends LoteriasBaseAppActivity implements OnClic
 
         DialogUtils.showDialogListItens(SimulaActivity.this, getResources().getString(R.string.quant_de_numeros), subtitulo, state.getLabelsQuantidadeNumeros(), "Confirmar", "Cancelar", onQuantidadeNumerosDialogListener());
     }
+    private OnDialogListener onQuantidadeTrevosDialogListener() {
 
+        return new OnDialogListener() {
+
+            @Override
+            public void itemSelecionado(
+                    int position
+            ) {
+
+                viewModel.onEvent(
+                        new SimulaUiEvent
+                                .SelecionarQuantidadeTrevos(
+                                position
+                        )
+                );
+            }
+
+            @Override
+            public void ok(
+                    int position
+            ) {
+
+                viewModel.onEvent(
+                        new SimulaUiEvent
+                                .ConfirmarQuantidadeTrevos(
+                                position
+                        )
+                );
+            }
+
+            @Override
+            public void cancelar() {
+
+            }
+        };
+    }
     private OnDialogListener onQuantidadeNumerosDialogListener() {
         return new OnDialogListener() {
             @Override
