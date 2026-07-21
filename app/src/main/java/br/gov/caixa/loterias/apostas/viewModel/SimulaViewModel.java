@@ -50,11 +50,13 @@ import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.viewModel.reducer.TeimosinhaReducer;
 
 public class SimulaViewModel extends AndroidViewModel {
 
     private final MutableLiveData<SimulaUiState> uiState = new MutableLiveData<>(SimulaUiState.initial());
 
+    private final TeimosinhaReducer teimosinhaReducer = new TeimosinhaReducer();
     private IdentificaoDeUmaApostaDas8Modalidades apostaPendente;
     private BarraTituloDTO barraTituloPendente;
 
@@ -1568,75 +1570,52 @@ public class SimulaViewModel extends AndroidViewModel {
     }
 
     private void inicializarTeimosinhas(SimulaUiEvent.InicializarTeimosinhas event) {
-        SimulaUiState state = getState();
-
-        String textoBotao = event.getTextoInicialTeimosinha();
-
-        List<String> labels = event.getQntTeimosinhas();
-        List<Integer> concursos = event.getQntConcursos();
-
-        if (event.getQntConcursoSelecionado() != 0 && labels != null && concursos != null) {
-            for (int i = 0; i < concursos.size(); i++) {
-                if (concursos.get(i) == event.getQntConcursoSelecionado() && i < labels.size()) {
-                    textoBotao = labels.get(i);
-                    break;
-                }
-            }
-        }
-
-        uiState.setValue(state.toBuilder().setLabelsTeimosinhas(labels).setConcursosTeimosinhas(concursos).setQtdConcursoSelecionado(event.getQntConcursoSelecionado()).setEspecial(event.isEspecial()).setTextoBotaoTeimosinhas(textoBotao).setExibirDialogTeimosinha(false).setExibirDialogSemTeimosinha(false).setAtualizarValorApostaPorTeimosinha(false).build());
+        uiState.setValue(
+                teimosinhaReducer.inicializar(
+                        getCurrentState(),
+                        event.getQntTeimosinhas(),
+                        event.getQntConcursos(),
+                        event.getQntConcursoSelecionado(),
+                        event.isEspecial(),
+                        event.getTextoInicialTeimosinha()
+                )
+        );
     }
 
     private void clicarTeimosinhas() {
-        SimulaUiState state = getState();
-
-        if (state.isEspecial()) {
-            uiState.setValue(state.toBuilder().setExibirDialogTeimosinha(false).setExibirDialogSemTeimosinha(true).setAtualizarValorApostaPorTeimosinha(false).build());
-            return;
-        }
-
-        uiState.setValue(state.toBuilder().setExibirDialogTeimosinha(true).setExibirDialogSemTeimosinha(false).setAtualizarValorApostaPorTeimosinha(false).build());
+        uiState.setValue(
+                teimosinhaReducer.clicar(
+                        getCurrentState()
+                )
+        );
     }
 
     private void confirmarTeimosinha(SimulaUiEvent.ConfirmarTeimosinha event) {
-        SimulaUiState state = getState();
-
-        int position = event.getPosition();
-
-        if (state.getConcursosTeimosinhas() == null || position < 0 || position >= state.getConcursosTeimosinhas().size()) {
-            return;
-        }
-
-        int qtdConcursoSelecionado = state.getConcursosTeimosinhas().get(position);
-
-        String textoBotao = state.getTextoBotaoTeimosinhas();
-
-        if (state.getLabelsTeimosinhas() != null && position < state.getLabelsTeimosinhas().size()) {
-            textoBotao = state.getLabelsTeimosinhas().get(position);
-        }
-
-        uiState.setValue(state.toBuilder().
-                setQtdConcursoSelecionado(qtdConcursoSelecionado).
-                setTextoBotaoTeimosinhas(textoBotao).
-                setExibirDialogTeimosinha(false).
-                setExibirDialogSemTeimosinha(false).
-                setComandoAnalytics(
-                        new AnalyticsEffect.TeimosinhaConfirmada(
-                                tipoJogoAtual,
-                                textoBotao
-                        )).setAtualizarValorApostaPorTeimosinha(true).build());
+        uiState.setValue(
+                teimosinhaReducer.confirmar(
+                        getCurrentState(),
+                        event.getPosition(),
+                        tipoJogoAtual
+                )
+        );
     }
 
     private void consumirEventoUnico() {
-        SimulaUiState state = getState();
 
-        uiState.setValue(state.toBuilder().setExibirDialogTeimosinha(false).setExibirDialogSemTeimosinha(false).build());
+        uiState.setValue(
+                teimosinhaReducer.consumirEvento(
+                        getCurrentState()
+                )
+        );
     }
 
     private void valorApostaAtualizado() {
-        SimulaUiState state = getState();
 
-        uiState.setValue(state.toBuilder().setAtualizarValorApostaPorTeimosinha(false).build());
+        uiState.setValue(
+                teimosinhaReducer.valorAtualizado(
+                        getCurrentState()
+                )
+        );
     }
 
     private SimulaUiState getState() {

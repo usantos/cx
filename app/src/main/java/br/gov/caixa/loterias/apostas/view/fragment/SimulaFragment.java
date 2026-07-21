@@ -52,6 +52,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
@@ -253,10 +254,26 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     }
 
     private void loadParametroJogo() {
-        if (parametroJogo == null) {
-            SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-            parametroJogo = ViewUtils.getParametroSimulacao(sessaoUsuario, tipoJogo).getParametroJogo();
+
+        if (parametroJogo != null) {
+            return;
         }
+
+        SessaoUsuario sessaoUsuario =
+                SessaoUsuario.getInstance();
+
+        ParametroSimulacao parametroSimulacao =
+                ViewUtils.getParametroSimulacao(
+                        sessaoUsuario,
+                        tipoJogo
+                );
+
+        if (parametroSimulacao == null) {
+            return;
+        }
+
+        parametroJogo =
+                parametroSimulacao.getParametroJogo();
     }
 
     @Override
