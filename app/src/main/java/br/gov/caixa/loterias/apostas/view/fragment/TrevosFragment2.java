@@ -157,16 +157,20 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
                         getQuantidadeNumerosAtual()
                 );
 
-        if (valoresApostas == null || valoresApostas.isEmpty()) {
-            return;
+        ParametroValorApostaDTO valorInicial = null;
+
+        if (valoresApostas != null
+                && !valoresApostas.isEmpty()) {
+            valorInicial = valoresApostas.get(0);
         }
 
-
-        viewModel.onEvent(
-                new SimulaUiEvent.QuantidadeTrevosAlterada(
-                        getValorTrevosAtual()
-                )
-        );
+        if (valorInicial != null) {
+            viewModel.onEvent(
+                    new SimulaUiEvent.QuantidadeTrevosAlterada(
+                            valorInicial
+                    )
+            );
+        }
 
         initRecyclerView();
         model = new TrevoModel(getActivity());
