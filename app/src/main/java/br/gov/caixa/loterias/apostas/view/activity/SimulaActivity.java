@@ -895,6 +895,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         textoBotaoPrognosticosSelecionado = state.getTextoBotaoPrognosticosSelecionado();
 
         String textoQuantidadeNumeros;
+        String textoQuantidadeTrevos = state.getTextoBotaoQuantidadeTrevos();
 
         if (textoBotaoPrognosticosSelecionado != null && !textoBotaoPrognosticosSelecionado.trim().isEmpty()) {
 
@@ -910,7 +911,10 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         if (btnQuantidadeTrevos != null
                 && state.getEtapaAposta() == EtapaAposta.TREVOS) {
-            btnQuantidadeTrevos.setText(textoQuantidadeNumeros);
+
+            btnQuantidadeTrevos.setText(
+                    state.getTextoBotaoQuantidadeTrevos()
+            );
         }
 
         if (state.isExibirDialogQuantidadeNumeros()) {

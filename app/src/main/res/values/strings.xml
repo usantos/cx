@@ -1010,6 +1010,7 @@
     <string name="extra_id_aposta">idAposta</string>
     <string name="extra_tipos_aposta">tiposAposta</string>
     <string name="percent_d_numeros">%d números</string>
+    <string name="percent_d_trevos">%d números</string>
     <string name="percent_d_concurso">%d concurso</string>
     <string name="extra_valor_aposta">valorAposta</string>
     <string name="extra_equipe_selecionada">equipeSelecionada</string>

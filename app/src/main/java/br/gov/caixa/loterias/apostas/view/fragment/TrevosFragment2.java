@@ -1,14 +1,12 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,8 +15,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,42 +22,34 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.TrevoModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class TrevosFragment2 extends Fragment implements OnItemClickListener<DezenaHolder> {
+public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickListener<DezenaHolder> {
     private static final String ARG_PARAMENTRO = "ARG_PARAMENTRO";
     private static final String ARG_SELECIONADOS = "ARG_SELECIONADOS";
-    private boolean isAvisou = false;
     private static final int QUANTIDADE_COLUNA_LISTA = 3;
     private RecyclerView listaTrevos;
     private ParametroJogoDTO parametro;
     private ArrayList<Integer> dezenasSelecionadas;
-    private IdentificaoDeUmaApostaDas8Modalidades aposta;
     private List<ParametroValorApostaDTO> valoresApostas;
-    private ParametroValorApostaDTO valorApostaSelecionado;
     private List<Dezena> dezenaList;
-    private List<Integer> trevoSelecionadoList = new ArrayList<>();
     private ListaDezenaRecyclerView adapter;
 
     private TrevoModel model;
     private SimulaViewModel viewModel;
-    private SimulaUiState state;
 
     private TrevosFragment2() {
     }
@@ -104,12 +92,61 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
         return view;
     }
+    @Override
+    public void onViewCreated(
+            @NonNull View view,
+            @Nullable Bundle savedInstanceState
+    ) {
+        super.onViewCreated(view, savedInstanceState);
+
+        viewModel.getUiState()
+                .observe(
+                        getViewLifecycleOwner(),
+                        this::renderState
+                );
+    }
+    private void renderState(
+            SimulaUiState state
+    ) {
+        if (state.getEtapaAposta()
+                != EtapaAposta.TREVOS) {
+            return;
+        }
+
+        atualizarSelecaoVisualTrevos(
+                state.getTrevosSelecionados()
+        );
+
+        atualizarAdapterTrevos(
+                state.getTrevosSelecionados()
+        );
+    }
+
+    private void atualizarSelecaoVisualTrevos(
+            List<Integer> trevos
+    ) {
+
+        if (dezenaList == null) {
+            return;
+        }
+
+        for (Dezena dezena : dezenaList) {
+
+            Integer numero =
+                    Integer.valueOf(
+                            dezena.getValue()
+                    );
+
+            dezena.setSelected(
+                    trevos.contains(numero)
+            );
+        }
+    }
 
     private void init() {
         viewModel = new ViewModelProvider(
                 requireActivity()
         ).get(SimulaViewModel.class);
-        state = viewModel.getUiState().getValue();
 
         valoresApostas =
                 parametro.getValoresTrevoByNumero(
@@ -120,17 +157,20 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
             return;
         }
 
-        valorApostaSelecionado =
-                valoresApostas.get(0);
+
         viewModel.onEvent(
                 new SimulaUiEvent.QuantidadeTrevosAlterada(
-                        valorApostaSelecionado
+                        getValorTrevosAtual()
                 )
         );
 
         initRecyclerView();
         model = new TrevoModel(getActivity());
 //        editAposta();
+    }
+    private ParametroValorApostaDTO getValorTrevosAtual() {
+        return getStateAtual()
+                .getValorTrevosSelecionado();
     }
 
     private void initRecyclerView(){
@@ -140,7 +180,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
                         R.drawable.ic_item_trevo_selecionado,
                         R.color.milionaria_escuro_mkp, R.color.milionaria_escuro_mkp),
                 true);
-        adapter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, dezenaConfig, this);
+        adapter = new ListaDezenaRecyclerView(getListaDezenas(), getTrevosSelecionados(), dezenaConfig, this);
         listaTrevos.setAdapter(adapter);
         RecyclerView.LayoutManager layot = new GridLayoutManager(getActivity(), QUANTIDADE_COLUNA_LISTA);
         listaTrevos.setLayoutManager(layot);
@@ -165,9 +205,11 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
         SimulaUiState estadoAtual =
                 getStateAtual();
 
-        trevoSelecionadoList =
+        List<Integer> trevos =
                 ListaUtils.orderAscDezenas(
-                        trevoSelecionadoList
+                        new ArrayList<>(
+                                getTrevosSelecionados()
+                        )
                 );
 
         viewModel.onEvent(
@@ -177,7 +219,7 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
                                 dezenasSelecionadas,
                                 estadoAtual.getValorAposta(),
                                 estadoAtual.getQtdConcursoSelecionado(),
-                                trevoSelecionadoList
+                                trevos
                         ),
                         estadoAtual.getBarraTituloDTO(),
                         false,
@@ -195,54 +237,47 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     }
 
     private boolean isApostaTrevosCompleta() {
-        if (valorApostaSelecionado == null
-                || valorApostaSelecionado.getNumeroTrevos() == null) {
+        ParametroValorApostaDTO valorAtual =
+                getValorTrevosAtual();
+
+        if (valorAtual == null
+                || valorAtual.getNumeroTrevos() == null) {
             return false;
         }
 
-        return trevoSelecionadoList != null
-                && trevoSelecionadoList.size()
-                >= valorApostaSelecionado.getNumeroTrevos();
+        return getTrevosSelecionados().size()
+                == valorAtual.getNumeroTrevos();
     }
 
     private void limparTrevosSelecionados() {
-        if (trevoSelecionadoList != null) {
-            trevoSelecionadoList.clear();
-        }
 
-        if (adapter != null) {
-            adapter.atualizaSelecionados(
-                    trevoSelecionadoList
-            );
-        }
-
-        if (viewModel != null && valorApostaSelecionado != null) {
-            viewModel.onEvent(
-                    new SimulaUiEvent.TrevosAlterados(
-                            0,
-                            valorApostaSelecionado.getNumeroTrevos(),
-                            valorApostaSelecionado
-                    )
-            );
-        }
+        atualizarTrevosSelecionados(
+                new ArrayList<>()
+        );
     }
 
     private void completarTrevosAleatoriamente() {
+        ParametroValorApostaDTO valorAtual =
+                getValorTrevosAtual();
+
+        if (valorAtual == null
+                || valorAtual.getNumeroTrevos() == null) {
+            return;
+        }
+
         AlertDialogUtils.show(getContext());
-        model.preencheNumerosAleatorios(valorApostaSelecionado.getNumeroTrevos(), trevoSelecionadoList,
-                parametro.getTrevos().getQtdMaxima(), new OnSilceListener<List<Integer>>() {
+
+        model.preencheNumerosAleatorios(
+                valorAtual.getNumeroTrevos(),
+                getTrevosSelecionados(),
+                parametro.getTrevos().getQtdMaxima(),
+                new OnSilceListener<List<Integer>>() {
                     @Override
                     public void success(List<Integer> list) {
                         AlertDialogUtils.dismiss();
-                        trevoSelecionadoList.clear();
-                        trevoSelecionadoList.addAll(list);
-                        adapter.atualizaSelecionados(list);
-                        viewModel.onEvent(
-                                new SimulaUiEvent.TrevosAlterados(
-                                        trevoSelecionadoList.size(),
-                                        valorApostaSelecionado.getNumeroTrevos(),
-                                        valorApostaSelecionado
-                                )
+
+                        atualizarTrevosSelecionados(
+                                new ArrayList<>(list)
                         );
                     }
 
@@ -250,7 +285,8 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
                     public void error(VolleyError error) {
                         AlertDialogUtils.dismiss();
                     }
-                });
+                }
+        );
     }
 
 
@@ -258,69 +294,32 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
     public void onDetach() {
         super.onDetach();
     }
-    private ParametroValorApostaDTO buscarValorAtualTrevos() {
 
-        if (valoresApostas == null) {
-            return valorApostaSelecionado;
-        }
-
-        int quantidadeAtual =
-                trevoSelecionadoList.size();
-
-        for (ParametroValorApostaDTO valor : valoresApostas) {
-
-            if (valor.getNumeroTrevos() != null
-                    && valor.getNumeroTrevos() == quantidadeAtual) {
-
-                return valor;
-            }
-        }
-
-        return valorApostaSelecionado;
-    }
 
     @Override
-    public void itemClick(DezenaHolder holder, int position) {
-        Dezena dezena = dezenaList.get(position);
-        dezena.setSelected(!dezena.isSelected());
-        Integer numero = Integer.valueOf(dezena.getValue());
-        if (dezena.isSelected()) {
-            if (!trevoSelecionadoList.contains(numero)) {
-                trevoSelecionadoList.add(numero);
-                if ((trevoSelecionadoList.size() > 2) && (!isAvisou)) {
-                    DialogUtils.dialogEntendi(
-                            getActivity(),
-                            getString(R.string.msg_qtd_max_ultrapassada_milionaria)
-                    );
-                    isAvisou = true;
-                }
-            }
-        } else {
-            trevoSelecionadoList.remove(numero);
-        }
-        holder.atualizaDezena(dezena);
+    public void itemClick(
+            DezenaHolder holder,
+            int position
+    ) {
 
-        ParametroValorApostaDTO valorAtual =
-                buscarValorAtualTrevos();
+        Dezena dezena =
+                dezenaList.get(position);
 
-        if (valorAtual != null) {
-            valorApostaSelecionado =
-                    valorAtual;
-        }
-
-        if (valorApostaSelecionado == null
-                || valorApostaSelecionado.getNumeroTrevos() == null) {
-            return;
-        }
+        int numero =
+                Integer.parseInt(dezena.getValue());
 
         viewModel.onEvent(
-                new SimulaUiEvent.TrevosAlterados(
-                        trevoSelecionadoList.size(),
-                        valorApostaSelecionado.getNumeroTrevos(),
-                        valorApostaSelecionado
+                new SimulaUiEvent.ToggleTrevo(
+                        numero
                 )
         );
     }
+    private List<Integer> getTrevosSelecionados() {
+
+        return getStateAtual()
+                .getTrevosSelecionados();
+    }
+
     public int getQuantidadeNumeros() {
         return dezenasSelecionadas != null
                 ? dezenasSelecionadas.size()
@@ -336,28 +335,40 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
         return viewModel.getUiState().getValue();
     }
+    private void atualizarTrevosSelecionados(
+            List<Integer> trevos
+    ) {
+        ParametroValorApostaDTO valorAtual =
+                getValorTrevosAtual();
+
+        if (viewModel == null
+                || valorAtual == null
+                || valorAtual.getNumeroTrevos() == null) {
+            return;
+        }
+
+        viewModel.onEvent(
+                new SimulaUiEvent.TrevosAlterados(
+                        trevos,
+                        valorAtual.getNumeroTrevos(),
+                        valorAtual
+                )
+        );
+    }
 
     public void atualizarQuantidadeTrevos(
             ParametroValorApostaDTO valorSelecionado
     ) {
-        if (valorSelecionado == null) {
-            return;
-        }
 
-        if (parametro == null
-                || parametro.getTrevos() == null) {
-            return;
-        }
 
-        if (valoresApostas == null || valoresApostas.isEmpty()) {
+        if (valoresApostas == null
+                || valoresApostas.isEmpty()) {
+
             valoresApostas =
                     parametro.getValoresTrevoByNumero(
                             getQuantidadeNumeros()
                     );
         }
-
-        valorApostaSelecionado =
-                valorSelecionado;
 
         int ultimoValor =
                 valoresApostas != null
@@ -366,47 +377,61 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
 
         if (ultimoValor >= 0
                 && valoresApostas.get(ultimoValor)
-                .equals(valorApostaSelecionado)) {
+                .equals(valorSelecionado)) {
 
-            trevoSelecionadoList =
+            List<Integer> novosTrevos =
                     new ArrayList<>();
+
+
+            int quantidade =
+                    valorSelecionado.getNumeroTrevos();
 
             for (int numero = 1;
-                 numero <= parametro.getTrevos().getQtdPrognostico();
+                 numero <= quantidade;
                  numero++) {
 
-                trevoSelecionadoList.add(numero);
+                novosTrevos.add(numero);
             }
 
-            atualizarAdapterTrevos();
+
+            atualizarTrevosSelecionados(
+                    novosTrevos
+            );
+
+            return;
         }
 
-        if (trevoSelecionadoList != null
-                && valorApostaSelecionado.getNumeroTrevos() != null
-                && trevoSelecionadoList.size()
-                > valorApostaSelecionado.getNumeroTrevos()) {
+        List<Integer> trevosAtuais =
+                getTrevosSelecionados();
 
-            trevoSelecionadoList =
-                    new ArrayList<>();
+        if (trevosAtuais.size() > valorSelecionado.getNumeroTrevos()) {
 
-            atualizarAdapterTrevos();
+            List<Integer> ajustados =
+                    new ArrayList<>(trevosAtuais);
+
+            ajustados = ajustados.subList(
+                    0,
+                    valorSelecionado.getNumeroTrevos()
+            );
+
+            atualizarTrevosSelecionados(
+                    new ArrayList<>(ajustados)
+            );
+
+            return;
         }
 
-        viewModel.onEvent(
-                new SimulaUiEvent.TrevosAlterados(
-                        trevoSelecionadoList != null
-                                ? trevoSelecionadoList.size()
-                                : 0,
-                        valorApostaSelecionado.getNumeroTrevos(),
-                        valorApostaSelecionado
-                )
+        atualizarTrevosSelecionados(
+                trevosAtuais
         );
     }
 
-    private void atualizarAdapterTrevos() {
+    private void atualizarAdapterTrevos(
+            List<Integer> trevos
+    ) {
         if (adapter != null) {
             adapter.atualizaSelecionados(
-                    trevoSelecionadoList
+                    trevos
             );
         }
 
@@ -414,6 +439,15 @@ public class TrevosFragment2 extends Fragment implements OnItemClickListener<Dez
                 && adapter != null) {
             listaTrevos.setAdapter(adapter);
         }
+    }
+    @Override
+    public boolean possuiSelecaoValida() {
+        return isApostaTrevosCompleta();
+    }
+
+    @Override
+    public EtapaAposta getEtapa() {
+        return EtapaAposta.TREVOS;
     }
 
 }

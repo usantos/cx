@@ -719,12 +719,47 @@ public abstract class SimulaUiEvent {
         private final int quantidadeTrevosSelecionados;
         private final int quantidadeTrevosNecessaria;
         private final ParametroValorApostaDTO valorAposta;
+        private final List<Integer> trevosSelecionados;
 
         public TrevosAlterados(
                 int quantidadeTrevosSelecionados,
                 int quantidadeTrevosNecessaria,
                 ParametroValorApostaDTO valorAposta
         ) {
+            this(
+                    new ArrayList<Integer>(),
+                    quantidadeTrevosSelecionados,
+                    quantidadeTrevosNecessaria,
+                    valorAposta
+            );
+        }
+
+        public TrevosAlterados(
+                List<Integer> trevosSelecionados,
+                int quantidadeTrevosNecessaria,
+                ParametroValorApostaDTO valorAposta
+        ) {
+            this(
+                    trevosSelecionados,
+                    trevosSelecionados != null
+                            ? trevosSelecionados.size()
+                            : 0,
+                    quantidadeTrevosNecessaria,
+                    valorAposta
+            );
+        }
+
+        private TrevosAlterados(
+                List<Integer> trevosSelecionados,
+                int quantidadeTrevosSelecionados,
+                int quantidadeTrevosNecessaria,
+                ParametroValorApostaDTO valorAposta
+        ) {
+            this.trevosSelecionados =
+                    trevosSelecionados != null
+                            ? new ArrayList<>(trevosSelecionados)
+                            : new ArrayList<>();
+
             this.quantidadeTrevosSelecionados =
                     quantidadeTrevosSelecionados;
 
@@ -745,6 +780,10 @@ public abstract class SimulaUiEvent {
 
         public ParametroValorApostaDTO getValorAposta() {
             return valorAposta;
+        }
+
+        public List<Integer> getTrevosSelecionados() {
+            return new ArrayList<>(trevosSelecionados);
         }
     }
 
@@ -780,4 +819,17 @@ public abstract class SimulaUiEvent {
         }
     }
 
+    public static class ToggleTrevo
+            extends SimulaUiEvent {
+
+        private final int numeroTrevo;
+
+        public ToggleTrevo(int numeroTrevo) {
+            this.numeroTrevo = numeroTrevo;
+        }
+
+        public int getNumeroTrevo() {
+            return numeroTrevo;
+        }
+    }
 }

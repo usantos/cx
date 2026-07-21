@@ -86,6 +86,8 @@ public class SimulaUiState {
 
     private final int posicaoQuantidadeNumerosSelecionada;
     private final String textoBotaoPrognosticosSelecionado;
+    private final String textoBotaoQuantidadeTrevos;
+
 
     private final boolean atualizarValorApostaPorQuantidadeNumeros;
     private final boolean resetarTrevosPorQuantidadeNumeros;
@@ -110,6 +112,8 @@ public class SimulaUiState {
     private final ParametroValorApostaDTO valorTrevosSelecionado;
     private final boolean exibirAvisoTrevosMaximo;
     private final boolean avisouTrevosMaximo;
+    private final List<Integer> trevosSelecionados;
+    private final int quantidadeTrevosSelecionada;
 
     private SimulaUiState(
             Builder builder
@@ -254,6 +258,11 @@ public class SimulaUiState {
                         ? builder.textoBotaoPrognosticosSelecionado
                         : "";
 
+        this.textoBotaoQuantidadeTrevos =
+                builder.textoBotaoQuantidadeTrevos != null
+                        ? builder.textoBotaoQuantidadeTrevos
+                        : "";
+
         this.atualizarValorApostaPorQuantidadeNumeros =
                 builder.atualizarValorApostaPorQuantidadeNumeros;
 
@@ -291,6 +300,8 @@ public class SimulaUiState {
 
         this.valorTrevosSelecionado =
                 builder.valorTrevosSelecionado;
+        this.trevosSelecionados = builder.trevosSelecionados;
+        this.quantidadeTrevosSelecionada = builder.quantidadeTrevosSelecionada;
 
     }
 
@@ -336,6 +347,7 @@ public class SimulaUiState {
                 .setBotaoAdicionarHabilitado(false)
                 .setBotaoNextStepHabilitado(false)
                 .setBotaoLimparHabilitado(false)
+                .setTrevosSelecionados(new ArrayList<>())
                 .setValorCarrinho(BigDecimal.ZERO)
                 .setQuantidadeApostasCarrinho(0)
                 .setCarregandoCarrinho(false)
@@ -357,6 +369,7 @@ public class SimulaUiState {
                 .setAvisouQuantidadeNumerosMaxima(false)
                 .setPosicaoQuantidadeNumerosSelecionada(0)
                 .setTextoBotaoPrognosticosSelecionado("")
+                .setTextoBotaoQuantidadeTrevos("2 trevos")
                 .setAtualizarValorApostaPorQuantidadeNumeros(false)
                 .setResetarTrevosPorQuantidadeNumeros(false)
                 .setExibirDialogQuantidadeTrevos(false)
@@ -364,9 +377,11 @@ public class SimulaUiState {
                 .setValoresTrevos(new ArrayList<>())
                 .setPosicaoTrevosSelecionada(0)
                 .setSubtituloTrevos("")
+                .setQuantidadeTrevosSelecionada(0)
                 .setValorTrevosSelecionado(null)
                 .build();
     }
+    public List<Integer> getTrevosSelecionados(){return trevosSelecionados;}
 
     public String getTextoSelecionados() {
         return textoSelecionados;
@@ -633,6 +648,9 @@ public class SimulaUiState {
     public String getTextoBotaoPrognosticosSelecionado() {
         return textoBotaoPrognosticosSelecionado;
     }
+    public String getTextoBotaoQuantidadeTrevos() {
+        return textoBotaoQuantidadeTrevos;
+    }
 
     public boolean isAtualizarValorApostaPorQuantidadeNumeros() {
         return atualizarValorApostaPorQuantidadeNumeros;
@@ -650,6 +668,7 @@ public class SimulaUiState {
     public AnimacaoEffect getComandoAnimacao(){
         return animacaoEffect;
     }
+    public int getQuantidadeTrevosSelecionada(){return quantidadeTrevosSelecionada;}
 
 
     public static class Builder {
@@ -721,6 +740,8 @@ public class SimulaUiState {
 
         private int posicaoQuantidadeNumerosSelecionada;
         private String textoBotaoPrognosticosSelecionado;
+        private String textoBotaoQuantidadeTrevos;
+
         private boolean exibirOpcaoOutrosNumeros;
         private boolean opcaoOutrosNumerosSelecionada;
 
@@ -746,6 +767,8 @@ public class SimulaUiState {
         private ParametroValorApostaDTO valorTrevosSelecionado;
         private boolean exibirAvisoTrevosMaximo;
         private boolean avisouTrevosMaximo;
+        private List<Integer> trevosSelecionados;
+        private int quantidadeTrevosSelecionada;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<>();
@@ -779,6 +802,7 @@ public class SimulaUiState {
 
             this.posicaoQuantidadeNumerosSelecionada = 0;
             this.textoBotaoPrognosticosSelecionado = "";
+            this.textoBotaoQuantidadeTrevos = "2 trevos";
             this.screenSimulaEffect = null;
             this.surpresinhaHabilitada = false;
             this.exibirDialogFavoritarAposta = false;
@@ -797,6 +821,8 @@ public class SimulaUiState {
             this.valorTrevosSelecionado = null;
             this.exibirAvisoTrevosMaximo = false;
             this.avisouTrevosMaximo = false;
+            this.trevosSelecionados = new ArrayList<>();
+            this.quantidadeTrevosSelecionada = 0;
         }
 
         public Builder(
@@ -900,6 +926,7 @@ public class SimulaUiState {
 
             this.textoBotaoPrognosticosSelecionado =
                     state.textoBotaoPrognosticosSelecionado;
+            this.textoBotaoQuantidadeTrevos = state.textoBotaoQuantidadeTrevos;
 
             this.atualizarValorApostaPorQuantidadeNumeros =
                     state.atualizarValorApostaPorQuantidadeNumeros;
@@ -923,6 +950,11 @@ public class SimulaUiState {
                             ? new ArrayList<>(state.valoresTrevos)
                             : new ArrayList<>();
 
+            this.trevosSelecionados =
+                    state.trevosSelecionados != null
+                            ? new ArrayList<>(state.trevosSelecionados)
+                            : new ArrayList<>();
+
             this.posicaoTrevosSelecionada =
                     state.posicaoTrevosSelecionada;
 
@@ -933,6 +965,13 @@ public class SimulaUiState {
                     state.valorTrevosSelecionado;
             this.exibirAvisoTrevosMaximo = state.exibirAvisoTrevosMaximo;
             this.avisouTrevosMaximo = state.avisouTrevosMaximo;
+            this.quantidadeTrevosSelecionada = state.quantidadeTrevosSelecionada;
+        }
+        public Builder setQuantidadeTrevosSelecionada(
+                int quantidadeTrevosSelecionada
+        ){
+            this.quantidadeTrevosSelecionada = quantidadeTrevosSelecionada;
+            return this;
         }
 
         public Builder setLabelsQuantidadeNumeros(
@@ -990,6 +1029,15 @@ public class SimulaUiState {
             this.valoresTrevos =
                     valoresTrevos != null
                             ? new ArrayList<>(valoresTrevos)
+                            : new ArrayList<>();
+            return this;
+        }
+        public Builder setTrevosSelecionados(
+                List<Integer> trevosSelecionados
+        ) {
+            this.trevosSelecionados =
+                    trevosSelecionados != null
+                            ? new ArrayList<>(trevosSelecionados)
                             : new ArrayList<>();
             return this;
         }
@@ -1125,7 +1173,15 @@ public class SimulaUiState {
                             : "";
             return this;
         }
-
+        public Builder setTextoBotaoQuantidadeTrevos(
+                String textoBotaoQuantidadeTrevos
+        ) {
+            this.textoBotaoQuantidadeTrevos =
+                    textoBotaoQuantidadeTrevos != null
+                            ? textoBotaoQuantidadeTrevos
+                            : "2 trevos";
+            return this;
+        }
         public Builder setAtualizarValorApostaPorQuantidadeNumeros(
                 boolean atualizarValorApostaPorQuantidadeNumeros
         ) {
