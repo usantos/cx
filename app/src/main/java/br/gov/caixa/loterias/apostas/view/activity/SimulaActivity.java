@@ -147,6 +147,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     String numeroConcurso;
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     private TextView textInfoEtapa;
+    private EtapaAposta etapaRenderizada;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -199,7 +200,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
 
         viewModel.onEvent(new SimulaUiEvent.TelaInicializada(tipoJogo, isEspecial, parametroSimulacao));
-
+        etapaRenderizada = null;
+        inicializarEstadoTeimosinhas();
+        inicializarEstadoQuantidadeNumeros();
         viewModel.onEvent(new SimulaUiEvent.CarregarCarrinho());
     }
 
@@ -340,8 +343,32 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             botaoFavoritar.setText(getString(R.string.favoritar_aposta));
         }
     }
+    private void sincronizarFragmento(
+            SimulaUiState state
+    ) {
+
+        EtapaAposta etapaAtual =
+                state.getEtapaAposta();
+
+        if (etapaAtual == null) {
+            etapaAtual = EtapaAposta.NUMEROS;
+        }
+
+        if (etapaRenderizada != null
+                && etapaAtual == etapaRenderizada) {
+            return;
+        }
+
+        etapaRenderizada = etapaAtual;
+
+        renderEtapaAtual(
+                etapaAtual,
+                state
+        );
+    }
 
     private void render(SimulaUiState state) {
+        sincronizarFragmento(state);
         renderAnimacao(state);
         barraTituloDTO = state.getBarraTituloDTO();
         if (barraTituloDTO != null) {
@@ -402,9 +429,23 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                         : View.GONE
         );
 
-        textInfoEtapa.setText(
-                state.getTextoInfoEtapa()
-        );
+        String texto;
+
+        switch (state.getEtapaAposta()) {
+
+            case TREVOS:
+            case MES_SORTE:
+            case TIME_CORACAO:
+                texto = "2/2";
+                break;
+
+            case NUMEROS:
+            default:
+                texto = "1/2";
+                break;
+        }
+
+        textInfoEtapa.setText(texto);
     }
 
     private void triggerAnalytics(
@@ -558,13 +599,35 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     }
 
-    private void renderTextoSelecionados(SimulaUiState state) {
-
+    private void renderTextoSelecionados(
+            SimulaUiState state
+    ) {
         if (textSelecionados == null) {
             return;
         }
 
-        textSelecionados.setText(state.getTextoSelecionados());
+        String texto;
+
+        switch (state.getEtapaAposta()) {
+
+            case MES_SORTE:
+                texto = "Selecione o mês de sorte:";
+                break;
+
+            case TREVOS:
+                texto = "Selecione os trevos:";
+                break;
+
+            case TIME_CORACAO:
+                texto = "Selecione o time do coração:";
+                break;
+
+            default:
+                texto = state.getTextoSelecionados();
+                break;
+        }
+
+        textSelecionados.setText(texto);
     }
 
     private void renderEstadoBotoes(SimulaUiState state) {
@@ -787,16 +850,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         if (effect instanceof ScreenSimulaEffect.VoltarEtapa) {
 
-            ScreenSimulaEffect.VoltarEtapa voltarEtapa =
-                    (ScreenSimulaEffect.VoltarEtapa) effect;
-
-            renderEtapaAtual(
-                    voltarEtapa.getEtapa(),
-                    state
-            );
-
             viewModel.onEvent(
-                    new SimulaUiEvent.ComandoTelaSimulaConsumido()
+                    new SimulaUiEvent
+                            .ComandoTelaSimulaConsumido()
             );
 
             return;
@@ -823,7 +879,12 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 break;
 
             default:
+
+                mesesFragment = null;
+                trevosFragment = null;
+
                 abrirTelaCartela();
+
                 break;
         }
     }
@@ -1151,9 +1212,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         });
     }
 
-    private void voltaPraEscolhaDeNumeros() {
-        resetaCartela();
-    }
 
     private void resetaCartela() {
         cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
@@ -1345,17 +1403,17 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void configuraFragments() {
+
         fragmentManager = getSupportFragmentManager();
+
         cartelaFragment = new SimulaFragment();
+
         Bundle bundle = new Bundle();
 
         cartelaFragment.setArguments(bundle);
 
-        surpresinhaFragment = FragmentUtils.getSurpresinhaFragment2();
-
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
+        surpresinhaFragment =
+                FragmentUtils.getSurpresinhaFragment2();
     }
 
     private void configuraActivity() {
@@ -1415,8 +1473,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         cartelaFragment.cartelaFragmentBuilder(bundle);
         surpresinhaFragment.surpresinhaFragmentBuilder(bundle);
 
-        inicializarEstadoTeimosinhas();
-        inicializarEstadoQuantidadeNumeros();
         configuraBotoesListeners();
     }
 
@@ -1471,13 +1527,13 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         if (btnQuantidadeTrevos != null) {
             btnQuantidadeTrevos.setOnClickListener(
                     v -> {
-                        if (isFragmentTrevos()
-                                && trevosFragment != null) {
+                        SimulaUiState state = viewModel.getUiState().getValue();
 
+                        if (state != null) {
                             viewModel.onEvent(
                                     new SimulaUiEvent.ClicarQuantidadeTrevos(
                                             parametroSimulacao,
-                                            trevosFragment.getQuantidadeNumeros()
+                                            state.getQtdDezenasPossiveisSelecionado()
                                     )
                             );
                         }
@@ -1567,11 +1623,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
 
             cartelaFragment.atualizaStatusBotaoFinalizar(true);
-            return;
-        }
-
-        if (isFragmentMeses()) {
-            voltaPraEscolhaDeNumeros();
             return;
         }
 

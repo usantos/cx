@@ -9,6 +9,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 
@@ -876,6 +877,27 @@ public abstract class SimulaUiEvent {
         public int getQuantidade() {
             return quantidade;
         }
+    }
+    public static final class SelecionarMesDaSorte
+            extends SimulaUiEvent {
+
+        private final ParametroMesDeSorte mes;
+
+        public SelecionarMesDaSorte(
+                ParametroMesDeSorte mes
+        ) {
+            this.mes = mes;
+        }
+
+        public ParametroMesDeSorte getMes() {
+            return mes;
+        }
+    }
+    public static final class LimparMesDaSorte
+            extends SimulaUiEvent {
+    }
+    public static final class CompletarMesDaSorte
+            extends SimulaUiEvent {
     }
     public static final class RecalcularSurpresinha
             extends SimulaUiEvent {

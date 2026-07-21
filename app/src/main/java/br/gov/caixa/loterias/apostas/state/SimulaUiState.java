@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
 import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
@@ -117,7 +118,7 @@ public class SimulaUiState {
     private final int quantidadeTrevosSurpresinha;
     private final List<Integer> trevosSelecionados;
     private final int quantidadeTrevosSelecionada;
-
+    private final ParametroMesDeSorte mesSelecionado;
     private SimulaUiState(
             Builder builder
     ) {
@@ -308,7 +309,7 @@ public class SimulaUiState {
         this.quantidadeSurpresinhas = builder.quantidadeSurpresinhas;
         this.quantidadeNumerosSurpresinha = builder.quantidadeNumerosSurpresinha;
         this.quantidadeTrevosSurpresinha = builder.quantidadeTrevosSurpresinha;
-
+        this.mesSelecionado = builder.mesSelecionado;
     }
 
     public static SimulaUiState initial() {
@@ -318,6 +319,7 @@ public class SimulaUiState {
                 .setExibirDialogFavoritarAposta(false)
                 .setApostaFavoritada(false)
                 .setMostrarSalvarAposta(false)
+                .setMesSelecionado(null)
                 .setEtapaAposta(EtapaAposta.NUMEROS)
                 .setComandoCarrinho(null)
                 .setAbrirCarrinho(false)
@@ -387,6 +389,8 @@ public class SimulaUiState {
                 .setValorTrevosSelecionado(null)
                 .setQuantidadeSurpresinhas(0)
                 .setQuantidadeTrevosSurpresinha(0)
+                .setExibirInfoEtapa(false)
+                .setTextoInfoEtapa("")
                 .setQuantidadeNumerosSurpresinha(0)
                 .build();
     }
@@ -681,6 +685,7 @@ public class SimulaUiState {
     public int getQuantidadeSurpresinhas(){return quantidadeSurpresinhas;}
     public int getQuantidadeNumerosSurpresinha(){return quantidadeNumerosSurpresinha;}
     public int getQuantidadeTrevosSurpresinha(){return quantidadeTrevosSurpresinha;}
+    public ParametroMesDeSorte getMesSelecionado(){return mesSelecionado;}
 
 
     public static class Builder {
@@ -784,6 +789,7 @@ public class SimulaUiState {
         private int quantidadeSurpresinhas;
         private int quantidadeNumerosSurpresinha;
         private int quantidadeTrevosSurpresinha;
+        private ParametroMesDeSorte mesSelecionado;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<>();
@@ -840,6 +846,7 @@ public class SimulaUiState {
             this.quantidadeTrevosSelecionada = 0;
             this.quantidadeSurpresinhas = 0;
             this.quantidadeNumerosSurpresinha = 0;
+            this.mesSelecionado = null;
             this.quantidadeTrevosSurpresinha = 0;
         }
 
@@ -987,6 +994,7 @@ public class SimulaUiState {
             this.quantidadeSurpresinhas = state.quantidadeSurpresinhas;
             this.quantidadeNumerosSurpresinha = state.quantidadeNumerosSurpresinha;
             this.quantidadeTrevosSurpresinha = state.quantidadeTrevosSurpresinha;
+            this.mesSelecionado = state.mesSelecionado;
         }
         public Builder setQuantidadeTrevosSelecionada(
                 int quantidadeTrevosSelecionada
@@ -1307,7 +1315,10 @@ public class SimulaUiState {
                     : new ArrayList<>();
             return this;
         }
-
+        public Builder setMesSelecionado(ParametroMesDeSorte mesSelecionado) {
+            this.mesSelecionado = mesSelecionado;
+            return this;
+        }
         public Builder setConcursosTeimosinhas(List<Integer> concursosTeimosinhas) {
             this.concursosTeimosinhas = concursosTeimosinhas != null
                     ? new ArrayList<>(concursosTeimosinhas)

@@ -105,6 +105,10 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
                         this::renderState
                 );
     }
+    private int getQuantidadeNumerosAtual() {
+        return getStateAtual()
+                .getQtdDezenasPossiveisSelecionado();
+    }
     private void renderState(
             SimulaUiState state
     ) {
@@ -150,7 +154,7 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
 
         valoresApostas =
                 parametro.getValoresTrevoByNumero(
-                        getQuantidadeNumeros()
+                        getQuantidadeNumerosAtual()
                 );
 
         if (valoresApostas == null || valoresApostas.isEmpty()) {
@@ -320,12 +324,6 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
                 .getTrevosSelecionados();
     }
 
-    public int getQuantidadeNumeros() {
-        return dezenasSelecionadas != null
-                ? dezenasSelecionadas.size()
-                : 0;
-    }
-
     private SimulaUiState getStateAtual() {
         if (viewModel == null
                 || viewModel.getUiState() == null
@@ -366,7 +364,7 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
 
             valoresApostas =
                     parametro.getValoresTrevoByNumero(
-                            getQuantidadeNumeros()
+                            getQuantidadeNumerosAtual()
                     );
         }
 
