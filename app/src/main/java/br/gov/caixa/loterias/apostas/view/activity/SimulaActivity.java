@@ -203,7 +203,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         etapaRenderizada = null;
         inicializarEstadoTeimosinhas();
         inicializarEstadoQuantidadeNumeros();
-        viewModel.onEvent(new SimulaUiEvent.CarregarCarrinho());
     }
 
     @Override
@@ -1074,12 +1073,17 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     @Override
     protected void onResume() {
         super.onResume();
+
         AnalyticsHelper.getInstance().logViewScreenAposta(
                 AnalyticsHelper.JourneyParams.APOSTAR,
                 AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
                 AnalyticsHelper.Tela.MONTAR_APOSTA,
                 ModalidadeEnum.fromString(tipoJogo),
                 numeroConcurso
+        );
+
+        viewModel.onEvent(
+                new SimulaUiEvent.CarregarCarrinho()
         );
     }
 
