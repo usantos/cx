@@ -112,6 +112,9 @@ public class SimulaUiState {
     private final ParametroValorApostaDTO valorTrevosSelecionado;
     private final boolean exibirAvisoTrevosMaximo;
     private final boolean avisouTrevosMaximo;
+    private final int quantidadeSurpresinhas;
+    private final int quantidadeNumerosSurpresinha;
+    private final int quantidadeTrevosSurpresinha;
     private final List<Integer> trevosSelecionados;
     private final int quantidadeTrevosSelecionada;
 
@@ -302,6 +305,9 @@ public class SimulaUiState {
                 builder.valorTrevosSelecionado;
         this.trevosSelecionados = builder.trevosSelecionados;
         this.quantidadeTrevosSelecionada = builder.quantidadeTrevosSelecionada;
+        this.quantidadeSurpresinhas = builder.quantidadeSurpresinhas;
+        this.quantidadeNumerosSurpresinha = builder.quantidadeNumerosSurpresinha;
+        this.quantidadeTrevosSurpresinha = builder.quantidadeTrevosSurpresinha;
 
     }
 
@@ -379,6 +385,9 @@ public class SimulaUiState {
                 .setSubtituloTrevos("")
                 .setQuantidadeTrevosSelecionada(0)
                 .setValorTrevosSelecionado(null)
+                .setQuantidadeSurpresinhas(0)
+                .setQuantidadeTrevosSurpresinha(0)
+                .setQuantidadeNumerosSurpresinha(0)
                 .build();
     }
     public List<Integer> getTrevosSelecionados(){return trevosSelecionados;}
@@ -669,6 +678,9 @@ public class SimulaUiState {
         return animacaoEffect;
     }
     public int getQuantidadeTrevosSelecionada(){return quantidadeTrevosSelecionada;}
+    public int getQuantidadeSurpresinhas(){return quantidadeSurpresinhas;}
+    public int getQuantidadeNumerosSurpresinha(){return quantidadeNumerosSurpresinha;}
+    public int getQuantidadeTrevosSurpresinha(){return quantidadeTrevosSurpresinha;}
 
 
     public static class Builder {
@@ -769,6 +781,9 @@ public class SimulaUiState {
         private boolean avisouTrevosMaximo;
         private List<Integer> trevosSelecionados;
         private int quantidadeTrevosSelecionada;
+        private int quantidadeSurpresinhas;
+        private int quantidadeNumerosSurpresinha;
+        private int quantidadeTrevosSurpresinha;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<>();
@@ -823,6 +838,9 @@ public class SimulaUiState {
             this.avisouTrevosMaximo = false;
             this.trevosSelecionados = new ArrayList<>();
             this.quantidadeTrevosSelecionada = 0;
+            this.quantidadeSurpresinhas = 0;
+            this.quantidadeNumerosSurpresinha = 0;
+            this.quantidadeTrevosSurpresinha = 0;
         }
 
         public Builder(
@@ -966,6 +984,9 @@ public class SimulaUiState {
             this.exibirAvisoTrevosMaximo = state.exibirAvisoTrevosMaximo;
             this.avisouTrevosMaximo = state.avisouTrevosMaximo;
             this.quantidadeTrevosSelecionada = state.quantidadeTrevosSelecionada;
+            this.quantidadeSurpresinhas = state.quantidadeSurpresinhas;
+            this.quantidadeNumerosSurpresinha = state.quantidadeNumerosSurpresinha;
+            this.quantidadeTrevosSurpresinha = state.quantidadeTrevosSurpresinha;
         }
         public Builder setQuantidadeTrevosSelecionada(
                 int quantidadeTrevosSelecionada
@@ -1475,6 +1496,24 @@ public class SimulaUiState {
                 int triplasLoteca
         ) {
             this.triplasLoteca = triplasLoteca;
+            return this;
+        }
+        public Builder setQuantidadeSurpresinhas(
+                int quantidadeSurpresinhas
+        ) {
+            this.quantidadeSurpresinhas = quantidadeSurpresinhas;
+            return this;
+        }
+        public Builder setQuantidadeNumerosSurpresinha(
+                int quantidadeNumerosSurpresinha
+        ) {
+            this.quantidadeNumerosSurpresinha = quantidadeNumerosSurpresinha;
+            return this;
+        }
+        public Builder setQuantidadeTrevosSurpresinha(
+                int quantidadeTrevosSurpresinha
+        ) {
+            this.quantidadeTrevosSurpresinha = quantidadeTrevosSurpresinha;
             return this;
         }
 

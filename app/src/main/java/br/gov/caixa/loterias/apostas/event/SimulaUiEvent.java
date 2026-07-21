@@ -832,4 +832,64 @@ public abstract class SimulaUiEvent {
             return numeroTrevo;
         }
     }
+    public static final class AtualizarQuantidadeSurpresinhas
+            extends SimulaUiEvent {
+
+        private final int quantidade;
+
+        public AtualizarQuantidadeSurpresinhas(
+                int quantidade
+        ) {
+            this.quantidade = quantidade;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+    }
+    public static final class AtualizarQuantidadeNumerosSurpresinha
+            extends SimulaUiEvent {
+
+        private final int quantidade;
+
+        public AtualizarQuantidadeNumerosSurpresinha(
+                int quantidade
+        ) {
+            this.quantidade = quantidade;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+    }
+    public static final class AtualizarQuantidadeTrevosSurpresinha
+            extends SimulaUiEvent {
+
+        private final int quantidade;
+
+        public AtualizarQuantidadeTrevosSurpresinha(
+                int quantidade
+        ) {
+            this.quantidade = quantidade;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+    }
+    public static final class RecalcularSurpresinha
+            extends SimulaUiEvent {
+    }
+    public static final class AdicionarSurpresinhaAoCarrinho
+            extends SimulaUiEvent {
+    }
+    public static final class LimparConfiguracaoSurpresinha
+            extends SimulaUiEvent {
+    }
+    public static final class SolicitarSelecaoTimeCoracao
+            extends SimulaUiEvent {
+    }
+    public static final class InicializarSurpresinha
+            extends SimulaUiEvent {
+    }
 }

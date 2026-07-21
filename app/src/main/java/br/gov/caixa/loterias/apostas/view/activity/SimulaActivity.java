@@ -1577,7 +1577,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         if (surpresinhaFragment != null && surpresinhaFragment.getParametroJogo() != null) {
 
-            surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
 
             if (state.isResetarTrevosPorQuantidadeNumeros()) {
                 surpresinhaFragment.resetQtdTrevos();
@@ -1626,10 +1625,10 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void atualizarValorApostaPorTeimosinha() {
-        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment2) {
-            if (surpresinhaFragment.getParametroJogo() != null) {
-                surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-            }
+        if (fragmentManager.findFragmentById(
+                R.id.fragmentSimularApostas
+        ) instanceof SurpresinhaFragment2) {
+
             return;
         }
 

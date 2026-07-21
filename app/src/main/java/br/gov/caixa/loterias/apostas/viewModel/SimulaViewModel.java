@@ -345,9 +345,198 @@ public class SimulaViewModel extends AndroidViewModel {
             );
             return;
         }
+        if(event instanceof
+                SimulaUiEvent.AtualizarQuantidadeSurpresinhas){
+
+            handleQuantidadeSurpresinhas(
+                    (SimulaUiEvent
+                            .AtualizarQuantidadeSurpresinhas)
+                            event
+            );
+            return;
+        }
+        if(event instanceof
+                SimulaUiEvent.AtualizarQuantidadeNumerosSurpresinha){
+
+            handleQuantidadeNumerosSurpresinha(
+                    (SimulaUiEvent
+                            .AtualizarQuantidadeNumerosSurpresinha)
+                            event
+            );
+            return;
+        }
+        if(event instanceof
+                SimulaUiEvent.AtualizarQuantidadeTrevosSurpresinha){
+
+            handleQuantidadeTrevosSurpresinha(
+                    (SimulaUiEvent
+                            .AtualizarQuantidadeTrevosSurpresinha)
+                            event
+            );
+            return;
+        }
     }
-    private ParametroValorApostaDTO
-    obterValorTrevosAtual(
+    private void handleQuantidadeSurpresinhas(
+            SimulaUiEvent
+                    .AtualizarQuantidadeSurpresinhas event
+    ) {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setQuantidadeSurpresinhas(
+                                event.getQuantidade()
+                        )
+                        .build()
+        );
+
+        recalcularValorSurpresinha();
+    }
+    private void handleQuantidadeTrevosSurpresinha(
+            SimulaUiEvent
+                    .AtualizarQuantidadeTrevosSurpresinha event
+    ) {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setQuantidadeTrevosSurpresinha(
+                                event.getQuantidade()
+                        )
+                        .build()
+        );
+
+        recalcularValorSurpresinha();
+    }
+    private void handleQuantidadeNumerosSurpresinha(
+            SimulaUiEvent
+                    .AtualizarQuantidadeNumerosSurpresinha
+                    event
+    ) {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setQuantidadeNumerosSurpresinha(
+                                event.getQuantidade()
+                        )
+                        .build()
+        );
+
+        recalcularValorSurpresinha();
+    }
+    private void recalcularValorSurpresinha() {
+
+        SimulaUiState atual =
+                getCurrentState();
+
+        if (parametroJogoAtual == null) {
+            return;
+        }
+
+        int qtdNumeros =
+                atual.getQuantidadeNumerosSurpresinha();
+        if (qtdNumeros <= 0) {
+            qtdNumeros =
+                    atual.getQtdDezenasPossiveisSelecionado();
+        }
+
+        int qtdTrevos =
+                atual.getQuantidadeTrevosSurpresinha();
+
+        int qtdSurpresinhas =
+                atual.getQuantidadeSurpresinhas();
+
+        int qtdConcursos =
+                atual.getQtdConcursoSelecionado();
+
+        BigDecimal valorBase =
+                BigDecimal.ZERO;
+
+        if (tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA) {
+
+            ParametroValorApostaDTO valorTrevos =
+                    parametroJogoAtual.getValorApostaBy(
+                            qtdNumeros,
+                            qtdTrevos
+                    );
+
+            if (valorTrevos != null
+                    && valorTrevos.getValor() != null) {
+
+                valorBase =
+                        valorTrevos.getValor();
+            }
+
+        } else {
+
+            if (parametroJogoAtual.getValoresAposta()
+                    != null) {
+
+                for (ParametroValorApostaDTO valor :
+                        parametroJogoAtual.getValoresAposta()) {
+
+                    if (valor == null) {
+                        continue;
+                    }
+
+                    if (valor.getNumeroPrognosticos()
+                            != null
+                            && valor.getNumeroPrognosticos()
+                            == qtdNumeros
+                            && valor.getValor()
+                            != null) {
+
+                        valorBase =
+                                valor.getValor();
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (qtdConcursos > 0) {
+
+            valorBase =
+                    valorBase.multiply(
+                            BigDecimal.valueOf(
+                                    qtdConcursos
+                            )
+                    );
+        }
+
+        if (qtdSurpresinhas > 0) {
+
+            valorBase =
+                    valorBase.multiply(
+                            BigDecimal.valueOf(
+                                    qtdSurpresinhas
+                            )
+                    );
+        }
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setValorAposta(
+                                valorBase
+                        )
+                        .setValorGrande(
+                                isValorGrande(
+                                        valorBase
+                                )
+                        )
+                        .build()
+        );
+    }
+
+    private ParametroValorApostaDTO obterValorTrevosAtual(
             int quantidadeTrevos
     ) {
 
@@ -1184,10 +1373,21 @@ public class SimulaViewModel extends AndroidViewModel {
 
         boolean deveExibirAviso = posicaoValida >= 1 && !state.isAvisouQuantidadeNumerosMaxima();
 
-        SimulaUiState.Builder builder = state.toBuilder().setPosicaoQuantidadeNumerosSelecionada(posicaoValida).setQtdDezenasPossiveisSelecionado(qtdPrognosticos).setTextoBotaoPrognosticosSelecionado(textoBotao).setExibirAvisoQuantidadeNumerosMaxima(deveExibirAviso).setAvisouQuantidadeNumerosMaxima(state.isAvisouQuantidadeNumerosMaxima() || deveExibirAviso);
+        SimulaUiState.Builder builder = state.toBuilder().setPosicaoQuantidadeNumerosSelecionada(posicaoValida).setQuantidadeNumerosSurpresinha(
+                qtdPrognosticos
+        ).setQtdDezenasPossiveisSelecionado(qtdPrognosticos).setTextoBotaoPrognosticosSelecionado(textoBotao).setExibirAvisoQuantidadeNumerosMaxima(deveExibirAviso).setAvisouQuantidadeNumerosMaxima(state.isAvisouQuantidadeNumerosMaxima() || deveExibirAviso);
 
         if (confirmar) {
             builder.setExibirDialogQuantidadeNumeros(false).setAtualizarValorApostaPorQuantidadeNumeros(true).setResetarTrevosPorQuantidadeNumeros(tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA);
+        }
+        uiState.setValue(builder.build());
+
+        if (confirmar
+                && getCurrentState()
+                .isSurpresinhaHabilitada()) {
+
+            recalcularValorSurpresinha();
+            return;
         }
 
         builder.setComandoAnalytics(
@@ -1992,6 +2192,15 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setEquipeSelecionada(null)
                         .setTelaSelecaoTimeAtivado(false)
                         .setEscolhaTimeCoracaoSurpresinha(false)
+                        .setQuantidadeSurpresinhas(1)
+                        .setQuantidadeNumerosSurpresinha(qtdMinima)
+                        .setQuantidadeTrevosSurpresinha(
+                                parametroJogoAtual != null
+                                        && parametroJogoAtual.getTrevos() != null
+                                        && parametroJogoAtual.getTrevos().getQtdMinima() != null
+                                        ? parametroJogoAtual.getTrevos().getQtdMinima()
+                                        : 0
+                        )
                         .setQtdDezenasPossiveisSelecionado(qtdMinima)
                         .setQtdConcursoSelecionado(qtdConcurso)
                         .setTextoSelecionados("Selecione os números:")

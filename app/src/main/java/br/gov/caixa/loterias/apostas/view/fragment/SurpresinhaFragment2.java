@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
@@ -31,8 +30,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
+import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
@@ -53,9 +52,6 @@ public class SurpresinhaFragment2 extends Fragment {
     private ModalidadeEnum tipoJogo;
     private ParametroJogoDTO parametroJogo;
     private int typeGameColorLight;
-    private int qtdSurpresinhas = 1;
-    private int qtdTrevos;
-    private int getQtdNumeros;
     private int corFonteFundoBranco;
     private SurpresinhaGridViewAdapter simularDezenasAdapter;
     private BigDecimal valorTotalAposta;
@@ -91,6 +87,78 @@ public class SurpresinhaFragment2 extends Fragment {
         setListeners();
         init();
         return view;
+    }
+    @Override
+    public void onViewCreated(
+            @NonNull View view,
+            @Nullable Bundle savedInstanceState
+    ) {
+        super.onViewCreated(view, savedInstanceState);
+
+        viewModel.getUiState()
+                .observe(
+                        getViewLifecycleOwner(),
+                        this::renderState
+                );
+    }
+    private void renderState(
+            SimulaUiState state
+    ) {
+
+        renderQuantidadeSurpresinhas(state);
+        renderQuantidadeNumeros(state);
+        renderQuantidadeTrevos(state);
+        renderValorAposta(state);
+
+        atualizaBotoesQtdSurpresinha(state);
+
+        if (parametroJogo != null
+                && parametroJogo.isTipoJogo(
+                ModalidadeEnum.MAIS_MILIONARIA
+        )) {
+
+            atualizaBotoesQtdTrevos(state);
+        }
+
+        atualizaBotoesQtdNumeros(state);
+    }
+
+    private void renderQuantidadeSurpresinhas(
+            SimulaUiState state
+    ) {
+        qtdSurpresinhasSelecionadas.setText(
+                String.valueOf(
+                        state.getQuantidadeSurpresinhas()
+                )
+        );
+    }
+    private void renderQuantidadeTrevos(
+            SimulaUiState state
+    ) {
+        qtdSurpresinhasSelecionadasTrevos.setText(
+                String.valueOf(
+                        state.getQuantidadeTrevosSurpresinha()
+                )
+        );
+    }
+    private void renderQuantidadeNumeros(
+            SimulaUiState state
+    ) {
+        qtdNumerosSelecionadasNovo.setText(
+                String.valueOf(
+                        state.getQuantidadeNumerosSurpresinha()
+                )
+        );
+    }
+    private SimulaUiState getStateAtual() {
+
+        if (viewModel == null
+                || viewModel.getUiState() == null
+                || viewModel.getUiState().getValue() == null) {
+            return SimulaUiState.initial();
+        }
+
+        return viewModel.getUiState().getValue();
     }
 
     private void setViews() {
@@ -136,14 +204,6 @@ public class SurpresinhaFragment2 extends Fragment {
         parentActivity = ((SimulaActivity) getActivity());
         if (parentActivity != null) {
             parametroJogo = parentActivity.getParametroSimulacao();
-            if (parametroJogo != null && parametroJogo.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-                if (qtdTrevos == 0){
-                    qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
-                }
-                if (getQtdNumeros == 0){
-                    getQtdNumeros = parametroJogo.getQuantidadeMinima();
-                }
-            }
         }
         viewModel =
                 new ViewModelProvider(
@@ -188,22 +248,52 @@ public class SurpresinhaFragment2 extends Fragment {
             textViewParams.topToBottom = R.id.maisMilionaria;
             surpresinhaQtdInfo.setLayoutParams(textViewParams);
 
-            getQtdNumeros = parentActivity.qtdDezenasPossiveisSelecionado;
-            qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
-            atualizaBotoesQtdNumeros();
         }
     }
 
-    private void atualizaBotoesQtdNumeros() {
-        if (getQtdNumeros > parametroJogo.getQuantidadeMinima() && getQtdNumeros < parametroJogo.getQuantidadeMaxima()){
-            btnNumerosMenos.setBackgroundTintList(getCor(typeGameColorLight));
-            btnNumerosMais.setBackgroundTintList(getCor(typeGameColorLight));
-        }else if (getQtdNumeros == parametroJogo.getQuantidadeMinima()){
-            btnNumerosMenos.setBackgroundTintList(getCor(R.color.cinzaescuro));
-            btnNumerosMais.setBackgroundTintList(getCor(typeGameColorLight));
+    private void atualizaBotoesQtdNumeros(
+            SimulaUiState state
+    ) {
+
+        int qtdNumeros =
+                state.getQuantidadeNumerosSurpresinha();
+
+        int minimo =
+                parametroJogo.getQuantidadeMinima();
+
+        int maximo =
+                parametroJogo.getQuantidadeMaxima();
+
+        if (qtdNumeros > minimo
+                && qtdNumeros < maximo) {
+
+            btnNumerosMenos.setBackgroundTintList(
+                    getCor(typeGameColorLight)
+            );
+
+            btnNumerosMais.setBackgroundTintList(
+                    getCor(typeGameColorLight)
+            );
+
+        } else if (qtdNumeros == minimo) {
+
+            btnNumerosMenos.setBackgroundTintList(
+                    getCor(R.color.cinzaescuro)
+            );
+
+            btnNumerosMais.setBackgroundTintList(
+                    getCor(typeGameColorLight)
+            );
+
         } else {
-            btnNumerosMenos.setBackgroundTintList(getCor(typeGameColorLight));
-            btnNumerosMais.setBackgroundTintList(getCor(R.color.cinzaescuro));
+
+            btnNumerosMenos.setBackgroundTintList(
+                    getCor(typeGameColorLight)
+            );
+
+            btnNumerosMais.setBackgroundTintList(
+                    getCor(R.color.cinzaescuro)
+            );
         }
     }
 
@@ -238,66 +328,97 @@ public class SurpresinhaFragment2 extends Fragment {
 
     private void configuraBotoes() {
 
-        if (parentActivity == null || parametroJogo == null) {
+        if (parentActivity == null
+                || parametroJogo == null) {
             return;
         }
 
         valorAposta =
                 parentActivity.getValorApostaCartela();
 
-        atualizaValorTotalAposta(
-                parentActivity.qtdDezenasPossiveisSelecionado,
-                parentActivity.qtdConcursoSelecionado
-        );
-
-        atualizaBotoesQtdSurpresinha();
-
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
-            atualizaBotoesQtdTrevos();
-        }
-
         if (viewModel != null) {
+
             viewModel.onEvent(
                     new SimulaUiEvent.SurpresinhaAberta()
             );
         }
-
-        btnMenosSurpresinha.setBackgroundTintList(
-                getCor(R.color.cinzaescuro)
-        );
-
-        btnMaisSurpresinha.setBackgroundTintList(
-                getCor(corFonteFundoBranco)
-        );
     }
 
-    private void atualizaBotoesQtdSurpresinha() {
-        if (qtdSurpresinhas == QUANTIDADE_MINIMA_SURPRESINHAS){
-            btnMenosSurpresinha.setBackgroundTintList(getCor(R.color.cinzaescuro));
-            btnMaisSurpresinha.setBackgroundTintList(getCor(corFonteFundoBranco));
-        }else {
-            btnMenosSurpresinha.setBackgroundTintList(getCor(corFonteFundoBranco));
-            btnMaisSurpresinha.setBackgroundTintList(getCor(corFonteFundoBranco));
-        }
+    private void atualizaBotoesQtdSurpresinha(
+            SimulaUiState state
+    ) {
 
-        qtdSurpresinhasSelecionadas.setTextColor(ContextCompat.getColor(parentActivity, corFonteFundoBranco));
-        qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
-    }
+        int quantidade =
+                state.getQuantidadeSurpresinhas();
 
-    private void atualizaBotoesQtdTrevos() {
-        if (qtdTrevos > parametroJogo.getTrevos().getQtdMinima() && qtdTrevos < parametroJogo.getTrevos().getQtdMaxima()){
-            btnMenosTrevos.setBackgroundTintList(getCor(corFonteFundoBranco));
-            btnMaisTrevos.setBackgroundTintList(getCor(corFonteFundoBranco));
-        }else if (qtdTrevos == parametroJogo.getTrevos().getQtdMinima()){
-            btnMenosTrevos.setBackgroundTintList(getCor(R.color.cinzaescuro));
-            btnMaisTrevos.setBackgroundTintList(getCor(corFonteFundoBranco));
+        if (quantidade <= QUANTIDADE_MINIMA_SURPRESINHAS) {
+
+            btnMenosSurpresinha.setBackgroundTintList(
+                    getCor(R.color.cinzaescuro)
+            );
+
+            btnMaisSurpresinha.setBackgroundTintList(
+                    getCor(corFonteFundoBranco)
+            );
+
         } else {
-            btnMenosTrevos.setBackgroundTintList(getCor(corFonteFundoBranco));
-            btnMaisTrevos.setBackgroundTintList(getCor(R.color.cinzaescuro));
-        }
 
-        qtdSurpresinhasSelecionadasTrevos.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-        qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
+            btnMenosSurpresinha.setBackgroundTintList(
+                    getCor(corFonteFundoBranco)
+            );
+
+            btnMaisSurpresinha.setBackgroundTintList(
+                    getCor(corFonteFundoBranco)
+            );
+        }
+    }
+
+    private void atualizaBotoesQtdTrevos(
+            SimulaUiState state
+    ) {
+
+        int qtdTrevos =
+                state.getQuantidadeTrevosSurpresinha();
+
+        int minimo =
+                parametroJogo.getTrevos()
+                        .getQtdMinima();
+
+        int maximo =
+                parametroJogo.getTrevos()
+                        .getQtdMaxima();
+
+        if (qtdTrevos > minimo
+                && qtdTrevos < maximo) {
+
+            btnMenosTrevos.setBackgroundTintList(
+                    getCor(corFonteFundoBranco)
+            );
+
+            btnMaisTrevos.setBackgroundTintList(
+                    getCor(corFonteFundoBranco)
+            );
+
+        } else if (qtdTrevos == minimo) {
+
+            btnMenosTrevos.setBackgroundTintList(
+                    getCor(R.color.cinzaescuro)
+            );
+
+            btnMaisTrevos.setBackgroundTintList(
+                    getCor(corFonteFundoBranco)
+            );
+
+        } else {
+
+            btnMenosTrevos.setBackgroundTintList(
+                    getCor(corFonteFundoBranco)
+            );
+
+            btnMaisTrevos.setBackgroundTintList(
+                    getCor(R.color.cinzaescuro)
+            );
+        }
     }
 
     private ColorStateList getCor(int cor) {
@@ -319,73 +440,96 @@ public class SurpresinhaFragment2 extends Fragment {
         return arrayDezenas;
     }
 
-    public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
-        configuraListaDezenas();
-
-        BigDecimal valorEmReais = BigDecimal.ZERO;
-
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
-            ParametroValorApostaDTO valor = parametroJogo.getValorApostaBy(numPrognostico, qtdTrevos);
-            valorEmReais = valor.getValor();
-        }else {
-            for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
-                if (parametro.getNumeroPrognosticos() == numPrognostico) {
-                    valorEmReais = parametro.getValor();
-                    break;
-                }
-            }
-        }
-
-        if (qtdSurpresinhas > 0) {
-            if (qtdTeimosinhas == 0) {
-                valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(1.0)).multiply(BigDecimal.valueOf(qtdSurpresinhas));
-                ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
-            } else {
-                valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas)).multiply(BigDecimal.valueOf(qtdSurpresinhas));
-                ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
-            }
-        } else {
-            if (qtdTeimosinhas == 0) {
-                ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
-            } else {
-                valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas));
-                ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
-            }
-        }
-        if (isLotomania() && selcioneEspelhoSurpresinha.isChecked()) {
-            valorEmReais = valorEmReais.multiply(Constantes.DOIS_BIG_DECIMAL);
-            ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
-        }
-
-        valorTotalAposta = valorEmReais;
-    }
 
     public void adicionarSurpresinhaNoCarrinho() {
-        IncluirSurpresinhaDTO surpresinha;
-        switch (parametroJogo.getConcurso().getModalidade()){
-            case TIMEMANIA:
-                surpresinha = ApostaUtils.getSurpresinhaTimemania(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
-                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
-                                                             valorTotalAposta, equipeSelecionada);
-                break;
-            case LOTOMANIA:
-                surpresinha = ApostaUtils.getSurpresinhaLotomania(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
-                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
-                                                             valorTotalAposta, selcioneEspelhoSurpresinha.isChecked());
-                break;
-            case MAIS_MILIONARIA:
-                surpresinha = ApostaUtils.getSurpresinhaMaisMilionaria(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
-                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
-                                                             valorTotalAposta, qtdTrevos);
-                break;
-            default:
-                surpresinha = ApostaUtils.getSurpresinha(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
-                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
-                                                             valorTotalAposta);
 
+        SimulaUiState state =
+                getStateAtual();
+
+        if (state == null
+                || parametroJogo == null) {
+            return;
         }
 
-        model.addSurpresinhaCarrinho(surpresinha);
+        IncluirSurpresinhaDTO surpresinha;
+
+        int quantidadeNumeros =
+                state.getQuantidadeNumerosSurpresinha();
+
+        int quantidadeSurpresinhas =
+                state.getQuantidadeSurpresinhas();
+
+        int quantidadeConcursos =
+                state.getQtdConcursoSelecionado();
+
+        BigDecimal valorAposta =
+                state.getValorAposta();
+
+        switch (
+                parametroJogo.getConcurso()
+                        .getModalidade()
+        ) {
+
+            case TIMEMANIA:
+
+                surpresinha =
+                        ApostaUtils.getSurpresinhaTimemania(
+                                parametroJogo,
+                                quantidadeNumeros,
+                                quantidadeSurpresinhas,
+                                quantidadeConcursos,
+                                valorAposta,
+                                equipeSelecionada
+                        );
+
+                break;
+
+            case LOTOMANIA:
+
+                surpresinha =
+                        ApostaUtils.getSurpresinhaLotomania(
+                                parametroJogo,
+                                quantidadeNumeros,
+                                quantidadeSurpresinhas,
+                                quantidadeConcursos,
+                                valorAposta,
+                                selcioneEspelhoSurpresinha
+                                        .isChecked()
+                        );
+
+                break;
+
+            case MAIS_MILIONARIA:
+
+                surpresinha =
+                        ApostaUtils.getSurpresinhaMaisMilionaria(
+                                parametroJogo,
+                                quantidadeNumeros,
+                                quantidadeSurpresinhas,
+                                quantidadeConcursos,
+                                valorAposta,
+                                state.getQuantidadeTrevosSurpresinha()
+                        );
+
+                break;
+
+            default:
+
+                surpresinha =
+                        ApostaUtils.getSurpresinha(
+                                parametroJogo,
+                                quantidadeNumeros,
+                                quantidadeSurpresinhas,
+                                quantidadeConcursos,
+                                valorAposta
+                        );
+
+                break;
+        }
+
+        model.addSurpresinhaCarrinho(
+                surpresinha
+        );
     }
 
     private boolean isLotomania() {
@@ -413,100 +557,163 @@ public class SurpresinhaFragment2 extends Fragment {
         return tipoJogo == ModalidadeEnum.TIMEMANIA;
     }
 
-    private void btnMenosSurpresinha() {
-        if (qtdSurpresinhas > 1) {
-            qtdSurpresinhas--;
-            if (qtdSurpresinhas == 1) {
-                atualizaBotoesQtdSurpresinha();
-            }
-            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-            qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
-        }
-    }
 
     private void btnMaisSurpresinha() {
-        if (qtdSurpresinhas == 1) {
-            atualizaBotoesQtdSurpresinha();
-        }
 
-        qtdSurpresinhas++;
+        SimulaUiState state =
+                getStateAtual();
 
-        atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-        qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
-        btnMenosSurpresinha.setBackgroundTintList(getCor(corFonteFundoBranco));
+        int novaQtd =
+                state.getQuantidadeSurpresinhas() + 1;
 
+        viewModel.onEvent(
+                new SimulaUiEvent
+                        .AtualizarQuantidadeSurpresinhas(
+                        novaQtd
+                )
+        );
     }
 
-    private void btnMaisTrevos() {
-        if (qtdTrevos < parametroJogo.getTrevos().getQtdMaxima()) {
-            qtdTrevos++;
-            atualizaBotoesQtdTrevos();
-            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-            qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
+    private void btnMenosSurpresinha() {
+
+        SimulaUiState state =
+                getStateAtual();
+
+        int atual =
+                state.getQuantidadeSurpresinhas();
+
+        if (atual <= 1) {
+            return;
         }
-        if 	((qtdTrevos > (2)) && (!isAvisouT))
-        {
+
+        viewModel.onEvent(
+                new SimulaUiEvent
+                        .AtualizarQuantidadeSurpresinhas(
+                        atual - 1
+                )
+        );
+    }
+    private void btnMaisTrevos() {
+
+        SimulaUiState state =
+                getStateAtual();
+
+        int atual =
+                state.getQuantidadeTrevosSurpresinha();
+
+        if (atual <
+                parametroJogo.getTrevos()
+                        .getQtdMaxima()) {
+
+            viewModel.onEvent(
+                    new SimulaUiEvent
+                            .AtualizarQuantidadeTrevosSurpresinha(
+                            atual + 1
+                    )
+            );
+        }
+
+        if ((atual + 1 > 2)
+                && !isAvisouT) {
+
             DialogUtils.dialogEntendi(
                     getActivity(),
-                    getString(R.string.msg_qtd_max_ultrapassada_milionaria)
+                    getString(
+                            R.string.msg_qtd_max_ultrapassada_milionaria
+                    )
             );
+
             isAvisouT = true;
         }
-
     }
-
     private void btnMenosTrevos() {
-        if (qtdTrevos > parametroJogo.getTrevos().getQtdMinima()) {
-            qtdTrevos--;
-            atualizaBotoesQtdTrevos();
-            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-            qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
-        }
-    }
 
-    private void btnNumerosMais() {
-        if (getQtdNumeros < parametroJogo.getQuantidadeMaxima()) {
-            getQtdNumeros++;
-            parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
-            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-            qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
-        }
-        atualizarButtonColor();
-        parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
-        if 	((getQtdNumeros > (6)) && (!isAvisouN))
-        {
-           DialogUtils.dialogEntendi(
-                    getActivity(),
-                    getString(R.string.msg_qtd_max_ultrapassada)
+        SimulaUiState state =
+                getStateAtual();
+
+        int atual =
+                state.getQuantidadeTrevosSurpresinha();
+
+        int minimo =
+                parametroJogo.getTrevos()
+                        .getQtdMinima();
+
+        if (atual > minimo) {
+
+            viewModel.onEvent(
+                    new SimulaUiEvent
+                            .AtualizarQuantidadeTrevosSurpresinha(
+                            atual - 1
+                    )
             );
-            isAvisouN = true;
         }
-
     }
+    private void btnNumerosMais() {
 
+        SimulaUiState state =
+                getStateAtual();
+
+        int atual =
+                state.getQuantidadeNumerosSurpresinha();
+
+        if (atual <
+                parametroJogo.getQuantidadeMaxima()) {
+
+            int novo =
+                    atual + 1;
+
+            viewModel.onEvent(
+                    new SimulaUiEvent
+                            .AtualizarQuantidadeNumerosSurpresinha(
+                            novo
+                    )
+            );
+
+            if ((novo > 6)
+                    && !isAvisouN) {
+
+                DialogUtils.dialogEntendi(
+                        getActivity(),
+                        getString(
+                                R.string.msg_qtd_max_ultrapassada
+                        )
+                );
+
+                isAvisouN = true;
+            }
+        }
+    }
     private void btnNumerosMenos() {
-        if (getQtdNumeros > parametroJogo.getQuantidadeMinima()) {
-            getQtdNumeros--;
-            parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
-            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-            qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
+
+        SimulaUiState state =
+                getStateAtual();
+
+        int atual =
+                state.getQuantidadeNumerosSurpresinha();
+
+        if (atual >
+                parametroJogo.getQuantidadeMinima()) {
+
+            viewModel.onEvent(
+                    new SimulaUiEvent
+                            .AtualizarQuantidadeNumerosSurpresinha(
+                            atual - 1
+                    )
+            );
         }
-        atualizarButtonColor();
-        parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
     }
+    private void renderValorAposta(
+            SimulaUiState state
+    ) {
 
-    protected void atualizarButtonColor() {
-        if (getQtdNumeros == 6) {
-            btnNumerosMenos.setBackgroundTintList(getCor(R.color.cinzaescuro));
-        } else {
-            btnNumerosMenos.setBackgroundTintList(getCor(typeGameColorLight));
-        }
-        if (getQtdNumeros == 12){
-            btnNumerosMais.setBackgroundTintList(getCor(R.color.cinzaescuro));
-        }else {
-            btnNumerosMais.setBackgroundTintList(getCor(typeGameColorLight));
+        if (valorAposta == null) {
+            return;
         }
 
+        ViewUtils.setMoedaFormatHtml(
+                state.getValorAposta(),
+                valorAposta
+        );
     }
 
     private void layoutEspelhoSurpresinha() {
@@ -514,12 +721,19 @@ public class SurpresinhaFragment2 extends Fragment {
     }
 
     private void selecionarEspelho() {
-        if (selcioneEspelhoSurpresinha.isChecked()) {
-            selcioneEspelhoSurpresinha.setChecked(Boolean.FALSE);
-        } else {
-            selcioneEspelhoSurpresinha.setChecked(Boolean.TRUE);
-        }
-        atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+
+        selcioneEspelhoSurpresinha.setChecked(
+                !selcioneEspelhoSurpresinha.isChecked()
+        );
+
+        SimulaUiState state = getStateAtual();
+
+        viewModel.onEvent(
+                new SimulaUiEvent
+                        .AtualizarQuantidadeSurpresinhas(
+                        state.getQuantidadeSurpresinhas()
+                )
+        );
     }
 
     private void initDiaDeSorte() {
@@ -532,11 +746,21 @@ public class SurpresinhaFragment2 extends Fragment {
     }
 
     public void resetQtdTrevos() {
-        qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
-        atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-        qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
-        btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
-        btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.milionaria_escuro_mkp));
+
+        if (viewModel == null
+                || parametroJogo == null
+                || parametroJogo.getTrevos() == null) {
+            return;
+        }
+
+        viewModel.onEvent(
+                new SimulaUiEvent
+                        .AtualizarQuantidadeTrevosSurpresinha(
+                        parametroJogo
+                                .getTrevos()
+                                .getQtdMinima()
+                )
+        );
     }
     public void onAdicionarRodapeClicado() {
         adicionarSurpresinhaNoCarrinho();
