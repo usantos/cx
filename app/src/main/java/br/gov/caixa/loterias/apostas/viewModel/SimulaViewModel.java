@@ -439,6 +439,28 @@ public class SimulaViewModel extends AndroidViewModel {
             );
             return;
         }
+        if(event instanceof
+                SimulaUiEvent.SelecionarTimeCoracao){
+
+            handleSelecionarTimeCoracao(
+                    (SimulaUiEvent.SelecionarTimeCoracao)
+                            event
+            );
+            return;
+        }
+
+    }
+    private void handleSelecionarTimeCoracao(
+            SimulaUiEvent.SelecionarTimeCoracao event
+    ){
+        uiState.setValue(
+                getCurrentState()
+                        .toBuilder()
+                        .setEquipeSelecionada(
+                                event.getEquipe()
+                        )
+                        .build()
+        );
     }
     private void inicializarParametrosAposta(
             SimulaUiEvent.InicializarParametrosAposta event

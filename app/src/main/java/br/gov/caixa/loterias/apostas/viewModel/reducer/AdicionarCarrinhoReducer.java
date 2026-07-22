@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.viewModel.reducer;
 
-
 import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -13,13 +12,11 @@ public class AdicionarCarrinhoReducer {
             SimulaUiState atual,
             SimulaUiEvent.AdicionarCarrinhoClicado event
     ) {
-
         if (atual == null || event == null) {
             return atual;
         }
 
         if (event.isEscolhaTimeCoracaoSurpresinha()) {
-
             return publicarComando(
                     atual,
                     new CompletarApostaEffect
@@ -64,7 +61,6 @@ public class AdicionarCarrinhoReducer {
             SimulaUiState atual,
             SimulaUiEvent.AdicionarCarrinhoClicado event
     ) {
-
         boolean numerosCompletos =
                 isNumerosCompletos(
                         event.getQtdDezenasSelecionadas(),
@@ -75,7 +71,8 @@ public class AdicionarCarrinhoReducer {
             return atual;
         }
 
-        if (!event.isTelaSelecaoTimeAtivado()) {
+        if (atual.getEtapaAposta() != EtapaAposta.TIME_CORACAO
+                && atual.getEtapaAposta() != EtapaAposta.PRONTA) {
             return atual;
         }
 
@@ -92,7 +89,6 @@ public class AdicionarCarrinhoReducer {
             SimulaUiState atual,
             SimulaUiEvent.AdicionarCarrinhoClicado event
     ) {
-
         boolean numerosCompletos =
                 isNumerosCompletos(
                         event.getQtdDezenasSelecionadas(),
@@ -116,7 +112,6 @@ public class AdicionarCarrinhoReducer {
             SimulaUiState atual,
             SimulaUiEvent.AdicionarCarrinhoClicado event
     ) {
-
         boolean numerosCompletos =
                 isNumerosCompletos(
                         event.getQtdDezenasSelecionadas(),
@@ -139,7 +134,6 @@ public class AdicionarCarrinhoReducer {
     private SimulaUiState finalizarFluxoAdicionar(
             SimulaUiState atual
     ) {
-
         return atual.toBuilder()
                 .setEtapaAposta(
                         EtapaAposta.PRONTA
@@ -148,6 +142,7 @@ public class AdicionarCarrinhoReducer {
                 .setBotaoCompletarHabilitado(false)
                 .setBotaoAdicionarHabilitado(true)
                 .setBotaoLimparHabilitado(true)
+                .setMostrarBotaoLimparAposta(true)
                 .setComandoCompletarAposta(
                         new CompletarApostaEffect
                                 .ApostaEffectProntaParaAdicionar(
@@ -161,7 +156,6 @@ public class AdicionarCarrinhoReducer {
             SimulaUiState atual,
             CompletarApostaEffect comando
     ) {
-
         return atual.toBuilder()
                 .setComandoCompletarAposta(
                         comando
@@ -173,12 +167,10 @@ public class AdicionarCarrinhoReducer {
     public boolean isApostaPronta(
             SimulaUiEvent.AdicionarCarrinhoClicado event
     ) {
-
         ModalidadeEnum tipoJogo =
                 event.getTipoJogo();
 
         if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-
             boolean numerosCompletos =
                     isNumerosCompletos(
                             event.getQtdDezenasSelecionadas(),
@@ -186,13 +178,12 @@ public class AdicionarCarrinhoReducer {
                     );
 
             return numerosCompletos
-                    && event.isTelaSelecaoTimeAtivado()
+                    && !event.isFragmentCartela()
                     && event.isEquipeSelecionadaValida();
         }
 
         if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE
                 || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
-
             boolean numerosCompletos =
                     isNumerosCompletos(
                             event.getQtdDezenasSelecionadas(),
@@ -204,13 +195,11 @@ public class AdicionarCarrinhoReducer {
         }
 
         if (tipoJogo == ModalidadeEnum.SUPER_7) {
-
             return event.getQtdTotalSelecionadosSuperSete()
                     == event.getQtdDezenasPossiveisSelecionado();
         }
 
         if (tipoJogo == ModalidadeEnum.LOTECA) {
-
             boolean partidasCompletas =
                     event.getQtdPartidasSelecionadas()
                             == event.getQtdPartidasTotal();
@@ -224,7 +213,6 @@ public class AdicionarCarrinhoReducer {
         }
 
         if (tipoJogo == ModalidadeEnum.LOTOGOL) {
-
             return event.getQtdPartidasSelecionadas()
                     == event.getQtdPartidasTotal();
         }
@@ -237,7 +225,6 @@ public class AdicionarCarrinhoReducer {
             int selecionadas,
             int possiveis
     ) {
-
         return selecionadas == possiveis;
     }
 }

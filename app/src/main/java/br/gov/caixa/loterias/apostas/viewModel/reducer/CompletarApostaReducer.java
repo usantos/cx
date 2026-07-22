@@ -121,12 +121,6 @@ public class CompletarApostaReducer {
                     .PreencherNumerosAleatorios();
         }
 
-        if (event.isTelaSelecaoTimeAtivado()
-                && !event.isEquipeSelecionadaValida()) {
-            return new CompletarApostaEffect
-                    .SelecionarTimeAleatorio();
-        }
-
         return null;
     }
 

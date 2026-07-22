@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostas.viewModel.reducer;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
@@ -243,7 +241,7 @@ public class FluxoApostaReducer {
                         atual,
                         tipoJogoAtual,
                         EtapaAposta.TIME_CORACAO,
-                        new CompletarApostaEffect.MostrarEscolhaTimeCoracao()
+                        null
                 );
 
             default:
@@ -487,18 +485,10 @@ public class FluxoApostaReducer {
         }
 
         if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
-
-            EtapaAposta etapa =
-                    getEtapaApostaTimemania(
-                            event,
-                            etapaAtual,
-                            numerosCompletos
-                    );
-
-            return new ResultadoFluxoAposta(
-                    etapa,
-                    numerosCompletos,
-                    etapa == EtapaAposta.PRONTA
+            return resolverFluxoTimemania(
+                    event,
+                    etapaAtual,
+                    numerosCompletos
             );
         }
 
@@ -540,6 +530,37 @@ public class FluxoApostaReducer {
                         : EtapaAposta.NUMEROS,
                 numerosCompletos,
                 numerosCompletos
+        );
+    }
+    private ResultadoFluxoAposta resolverFluxoTimemania(
+            SimulaUiEvent.CartelaAlterada event,
+            EtapaAposta etapaAtual,
+            boolean numerosCompletos
+    ) {
+        boolean timeValido =
+                event.isEquipeSelecionadaValida();
+
+        if (!numerosCompletos) {
+            return new ResultadoFluxoAposta(
+                    EtapaAposta.NUMEROS,
+                    false,
+                    false
+            );
+        }
+
+        if (etapaAtual == EtapaAposta.TIME_CORACAO
+                || etapaAtual == EtapaAposta.PRONTA) {
+            return new ResultadoFluxoAposta(
+                    EtapaAposta.TIME_CORACAO,
+                    true,
+                    timeValido
+            );
+        }
+
+        return new ResultadoFluxoAposta(
+                EtapaAposta.NUMEROS,
+                true,
+                false
         );
     }
 
@@ -623,36 +644,6 @@ public class FluxoApostaReducer {
         return tipoJogo != ModalidadeEnum.LOTECA
                 && tipoJogo != ModalidadeEnum.LOTOGOL;
     }
-
-    @NonNull
-    private static EtapaAposta getEtapaApostaTimemania(
-            SimulaUiEvent.CartelaAlterada event,
-            EtapaAposta etapaAtual,
-            boolean numerosCompletos
-    ) {
-
-        boolean estaNaEtapaTime =
-                etapaAtual == EtapaAposta.TIME_CORACAO
-                        || event.isTelaSelecaoTimeAtivado();
-
-        boolean timeValido =
-                event.isEquipeSelecionadaValida();
-
-        if (!numerosCompletos) {
-            return EtapaAposta.NUMEROS;
-        }
-
-        if (!estaNaEtapaTime) {
-            return EtapaAposta.NUMEROS;
-        }
-
-        if (!timeValido) {
-            return EtapaAposta.TIME_CORACAO;
-        }
-
-        return EtapaAposta.PRONTA;
-    }
-
     private static class ResultadoFluxoAposta {
 
         private final EtapaAposta etapa;

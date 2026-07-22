@@ -51,6 +51,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
+import br.gov.caixa.loterias.apostas.view.fragment.TimesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment2;
 
@@ -262,6 +263,12 @@ public class FragmentUtils {
 	public static TrevosFragment2 startTrevosFragment2(FragmentManager fm, int id,
 													 ParametroJogoDTO parametroSimulacao, ArrayList<Integer> dezenasSelecionadas) {
 		TrevosFragment2 frag = TrevosFragment2.newInstance(parametroSimulacao, dezenasSelecionadas);
+		startFragmentAllowingStateLoss(fm, id, frag);
+		return frag;
+	}
+	public static TimesFragment startTimesFragment(FragmentManager fm, int id,
+													 ParametroJogoDTO parametroSimulacao, ArrayList<Integer> dezenasSelecionadas) {
+		TimesFragment frag = TimesFragment.newInstance(parametroSimulacao, dezenasSelecionadas);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}

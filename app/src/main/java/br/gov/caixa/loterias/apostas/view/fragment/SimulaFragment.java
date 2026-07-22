@@ -97,22 +97,16 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private List<Dezena> dezenas = new ArrayList<>();
     private List<Integer> dezenasSelecionadas = new ArrayList<>();
     private List<List<Integer>> matrizSelecionada;
-    private List<ParametroEquipe> listaEquipefiltro;
     private HashSet<ParametroPartida> partidasSelecionadas;
 
     private CartelaFragmentListener CartelaFragment2Listener;
 
-    private ParametroEquipe equipeSelecionada = null;
     private ParametroJogoDTO parametroJogo;
     private ModalidadeEnum tipoJogo;
-    private TimeCoracaoAdapter timeCoracaoAdapter;
-
     private SimulaActivity parentActivity;
     private AppCompatCheckBox selecioneOutrosNumeros;
     private View view;
-    private EditText informeNomeTime;
-    private LinearLayout selecioneTimeCoracaoLayout, opcaoOutrosNumerosLayout;
-    private RecyclerView mGridTimeCoracao;
+    private LinearLayout opcaoOutrosNumerosLayout;
     private RecyclerView listaDezenas;
     private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
     private ArrayList<SuperSeteAdapter> listaAdaptersSuperSete;
@@ -120,7 +114,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private int qtdTotalSelecionadosSuperSete = 0;
 
     private boolean isEcolhaTimeBtnAtivado;
-    private boolean isTelaSelecaoTimeAtivado;
     private boolean isEscolhaTimeCoracaoSurpresinha;
     private boolean isAvisou = false;
     public BigDecimal valorTotalAposta;
@@ -393,17 +386,10 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         notificarEstadoCartelaAlterado();
-        // Chama a tela de escolha de time
-        if (isEscolhaTimeCoracaoSurpresinha) {
-            mostrarCartelaEscolhaTimeCoracao();
-        } else {
-            isTelaSelecaoTimeAtivado = false;
-            limparTimeSelecionado();
-        }
 
-        if (!isEscolhaTimeCoracaoSurpresinha) {
-            configuraListaDezenas(view);
-        }
+        configuraListaDezenas(
+                view
+        );
 
         if (parentActivity.getAposta() != null) {
             editaAposta();
@@ -523,26 +509,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
     }
 
-    private void preencherVisibilidadeGridView() {
-        if (mGridTimeCoracao != null) {
-            mGridTimeCoracao.setVisibility(View.VISIBLE);
-        }
-
-        if (selecioneTimeCoracaoLayout != null) {
-            selecioneTimeCoracaoLayout.setVisibility(View.VISIBLE);
-        }
-
-        if (recyclerViewPartida != null) {
-            recyclerViewPartida.setVisibility(View.GONE);
-
-        }
-
-        if (listaDezenas != null) {
-            listaDezenas.setVisibility(View.GONE);
-        }
-
-    }
-
     private void solicitarAdicionarCarrinho() {
 
         IdentificaoDeUmaApostaDas8Modalidades apostaParaCarrinho = null;
@@ -556,7 +522,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         apostaParaCarrinho,
                         barraTituloDTO,
                         isEscolhaTimeCoracaoSurpresinha,
-                        equipeSelecionada
+                        getStateAtual().getEquipeSelecionada()
                 )
         );
     }
@@ -649,7 +615,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     dezenasSelecionadas,
                     valorAtual,
                     getStateAtual().getQtdConcursoSelecionado(),
-                    equipeSelecionada
+                    getStateAtual().getEquipeSelecionada()
             );
 
         } else {
@@ -701,8 +667,8 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         : 0;
 
         boolean equipeSelecionadaValida =
-                equipeSelecionada != null
-                        && equipeSelecionada.isSelecionado();
+                getStateAtual().getEquipeSelecionada() != null
+                        && getStateAtual().getEquipeSelecionada().isSelecionado();
 
         viewModel.onEvent(
                 new SimulaUiEvent.CompletarApostaClicado(
@@ -714,7 +680,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         qtdPartidasTotal,
                         isEscolhaTimeCoracaoSurpresinha,
                         isEcolhaTimeBtnAtivado,
-                        isTelaSelecaoTimeAtivado,
                         equipeSelecionadaValida,
                         parentActivity.isFragmentCartela()
                 )
@@ -760,8 +725,8 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         : 0;
 
         boolean equipeSelecionadaValida =
-                equipeSelecionada != null
-                        && equipeSelecionada.isSelecionado();
+                getStateAtual().getEquipeSelecionada() != null
+                        && getStateAtual().getEquipeSelecionada().isSelecionado();
 
         viewModel.onEvent(
                 new SimulaUiEvent.AdicionarCarrinhoClicado(
@@ -774,7 +739,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         duplosLoteca,
                         triplosLoteca,
                         isEscolhaTimeCoracaoSurpresinha,
-                        isTelaSelecaoTimeAtivado,
                         equipeSelecionadaValida,
                         parentActivity.isFragmentCartela()
                 )
@@ -819,8 +783,8 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 possuiPlacarLotogol();
 
         boolean equipeSelecionadaValida =
-                equipeSelecionada != null
-                        && equipeSelecionada.isSelecionado();
+                getStateAtual().getEquipeSelecionada() != null
+                        && getStateAtual().getEquipeSelecionada().isSelecionado();
 
         boolean exibirOutrosNumeros =
                 parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
@@ -847,7 +811,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         duplosLoteca,
                         triplosLoteca,
                         possuiPlacarLotogol,
-                        isTelaSelecaoTimeAtivado,
                         equipeSelecionadaValida,
                         isEscolhaTimeCoracaoSurpresinha,
                         outrosNumerosSelecionado,
@@ -864,8 +827,8 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-            return equipeSelecionada != null
-                    && equipeSelecionada.isSelecionado();
+            return getStateAtual().getEquipeSelecionada() != null
+                    && getStateAtual().getEquipeSelecionada().isSelecionado();
         }
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
@@ -1007,17 +970,9 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         if (state.getComandoCompletarAposta()
                 instanceof CompletarApostaEffect.MostrarEscolhaTimeCoracao) {
 
-            mostrarCartelaEscolhaTimeCoracao();
-            timemaniaTimeSelecionadoEdicao();
-
-            consumirComandoCompletarAposta();
-            return;
-        }
-
-        if (state.getComandoCompletarAposta()
-                instanceof CompletarApostaEffect.SelecionarTimeAleatorio) {
-
-            selecionarTimeAleatorio();
+            parentActivity.timesFragment(
+                    dezenasSelecionadas
+            );
 
             consumirComandoCompletarAposta();
             return;
@@ -1027,7 +982,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 instanceof CompletarApostaEffect.AdicionarTimeSurpresa) {
 
             parentActivity.adicionarTimeSurpresa(
-                    equipeSelecionada
+                    getStateAtual().getEquipeSelecionada()
             );
 
             consumirComandoCompletarAposta();
@@ -1075,10 +1030,10 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         if (parametroJogo.isTipoJogo(
                 ModalidadeEnum.TIMEMANIA
-        ) && equipeSelecionada != null) {
+        ) && getStateAtual().getEquipeSelecionada() != null) {
 
             aposta.setTimeDoCoracao(
-                    equipeSelecionada
+                    getStateAtual().getEquipeSelecionada()
             );
         }
 
@@ -1121,11 +1076,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             executouLimpeza = true;
         }
 
-        if (state.isLimparTimeCoracao()) {
-            renderLimparTimeCoracao();
-            executouLimpeza = true;
-        }
-
         if (state.isLimparSuperSete()) {
             renderLimparSuperSete(state);
             executouLimpeza = true;
@@ -1164,25 +1114,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         if (simularDezenasAdapter != null) {
             simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
-        }
-
-    }
-
-    private void renderLimparTimeCoracao() {
-
-        if (equipeSelecionada != null) {
-            equipeSelecionada.setSelecionado(false);
-        }
-
-        equipeSelecionada = null;
-
-        if (informeNomeTime != null) {
-            informeNomeTime.setText(StringUtils.EMPTY);
-            informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }
-
-        if (timeCoracaoAdapter != null) {
-            timeCoracaoAdapter.notifyDataSetChanged();
         }
 
     }
@@ -1294,19 +1225,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     }
 
 
-    private void selecionarTimeAleatorio() {
-        int randomInt;
-        Random randomGenerator = Utils.getRandom();
-        randomInt = randomGenerator.nextInt(listaEquipefiltro.size() - 1);
-        equipeSelecionada = listaEquipefiltro.get(randomInt);
-        equipeSelecionada.setSelecionado(true);
-        String nomeTime = String.format("%s-%s", equipeSelecionada.getNome(), equipeSelecionada.getUf());
-        informeNomeTime.setText(nomeTime);
-        timeCoracaoAdapter.notifyDataSetChanged();
-        atualizarValorENotificarEstadoCartela();
-        atualizarAdicionarCarinhoCompletarCartela(false);
-    }
-
     private void limparOpcaoOutrosNumerosLayout() {
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && opcaoOutrosNumerosLayout.getVisibility() == View.VISIBLE) {
             setVisibilityCheckedNumerosLayout();
@@ -1317,20 +1235,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private void setVisibilityCheckedNumerosLayout() {
         opcaoOutrosNumerosLayout.setVisibility(View.GONE);
         selecioneOutrosNumeros.setChecked(Boolean.FALSE);
-    }
-
-    private void limparTimeSelecionado() {
-        if (equipeSelecionada != null) {
-            equipeSelecionada.setSelecionado(false);
-            if (informeNomeTime != null) {
-                informeNomeTime.setText(StringUtils.EMPTY);
-            }
-        }
-
-        if (timeCoracaoAdapter != null) {
-            timeCoracaoAdapter.notifyDataSetChanged();
-        }
-
     }
 
     private void onClickOutrosNumerosLayout() {
@@ -1442,55 +1346,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         return mostraSalvar;
     }
 
-    private void mostrarCartelaEscolhaTimeCoracao() {
-        // Estando a aposta completa apresenta a tela de escolha do time
-        // Seta a paginação
-
-        isEcolhaTimeBtnAtivado = true;
-        isTelaSelecaoTimeAtivado = true;
-        selecioneTimeCoracaoLayout = view.findViewById(R.id.selecioneTimeCoracao);
-        mGridTimeCoracao = view.findViewById(R.id.gridTimes);
-        preencherVisibilidadeGridView();
-        informeNomeTime = selecioneTimeCoracaoLayout.findViewById(R.id.informe_nome_time);
-        onChangeInformeNomeTime();
-        EscudoBO.getInstance().carregaEscudos(context, this::configurarSelecaoTimeCoracao);
-        configurarSelecaoTimeCoracao();
-        atualizarValorENotificarEstadoCartela();
-
-    }
-
-    private void onChangeInformeNomeTime() {
-        informeNomeTime.addTextChangedListener(new NomeTimemaniaTextWatcher(getActivity(), informeNomeTime, parametroJogo.getEquipes(),
-                onNomeTimeTextWatchListener()));
-    }
-
-    private NomeTimeTextWatcherListener onNomeTimeTextWatchListener() {
-        return new NomeTimeTextWatcherListener() {
-            @Override
-            public void isValido(boolean isValid) {
-                if (isValid) {
-                    aplicaCheckTimeSelecionado();
-                } else {
-                    informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                }
-            }
-
-            @Override
-            public void limparFiltro() {
-                listaEquipefiltro.clear();
-            }
-
-            @Override
-            public void addFiltro(List<ParametroEquipe> listaFriltrada) {
-                listaEquipefiltro.addAll(listaFriltrada);
-                timeCoracaoAdapter.notifyDataSetChanged();
-            }
-        };
-    }
-
-    private void aplicaCheckTimeSelecionado() {
-        informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-    }
 
 //    private void configuraBotoesLotecaOuLotogol() {
 //        botaoCompletar = parentActivity.getBotaoCompletar();
@@ -1659,12 +1514,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 atualizarValorENotificarEstadoCartela();
             } else {
                 atualizarValorENotificarEstadoCartela();
-                if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-                    Button botaoCompletar = getBotaoCompletar();
-                    if(botaoCompletar != null) {
-                        botaoCompletar.setClickable(equipeSelecionada != null && equipeSelecionada.isSelecionado());
-                    }
-                }
             }
 
         } else if (dezenasSelecionadas.size() > getStateAtual().getQtdDezenasPossiveisSelecionado()) {
@@ -1980,35 +1829,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
     }
 
-    /**
-     * Metodo configura a cartela de times do coracao
-     */
-    private void configurarSelecaoTimeCoracao() {
-        listaEquipefiltro = new ArrayList<>(parametroJogo.getEquipes());
-        timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), listaEquipefiltro, onTimeSelecionadoListener());
-        mGridTimeCoracao.setLayoutManager(new GridLayoutManager(context, 3));
-        mGridTimeCoracao.setAdapter(timeCoracaoAdapter);
-    }
-
-    private OnItemClickListener onTimeSelecionadoListener() {
-        return (holder, position) -> {
-            if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
-                equipeSelecionada.setSelecionado(false);
-            }
-            equipeSelecionada = listaEquipefiltro.get(position);
-            equipeSelecionada.setSelecionado(true);
-            String nomeTime = String.format("%s-%s", equipeSelecionada.getNome(), equipeSelecionada.getUf());
-            informeNomeTime.setText(nomeTime);
-            aplicaCheckTimeSelecionado();
-            listaEquipefiltro.clear();
-            listaEquipefiltro.addAll(parametroJogo.getEquipes());
-            timeCoracaoAdapter.notifyDataSetChanged();
-            atualizarValorENotificarEstadoCartela();
-            atualizarAdicionarCarinhoCompletarCartela(false);
-            InputUtils.closeKeyboard(getActivity());
-        };
-    }
-
     @Override
     public void clickEquipeLoteca(ParametroPartida parametroPartida) {
         if (parametroPartida.isSelecionado()) {
@@ -2211,11 +2031,17 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             atualizarQtdConcurso(aposta.getQuantidadeTeimosinhas());
 
-            equipeSelecionada =
-                    aposta.getTimeDoCoracao();
 
-            if (equipeSelecionada != null) {
+
+            if (aposta.getTimeDoCoracao() != null) {
                 isEcolhaTimeBtnAtivado = true;
+
+                viewModel.onEvent(
+                        new SimulaUiEvent
+                                .SelecionarTimeCoracao(
+                                aposta.getTimeDoCoracao()
+                        )
+                );
             }
 
         }
@@ -2237,24 +2063,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         );
     }
 
-    private void timemaniaTimeSelecionadoEdicao() {
-        if (equipeSelecionada != null) {
-            equipeSelecionada.setSelecionado(Boolean.TRUE);
-            String nomeTime = String.format("%s-%s", equipeSelecionada.getNome(), equipeSelecionada.getUf());
-            informeNomeTime.setText(nomeTime);
-
-            for (ParametroEquipe equipe : listaEquipefiltro) {
-                if (equipe.getNumero().equals(equipeSelecionada.getNumero())) {
-                    equipe.setSelecionado(equipeSelecionada.isSelecionado());
-                    equipeSelecionada = equipe;
-                    break;
-                }
-            }
-            timeCoracaoAdapter.notifyDataSetChanged();
-            atualizarValorENotificarEstadoCartela();
-            atualizarAdicionarCarinhoCompletarCartela(false);
-        }
-    }
     private Button getBotaoCompletar() {
         return parentActivity != null
                 ? parentActivity.getBotaoCompletar()

@@ -23,7 +23,6 @@ import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
@@ -79,6 +78,7 @@ import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.SimulaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
+import br.gov.caixa.loterias.apostas.view.fragment.TimesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment2;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
@@ -109,7 +109,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     private TrevosFragment2 trevosFragment;
     private MesesFragment2 mesesFragment;
-
+    private TimesFragment timesFragment;
     private int typeGameColorLight;
     private int typeGameColorDark;
     private List<String> qtdNumerosList;
@@ -535,20 +535,35 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
     }
 
-    private void solicitarSalvarFavoritoDoFragmentAtual(String nome) {
-        if (cartelaFragment != null && isFragmentCartela()) {
-            cartelaFragment.onSalvarFavoritoRodapeConfirmado(nome);
+    private void solicitarSalvarFavoritoDoFragmentAtual(
+            String nome
+    ) {
+        if (cartelaFragment != null
+                && isFragmentCartela()) {
+            cartelaFragment
+                    .onSalvarFavoritoRodapeConfirmado(
+                            nome
+                    );
             return;
         }
 
-        if (trevosFragment != null && fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment2) {
-            // Se o TrevosFragment2 tiver payload próprio no futuro,
-            // ele deve expor método semelhante.
+        if (isFragmentTimes()
+                && timesFragment != null) {
+            timesFragment
+                    .onSalvarFavoritoRodapeConfirmado(
+                            nome
+                    );
             return;
         }
 
-        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof MesesFragment2) {
-            // MesesFragment2 também deve expor payload se salvar direto dessa etapa.
+        if (isFragmentTrevos()
+                && trevosFragment != null) {
+            return;
+        }
+
+        if (isFragmentMeses()
+                && mesesFragment != null) {
+            return;
         }
     }
 
@@ -881,11 +896,11 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 break;
 
             case TIME_CORACAO:
-//                mostrarTimeCoracaoFragment();
+                timesFragment(state.getDezenasSelecionadas());
                 break;
 
             default:
-
+                timesFragment = null;
                 mesesFragment = null;
                 trevosFragment = null;
 
@@ -1127,9 +1142,14 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             trevosFragment.onCompletarRodapeClicado();
             return;
         }
+        if (isFragmentTimes() && timesFragment != null) {
+            timesFragment.onCompletarRodapeClicado();
+            return;
+        }
 
 
-        viewModel.onEvent(new SimulaUiEvent.CompletarApostaClicado(tipoJogo, 0,  getQtdDezenasSelecionadaState(), 0, 0, 0, false, false, false, false, isFragmentCartela()));
+
+        viewModel.onEvent(new SimulaUiEvent.CompletarApostaClicado(tipoJogo, 0,  getQtdDezenasSelecionadaState(), 0, 0, 0, false, false, false, isFragmentCartela()));
     }
 
     private void executarAdicionarRodape() {
@@ -1147,10 +1167,14 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             trevosFragment.onAdicionarRodapeClicado();
             return;
         }
+        if (isFragmentTimes() && timesFragment != null) {
+            timesFragment.onAdicionarRodapeClicado();
+            return;
+        }
 
         if (isFragmentMeses()) {
 
-            viewModel.onEvent(new SimulaUiEvent.AdicionarCarrinhoClicado(tipoJogo, getQtdDezenasSelecionadaState(), getQtdDezenasSelecionadaState(), 0, 0, 0, 0, 0, false, false, false, // <- NÃO é cartela
+            viewModel.onEvent(new SimulaUiEvent.AdicionarCarrinhoClicado(tipoJogo, getQtdDezenasSelecionadaState(), getQtdDezenasSelecionadaState(), 0, 0, 0, 0, 0, false, false, // <- NÃO é cartela
                     false));
 
             return;
@@ -1161,7 +1185,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        viewModel.onEvent(new SimulaUiEvent.AdicionarCarrinhoClicado(tipoJogo, getQtdDezenasSelecionadaState(), getQtdDezenasSelecionadaState(), 0, 0, 0, 0, 0, false, false, true, false));
+        viewModel.onEvent(new SimulaUiEvent.AdicionarCarrinhoClicado(tipoJogo, getQtdDezenasSelecionadaState(), getQtdDezenasSelecionadaState(), 0, 0, 0, 0, 0, false, true, false));
     }
 
     private void executarFavoritarRodape() {
@@ -1261,8 +1285,18 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     @Override
     public void escolherOutroTimeSurpresinha() {
-        cartelaFragment.setEscolhaTimeCoracaoSurpresinha(true);
-        abrirTelaCartela();
+        timesFragment =
+                TimesFragment.newInstance(
+                        parametroSimulacao,
+                        new ArrayList<>(),
+                        true
+                );
+
+        FragmentUtils.startFragmentAllowingStateLoss(
+                fragmentManager,
+                R.id.fragmentSimularApostas,
+                timesFragment
+        );
     }
 
     public void setColorValuesLoteca() {
@@ -1337,6 +1371,10 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     public void trevosFragment(List<Integer> dezenasSelecionadas) {
         trevosFragment = FragmentUtils.startTrevosFragment2(fragmentManager, R.id.fragmentSimularApostas, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
     }
+    public void timesFragment(List<Integer> dezenasSelecionadas) {
+        timesFragment = FragmentUtils.startTimesFragment(fragmentManager, R.id.fragmentSimularApostas, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
+    }
+
 
     public ParametroMesDeSorte getMesDeSorteCartela() {
         return mesDeSorteCartela;
@@ -1512,6 +1550,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                             trevosFragment.onLimparRodapeClicado();
                         } else if (isFragmentMeses() && mesesFragment != null) {
                             mesesFragment.onLimparRodapeClicado();
+                        } else if(isFragmentTimes() && timesFragment != null){
+                            timesFragment.onLimparRodapeClicado();
                         } else viewModel.onEvent(new SimulaUiEvent.LimparApostaSolicitado());
                     }
             );
@@ -1614,11 +1654,23 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         };
     }
 
-    private void atualizarValorApostaPorQuantidadeNumeros(SimulaUiState state) {
-        textoBotaoPrognosticosSelecionado = state.getTextoBotaoPrognosticosSelecionado();
+    private void atualizarValorApostaPorQuantidadeNumeros(
+            SimulaUiState state
+    ) {
+        textoBotaoPrognosticosSelecionado =
+                state.getTextoBotaoPrognosticosSelecionado();
 
         if (btnQuantidadeNumeros != null) {
-            btnQuantidadeNumeros.setText(textoBotaoPrognosticosSelecionado);
+            btnQuantidadeNumeros.setText(
+                    textoBotaoPrognosticosSelecionado
+            );
+        }
+
+        if (isFragmentTimes()
+                && timesFragment != null) {
+            timesFragment.atualizarValorAposta();
+            timesFragment.revalidarEstado();
+            return;
         }
 
         if (isFragmentCartela()) {
@@ -1627,13 +1679,14 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     getQtdConcursoState()
             );
 
-            cartelaFragment.atualizaStatusBotaoFinalizar(true);
+            cartelaFragment.atualizaStatusBotaoFinalizar(
+                    true
+            );
             return;
         }
 
-        if (surpresinhaFragment != null && surpresinhaFragment.getParametroJogo() != null) {
-
-
+        if (surpresinhaFragment != null
+                && surpresinhaFragment.getParametroJogo() != null) {
             if (state.isResetarTrevosPorQuantidadeNumeros()) {
                 surpresinhaFragment.resetQtdTrevos();
             }
@@ -1675,6 +1728,10 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private boolean isFragmentTrevos() {
         return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment2;
     }
+    private boolean isFragmentTimes() {
+        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TimesFragment;
+    }
+
 
     private boolean isFragmentSurpresinha() {
         return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment2;
@@ -1684,16 +1741,15 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         if (fragmentManager.findFragmentById(
                 R.id.fragmentSimularApostas
         ) instanceof SurpresinhaFragment2) {
-
             return;
         }
 
-//        if (isFragmentTrevos()) {
-//            if (trevosFragment != null && trevosFragment.getParametroValorApostaSelecionado() != null) {
-//                atualizaValorAposta(trevosFragment.getParametroValorApostaSelecionado());
-//            }
-//            return;
-//        }
+        if (isFragmentTimes()
+                && timesFragment != null) {
+            timesFragment.atualizarValorAposta();
+            timesFragment.revalidarEstado();
+            return;
+        }
 
         if (cartelaFragment != null) {
             cartelaFragment.atualizaValorTotalAposta(
