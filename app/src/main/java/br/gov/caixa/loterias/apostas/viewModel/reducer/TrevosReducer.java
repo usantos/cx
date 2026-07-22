@@ -15,23 +15,12 @@ public class TrevosReducer {
 
     public SimulaUiState toggleTrevo(
             SimulaUiState atual,
-            SimulaUiEvent.ToggleTrevo event
+            SimulaUiEvent.ToggleTrevo event,
+            List<ParametroValorApostaDTO> valoresTrevosDisponiveis
     ) {
-
         if (atual == null || event == null) {
             return atual;
         }
-
-        ParametroValorApostaDTO valorAtual =
-                atual.getValorTrevosSelecionado();
-
-        if (valorAtual == null
-                || valorAtual.getNumeroTrevos() == null) {
-            return atual;
-        }
-
-        int quantidadeNecessaria =
-                valorAtual.getNumeroTrevos();
 
         List<Integer> trevos =
                 criarListaTrevosSegura(
@@ -41,40 +30,87 @@ public class TrevosReducer {
         Integer numero =
                 event.getNumeroTrevo();
 
+        if (numero == null) {
+            return atual;
+        }
+
         boolean jaSelecionado =
                 trevos.contains(numero);
 
         if (jaSelecionado) {
-
             trevos.remove(numero);
-
         } else {
-
-            if (trevos.size() >= quantidadeNecessaria) {
-                return atual.toBuilder()
-                        .setExibirAvisoTrevosMaximo(true)
-                        .build();
-            }
-
             trevos.add(numero);
         }
+
+        List<ParametroValorApostaDTO> valores =
+                resolverValoresTrevosDisponiveis(
+                        atual,
+                        valoresTrevosDisponiveis
+                );
 
         int quantidadeSelecionada =
                 trevos.size();
 
-        boolean apostaCompleta =
-                quantidadeSelecionada == quantidadeNecessaria;
+        int quantidadeNecessaria =
+                calcularQuantidadeNecessariaPorSelecao(
+                        quantidadeSelecionada,
+                        valores
+                );
+
+        ParametroValorApostaDTO valorAtualizado =
+                obterValorTrevosPorQuantidade(
+                        valores,
+                        quantidadeNecessaria
+                );
+
+        if (valorAtualizado == null) {
+            valorAtualizado =
+                    atual.getValorTrevosSelecionado();
+        }
+
+        if (valorAtualizado == null
+                || valorAtualizado.getNumeroTrevos() == null) {
+            return atual.toBuilder()
+                    .setTrevosSelecionados(trevos)
+                    .setQuantidadeTrevosSelecionada(quantidadeNecessaria)
+                    .setBotaoAdicionarHabilitado(false)
+                    .setBotaoCompletarHabilitado(true)
+                    .setBotaoCompletarVisivel(true)
+                    .setBotaoLimparHabilitado(quantidadeSelecionada > 0)
+                    .setMostrarBotaoLimparAposta(quantidadeSelecionada > 0)
+                    .setMostrarSalvarAposta(false)
+                    .setTextoSelecionados(
+                            montarTextoTrevosSelecionados(
+                                    quantidadeSelecionada,
+                                    quantidadeNecessaria
+                            )
+                    )
+                    .build();
+        }
 
         BigDecimal valorAposta =
                 aplicarQuantidadeConcursos(
                         atual,
-                        valorAtual.getValor()
+                        valorAtualizado.getValor()
                 );
+
+        boolean apostaCompleta =
+                quantidadeSelecionada == quantidadeNecessaria
+                        && quantidadeSelecionada >= 2;
+
+        boolean aumentouQuantidadeTrevos =
+                !jaSelecionado
+                        && atual.getValorTrevosSelecionado() != null
+                        && atual.getValorTrevosSelecionado().getNumeroTrevos() != null
+                        && quantidadeNecessaria
+                        > atual.getValorTrevosSelecionado().getNumeroTrevos();
 
         return atual.toBuilder()
                 .setEtapaAposta(EtapaAposta.TREVOS)
+                .setValoresTrevos(valores)
                 .setTrevosSelecionados(trevos)
-                .setValorTrevosSelecionado(valorAtual)
+                .setValorTrevosSelecionado(valorAtualizado)
                 .setQuantidadeTrevosSelecionada(quantidadeNecessaria)
                 .setValorAposta(valorAposta)
                 .setValorGrande(isValorGrande(valorAposta))
@@ -89,6 +125,25 @@ public class TrevosReducer {
                                 quantidadeSelecionada,
                                 quantidadeNecessaria
                         )
+                )
+                .setTextoBotaoQuantidadeTrevos(
+                        montarTextoBotaoTrevos(
+                                quantidadeNecessaria
+                        )
+                )
+                .setPosicaoTrevosSelecionada(
+                        obterPosicaoValorTrevos(
+                                valores,
+                                quantidadeNecessaria
+                        )
+                )
+                .setExibirAvisoTrevosMaximo(
+                        aumentouQuantidadeTrevos
+                                && !atual.isAvisouTrevosMaximo()
+                )
+                .setAvisouTrevosMaximo(
+                        atual.isAvisouTrevosMaximo()
+                                || aumentouQuantidadeTrevos
                 )
                 .build();
     }
@@ -508,5 +563,180 @@ public class TrevosReducer {
         }
 
         return new ArrayList<Integer>(origem);
+    }
+    private List<ParametroValorApostaDTO> resolverValoresTrevosDisponiveis(
+            SimulaUiState atual,
+            List<ParametroValorApostaDTO> valoresTrevosDisponiveis
+    ) {
+        if (valoresTrevosDisponiveis != null
+                && !valoresTrevosDisponiveis.isEmpty()) {
+            return new ArrayList<>(
+                    valoresTrevosDisponiveis
+            );
+        }
+
+        if (atual != null
+                && atual.getValoresTrevos() != null
+                && !atual.getValoresTrevos().isEmpty()) {
+            return new ArrayList<>(
+                    atual.getValoresTrevos()
+            );
+        }
+
+        List<ParametroValorApostaDTO> fallback =
+                new ArrayList<>();
+
+        if (atual != null
+                && atual.getValorTrevosSelecionado() != null) {
+            fallback.add(
+                    atual.getValorTrevosSelecionado()
+            );
+        }
+
+        return fallback;
+    }
+
+    private int calcularQuantidadeNecessariaPorSelecao(
+            int quantidadeSelecionada,
+            List<ParametroValorApostaDTO> valores
+    ) {
+        int minimo =
+                obterQuantidadeMinimaTrevos(
+                        valores
+                );
+
+        int quantidadeDesejada =
+                Math.max(
+                        minimo,
+                        quantidadeSelecionada
+                );
+
+        ParametroValorApostaDTO valor =
+                obterValorTrevosPorQuantidade(
+                        valores,
+                        quantidadeDesejada
+                );
+
+        if (valor != null) {
+            return quantidadeDesejada;
+        }
+
+        int maiorQuantidadeDisponivel =
+                obterMaiorQuantidadeTrevos(
+                        valores
+                );
+
+        if (maiorQuantidadeDisponivel > 0) {
+            return Math.min(
+                    quantidadeDesejada,
+                    maiorQuantidadeDisponivel
+            );
+        }
+
+        return quantidadeDesejada;
+    }
+
+    private int obterQuantidadeMinimaTrevos(
+            List<ParametroValorApostaDTO> valores
+    ) {
+        int minimo =
+                Integer.MAX_VALUE;
+
+        if (valores != null) {
+            for (ParametroValorApostaDTO valor : valores) {
+                if (valor == null
+                        || valor.getNumeroTrevos() == null) {
+                    continue;
+                }
+
+                minimo =
+                        Math.min(
+                                minimo,
+                                valor.getNumeroTrevos()
+                        );
+            }
+        }
+
+        if (minimo == Integer.MAX_VALUE) {
+            return 2;
+        }
+
+        return Math.max(
+                2,
+                minimo
+        );
+    }
+
+    private int obterMaiorQuantidadeTrevos(
+            List<ParametroValorApostaDTO> valores
+    ) {
+        int maior =
+                0;
+
+        if (valores == null) {
+            return maior;
+        }
+
+        for (ParametroValorApostaDTO valor : valores) {
+            if (valor == null
+                    || valor.getNumeroTrevos() == null) {
+                continue;
+            }
+
+            maior =
+                    Math.max(
+                            maior,
+                            valor.getNumeroTrevos()
+                    );
+        }
+
+        return maior;
+    }
+
+    private ParametroValorApostaDTO obterValorTrevosPorQuantidade(
+            List<ParametroValorApostaDTO> valores,
+            int quantidadeTrevos
+    ) {
+        if (valores == null) {
+            return null;
+        }
+
+        for (ParametroValorApostaDTO valor : valores) {
+            if (valor == null
+                    || valor.getNumeroTrevos() == null) {
+                continue;
+            }
+
+            if (valor.getNumeroTrevos() == quantidadeTrevos) {
+                return valor;
+            }
+        }
+
+        return null;
+    }
+
+    private int obterPosicaoValorTrevos(
+            List<ParametroValorApostaDTO> valores,
+            int quantidadeTrevos
+    ) {
+        if (valores == null) {
+            return 0;
+        }
+
+        for (int i = 0; i < valores.size(); i++) {
+            ParametroValorApostaDTO valor =
+                    valores.get(i);
+
+            if (valor == null
+                    || valor.getNumeroTrevos() == null) {
+                continue;
+            }
+
+            if (valor.getNumeroTrevos() == quantidadeTrevos) {
+                return i;
+            }
+        }
+
+        return 0;
     }
 }

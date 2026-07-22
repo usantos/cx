@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.viewModel;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -35,6 +36,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
@@ -475,13 +477,49 @@ public class SimulaViewModel extends AndroidViewModel {
     private void handleToggleTrevo(
             SimulaUiEvent.ToggleTrevo event
     ) {
+        SimulaUiState atual =
+                getCurrentState();
+
+        List<ParametroValorApostaDTO> valoresTrevos =
+                obterValoresTrevosParaQuantidadeAtual(
+                        atual
+                );
 
         uiState.setValue(
                 trevosReducer.toggleTrevo(
-                        getCurrentState(),
-                        event
+                        atual,
+                        event,
+                        valoresTrevos
                 )
         );
+    }
+
+    private List<ParametroValorApostaDTO> obterValoresTrevosParaQuantidadeAtual(
+            SimulaUiState atual
+    ) {
+        if (parametroJogoAtual == null
+                || atual == null) {
+            return new ArrayList<>();
+        }
+
+        int quantidadeNumeros =
+                atual.getQtdDezenasPossiveisSelecionado();
+
+        if (quantidadeNumeros <= 0) {
+            quantidadeNumeros =
+                    getQuantidadeMinimaSafe();
+        }
+
+        List<ParametroValorApostaDTO> valores =
+                parametroJogoAtual.getValoresTrevoByNumero(
+                        quantidadeNumeros
+                );
+
+        if (valores == null) {
+            return new ArrayList<>();
+        }
+
+        return valores;
     }
 
     private void consumirAvisoTrevosMaximo() {
