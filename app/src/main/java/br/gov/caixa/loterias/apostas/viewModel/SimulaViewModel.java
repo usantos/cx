@@ -412,6 +412,75 @@ public class SimulaViewModel extends AndroidViewModel {
 
             return;
         }
+        if (event instanceof
+                SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente) {
+
+            atualizarQuantidadeInterna(
+                    (SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente)
+                            event
+            );
+            return;
+        }
+        if (event instanceof
+                SimulaUiEvent.QtdConcursoAtualizadaInternamente) {
+
+            handleQtdConcursoAtualizadaInternamente(
+                    (SimulaUiEvent
+                            .QtdConcursoAtualizadaInternamente)
+                            event
+            );
+            return;
+        }
+        if(event instanceof SimulaUiEvent.InicializarParametrosAposta){
+            inicializarParametrosAposta(
+                    (SimulaUiEvent
+                            .InicializarParametrosAposta)
+                            event
+            );
+            return;
+        }
+    }
+    private void inicializarParametrosAposta(
+            SimulaUiEvent.InicializarParametrosAposta event
+    ) {
+        uiState.setValue(
+                getCurrentState()
+                        .toBuilder()
+                        .setQtdDezenasPossiveisSelecionado(
+                                event.getQtdDezenas()
+                        )
+                        .setQtdConcursoSelecionado(
+                                event.getQtdConcurso()
+                        )
+                        .build()
+        );
+    }
+    private void handleQtdConcursoAtualizadaInternamente(
+            SimulaUiEvent.QtdConcursoAtualizadaInternamente event
+    ) {
+        SimulaUiState atual =
+                getCurrentState();
+
+        uiState.setValue(
+                atual.toBuilder()
+                        .setQtdConcursoSelecionado(
+                                event.getQuantidade()
+                        )
+                        .build()
+        );
+    }
+    private void atualizarQuantidadeInterna(
+            SimulaUiEvent
+                    .QuantidadeNumerosAtualizadaInternamente event
+    ) {
+        uiState.setValue(
+                getCurrentState()
+                        .toBuilder()
+                        .setQtdDezenasPossiveisSelecionado(
+                                event.getQuantidade()
+                        )
+                        .build()
+        );
     }
     private void handleLimparMesDaSorte() {
 

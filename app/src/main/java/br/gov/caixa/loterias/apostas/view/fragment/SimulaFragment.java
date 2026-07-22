@@ -126,7 +126,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     public BigDecimal valorTotalAposta;
     public int typeGameColorLight, typeGameColorDark;
     public int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
-    public Button botaoCompletar, botaoLimparAposta;
     public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
     public ListaDezenaRecyclerView simularDezenasAdapter;
     public String dataSorteioAtual;
@@ -314,6 +313,20 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         partidasSelecionadas = new HashSet<>();
 
     }
+    private SimulaUiState getStateAtual() {
+        if (viewModel == null
+                || viewModel.getUiState() == null
+                || viewModel.getUiState().getValue() == null) {
+            return SimulaUiState.initial();
+        }
+
+        return viewModel.getUiState().getValue();
+    }
+
+    private int getQuantidadeSelecionada() {
+        return getStateAtual()
+                .getQtdDezenasPossiveisSelecionado();
+    }
 
     private BarraTituloDTO getBarraTituloSafe() {
 
@@ -342,7 +355,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         if (parentActivity != null && parametroJogo != null) {
             if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
-                configuraBotoesLotecaOuLotogol();
+//                configuraBotoesLotecaOuLotogol();
             }
         }
 
@@ -413,7 +426,15 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     ) {
         solicitarSalvarApostaFavorita(nome);
     }
-
+    private void atualizarQuantidadeSelecionada(
+            int quantidade
+    ) {
+        viewModel.onEvent(
+                new SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente(
+                        quantidade
+                )
+        );
+    }
     private void inicializarValorApostaMinima() {
 
         if (parametroJogo == null || parentActivity == null) {
@@ -427,13 +448,13 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         int qtdMinima =
-                parentActivity.qtdDezenasPossiveisSelecionado > 0
-                        ? parentActivity.qtdDezenasPossiveisSelecionado
+                getStateAtual().getQtdDezenasPossiveisSelecionado() > 0
+                        ? getStateAtual().getQtdDezenasPossiveisSelecionado()
                         : getQuantidadeMinimaSafe();
 
         atualizaValorTotalAposta(
                 qtdMinima,
-                parentActivity.qtdConcursoSelecionado
+                getStateAtual().getQtdConcursoSelecionado()
         );
     }
 
@@ -556,7 +577,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     parametroJogo,
                     dezenasSelecionadas,
                     parentActivity.getValorTotalApostaAtual(),
-                    parentActivity.qtdConcursoSelecionado,
+                    getStateAtual().getQtdConcursoSelecionado(),
                     ListaUtils.pegaListaSuperSete(
                             listaAdaptersSuperSete
                     )
@@ -597,7 +618,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     parametroJogo,
                     dezenasSelecionadas,
                     valorAtual,
-                    parentActivity.qtdConcursoSelecionado,
+                    getStateAtual().getQtdConcursoSelecionado(),
                     parentActivity.getMesDeSorteCartela()
             );
 
@@ -607,7 +628,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     parametroJogo,
                     dezenasSelecionadas,
                     valorAtual,
-                    parentActivity.qtdConcursoSelecionado,
+                    getStateAtual().getQtdConcursoSelecionado(),
                     partidasSelecionadas
             );
 
@@ -617,7 +638,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     parametroJogo,
                     dezenasSelecionadas,
                     valorAtual,
-                    parentActivity.qtdConcursoSelecionado,
+                    getStateAtual().getQtdConcursoSelecionado(),
                     partidasSelecionadas
             );
 
@@ -627,7 +648,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     parametroJogo,
                     dezenasSelecionadas,
                     valorAtual,
-                    parentActivity.qtdConcursoSelecionado,
+                    getStateAtual().getQtdConcursoSelecionado(),
                     equipeSelecionada
             );
 
@@ -637,7 +658,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     parametroJogo,
                     dezenasSelecionadas,
                     valorAtual,
-                    parentActivity.qtdConcursoSelecionado
+                    getStateAtual().getQtdConcursoSelecionado()
             );
         }
     }
@@ -687,7 +708,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 new SimulaUiEvent.CompletarApostaClicado(
                         parametroJogo.getConcurso().getModalidade(),
                         dezenasSelecionadas != null ? dezenasSelecionadas.size() : 0,
-                        parentActivity.qtdDezenasPossiveisSelecionado,
+                        getStateAtual().getQtdDezenasPossiveisSelecionado(),
                         qtdTotalSelecionadosSuperSete,
                         qtdPartidasSelecionadas,
                         qtdPartidasTotal,
@@ -746,7 +767,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 new SimulaUiEvent.AdicionarCarrinhoClicado(
                         parametroJogo.getConcurso().getModalidade(),
                         dezenasSelecionadas != null ? dezenasSelecionadas.size() : 0,
-                        parentActivity.qtdDezenasPossiveisSelecionado,
+                        getStateAtual().getQtdDezenasPossiveisSelecionado(),
                         qtdTotalSelecionadosSuperSete,
                         qtdPartidasSelecionadas,
                         qtdPartidasTotal,
@@ -1323,7 +1344,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         AlertDialogUtils.show(getActivity());
 
         dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
-        model.preencheNumerosAleatorios(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, parametroJogo.getPrognosticoMaximo(),
+        model.preencheNumerosAleatorios(getStateAtual().getQtdDezenasPossiveisSelecionado(), dezenasSelecionadas, parametroJogo.getPrognosticoMaximo(),
                 new OnSilceListener<List<Integer>>() {
                     @Override
                     public void success(List<Integer> list) {
@@ -1346,7 +1367,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         AlertDialogUtils.show(getActivity());
         dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
 
-        model.preencheNumerosAleatoriosSuperSete(parentActivity.qtdDezenasPossiveisSelecionado, listaInteiros, parametroJogo.getConcurso().getModalidade().name(),
+        model.preencheNumerosAleatoriosSuperSete(getStateAtual().getQtdDezenasPossiveisSelecionado(), listaInteiros, parametroJogo.getConcurso().getModalidade().name(),
                 new OnSilceListener<List<List<Integer>>>() {
                     @Override
                     public void success(List<List<Integer>> payload) {
@@ -1365,10 +1386,22 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     }
 
     private void atualizaSuperSetePrognosticoMaior(ArrayList<ArrayList<Integer>> listaInteiros) {
-        if (parentActivity.qtdDezenasPossiveisSelecionado < getQtdTotalSelecionadosSuperSete(listaInteiros)) {
+        int qtdSelecionada =
+                getQtdTotalSelecionadosSuperSete(
+                        listaInteiros
+                );
+
+        if (qtdSelecionada
+                > getStateAtual()
+                .getQtdDezenasPossiveisSelecionado()) {
+
+            atualizarQuantidadeSelecionada(
+                    qtdSelecionada
+            );
             qtdTotalSelecionadosSuperSete = 0;
             limpaNumerosSuperSete();
         }
+
     }
 
     private int getQtdTotalSelecionadosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros) {
@@ -1459,17 +1492,17 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
     }
 
-    private void configuraBotoesLotecaOuLotogol() {
-        botaoCompletar = parentActivity.getBotaoCompletar();
-        botaoCompletar.setVisibility(View.INVISIBLE);
-        String textoBotao;
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-            textoBotao = getString(R.string.label_selecionar_times_aleatoriamente);
-        } else {
-            textoBotao = getString(R.string.label_complete_placar_aleatoriamente);
-        }
-        botaoCompletar.setText(ViewUtils.textCaixaSTDBold(getActivity(), textoBotao));
-    }
+//    private void configuraBotoesLotecaOuLotogol() {
+//        botaoCompletar = parentActivity.getBotaoCompletar();
+//        botaoCompletar.setVisibility(View.INVISIBLE);
+//        String textoBotao;
+//        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
+//            textoBotao = getString(R.string.label_selecionar_times_aleatoriamente);
+//        } else {
+//            textoBotao = getString(R.string.label_complete_placar_aleatoriamente);
+//        }
+//        botaoCompletar.setText(ViewUtils.textCaixaSTDBold(getActivity(), textoBotao));
+//    }
 
     private void atualizarValorENotificarEstadoCartela() {
 
@@ -1478,7 +1511,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         int qtdPossivelParaEstado =
-                parentActivity.qtdDezenasPossiveisSelecionado;
+                getStateAtual().getQtdDezenasPossiveisSelecionado();
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 
@@ -1493,12 +1526,12 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             atualizaValorTotalAposta(
                     qtdParaCalculo,
-                    parentActivity.qtdConcursoSelecionado
+                    getStateAtual().getQtdConcursoSelecionado()
             );
         }
 
-        parentActivity.qtdDezenasPossiveisSelecionado =
-                qtdPossivelParaEstado;
+        atualizarQuantidadeSelecionada(
+                qtdPossivelParaEstado);
 
         notificarEstadoCartelaAlterado(
                 qtdPossivelParaEstado
@@ -1512,7 +1545,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         notificarEstadoCartelaAlterado(
-                parentActivity.qtdDezenasPossiveisSelecionado
+                getStateAtual().getQtdDezenasPossiveisSelecionado()
         );
     }
 
@@ -1522,11 +1555,33 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 ((SuperSeteAdapter) grid.getAdapter()).limpaNumeros();
             }
         }
-        botaoLimparAposta.setEnabled(false);
-        parentActivity.qtdDezenasPossiveisSelecionado = parametroJogo.getQuantidadeMinima() != null ? parametroJogo.getQuantidadeMinima() : 0;
+        Button botaoLimpar =
+                getBotaoLimparAposta();
+
+        if (botaoLimpar != null) {
+            botaoLimpar.setEnabled(false);
+        }
+
+        int quantidadeMinima =
+                parametroJogo.getQuantidadeMinima() != null
+                        ? parametroJogo.getQuantidadeMinima()
+                        : 0;
+
+        atualizarQuantidadeSelecionada(
+                quantidadeMinima
+        );
 
         qtdTotalSelecionadosSuperSete = 0;
-        atualizarValorENotificarEstadoCartela();
+
+        atualizaValorTotalAposta(
+                quantidadeMinima,
+                getStateAtual()
+                        .getQtdConcursoSelecionado()
+        );
+
+        notificarEstadoCartelaAlterado(
+                quantidadeMinima
+        );
     }
 
     private boolean mostraLimparSuperSete() {
@@ -1542,11 +1597,12 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
 
     public void atualizaStatusBotaoFinalizar(Boolean isPickerPrognosticos) {
+
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
             if (partidasSelecionadas.size() < parametroJogo.getPartidas().size()) {
-                botaoCompletar.setEnabled(false);
+                setBotaoCompletarEnabled(false);
             } else {
-                botaoCompletar.setEnabled(true);
+                setBotaoCompletarEnabled(true);
                 atualizarValorENotificarEstadoCartela();
             }
         } else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
@@ -1556,7 +1612,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 preencheSuperSete(matrizSelecionada);
                 matrizSelecionada = null;
             }
-            if (validaSelecaoSuperSete() && qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
+            if (validaSelecaoSuperSete() && qtdTotalSelecionadosSuperSete == getStateAtual().getQtdDezenasPossiveisSelecionado()) {
                 atualizarValorENotificarEstadoCartela();
             } else {
                 atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
@@ -1573,20 +1629,30 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             if (partidasSelecionadas.size() == parametroJogo.getPartidas().size() && (duplo > 0 || triplo > 0)) {
                 if (mostrarBotao) {
-                    botaoCompletar.setEnabled(true);
+                    setBotaoCompletarEnabled(true);
                     atualizarValorENotificarEstadoCartela();
                 } else {
-                    botaoCompletar.setEnabled(false);
+                    setBotaoCompletarEnabled(false);
                 }
 
             } else {
-                botaoCompletar.setEnabled(false);
+                setBotaoCompletarEnabled(false);
             }
+        }
+    }
+    private void setBotaoCompletarEnabled(
+            boolean enabled
+    ) {
+        Button button =
+                getBotaoCompletar();
+
+        if (button != null) {
+            button.setEnabled(enabled);
         }
     }
 
     private void atualizarAdicionarCarinhoCompletarCartela(Boolean isPickerPrognosticos) {
-        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado || isEscolhaTimeCoracaoSurpresinha) {
+        if (dezenasSelecionadas.size() == getStateAtual().getQtdDezenasPossiveisSelecionado() || isEscolhaTimeCoracaoSurpresinha) {
             if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
                 atualizarValorENotificarEstadoCartela();
             } else if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
@@ -1594,16 +1660,24 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             } else {
                 atualizarValorENotificarEstadoCartela();
                 if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-                    botaoCompletar.setClickable(equipeSelecionada != null && equipeSelecionada.isSelecionado());
+                    Button botaoCompletar = getBotaoCompletar();
+                    if(botaoCompletar != null) {
+                        botaoCompletar.setClickable(equipeSelecionada != null && equipeSelecionada.isSelecionado());
+                    }
                 }
             }
 
-        } else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
+        } else if (dezenasSelecionadas.size() > getStateAtual().getQtdDezenasPossiveisSelecionado()) {
             dezenasSelecionadas.clear();
             simularDezenasAdapter.notifyDataSetChanged();
             atualizarValorENotificarEstadoCartela();
 
-            botaoLimparAposta.setEnabled(false);
+            Button botaoLimpar =
+                    getBotaoLimparAposta();
+
+            if (botaoLimpar != null) {
+                botaoLimpar.setEnabled(false);
+            }
         } else {
             if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7) && isPickerPrognosticos) {
                 atualizaSuperSetePrognosticoMaior(ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
@@ -1720,11 +1794,11 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         ? parametroJogo.getQuantidadeMinima()
                         : 0;
 
-        parentActivity.qtdDezenasPossiveisSelecionado =
+        atualizarQuantidadeSelecionada(
                 Math.max(
                         dezenasSelecionadas.size(),
                         quantidadeMinima
-                );
+                ));
 
     }
 
@@ -1737,7 +1811,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 dezenasSelecionadas.size();
 
         int quantidadePossivelAtual =
-                parentActivity.qtdDezenasPossiveisSelecionado;
+                getStateAtual().getQtdDezenasPossiveisSelecionado();
 
         int quantidadeMaxima =
                 parametroJogo.getQuantidadeMaxima();
@@ -1754,10 +1828,10 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         if (quantidadePossivelAtual < quantidadeMaxima) {
 
-            parentActivity.qtdDezenasPossiveisSelecionado =
+            atualizarQuantidadeSelecionada(
                     CartelaFragment2Listener.verificaNovoQtdDezenasMax(
                             quantidadePossivelAtual
-                    );
+                    ));
 
             adicionarDezena(
                     dezena,
@@ -1823,13 +1897,19 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 Integer valorSelecionado = Integer.valueOf(dezena.getValue());
 
                 if (listaSelecionados.contains(valorSelecionado)) {
-                    if (listaSelecionados.size() == adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado)) {
+                    if (listaSelecionados.size() == adapter.getQtdColunasMaximas(getStateAtual().getQtdDezenasPossiveisSelecionado())) {
                         listaSelecionados.remove(valorSelecionado);
                         qtdTotalSelecionadosSuperSete--;
                         if (qtdTotalSelecionadosSuperSete >= parametroJogo.getQuantidadeMinima()) {
-                            parentActivity.qtdDezenasPossiveisSelecionado -= 1;
-                            parentActivity.verificaNovoQtdDezenasMax(qtdTotalSelecionadosSuperSete);
-                            atualizarValorENotificarEstadoCartela();
+                            atualizarQuantidadeSelecionada(getStateAtual().getQtdDezenasPossiveisSelecionado() - 1);
+                            int novaQuantidade =
+                                    parentActivity.verificaNovoQtdDezenasMax(
+                                            qtdTotalSelecionadosSuperSete
+                                    );
+
+                            atualizarQuantidadeSelecionada(
+                                    novaQuantidade
+                            );
                         }
                         atualizarValorENotificarEstadoCartela();
                     } else {
@@ -1840,29 +1920,35 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     }
                 } else {
                     int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
-                    if (qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
+                    if (qtdTotalSelecionadosSuperSete == getStateAtual().getQtdDezenasPossiveisSelecionado()) {
                         // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
-                        int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
 
-                        parentActivity.qtdDezenasPossiveisSelecionado = CartelaFragment2Listener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
+                        int quantidadeAtual =
+                                getStateAtual()
+                                        .getQtdDezenasPossiveisSelecionado();
 
-                        if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
+                        int novaQuantidade =
+                                CartelaFragment2Listener
+                                        .verificaNovoQtdDezenasMax(
+                                                quantidadeAtual
+                                        );
+
+                        if (quantidadeAtual < maxNumerosParaSelecionar) {
                             if (listaSelecionados.size() < SuperSeteAdapter.QTD_MAX_POR_COLUNA) {
-                                if (listaSelecionados.size() < adapter.getQtdColunasMaximas((parentActivity.qtdDezenasPossiveisSelecionado + 1))) {
-                                    parentActivity.qtdDezenasPossiveisSelecionado += 1;
-                                    parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
+                                if (listaSelecionados.size() < adapter.getQtdColunasMaximas((novaQuantidade))) {
+                                    atualizarQuantidadeSelecionada(novaQuantidade);
                                     atualizarValorENotificarEstadoCartela();
                                     listaSelecionados.add(valorSelecionado);
                                     qtdTotalSelecionadosSuperSete++;
 
-                                    if ((qtdTotalSelecionadosSuperSete == (parentActivity.qtdDezenasPossiveisSelecionado)) && (!isAvisou)) {
+                                    if ((qtdTotalSelecionadosSuperSete == (getStateAtual().getQtdDezenasPossiveisSelecionado())) && (!isAvisou)) {
                                         DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_qtd_max_ultrapassada));
                                         isAvisou = true;
                                     }
                                 } else {
                                     DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
                                             "{qtdColunas}",
-                                            String.valueOf(adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado))));
+                                            String.valueOf(adapter.getQtdColunasMaximas(getStateAtual().getQtdDezenasPossiveisSelecionado()))));
                                 }
                             } else {
                                 DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_qtd_max_col_super_sete));
@@ -1872,13 +1958,13 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         }
                     } else {
                         if (listaSelecionados.size() < SuperSeteAdapter.QTD_MAX_POR_COLUNA) {
-                            if (listaSelecionados.size() < adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado)) {
+                            if (listaSelecionados.size() < adapter.getQtdColunasMaximas(getStateAtual().getQtdDezenasPossiveisSelecionado())) {
                                 listaSelecionados.add(valorSelecionado);
                                 qtdTotalSelecionadosSuperSete++;
                             } else {
                                 DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
                                         "{qtdColunas}",
-                                        String.valueOf(adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado))));
+                                        String.valueOf(adapter.getQtdColunasMaximas(getStateAtual().getQtdDezenasPossiveisSelecionado()))));
                             }
                         } else {
                             DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_qtd_max_col_super_sete));
@@ -1995,7 +2081,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         partidasSelecionadas.clear();
         parentActivity.zerarApostasLoteca();
         atualizaValorApostaLoteca();
-        botaoCompletar.setEnabled(false);
+        setBotaoCompletarEnabled(false);
     }
 
     @Override
@@ -2090,16 +2176,21 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     apostaSuperSete.getMatrizNumerosSelecionados()
             );
 
-            parentActivity.qtdDezenasPossiveisSelecionado =
-                    apostaSuperSete.getQuantidadeNumeros();
+            atualizarQuantidadeSelecionada(
+                    apostaSuperSete.getQuantidadeNumeros());
 
-            parentActivity.qtdConcursoSelecionado =
-                    apostaSuperSete.getQuantidadeTeimosinhas();
+            atualizarQtdConcurso(apostaSuperSete.getQuantidadeTeimosinhas());
 
             publicarValorAposta(aposta.getValor());
 
-            botaoLimparAposta.setEnabled(
-                    mostraLimparSuperSete()
+            Button botaoLimpar =
+                    getBotaoLimparAposta();
+
+            if (botaoLimpar != null) {
+                botaoLimpar.setEnabled(mostraLimparSuperSete());
+            }
+            notificarEstadoCartelaAlterado(
+                    apostaSuperSete.getQuantidadeNumeros()
             );
 
             return;
@@ -2115,11 +2206,10 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                     dezenasSelecionadas
             );
 
-            parentActivity.qtdDezenasPossiveisSelecionado =
-                    aposta.getQuantidadeNumeros();
+            atualizarQuantidadeSelecionada(
+                    aposta.getQuantidadeNumeros());
 
-            parentActivity.qtdConcursoSelecionado =
-                    aposta.getQuantidadeTeimosinhas();
+            atualizarQtdConcurso(aposta.getQuantidadeTeimosinhas());
 
             equipeSelecionada =
                     aposta.getTimeDoCoracao();
@@ -2135,6 +2225,16 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         );
 
         notificarEstadoCartelaAlterado();
+    }
+    private void atualizarQtdConcurso(
+            int quantidade
+    ) {
+        viewModel.onEvent(
+                new SimulaUiEvent
+                        .QtdConcursoAtualizadaInternamente(
+                        quantidade
+                )
+        );
     }
 
     private void timemaniaTimeSelecionadoEdicao() {
@@ -2154,5 +2254,16 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             atualizarValorENotificarEstadoCartela();
             atualizarAdicionarCarinhoCompletarCartela(false);
         }
+    }
+    private Button getBotaoCompletar() {
+        return parentActivity != null
+                ? parentActivity.getBotaoCompletar()
+                : null;
+    }
+
+    private Button getBotaoLimparAposta() {
+        return parentActivity != null
+                ? parentActivity.getBotaoLimparAposta()
+                : null;
     }
 }

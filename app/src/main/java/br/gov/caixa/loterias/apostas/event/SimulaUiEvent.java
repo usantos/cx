@@ -878,6 +878,58 @@ public abstract class SimulaUiEvent {
             return quantidade;
         }
     }
+    public static class QuantidadeNumerosAtualizadaInternamente
+            extends SimulaUiEvent {
+
+        private final int quantidade;
+
+        public QuantidadeNumerosAtualizadaInternamente(
+                int quantidade
+        ) {
+            this.quantidade = quantidade;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+    }
+    public static class QtdConcursoAtualizadaInternamente
+            extends SimulaUiEvent {
+
+        private final int quantidade;
+
+        public QtdConcursoAtualizadaInternamente(
+                int quantidade
+        ) {
+            this.quantidade = quantidade;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+    }
+    public static class InicializarParametrosAposta
+            extends SimulaUiEvent {
+
+        private final int qtdDezenas;
+        private final int qtdConcurso;
+
+        public InicializarParametrosAposta(
+                int qtdDezenas,
+                int qtdConcurso
+        ) {
+            this.qtdDezenas = qtdDezenas;
+            this.qtdConcurso = qtdConcurso;
+        }
+
+        public int getQtdDezenas() {
+            return qtdDezenas;
+        }
+
+        public int getQtdConcurso() {
+            return qtdConcurso;
+        }
+    }
     public static final class SelecionarMesDaSorte
             extends SimulaUiEvent {
 
