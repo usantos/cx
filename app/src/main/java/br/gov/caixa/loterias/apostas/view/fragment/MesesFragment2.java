@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
+import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.MesesAdapter;
@@ -41,7 +42,6 @@ public class MesesFragment2 extends Fragment {
     private ParametroJogoDTO parametroJogoDTO;
     private ArrayList<Integer> dezenasSelecionadas;
 
-    private ParametroMesDeSorte mesDeSorte;
     private SimulaActivity parentActivity;
     private MesesAdapter mesesAdapter;
     private View view;
@@ -90,6 +90,19 @@ public class MesesFragment2 extends Fragment {
         ).get(SimulaViewModel.class);
         setTelaDiaSorte();
     }
+    @Override
+    public void onViewCreated(
+            @NonNull View view,
+            @Nullable Bundle savedInstanceState
+    ) {
+        super.onViewCreated(view, savedInstanceState);
+
+        viewModel.getUiState()
+                .observe(
+                        getViewLifecycleOwner(),
+                        this::renderState
+                );
+    }
 
     @Override
     public void onDetach() {
@@ -98,32 +111,40 @@ public class MesesFragment2 extends Fragment {
 
     private void setTelaDiaSorte() {
         initRecyclerView();
-        setMesDeSorte();
         acaoBotaoLimpar();
     }
 
     private void acaoBotaoLimpar() {
-        parentActivity.getBotaoLimparAposta().setOnClickListener(v -> {
-            limparTodosMeses();
 
-            mesesAdapter.notifyDataSetChanged();
-
-            limparMesDeSorte();
-
-            viewModel.onEvent(
-                    new SimulaUiEvent.MesSorteAlterado(
-                            false
-                    )
-            );
-
-        });
+        parentActivity
+                .getBotaoLimparAposta()
+                .setOnClickListener(
+                        v ->
+                                viewModel.onEvent(
+                                        new SimulaUiEvent
+                                                .LimparMesDaSorte()
+                                )
+                );
     }
+
     public boolean possuiMesSelecionado() {
-        return getItemSelecionado() != null;
+
+        return getStateAtual()
+                .getMesSelecionado()
+                != null;
     }
     public void onAdicionarRodapeClicado() {
 
         if (!possuiMesSelecionado()) {
+            return;
+        }
+        SimulaUiState state =
+                getStateAtual();
+
+        ParametroMesDeSorte mes =
+                state.getMesSelecionado();
+
+        if (mes == null) {
             return;
         }
 
@@ -132,9 +153,9 @@ public class MesesFragment2 extends Fragment {
                         ApostaUtils.getApostaDiaDeSorte(
                                 parametroJogoDTO,
                                 dezenasSelecionadas,
-                                parentActivity.getValorTotalApostaAtual(),
-                                parentActivity.qtdConcursoSelecionado,
-                                parentActivity.getMesDeSorteCartela()
+                                state.getValorAposta(),
+                                state.getQtdConcursoSelecionado(),
+                                mes
                         ),
                         parentActivity.getBarraTituloDTO(),
                         false,
@@ -152,7 +173,8 @@ public class MesesFragment2 extends Fragment {
         List<ParametroMesDeSorte> meses =
                 parametroJogoDTO.getMeses();
 
-        if (meses == null || meses.isEmpty()) {
+        if (meses == null
+                || meses.isEmpty()) {
             return;
         }
 
@@ -161,36 +183,30 @@ public class MesesFragment2 extends Fragment {
                         meses.size()
                 );
 
-        ParametroMesDeSorte mes =
-                meses.get(random);
-
-        limparTodosMeses();
-
-        mes.setSelecionado(true);
-
-        setMesDeSorte(mes);
-
-        mesesAdapter.notifyDataSetChanged();
-
         viewModel.onEvent(
-                new SimulaUiEvent.MesSorteAlterado(
-                        true
+                new SimulaUiEvent
+                        .SelecionarMesDaSorte(
+                        meses.get(random)
                 )
         );
+    }
+    private SimulaUiState getStateAtual() {
+
+        if (viewModel == null
+                || viewModel.getUiState() == null
+                || viewModel.getUiState().getValue() == null) {
+
+            return SimulaUiState.initial();
+        }
+
+        return viewModel.getUiState().getValue();
     }
 
     public void onLimparRodapeClicado() {
 
-        limparTodosMeses();
-
-        mesesAdapter.notifyDataSetChanged();
-
-        limparMesDeSorte();
-
         viewModel.onEvent(
-                new SimulaUiEvent.MesSorteAlterado(
-                        false
-                )
+                new SimulaUiEvent
+                        .LimparMesDaSorte()
         );
     }
 
@@ -199,16 +215,20 @@ public class MesesFragment2 extends Fragment {
         mesesGridView.setAdapter(mesesAdapter);
         mesesGridView.setExpanded(true);
 
-        mesesGridView.setOnItemClickListener((parent, view, position, id) -> {
-            ItemRetanguloTextView viewClickada = (ItemRetanguloTextView) view;
-            limparTodosMeses();
-            viewClickada.getMesDeSorte().setSelecionado(true);
-            setMesDeSorte(viewClickada.getMesDeSorte());
-            mesesAdapter.notifyDataSetChanged();
-            viewModel.onEvent(
-                    new SimulaUiEvent.MesSorteAlterado(true)
-            );
-        });
+        mesesGridView.setOnItemClickListener(
+                (parent, view, position, id) -> {
+
+                    ItemRetanguloTextView item =
+                            (ItemRetanguloTextView) view;
+
+                    viewModel.onEvent(
+                            new SimulaUiEvent
+                                    .SelecionarMesDaSorte(
+                                    item.getMesDeSorte()
+                            )
+                    );
+                }
+        );
     }
 
     private void limparTodosMeses() {
@@ -218,50 +238,44 @@ public class MesesFragment2 extends Fragment {
             }
         }
     }
+    private void renderState(
+            SimulaUiState state
+    ) {
 
-    private ParametroMesDeSorte getItemSelecionado() {
-        if (parametroJogoDTO.getMeses() != null) {
-            for (ParametroMesDeSorte mesDeSorte : parametroJogoDTO.getMeses()) {
-                if (mesDeSorte.isSelecionado()) {
-                    return mesDeSorte;
-                }
-            }
-        }
-        return null;
+        renderMesSelecionado(state);
     }
+    private void renderMesSelecionado(
+            SimulaUiState state
+    ) {
 
-    private void setMesDeSorte() {
-        if(dezenasSelecionadas == null){
-            this.mesDeSorte = parentActivity.getMesDeSorteSurpresinha();
-        }else{
-            this.mesDeSorte = parentActivity.getMesDeSorteCartela();
+        limparTodosMeses();
+
+        ParametroMesDeSorte mesSelecionado =
+                state.getMesSelecionado();
+
+        if (mesSelecionado == null) {
+
+            mesesAdapter.notifyDataSetChanged();
+
+            return;
         }
 
-        if (parametroJogoDTO.getMeses() != null && this.mesDeSorte != null) {
-            for (ParametroMesDeSorte mesDeSorte : parametroJogoDTO.getMeses()) {
-                if (mesDeSorte.getNumero().equals(this.mesDeSorte.getNumero())) {
-                    mesDeSorte.setSelecionado(true);
-                    break;
-                }
+        for (ParametroMesDeSorte mes :
+                parametroJogoDTO.getMeses()) {
+
+            if (mes.getNumero()
+                    .equals(
+                            mesSelecionado.getNumero()
+                    )) {
+
+                mes.setSelecionado(true);
+
+                break;
             }
         }
+
         mesesAdapter.notifyDataSetChanged();
     }
 
-    private void setMesDeSorte(ParametroMesDeSorte mesDeSorte) {
-        if (dezenasSelecionadas != null) {
-            parentActivity.setMesDeSorteCartela(mesDeSorte);
-        } else {
-            parentActivity.setMesDeSorteSurpresinha(mesDeSorte);
-        }
-    }
-
-    private void limparMesDeSorte() {
-        if (dezenasSelecionadas != null) {
-            parentActivity.setMesDeSorteCartela(getItemSelecionado());
-        }else{
-            parentActivity.setMesDeSorteSurpresinha(getItemSelecionado());
-        }
-    }
 
 }

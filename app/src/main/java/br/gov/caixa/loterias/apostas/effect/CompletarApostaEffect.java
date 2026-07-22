@@ -26,9 +26,6 @@ public abstract class CompletarApostaEffect {
     public static final class MostrarEscolhaTimeCoracao extends CompletarApostaEffect {
     }
 
-    public static final class SelecionarTimeAleatorio extends CompletarApostaEffect {
-    }
-
     public static final class AdicionarTimeSurpresa extends CompletarApostaEffect {
     }
 

@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
 import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
@@ -112,9 +113,12 @@ public class SimulaUiState {
     private final ParametroValorApostaDTO valorTrevosSelecionado;
     private final boolean exibirAvisoTrevosMaximo;
     private final boolean avisouTrevosMaximo;
+    private final int quantidadeSurpresinhas;
+    private final int quantidadeNumerosSurpresinha;
+    private final int quantidadeTrevosSurpresinha;
     private final List<Integer> trevosSelecionados;
     private final int quantidadeTrevosSelecionada;
-
+    private final ParametroMesDeSorte mesSelecionado;
     private SimulaUiState(
             Builder builder
     ) {
@@ -302,7 +306,10 @@ public class SimulaUiState {
                 builder.valorTrevosSelecionado;
         this.trevosSelecionados = builder.trevosSelecionados;
         this.quantidadeTrevosSelecionada = builder.quantidadeTrevosSelecionada;
-
+        this.quantidadeSurpresinhas = builder.quantidadeSurpresinhas;
+        this.quantidadeNumerosSurpresinha = builder.quantidadeNumerosSurpresinha;
+        this.quantidadeTrevosSurpresinha = builder.quantidadeTrevosSurpresinha;
+        this.mesSelecionado = builder.mesSelecionado;
     }
 
     public static SimulaUiState initial() {
@@ -312,6 +319,7 @@ public class SimulaUiState {
                 .setExibirDialogFavoritarAposta(false)
                 .setApostaFavoritada(false)
                 .setMostrarSalvarAposta(false)
+                .setMesSelecionado(null)
                 .setEtapaAposta(EtapaAposta.NUMEROS)
                 .setComandoCarrinho(null)
                 .setAbrirCarrinho(false)
@@ -379,6 +387,11 @@ public class SimulaUiState {
                 .setSubtituloTrevos("")
                 .setQuantidadeTrevosSelecionada(0)
                 .setValorTrevosSelecionado(null)
+                .setQuantidadeSurpresinhas(0)
+                .setQuantidadeTrevosSurpresinha(0)
+                .setExibirInfoEtapa(false)
+                .setTextoInfoEtapa("")
+                .setQuantidadeNumerosSurpresinha(0)
                 .build();
     }
     public List<Integer> getTrevosSelecionados(){return trevosSelecionados;}
@@ -669,6 +682,10 @@ public class SimulaUiState {
         return animacaoEffect;
     }
     public int getQuantidadeTrevosSelecionada(){return quantidadeTrevosSelecionada;}
+    public int getQuantidadeSurpresinhas(){return quantidadeSurpresinhas;}
+    public int getQuantidadeNumerosSurpresinha(){return quantidadeNumerosSurpresinha;}
+    public int getQuantidadeTrevosSurpresinha(){return quantidadeTrevosSurpresinha;}
+    public ParametroMesDeSorte getMesSelecionado(){return mesSelecionado;}
 
 
     public static class Builder {
@@ -769,6 +786,10 @@ public class SimulaUiState {
         private boolean avisouTrevosMaximo;
         private List<Integer> trevosSelecionados;
         private int quantidadeTrevosSelecionada;
+        private int quantidadeSurpresinhas;
+        private int quantidadeNumerosSurpresinha;
+        private int quantidadeTrevosSurpresinha;
+        private ParametroMesDeSorte mesSelecionado;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<>();
@@ -823,6 +844,10 @@ public class SimulaUiState {
             this.avisouTrevosMaximo = false;
             this.trevosSelecionados = new ArrayList<>();
             this.quantidadeTrevosSelecionada = 0;
+            this.quantidadeSurpresinhas = 0;
+            this.quantidadeNumerosSurpresinha = 0;
+            this.mesSelecionado = null;
+            this.quantidadeTrevosSurpresinha = 0;
         }
 
         public Builder(
@@ -966,6 +991,10 @@ public class SimulaUiState {
             this.exibirAvisoTrevosMaximo = state.exibirAvisoTrevosMaximo;
             this.avisouTrevosMaximo = state.avisouTrevosMaximo;
             this.quantidadeTrevosSelecionada = state.quantidadeTrevosSelecionada;
+            this.quantidadeSurpresinhas = state.quantidadeSurpresinhas;
+            this.quantidadeNumerosSurpresinha = state.quantidadeNumerosSurpresinha;
+            this.quantidadeTrevosSurpresinha = state.quantidadeTrevosSurpresinha;
+            this.mesSelecionado = state.mesSelecionado;
         }
         public Builder setQuantidadeTrevosSelecionada(
                 int quantidadeTrevosSelecionada
@@ -1286,7 +1315,10 @@ public class SimulaUiState {
                     : new ArrayList<>();
             return this;
         }
-
+        public Builder setMesSelecionado(ParametroMesDeSorte mesSelecionado) {
+            this.mesSelecionado = mesSelecionado;
+            return this;
+        }
         public Builder setConcursosTeimosinhas(List<Integer> concursosTeimosinhas) {
             this.concursosTeimosinhas = concursosTeimosinhas != null
                     ? new ArrayList<>(concursosTeimosinhas)
@@ -1475,6 +1507,24 @@ public class SimulaUiState {
                 int triplasLoteca
         ) {
             this.triplasLoteca = triplasLoteca;
+            return this;
+        }
+        public Builder setQuantidadeSurpresinhas(
+                int quantidadeSurpresinhas
+        ) {
+            this.quantidadeSurpresinhas = quantidadeSurpresinhas;
+            return this;
+        }
+        public Builder setQuantidadeNumerosSurpresinha(
+                int quantidadeNumerosSurpresinha
+        ) {
+            this.quantidadeNumerosSurpresinha = quantidadeNumerosSurpresinha;
+            return this;
+        }
+        public Builder setQuantidadeTrevosSurpresinha(
+                int quantidadeTrevosSurpresinha
+        ) {
+            this.quantidadeTrevosSurpresinha = quantidadeTrevosSurpresinha;
             return this;
         }
 

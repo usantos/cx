@@ -9,6 +9,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 
@@ -62,7 +63,6 @@ public abstract class SimulaUiEvent {
         private final int qtdPartidasTotal;
         private final boolean escolhaTimeCoracaoSurpresinha;
         private final boolean escolhaTimeBtnAtivado;
-        private final boolean telaSelecaoTimeAtivado;
         private final boolean equipeSelecionadaValida;
         private final boolean fragmentCartela;
 
@@ -75,7 +75,6 @@ public abstract class SimulaUiEvent {
                 int qtdPartidasTotal,
                 boolean escolhaTimeCoracaoSurpresinha,
                 boolean escolhaTimeBtnAtivado,
-                boolean telaSelecaoTimeAtivado,
                 boolean equipeSelecionadaValida,
                 boolean fragmentCartela
         ) {
@@ -87,7 +86,6 @@ public abstract class SimulaUiEvent {
             this.qtdPartidasTotal = qtdPartidasTotal;
             this.escolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
             this.escolhaTimeBtnAtivado = escolhaTimeBtnAtivado;
-            this.telaSelecaoTimeAtivado = telaSelecaoTimeAtivado;
             this.equipeSelecionadaValida = equipeSelecionadaValida;
             this.fragmentCartela = fragmentCartela;
         }
@@ -124,9 +122,6 @@ public abstract class SimulaUiEvent {
             return escolhaTimeBtnAtivado;
         }
 
-        public boolean isTelaSelecaoTimeAtivado() {
-            return telaSelecaoTimeAtivado;
-        }
 
         public boolean isEquipeSelecionadaValida() {
             return equipeSelecionadaValida;
@@ -163,7 +158,6 @@ public abstract class SimulaUiEvent {
         private final int duplosLoteca;
         private final int triplosLoteca;
         private final boolean escolhaTimeCoracaoSurpresinha;
-        private final boolean telaSelecaoTimeAtivado;
         private final boolean equipeSelecionadaValida;
         private final boolean fragmentCartela;
 
@@ -177,7 +171,6 @@ public abstract class SimulaUiEvent {
                 int duplosLoteca,
                 int triplosLoteca,
                 boolean escolhaTimeCoracaoSurpresinha,
-                boolean telaSelecaoTimeAtivado,
                 boolean equipeSelecionadaValida,
                 boolean fragmentCartela
         ) {
@@ -190,7 +183,6 @@ public abstract class SimulaUiEvent {
             this.duplosLoteca = duplosLoteca;
             this.triplosLoteca = triplosLoteca;
             this.escolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
-            this.telaSelecaoTimeAtivado = telaSelecaoTimeAtivado;
             this.equipeSelecionadaValida = equipeSelecionadaValida;
             this.fragmentCartela = fragmentCartela;
         }
@@ -231,10 +223,6 @@ public abstract class SimulaUiEvent {
             return escolhaTimeCoracaoSurpresinha;
         }
 
-        public boolean isTelaSelecaoTimeAtivado() {
-            return telaSelecaoTimeAtivado;
-        }
-
         public boolean isEquipeSelecionadaValida() {
             return equipeSelecionadaValida;
         }
@@ -265,7 +253,6 @@ public abstract class SimulaUiEvent {
         private final int triplosLoteca;
 
         private final boolean possuiPlacarLotogol;
-        private final boolean telaSelecaoTimeAtivado;
         private final boolean equipeSelecionadaValida;
         private final boolean escolhaTimeCoracaoSurpresinha;
         private boolean etapaComplementarCompleta;
@@ -281,7 +268,6 @@ public abstract class SimulaUiEvent {
                 int duplosLoteca,
                 int triplosLoteca,
                 boolean possuiPlacarLotogol,
-                boolean telaSelecaoTimeAtivado,
                 boolean equipeSelecionadaValida,
                 boolean escolhaTimeCoracaoSurpresinha,
                 boolean opcaoOutrosNumerosSelecionada,
@@ -298,7 +284,6 @@ public abstract class SimulaUiEvent {
             this.duplosLoteca = duplosLoteca;
             this.triplosLoteca = triplosLoteca;
             this.possuiPlacarLotogol = possuiPlacarLotogol;
-            this.telaSelecaoTimeAtivado = telaSelecaoTimeAtivado;
             this.equipeSelecionadaValida = equipeSelecionadaValida;
             this.escolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
             this.opcaoOutrosNumerosSelecionada = opcaoOutrosNumerosSelecionada;
@@ -345,10 +330,6 @@ public abstract class SimulaUiEvent {
 
         public boolean isPossuiPlacarLotogol() {
             return possuiPlacarLotogol;
-        }
-
-        public boolean isTelaSelecaoTimeAtivado() {
-            return telaSelecaoTimeAtivado;
         }
 
         public boolean isEquipeSelecionadaValida() {
@@ -831,5 +812,152 @@ public abstract class SimulaUiEvent {
         public int getNumeroTrevo() {
             return numeroTrevo;
         }
+    }
+    public static final class AtualizarQuantidadeSurpresinhas
+            extends SimulaUiEvent {
+
+        private final int quantidade;
+
+        public AtualizarQuantidadeSurpresinhas(
+                int quantidade
+        ) {
+            this.quantidade = quantidade;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+    }
+    public static final class AtualizarQuantidadeNumerosSurpresinha
+            extends SimulaUiEvent {
+
+        private final int quantidade;
+
+        public AtualizarQuantidadeNumerosSurpresinha(
+                int quantidade
+        ) {
+            this.quantidade = quantidade;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+    }
+    public static final class AtualizarQuantidadeTrevosSurpresinha
+            extends SimulaUiEvent {
+
+        private final int quantidade;
+
+        public AtualizarQuantidadeTrevosSurpresinha(
+                int quantidade
+        ) {
+            this.quantidade = quantidade;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+    }
+    public static class QuantidadeNumerosAtualizadaInternamente
+            extends SimulaUiEvent {
+
+        private final int quantidade;
+
+        public QuantidadeNumerosAtualizadaInternamente(
+                int quantidade
+        ) {
+            this.quantidade = quantidade;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+    }
+    public static class QtdConcursoAtualizadaInternamente
+            extends SimulaUiEvent {
+
+        private final int quantidade;
+
+        public QtdConcursoAtualizadaInternamente(
+                int quantidade
+        ) {
+            this.quantidade = quantidade;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+    }
+    public static class InicializarParametrosAposta
+            extends SimulaUiEvent {
+
+        private final int qtdDezenas;
+        private final int qtdConcurso;
+
+        public InicializarParametrosAposta(
+                int qtdDezenas,
+                int qtdConcurso
+        ) {
+            this.qtdDezenas = qtdDezenas;
+            this.qtdConcurso = qtdConcurso;
+        }
+
+        public int getQtdDezenas() {
+            return qtdDezenas;
+        }
+
+        public int getQtdConcurso() {
+            return qtdConcurso;
+        }
+    }
+    public static final class SelecionarMesDaSorte
+            extends SimulaUiEvent {
+
+        private final ParametroMesDeSorte mes;
+
+        public SelecionarMesDaSorte(
+                ParametroMesDeSorte mes
+        ) {
+            this.mes = mes;
+        }
+
+        public ParametroMesDeSorte getMes() {
+            return mes;
+        }
+    }
+    public static final class LimparMesDaSorte
+            extends SimulaUiEvent {
+    }
+    public static final class SelecionarTimeCoracao
+            extends SimulaUiEvent {
+
+        private final ParametroEquipe equipe;
+
+        public SelecionarTimeCoracao(
+                ParametroEquipe equipe) {
+            this.equipe = equipe;
+        }
+
+        public ParametroEquipe getEquipe() {
+            return equipe;
+        }
+    }
+    public static final class CompletarMesDaSorte
+            extends SimulaUiEvent {
+    }
+    public static final class RecalcularSurpresinha
+            extends SimulaUiEvent {
+    }
+    public static final class AdicionarSurpresinhaAoCarrinho
+            extends SimulaUiEvent {
+    }
+    public static final class LimparConfiguracaoSurpresinha
+            extends SimulaUiEvent {
+    }
+    public static final class SolicitarSelecaoTimeCoracao
+            extends SimulaUiEvent {
+    }
+    public static final class InicializarSurpresinha
+            extends SimulaUiEvent {
     }
 }

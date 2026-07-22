@@ -289,51 +289,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
-                    android:id="@+id/selecioneTimeCoracao"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="81dp"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:visibility="visible">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="45dp"
-                        android:layout_marginRight="45dp"
-                        android:text="@string/label_nome_do_seu_time"
-                        android:textColor="@color/azulFormNovoTipoPagamento"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/caixa_std_regular"/>
-
-                    <EditText
-                        android:id="@+id/informe_nome_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="45dp"
-                        android:layout_marginRight="45dp"
-                        android:maxLines="1"
-                        android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/caixa_std_regular"/>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/gridTimes"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        android:gravity="center"
-                        android:nestedScrollingEnabled="false"
-                        android:numColumns="3"
-                        android:paddingBottom="119dp"
-                        android:stretchMode="columnWidth"
-                        android:verticalSpacing="16dp"
-                        app:layout_goneMarginBottom="10dp" />
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/layoutRecyclerViewPartida"
@@ -341,7 +297,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@+id/selecioneTimeCoracao">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
