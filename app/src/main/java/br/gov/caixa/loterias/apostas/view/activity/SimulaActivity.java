@@ -1508,7 +1508,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         bundle.putSerializable(getResources().getString(R.string.extra_type_game_color_Dark), typeGameColorDark);
         bundle.putInt("typeGameColorLight", typeGameColorLight);
         bundle.putInt("typeGameColorDark", typeGameColorDark);
-        bundle.putInt(COR_FONTE_FUNDO_BRANCO, estilo.getCorLetraLista());
+        bundle.putInt(COR_FONTE_FUNDO_BRANCO, estilo.getCorItemDezena());
         bundle.putInt(COR_FONTE_FUNDO_CLARO, estilo.getCorFonteFundoClaro());
         bundle.putInt(COR_FONTE_FUNDO_ESCURO, estilo.getCorFonteFundoEscuro());
 

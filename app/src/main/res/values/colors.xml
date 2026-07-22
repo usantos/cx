@@ -142,6 +142,8 @@
     <color name="jr_nvl_4">#2C4F8B</color>
 
     <color name="verde_tutorial">#008254</color>
+    <color name="verde_item_supersete">#008254</color>
+    <color name="cinza130_supersete">#3f4b52</color>
     <color name="cinza_tutorial">#47586C</color>
     <color name="cinza_borda">#C4C4C4</color>
     <color name="azul_mercado_pago">#50B4E9</color>
@@ -220,6 +222,8 @@
     <color name="dia_sorte_claro_mkp">#E3C021</color>
     <color name="dia_sorte_escuro_mkp">#AE9319</color>
     <color name="dia_sorte_letra_mkp">#7E6906</color>
+    <color name="dia_sorte_letra_fundo_escuro_mkp">#038041</color>
+    <color name="dia_sorte_cor_mkp">#AE9318</color>
     <color name="super_sete_claro_mkp">#BED730</color>
     <color name="super_sete_escuro_mkp">#839F38</color>
     <color name="super_sete_letra_mkp">#038141</color>
