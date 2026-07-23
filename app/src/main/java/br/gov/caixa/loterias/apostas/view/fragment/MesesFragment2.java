@@ -21,18 +21,20 @@ import java.util.Random;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.MesesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ItemRetanguloTextView;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class MesesFragment2 extends Fragment {
+public class MesesFragment2 extends BaseEtapaFragment {
     private static final String ARG_MODADLIDADE = "ARG_MODALIDADE";
     private static final String ARG_PARAMENTRO = "ARG_PARAMENTRO";
     private static final String ARG_DEZENAS = "ARG_DEZENAS";
@@ -88,7 +90,7 @@ public class MesesFragment2 extends Fragment {
         viewModel = new ViewModelProvider(
                 requireActivity()
         ).get(SimulaViewModel.class);
-        setTelaDiaSorte();
+        initRecyclerView();
     }
     @Override
     public void onViewCreated(
@@ -108,23 +110,36 @@ public class MesesFragment2 extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+    @Override
+    public void onSalvarFavoritoRodapeConfirmado(
+            String nome
+    ) {
 
-    private void setTelaDiaSorte() {
-        initRecyclerView();
-        acaoBotaoLimpar();
-    }
+        ParametroMesDeSorte mesSelecionado =
+                getStateAtual().getMesSelecionado();
 
-    private void acaoBotaoLimpar() {
+        if (mesSelecionado == null) {
+            return;
+        }
 
-        parentActivity
-                .getBotaoLimparAposta()
-                .setOnClickListener(
-                        v ->
-                                viewModel.onEvent(
-                                        new SimulaUiEvent
-                                                .LimparMesDaSorte()
-                                )
-                );
+        ApostaFavoritaDTO apostaFavorita =
+                new ApostaFavoritaDTO();
+
+        apostaFavorita.setMesDeSorte(
+                mesSelecionado
+        );
+
+        viewModel.onEvent(
+                new SimulaUiEvent
+                        .SalvarApostaFavoritaSolicitado(
+                        apostaFavorita,
+                        nome,
+                        new ArrayList<>(
+                                getStateAtual()
+                                        .getDezenasSelecionadas()
+                        )
+                )
+        );
     }
 
     public boolean possuiMesSelecionado() {
@@ -276,6 +291,14 @@ public class MesesFragment2 extends Fragment {
 
         mesesAdapter.notifyDataSetChanged();
     }
+    @Override
+    public boolean possuiSelecaoValida() {
+        return possuiMesSelecionado();
+    }
 
+    @Override
+    public EtapaAposta getEtapa() {
+        return EtapaAposta.MES_SORTE;
+    }
 
 }

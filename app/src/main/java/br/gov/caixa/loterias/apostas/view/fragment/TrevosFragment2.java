@@ -21,8 +21,10 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.TrevoModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
@@ -108,6 +110,39 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
     private int getQuantidadeNumerosAtual() {
         return getStateAtual()
                 .getQtdDezenasPossiveisSelecionado();
+    }
+    @Override
+    public void onSalvarFavoritoRodapeConfirmado(
+            String nome
+    ) {
+
+        ParametroTrevo parametroTrevo =
+                new ParametroTrevo();
+
+        parametroTrevo.setTrevosSelecionados(
+                new ArrayList<>(
+                        getTrevosSelecionados()
+                )
+        );
+
+        ApostaFavoritaDTO apostaFavorita =
+                new ApostaFavoritaDTO();
+
+        apostaFavorita.setParametroTrevo(
+                parametroTrevo
+        );
+
+        viewModel.onEvent(
+                new SimulaUiEvent
+                        .SalvarApostaFavoritaSolicitado(
+                        apostaFavorita,
+                        nome,
+                        new ArrayList<>(
+                                getStateAtual()
+                                        .getDezenasSelecionadas()
+                        )
+                )
+        );
     }
     private void renderState(
             SimulaUiState state

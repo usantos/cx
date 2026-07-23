@@ -60,6 +60,7 @@ import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -78,7 +79,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class SimulaFragment extends Fragment implements LocateAdapterListener, LotogolListener {
+public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterListener, LotogolListener {
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
     private SensorManager mSensorManager;
 
@@ -395,7 +396,21 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     public void onSalvarFavoritoRodapeConfirmado(
             String nome
     ) {
-        solicitarSalvarApostaFavorita(nome);
+
+        ApostaFavoritaDTO apostaFavorita =
+                new ApostaFavoritaDTO();
+
+
+        Object numerosSelecionados =
+                obterNumerosSelecionadosFavoritos();
+
+        viewModel.onEvent(
+                new SimulaUiEvent.SalvarApostaFavoritaSolicitado(
+                        apostaFavorita,
+                        nome,
+                        numerosSelecionados
+                )
+        );
     }
     private void atualizarQuantidadeSelecionada(
             int quantidade
@@ -989,51 +1004,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         viewModel.onEvent(
                 new SimulaUiEvent.ComandoCompletarApostaConsumido()
         );
-    }
-
-    private void solicitarSalvarApostaFavorita(
-            String nome
-    ) {
-
-        ApostaFavoritaDTO apostaFavorita =
-                criarApostaFavoritaDTO();
-
-        Object numerosSelecionados =
-                obterNumerosSelecionadosFavoritos();
-
-        viewModel.onEvent(
-                new SimulaUiEvent.SalvarApostaFavoritaSolicitado(
-                        apostaFavorita,
-                        nome,
-                        numerosSelecionados
-                )
-        );
-    }
-
-    private ApostaFavoritaDTO criarApostaFavoritaDTO() {
-
-        ApostaFavoritaDTO aposta =
-                new ApostaFavoritaDTO();
-
-        if (parametroJogo.isTipoJogo(
-                ModalidadeEnum.TIMEMANIA
-        ) && getStateAtual().getEquipeSelecionada() != null) {
-
-            aposta.setTimeDoCoracao(
-                    getStateAtual().getEquipeSelecionada()
-            );
-        }
-
-        if (parametroJogo.isTipoJogo(
-                ModalidadeEnum.MAIS_MILIONARIA
-        )) {
-
-            aposta.setParametroTrevo(
-                    new ParametroTrevo()
-            );
-        }
-
-        return aposta;
     }
 
     private Object obterNumerosSelecionadosFavoritos() {
@@ -2147,5 +2117,21 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         return parentActivity != null
                 ? parentActivity.getBotaoLimparAposta()
                 : null;
+    }
+    @Override
+    public void onLimparRodapeClicado() {
+        viewModel.onEvent(
+                new SimulaUiEvent.LimparApostaSolicitado()
+        );
+    }
+
+    @Override
+    public boolean possuiSelecaoValida() {
+        return getStateAtual().isBotaoAdicionarHabilitado();
+    }
+
+    @Override
+    public EtapaAposta getEtapa() {
+        return EtapaAposta.NUMEROS;
     }
 }

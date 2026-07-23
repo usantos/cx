@@ -11,5 +11,6 @@ public interface EtapaFragment {
     void onLimparRodapeClicado();
 
     boolean possuiSelecaoValida();
+    void onSalvarFavoritoRodapeConfirmado(String nome);
     EtapaAposta getEtapa();
 }
