@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.viewModel;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -24,7 +23,6 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
 import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
-import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
 import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -89,311 +87,330 @@ public class SimulaViewModel extends AndroidViewModel {
     }
 
     public void onEvent(SimulaUiEvent event) {
-
-        if (event instanceof SimulaUiEvent.TelaInicializada) {
-
-            handleTelaInicializada((SimulaUiEvent.TelaInicializada) event);
-
+        if (handleCarrinhoEvents(event)) {
             return;
         }
-
-        if (event instanceof SimulaUiEvent.AdicionarCarrinhoSolicitado) {
-
-            handleAdicionarCarrinhoSolicitado((SimulaUiEvent.AdicionarCarrinhoSolicitado) event);
-
+        if(handleLimparEvents(event)){
             return;
         }
+        if(handleCompletarEvents(event)){
+            return;
+        }
+        if(handleCartelaEvents(event)){
+            return;
+        }
+        if(handleTeimosinhaEvents(event)){
+            return;
+        }
+        if(handleNumerosEvents(event)){
+            return;
+        }
+        if(handleSurpresinhaEvents(event)){
+            return;
+        }
+        if(handleTrevosEvents(event)){
+            return;
+        }
+        if(handleFavoritarEvents(event)){
+            return;
+        }
+        if(handleNextStepEvents(event)){
+            return;
+        }
+    }
 
-        if (event instanceof SimulaUiEvent.ConfirmarAdicionarCarrinho) {
+    private boolean handleCarrinhoEvents(
+            SimulaUiEvent event
+    ) {
+
+        if (event instanceof
+                SimulaUiEvent.AdicionarCarrinhoSolicitado) {
+
+            handleAdicionarCarrinhoSolicitado(
+                    (SimulaUiEvent
+                            .AdicionarCarrinhoSolicitado)
+                            event
+            );
+
+            return true;
+        }
+
+        if (event instanceof
+                SimulaUiEvent.AdicionarCarrinhoClicado) {
+
+            handleAdicionarCarrinhoClicado(
+                    (SimulaUiEvent
+                            .AdicionarCarrinhoClicado)
+                            event
+            );
+
+            return true;
+        }
+
+        if (event instanceof
+                SimulaUiEvent.ConfirmarAdicionarCarrinho) {
 
             executarAdicionarCarrinhoPendente();
 
-            return;
+            return true;
+        }
+
+        if (event instanceof
+                SimulaUiEvent.CarrinhoClicado) {
+
+            abrirCarrinho();
+
+            return true;
+        }
+
+        if (event instanceof
+                SimulaUiEvent.CarregarCarrinho) {
+
+            carregarCarrinho();
+
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.AbrirCarrinhoConsumido) {
+            consumirAbrirCarrinho();
+            return true;
         }
 
         if (event instanceof SimulaUiEvent.ComandoCarrinhoConsumido) {
 
             limparComandoCarrinho();
 
-            return;
+            return true;
         }
 
+        return false;
+    }
+    private boolean handleLimparEvents(
+            SimulaUiEvent event
+    ) {
         if (event instanceof SimulaUiEvent.LimparApostaSolicitado) {
 
             limparAposta();
 
-            return;
+            return true;
         }
 
-        if (event instanceof SimulaUiEvent.CompletarApostaClicado) {
-
-            handleCompletarApostaClicado((SimulaUiEvent.CompletarApostaClicado) event);
-
-            return;
+        if (event instanceof SimulaUiEvent.ComandoTelaSimulaConsumido) {
+            limparComandoTelaSimula();
+            return true;
         }
+
+        if (event instanceof SimulaUiEvent.ComandoFavoritarApostaConsumido) {
+            limparComandoFavoritarAposta();
+            return true;
+        }
+
+        if (event instanceof
+                SimulaUiEvent.LimparMesDaSorte) {
+
+            handleLimparMesDaSorte();
+
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.ComandoAnalyticsConsumido) {
+            limparComandoAnalytics();
+            return true;
+        }
+
+        if (event instanceof
+                SimulaUiEvent.ComandoAnimacaoConsumido) {
+            limparComandoAnimacao();
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.LimpezaApostaRenderizada) {
+            limparFlagsDeRenderizacao();
+            return true;
+        }
+
+        return false;
+    }
+    private boolean handleCartelaEvents(
+            SimulaUiEvent event
+    ) {
         if (event instanceof SimulaUiEvent.ToggleOutrosNumeros) {
             toggleOutrosNumeros();
-            return;
-        }
-
-        if (event instanceof SimulaUiEvent.AdicionarCarrinhoClicado) {
-
-            handleAdicionarCarrinhoClicado((SimulaUiEvent.AdicionarCarrinhoClicado) event);
-
-            return;
-        }
-
-        if (event instanceof SimulaUiEvent.ComandoCompletarApostaConsumido) {
-
-            limparComandoCompletarAposta();
-
-            return;
+            return true;
         }
 
         if (event instanceof SimulaUiEvent.CartelaAlterada) {
 
             handleCartelaAlterada((SimulaUiEvent.CartelaAlterada) event);
 
-            return;
+            return true;
         }
         if (event instanceof SimulaUiEvent.ValorApostaAlterado) {
 
             handleValorApostaAlterado((SimulaUiEvent.ValorApostaAlterado) event);
 
-            return;
+            return true;
+        }
+        if (event instanceof SimulaUiEvent.InicializarParametrosAposta) {
+            inicializarParametrosAposta(
+                    (SimulaUiEvent
+                            .InicializarParametrosAposta)
+                            event
+            );
+            return true;
         }
 
-        if (event instanceof SimulaUiEvent.CarregarCarrinho) {
-            carregarCarrinho();
-            return;
+        if (event instanceof SimulaUiEvent.TelaInicializada) {
+
+            handleTelaInicializada((SimulaUiEvent.TelaInicializada) event);
+
+            return true;
         }
+
         if (event instanceof SimulaUiEvent.ComoJogarClicado) {
 
             handleComoJogar();
 
-            return;
+            return true;
         }
 
         if (event instanceof SimulaUiEvent.DialogComoJogarConsumido) {
 
             consumirDialogComoJogar();
 
-            return;
+            return true;
         }
 
-        if (event instanceof SimulaUiEvent.LimpezaApostaRenderizada) {
 
-            limparFlagsDeRenderizacao();
-        }
+        return false;
+    }
+    private boolean handleTeimosinhaEvents(
+            SimulaUiEvent event
+    ) {
         if (event instanceof SimulaUiEvent.InicializarTeimosinhas) {
             inicializarTeimosinhas((SimulaUiEvent.InicializarTeimosinhas) event);
-            return;
-        }
-
-        if (event instanceof SimulaUiEvent.ClicarTeimosinhas) {
-            clicarTeimosinhas();
-            return;
-        }
-
-        if (event instanceof SimulaUiEvent.ConfirmarTeimosinha) {
-            confirmarTeimosinha((SimulaUiEvent.ConfirmarTeimosinha) event);
-            return;
-        }
-
-        if (event instanceof SimulaUiEvent.ConsumirEventoUnico) {
-            consumirEventoUnico();
-            return;
+            return true;
         }
 
         if (event instanceof SimulaUiEvent.ValorApostaAtualizado) {
             valorApostaAtualizado();
-            return;
+            return true;
         }
+
+        if (event instanceof SimulaUiEvent.ClicarTeimosinhas) {
+            clicarTeimosinhas();
+            return true;
+        }
+
+        if (event instanceof
+                SimulaUiEvent.QtdConcursoAtualizadaInternamente) {
+
+            handleQtdConcursoAtualizadaInternamente(
+                    (SimulaUiEvent
+                            .QtdConcursoAtualizadaInternamente)
+                            event
+            );
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.ConfirmarTeimosinha) {
+            confirmarTeimosinha((SimulaUiEvent.ConfirmarTeimosinha) event);
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.ConsumirEventoUnico) {
+            consumirEventoUnico();
+            return true;
+        }
+
+        return false;
+    }
+    private boolean handleNumerosEvents(
+            SimulaUiEvent event
+    ) {
         if (event instanceof SimulaUiEvent.InicializarQuantidadeNumeros) {
             inicializarQuantidadeNumeros((SimulaUiEvent.InicializarQuantidadeNumeros) event);
-            return;
+            return true;
+        }
+        if (event instanceof
+                SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente) {
+
+            atualizarQuantidadeInterna(
+                    (SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente)
+                            event
+            );
+            return true;
         }
 
         if (event instanceof SimulaUiEvent.ClicarQuantidadeNumeros) {
             clicarQuantidadeNumeros();
-            return;
+            return true;
         }
 
         if (event instanceof SimulaUiEvent.SelecionarQuantidadeNumeros) {
             selecionarQuantidadeNumeros((SimulaUiEvent.SelecionarQuantidadeNumeros) event);
-            return;
+            return true;
         }
 
         if (event instanceof SimulaUiEvent.ConfirmarQuantidadeNumeros) {
             confirmarQuantidadeNumeros((SimulaUiEvent.ConfirmarQuantidadeNumeros) event);
-            return;
+            return true;
         }
 
         if (event instanceof SimulaUiEvent.DialogQuantidadeNumerosConsumido) {
             consumirDialogQuantidadeNumeros();
-            return;
+            return true;
         }
 
         if (event instanceof SimulaUiEvent.AvisoQuantidadeNumerosConsumido) {
             consumirAvisoQuantidadeNumeros();
-            return;
+            return true;
         }
 
         if (event instanceof SimulaUiEvent.ValorApostaQuantidadeNumerosAtualizado) {
             valorApostaQuantidadeNumerosAtualizado();
-            return;
-        }
-        if (event instanceof SimulaUiEvent.CarrinhoClicado) {
-            abrirCarrinho();
-            return;
+            return true;
         }
 
-        if (event instanceof SimulaUiEvent.AbrirCarrinhoConsumido) {
-            consumirAbrirCarrinho();
-            return;
+        return false;
+    }
+
+    private boolean handleCompletarEvents(
+            SimulaUiEvent event
+    ) {
+        if (event instanceof SimulaUiEvent.CompletarApostaClicado) {
+
+            handleCompletarApostaClicado((SimulaUiEvent.CompletarApostaClicado) event);
+
+            return true;
         }
-        if (event instanceof SimulaUiEvent.AlterarSurpresinha) {
+        if (event instanceof SimulaUiEvent.ComandoCompletarApostaConsumido) {
 
-            handleAlterarSurpresinha(((SimulaUiEvent.AlterarSurpresinha) event).isHabilitada());
+            limparComandoCompletarAposta();
 
-            return;
-        }
-
-        if (event instanceof SimulaUiEvent.ComandoTelaSimulaConsumido) {
-            limparComandoTelaSimula();
-            return;
-        }
-        if (event instanceof SimulaUiEvent.SurpresinhaAberta) {
-
-            handleSurpresinhaAberta();
-            return;
+            return true;
         }
 
-        if (event instanceof SimulaUiEvent.SurpresinhaFechada) {
+        return false;
+    }
+    private boolean handleNextStepEvents(
+            SimulaUiEvent event
+    ) {
 
-            handleSurpresinhaFechada();
-            return;
-        }
-        if (event instanceof SimulaUiEvent.FavoritarApostaClicado) {
-            abrirDialogFavoritarAposta();
-            return;
-        }
-
-        if (event instanceof SimulaUiEvent.DialogFavoritarApostaConsumido) {
-            consumirDialogFavoritarAposta();
-            return;
-        }
-        if (event instanceof SimulaUiEvent.SalvarApostaFavoritaSolicitado) {
-            handleSalvarApostaFavoritaSolicitado((SimulaUiEvent.SalvarApostaFavoritaSolicitado) event);
-            return;
-        }
-
-        if (event instanceof SimulaUiEvent.ConfirmarSalvarApostaFavorita) {
-            salvarApostaFavorita(((SimulaUiEvent.ConfirmarSalvarApostaFavorita) event).getApostaFavorita());
-            return;
-        }
-
-        if (event instanceof SimulaUiEvent.ComandoFavoritarApostaConsumido) {
-            limparComandoFavoritarAposta();
-            return;
-        }
         if (event instanceof SimulaUiEvent.NextStepClicado) {
 
             handleNextStepClicado((SimulaUiEvent.NextStepClicado) event);
 
-            return;
+            return true;
         }
 
-        if (event instanceof SimulaUiEvent.QuantidadeTrevosAlterada) {
-            handleQuantidadeTrevosAlterada((SimulaUiEvent.QuantidadeTrevosAlterada) event);
-            return;
-        }
         if (event instanceof SimulaUiEvent.MesSorteAlterado) {
             handleMesSorteAlterado((SimulaUiEvent.MesSorteAlterado) event);
-            return;
+            return true;
         }
 
-        if (event instanceof SimulaUiEvent.TrevosAlterados) {
-            handleTrevosAlterados((SimulaUiEvent.TrevosAlterados) event);
-            return;
-        }
-        if (event instanceof SimulaUiEvent.ClicarQuantidadeTrevos) {
-            clicarQuantidadeTrevos(
-                    (SimulaUiEvent.ClicarQuantidadeTrevos) event
-            );
-            return;
-        }
 
-        if (event instanceof SimulaUiEvent.SelecionarQuantidadeTrevos) {
-            selecionarQuantidadeTrevos(
-                    (SimulaUiEvent.SelecionarQuantidadeTrevos) event
-            );
-            return;
-        }
 
-        if (event instanceof SimulaUiEvent.ConfirmarQuantidadeTrevos) {
-            confirmarQuantidadeTrevos(
-                    (SimulaUiEvent.ConfirmarQuantidadeTrevos) event
-            );
-            return;
-        }
-
-        if (event instanceof SimulaUiEvent.DialogQuantidadeTrevosConsumido) {
-            consumirDialogQuantidadeTrevos();
-            return;
-        }
-        if (event instanceof SimulaUiEvent.ComandoAnalyticsConsumido) {
-            limparComandoAnalytics();
-            return;
-        }
-        if (event instanceof
-                SimulaUiEvent.ComandoAnimacaoConsumido) {
-
-            limparComandoAnimacao();
-            return;
-        }
-        if (event instanceof
-                SimulaUiEvent.AvisoTrevosMaximoConsumido) {
-
-            consumirAvisoTrevosMaximo();
-            return;
-        }
-        if (event instanceof SimulaUiEvent.ToggleTrevo) {
-            handleToggleTrevo(
-                    (SimulaUiEvent.ToggleTrevo) event
-            );
-            return;
-        }
-        if(event instanceof
-                SimulaUiEvent.AtualizarQuantidadeSurpresinhas){
-
-            handleQuantidadeSurpresinhas(
-                    (SimulaUiEvent
-                            .AtualizarQuantidadeSurpresinhas)
-                            event
-            );
-            return;
-        }
-        if(event instanceof
-                SimulaUiEvent.AtualizarQuantidadeNumerosSurpresinha){
-
-            handleQuantidadeNumerosSurpresinha(
-                    (SimulaUiEvent
-                            .AtualizarQuantidadeNumerosSurpresinha)
-                            event
-            );
-            return;
-        }
-        if(event instanceof
-                SimulaUiEvent.AtualizarQuantidadeTrevosSurpresinha){
-
-            handleQuantidadeTrevosSurpresinha(
-                    (SimulaUiEvent
-                            .AtualizarQuantidadeTrevosSurpresinha)
-                            event
-            );
-            return;
-        }
         if (event instanceof
                 SimulaUiEvent.SelecionarMesDaSorte) {
 
@@ -403,53 +420,155 @@ public class SimulaViewModel extends AndroidViewModel {
                             event
             );
 
-            return;
+            return true;
         }
+
         if (event instanceof
-                SimulaUiEvent.LimparMesDaSorte) {
-
-            handleLimparMesDaSorte();
-
-            return;
-        }
-        if (event instanceof
-                SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente) {
-
-            atualizarQuantidadeInterna(
-                    (SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente)
-                            event
-            );
-            return;
-        }
-        if (event instanceof
-                SimulaUiEvent.QtdConcursoAtualizadaInternamente) {
-
-            handleQtdConcursoAtualizadaInternamente(
-                    (SimulaUiEvent
-                            .QtdConcursoAtualizadaInternamente)
-                            event
-            );
-            return;
-        }
-        if(event instanceof SimulaUiEvent.InicializarParametrosAposta){
-            inicializarParametrosAposta(
-                    (SimulaUiEvent
-                            .InicializarParametrosAposta)
-                            event
-            );
-            return;
-        }
-        if(event instanceof
-                SimulaUiEvent.SelecionarTimeCoracao){
+                SimulaUiEvent.SelecionarTimeCoracao) {
 
             handleSelecionarTimeCoracao(
                     (SimulaUiEvent.SelecionarTimeCoracao)
                             event
             );
-            return;
+            return true;
         }
 
+        return false;
     }
+    private boolean handleFavoritarEvents(
+            SimulaUiEvent event
+    ) {
+        if (event instanceof SimulaUiEvent.FavoritarApostaClicado) {
+            abrirDialogFavoritarAposta();
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.DialogFavoritarApostaConsumido) {
+            consumirDialogFavoritarAposta();
+            return true;
+        }
+        if (event instanceof SimulaUiEvent.SalvarApostaFavoritaSolicitado) {
+            handleSalvarApostaFavoritaSolicitado((SimulaUiEvent.SalvarApostaFavoritaSolicitado) event);
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.ConfirmarSalvarApostaFavorita) {
+            salvarApostaFavorita(((SimulaUiEvent.ConfirmarSalvarApostaFavorita) event).getApostaFavorita());
+            return true;
+        }
+
+        return false;
+    }
+    private boolean handleTrevosEvents(
+            SimulaUiEvent event
+    ) {
+
+        if (event instanceof SimulaUiEvent.QuantidadeTrevosAlterada) {
+            handleQuantidadeTrevosAlterada((SimulaUiEvent.QuantidadeTrevosAlterada) event);
+            return true;
+        }
+        if (event instanceof SimulaUiEvent.TrevosAlterados) {
+            handleTrevosAlterados((SimulaUiEvent.TrevosAlterados) event);
+            return true;
+        }
+        if (event instanceof SimulaUiEvent.ClicarQuantidadeTrevos) {
+            clicarQuantidadeTrevos(
+                    (SimulaUiEvent.ClicarQuantidadeTrevos) event
+            );
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.SelecionarQuantidadeTrevos) {
+            selecionarQuantidadeTrevos(
+                    (SimulaUiEvent.SelecionarQuantidadeTrevos) event
+            );
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.ConfirmarQuantidadeTrevos) {
+            confirmarQuantidadeTrevos(
+                    (SimulaUiEvent.ConfirmarQuantidadeTrevos) event
+            );
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.DialogQuantidadeTrevosConsumido) {
+            consumirDialogQuantidadeTrevos();
+            return true;
+        }
+
+        if (event instanceof
+                SimulaUiEvent.AvisoTrevosMaximoConsumido) {
+
+            consumirAvisoTrevosMaximo();
+            return true;
+        }
+        if (event instanceof SimulaUiEvent.ToggleTrevo) {
+            handleToggleTrevo(
+                    (SimulaUiEvent.ToggleTrevo) event
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private boolean handleSurpresinhaEvents(
+            SimulaUiEvent event
+    ) {
+        if (event instanceof SimulaUiEvent.AlterarSurpresinha) {
+
+            handleAlterarSurpresinha(((SimulaUiEvent.AlterarSurpresinha) event).isHabilitada());
+
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.SurpresinhaAberta) {
+
+            handleSurpresinhaAberta();
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.SurpresinhaFechada) {
+
+            handleSurpresinhaFechada();
+            return true;
+        }
+        if (event instanceof
+                SimulaUiEvent.AtualizarQuantidadeSurpresinhas) {
+
+            handleQuantidadeSurpresinhas(
+                    (SimulaUiEvent
+                            .AtualizarQuantidadeSurpresinhas)
+                            event
+            );
+            return true;
+        }
+        if (event instanceof
+                SimulaUiEvent.AtualizarQuantidadeNumerosSurpresinha) {
+
+            handleQuantidadeNumerosSurpresinha(
+                    (SimulaUiEvent
+                            .AtualizarQuantidadeNumerosSurpresinha)
+                            event
+            );
+            return true;
+        }
+        if (event instanceof
+                SimulaUiEvent.AtualizarQuantidadeTrevosSurpresinha) {
+
+            handleQuantidadeTrevosSurpresinha(
+                    (SimulaUiEvent
+                            .AtualizarQuantidadeTrevosSurpresinha)
+                            event
+            );
+            return true;
+        }
+
+        return false;
+    }
+
     private void handleSelecionarTimeCoracao(
             SimulaUiEvent.SelecionarTimeCoracao event
     ){

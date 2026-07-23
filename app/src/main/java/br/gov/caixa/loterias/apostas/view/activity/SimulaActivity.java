@@ -1245,11 +1245,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
 
-    private void resetaCartela() {
-        cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
-        abrirTelaCartela();
-    }
-
     public ParametroJogoDTO getParametroSimulacao() {
         return parametroSimulacao;
     }

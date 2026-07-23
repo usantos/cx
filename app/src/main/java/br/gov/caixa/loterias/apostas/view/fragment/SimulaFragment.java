@@ -104,7 +104,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private int qtdTotalSelecionadosSuperSete = 0;
 
     private boolean isEcolhaTimeBtnAtivado;
-    private boolean isEscolhaTimeCoracaoSurpresinha;
     private boolean isAvisou = false;
     public BigDecimal valorTotalAposta;
     public int typeGameColorLight, typeGameColorDark;
@@ -499,7 +498,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         IdentificaoDeUmaApostaDas8Modalidades apostaParaCarrinho = null;
 
-        if (!isEscolhaTimeCoracaoSurpresinha) {
+        if (!getStateAtual().isEscolhaTimeCoracaoSurpresinha()) {
             apostaParaCarrinho = criarApostaParaCarrinho();
         }
 
@@ -507,7 +506,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 new SimulaUiEvent.AdicionarCarrinhoSolicitado(
                         apostaParaCarrinho,
                         barraTituloDTO,
-                        isEscolhaTimeCoracaoSurpresinha,
+                        getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
                         getStateAtual().getEquipeSelecionada()
                 )
         );
@@ -520,7 +519,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     }
     private IdentificaoDeUmaApostaDas8Modalidades criarApostaParaCarrinho() {
 
-        if (isEscolhaTimeCoracaoSurpresinha) {
+        if (getStateAtual().isEscolhaTimeCoracaoSurpresinha()) {
             return null;
         }
 
@@ -666,7 +665,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         qtdTotalSelecionadosSuperSete,
                         qtdPartidasSelecionadas,
                         qtdPartidasTotal,
-                        isEscolhaTimeCoracaoSurpresinha,
+                        getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
                         isEcolhaTimeBtnAtivado,
                         equipeSelecionadaValida,
                         parentActivity.isFragmentCartela()
@@ -726,7 +725,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         qtdPartidasTotal,
                         duplosLoteca,
                         triplosLoteca,
-                        isEscolhaTimeCoracaoSurpresinha,
+                        getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
                         equipeSelecionadaValida,
                         parentActivity.isFragmentCartela()
                 )
@@ -800,7 +799,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         triplosLoteca,
                         possuiPlacarLotogol,
                         equipeSelecionadaValida,
-                        isEscolhaTimeCoracaoSurpresinha,
+                        getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
                         outrosNumerosSelecionado,
                         exibirOutrosNumeros,
                         etapaComplementarCompleta,
@@ -1489,7 +1488,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     }
 
     private void atualizarAdicionarCarinhoCompletarCartela(Boolean isPickerPrognosticos) {
-        if (getDezenasSelecionadasState().size() == getStateAtual().getQtdDezenasPossiveisSelecionado() || isEscolhaTimeCoracaoSurpresinha) {
+        if (getDezenasSelecionadasState().size() == getStateAtual().getQtdDezenasPossiveisSelecionado() || getStateAtual().isEscolhaTimeCoracaoSurpresinha()) {
             if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
                 atualizarValorENotificarEstadoCartela();
             } else if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
@@ -1693,7 +1692,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
                         equipeSelecionadaValida,
 
-                        isEscolhaTimeCoracaoSurpresinha,
+                        getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
 
                         outrosNumerosSelecionado,
 
@@ -1996,10 +1995,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             partidasSelecionadas.remove(parametroPartida);
         }
         atualizarValorENotificarEstadoCartela();
-    }
-
-    public void setEscolhaTimeCoracaoSurpresinha(boolean escolhaTimeCoracaoSurpresinha) {
-        isEscolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
     }
 
     private boolean atualizaValorApostaLoteca() {
