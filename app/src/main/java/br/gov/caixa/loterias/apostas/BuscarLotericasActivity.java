@@ -52,6 +52,8 @@ public class BuscarLotericasActivity extends LoteriasBaseAppActivity {
     private List<LotericaFavoritaDTO> listLoteriaFav = new ArrayList<>();
     private BuscaLotericaAdapter buscaLotericaAdapter;
     private Toolbar toolbar;
+    private ImageButton customButton;
+    private View borderView;
 
     private LotericaFavoritaModel lotericaFavoritaModel;
 
@@ -105,6 +107,7 @@ public class BuscarLotericasActivity extends LoteriasBaseAppActivity {
                         listLotericaDTO.clear();
                         buscaLotericaAdapter.submitList(new ArrayList<>(listLotericaDTO));
                         rvFavorites.setVisibility(View.GONE);
+                        borderView.setVisibility(View.GONE);
                     }
 
                     rvFavorites.setVisibility(View.VISIBLE);
@@ -132,6 +135,7 @@ public class BuscarLotericasActivity extends LoteriasBaseAppActivity {
         btnDuvidas = findViewById(R.id.btn_duvidas_mkp);
         toolbarTitle = findViewById(R.id.toolbar_title);
         tvLotericas = findViewById(R.id.tv_lotericas);
+        borderView = findViewById(R.id.border_view);
         ViewCompat.setAccessibilityHeading(toolbarTitle,true);
         ViewCompat.setAccessibilityHeading(tvLotericas,true);
 
@@ -144,17 +148,8 @@ public class BuscarLotericasActivity extends LoteriasBaseAppActivity {
 
     private void configToolbar() {
         this.toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setElevation(0);
-            Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.seta_esquerda);
-            getSupportActionBar().setHomeAsUpIndicator(upArrow);
-            getSupportActionBar().setHomeActionContentDescription(R.string.txt_voltar);
-            getSupportActionBar().setTitle("");
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
+        this.customButton = findViewById(R.id.customButton);
+        customButton.setOnClickListener(view -> finish());
     }
 
     private OnSilceListener<List<LotericaDTO>> onBuscaLotericasListener(String query) {
@@ -201,6 +196,7 @@ public class BuscarLotericasActivity extends LoteriasBaseAppActivity {
             return;
         }
         rvFavorites.setVisibility(View.VISIBLE);
+        borderView.setVisibility(View.VISIBLE);
         buscaLotericaAdapter.submitList(list);
     }
 

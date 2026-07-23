@@ -1677,5 +1677,6 @@
     <string name="txt_name_code">Nome ou código</string>
     <string name="txt_lotericas">Lotéricas</string>
     <string name="txt_buscar_lotericas">Buscar Lotericas</string>
+    <string name="txt_back">Voltar</string>
 
 </resources>
