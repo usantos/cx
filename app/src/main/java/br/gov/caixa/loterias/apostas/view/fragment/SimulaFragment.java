@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -36,7 +35,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
@@ -49,7 +47,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
@@ -63,25 +60,20 @@ import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
-import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TimeCoracaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
-import br.gov.caixa.loterias.apostas.view.custom.NomeTimemaniaTextWatcher;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
-import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
@@ -95,7 +87,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             SensorManager.GRAVITY_EARTH).getSensor();
 
     private List<Dezena> dezenas = new ArrayList<>();
-    private List<Integer> dezenasSelecionadas = new ArrayList<>();
     private List<List<Integer>> matrizSelecionada;
     private HashSet<ParametroPartida> partidasSelecionadas;
 
@@ -107,7 +98,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     private AppCompatCheckBox selecioneOutrosNumeros;
     private View view;
     private LinearLayout opcaoOutrosNumerosLayout;
-    private RecyclerView listaDezenas;
     private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
     private ArrayList<SuperSeteAdapter> listaAdaptersSuperSete;
     private ExpandableHeightRecyclerView recyclerViewPartida;
@@ -316,10 +306,6 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         return viewModel.getUiState().getValue();
     }
 
-    private int getQuantidadeSelecionada() {
-        return getStateAtual()
-                .getQtdDezenasPossiveisSelecionado();
-    }
 
     private BarraTituloDTO getBarraTituloSafe() {
 
@@ -526,22 +512,24 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 )
         );
     }
+    private List<Integer> getDezenasSelecionadasState() {
 
+        SimulaUiState state = getStateAtual();
+
+        return state.getDezenasSelecionadas();
+    }
     private IdentificaoDeUmaApostaDas8Modalidades criarApostaParaCarrinho() {
 
         if (isEscolhaTimeCoracaoSurpresinha) {
             return null;
         }
 
-        dezenasSelecionadas =
-                ListaUtils.orderAscDezenas(
-                        dezenasSelecionadas
-                );
-
         if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
             return ApostaUtils.getApostaSuperSete(
                     parametroJogo,
-                    dezenasSelecionadas,
+                    ListaUtils.orderAscDezenas(
+                            getDezenasSelecionadasState()
+                    ),
                     parentActivity.getValorTotalApostaAtual(),
                     getStateAtual().getQtdConcursoSelecionado(),
                     ListaUtils.pegaListaSuperSete(
@@ -582,7 +570,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             return ApostaUtils.getApostaDiaDeSorte(
                     parametroJogo,
-                    dezenasSelecionadas,
+                    getDezenasSelecionadasState(),
                     valorAtual,
                     getStateAtual().getQtdConcursoSelecionado(),
                     parentActivity.getMesDeSorteCartela()
@@ -592,7 +580,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             return ApostaUtils.getApostaLoteca(
                     parametroJogo,
-                    dezenasSelecionadas,
+                    getDezenasSelecionadasState(),
                     valorAtual,
                     getStateAtual().getQtdConcursoSelecionado(),
                     partidasSelecionadas
@@ -602,7 +590,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             return ApostaUtils.getApostaLotogol(
                     parametroJogo,
-                    dezenasSelecionadas,
+                    getDezenasSelecionadasState(),
                     valorAtual,
                     getStateAtual().getQtdConcursoSelecionado(),
                     partidasSelecionadas
@@ -612,7 +600,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             return ApostaUtils.getApostaTimemania(
                     parametroJogo,
-                    dezenasSelecionadas,
+                    getDezenasSelecionadasState(),
                     valorAtual,
                     getStateAtual().getQtdConcursoSelecionado(),
                     getStateAtual().getEquipeSelecionada()
@@ -622,7 +610,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
             return ApostaUtils.getApostaPreenchida(
                     parametroJogo,
-                    dezenasSelecionadas,
+                    getDezenasSelecionadasState(),
                     valorAtual,
                     getStateAtual().getQtdConcursoSelecionado()
             );
@@ -673,7 +661,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         viewModel.onEvent(
                 new SimulaUiEvent.CompletarApostaClicado(
                         parametroJogo.getConcurso().getModalidade(),
-                        dezenasSelecionadas != null ? dezenasSelecionadas.size() : 0,
+                        getDezenasSelecionadasState() != null ? getDezenasSelecionadasState().size() : 0,
                         getStateAtual().getQtdDezenasPossiveisSelecionado(),
                         qtdTotalSelecionadosSuperSete,
                         qtdPartidasSelecionadas,
@@ -731,7 +719,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         viewModel.onEvent(
                 new SimulaUiEvent.AdicionarCarrinhoClicado(
                         parametroJogo.getConcurso().getModalidade(),
-                        dezenasSelecionadas != null ? dezenasSelecionadas.size() : 0,
+                        getDezenasSelecionadasState() != null ? getDezenasSelecionadasState().size() : 0,
                         getStateAtual().getQtdDezenasPossiveisSelecionado(),
                         qtdTotalSelecionadosSuperSete,
                         qtdPartidasSelecionadas,
@@ -788,7 +776,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         boolean exibirOutrosNumeros =
                 parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
-                        && dezenasSelecionadas.size()
+                        && getDezenasSelecionadasState().size()
                         == qtdDezenasPossiveisParaEstado;
 
         boolean outrosNumerosSelecionado =
@@ -801,8 +789,8 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         viewModel.onEvent(
                 new SimulaUiEvent.CartelaAlterada(
                         parametroJogo.getConcurso().getModalidade(),
-                        dezenasSelecionadas != null
-                                ? dezenasSelecionadas.size()
+                        getDezenasSelecionadasState() != null
+                                ? getDezenasSelecionadasState().size()
                                 : 0,
                         qtdDezenasPossiveisParaEstado,
                         qtdTotalSelecionadosSuperSete,
@@ -816,7 +804,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         outrosNumerosSelecionado,
                         exibirOutrosNumeros,
                         etapaComplementarCompleta,
-                        dezenasSelecionadas
+                        getDezenasSelecionadasState()
                 )
         );
     }
@@ -949,7 +937,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 instanceof CompletarApostaEffect.AbrirMesDeSorte) {
 
             parentActivity.mesDeSorteFragment(
-                    dezenasSelecionadas
+                    getDezenasSelecionadasState()
             );
 
             consumirComandoCompletarAposta();
@@ -960,7 +948,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 instanceof CompletarApostaEffect.AbrirTrevos) {
 
             parentActivity.trevosFragment(
-                    dezenasSelecionadas
+                    getDezenasSelecionadasState()
             );
 
             consumirComandoCompletarAposta();
@@ -971,7 +959,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 instanceof CompletarApostaEffect.MostrarEscolhaTimeCoracao) {
 
             parentActivity.timesFragment(
-                    dezenasSelecionadas
+                    getDezenasSelecionadasState()
             );
 
             consumirComandoCompletarAposta();
@@ -1061,7 +1049,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
         }
 
         return new ArrayList<>(
-                dezenasSelecionadas
+                getDezenasSelecionadasState()
         );
     }
 
@@ -1102,20 +1090,16 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             );
         }
     }
-
     private void renderLimparNumerosCartela(
             SimulaUiState state
     ) {
-        dezenasSelecionadas.clear();
-
-        if (state.getDezenasSelecionadas() != null) {
-            dezenasSelecionadas.addAll(state.getDezenasSelecionadas());
-        }
 
         if (simularDezenasAdapter != null) {
-            simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
-        }
 
+            simularDezenasAdapter.atualizaSelecionados(
+                    state.getDezenasSelecionadas()
+            );
+        }
     }
 
     private void renderLimparSuperSete(
@@ -1246,17 +1230,16 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
     private void preencheNumerosAleatorios() {
         AlertDialogUtils.show(getActivity());
-
-        dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
-        model.preencheNumerosAleatorios(getStateAtual().getQtdDezenasPossiveisSelecionado(), dezenasSelecionadas, parametroJogo.getPrognosticoMaximo(),
+        List<Integer> selecionadas = getDezenasSelecionadasState();
+        selecionadas = ListaUtils.orderAscDezenas(selecionadas);
+        model.preencheNumerosAleatorios(getStateAtual().getQtdDezenasPossiveisSelecionado(), selecionadas, parametroJogo.getPrognosticoMaximo(),
                 new OnSilceListener<List<Integer>>() {
                     @Override
                     public void success(List<Integer> list) {
                         AlertDialogUtils.dismiss();
                         isEcolhaTimeBtnAtivado = true;
-                        dezenasSelecionadas.clear();
-                        dezenasSelecionadas.addAll(list);
-                        simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
+                        simularDezenasAdapter.atualizaSelecionados(list);
+                        atualizarDezenasSelecionadas(list);
                         atualizarValorENotificarEstadoCartela();
                     }
 
@@ -1269,8 +1252,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
     private void preencheNumerosAleatoriosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros) {
         AlertDialogUtils.show(getActivity());
-        dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
-
+        atualizarDezenasSelecionadas(ListaUtils.orderAscDezenas(getDezenasSelecionadasState()));
         model.preencheNumerosAleatoriosSuperSete(getStateAtual().getQtdDezenasPossiveisSelecionado(), listaInteiros, parametroJogo.getConcurso().getModalidade().name(),
                 new OnSilceListener<List<List<Integer>>>() {
                     @Override
@@ -1507,7 +1489,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     }
 
     private void atualizarAdicionarCarinhoCompletarCartela(Boolean isPickerPrognosticos) {
-        if (dezenasSelecionadas.size() == getStateAtual().getQtdDezenasPossiveisSelecionado() || isEscolhaTimeCoracaoSurpresinha) {
+        if (getDezenasSelecionadasState().size() == getStateAtual().getQtdDezenasPossiveisSelecionado() || isEscolhaTimeCoracaoSurpresinha) {
             if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
                 atualizarValorENotificarEstadoCartela();
             } else if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
@@ -1516,8 +1498,10 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                 atualizarValorENotificarEstadoCartela();
             }
 
-        } else if (dezenasSelecionadas.size() > getStateAtual().getQtdDezenasPossiveisSelecionado()) {
+        } else if (getDezenasSelecionadasState().size() > getStateAtual().getQtdDezenasPossiveisSelecionado()) {
+            List<Integer> dezenasSelecionadas = getDezenasSelecionadasState();
             dezenasSelecionadas.clear();
+            atualizarDezenasSelecionadas(dezenasSelecionadas);
             simularDezenasAdapter.notifyDataSetChanged();
             atualizarValorENotificarEstadoCartela();
 
@@ -1536,11 +1520,11 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     }
 
     private void configuraListaDezenas(View fragmentView) {
-        listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
+        RecyclerView listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
         recyclerViewPartida = fragmentView.findViewById(R.id.recyclerViewPartida);
 
         if (dezenas != null && !dezenas.isEmpty() && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-            simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, dezenasSelecionadas,
+            simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, getDezenasSelecionadasState(),
                     corFonteFundoBranco, onItemClickListener());
             listaDezenas.setAdapter(simularDezenasAdapter);
 
@@ -1586,7 +1570,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
                         );
 
                 boolean estavaSelecionada =
-                        dezenasSelecionadas.contains(
+                        getDezenasSelecionadasState().contains(
                                 valorSelecionado
                         );
 
@@ -1612,7 +1596,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
                 if (simularDezenasAdapter != null) {
                     simularDezenasAdapter.atualizaSelecionados(
-                            dezenasSelecionadas
+                            getDezenasSelecionadasState()
                     );
                 }
 
@@ -1626,17 +1610,111 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             }
         };
     }
+    private void atualizarDezenasSelecionadas(
+            List<Integer> novasDezenas
+    ) {
+
+        int qtdDezenasPossiveis =
+                getStateAtual()
+                        .getQtdDezenasPossiveisSelecionado();
+
+        int qtdPartidasSelecionadas =
+                partidasSelecionadas != null
+                        ? partidasSelecionadas.size()
+                        : 0;
+
+        int qtdPartidasTotal =
+                parametroJogo.getPartidas() != null
+                        ? parametroJogo.getPartidas().size()
+                        : 0;
+
+        int duplosLoteca = 0;
+        int triplosLoteca = 0;
+
+        if (parametroJogo.isTipoJogo(
+                ModalidadeEnum.LOTECA
+        )) {
+
+            duplosLoteca =
+                    getIntTextSafe(
+                            parentActivity
+                                    .getLabelValueDuplasLoteca()
+                    );
+
+            triplosLoteca =
+                    getIntTextSafe(
+                            parentActivity
+                                    .getLabelValueTriplasLoteca()
+                    );
+        }
+
+        boolean equipeSelecionadaValida =
+                getStateAtual()
+                        .getEquipeSelecionada() != null
+                        && getStateAtual()
+                        .getEquipeSelecionada()
+                        .isSelecionado();
+
+        boolean outrosNumerosSelecionado =
+                selecioneOutrosNumeros != null
+                        && selecioneOutrosNumeros.isChecked();
+
+        boolean exibirOutrosNumeros =
+                parametroJogo.isTipoJogo(
+                        ModalidadeEnum.LOTOMANIA
+                )
+                        && novasDezenas.size()
+                        == qtdDezenasPossiveis;
+
+        boolean etapaComplementarCompleta =
+                calcularEtapaComplementarCompleta();
+
+        viewModel.onEvent(
+                new SimulaUiEvent.CartelaAlterada(
+                        parametroJogo
+                                .getConcurso()
+                                .getModalidade(),
+
+                        novasDezenas.size(),
+
+                        qtdDezenasPossiveis,
+
+                        qtdTotalSelecionadosSuperSete,
+
+                        qtdPartidasSelecionadas,
+
+                        qtdPartidasTotal,
+
+                        duplosLoteca,
+
+                        triplosLoteca,
+
+                        possuiPlacarLotogol(),
+
+                        equipeSelecionadaValida,
+
+                        isEscolhaTimeCoracaoSurpresinha,
+
+                        outrosNumerosSelecionado,
+
+                        exibirOutrosNumeros,
+
+                        etapaComplementarCompleta,
+
+                        new ArrayList<>(novasDezenas)
+                )
+        );
+    }
 
     private void removerDezenaSelecionada(
             Dezena dezena,
             Integer valorSelecionado
     ) {
 
-        dezenasSelecionadas.remove(
-                valorSelecionado
-        );
-
+        List<Integer> selecionadas = getDezenasSelecionadasState();
+        selecionadas.remove(valorSelecionado);
         dezena.setSelected(false);
+        atualizarDezenasSelecionadas(selecionadas);
 
         int quantidadeMinima =
                 parametroJogo.getQuantidadeMinima() != null
@@ -1645,7 +1723,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         atualizarQuantidadeSelecionada(
                 Math.max(
-                        dezenasSelecionadas.size(),
+                        getDezenasSelecionadasState().size(),
                         quantidadeMinima
                 ));
 
@@ -1657,7 +1735,7 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
     ) {
 
         int quantidadeAtualSelecionada =
-                dezenasSelecionadas.size();
+                getDezenasSelecionadasState().size();
 
         int quantidadePossivelAtual =
                 getStateAtual().getQtdDezenasPossiveisSelecionado();
@@ -1713,10 +1791,12 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
             Dezena dezena,
             Integer valorSelecionado
     ) {
+        List<Integer> dezenasSelecionadas = getDezenasSelecionadasState();
 
         dezenasSelecionadas.add(
                 valorSelecionado
         );
+        atualizarDezenasSelecionadas(dezenasSelecionadas);
 
         dezena.setSelected(true);
 
@@ -2018,12 +2098,11 @@ public class SimulaFragment extends Fragment implements LocateAdapterListener, L
 
         if (CollectionUtils.isNotEmpty(aposta.getListaNumerosSelecionados())) {
 
-            dezenasSelecionadas =
-                    aposta.getListaNumerosSelecionados();
-
+            List<Integer> selecionadas = aposta.getListaNumerosSelecionados();
+            atualizarDezenasSelecionadas(selecionadas);
 
             simularDezenasAdapter.atualizaSelecionados(
-                    dezenasSelecionadas
+                    selecionadas
             );
 
             atualizarQuantidadeSelecionada(
