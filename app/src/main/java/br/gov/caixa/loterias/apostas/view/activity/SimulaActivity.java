@@ -77,11 +77,9 @@ import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.EtapaFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.SimulaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.TimesFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment2;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
@@ -109,8 +107,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private SimulaFragment cartelaFragment;
     private SurpresinhaFragment2 surpresinhaFragment;
 
-    private TrevosFragment2 trevosFragment;
-    private MesesFragment2 mesesFragment;
     private TimesFragment timesFragment;
     private int typeGameColorLight;
     private int typeGameColorDark;
@@ -831,15 +827,17 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
         if (effect instanceof ScreenSimulaEffect.AtualizarQuantidadeTrevos) {
 
-            ScreenSimulaEffect.AtualizarQuantidadeTrevos comando =
-                    (ScreenSimulaEffect.AtualizarQuantidadeTrevos) effect;
+            ScreenSimulaEffect.AtualizarQuantidadeTrevos comando = (ScreenSimulaEffect.AtualizarQuantidadeTrevos) effect;
 
-            if (isFragmentTrevos()
-                    && trevosFragment != null) {
+            EtapaFragment etapa =
+                    getEtapaAtual();
 
-                trevosFragment.atualizarQuantidadeTrevos(
+            if (etapa != null) {
+
+                etapa.atualizarQuantidadeTrevos(
                         comando.getValorSelecionado()
                 );
+
             }
 
             viewModel.onEvent(
@@ -881,8 +879,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             default:
                 timesFragment = null;
-                mesesFragment = null;
-                trevosFragment = null;
 
                 abrirTelaCartela();
 
@@ -1279,11 +1275,11 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     public void mesDeSorteFragment(List<Integer> dezenasSelecionadas) {
-        mesesFragment = FragmentUtils.startMesesFragment2(fragmentManager, R.id.fragmentSimularApostas, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
+        FragmentUtils.startMesesFragment2(fragmentManager, R.id.fragmentSimularApostas, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
     }
 
     public void trevosFragment(List<Integer> dezenasSelecionadas) {
-        trevosFragment = FragmentUtils.startTrevosFragment2(fragmentManager, R.id.fragmentSimularApostas, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
+        FragmentUtils.startTrevosFragment2(fragmentManager, R.id.fragmentSimularApostas, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
     }
     public void timesFragment(List<Integer> dezenasSelecionadas) {
         timesFragment = FragmentUtils.startTimesFragment(fragmentManager, R.id.fragmentSimularApostas, parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
@@ -1574,40 +1570,14 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     textoBotaoPrognosticosSelecionado
             );
         }
-
-        if (isFragmentTimes()
-                && timesFragment != null) {
-            timesFragment.atualizarValorAposta();
-            timesFragment.revalidarEstado();
-            return;
-        }
-
-        if (isFragmentCartela()) {
-            cartelaFragment.atualizaValorTotalAposta(
+        EtapaFragment etapa = getEtapaAtual();
+        if (etapa != null) {
+            etapa.onQuantidadeNumerosAlterada();
+            etapa.onAtualizaValorTotalAposta(
                     getQtdDezenasSelecionadaState(),
                     getQtdConcursoState()
             );
-
-            cartelaFragment.atualizaStatusBotaoFinalizar(
-                    true
-            );
-            return;
         }
-
-        if (surpresinhaFragment != null
-                && surpresinhaFragment.getParametroJogo() != null) {
-            if (state.isResetarTrevosPorQuantidadeNumeros()) {
-                surpresinhaFragment.resetQtdTrevos();
-            }
-        }
-    }
-
-    private boolean isFragmentMeses() {
-        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof MesesFragment2;
-    }
-
-    public boolean isFragmentCartela() {
-        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SimulaFragment;
     }
 
     //TODO//
@@ -1634,34 +1604,16 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         };
     }
 
-    private boolean isFragmentTrevos() {
-        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment2;
-    }
-    private boolean isFragmentTimes() {
-        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TimesFragment;
-    }
-
-
-    private boolean isFragmentSurpresinha() {
-        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment2;
-    }
-
     private void atualizarValorApostaPorTeimosinha() {
         if (fragmentManager.findFragmentById(
                 R.id.fragmentSimularApostas
         ) instanceof SurpresinhaFragment2) {
             return;
         }
-
-        if (isFragmentTimes()
-                && timesFragment != null) {
-            timesFragment.atualizarValorAposta();
-            timesFragment.revalidarEstado();
-            return;
-        }
-
-        if (cartelaFragment != null) {
-            cartelaFragment.atualizaValorTotalAposta(
+        EtapaFragment etapa = getEtapaAtual();
+        if (etapa != null) {
+            etapa.onQuantidadeNumerosAlterada();
+            etapa.onAtualizaValorTotalAposta(
                     getQtdDezenasSelecionadaState(),
                     getQtdConcursoState()
             );

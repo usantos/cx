@@ -19,8 +19,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,14 +48,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
-import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
@@ -77,7 +73,6 @@ import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
-import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
 public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterListener, LotogolListener {
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
@@ -91,7 +86,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     private List<List<Integer>> matrizSelecionada;
     private HashSet<ParametroPartida> partidasSelecionadas;
 
-    private CartelaFragmentListener CartelaFragment2Listener;
+    private CartelaFragmentListener CartelaFragmentListener;
 
     private ParametroJogoDTO parametroJogo;
     private ModalidadeEnum tipoJogo;
@@ -115,9 +110,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
     private SimularApostaModel model;
     private CartelaModel cartelaModel;
-    private SimulaViewModel viewModel;
 
-    public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     private Context context;
 
     public SimulaFragment() {
@@ -140,8 +133,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             return;
         }
 
-        SimulaUiState state =
-                viewModel.getUiState().getValue();
 
         if (parametroJogo.getValoresAposta() == null) {
             DialogUtils.dialogEntendiListener(
@@ -179,11 +170,11 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 valorCalculado = parametroValorAposta.getValor();
             }
 
-            if (state.getQtdConcursoSelecionado() > 0) {
+            if (getStateAtual().getQtdConcursoSelecionado() > 0) {
                 valorCalculado =
                         valorCalculado.multiply(
                                 BigDecimal.valueOf(
-                                        state.getQtdConcursoSelecionado()
+                                        getStateAtual().getQtdConcursoSelecionado()
                                 )
                         );
             }
@@ -223,8 +214,8 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         }
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
-                && state != null
-                && state.isOpcaoOutrosNumerosSelecionada()) {
+                && getStateAtual() != null
+                && getStateAtual().isOpcaoOutrosNumerosSelecionada()) {
 
             valorCalculado =
                     valorCalculado.multiply(
@@ -263,13 +254,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         super.onCreate(savedInstanceState);
         mSensorManager = (SensorManager) this.context.getSystemService(Context.SENSOR_SERVICE);
         mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-        viewModel =
-                new ViewModelProvider(
-                        requireActivity()
-                ).get(SimulaViewModel.class);
 
-
-        barraTituloDTO = getBarraTituloSafe();
         parentActivity = ((SimulaActivity) getActivity());
         identificarTipoJogo();
         if (parentActivity != null) {
@@ -295,35 +280,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         cartelaModel = new CartelaModel();
         partidasSelecionadas = new HashSet<>();
 
-    }
-    private SimulaUiState getStateAtual() {
-        if (viewModel == null
-                || viewModel.getUiState() == null
-                || viewModel.getUiState().getValue() == null) {
-            return SimulaUiState.initial();
-        }
-
-        return viewModel.getUiState().getValue();
-    }
-
-
-    private BarraTituloDTO getBarraTituloSafe() {
-
-        if (viewModel == null) {
-            return new BarraTituloDTO();
-        }
-
-        SimulaUiState state = viewModel.getUiState().getValue();
-
-        if (state == null) {
-            return new BarraTituloDTO();
-        }
-
-        BarraTituloDTO barra = state.getBarraTituloDTO();
-
-        return barra != null
-                ? barra
-                : new BarraTituloDTO();
     }
 
     @Override
@@ -393,34 +349,39 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         solicitarAdicionarCarrinhoPorBotao();
     }
 
-    public void onSalvarFavoritoRodapeConfirmado(
-            String nome
-    ) {
+    protected ApostaFavoritaDTO criarApostaFavoritaDTO() {
+        ApostaFavoritaDTO apostaFavorita = new ApostaFavoritaDTO();
 
-        ApostaFavoritaDTO apostaFavorita =
-                new ApostaFavoritaDTO();
+        return apostaFavorita;
+    }
 
+    @Override
+    protected Object getDezenasSelecionadas() {
 
-        Object numerosSelecionados =
-                obterNumerosSelecionadosFavoritos();
+        if (parametroJogo.isTipoJogo(
+                ModalidadeEnum.SUPER_7
+        )) {
 
-        viewModel.onEvent(
-                new SimulaUiEvent.SalvarApostaFavoritaSolicitado(
-                        apostaFavorita,
-                        nome,
-                        numerosSelecionados
-                )
+            return ListaUtils.pegaListaSuperSete(
+                    listaAdaptersSuperSete
+            );
+        }
+
+        return new ArrayList<>(
+                getDezenasSelecionadasState()
         );
     }
+
     private void atualizarQuantidadeSelecionada(
             int quantidade
     ) {
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente(
                         quantidade
                 )
         );
     }
+
     private void inicializarValorApostaMinima() {
 
         if (parametroJogo == null || parentActivity == null) {
@@ -490,9 +451,9 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         super.onAttach(context);
         this.context = context;
         try {
-            CartelaFragment2Listener = (CartelaFragmentListener) context;
+            CartelaFragmentListener = (CartelaFragmentListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context + " must implement CartelaFragment2Listener");
+            throw new ClassCastException(context + " must implement CartelaFragmentListener");
         }
     }
 
@@ -500,7 +461,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     public void onDetach() {
         super.onDetach();
         this.context = null;
-        CartelaFragment2Listener = null;
+        CartelaFragmentListener = null;
     }
 
     private void identificarTipoJogo() {
@@ -517,21 +478,23 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             apostaParaCarrinho = criarApostaParaCarrinho();
         }
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.AdicionarCarrinhoSolicitado(
                         apostaParaCarrinho,
-                        barraTituloDTO,
+                        getBarraTitulo(),
                         getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
                         getStateAtual().getEquipeSelecionada()
                 )
         );
     }
+
     private List<Integer> getDezenasSelecionadasState() {
 
         SimulaUiState state = getStateAtual();
 
         return state.getDezenasSelecionadas();
     }
+
     private IdentificaoDeUmaApostaDas8Modalidades criarApostaParaCarrinho() {
 
         if (getStateAtual().isEscolhaTimeCoracaoSurpresinha()) {
@@ -555,8 +518,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         IdentificaoDeUmaApostaDas8Modalidades aposta =
                 getApostaPreenchida();
 
-        SimulaUiState state =
-                viewModel.getUiState().getValue();
+        SimulaUiState state = getStateAtual();
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
                 && state != null
@@ -654,7 +616,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
     private void solicitarCompletarAposta() {
 
-        if (viewModel == null || parametroJogo == null || parentActivity == null) {
+        if (parametroJogo == null || parentActivity == null) {
             return;
         }
 
@@ -672,7 +634,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 getStateAtual().getEquipeSelecionada() != null
                         && getStateAtual().getEquipeSelecionada().isSelecionado();
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.CompletarApostaClicado(
                         parametroJogo.getConcurso().getModalidade(),
                         getDezenasSelecionadasState() != null ? getDezenasSelecionadasState().size() : 0,
@@ -683,14 +645,14 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
                         isEcolhaTimeBtnAtivado,
                         equipeSelecionadaValida,
-                        parentActivity.isFragmentCartela()
+                        true
                 )
         );
     }
 
     private void solicitarAdicionarCarrinhoPorBotao() {
 
-        if (viewModel == null || parametroJogo == null || parentActivity == null) {
+        if (parametroJogo == null || parentActivity == null) {
             return;
         }
 
@@ -730,7 +692,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 getStateAtual().getEquipeSelecionada() != null
                         && getStateAtual().getEquipeSelecionada().isSelecionado();
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.AdicionarCarrinhoClicado(
                         parametroJogo.getConcurso().getModalidade(),
                         getDezenasSelecionadasState() != null ? getDezenasSelecionadasState().size() : 0,
@@ -742,7 +704,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         triplosLoteca,
                         getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
                         equipeSelecionadaValida,
-                        parentActivity.isFragmentCartela()
+                        true
                 )
         );
     }
@@ -751,7 +713,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             int qtdDezenasPossiveisParaEstado
     ) {
 
-        if (viewModel == null || parametroJogo == null || parentActivity == null) {
+        if (parametroJogo == null || parentActivity == null) {
             return;
         }
 
@@ -800,7 +762,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         boolean etapaComplementarCompleta =
                 calcularEtapaComplementarCompleta();
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.CartelaAlterada(
                         parametroJogo.getConcurso().getModalidade(),
                         getDezenasSelecionadasState() != null
@@ -1001,24 +963,8 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     }
 
     private void consumirComandoCompletarAposta() {
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.ComandoCompletarApostaConsumido()
-        );
-    }
-
-    private Object obterNumerosSelecionadosFavoritos() {
-
-        if (parametroJogo.isTipoJogo(
-                ModalidadeEnum.SUPER_7
-        )) {
-
-            return ListaUtils.pegaListaSuperSete(
-                    listaAdaptersSuperSete
-            );
-        }
-
-        return new ArrayList<>(
-                getDezenasSelecionadasState()
         );
     }
 
@@ -1054,11 +1000,12 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         }
 
         if (executouLimpeza) {
-            viewModel.onEvent(
+            dispatch(
                     new SimulaUiEvent.LimpezaApostaRenderizada()
             );
         }
     }
+
     private void renderLimparNumerosCartela(
             SimulaUiState state
     ) {
@@ -1166,11 +1113,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
         valorTotalAposta = valorSeguro;
 
-        if (viewModel == null) {
-            return;
-        }
-
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.ValorApostaAlterado(
                         valorSeguro
                 )
@@ -1192,7 +1135,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
     private void onClickOutrosNumerosLayout() {
 
-        opcaoOutrosNumerosLayout.setOnClickListener(v -> viewModel.onEvent(
+        opcaoOutrosNumerosLayout.setOnClickListener(v -> dispatch(
                 new SimulaUiEvent.ToggleOutrosNumeros()
         ));
     }
@@ -1412,7 +1355,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 atualizarValorENotificarEstadoCartela();
             }
         } else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-                atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
+            atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
         } else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
             if (matrizSelecionada != null) {
                 preencheSuperSete(matrizSelecionada);
@@ -1446,6 +1389,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             }
         }
     }
+
     private void setBotaoCompletarEnabled(
             boolean enabled
     ) {
@@ -1579,6 +1523,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             }
         };
     }
+
     private void atualizarDezenasSelecionadas(
             List<Integer> novasDezenas
     ) {
@@ -1638,7 +1583,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         boolean etapaComplementarCompleta =
                 calcularEtapaComplementarCompleta();
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.CartelaAlterada(
                         parametroJogo
                                 .getConcurso()
@@ -1725,7 +1670,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         if (quantidadePossivelAtual < quantidadeMaxima) {
 
             atualizarQuantidadeSelecionada(
-                    CartelaFragment2Listener.verificaNovoQtdDezenasMax(
+                    CartelaFragmentListener.verificaNovoQtdDezenasMax(
                             quantidadePossivelAtual
                     ));
 
@@ -1826,7 +1771,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                                         .getQtdDezenasPossiveisSelecionado();
 
                         int novaQuantidade =
-                                CartelaFragment2Listener
+                                CartelaFragmentListener
                                         .verificaNovoQtdDezenasMax(
                                                 quantidadeAtual
                                         );
@@ -1917,18 +1862,18 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
 
         if (somaTotais >= 14) {
-            valorTotalJogos.setTextColor(ContextCompat.getColor(context,R.color.verdeazul));
-            valorTotalSimples.setTextColor(ContextCompat.getColor(context,R.color.verdeazul));
+            valorTotalJogos.setTextColor(ContextCompat.getColor(context, R.color.verdeazul));
+            valorTotalSimples.setTextColor(ContextCompat.getColor(context, R.color.verdeazul));
         } else {
-            valorTotalJogos.setTextColor(ContextCompat.getColor(context,R.color.loteca_claro_mkp));
-            valorTotalSimples.setTextColor(ContextCompat.getColor(context,R.color.loteca_claro_mkp));
+            valorTotalJogos.setTextColor(ContextCompat.getColor(context, R.color.loteca_claro_mkp));
+            valorTotalSimples.setTextColor(ContextCompat.getColor(context, R.color.loteca_claro_mkp));
         }
         if (valueDuplas == 0 && valueTriplas == 0) {
-            valorTotalDuplas.setTextColor(ContextCompat.getColor(context,R.color.loteca_claro_mkp));
-            valorTotalTriplas.setTextColor(ContextCompat.getColor(context,R.color.loteca_claro_mkp));
+            valorTotalDuplas.setTextColor(ContextCompat.getColor(context, R.color.loteca_claro_mkp));
+            valorTotalTriplas.setTextColor(ContextCompat.getColor(context, R.color.loteca_claro_mkp));
         } else {
-            valorTotalDuplas.setTextColor(ContextCompat.getColor(context,R.color.verdeazul));
-            valorTotalTriplas.setTextColor(ContextCompat.getColor(context,R.color.verdeazul));
+            valorTotalDuplas.setTextColor(ContextCompat.getColor(context, R.color.verdeazul));
+            valorTotalTriplas.setTextColor(ContextCompat.getColor(context, R.color.verdeazul));
         }
 
 
@@ -2076,11 +2021,10 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             atualizarQtdConcurso(aposta.getQuantidadeTeimosinhas());
 
 
-
             if (aposta.getTimeDoCoracao() != null) {
                 isEcolhaTimeBtnAtivado = true;
 
-                viewModel.onEvent(
+                dispatch(
                         new SimulaUiEvent
                                 .SelecionarTimeCoracao(
                                 aposta.getTimeDoCoracao()
@@ -2096,10 +2040,11 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
         notificarEstadoCartelaAlterado();
     }
+
     private void atualizarQtdConcurso(
             int quantidade
     ) {
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent
                         .QtdConcursoAtualizadaInternamente(
                         quantidade
@@ -2118,9 +2063,10 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 ? parentActivity.getBotaoLimparAposta()
                 : null;
     }
+
     @Override
     public void onLimparRodapeClicado() {
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.LimparApostaSolicitado()
         );
     }
@@ -2133,5 +2079,24 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     @Override
     public EtapaAposta getEtapa() {
         return EtapaAposta.NUMEROS;
+    }
+
+    @Override
+    public void onQuantidadeNumerosAlterada() {
+    }
+
+    @Override
+    public void onAtualizaValorTotalAposta(
+            int numPrognostico,
+            int qtdTeimosinhas
+    ) {
+        atualizaValorTotalAposta(
+                numPrognostico,
+                qtdTeimosinhas
+        );
+
+        atualizaStatusBotaoFinalizar(
+                true
+        );
     }
 }

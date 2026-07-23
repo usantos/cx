@@ -4,13 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,7 +18,6 @@ import java.util.Random;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
@@ -32,7 +27,6 @@ import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.MesesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ItemRetanguloTextView;
-import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
 public class MesesFragment2 extends BaseEtapaFragment {
     private static final String ARG_MODADLIDADE = "ARG_MODALIDADE";
@@ -43,12 +37,8 @@ public class MesesFragment2 extends BaseEtapaFragment {
 
     private ParametroJogoDTO parametroJogoDTO;
     private ArrayList<Integer> dezenasSelecionadas;
-
-    private SimulaActivity parentActivity;
     private MesesAdapter mesesAdapter;
     private View view;
-    private SimulaViewModel viewModel;
-
 
     private MesesFragment2(){}
 
@@ -81,17 +71,10 @@ public class MesesFragment2 extends BaseEtapaFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_meses, container, false);
         mesesGridView = view.findViewById(R.id.mesesGridView);
-        init();
+        initRecyclerView();
         return view;
     }
 
-    private void init() {
-        parentActivity = ((SimulaActivity) getActivity());
-        viewModel = new ViewModelProvider(
-                requireActivity()
-        ).get(SimulaViewModel.class);
-        initRecyclerView();
-    }
     @Override
     public void onViewCreated(
             @NonNull View view,
@@ -110,16 +93,13 @@ public class MesesFragment2 extends BaseEtapaFragment {
     public void onDetach() {
         super.onDetach();
     }
-    @Override
-    public void onSalvarFavoritoRodapeConfirmado(
-            String nome
-    ) {
 
+    protected ApostaFavoritaDTO criarApostaFavoritaDTO(){
         ParametroMesDeSorte mesSelecionado =
                 getStateAtual().getMesSelecionado();
 
         if (mesSelecionado == null) {
-            return;
+            return null;
         }
 
         ApostaFavoritaDTO apostaFavorita =
@@ -128,18 +108,7 @@ public class MesesFragment2 extends BaseEtapaFragment {
         apostaFavorita.setMesDeSorte(
                 mesSelecionado
         );
-
-        viewModel.onEvent(
-                new SimulaUiEvent
-                        .SalvarApostaFavoritaSolicitado(
-                        apostaFavorita,
-                        nome,
-                        new ArrayList<>(
-                                getStateAtual()
-                                        .getDezenasSelecionadas()
-                        )
-                )
-        );
+        return apostaFavorita;
     }
 
     public boolean possuiMesSelecionado() {
@@ -163,7 +132,7 @@ public class MesesFragment2 extends BaseEtapaFragment {
             return;
         }
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.AdicionarCarrinhoSolicitado(
                         ApostaUtils.getApostaDiaDeSorte(
                                 parametroJogoDTO,
@@ -172,7 +141,7 @@ public class MesesFragment2 extends BaseEtapaFragment {
                                 state.getQtdConcursoSelecionado(),
                                 mes
                         ),
-                        parentActivity.getBarraTituloDTO(),
+                       getBarraTitulo(),
                         false,
                         null
                 )
@@ -198,28 +167,17 @@ public class MesesFragment2 extends BaseEtapaFragment {
                         meses.size()
                 );
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent
                         .SelecionarMesDaSorte(
                         meses.get(random)
                 )
         );
     }
-    private SimulaUiState getStateAtual() {
-
-        if (viewModel == null
-                || viewModel.getUiState() == null
-                || viewModel.getUiState().getValue() == null) {
-
-            return SimulaUiState.initial();
-        }
-
-        return viewModel.getUiState().getValue();
-    }
 
     public void onLimparRodapeClicado() {
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent
                         .LimparMesDaSorte()
         );
@@ -236,7 +194,7 @@ public class MesesFragment2 extends BaseEtapaFragment {
                     ItemRetanguloTextView item =
                             (ItemRetanguloTextView) view;
 
-                    viewModel.onEvent(
+                    dispatch(
                             new SimulaUiEvent
                                     .SelecionarMesDaSorte(
                                     item.getMesDeSorte()
@@ -300,5 +258,7 @@ public class MesesFragment2 extends BaseEtapaFragment {
     public EtapaAposta getEtapa() {
         return EtapaAposta.MES_SORTE;
     }
+    @Override
+    public void onQuantidadeNumerosAlterada() {}
 
 }

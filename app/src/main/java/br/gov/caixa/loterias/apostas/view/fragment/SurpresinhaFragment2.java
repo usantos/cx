@@ -16,8 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 
@@ -26,6 +24,7 @@ import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
@@ -36,13 +35,13 @@ import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
-import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
-public class SurpresinhaFragment2 extends Fragment {
+public class SurpresinhaFragment2 extends BaseEtapaFragment {
 
     private static final int QUANTIDADE_MINIMA_SURPRESINHAS = 1;
 
@@ -71,7 +70,6 @@ public class SurpresinhaFragment2 extends Fragment {
     private AppCompatCheckBox selcioneEspelhoSurpresinha;
     private ConstraintLayout maisMilionaria, numeroNovoConst;
     private SurpresinhaApostaModel model;
-    private SimulaViewModel viewModel;
 
     public SurpresinhaFragment2() {}
 
@@ -150,17 +148,6 @@ public class SurpresinhaFragment2 extends Fragment {
                 )
         );
     }
-    private SimulaUiState getStateAtual() {
-
-        if (viewModel == null
-                || viewModel.getUiState() == null
-                || viewModel.getUiState().getValue() == null) {
-            return SimulaUiState.initial();
-        }
-
-        return viewModel.getUiState().getValue();
-    }
-
     private void setViews() {
         escolhaItemImageView = view.findViewById(R.id.escolhaItemImageView);
         infoItemSurpresaTextView = view.findViewById(R.id.infoItemSurpresaTextView);
@@ -205,10 +192,6 @@ public class SurpresinhaFragment2 extends Fragment {
         if (parentActivity != null) {
             parametroJogo = parentActivity.getParametroSimulacao();
         }
-        viewModel =
-                new ViewModelProvider(
-                        requireActivity()
-                ).get(SimulaViewModel.class);
         Bundle bundle = getArguments();
         if (bundle != null) {
             equipeSelecionada = new Gson().fromJson(bundle.getString("equipeSelecionada"), ParametroEquipe.class);
@@ -333,15 +316,9 @@ public class SurpresinhaFragment2 extends Fragment {
             return;
         }
 
-        valorAposta =
-                parentActivity.getValorApostaCartela();
+        valorAposta = parentActivity.getValorApostaCartela();
+        dispatch(new SimulaUiEvent.SurpresinhaAberta());
 
-        if (viewModel != null) {
-
-            viewModel.onEvent(
-                    new SimulaUiEvent.SurpresinhaAberta()
-            );
-        }
     }
 
     private void atualizaBotoesQtdSurpresinha(
@@ -566,7 +543,7 @@ public class SurpresinhaFragment2 extends Fragment {
         int novaQtd =
                 state.getQuantidadeSurpresinhas() + 1;
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent
                         .AtualizarQuantidadeSurpresinhas(
                         novaQtd
@@ -585,8 +562,7 @@ public class SurpresinhaFragment2 extends Fragment {
         if (atual <= 1) {
             return;
         }
-
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent
                         .AtualizarQuantidadeSurpresinhas(
                         atual - 1
@@ -604,8 +580,7 @@ public class SurpresinhaFragment2 extends Fragment {
         if (atual <
                 parametroJogo.getTrevos()
                         .getQtdMaxima()) {
-
-            viewModel.onEvent(
+            dispatch(
                     new SimulaUiEvent
                             .AtualizarQuantidadeTrevosSurpresinha(
                             atual + 1
@@ -639,8 +614,7 @@ public class SurpresinhaFragment2 extends Fragment {
                         .getQtdMinima();
 
         if (atual > minimo) {
-
-            viewModel.onEvent(
+            dispatch(
                     new SimulaUiEvent
                             .AtualizarQuantidadeTrevosSurpresinha(
                             atual - 1
@@ -662,7 +636,7 @@ public class SurpresinhaFragment2 extends Fragment {
             int novo =
                     atual + 1;
 
-            viewModel.onEvent(
+            dispatch(
                     new SimulaUiEvent
                             .AtualizarQuantidadeNumerosSurpresinha(
                             novo
@@ -694,7 +668,7 @@ public class SurpresinhaFragment2 extends Fragment {
         if (atual >
                 parametroJogo.getQuantidadeMinima()) {
 
-            viewModel.onEvent(
+            dispatch(
                     new SimulaUiEvent
                             .AtualizarQuantidadeNumerosSurpresinha(
                             atual - 1
@@ -728,7 +702,7 @@ public class SurpresinhaFragment2 extends Fragment {
 
         SimulaUiState state = getStateAtual();
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent
                         .AtualizarQuantidadeSurpresinhas(
                         state.getQuantidadeSurpresinhas()
@@ -747,13 +721,11 @@ public class SurpresinhaFragment2 extends Fragment {
 
     public void resetQtdTrevos() {
 
-        if (viewModel == null
-                || parametroJogo == null
-                || parametroJogo.getTrevos() == null) {
+        if (parametroJogo == null || parametroJogo.getTrevos() == null) {
             return;
         }
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent
                         .AtualizarQuantidadeTrevosSurpresinha(
                         parametroJogo
@@ -765,4 +737,34 @@ public class SurpresinhaFragment2 extends Fragment {
     public void onAdicionarRodapeClicado() {
         adicionarSurpresinhaNoCarrinho();
     }
+    protected ApostaFavoritaDTO criarApostaFavoritaDTO(){
+        ApostaFavoritaDTO apostaFavorita =
+                new ApostaFavoritaDTO();
+
+        return apostaFavorita;
+    }
+    @Override
+    public void onSalvarFavoritoRodapeConfirmado(
+            String nome
+    ) {
+
+    }
+    @Override
+    public void onCompletarRodapeClicado() {
+
+    }
+    @Override
+    public void onLimparRodapeClicado() {
+
+    }
+    @Override
+    public boolean possuiSelecaoValida() {
+        return true;
+    }
+    @Override
+    public EtapaAposta getEtapa() {
+        return EtapaAposta.NUMEROS;
+    }
+    @Override
+    public void onQuantidadeNumerosAlterada() {}
 }

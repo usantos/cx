@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +36,6 @@ import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
-import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
 public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickListener<DezenaHolder> {
     private static final String ARG_PARAMENTRO = "ARG_PARAMENTRO";
@@ -51,7 +49,6 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
     private ListaDezenaRecyclerView adapter;
 
     private TrevoModel model;
-    private SimulaViewModel viewModel;
 
     private TrevosFragment2() {
     }
@@ -111,11 +108,7 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
         return getStateAtual()
                 .getQtdDezenasPossiveisSelecionado();
     }
-    @Override
-    public void onSalvarFavoritoRodapeConfirmado(
-            String nome
-    ) {
-
+    protected ApostaFavoritaDTO criarApostaFavoritaDTO(){
         ParametroTrevo parametroTrevo =
                 new ParametroTrevo();
 
@@ -124,26 +117,15 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
                         getTrevosSelecionados()
                 )
         );
-
-        ApostaFavoritaDTO apostaFavorita =
-                new ApostaFavoritaDTO();
+        ApostaFavoritaDTO apostaFavorita = new ApostaFavoritaDTO();
 
         apostaFavorita.setParametroTrevo(
                 parametroTrevo
         );
 
-        viewModel.onEvent(
-                new SimulaUiEvent
-                        .SalvarApostaFavoritaSolicitado(
-                        apostaFavorita,
-                        nome,
-                        new ArrayList<>(
-                                getStateAtual()
-                                        .getDezenasSelecionadas()
-                        )
-                )
-        );
+        return apostaFavorita;
     }
+
     private void renderState(
             SimulaUiState state
     ) {
@@ -183,10 +165,6 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
     }
 
     private void init() {
-        viewModel = new ViewModelProvider(
-                requireActivity()
-        ).get(SimulaViewModel.class);
-
         valoresApostas =
                 parametro.getValoresTrevoByNumero(
                         getQuantidadeNumerosAtual()
@@ -200,7 +178,7 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
         }
 
         if (valorInicial != null) {
-            viewModel.onEvent(
+            dispatch(
                     new SimulaUiEvent.QuantidadeTrevosAlterada(
                             valorInicial
                     )
@@ -255,7 +233,7 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
                         )
                 );
 
-        viewModel.onEvent(
+       dispatch(
                 new SimulaUiEvent.AdicionarCarrinhoSolicitado(
                         ApostaUtils.getApostaMaisMilionaria(
                                 parametro,
@@ -264,7 +242,7 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
                                 estadoAtual.getQtdConcursoSelecionado(),
                                 trevos
                         ),
-                        estadoAtual.getBarraTituloDTO(),
+                        getBarraTitulo(),
                         false,
                         null
                 )
@@ -351,7 +329,7 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
         int numero =
                 Integer.parseInt(dezena.getValue());
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.ToggleTrevo(
                         numero
                 )
@@ -363,28 +341,17 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
                 .getTrevosSelecionados();
     }
 
-    private SimulaUiState getStateAtual() {
-        if (viewModel == null
-                || viewModel.getUiState() == null
-                || viewModel.getUiState().getValue() == null) {
-            return SimulaUiState.initial();
-        }
-
-        return viewModel.getUiState().getValue();
-    }
     private void atualizarTrevosSelecionados(
             List<Integer> trevos
     ) {
         ParametroValorApostaDTO valorAtual =
                 getValorTrevosAtual();
 
-        if (viewModel == null
-                || valorAtual == null
-                || valorAtual.getNumeroTrevos() == null) {
+        if (valorAtual == null || valorAtual.getNumeroTrevos() == null) {
             return;
         }
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.TrevosAlterados(
                         trevos,
                         valorAtual.getNumeroTrevos(),
@@ -393,6 +360,7 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
         );
     }
 
+    @Override
     public void atualizarQuantidadeTrevos(
             ParametroValorApostaDTO valorSelecionado
     ) {
@@ -486,5 +454,7 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
     public EtapaAposta getEtapa() {
         return EtapaAposta.TREVOS;
     }
+    @Override
+    public void onQuantidadeNumerosAlterada() {}
 
 }

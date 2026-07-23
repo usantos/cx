@@ -9,12 +9,10 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -33,7 +31,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
-import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
@@ -43,7 +40,6 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TimeCoracaoAdapte
 import br.gov.caixa.loterias.apostas.view.custom.NomeTimemaniaTextWatcher;
 import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
-import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
 
 public class TimesFragment extends BaseEtapaFragment {
 
@@ -53,9 +49,6 @@ public class TimesFragment extends BaseEtapaFragment {
             "ARG_ESCOLHA_TIME_SURPRESINHA";
 
     private static final int QUANTIDADE_COLUNA_LISTA = 3;
-
-    private SimulaViewModel viewModel;
-    private SimulaActivity parentActivity;
 
     private ParametroJogoDTO parametro;
 
@@ -220,17 +213,6 @@ public class TimesFragment extends BaseEtapaFragment {
     }
 
     private void inicializar() {
-        parentActivity =
-                (SimulaActivity)
-                        requireActivity();
-
-        viewModel =
-                new ViewModelProvider(
-                        requireActivity()
-                ).get(
-                        SimulaViewModel.class
-                );
-
         preencherVisibilidadeTimeCoracao();
 
         configurarBuscaTime();
@@ -406,7 +388,7 @@ public class TimesFragment extends BaseEtapaFragment {
                 true
         );
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent
                         .SelecionarTimeCoracao(
                         equipe
@@ -591,7 +573,7 @@ public class TimesFragment extends BaseEtapaFragment {
         if (state.isLimparTimeCoracao()) {
             limparTimeSelecionado();
 
-            viewModel.onEvent(
+            dispatch(
                     new SimulaUiEvent.LimpezaApostaRenderizada()
             );
 
@@ -627,13 +609,11 @@ public class TimesFragment extends BaseEtapaFragment {
                 getStateAtual();
 
         if (isEscolhaTimeCoracaoSurpresinha) {
-            viewModel.onEvent(
+            dispatch(
                     new SimulaUiEvent
                             .AdicionarCarrinhoSolicitado(
                             null,
-                            getBarraTituloSafe(
-                                    state
-                            ),
+                            getBarraTitulo(),
                             true,
                             equipe
                     )
@@ -641,16 +621,14 @@ public class TimesFragment extends BaseEtapaFragment {
             return;
         }
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent
                         .AdicionarCarrinhoSolicitado(
                         criarApostaTimemania(
                                 state,
                                 equipe
                         ),
-                        getBarraTituloSafe(
-                                state
-                        ),
+                        getBarraTitulo(),
                         false,
                         null
                 )
@@ -662,38 +640,25 @@ public class TimesFragment extends BaseEtapaFragment {
     }
 
     public void onLimparRodapeClicado() {
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent.LimparApostaSolicitado()
         );
     }
-    public void onSalvarFavoritoRodapeConfirmado(
-            String nome
-    ) {
+    protected ApostaFavoritaDTO criarApostaFavoritaDTO(){
         ParametroEquipe equipe =
                 getEquipeSelecionadaAtual();
 
         if (equipe == null
                 || !equipe.isSelecionado()) {
-            return;
+            return null;
         }
 
-        ApostaFavoritaDTO apostaFavorita =
-                new ApostaFavoritaDTO();
+        ApostaFavoritaDTO apostaFavorita = new ApostaFavoritaDTO();
 
         apostaFavorita.setTimeDoCoracao(
                 equipe
         );
-
-        viewModel.onEvent(
-                new SimulaUiEvent
-                        .SalvarApostaFavoritaSolicitado(
-                        apostaFavorita,
-                        nome,
-                        new ArrayList<>(
-                                getStateAtual().getDezenasSelecionadas()
-                        )
-                )
-        );
+        return apostaFavorita;
     }
 
     private IdentificaoDeUmaApostaDas8Modalidades criarApostaTimemania(
@@ -773,8 +738,7 @@ public class TimesFragment extends BaseEtapaFragment {
     }
 
     public void atualizarValorAposta() {
-        if (viewModel == null
-                || parametro == null) {
+        if (parametro == null) {
             return;
         }
 
@@ -787,7 +751,7 @@ public class TimesFragment extends BaseEtapaFragment {
                         state.getQtdConcursoSelecionado()
                 );
 
-        viewModel.onEvent(
+        dispatch(
                 new SimulaUiEvent
                         .ValorApostaAlterado(
                         valor
@@ -861,8 +825,7 @@ public class TimesFragment extends BaseEtapaFragment {
     private void notificarEstadoTimeAlterado(
             ParametroEquipe equipe
     ) {
-        if (viewModel == null
-                || parametro == null) {
+        if (parametro == null) {
             return;
         }
 
@@ -873,7 +836,7 @@ public class TimesFragment extends BaseEtapaFragment {
                 equipe != null
                         && equipe.isSelecionado();
 
-        viewModel.onEvent(
+       dispatch(
                 new SimulaUiEvent.CartelaAlterada(
                         parametro.getConcurso().getModalidade(),
                         getStateAtual().getDezenasSelecionadas() != null
@@ -896,33 +859,6 @@ public class TimesFragment extends BaseEtapaFragment {
         );
     }
 
-    private SimulaUiState getStateAtual() {
-        if (viewModel == null
-                || viewModel.getUiState() == null
-                || viewModel.getUiState().getValue() == null) {
-            return SimulaUiState.initial();
-        }
-
-        return viewModel.getUiState()
-                .getValue();
-    }
-
-    private BarraTituloDTO getBarraTituloSafe(
-            SimulaUiState state
-    ) {
-        if (state != null
-                && state.getBarraTituloDTO() != null) {
-            return state.getBarraTituloDTO();
-        }
-
-        if (parentActivity != null
-                && parentActivity.getBarraTituloDTO() != null) {
-            return parentActivity.getBarraTituloDTO();
-        }
-
-        return new BarraTituloDTO();
-    }
-
     @Override
     public boolean possuiSelecaoValida() {
         ParametroEquipe equipe =
@@ -936,4 +872,10 @@ public class TimesFragment extends BaseEtapaFragment {
     public EtapaAposta getEtapa() {
         return EtapaAposta.TIME_CORACAO;
     }
+    @Override
+    public void onQuantidadeNumerosAlterada() {
+        atualizarValorAposta();
+        revalidarEstado();
+    }
+
 }

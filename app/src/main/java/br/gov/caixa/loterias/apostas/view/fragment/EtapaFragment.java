@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 
 public interface EtapaFragment {
@@ -13,4 +14,14 @@ public interface EtapaFragment {
     boolean possuiSelecaoValida();
     void onSalvarFavoritoRodapeConfirmado(String nome);
     EtapaAposta getEtapa();
+    void onQuantidadeNumerosAlterada();
+
+    void onAtualizaValorTotalAposta(
+            int numPrognostico,
+            int qtdTeimosinhas
+    );
+    default void atualizarQuantidadeTrevos(
+            ParametroValorApostaDTO valor
+    ) {
+    }
 }
