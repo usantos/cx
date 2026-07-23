@@ -14,7 +14,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
-import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
@@ -76,6 +75,16 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 		if(btnDuvidas != null){
 			btnDuvidas.setOnClickListener(v -> abrirTermosUso());
 		}
+
+		ImageView btnBuscar = findViewById(R.id.icone_buscar);
+		if (btnBuscar != null) {
+			btnBuscar.setOnClickListener(v -> abrirBuscarFavoritas());
+		}
+	}
+
+	private void abrirBuscarFavoritas() {
+		Intent intent = new Intent(getBaseContext(), BuscarLotericasActivity.class);
+		startActivity(intent);
 	}
 
 	private View.OnClickListener onFiltrarListener(ActivityResultLauncher<Intent> launcher,  FiltroAplicadoMarketplace filtro) {

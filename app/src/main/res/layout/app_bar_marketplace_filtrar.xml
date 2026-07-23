@@ -39,6 +39,16 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
                 <ImageView
+                    android:id="@+id/icone_buscar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/search_24"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/icone_filtrar"/>
+
+                <ImageView
                     android:id="@+id/icone_filtrar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
