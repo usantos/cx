@@ -48,7 +48,6 @@ public class BuscarLotericasActivity extends LoteriasBaseAppActivity {
     private TextView toolbarTitle;
     private TextView tvLotericas;
     private ImageButton btnBack;
-    private View borderView;
     private ConstraintLayout clEmptyState;
     private BuscaLotericaAdapter adapter;
     private List<LotericaComposition> searchResults = new ArrayList<>();
@@ -151,7 +150,6 @@ public class BuscarLotericasActivity extends LoteriasBaseAppActivity {
         btnDuvidas = findViewById(R.id.btn_duvidas_mkp);
         toolbarTitle = findViewById(R.id.toolbar_title);
         tvLotericas = findViewById(R.id.tv_lotericas);
-        borderView = findViewById(R.id.border_view);
         clEmptyState = findViewById(R.id.cl_body);
         ViewCompat.setAccessibilityHeading(toolbarTitle,true);
         ViewCompat.setAccessibilityHeading(tvLotericas,true);
@@ -295,7 +293,6 @@ public class BuscarLotericasActivity extends LoteriasBaseAppActivity {
 
 
     private void showResults(boolean showList) {
-        borderView.setVisibility(showList ? View.VISIBLE : View.GONE);
         rvSearchResults.setVisibility(showList ? View.VISIBLE : View.GONE);
         clEmptyState.setVisibility(showList ? View.GONE : View.VISIBLE);
     }
