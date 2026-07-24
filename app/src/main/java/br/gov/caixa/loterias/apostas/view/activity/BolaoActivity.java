@@ -248,6 +248,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        buscaLotericas();
+    }
 
     private void loadParametroJogo(ModalidadeEnum modalidade) {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
@@ -408,10 +413,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 if (payload == null) {
                     payload = simulaPayloadLoterica();
                 }
-                if (lotericasAdapter == null) {
-                    setLotericasFavoritas(payload);
-                    configuraListView();
-                }
+
+                setLotericasFavoritas(payload);
+                configuraListView();
 
                 if (lotericasList == null || lotericasList.isEmpty()) {
                     initLotericasVazia();

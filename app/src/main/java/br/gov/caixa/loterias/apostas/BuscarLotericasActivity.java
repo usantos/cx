@@ -249,7 +249,7 @@ public class BuscarLotericasActivity extends LoteriasBaseAppActivity {
     }
 
     private String getDialogMessage(LotericaComposition item, boolean shouldFavorite) {
-        String nome = item.getLotericaDTO().getNomeFantasia();
+        String nome = item.getLotericaDTO().getNomeFantasia().trim();
         if(shouldFavorite) {
             return "Deseja incluir " + nome.toUpperCase() + " na sua lista de favoritas?";
         }
