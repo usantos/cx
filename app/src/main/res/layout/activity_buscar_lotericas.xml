@@ -108,30 +108,32 @@
             android:textColor="@color/blackText"
             android:text="@string/txt_lotericas"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:background="@drawable/button_border_blue_caixa"
+        <EditText
+            android:background="@drawable/button_border_blue_caixa_spaced"
             android:textColorHint="@color/cinzanaoselecionado"
             android:inputType="text"
             android:id="@+id/edt_nome"
             android:layout_width="match_parent"
+            android:imeOptions="actionDone"
+            android:textColor="@color/cinzanaoselecionado"
             android:layout_height="40dp"
+            android:textSize="16sp"
+            android:singleLine="true"
             app:layout_constraintTop_toBottomOf="@+id/tv_lotericas"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_exemplo"
-            android:hint="@string/txt_name_code">
+            android:hint="@string/txt_name_code"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:imeOptions="actionDone"
-                android:singleLine="true"
-                android:textSize="16sp"
-                android:textColor="@color/cinzanaoselecionado"
-                android:id="@+id/et_lottery"
-                android:inputType="text"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:imeOptions="actionDone"-->
+<!--            android:singleLine="true"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColor="@color/cinzanaoselecionado"-->
+<!--            android:id="@+id/et_lottery"-->
+<!--            android:inputType="text"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
 
         <TextView
             android:id="@+id/tv_exemplo"
@@ -155,18 +157,66 @@
         app:layout_constraintTop_toBottomOf="@+id/head_layout"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/rv_body"
+        app:layout_constraintBottom_toTopOf="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="2dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_body"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/body"
         android:layout_width="match_parent"
-        tools:listitem="@layout/item_buscar_favoritas"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/border_view" />
+        app:layout_constraintTop_toBottomOf="@id/border_view">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/rv_body"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/item_buscar_favoritas"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+            android:id="@+id/cl_body"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_height="0dp">
+
+            <TextView
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_verifique"
+                android:id="@+id/tv_nao_encontrada"
+                android:text="Nenhuma Lotérica encontrada"
+                android:textColor="@color/blackText"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                app:layout_constraintTop_toBottomOf="@id/tv_nao_encontrada"
+                android:text="Verifique o nome ou código digitado e tente novamente."
+                android:id="@+id/tv_verifique"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cinzanaoselecionado"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
