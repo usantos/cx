@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
 import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
 import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
+import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -418,6 +419,16 @@ public class SimulaViewModel extends AndroidViewModel {
                     (SimulaUiEvent
                             .SelecionarMesDaSorte)
                             event
+            );
+
+            return true;
+        }
+        if (event instanceof SimulaUiEvent.VoltarEtapa) {
+
+            uiState.setValue(
+                    fluxoApostaReducer.voltarEtapa(
+                            getCurrentState()
+                    )
             );
 
             return true;

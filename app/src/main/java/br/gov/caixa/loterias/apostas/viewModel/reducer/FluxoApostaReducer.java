@@ -580,7 +580,50 @@ public class FluxoApostaReducer {
         return event.getQtdDezenasSelecionadas()
                 == event.getQtdDezenasPossiveisSelecionado();
     }
+    public SimulaUiState voltarEtapa(
+            SimulaUiState atual
+    ) {
+        if (atual == null) {
+            return null;
+        }
 
+        switch (atual.getEtapaAposta()) {
+
+            case TREVOS:
+            case MES_SORTE:
+            case TIME_CORACAO:
+
+                return atual.toBuilder()
+                        .setEtapaAposta(
+                                EtapaAposta.NUMEROS
+                        )
+                        .setTextoSelecionados(
+                                montarTextoSelecionados(
+                                        atual.getDezenasSelecionadas().size(),
+                                        atual.getQtdDezenasPossiveisSelecionado()
+                                )
+                        )
+                        .setTextoInfoEtapa("1/2")
+                        .setBotaoNextStepHabilitado(
+                                atual.getDezenasSelecionadas().size()
+                                        == atual.getQtdDezenasPossiveisSelecionado()
+                        )
+                        .setBotaoAdicionarHabilitado(false)
+                        .setBotaoCompletarHabilitado(true)
+                        .setBotaoCompletarVisivel(true)
+                        .setMostrarSalvarAposta(false)
+                        .setApostaFavoritada(false)
+                        .setComandoTelaSimula(
+                                new ScreenSimulaEffect.VoltarEtapa(
+                                        EtapaAposta.NUMEROS
+                                )
+                        )
+                        .build();
+
+            default:
+                return atual;
+        }
+    }
     private boolean calcularBotaoLimparHabilitadoPorFluxo(
             SimulaUiEvent.CartelaAlterada event,
             ResultadoFluxoAposta fluxo

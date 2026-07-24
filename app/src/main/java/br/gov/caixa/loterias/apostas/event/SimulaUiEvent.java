@@ -960,4 +960,6 @@ public abstract class SimulaUiEvent {
     public static final class InicializarSurpresinha
             extends SimulaUiEvent {
     }
+    public static class VoltarEtapa extends SimulaUiEvent {
+    }
 }

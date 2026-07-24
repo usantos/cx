@@ -108,7 +108,11 @@ public class CabecalhoSimulacaoFragment extends Fragment {
 			startActivity(intent);
 		});
 
-		btnVoltar.setOnClickListener(v -> getActivity().onBackPressed());
+		btnVoltar.setOnClickListener(v ->
+				requireActivity()
+						.getOnBackPressedDispatcher()
+						.onBackPressed()
+		);
 	}
 
 	private void aplicaEstiloFonte() {

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -148,9 +149,14 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simula_aposta);
         init();
+        onBackPressedDispatcher();
+    }
+    private void onBackPressedDispatcher(){
+
         getOnBackPressedDispatcher().addCallback(
                 this,
                 new OnBackPressedCallback(true) {
+
                     @Override
                     public void handleOnBackPressed() {
 
@@ -158,9 +164,18 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                                 SimulaActivity.this
                         );
 
-                        setEnabled(false);
-                        getOnBackPressedDispatcher()
-                                .onBackPressed();
+                        if (voltarEtapaComplementar()) {
+                            return;
+                        }
+
+                        if (possuiApostaEmAndamento()) {
+
+                            exibirDialogConfirmacaoSaida();
+
+                            return;
+                        }
+
+                        finish();
                     }
                 }
         );
@@ -1694,5 +1709,54 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
 
         return null;
+    }
+    private boolean voltarEtapaComplementar() {
+
+        SimulaUiState state = viewModel.getUiState().getValue();
+
+        if (state == null) {
+            return false;
+        }
+
+        switch (state.getEtapaAposta()) {
+
+            case TREVOS:
+            case MES_SORTE:
+            case TIME_CORACAO:
+
+                viewModel.onEvent(
+                        new SimulaUiEvent.VoltarEtapa()
+                );
+
+                return true;
+
+            default:
+                return false;
+        }
+    }
+    private void exibirDialogConfirmacaoSaida() {
+
+        DialogUtils.dialogConfirmar(
+                this,
+                getString(R.string.text_descartar),
+                (dialog, which) -> {
+
+                    setResult(RESULT_CANCELED);
+
+                    finish();
+                }
+        );
+    }
+    private boolean possuiApostaEmAndamento() {
+
+        SimulaUiState state =
+                viewModel.getUiState().getValue();
+
+        if (state == null) {
+            return false;
+        }
+
+        return state.getDezenasSelecionadas() != null
+                && !state.getDezenasSelecionadas().isEmpty();
     }
 }
