@@ -258,7 +258,5 @@ public class MesesFragment2 extends BaseEtapaFragment {
     public EtapaAposta getEtapa() {
         return EtapaAposta.MES_SORTE;
     }
-    @Override
-    public void onQuantidadeNumerosAlterada() {}
 
 }

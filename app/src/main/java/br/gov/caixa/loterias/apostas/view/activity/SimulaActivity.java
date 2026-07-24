@@ -11,6 +11,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -850,9 +851,16 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         if (effect instanceof ScreenSimulaEffect.VoltarEtapa) {
 
+            etapaRenderizada = null;
+
+            renderEtapaAtual(
+                    ((ScreenSimulaEffect.VoltarEtapa) effect)
+                            .getEtapa(),
+                    state
+            );
+
             viewModel.onEvent(
-                    new SimulaUiEvent
-                            .ComandoTelaSimulaConsumido()
+                    new SimulaUiEvent.ComandoTelaSimulaConsumido()
             );
 
             return;

@@ -79,4 +79,6 @@ public abstract class BaseEtapaFragment
                 ? getStateAtual().getBarraTituloDTO()
                 : new BarraTituloDTO();
     }
+    @Override
+    public void onQuantidadeNumerosAlterada() {}
 }

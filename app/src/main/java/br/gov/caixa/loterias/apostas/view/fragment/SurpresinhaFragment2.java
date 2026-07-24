@@ -765,6 +765,4 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     public EtapaAposta getEtapa() {
         return EtapaAposta.NUMEROS;
     }
-    @Override
-    public void onQuantidadeNumerosAlterada() {}
 }

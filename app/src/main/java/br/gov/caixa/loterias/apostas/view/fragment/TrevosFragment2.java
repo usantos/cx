@@ -454,7 +454,6 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
     public EtapaAposta getEtapa() {
         return EtapaAposta.TREVOS;
     }
-    @Override
-    public void onQuantidadeNumerosAlterada() {}
+
 
 }

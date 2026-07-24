@@ -2082,10 +2082,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     }
 
     @Override
-    public void onQuantidadeNumerosAlterada() {
-    }
-
-    @Override
     public void onAtualizaValorTotalAposta(
             int numPrognostico,
             int qtdTeimosinhas
