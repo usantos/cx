@@ -61,6 +61,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
+import br.gov.caixa.loterias.apostas.utils.AccessibilityUtils;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
@@ -1080,12 +1081,16 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private void configurarEventosViewModel() {
 
         if (containerComoJogar != null) {
+            AccessibilityUtils.setBotao(containerComoJogar);
             containerComoJogar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     viewModel.onEvent(new SimulaUiEvent.ComoJogarClicado());
                 }
             });
+        }
+        if(frameCarrinho != null){
+            AccessibilityUtils.setBotao(frameCarrinho);
         }
     }
 

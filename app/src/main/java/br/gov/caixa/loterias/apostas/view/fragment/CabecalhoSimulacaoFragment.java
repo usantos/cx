@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
@@ -163,5 +164,6 @@ public class CabecalhoSimulacaoFragment extends Fragment {
 		}
 		tvConcurso.setText(concurso);
 		tvSorteio.setText(sorteio);
+		ViewCompat.setAccessibilityHeading(tvModalidade,true);
 	}
 }

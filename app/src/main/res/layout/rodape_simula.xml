@@ -129,10 +129,13 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/layoutValorAposta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:focusable="true"
             android:gravity="center"
+            android:importantForAccessibility="yes"
             android:orientation="vertical">
 
             <TextView
@@ -140,6 +143,7 @@
                 android:layout_height="wrap_content"
                 android:text="Valor dessa aposta"
                 android:textColor="#666666"
+                android:importantForAccessibility="no"
                 android:fontFamily="@font/caixa_std_regular"
                 android:textSize="11sp" />
 
@@ -149,6 +153,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/caixa_std_bold"
                 android:text="R$ 3,00"
+                android:importantForAccessibility="no"
                 android:textColor="#222222"
                 android:textSize="14sp"
                  />
@@ -161,16 +166,20 @@
             android:background="@color/cinza70" />
 
         <LinearLayout
+            android:id="@+id/layoutValorCarrinho"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:focusable="true"
+            android:importantForAccessibility="yes"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Total do carrinho"
+                android:importantForAccessibility="no"
                 android:fontFamily="@font/caixa_std_regular"
                 android:textColor="#666666"
                 android:textSize="11sp" />
@@ -180,6 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="R$ 0,00"
+                android:importantForAccessibility="no"
                 android:textColor="#222222"
                 android:textSize="14sp"
                 android:fontFamily="@font/caixa_std_bold"
@@ -195,6 +205,7 @@
         <FrameLayout
             android:id="@+id/frameCarrinho"
             android:layout_width="56dp"
+            android:contentDescription="@string/carrinho_apostas"
             android:layout_height="match_parent">
 
             <ImageView
