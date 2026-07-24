@@ -40,6 +40,15 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 		}
 	}
 
+	public void hideSearch(Boolean shouldHide){
+		ImageView btnFiltrar = findViewById(R.id.icone_buscar);
+		if(shouldHide){
+			btnFiltrar.setVisibility(View.GONE);
+		} else {
+			btnFiltrar.setVisibility(View.VISIBLE);
+		}
+	}
+
 	public void configFiltrar(ActivityResultLauncher<Intent> launcher, FiltroAplicadoMarketplace filtro) {
         ImageView btnFiltrar = findViewById(R.id.icone_filtrar);
 		if (filtro == null) {
