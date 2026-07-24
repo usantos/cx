@@ -687,6 +687,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             botaoNextStep.setVisibility(mostrarNextStep ? View.VISIBLE : View.GONE);
 
             botaoNextStep.setEnabled(state.isBotaoNextStepHabilitado());
+            botaoNextStep.setText(state.getTextoEscolha());
 
             if (botaoNextStep instanceof MaterialButton) {
                 visualModalidadeBotao(state.isBotaoNextStepHabilitado(), (MaterialButton) botaoNextStep);

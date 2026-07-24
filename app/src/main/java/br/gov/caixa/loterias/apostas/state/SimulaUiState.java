@@ -93,6 +93,7 @@ public class SimulaUiState {
     private final boolean atualizarValorApostaPorQuantidadeNumeros;
     private final boolean resetarTrevosPorQuantidadeNumeros;
     private final String textoSelecionados;
+    private final String textoEscolha;
     private final boolean abrirCarrinho;
     private final ScreenSimulaEffect screenSimulaEffect;
     private final boolean surpresinhaHabilitada;
@@ -281,6 +282,11 @@ public class SimulaUiState {
                         ? builder.textoSelecionados
                         : "Selecione os números:";
 
+        this.textoEscolha =
+                builder.textoEscolha != null
+                        ? builder.textoEscolha
+                        : "Escolha";
+
         this.exibirDialogQuantidadeTrevos =
                 builder.exibirDialogQuantidadeTrevos;
 
@@ -335,6 +341,7 @@ public class SimulaUiState {
                 .setQtdDezenasPossiveisSelecionado(0)
                 .setQtdConcursoSelecionado(0)
                 .setTextoSelecionados("Selecione os números:")
+                .setTextoEscolha("Escolha")
                 .setMostrarBotaoLimparAposta(false)
                 .setMostrarSalvarAposta(false)
                 .setLimparNumerosCartela(false)
@@ -399,6 +406,7 @@ public class SimulaUiState {
     public String getTextoSelecionados() {
         return textoSelecionados;
     }
+    public String getTextoEscolha(){return textoEscolha;}
     public boolean isExibirDialogQuantidadeTrevos() {
         return exibirDialogQuantidadeTrevos;
     }
@@ -765,6 +773,7 @@ public class SimulaUiState {
         private boolean atualizarValorApostaPorQuantidadeNumeros;
         private boolean resetarTrevosPorQuantidadeNumeros;
         private String textoSelecionados = "Selecione os números:";
+        private String textoEscolha = "Escolha";
         private boolean abrirCarrinho;
         private boolean surpresinhaHabilitada;
         private ScreenSimulaEffect screenSimulaEffect;
@@ -865,6 +874,7 @@ public class SimulaUiState {
             this.carregandoCarrinho = state.carregandoCarrinho;
             this.exibirCarrinho = state.exibirCarrinho;
             this.textoSelecionados = state.textoSelecionados;
+            this.textoEscolha = state.textoEscolha;
             this.carrinho = state.carrinho;
             this.etapaAposta = state.etapaAposta;
             this.tipoJogo = state.tipoJogo;
@@ -1155,7 +1165,15 @@ public class SimulaUiState {
                     exibirDialogQuantidadeNumeros;
             return this;
         }
-
+        public Builder setTextoEscolha(
+                String textoEscolha
+        ) {
+            this.textoEscolha =
+                    textoEscolha != null
+                            ? textoEscolha
+                            : "Escolha";
+            return this;
+        }
         public Builder setTextoSelecionados(
                 String textoSelecionados
         ) {

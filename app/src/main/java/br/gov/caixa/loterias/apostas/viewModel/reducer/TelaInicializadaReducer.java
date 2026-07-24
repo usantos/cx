@@ -8,6 +8,7 @@ import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
+import br.gov.caixa.loterias.apostas.utils.EscolhaUtils;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 
 public class TelaInicializadaReducer {
@@ -62,6 +63,7 @@ public class TelaInicializadaReducer {
                                 EtapaAposta.NUMEROS
                         )
                 )
+                .setTextoEscolha(EscolhaUtils.obterTextoEscolha(tipoJogo))
                 .setComandoCarrinho(null)
                 .setComandoCompletarAposta(null)
                 .setComandoFavoritarAposta(null)

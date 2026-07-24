@@ -7,6 +7,7 @@ import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
+import br.gov.caixa.loterias.apostas.utils.EscolhaUtils;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 
 public class FluxoApostaReducer {
@@ -168,6 +169,9 @@ public class FluxoApostaReducer {
                 )
                 .setBotaoNextStepHabilitado(
                         botaoNextStepHabilitado
+                )
+                .setTextoEscolha(
+                        EscolhaUtils.obterTextoEscolha(tipoJogo)
                 )
                 .setBotaoAdicionarHabilitado(
                         botaoAdicionarHabilitado
@@ -363,28 +367,6 @@ public class FluxoApostaReducer {
         }
 
         return builder;
-    }
-
-    public SimulaUiState.Builder resetarFluxoComplementar(
-            SimulaUiState.Builder builder
-    ) {
-
-        if (builder == null) {
-            return null;
-        }
-
-        return resetarParaEtapaNumeros(builder)
-                .setMesSelecionado(null)
-                .setEquipeSelecionada(null)
-                .setTelaSelecaoTimeAtivado(false)
-                .setEscolhaTimeCoracaoSurpresinha(false)
-                .setTrevosSelecionados(new ArrayList<Integer>())
-                .setQuantidadeTrevosSelecionada(0)
-                .setValorTrevosSelecionado(null)
-                .setValoresTrevos(new ArrayList<>())
-                .setLabelsQuantidadeTrevos(new ArrayList<String>())
-                .setPosicaoTrevosSelecionada(0)
-                .setTextoBotaoQuantidadeTrevos("2 trevos");
     }
 
     private SimulaUiState.Builder resetarParaEtapaNumeros(
