@@ -10,11 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.ListItem;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaComposition;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
 import br.gov.caixa.loterias.apostas.view.holder.BuscaLotericaViewHolder;
-import br.gov.caixa.loterias.apostas.view.holder.LotericaViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class BuscaLotericaAdapter extends RecyclerView.Adapter<BuscaLotericaViewHolder> {
