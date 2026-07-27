@@ -62,8 +62,8 @@ android {
 
         //                   22                 1.22.0 = 01 022               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220102309
-        versionName "1.23.3"
+        versionCode 220102311
+        versionName "1.23.4"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
