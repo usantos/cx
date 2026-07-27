@@ -97,6 +97,16 @@ public class PartidaLotecaDTO implements Serializable {
         this.letraLegenda = letraLegenda;
     }
 
+    @ApiModelProperty(value = "")
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+
     public String getLegendaAbreviada() {
         if (descricaoLegenda != null && descricaoLegenda.length() > 4)
             return descricaoLegenda.substring(4);

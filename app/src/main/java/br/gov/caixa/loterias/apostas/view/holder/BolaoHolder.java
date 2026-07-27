@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
@@ -59,6 +60,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private TextView valorPremioPorExtenso;
 	private TextView concurso;
     private Boolean isMega30 = false;
+    private Boolean isLotecaPais = false;
 
 
 	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener, FiltroAplicadoMarketplace filtro) {
@@ -99,8 +101,12 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
-		isMega30 = EspecialUtils.isMega30(bolao.getConcurso(),bolao.getTipoConcurso());
-		estilo = new EstiloModalidadeMKP(bolao.getModalidade(),isMega30);
+		//isMega30 = EspecialUtils.isMega30(bolao.getConcurso(), bolao.getTipoConcurso());
+		isMega30 = EspecialUtils.isMega30(bolao.getModalidade(), bolao.getConcurso(), bolao.getTipoConcurso().toString().equals(TipoConcursoEnum.ESPECIAL.getValor()));
+		isLotecaPais = EspecialUtils.isLotecaPais(bolao.getModalidade(), bolao.getConcurso(), bolao.getTipoConcurso().toString().equals(TipoConcursoEnum.ESPECIAL.getValor()));
+		//estilo = new EstiloModalidadeMKP(bolao.getModalidade(), isMega30);
+		estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(bolao.getModalidade(),bolao.getConcurso(), bolao.getTipoConcurso().toString().equals(TipoConcursoEnum.ESPECIAL.getValor()));
+
 
 		aplicaEstilo();
 		if (isFiltradoLoterica()) {
@@ -110,8 +116,9 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 			if (isEspecial(bolao.getTipoConcurso())){
                 if(isMega30) {
                     modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
-                }
-                else {
+                } else if (isLotecaPais) {
+					modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS,""));
+				} else {
                     modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
                 }
             } else {

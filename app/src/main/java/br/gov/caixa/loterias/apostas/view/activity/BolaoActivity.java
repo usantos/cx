@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -296,8 +297,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, cotasDisponiveis.get(0).isLotericaFavorita());
             selectFiltroLoterica();
         } else {
-            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
             boolean isEspecial = tipoConcurso == TipoConcursoEnum.ESPECIAL;
+
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+            //EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(modalidade,  parametroJogo.getConcurso().getNumero(), isEspecial);
+
             FragmentUtils.startFragmentBarraTituloBolao(
                     getSupportFragmentManager(),
                     R.id.barra_titulo_mkp,
@@ -448,17 +452,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                     initLotericasVazia();
                 }
 
-                //Animação Copa da Loteca
-                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.LOTECA) {
-                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.copa_loteca_3);
-                    lottieManager.setSpeed(1.75f);
-                    lottieManager.start();
-                }
-                //Animação Quina de São João
-                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.QUINA) {
-                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.quina_sao_joao_1);
-                    lottieManager.setSpeed(1.5f);
-                    lottieManager.start();
+                //Animação Lotofacil da Independencia
+                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.LOTOFACIL) {
+                    scrollView.post(() -> {
+                        lottieManager = new LottieManager(BolaoActivity.this, R.raw.lotofacil_independencia);
+                        lottieManager.setSpeed(0.60f);
+                        lottieManager.start();
+                    });
                 }
 
             }

@@ -71,6 +71,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private ImageView icTrevoBolao, headerEspeciais;
 	private LinearLayout layoutLoerica, layoutPremio;
     private Boolean isMega30 = false;
+    private Boolean isLotecaPais = false;
 
 
 
@@ -119,8 +120,10 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
-        isMega30 = EspecialUtils.isMega30(bolao.getConcurso(),bolao.getTipoConcurso());
-		estilo = new EstiloModalidadeMKP(bolao.getModalidade(), isMega30);
+        isMega30 = EspecialUtils.isMega30(bolao.getModalidade(), bolao.getConcurso(), bolao.getTipoConcurso().toString().equals(TipoConcursoEnum.ESPECIAL.getValor()));
+        isLotecaPais = EspecialUtils.isLotecaPais(bolao.getModalidade(), bolao.getConcurso(), bolao.getTipoConcurso().toString().equals(TipoConcursoEnum.ESPECIAL.getValor()));
+		//estilo = new EstiloModalidadeMKP(bolao.getModalidade(), isMega30);
+		estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(bolao.getModalidade(),bolao.getConcurso(), bolao.getTipoConcurso().toString().equals(TipoConcursoEnum.ESPECIAL.getValor()));
 		aplicaEstilo(bolao);
 		preencheConteudo(bolao);
 		atualizaQuantidadeTextView(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
@@ -146,6 +149,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 				icTrevoBolao.setVisibility(View.GONE);
 				headerEspeciais.setVisibility(View.VISIBLE);
 				headerEspeciais.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getImagemEspecialCarrossel()));
+				if (isLotecaPais) {
+					headerEspeciais.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cabecalho_loteca_pais_carrossel));
+				}
 			} else {
 				cabecalhoFiltrado.setBackgroundColor(corClara);
 				trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
@@ -190,8 +196,13 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			if (isEspecial(bolao.getTipoConcurso())){
 				//modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 				if (bolao.getModalidade() == ModalidadeEnum.LOTECA) {
-					modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
+					if (isLotecaPais) {
+						//modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, ""));
+						modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, ""));
+					} else {
+						modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
 					//TextViewUtils.mudarTamanhoPorPorcentagem(modalidade, -20f);
+					}
 				}else {
 					modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 				}
@@ -256,8 +267,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			} else {
 				if(isMega30){
 					modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
-				}
-				else {
+				} else if (isLotecaPais) {
+					modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS,""));
+				} else {
 					modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
 				}
 			}
