@@ -142,15 +142,6 @@ public class PartidaLotecaDTO implements Serializable {
                 (this.empate == null ? partidaLotecaDTO.empate == null : this.empate.equals(partidaLotecaDTO.empate));
     }
 
-    @ApiModelProperty(value = "")
-    public Integer getNumero() {
-        return numero;
-    }
-
-    public void setNumero(Integer numero) {
-        this.numero = numero;
-    }
-
     @Override
     public int hashCode() {
         int result = 17;

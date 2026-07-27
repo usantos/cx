@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -537,12 +538,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                     PrincipalActivity.this,
                     getString(R.string.alerta_descricao_pagamento_nao_identificado),
                     getString(R.string.acompanhe_suas_compras),
-                    new OnDialogBotaoListener() {
-                        @Override
-                        public void onButtonClick(DialogInterface dialog, int which) {
-                            startActivity(IntentUtil.getIntentOrigemDestino(PrincipalActivity.this, ListaComprasActivity.class));
-                        }
-                    }
+                    (dialog, which) -> startActivity(IntentUtil.getIntentOrigemDestino(PrincipalActivity.this, ListaComprasActivity.class))
             );
         } else if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
             if(getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){

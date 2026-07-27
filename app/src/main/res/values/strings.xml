@@ -1686,6 +1686,9 @@
     <string name="txt_choose_your_reward">Escolha como resgatar seu prêmio</string>
     <string name="txt_contest">Concurso</string>
     <string name="txt_concursos">Concursos</string>
-    <string name="animacao_msg">Deseja visualizar esta animação nas próximas vezes?</string>
+    <string name="receba_na_hora">Receba na hora</string>
+    <string name="retire_qualquer_loterica">Retire em qualquer lotérica</string>
+    <string name="valores_isencao_ir">Valores acima da isenção do IR</string>
+    <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Aguarde e tente novamente mais tarde.</string>
 
 </resources>

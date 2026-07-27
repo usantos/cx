@@ -454,11 +454,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
                 //Animação Lotofacil da Independencia
                 if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.LOTOFACIL) {
-                    scrollView.post(() -> {
-                        lottieManager = new LottieManager(BolaoActivity.this, R.raw.lotofacil_independencia);
-                        lottieManager.setSpeed(0.60f);
-                        lottieManager.start();
-                    });
+                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.lotofacil_independencia);
+                    lottieManager.setSpeed(0.60f);
+                    lottieManager.start();
                 }
 
             }
