@@ -1348,7 +1348,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
                     if (numeroTeimosinha == 0) {
-                        qtdConcursosList.add("Nenhuma");
+                        qtdConcursosList.add("Nenhum concurso");
                     } else if (numeroTeimosinha == 1) {
                         qtdConcursosList.add(numeroTeimosinha + getResources().getString(R.string.espaco_concurso));
                     } else {
