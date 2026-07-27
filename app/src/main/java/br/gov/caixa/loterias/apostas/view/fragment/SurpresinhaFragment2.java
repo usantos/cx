@@ -38,7 +38,7 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
-import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter2;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 public class SurpresinhaFragment2 extends BaseEtapaFragment {
@@ -52,19 +52,18 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     private ParametroJogoDTO parametroJogo;
     private int typeGameColorLight;
     private int corFonteFundoBranco;
-    private SurpresinhaGridViewAdapter simularDezenasAdapter;
+    private SurpresinhaGridViewAdapter2 simularDezenasAdapter;
     private BigDecimal valorTotalAposta;
     private boolean isAvisouT = false;
     private boolean isAvisouN = false;
     private View view;
-    private ImageView escolhaItemImageView;
 
-    private TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas, surpresinhaTitulo,
-            surpresinhaQtdInfo, surpresinhaInfo, qtdSurpresinhasSelecionadasTrevos, qtdNumerosSelecionadasNovo;
+    private TextView qtdSurpresinhasSelecionadas,
+            surpresinhaQtdInfo, qtdSurpresinhasSelecionadasTrevos, qtdNumerosSelecionadasNovo;
 
     private Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha, btnMenosTrevos,
             btnMaisTrevos, btnNumerosMenos, btnNumerosMais;
-    private RelativeLayout escolhaItemLayout;
+    private LinearLayout escolhaItemLayout;
     private ExpandableHeightGridView listaDezenasSurpresinha;
     private LinearLayout layoutEspelhoSurpresinha;
     private AppCompatCheckBox selcioneEspelhoSurpresinha;
@@ -80,7 +79,7 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_surpresinha, container, false);
+        view = inflater.inflate(R.layout.fragment_surpresinha_novo, container, false);
         setViews();
         setListeners();
         init();
@@ -149,12 +148,8 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         );
     }
     private void setViews() {
-        escolhaItemImageView = view.findViewById(R.id.escolhaItemImageView);
-        infoItemSurpresaTextView = view.findViewById(R.id.infoItemSurpresaTextView);
         qtdSurpresinhasSelecionadas = view.findViewById(R.id.qtdSurpresinhasSelecionadas);
-        surpresinhaTitulo = view.findViewById(R.id.surpresinhaTitulo);
         surpresinhaQtdInfo = view.findViewById(R.id.surpresinhaQtdInfo);
-        surpresinhaInfo = view.findViewById(R.id.surpresinhaInfo);
         qtdSurpresinhasSelecionadasTrevos = view.findViewById(R.id.qtdSurpresinhasSelecionadasTrevos);
         qtdNumerosSelecionadasNovo = view.findViewById(R.id.qtdNumerosSelecionadasNovo);
         escolherOutroItemBtn = view.findViewById(R.id.escolherOutroItemBtn);
@@ -219,9 +214,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
             initDiaDeSorte();
         }
 
-        surpresinhaTitulo.setTextColor(ContextCompat.getColor(parentActivity, corFonteFundoBranco));
-        surpresinhaInfo.setTextColor(ContextCompat.getColor(parentActivity, corFonteFundoBranco));
-        surpresinhaQtdInfo.setTextColor(ContextCompat.getColor(parentActivity, corFonteFundoBranco));
 
         if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
             maisMilionaria.setVisibility(View.VISIBLE);
@@ -251,31 +243,31 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
                 && qtdNumeros < maximo) {
 
             btnNumerosMenos.setBackgroundTintList(
-                    getCor(typeGameColorLight)
+                    getCor(R.color.cinza110)
             );
 
             btnNumerosMais.setBackgroundTintList(
-                    getCor(typeGameColorLight)
+                    getCor(R.color.cinza110)
             );
 
         } else if (qtdNumeros == minimo) {
 
             btnNumerosMenos.setBackgroundTintList(
-                    getCor(R.color.cinzaescuro)
+                    getCor(R.color.linhaDivisa)
             );
 
             btnNumerosMais.setBackgroundTintList(
-                    getCor(typeGameColorLight)
+                    getCor(R.color.linhaDivisa)
             );
 
         } else {
 
             btnNumerosMenos.setBackgroundTintList(
-                    getCor(typeGameColorLight)
+                    getCor(R.color.cinza110)
             );
 
             btnNumerosMais.setBackgroundTintList(
-                    getCor(R.color.cinzaescuro)
+                    getCor(R.color.linhaDivisa)
             );
         }
     }
@@ -331,21 +323,21 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         if (quantidade <= QUANTIDADE_MINIMA_SURPRESINHAS) {
 
             btnMenosSurpresinha.setBackgroundTintList(
-                    getCor(R.color.cinzaescuro)
+                    getCor(R.color.linhaDivisa)
             );
 
             btnMaisSurpresinha.setBackgroundTintList(
-                    getCor(corFonteFundoBranco)
+                    getCor(R.color.cinza110)
             );
 
         } else {
 
             btnMenosSurpresinha.setBackgroundTintList(
-                    getCor(corFonteFundoBranco)
+                    getCor(R.color.cinza110)
             );
 
             btnMaisSurpresinha.setBackgroundTintList(
-                    getCor(corFonteFundoBranco)
+                    getCor(R.color.cinza110)
             );
         }
     }
@@ -369,31 +361,31 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
                 && qtdTrevos < maximo) {
 
             btnMenosTrevos.setBackgroundTintList(
-                    getCor(corFonteFundoBranco)
+                    getCor(R.color.cinza110)
             );
 
             btnMaisTrevos.setBackgroundTintList(
-                    getCor(corFonteFundoBranco)
+                    getCor(R.color.cinza110)
             );
 
         } else if (qtdTrevos == minimo) {
 
             btnMenosTrevos.setBackgroundTintList(
-                    getCor(R.color.cinzaescuro)
+                    getCor(R.color.linhaDivisa)
             );
 
             btnMaisTrevos.setBackgroundTintList(
-                    getCor(corFonteFundoBranco)
+                    getCor(R.color.cinza110)
             );
 
         } else {
 
             btnMenosTrevos.setBackgroundTintList(
-                    getCor(corFonteFundoBranco)
+                    getCor(R.color.cinza110)
             );
 
             btnMaisTrevos.setBackgroundTintList(
-                    getCor(R.color.cinzaescuro)
+                    getCor(R.color.linhaDivisa)
             );
         }
     }
@@ -404,13 +396,13 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
 
     private void configuraListaDezenas() {
         listaDezenasSurpresinha.setExpanded(true);
-        simularDezenasAdapter = new SurpresinhaGridViewAdapter(getActivity(), montaListaDezenasSurpresinha(), getActivity(), corFonteFundoBranco);
+        simularDezenasAdapter = new SurpresinhaGridViewAdapter2(getActivity(), montaListaDezenasSurpresinha(), getActivity());
         listaDezenasSurpresinha.setAdapter(simularDezenasAdapter);
     }
 
     private ArrayList<String> montaListaDezenasSurpresinha() {
         ArrayList<String> arrayDezenas = new ArrayList<>();
-        for (int i = 0; i < Constantes.CINCO_INTEIRO; i++) {
+        for (int i = 0; i < Constantes.SEIS_INTEIRO; i++) {
             arrayDezenas.add("XX");
         }
 
@@ -711,9 +703,9 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     }
 
     private void initDiaDeSorte() {
-        escolhaItemImageView.setImageDrawable(getResources().getDrawable(R.drawable.agrupar_1));
-        infoItemSurpresaTextView.setText(R.string.label_mes_sorte);
-        infoItemSurpresaTextView.setTextColor(getResources().getColor(corFonteFundoBranco));
+//        escolhaItemImageView.setImageDrawable(getResources().getDrawable(R.drawable.agrupar_1));
+//        infoItemSurpresaTextView.setText(R.string.label_mes_sorte);
+//        infoItemSurpresaTextView.setTextColor(getResources().getColor(corFonteFundoBranco));
         escolherOutroItemBtn.setText(R.string.label_escolher_outro_mes);
         escolherOutroItemBtn.setVisibility(View.GONE);
         escolhaItemLayout.setVisibility(View.VISIBLE);

@@ -39,7 +39,8 @@
     <string name="surpresinhaTitulo">Surpresinha</string>
     <string name="surpresinhaInfo">Na Surpresinha os números ficam\nmascarados até a efetivação da compra.</string>
     <string name="surpresinhaQtdInfo">Você ainda pode escolher quantas\nSurpresinhas quer apostar neste concurso.</string>
-
+    <string name="surpresinhaInfoNova">Você ainda pode escolher quantos jogos Surpresinha quer apostar neste concurso:</string>
+    <string name="surpresinhaTime">O time também entra na surpresa! Mas, se quiser, você pode escolher o seu favorito.</string>
     <string name="titulo_dialog">Titulo da dialog</string>
     <string name="cancelar">Cancelar</string>
     <string name="ajuda_dialog">Ajuda</string>
@@ -206,6 +207,7 @@
     <string name="label_selecionar_times_aleatoriamente">_Selecionar_\ntimes aleatoriamente</string>
     <string name="label_selecionar_time_aleatoriamente">_Selecionar_\ntime aleatoriamente</string>
     <string name="label_escolha_time_coracao">_Escolha_\no time do coração</string>
+    <string name="label_escolher_time">Escolher time do coração</string>
     <string name="label_escolha_trevos">_Escolher_\nos Trevos</string>
     <string name="label_escolha_time_seu_coracao">Escolha o time do seu coração</string>
 
