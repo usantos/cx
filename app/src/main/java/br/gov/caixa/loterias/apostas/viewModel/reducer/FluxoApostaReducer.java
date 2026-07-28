@@ -185,6 +185,9 @@ public class FluxoApostaReducer {
                 .setMostrarBotaoLimparAposta(
                         botaoLimparHabilitado
                 )
+                .setQtdTotalSelecionadosSuperSete(
+                        event.getQtdTotalSelecionadosSuperSete()
+                )
                 .setMostrarSalvarAposta(
                         mostrarSalvarAposta
                 )
