@@ -11,6 +11,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -651,7 +652,10 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         boolean etapaNumeros = etapaAtual == EtapaAposta.NUMEROS;
 
-        boolean mostrarNextStep = modalidadeComSegundaEtapa && etapaNumeros;
+        boolean mostrarNextStep =
+                modalidadeComSegundaEtapa
+                        && etapaNumeros
+                        && !state.isSurpresinhaHabilitada();
 
         boolean mostrarAdicionar = !mostrarNextStep;
 
@@ -666,7 +670,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 !mostrarBtnQuantidadeTrevos;
 
         int corIcon = ContextCompat.getColor(this, estilo.getCorFonteFundoClaro());
-
 
         if (btnQuantidadeNumeros != null) {
 
@@ -1553,7 +1556,15 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             subtitulo = getResources().getString(R.string.valores_para_apostas_com_2_trevos);
         }
 
-        DialogUtils.showDialogListItens(SimulaActivity.this, getResources().getString(R.string.quant_de_numeros), subtitulo, state.getLabelsQuantidadeNumeros(), "Confirmar", "Cancelar", onQuantidadeNumerosDialogListener());
+        DialogUtils.showDialogListItens(
+                SimulaActivity.this,
+                getResources().getString(R.string.quant_de_numeros),
+                subtitulo,
+                state.getLabelsQuantidadeNumeros(),
+                "Confirmar",
+                "Cancelar",
+                onQuantidadeNumerosDialogListener()
+        );
     }
     private OnDialogListener onQuantidadeTrevosDialogListener() {
 
