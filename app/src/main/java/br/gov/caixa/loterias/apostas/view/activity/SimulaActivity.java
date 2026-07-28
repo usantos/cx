@@ -1631,14 +1631,10 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     textoBotaoPrognosticosSelecionado
             );
         }
-        EtapaFragment etapa = getEtapaAtual();
-        if (etapa != null) {
-            etapa.onQuantidadeNumerosAlterada();
-            etapa.onAtualizaValorTotalAposta(
-                    getQtdDezenasSelecionadaState(),
-                    getQtdConcursoState()
-            );
-        }
+
+        viewModel.onEvent(
+                new SimulaUiEvent.ValorApostaQuantidadeNumerosAtualizado()
+        );
     }
 
     //TODO//
@@ -1666,19 +1662,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void atualizarValorApostaPorTeimosinha() {
-        if (fragmentManager.findFragmentById(
-                R.id.fragmentSimularApostas
-        ) instanceof SurpresinhaFragment2) {
-            return;
-        }
-        EtapaFragment etapa = getEtapaAtual();
-        if (etapa != null) {
-            etapa.onQuantidadeNumerosAlterada();
-            etapa.onAtualizaValorTotalAposta(
-                    getQtdDezenasSelecionadaState(),
-                    getQtdConcursoState()
-            );
-        }
+        viewModel.onEvent(
+                new SimulaUiEvent.ValorApostaAtualizado()
+        );
     }
 
     private void abrirTelaCartela() {

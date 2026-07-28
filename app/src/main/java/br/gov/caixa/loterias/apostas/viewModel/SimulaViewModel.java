@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostas.viewModel.reducer.SurpresinhaReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.TeimosinhaReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.TelaInicializadaReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.TrevosReducer;
+import br.gov.caixa.loterias.apostas.viewModel.reducer.ValorApostaReducer;
 
 public class SimulaViewModel extends AndroidViewModel {
 
@@ -75,6 +76,7 @@ public class SimulaViewModel extends AndroidViewModel {
     private final TelaInicializadaReducer telaInicializadaReducer = new TelaInicializadaReducer(fluxoApostaReducer);
     private final CompletarApostaReducer completarApostaReducer = new CompletarApostaReducer();
     private final AdicionarCarrinhoReducer adicionarCarrinhoReducer = new AdicionarCarrinhoReducer();
+    private final ValorApostaReducer valorApostaReducer = new ValorApostaReducer();
     private IdentificaoDeUmaApostaDas8Modalidades apostaPendente;
     private BarraTituloDTO barraTituloPendente;
 
@@ -1035,7 +1037,6 @@ public class SimulaViewModel extends AndroidViewModel {
     private void confirmarQuantidadeNumeros(
             SimulaUiEvent.ConfirmarQuantidadeNumeros event
     ) {
-
         SimulaUiState novoEstado =
                 quantidadeNumerosReducer.confirmar(
                         getCurrentState(),
@@ -1047,10 +1048,7 @@ public class SimulaViewModel extends AndroidViewModel {
                 novoEstado
         );
 
-        if (novoEstado != null
-                && novoEstado.isSurpresinhaHabilitada()) {
-            recalcularValorSurpresinha();
-        }
+        recalcularValorApostaAtual();
     }
 
     private String montarTextoQuantidadeNumeros(
@@ -1103,6 +1101,8 @@ public class SimulaViewModel extends AndroidViewModel {
                         tipoJogoAtual
                 )
         );
+
+        recalcularValorApostaAtual();
     }
 
     private void consumirEventoUnico() {
@@ -1666,6 +1666,16 @@ public class SimulaViewModel extends AndroidViewModel {
         }
 
         return parametroJogoAtual.getQuantidadeMinima();
+    }
+
+    private void recalcularValorApostaAtual() {
+        updateState(state ->
+                valorApostaReducer.recalcular(
+                        state,
+                        parametroJogoAtual,
+                        tipoJogoAtual
+                )
+        );
     }
 
     private void updateState(

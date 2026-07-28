@@ -69,10 +69,7 @@ public abstract class BaseEtapaFragment
                         .getDezenasSelecionadas()
         );
     }
-    public void onAtualizaValorTotalAposta(
-            int prognosticos,
-            int concursos
-    ) {}
+
     protected BarraTituloDTO getBarraTitulo() {
 
         return getStateAtual().getBarraTituloDTO() != null

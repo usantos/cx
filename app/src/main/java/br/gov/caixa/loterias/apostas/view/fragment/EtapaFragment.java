@@ -16,10 +16,6 @@ public interface EtapaFragment {
     EtapaAposta getEtapa();
     void onQuantidadeNumerosAlterada();
 
-    void onAtualizaValorTotalAposta(
-            int numPrognostico,
-            int qtdTeimosinhas
-    );
     default void atualizarQuantidadeTrevos(
             ParametroValorApostaDTO valor
     ) {

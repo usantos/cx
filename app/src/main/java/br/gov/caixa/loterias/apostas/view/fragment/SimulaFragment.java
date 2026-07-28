@@ -2085,18 +2085,4 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         return EtapaAposta.NUMEROS;
     }
 
-    @Override
-    public void onAtualizaValorTotalAposta(
-            int numPrognostico,
-            int qtdTeimosinhas
-    ) {
-        atualizaValorTotalAposta(
-                numPrognostico,
-                qtdTeimosinhas
-        );
-
-        atualizaStatusBotaoFinalizar(
-                true
-        );
-    }
 }
