@@ -312,7 +312,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/caixa_std_regular"
-                    android:minWidth="100dp"
+                    android:minWidth="112dp"
                     android:padding="4dp"
                     android:text="6 números"
                     android:textAllCaps="false"
@@ -352,7 +352,7 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="12dp"
                 android:fontFamily="@font/caixa_std_regular"
-                android:minWidth="100dp"
+                android:minWidth="112dp"
                 android:padding="4dp"
                 android:text="Teimosinha"
                 android:textAllCaps="false"
@@ -395,7 +395,7 @@
             android:fontFamily="@font/caixa_std_regular"
             android:text="Selecione os números:"
             android:textColor="@color/cinza110"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutFiltros" />
 
