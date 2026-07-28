@@ -1633,6 +1633,7 @@
     <string name="label_time_do_coracao">Time do coração:</string>
     <string name="label_mes_sorteado_">Mês sorteado</string>
     <string name="label_mes_de_sorte">Mês de sorte:</string>
+    <string name="label_meses">Mês de sorte</string>
     <string name="label_trevos_sorteados">Trevos sorteados</string>
     <string name="label_trevos">Trevos</string>
     <string name="label_concurso_nao_apurado">Concurso\nnão apurado</string>

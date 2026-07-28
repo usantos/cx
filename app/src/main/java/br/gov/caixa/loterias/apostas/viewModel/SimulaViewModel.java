@@ -32,12 +32,14 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
+import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
@@ -51,6 +53,7 @@ import br.gov.caixa.loterias.apostas.viewModel.reducer.LimparReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.MesDaSorteReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.QuantidadeNumerosReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.StateReducer;
+import br.gov.caixa.loterias.apostas.viewModel.reducer.SurpresinhaCarrinhoReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.SurpresinhaReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.TeimosinhaReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.TelaInicializadaReducer;
@@ -65,6 +68,7 @@ public class SimulaViewModel extends AndroidViewModel {
     private final TrevosReducer trevosReducer = new TrevosReducer();
     private final CarrinhoReducer carrinhoReducer = new CarrinhoReducer();
     private final SurpresinhaReducer surpresinhaReducer = new SurpresinhaReducer();
+    private final SurpresinhaCarrinhoReducer surpresinhaCarrinhoReducer = new SurpresinhaCarrinhoReducer();
     private final MesDaSorteReducer mesDaSorteReducer = new MesDaSorteReducer();
     private final FavoritarApostaReducer favoritarApostaReducer = new FavoritarApostaReducer();
     private final LimparReducer limparReducer = new LimparReducer();
@@ -558,6 +562,12 @@ public class SimulaViewModel extends AndroidViewModel {
                     (SimulaUiEvent
                             .AtualizarQuantidadeNumerosSurpresinha)
                             event
+            );
+            return true;
+        }
+        if (event instanceof SimulaUiEvent.AdicionarSurpresinhaCarrinho) {
+            handleAdicionarSurpresinhaCarrinho(
+                    (SimulaUiEvent.AdicionarSurpresinhaCarrinho) event
             );
             return true;
         }
@@ -1389,6 +1399,34 @@ public class SimulaViewModel extends AndroidViewModel {
         return parametroJogoAtual
                 .getTrevos()
                 .getQtdMinima();
+    }
+    private void handleAdicionarSurpresinhaCarrinho(
+            SimulaUiEvent.AdicionarSurpresinhaCarrinho event
+    ) {
+
+        SimulaUiState state =
+                getCurrentState();
+
+        IncluirSurpresinhaDTO dto =
+                surpresinhaCarrinhoReducer.criar(
+                        state,
+                        parametroJogoAtual,
+                        tipoJogoAtual,
+                        event.isEspelhoLotomania()
+                );
+
+        if (dto == null) {
+            return;
+        }
+
+        updateState(
+                atual -> atual.toBuilder()
+                        .setComandoCarrinho(
+                                new CarrinhoEffect
+                                        .AdicionarSurpresinha(dto)
+                        )
+                        .build()
+        );
     }
 
     private void handleAdicionarCarrinhoSolicitado(SimulaUiEvent.AdicionarCarrinhoSolicitado event) {

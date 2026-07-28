@@ -962,4 +962,19 @@ public abstract class SimulaUiEvent {
     }
     public static class VoltarEtapa extends SimulaUiEvent {
     }
+    public static final class AdicionarSurpresinhaCarrinho
+            extends SimulaUiEvent {
+
+        private final boolean espelhoLotomania;
+
+        public AdicionarSurpresinhaCarrinho(
+                boolean espelhoLotomania
+        ) {
+            this.espelhoLotomania = espelhoLotomania;
+        }
+
+        public boolean isEspelhoLotomania() {
+            return espelhoLotomania;
+        }
+    }
 }

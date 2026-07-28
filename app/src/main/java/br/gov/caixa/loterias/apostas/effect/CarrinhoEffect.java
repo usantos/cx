@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.effect;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 
@@ -48,4 +49,20 @@ public abstract class CarrinhoEffect {
             return equipeSelecionada;
         }
     }
+    public static final class AdicionarSurpresinha
+            extends CarrinhoEffect {
+
+        private final IncluirSurpresinhaDTO dto;
+
+        public AdicionarSurpresinha(
+                IncluirSurpresinhaDTO dto
+        ) {
+            this.dto = dto;
+        }
+
+        public IncluirSurpresinhaDTO getDto() {
+            return dto;
+        }
+    }
+
 }

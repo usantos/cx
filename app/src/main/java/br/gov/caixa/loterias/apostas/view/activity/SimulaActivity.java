@@ -11,11 +11,9 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -60,6 +58,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
+import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AccessibilityUtils;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
@@ -145,6 +144,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     private TextView textInfoEtapa;
     private EtapaAposta etapaRenderizada;
+    private SurpresinhaApostaModel surpresinhaModel = new SurpresinhaApostaModel(this);
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1041,6 +1041,27 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             return;
         }
+        if (comando instanceof
+                CarrinhoEffect.AdicionarSurpresinha) {
+
+            if (surpresinhaModel == null) {
+                surpresinhaModel =
+                        new SurpresinhaApostaModel(this);
+            }
+
+            surpresinhaModel.addSurpresinhaCarrinho(
+                    ((CarrinhoEffect.AdicionarSurpresinha)
+                            comando)
+                            .getDto()
+            );
+
+            viewModel.onEvent(
+                    new SimulaUiEvent.ComandoCarrinhoConsumido()
+            );
+
+            return;
+        }
+
 
         if (comando instanceof CarrinhoEffect.AdicionarTimeSurpresa) {
 

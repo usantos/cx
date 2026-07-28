@@ -6,9 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,13 +23,10 @@ import java.util.ArrayList;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
-import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
-import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -68,7 +63,7 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     private LinearLayout layoutEspelhoSurpresinha;
     private AppCompatCheckBox selcioneEspelhoSurpresinha;
     private ConstraintLayout maisMilionaria, numeroNovoConst;
-    private SurpresinhaApostaModel model;
+    private ConstraintLayout mesesContainer;
 
     public SurpresinhaFragment2() {}
 
@@ -165,6 +160,7 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         selcioneEspelhoSurpresinha = view.findViewById(R.id.selcioneEspelhoSurpresinha);
         maisMilionaria = view.findViewById(R.id.maisMilionaria);
         numeroNovoConst = view.findViewById(R.id.numeroNovoConst);
+        mesesContainer = view.findViewById(R.id.mesesContainer);
     }
 
     private void setListeners(){
@@ -179,7 +175,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     }
 
     private void init() {
-        model = new SurpresinhaApostaModel(getActivity());
 
         AppCenterManager.registraEvento("ENTROU_SURPRESINHA");
 
@@ -202,16 +197,12 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
             selcioneEspelhoSurpresinha = layoutEspelhoSurpresinha.findViewById(R.id.selcioneEspelhoSurpresinha);
         }
 
-        if (equipeSelecionada != null) {
-            adicionarSurpresinhaNoCarrinho();
-        }
-
         if (isTimemania()) {
             escolhaItemLayout.setVisibility(View.VISIBLE);
         }
 
         if (isDiaDeSorte()) {
-            initDiaDeSorte();
+            mesesContainer.setVisibility(View.VISIBLE);
         }
 
 
@@ -407,98 +398,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         }
 
         return arrayDezenas;
-    }
-
-
-    public void adicionarSurpresinhaNoCarrinho() {
-
-        SimulaUiState state =
-                getStateAtual();
-
-        if (state == null
-                || parametroJogo == null) {
-            return;
-        }
-
-        IncluirSurpresinhaDTO surpresinha;
-
-        int quantidadeNumeros =
-                state.getQuantidadeNumerosSurpresinha();
-
-        int quantidadeSurpresinhas =
-                state.getQuantidadeSurpresinhas();
-
-        int quantidadeConcursos =
-                state.getQtdConcursoSelecionado();
-
-        BigDecimal valorAposta =
-                state.getValorAposta();
-
-        switch (
-                parametroJogo.getConcurso()
-                        .getModalidade()
-        ) {
-
-            case TIMEMANIA:
-
-                surpresinha =
-                        ApostaUtils.getSurpresinhaTimemania(
-                                parametroJogo,
-                                quantidadeNumeros,
-                                quantidadeSurpresinhas,
-                                quantidadeConcursos,
-                                valorAposta,
-                                equipeSelecionada
-                        );
-
-                break;
-
-            case LOTOMANIA:
-
-                surpresinha =
-                        ApostaUtils.getSurpresinhaLotomania(
-                                parametroJogo,
-                                quantidadeNumeros,
-                                quantidadeSurpresinhas,
-                                quantidadeConcursos,
-                                valorAposta,
-                                selcioneEspelhoSurpresinha
-                                        .isChecked()
-                        );
-
-                break;
-
-            case MAIS_MILIONARIA:
-
-                surpresinha =
-                        ApostaUtils.getSurpresinhaMaisMilionaria(
-                                parametroJogo,
-                                quantidadeNumeros,
-                                quantidadeSurpresinhas,
-                                quantidadeConcursos,
-                                valorAposta,
-                                state.getQuantidadeTrevosSurpresinha()
-                        );
-
-                break;
-
-            default:
-
-                surpresinha =
-                        ApostaUtils.getSurpresinha(
-                                parametroJogo,
-                                quantidadeNumeros,
-                                quantidadeSurpresinhas,
-                                quantidadeConcursos,
-                                valorAposta
-                        );
-
-                break;
-        }
-
-        model.addSurpresinhaCarrinho(
-                surpresinha
-        );
     }
 
     private boolean isLotomania() {
@@ -702,15 +601,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         );
     }
 
-    private void initDiaDeSorte() {
-//        escolhaItemImageView.setImageDrawable(getResources().getDrawable(R.drawable.agrupar_1));
-//        infoItemSurpresaTextView.setText(R.string.label_mes_sorte);
-//        infoItemSurpresaTextView.setTextColor(getResources().getColor(corFonteFundoBranco));
-        escolherOutroItemBtn.setText(R.string.label_escolher_outro_mes);
-        escolherOutroItemBtn.setVisibility(View.GONE);
-        escolhaItemLayout.setVisibility(View.VISIBLE);
-    }
-
     public void resetQtdTrevos() {
 
         if (parametroJogo == null || parametroJogo.getTrevos() == null) {
@@ -727,7 +617,11 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         );
     }
     public void onAdicionarRodapeClicado() {
-        adicionarSurpresinhaNoCarrinho();
+        dispatch(
+                new SimulaUiEvent.AdicionarSurpresinhaCarrinho(
+                        selcioneEspelhoSurpresinha.isChecked()
+                )
+        );
     }
     protected ApostaFavoritaDTO criarApostaFavoritaDTO(){
         ApostaFavoritaDTO apostaFavorita =

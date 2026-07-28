@@ -58,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
+                android:importantForAccessibility="yes"
                 app:layout_constraintTop_toBottomOf="@id/numerosInfo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -76,15 +77,16 @@
                 <View
                     android:layout_width="40dp"
                     android:layout_height="2dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center|bottom"
                     android:background="@color/cinza110"/>
 
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNumerosMenos"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="0dp"
                 android:backgroundTint="@color/cinza110"
@@ -100,8 +102,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNumerosMais"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/mais"
@@ -135,12 +137,45 @@
             android:verticalSpacing="9dp"
             app:layout_constraintTop_toBottomOf="@+id/surpresinhaInfo" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mesesContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/listaDezenasSurpresinha"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/mesesIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/time_surpresa"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/mesesLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/label_meses"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toEndOf="@id/mesesIcon"
+                app:layout_constraintTop_toTopOf="@id/mesesIcon"
+                app:layout_constraintBottom_toBottomOf="@id/mesesIcon"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/escolhaItemLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/listaDezenasSurpresinha"
+            app:layout_constraintTop_toBottomOf="@+id/mesesContainer"
             android:visibility="gone"
             android:orientation="vertical"
             tools:visibility="visible">
@@ -220,6 +255,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
+                android:importantForAccessibility="yes"
                 app:layout_constraintTop_toBottomOf="@id/trevosInfo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -238,14 +274,15 @@
                 <View
                     android:layout_width="40dp"
                     android:layout_height="2dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center|bottom"
                     android:background="@color/cinza110"/>
 
             </LinearLayout>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenosTrevos"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="0dp"
                 android:backgroundTint="@color/cinza110"
@@ -261,8 +298,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMaisTrevos"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/mais"
@@ -305,6 +342,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
+            android:importantForAccessibility="yes"
             app:layout_constraintTop_toBottomOf="@id/surpresinhaQtdInfo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -323,15 +361,16 @@
             <View
                 android:layout_width="40dp"
                 android:layout_height="2dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center|bottom"
                 android:background="@color/cinza110"/>
 
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnMenosSurpresinha"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="0dp"
             android:layout_marginTop="20dp"
             app:cornerRadius="4dp"
@@ -347,8 +386,8 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnMaisSurpresinha"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="0dp"
             android:layout_marginTop="20dp"
             app:cornerRadius="4dp"
