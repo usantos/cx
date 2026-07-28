@@ -525,25 +525,16 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 && state.isOpcaoOutrosNumerosSelecionada()) {
 
             aposta.setGerarEspelho(true);
-
-            if (aposta.getValor() != null) {
-                aposta.setValor(
-                        aposta.getValor()
-                                .divide(Constantes.DOIS_BIG_DECIMAL)
-                );
-            }
         }
 
         return aposta;
     }
 
     private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
-
         BigDecimal valorAtual =
-                parentActivity.getValorTotalApostaAtual();
+                obterValorApostaParaCarrinho();
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
-
             return ApostaUtils.getApostaDiaDeSorte(
                     parametroJogo,
                     getDezenasSelecionadasState(),
@@ -551,9 +542,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                     getStateAtual().getQtdConcursoSelecionado(),
                     parentActivity.getMesDeSorteCartela()
             );
-
         } else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-
             return ApostaUtils.getApostaLoteca(
                     parametroJogo,
                     getDezenasSelecionadasState(),
@@ -561,9 +550,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                     getStateAtual().getQtdConcursoSelecionado(),
                     partidasSelecionadas
             );
-
         } else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
-
             return ApostaUtils.getApostaLotogol(
                     parametroJogo,
                     getDezenasSelecionadasState(),
@@ -571,9 +558,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                     getStateAtual().getQtdConcursoSelecionado(),
                     partidasSelecionadas
             );
-
         } else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-
             return ApostaUtils.getApostaTimemania(
                     parametroJogo,
                     getDezenasSelecionadasState(),
@@ -581,9 +566,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                     getStateAtual().getQtdConcursoSelecionado(),
                     getStateAtual().getEquipeSelecionada()
             );
-
         } else {
-
             return ApostaUtils.getApostaPreenchida(
                     parametroJogo,
                     getDezenasSelecionadasState(),
@@ -591,6 +574,24 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                     getStateAtual().getQtdConcursoSelecionado()
             );
         }
+    }
+    private BigDecimal obterValorApostaParaCarrinho() {
+        BigDecimal valorAtual =
+                parentActivity != null
+                        ? parentActivity.getValorTotalApostaAtual()
+                        : BigDecimal.ZERO;
+
+        SimulaUiState state = getStateAtual();
+
+        if (parametroJogo != null
+                && parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)
+                && state != null
+                && state.isOpcaoOutrosNumerosSelecionada()) {
+
+            return valorAtual.divide(BigDecimal.valueOf(2));
+        }
+
+        return valorAtual;
     }
 
     private void zeraLoteca() {
@@ -1134,10 +1135,13 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     }
 
     private void onClickOutrosNumerosLayout() {
+        opcaoOutrosNumerosLayout.setOnClickListener(v -> {
+            dispatch(
+                    new SimulaUiEvent.ToggleOutrosNumeros()
+            );
 
-        opcaoOutrosNumerosLayout.setOnClickListener(v -> dispatch(
-                new SimulaUiEvent.ToggleOutrosNumeros()
-        ));
+            atualizarValorENotificarEstadoCartela();
+        });
     }
 
     private void preencheNumerosAleatorios() {

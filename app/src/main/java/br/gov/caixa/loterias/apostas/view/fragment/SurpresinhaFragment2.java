@@ -570,13 +570,15 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     private void renderValorAposta(
             SimulaUiState state
     ) {
+        BigDecimal valor = state.getValorAposta();
 
-        if (valorAposta == null) {
-            return;
+        if (selcioneEspelhoSurpresinha != null
+                && selcioneEspelhoSurpresinha.isChecked()) {
+            valor = valor.multiply(BigDecimal.valueOf(2));
         }
 
         ViewUtils.setMoedaFormatHtml(
-                state.getValorAposta(),
+                valor,
                 valorAposta
         );
     }

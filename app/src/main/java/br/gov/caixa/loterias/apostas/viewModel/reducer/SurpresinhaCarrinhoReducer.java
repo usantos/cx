@@ -16,7 +16,6 @@ public class SurpresinhaCarrinhoReducer {
             ModalidadeEnum modalidade,
             boolean espelhoLotomania
     ) {
-
         if (state == null
                 || parametroJogo == null
                 || modalidade == null) {
@@ -33,10 +32,19 @@ public class SurpresinhaCarrinhoReducer {
                 state.getQtdConcursoSelecionado();
 
         BigDecimal valorAposta =
-                state.getValorAposta();
+                state.getValorAposta() != null
+                        ? state.getValorAposta()
+                        : BigDecimal.ZERO;
+
+        if (modalidade == ModalidadeEnum.LOTOMANIA
+                && espelhoLotomania) {
+            valorAposta =
+                    valorAposta.multiply(
+                            BigDecimal.valueOf(2)
+                    );
+        }
 
         switch (modalidade) {
-
             case TIMEMANIA:
                 return ApostaUtils.getSurpresinhaTimemania(
                         parametroJogo,
