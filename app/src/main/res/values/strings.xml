@@ -1041,7 +1041,7 @@
     <string name="extra_type_game_color_light">typeGameColorLight</string>
     <string name="extra_type_game_color_Dark">typeGameColorDark</string>
     <string name="evento_entrou_selecao_prognosticos">ENTROU_SELECAO_PROGNOSTICOS</string>
-    <string name="quant_de_numeros">Quant. de números</string>
+    <string name="quant_de_numeros">Quantidade de números</string>
     <string name="espaco_numeros">&#160;números</string>
     <string name="evento_entrou_popup_teimosinha">ENTROU_POPUP_TEIMOSINHA</string>
     <string name="teimosinhas_maiusculo">Teimosinhas</string>
@@ -1172,7 +1172,8 @@
     <string name="subtitulo_trevos">Agora escolha de 2 a 6 trevos \npara marcar nesta aposta</string>
     <string name="trevos">trevos</string>
     <string name="para_aposta_com_x_numeros">Para a aposta com x números</string>
-    <string name="quant_de_trevos">Quant. de trevos</string>
+    <string name="quant_de_trevos">Quantidade de trevos</string>
+    <string name="informe_favorita">Informe um nome para salvar sua aposta favorita:</string>
     <string name="trevos_por"> trevos por </string>
     <string name="completar_trevos_aleatoriamente">_Completar_\n Trevos aleatoriamente</string>
     <string name="comecar_tutorial">_Começar_\n tutorial</string>

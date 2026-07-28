@@ -565,7 +565,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        Dialog dialog = DialogUtils.buildDialogFavoritar(this, getString(R.string.favoritar_aposta), getString(R.string.exemplo_aposta), new OnDialogFavoritarListener() {
+        Dialog dialog = DialogUtils.buildDialogFavoritar(this, getString(R.string.favoritar_aposta), getString(R.string.exemplo_aposta), getString(R.string.informe_favorita), new OnDialogFavoritarListener() {
             @Override
             public void Confirmar(String nome, boolean manterSurpresinhas) {
                 if (TextUtils.isEmpty(nome)) {
@@ -933,7 +933,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        DialogUtils.dialogTituloEntendi(this, state.getTitleComoJogar(), state.getMensagemComoJogar());
+        DialogUtils.dialogHtml(this, state.getTitleComoJogar(), state.getMensagemComoJogar());
 
         viewModel.onEvent(new SimulaUiEvent.DialogComoJogarConsumido());
     }
@@ -1774,7 +1774,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         );
     }
     private boolean possuiApostaEmAndamento() {
-
         SimulaUiState state =
                 viewModel.getUiState().getValue();
 
@@ -1782,7 +1781,16 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return false;
         }
 
-        return state.getDezenasSelecionadas() != null
-                && !state.getDezenasSelecionadas().isEmpty();
+        if (state.getDezenasSelecionadas() != null
+                && !state.getDezenasSelecionadas().isEmpty()) {
+            return true;
+        }
+
+        if (state.getTipoJogo() == ModalidadeEnum.SUPER_7) {
+            return state.getQtdTotalSelecionadosSuperSete() > 0;
+        }
+
+        return false;
     }
+
 }
