@@ -49,11 +49,20 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 		return bolaoList.size();
 	}
 
-	public void atualizaLista(int inicioRange, List<CotasBolaoDTO> novosBoloes, FiltroAplicadoMarketplace filtro) {
+	public void atualizaLista(
+			int inicioRange,
+			List<CotasBolaoDTO> novosBoloes,
+			FiltroAplicadoMarketplace filtro
+	) {
 		this.filtro = filtro;
-		if (bolaoList != null){
+
+		if (bolaoList != null) {
 			bolaoList.addAll(novosBoloes);
-			notifyItemRangeInserted(inicioRange, bolaoList.size());
+
+			notifyItemRangeInserted(
+					inicioRange,
+					novosBoloes.size()
+			);
 		}
 	}
 }
