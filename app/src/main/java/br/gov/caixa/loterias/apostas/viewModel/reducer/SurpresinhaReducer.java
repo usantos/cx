@@ -1,12 +1,14 @@
 package br.gov.caixa.loterias.apostas.viewModel.reducer;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 
 public class SurpresinhaReducer {
 
@@ -40,17 +42,29 @@ public class SurpresinhaReducer {
                     .build();
         }
 
-        ScreenSimulaEffect comando =
-                new ScreenSimulaEffect.VoltarEtapa(
-                        atual.getEtapaAposta()
-                );
 
         return atual.toBuilder()
                 .setSurpresinhaHabilitada(false)
-                .setComandoTelaSimula(comando)
                 .setBotaoCompletarVisivel(true)
                 .setBotaoCompletarHabilitado(true)
                 .setBotaoAdicionarHabilitado(false)
+                // voltar para a etapa inicial
+                .setEtapaAposta(EtapaAposta.NUMEROS)
+                .setTextoInfoEtapa("1/2")
+                // limpar seleções
+                .setDezenasSelecionadas(new ArrayList<>())
+                .setTrevosSelecionados(new ArrayList<>())
+                .setQuantidadeTrevosSelecionada(0)
+                .setEquipeSelecionada(null)
+                .setMesSelecionado(null)
+                // limpar estado visual
+                .setBotaoNextStepHabilitado(false)
+                .setMostrarBotaoLimparAposta(true)
+                .setComandoTelaSimula(
+                        new ScreenSimulaEffect.VoltarEtapa(
+                                EtapaAposta.NUMEROS
+                        )
+                )
                 .build();
     }
 
