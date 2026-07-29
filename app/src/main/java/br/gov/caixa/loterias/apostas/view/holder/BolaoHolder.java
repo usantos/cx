@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.math.BigDecimal;
 
@@ -179,8 +180,11 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		botaoFavoritar.setState(bolao.isLotericaFavorita());
 
 		botaoFavoritar.setOnStateChangeListener(isFavoritado -> {
-			if(listener != null){
-				listener.onFavoritarClick(position);
+
+			int pos = getBindingAdapterPosition();
+
+			if (pos != RecyclerView.NO_POSITION) {
+				listener.onFavoritarClick(pos);
 			}
 		});
 
@@ -216,19 +220,19 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.seta_bolao:
-				listener.verMais(this, getAbsoluteAdapterPosition());
+				listener.verMais(this, getBindingAdapterPosition());
 				break;
 			case R.id.detalhes:
-				listener.detalhes(getAbsoluteAdapterPosition());
+				listener.detalhes(getBindingAdapterPosition());
 				break;
 			case R.id.diminui_cota:
-				listener.diminui(this, getAbsoluteAdapterPosition());
+				listener.diminui(this, getBindingAdapterPosition());
 				break;
 			case R.id.aumenta_cota:
-				listener.aumenta(this, getAbsoluteAdapterPosition());
+				listener.aumenta(this, getBindingAdapterPosition());
 				break;
 			case R.id.adicionar_carrinho:
-				listener.adicionarCarrinho(getAbsoluteAdapterPosition());
+				listener.adicionarCarrinho(getBindingAdapterPosition());
 				break;
 		}
 	}

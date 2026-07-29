@@ -48,21 +48,10 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 	public int getItemCount() {
 		return bolaoList.size();
 	}
-
-	public void atualizaLista(
-			int inicioRange,
-			List<CotasBolaoDTO> novosBoloes,
+	public void atualizarFiltro(
 			FiltroAplicadoMarketplace filtro
 	) {
 		this.filtro = filtro;
-
-		if (bolaoList != null) {
-			bolaoList.addAll(novosBoloes);
-
-			notifyItemRangeInserted(
-					inicioRange,
-					novosBoloes.size()
-			);
-		}
+		notifyDataSetChanged();
 	}
 }

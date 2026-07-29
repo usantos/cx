@@ -75,7 +75,7 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
             case R.id.ic_lixeira: {
                 String excluirFavorita = "Deseja excluir xxx da sua lista de favoritas?";
 
-                final int pos = getAbsoluteAdapterPosition();
+                final int pos = getBindingAdapterPosition();
                 if (pos == RecyclerView.NO_POSITION) {
                     break;
                 }
@@ -98,7 +98,7 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
             }
 
             case R.id.ver_bolao:
-				listener.verBoloes(this, getAbsoluteAdapterPosition());
+				listener.verBoloes(this, getBindingAdapterPosition());
 				break;
 		}
 	}
