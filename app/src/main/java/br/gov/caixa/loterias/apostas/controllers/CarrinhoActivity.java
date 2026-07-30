@@ -45,6 +45,7 @@ import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -344,6 +345,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     private void onClickAvancaPagamento() {
+        logCart();
         if (LoginSP.isLoginRealizado() && RedirectUtils.temRedirectCadastrarApostador()){
             startActivity(IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, CadastrarActivity.class));
             finish();
@@ -373,6 +375,23 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             } else {
                 trataPermissao();
             }
+        }
+    }
+
+    private void logCart(){
+        if(carrinho != null) {
+            AnalyticsHelper.getInstance().logInteraction(
+                    AnalyticsHelper.EventCategoryParams.CTA,
+                    AnalyticsHelper.EventActionParams.CLICK,
+                    AnalyticsHelper.EventLabelParams.PAYMENT,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.CARRINHO,
+                    AnalyticsHelper.Tela.BETS_CART,
+                    ViewUtils.getMoedaFormat(carrinho.getValorTotal()),
+                    String.valueOf(carrinho.getApostas().size()),
+                    String.valueOf(carrinho.getApostasIndividuais().size()),
+                    String.valueOf(carrinho.getBoloes().size())
+        );
         }
     }
 
@@ -566,6 +585,13 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 setCarrinho(payload);
                 atualizaLayout(offSet);
 
+                AnalyticsHelper.getInstance().logViewCartScreen(
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.CARRINHO,
+                        AnalyticsHelper.Tela.BETS_CART,
+                        payload
+                );
+
                 if (payload.getMsgCotaExcluida() != null && payload.getMsgCotaExcluida()) {
                     notificationCotasExcluidas();
                 }
@@ -605,6 +631,13 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 ocorrendoValidacao = false;
                 AlertDialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
+                AnalyticsHelper.getInstance().logFlowEnd(
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.CARRINHO,
+                        AnalyticsHelper.Tela.BETS_CART,
+                        carrinho
+                );
                 startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
             }
 
