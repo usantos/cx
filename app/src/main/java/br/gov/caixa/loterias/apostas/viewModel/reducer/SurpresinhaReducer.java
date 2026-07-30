@@ -69,6 +69,25 @@ public class SurpresinhaReducer {
                 )
                 .build();
     }
+    public SimulaUiState voltarParaSurpresinha(
+            SimulaUiState atual
+    ) {
+        if (atual == null) {
+            return null;
+        }
+
+        return atual.toBuilder()
+                .setTelaSelecaoTimeAtivado(false)
+                .setEscolhaTimeCoracaoSurpresinha(false)
+                .setEtapaAposta(EtapaAposta.NUMEROS)
+                .setComandoTelaSimula(
+                        new ScreenSimulaEffect.AbrirSurpresinha(
+                                false,
+                                true
+                        )
+                )
+                .build();
+    }
 
     public SimulaUiState surpresinhaAberta(
             SimulaUiState atual

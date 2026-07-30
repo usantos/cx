@@ -910,6 +910,9 @@ public abstract class SimulaUiEvent {
             return qtdConcurso;
         }
     }
+    public static final class VoltarParaSurpresinha
+            extends SimulaUiEvent {
+    }
     public static final class SelecionarMesDaSorte
             extends SimulaUiEvent {
 

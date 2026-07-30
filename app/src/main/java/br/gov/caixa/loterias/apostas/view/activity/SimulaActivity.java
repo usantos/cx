@@ -167,11 +167,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         onBackPressedDispatcher();
     }
     private void onBackPressedDispatcher(){
-
         getOnBackPressedDispatcher().addCallback(
                 this,
                 new OnBackPressedCallback(true) {
-
                     @Override
                     public void handleOnBackPressed() {
 
@@ -179,14 +177,24 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                                 SimulaActivity.this
                         );
 
+                        SimulaUiState state =
+                                viewModel.getUiState().getValue();
+
+                        if (state != null
+                                && state.isEscolhaTimeCoracaoSurpresinha()) {
+
+                            viewModel.onEvent(
+                                    new SimulaUiEvent.VoltarParaSurpresinha()
+                            );
+                            return;
+                        }
+
                         if (voltarEtapaComplementar()) {
                             return;
                         }
 
                         if (possuiApostaEmAndamento()) {
-
                             exibirDialogConfirmacaoSaida();
-
                             return;
                         }
 

@@ -578,6 +578,10 @@ public class SimulaViewModel extends AndroidViewModel {
             handleSolicitarSelecaoTimeCoracao();
             return true;
         }
+        if (event instanceof SimulaUiEvent.VoltarParaSurpresinha) {
+            handleVoltarParaSurpresinha();
+            return true;
+        }
         if (event instanceof
                 SimulaUiEvent.AtualizarQuantidadeTrevosSurpresinha) {
 
@@ -1731,6 +1735,11 @@ public class SimulaViewModel extends AndroidViewModel {
                         parametroJogoAtual,
                         tipoJogoAtual
                 )
+        );
+    }
+    private void handleVoltarParaSurpresinha() {
+        updateState(
+                surpresinhaReducer::voltarParaSurpresinha
         );
     }
 
