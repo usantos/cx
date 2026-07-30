@@ -194,7 +194,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 bolaoList,
                 onItemBolaoListener(),
                 this,
-                filtro
+                filtro,
+                true
         );
 
         concatBolaoAdapter = new ConcatAdapter(
