@@ -14,19 +14,26 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 
-	private TextView nomeEquipe1, nomeEquipe2, nomeEmpate;
-	private ImageView checkEquipe1, checkEquipe2, checkEmpate;
-	private Context context;
-	private ConfiguracaoLoteca configuracaoLoteca;
-	private ResultadoConcursoDTO resultado;
+	private final TextView nomeEquipe1;
+    private final TextView nomeEquipe2;
+    private final TextView nomeEmpate;
+    private final TextView jogo;
+	private final ImageView checkEquipe1;
+    private final ImageView checkEquipe2;
+    private final ImageView checkEmpate;
+	private final Context context;
+	private final ConfiguracaoLoteca configuracaoLoteca;
+	private final ResultadoConcursoDTO resultado;
 
-	private Boolean isEspecial;
+	private final Boolean isEspecial;
 
 	public PartidaLotecaHolder(View itemView, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso, Boolean isEspecial) {
 		super(itemView);
+		jogo = itemView.findViewById(R.id.title);
 		nomeEquipe1 = itemView.findViewById(R.id.nome_equipe_1);
 		nomeEquipe2 = itemView.findViewById(R.id.nome_equipe_2);
 		nomeEmpate  = itemView.findViewById(R.id.nome_empate);
@@ -61,8 +68,22 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 			nomeEmpate.setTextColor(context.getResources().getColor(configuracaoLoteca.getCorTexto()));
 		}
 		aplicaChecks(partida);
+		aplicaFonte(partida);
 		if (resultado != null){
 			aplicaResultados(position);
+		}
+		jogo.setText(context.getString(R.string.jogo_numero, position + 1));
+	}
+
+	private void aplicaFonte(PartidaLotecaDTO partida) {
+		aplicaFonte(nomeEmpate, partida.getEmpate());
+		aplicaFonte(nomeEquipe1, partida.getEquipe1().getVitoria());
+		aplicaFonte(nomeEquipe2, partida.getEquipe2().getVitoria());
+	}
+
+	private void aplicaFonte(TextView txt, Boolean devePintar) {
+		if (devePintar) {
+			txt.setTypeface(ViewUtils.getFontCaixaStdBold(context));
 		}
 	}
 
