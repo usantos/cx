@@ -188,8 +188,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
         bolaoFooterAdapter = new BolaoFooterAdapter();
 
+        bolaoList = new ArrayList<>();
+
         listAdapter = new ListaBolaoAdapter(
-                new ArrayList<>(),
+                bolaoList,
                 onItemBolaoListener(),
                 this,
                 filtro
@@ -824,27 +826,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         if (bolaoList == null) {
             bolaoList = new ArrayList<>();
         }
+        List<CotasBolaoDTO> novaListaCompleta =
+                model.getBolaoList(cotas);
 
-        List<CotasBolaoDTO> novaListaCompleta = model.getBolaoList(cotas);
+        bolaoList.clear();
+        bolaoList.addAll(novaListaCompleta);
 
-        if (listAdapter == null) {
-            bolaoList = novaListaCompleta;
-            listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), this, filtro);
-        } else {
-            int inicioRange = bolaoList.size();
-            bolaoList.clear();
-            bolaoList.addAll(novaListaCompleta);
-
-            if (inicioRange < bolaoList.size()) {
-                listAdapter.atualizaLista(
-                        inicioRange,
-                        bolaoList.subList(inicioRange, bolaoList.size()),
-                        filtro
-                );
-            } else {
-                listAdapter.notifyDataSetChanged();
-            }
-        }
+        listAdapter.notifyDataSetChanged();
 
         bolaoFooterAdapter.mostrarLoading(false);
         bolaoFooterAdapter.mostrarFimLista(!bolaoList.isEmpty() && model.isAcabouRegistros());
@@ -913,7 +901,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 cotasDisponiveis = null;
 
                 buscaBoloesFiltro();
-                listAdapter = null;
                 bolaoFooterAdapter.mostrarLoading(false);
                 rvConteudoBoloes.scrollToPosition(0);
             }
@@ -980,7 +967,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             if (result.getResultCode() == Activity.RESULT_OK) {
                 AlertDialogUtils.show(BolaoActivity.this);
                 model.zeraPaginacao();
-                listAdapter = null;
                 cotasDisponiveis = null;
                 if (isFiltrando) {
                     buscaBoloesFiltro();
@@ -1101,9 +1087,18 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private OnItemBolaoListener onItemBolaoListener() {
         return new OnItemBolaoListener() {
             @Override
-            public void verMais(BolaoHolder holder, int position) {
-                bolaoList.get(position).setAbertoParaMostrarDetalhes(!bolaoList.get(position).isAbertoParaMostrarDetalhes());
-                holder.mostrarDetalhes(bolaoList.get(position).isAbertoParaMostrarDetalhes());
+            public void verMais(
+                    BolaoHolder holder,
+                    int position
+            ) {
+                CotasBolaoDTO item =
+                        bolaoList.get(position);
+
+                item.setAbertoParaMostrarDetalhes(
+                        !item.isAbertoParaMostrarDetalhes()
+                );
+
+                listAdapter.notifyItemChanged(position);
             }
 
             @Override

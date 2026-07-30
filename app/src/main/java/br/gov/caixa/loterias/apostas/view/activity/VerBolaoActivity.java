@@ -330,21 +330,10 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
 
         List<CotasBolaoDTO> novaListaCompleta = model.getBolaoList(cotas);
 
-        int tamanhoAnterior = bolaoList.size();
         bolaoList.clear();
         bolaoList.addAll(novaListaCompleta);
 
-        if (tamanhoAnterior == 0) {
-            listAdapter.notifyDataSetChanged();
-        } else if (tamanhoAnterior < bolaoList.size()) {
-            listAdapter.atualizaLista(
-                    tamanhoAnterior,
-                    bolaoList.subList(tamanhoAnterior, bolaoList.size()),
-                    filtro
-            );
-        } else {
-            listAdapter.notifyDataSetChanged();
-        }
+        listAdapter.notifyDataSetChanged();
 
         bolaoFooterAdapter.mostrarLoading(false);
         bolaoFooterAdapter.mostrarFimLista(!bolaoList.isEmpty() && model.isAcabouRegistros());
@@ -440,8 +429,9 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
             if (result.getResultCode() == Activity.RESULT_OK) {
                 AlertDialogUtils.show(VerBolaoActivity.this);
                 model.zeraPaginacao();
-                listAdapter = null;
                 cotasDisponiveis = null;
+                bolaoList.clear();
+                carrosselList.clear();
                 buscaBoloesFiltro();
             }
         };
