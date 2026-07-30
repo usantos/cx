@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.viewModel.reducer;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
@@ -65,7 +67,19 @@ public class FluxoApostaReducer {
         boolean apostaFavoritada =
                 atual.isApostaFavoritada();
 
-        if (estaEmTimeCoracao) {
+        boolean escolhaTimeSurpresinha =
+                atual.isSurpresinhaHabilitada()
+                        && event.isEscolhaTimeCoracaoSurpresinha()
+                        && etapa == EtapaAposta.TIME_CORACAO;
+
+        if (escolhaTimeSurpresinha) {
+            botaoAdicionarHabilitado = event.isEquipeSelecionadaValida();
+            botaoCompletarHabilitado = false;
+            mostrarSalvarAposta = false;
+            botaoLimparHabilitado = false;
+            apostaFavoritada = false;
+        }
+        else if (estaEmTimeCoracao) {
 
             botaoAdicionarHabilitado =
                     event.isEquipeSelecionadaValida();
@@ -149,12 +163,13 @@ public class FluxoApostaReducer {
                 );
 
         boolean exibirInfoEtapa =
-                possuiEtapaComplementar(
-                        tipoJogo
-                );
+                possuiEtapaComplementar(tipoJogo)
+                        && !atual.isEscolhaTimeCoracaoSurpresinha();
 
         String textoInfoEtapa =
-                obterTextoInfoEtapa(
+                atual.isEscolhaTimeCoracaoSurpresinha()
+                        ? ""
+                        : obterTextoInfoEtapa(
                         tipoJogo,
                         etapa
                 );
@@ -205,6 +220,14 @@ public class FluxoApostaReducer {
                 )
                 .setExibirInfoEtapa(
                         exibirInfoEtapa
+                )
+                .setTelaSelecaoTimeAtivado(
+                        escolhaTimeSurpresinha
+                                || atual.isTelaSelecaoTimeAtivado()
+                )
+                .setEscolhaTimeCoracaoSurpresinha(
+                        escolhaTimeSurpresinha
+                                || atual.isEscolhaTimeCoracaoSurpresinha()
                 )
                 .setTextoInfoEtapa(
                         textoInfoEtapa
@@ -471,11 +494,13 @@ public class FluxoApostaReducer {
 
         if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
             return resolverFluxoTimemania(
+                    atual,
                     event,
                     etapaAtual,
                     numerosCompletos
             );
         }
+
 
         if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE) {
 
@@ -518,12 +543,26 @@ public class FluxoApostaReducer {
         );
     }
     private ResultadoFluxoAposta resolverFluxoTimemania(
+            SimulaUiState atual,
             SimulaUiEvent.CartelaAlterada event,
             EtapaAposta etapaAtual,
             boolean numerosCompletos
     ) {
         boolean timeValido =
                 event.isEquipeSelecionadaValida();
+
+        boolean escolhaTimeSurpresinha =
+                atual != null
+                        && atual.isSurpresinhaHabilitada()
+                        && atual.isEscolhaTimeCoracaoSurpresinha();
+
+        if (escolhaTimeSurpresinha) {
+            return new ResultadoFluxoAposta(
+                    EtapaAposta.TIME_CORACAO,
+                    true,
+                    timeValido
+            );
+        }
 
         if (!numerosCompletos) {
             return new ResultadoFluxoAposta(

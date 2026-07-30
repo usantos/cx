@@ -55,6 +55,8 @@ public class SurpresinhaReducer {
                 .setDezenasSelecionadas(new ArrayList<>())
                 .setTrevosSelecionados(new ArrayList<>())
                 .setQuantidadeTrevosSelecionada(0)
+                .setTelaSelecaoTimeAtivado(false)
+                .setEscolhaTimeCoracaoSurpresinha(false)
                 .setEquipeSelecionada(null)
                 .setMesSelecionado(null)
                 // limpar estado visual
@@ -99,6 +101,8 @@ public class SurpresinhaReducer {
                 .setSurpresinhaHabilitada(false)
                 .setBotaoCompletarVisivel(true)
                 .setBotaoCompletarHabilitado(true)
+                .setTelaSelecaoTimeAtivado(false)
+                .setEscolhaTimeCoracaoSurpresinha(false)
                 .setBotaoAdicionarHabilitado(false)
                 .build();
     }
@@ -298,5 +302,42 @@ public class SurpresinhaReducer {
 
         return valor != null
                 && valor.doubleValue() > 999.99;
+    }
+    public SimulaUiState abrirSelecaoTimeCoracaoSurpresinha(
+            SimulaUiState atual
+    ) {
+        if (atual == null) {
+            return null;
+        }
+
+        return atual.toBuilder()
+                .setSurpresinhaHabilitada(true)
+                .setEtapaAposta(EtapaAposta.TIME_CORACAO)
+
+                // marca o cenário específico:
+                // estou escolhendo time a partir da surpresinha
+                .setTelaSelecaoTimeAtivado(true)
+                .setEscolhaTimeCoracaoSurpresinha(true)
+
+                // quando entrar nessa tela, não reaproveita time antigo
+                .setEquipeSelecionada(null)
+
+                // não é fluxo 2/2 normal da Timemania manual
+                .setExibirInfoEtapa(false)
+                .setTextoInfoEtapa("")
+
+                // rodapé específico desse cenário
+                .setBotaoNextStepHabilitado(false)
+                .setBotaoCompletarVisivel(false)
+                .setBotaoCompletarHabilitado(false)
+                .setBotaoLimparHabilitado(false)
+                .setMostrarBotaoLimparAposta(false)
+                .setMostrarSalvarAposta(false)
+                .setApostaFavoritada(false)
+
+                // adicionar aparece, mas o render pode habilitar só com time
+                .setBotaoAdicionarHabilitado(false)
+
+                .build();
     }
 }

@@ -43,6 +43,7 @@ import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
+import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.AdicionarCarrinhoReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.CarrinhoReducer;
@@ -571,6 +572,10 @@ public class SimulaViewModel extends AndroidViewModel {
             handleAdicionarSurpresinhaCarrinho(
                     (SimulaUiEvent.AdicionarSurpresinhaCarrinho) event
             );
+            return true;
+        }
+        if (event instanceof SimulaUiEvent.SolicitarSelecaoTimeCoracao) {
+            handleSolicitarSelecaoTimeCoracao();
             return true;
         }
         if (event instanceof
@@ -1202,7 +1207,10 @@ public class SimulaViewModel extends AndroidViewModel {
 
         return crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
     }
-
+    private void handleSolicitarSelecaoTimeCoracao() {
+        updateState(surpresinhaReducer::abrirSelecaoTimeCoracaoSurpresinha
+        );
+    }
     private void publicarEstadoCarrinho(
             CarrinhoDTO carrinho,
             boolean carregando
@@ -1429,12 +1437,11 @@ public class SimulaViewModel extends AndroidViewModel {
         );
     }
 
-    private void handleAdicionarCarrinhoSolicitado(SimulaUiEvent.AdicionarCarrinhoSolicitado event) {
-
+    private void handleAdicionarCarrinhoSolicitado(
+            SimulaUiEvent.AdicionarCarrinhoSolicitado event
+    ) {
         if (event.isEscolhaTimeCoracaoSurpresinha()) {
-
-            publicarComando(new CarrinhoEffect.AdicionarTimeSurpresa(event.getEquipeSelecionada()));
-
+            handleAdicionarSurpresinhaTimemaniaComTime(event);
             return;
         }
 
@@ -1442,13 +1449,62 @@ public class SimulaViewModel extends AndroidViewModel {
         barraTituloPendente = getBarraTituloSafe(event.getBarraTituloDTO());
 
         if (LoginSP.isLoginRealizado() && checaLimiteDiario(apostaPendente)) {
-
             publicarComando(new CarrinhoEffect.MostrarConfirmacaoLimiteDiario());
-
             return;
         }
 
         executarAdicionarCarrinhoPendente();
+    }
+    private void handleAdicionarSurpresinhaTimemaniaComTime(
+            SimulaUiEvent.AdicionarCarrinhoSolicitado event
+    ) {
+        updateState(state -> {
+            SimulaUiState stateComTime =
+                    state.toBuilder()
+                            .setEquipeSelecionada(event.getEquipeSelecionada())
+
+                            // sai do modo "escolha de time vindo da surpresinha"
+                            .setTelaSelecaoTimeAtivado(false)
+                            .setEscolhaTimeCoracaoSurpresinha(false)
+
+                            // mantém a surpresinha ligada
+                            .setSurpresinhaHabilitada(true)
+
+                            // volta para etapa base depois do comando
+                            .setEtapaAposta(EtapaAposta.NUMEROS)
+                            .setExibirInfoEtapa(false)
+                            .setTextoInfoEtapa("")
+
+                            // estado visual do rodapé
+                            .setBotaoAdicionarHabilitado(true)
+                            .setBotaoCompletarVisivel(false)
+                            .setBotaoCompletarHabilitado(false)
+                            .setBotaoNextStepHabilitado(false)
+                            .setBotaoLimparHabilitado(false)
+                            .setMostrarBotaoLimparAposta(false)
+                            .setMostrarSalvarAposta(false)
+                            .setApostaFavoritada(false)
+                            .build();
+
+            IncluirSurpresinhaDTO dto =
+                    surpresinhaCarrinhoReducer.criar(
+                            stateComTime,
+                            parametroJogoAtual,
+                            tipoJogoAtual,
+                            false
+                    );
+
+            if (dto == null) {
+                return state;
+            }
+
+            return stateComTime
+                    .toBuilder()
+                    .setComandoCarrinho(
+                            new CarrinhoEffect.AdicionarSurpresinha(dto)
+                    )
+                    .build();
+        });
     }
 
     private void executarAdicionarCarrinhoPendente() {

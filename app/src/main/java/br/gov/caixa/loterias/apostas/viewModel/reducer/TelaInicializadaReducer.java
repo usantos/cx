@@ -80,6 +80,8 @@ public class TelaInicializadaReducer {
                         EtapaAposta.NUMEROS
                 )
                 .setSurpresinhaHabilitada(false)
+                .setTelaSelecaoTimeAtivado(false)
+                .setEscolhaTimeCoracaoSurpresinha(false)
                 .setDezenasSelecionadas(
                         new ArrayList<Integer>()
                 )

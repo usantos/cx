@@ -88,6 +88,8 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFragmentListener, SurpresinhaFragmentListener {
 
@@ -96,8 +98,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     public static String COR_FONTE_FUNDO_ESCURO = "COR_FONTE_FUNDO_ESCURO";
 
     public final static String APOSTA_EXTRA = "aposta";
-    private static final int RESULT_FINISH = 3;
-    //TODO: MEGA 30 ANOS//
+    private static final int RESULT_FINISH = 2;
     private int numero_concurso;
     private ConstraintLayout toolBarLoteca;
     private Button botaoLimparAposta, botaoCompletar, botaoAdicionar, botaoNextStep;
@@ -145,6 +146,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     private TextView textInfoEtapa;
     private EtapaAposta etapaRenderizada;
+    private boolean renderizacaoSurpresinhaTime;
     private SurpresinhaApostaModel surpresinhaModel = new SurpresinhaApostaModel(this);
 
     public void onCreate(Bundle savedInstanceState) {
@@ -210,7 +212,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.SUPER_SETE_TUTORIAL)) {
             startActivity(new Intent(this, TutorialSuperSeteActivity.class));
         }
-
+        inicializarTela();
+    }
+    private void inicializarTela(){
         viewModel.onEvent(new SimulaUiEvent.TelaInicializada(tipoJogo, isEspecial, parametroSimulacao));
 
         viewModel.onEvent(
@@ -223,9 +227,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                                 : 0
                 ));
 
-                etapaRenderizada = null;
         inicializarEstadoTeimosinhas();
         inicializarEstadoQuantidadeNumeros();
+        etapaRenderizada = null;
     }
 
     @Override
@@ -376,10 +380,17 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             etapaAtual = EtapaAposta.NUMEROS;
         }
 
-        if (etapaRenderizada != null
-                && etapaAtual == etapaRenderizada) {
+        boolean escolhaTimeSurpresinha =
+                state.isEscolhaTimeCoracaoSurpresinha();
+
+        if (etapaRenderizada == etapaAtual
+                && renderizacaoSurpresinhaTime == escolhaTimeSurpresinha) {
             return;
         }
+
+        renderizacaoSurpresinhaTime =
+                escolhaTimeSurpresinha;
+
 
         etapaRenderizada = etapaAtual;
 
@@ -390,6 +401,15 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void render(SimulaUiState state) {
+        Log.e(
+                "TIME_SURP",
+                "etapa="
+                        + state.getEtapaAposta()
+                        + " escolha="
+                        + state.isEscolhaTimeCoracaoSurpresinha()
+                        + " surpresinha="
+                        + state.isSurpresinhaHabilitada()
+        );
         sincronizarFragmento(state);
         renderAnimacao(state);
         barraTituloDTO = state.getBarraTituloDTO();
@@ -445,6 +465,16 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
+        boolean escolhaTimeSurpresinha =
+                state.isSurpresinhaHabilitada()
+                        && state.isEscolhaTimeCoracaoSurpresinha()
+                        && state.getEtapaAposta() == EtapaAposta.TIME_CORACAO;
+
+        if (escolhaTimeSurpresinha) {
+            textInfoEtapa.setVisibility(View.GONE);
+            return;
+        }
+
         textInfoEtapa.setVisibility(
                 state.getExibirInfoEtapa()
                         ? View.VISIBLE
@@ -452,15 +482,12 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         );
 
         String texto;
-
         switch (state.getEtapaAposta()) {
-
             case TREVOS:
             case MES_SORTE:
             case TIME_CORACAO:
                 texto = "2/2";
                 break;
-
             case NUMEROS:
             default:
                 texto = "1/2";
@@ -670,6 +697,59 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 !mostrarBtnQuantidadeTrevos;
 
         int corIcon = ContextCompat.getColor(this, estilo.getCorFonteFundoClaro());
+
+        boolean escolhaTimeSurpresinha =
+                state.isSurpresinhaHabilitada()
+                        && state.isEscolhaTimeCoracaoSurpresinha()
+                        && etapaAtual == EtapaAposta.TIME_CORACAO;
+
+        if (escolhaTimeSurpresinha) {
+            if (btnTeimosinha != null) {
+                btnTeimosinha.setVisibility(View.GONE);
+            }
+
+            if (btnQuantidadeNumeros != null) {
+                btnQuantidadeNumeros.setVisibility(View.GONE);
+            }
+
+            if (btnQuantidadeTrevos != null) {
+                btnQuantidadeTrevos.setVisibility(View.GONE);
+            }
+
+            if (textInfoEtapa != null) {
+                textInfoEtapa.setVisibility(View.GONE);
+            }
+
+            if (botaoNextStep != null) {
+                botaoNextStep.setVisibility(View.GONE);
+            }
+
+            if (botaoCompletar != null) {
+                botaoCompletar.setVisibility(View.GONE);
+            }
+
+            if (botaoLimparAposta != null) {
+                botaoLimparAposta.setVisibility(View.GONE);
+            }
+
+            if (botaoFavoritar != null) {
+                botaoFavoritar.setVisibility(View.GONE);
+            }
+
+            if (botaoAdicionar != null) {
+                botaoAdicionar.setVisibility(View.VISIBLE);
+                botaoAdicionar.setEnabled(state.isBotaoAdicionarHabilitado());
+
+                if (botaoAdicionar instanceof MaterialButton) {
+                    visualModalidadeBotao(
+                            state.isBotaoAdicionarHabilitado(),
+                            (MaterialButton) botaoAdicionar
+                    );
+                }
+            }
+
+            return;
+        }
 
         if (btnQuantidadeNumeros != null) {
 
@@ -902,7 +982,11 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 break;
 
             case TIME_CORACAO:
-                timesFragment(state.getDezenasSelecionadas());
+                if (state.isEscolhaTimeCoracaoSurpresinha()) {
+                    timesFragmentSurpresinha();
+                } else {
+                    timesFragment(state.getDezenasSelecionadas());
+                }
                 break;
 
             default:
@@ -916,6 +1000,20 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     private void abrirTelaSurpresinha() {
         FragmentUtils.startFragmentAllowingStateLoss(fragmentManager, R.id.fragmentSimularApostas, surpresinhaFragment);
+    }
+    private void timesFragmentSurpresinha() {
+        timesFragment =
+                TimesFragment.newInstance(
+                        parametroSimulacao,
+                        new ArrayList<>(),
+                        true
+                );
+
+        FragmentUtils.startFragmentAllowingStateLoss(
+                fragmentManager,
+                R.id.fragmentSimularApostas,
+                timesFragment
+        );
     }
 
     private void executarAbrirSurpresinha() {
@@ -1790,4 +1888,17 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         return false;
     }
 
+    private void resetarTelaAposRetornoDeActivity() {
+        zerarApostas();
+        inicializarTela();
+
+        etapaRenderizada = null;
+        renderizacaoSurpresinhaTime = false;
+
+        abrirTelaCartela();
+
+        viewModel.onEvent(
+                new SimulaUiEvent.CarregarCarrinho()
+        );
+    }
 }

@@ -962,6 +962,7 @@ public abstract class SimulaUiEvent {
     }
     public static class VoltarEtapa extends SimulaUiEvent {
     }
+
     public static final class AdicionarSurpresinhaCarrinho
             extends SimulaUiEvent {
 

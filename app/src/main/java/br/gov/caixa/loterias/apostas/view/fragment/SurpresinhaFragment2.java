@@ -414,13 +414,10 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
 
     private void escolherOutroItemBtn() {
         if (isTimemania()) {
-            parentActivity.escolherOutroTimeSurpresinha();
-        } else if (isDiaDeSorte()) {
-            parentActivity.mesDeSorteFragment(null);
+            dispatch(new SimulaUiEvent.SolicitarSelecaoTimeCoracao());
+            return;
         }
-
     }
-
     private boolean isTimemania() {
         return tipoJogo == ModalidadeEnum.TIMEMANIA;
     }
