@@ -37,6 +37,7 @@ public class LimparReducer {
                         .setOpcaoOutrosNumerosSelecionada(false)
                         .setBotaoNextStepHabilitado(false)
                         .setExibirOpcaoOutrosNumeros(false)
+                        .setPossuiAlteracoesPendentes(false)
                         .setValorAposta(valorSeguro)
                         .setValorGrande(isValorGrande(valorSeguro))
                         .setLimparOpcaoOutrosNumeros(true)
@@ -94,6 +95,7 @@ public class LimparReducer {
                 .setLimparSuperSete(false)
                 .setLimparLoteca(false)
                 .setLimparLotogol(false)
+                .setPossuiAlteracoesPendentes(false)
                 .setLimparOpcaoOutrosNumeros(false)
                 .build();
     }

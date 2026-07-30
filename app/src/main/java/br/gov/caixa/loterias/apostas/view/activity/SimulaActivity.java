@@ -1905,20 +1905,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         SimulaUiState state =
                 viewModel.getUiState().getValue();
 
-        if (state == null) {
-            return false;
-        }
-
-        if (state.getDezenasSelecionadas() != null
-                && !state.getDezenasSelecionadas().isEmpty()) {
-            return true;
-        }
-
-        if (state.getTipoJogo() == ModalidadeEnum.SUPER_7) {
-            return state.getQtdTotalSelecionadosSuperSete() > 0;
-        }
-
-        return false;
+        return state != null
+                && state.getPossuiAlteracoesPendentes();
     }
 
     private void resetarTelaAposRetornoDeActivity() {

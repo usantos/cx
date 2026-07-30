@@ -174,6 +174,16 @@ public class FluxoApostaReducer {
                         etapa
                 );
 
+        boolean possuiAlteracoesPendentes;
+
+        if (tipoJogo == ModalidadeEnum.SUPER_7) {
+            possuiAlteracoesPendentes =
+                    event.getQtdTotalSelecionadosSuperSete() > 0;
+        } else {
+            possuiAlteracoesPendentes =
+                    event.getQtdDezenasSelecionadas() > 0;
+        }
+
         return atual.toBuilder()
                 .setEtapaAposta(etapa)
                 .setQtdDezenasPossiveisSelecionado(
@@ -212,6 +222,7 @@ public class FluxoApostaReducer {
                 .setTextoSelecionados(
                         textoSelecionados
                 )
+                .setPossuiAlteracoesPendentes(possuiAlteracoesPendentes)
                 .setExibirOpcaoOutrosNumeros(
                         event.isExibirOpcaoOutrosNumeros()
                 )
@@ -314,6 +325,7 @@ public class FluxoApostaReducer {
                 .setTextoSelecionados(textoSelecionados)
                 .setComandoCompletarAposta(comando)
                 .setExibirInfoEtapa(true)
+                .setPossuiAlteracoesPendentes(false)
                 .setTextoInfoEtapa(
                         obterTextoInfoEtapa(
                                 tipoJogoAtual,

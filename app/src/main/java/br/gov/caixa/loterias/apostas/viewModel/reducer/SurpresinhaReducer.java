@@ -142,6 +142,7 @@ public class SurpresinhaReducer {
                         .setQuantidadeSurpresinhas(
                                 quantidade
                         )
+                        .setPossuiAlteracoesPendentes(true)
                         .build();
 
         return recalcularValorSurpresinha(
@@ -167,6 +168,7 @@ public class SurpresinhaReducer {
                         .setQuantidadeNumerosSurpresinha(
                                 quantidade
                         )
+                        .setPossuiAlteracoesPendentes(true)
                         .build();
 
         return recalcularValorSurpresinha(
@@ -192,6 +194,7 @@ public class SurpresinhaReducer {
                         .setQuantidadeTrevosSurpresinha(
                                 quantidade
                         )
+                        .setPossuiAlteracoesPendentes(true)
                         .build();
 
         return recalcularValorSurpresinha(
@@ -344,6 +347,7 @@ public class SurpresinhaReducer {
                 // não é fluxo 2/2 normal da Timemania manual
                 .setExibirInfoEtapa(false)
                 .setTextoInfoEtapa("")
+                .setPossuiAlteracoesPendentes(true)
 
                 // rodapé específico desse cenário
                 .setBotaoNextStepHabilitado(false)

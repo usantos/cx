@@ -73,6 +73,7 @@ public class FavoritarApostaReducer {
         return atual.toBuilder()
                 .setApostaFavoritada(true)
                 .setMostrarSalvarAposta(true)
+                .setPossuiAlteracoesPendentes(true)
                 .build();
     }
 

@@ -120,6 +120,7 @@ public class SimulaUiState {
     private final List<Integer> trevosSelecionados;
     private final int quantidadeTrevosSelecionada;
     private final ParametroMesDeSorte mesSelecionado;
+    private final boolean possuiAlteracoesPendentes;
     private SimulaUiState(
             Builder builder
     ) {
@@ -316,6 +317,7 @@ public class SimulaUiState {
         this.quantidadeNumerosSurpresinha = builder.quantidadeNumerosSurpresinha;
         this.quantidadeTrevosSurpresinha = builder.quantidadeTrevosSurpresinha;
         this.mesSelecionado = builder.mesSelecionado;
+        this.possuiAlteracoesPendentes = builder.possuiAlteracoesPendentes;
     }
 
     public static SimulaUiState initial() {
@@ -367,6 +369,7 @@ public class SimulaUiState {
                 .setQuantidadeApostasCarrinho(0)
                 .setCarregandoCarrinho(false)
                 .setExibirCarrinho(false)
+                .setPossuiAlteracoesPendentes(false)
                 .setCarrinho(null)
                 .setValorAposta(BigDecimal.ZERO)
                 .setValorGrande(false)
@@ -426,6 +429,7 @@ public class SimulaUiState {
     public String getSubtituloTrevos() {
         return subtituloTrevos;
     }
+    public Boolean getPossuiAlteracoesPendentes(){return possuiAlteracoesPendentes;}
 
     public ParametroValorApostaDTO getValorTrevosSelecionado() {
         return valorTrevosSelecionado;
@@ -799,6 +803,7 @@ public class SimulaUiState {
         private int quantidadeNumerosSurpresinha;
         private int quantidadeTrevosSurpresinha;
         private ParametroMesDeSorte mesSelecionado;
+        private boolean possuiAlteracoesPendentes;
 
         public Builder() {
             this.dezenasSelecionadas = new ArrayList<>();
@@ -829,7 +834,7 @@ public class SimulaUiState {
             this.exibirDialogQuantidadeNumeros = false;
             this.exibirAvisoQuantidadeNumerosMaxima = false;
             this.avisouQuantidadeNumerosMaxima = false;
-
+            this.possuiAlteracoesPendentes = false;
             this.posicaoQuantidadeNumerosSelecionada = 0;
             this.textoBotaoPrognosticosSelecionado = "";
             this.textoBotaoQuantidadeTrevos = "2 trevos";
@@ -1005,11 +1010,18 @@ public class SimulaUiState {
             this.quantidadeNumerosSurpresinha = state.quantidadeNumerosSurpresinha;
             this.quantidadeTrevosSurpresinha = state.quantidadeTrevosSurpresinha;
             this.mesSelecionado = state.mesSelecionado;
+            this.possuiAlteracoesPendentes = state.possuiAlteracoesPendentes;
         }
         public Builder setQuantidadeTrevosSelecionada(
                 int quantidadeTrevosSelecionada
         ){
             this.quantidadeTrevosSelecionada = quantidadeTrevosSelecionada;
+            return this;
+        }
+        public Builder setPossuiAlteracoesPendentes(
+                boolean possuiAlteracoesPendentes
+        ){
+            this.possuiAlteracoesPendentes = possuiAlteracoesPendentes;
             return this;
         }
 

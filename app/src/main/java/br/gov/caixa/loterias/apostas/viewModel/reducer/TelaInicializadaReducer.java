@@ -146,6 +146,7 @@ public class TelaInicializadaReducer {
                 .setTriplasLoteca(0)
                 .setExibirDialogComoJogar(false)
                 .setMensagemComoJogar("")
+                .setPossuiAlteracoesPendentes(false)
                 .setTitleComoJogar("")
                 .setExibirDialogFavoritarAposta(false)
                 .setExibirDialogTeimosinha(false)
