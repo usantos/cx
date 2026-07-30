@@ -334,17 +334,185 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Bloco 3: Recycle -->
+            <!-- Bloco 3: Centro Apenas LOTECA Top -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_loteca_top"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rl_tipo_aposta">
+
+                <TextView
+                    android:id="@+id/tv_label_minhas_apostas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="@string/minhasApostas"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_marginStart="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_legenda_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:importantForAccessibility="yes"
+                    android:contentDescription="@string/acessibilidade_legenda_botao"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_label_legenda"
+                    android:importantForAccessibility="no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="@string/label_legenda"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="2dp"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_lupa_legenda"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/iv_lupa_legenda"
+                    android:importantForAccessibility="no"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:src="@drawable/lupa_legenda"
+                    app:tint="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/v_linha_loteca"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_label_minhas_apostas"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Bloco 3: Centro Recycle -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_accordion_teimosinha"
+                android:id="@+id/rv_centro_detalhe_minhas_apostas"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                app:layout_constraintTop_toBottomOf="@+id/rl_tipo_aposta"
+                app:layout_constraintTop_toBottomOf="@+id/cl_loteca_top"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"                 />
+
+            <!-- Bloco 3: Centro Apenas LOTECA Bottom -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_loteca_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_centro_detalhe_minhas_apostas">
+
+                <View
+                    android:id="@+id/v_linha_loteca2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_label_loteca_acertos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="@string/label_acertos_dois_pontos"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/v_linha_loteca2" />
+
+                <TextView
+                    android:id="@+id/tv_loteca_acertos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:text="13 palpites"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="4dp"
+                    app:layout_constraintStart_toEndOf="@+id/tv_label_loteca_acertos"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_label_loteca_acertos" />
+
+                <TextView
+                    android:id="@+id/tv_label_loteca_premio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="@string/label_premio_dois_pontos"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_marginStart="24dp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_label_loteca_acertos" />
+
+                <TextView
+                    android:id="@+id/tv_loteca_premio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:text="R$ 3,50"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginStart="4dp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toEndOf="@+id/tv_label_loteca_premio"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_label_loteca_premio" />
+
+                <View
+                    android:id="@+id/v_linha_loteca3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_label_loteca_premio"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Bloco 4: Rodape -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -355,7 +523,7 @@
                 android:paddingBottom="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_accordion_teimosinha">
+                app:layout_constraintTop_toBottomOf="@id/cl_loteca_bottom">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:contentDescription="@string/contest_reward_valid_time"
@@ -643,7 +811,7 @@
                     android:layout_width="21dp"
                     android:layout_height="21dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/icon_favoritado" />
+                    android:src="@drawable/icon_favoritado_novo" />
 
                 <TextView
                     android:id="@+id/labelApostaSalvaTxt"
@@ -665,7 +833,7 @@
                 android:layout_alignParentTop="true"
                 android:background="@drawable/rounded_text_view_colunas"
                 android:backgroundTint="@color/cinza110"
-                android:drawableStart="@drawable/icon_favoritar"
+                android:drawableStart="@drawable/icon_favoritar_novo"
                 android:drawablePadding="10dp"
                 android:gravity="center"
                 android:minHeight="61dp"

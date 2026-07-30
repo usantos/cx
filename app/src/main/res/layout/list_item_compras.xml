@@ -101,7 +101,7 @@
         </LinearLayout>
 
         <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
-            android:id="@+id/tipo_aposta_linha_compras"
+            android:id="@+id/talvHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
