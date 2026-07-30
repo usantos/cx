@@ -74,6 +74,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
+import br.gov.caixa.loterias.apostas.utils.ResultadoNavegacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
@@ -98,7 +99,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     public static String COR_FONTE_FUNDO_ESCURO = "COR_FONTE_FUNDO_ESCURO";
 
     public final static String APOSTA_EXTRA = "aposta";
-    private static final int RESULT_FINISH = 2;
     private int numero_concurso;
     private ConstraintLayout toolBarLoteca;
     private Button botaoLimparAposta, botaoCompletar, botaoAdicionar, botaoNextStep;
@@ -148,6 +148,17 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private EtapaAposta etapaRenderizada;
     private boolean renderizacaoSurpresinhaTime;
     private SurpresinhaApostaModel surpresinhaModel = new SurpresinhaApostaModel(this);
+    private final ActivityResultLauncher<Intent> fluxoApostaLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode()
+                                == ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA) {
+
+                            resetarTelaAposRetornoDeActivity();
+                        }
+                    }
+            );
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,7 +221,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
 
         if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.SUPER_SETE_TUTORIAL)) {
-            startActivity(new Intent(this, TutorialSuperSeteActivity.class));
+            Intent intent = new Intent(this,TutorialSuperSeteActivity.class);
+            abrirFluxoApostaComResultado(intent);
         }
         inicializarTela();
     }
@@ -847,6 +859,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private void renderSwitchSurpresinha(SimulaUiState state) {
 
         boolean surpresinhaHabilitada = state.isSurpresinhaHabilitada();
+        switchSurpresinha.setChecked(state.isSurpresinhaHabilitada());
 
         if (botaoCompletar != null) {
             botaoCompletar.setVisibility(surpresinhaHabilitada ? View.GONE : View.VISIBLE);
@@ -1289,8 +1302,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 Bundle args = new Bundle();
 
                 args.putSerializable(CarrinhoActivity.CARRINHO, response.getPayload());
-
-                startActivity(new Intent(SimulaActivity.this, CarrinhoActivity.class).putExtras(args));
+                Intent intent = new Intent(SimulaActivity.this, CarrinhoActivity.class).putExtras(args);
+                abrirFluxoApostaComResultado(intent);
             }
 
             @Override
@@ -1299,8 +1312,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 AlertDialogUtils.dismiss();
 
                 if (MensagensNetwork.isUnauthorizedError(error)) {
-
-                    startActivity(new Intent(SimulaActivity.this, CarrinhoActivity.class).putExtra(CarrinhoActivity.LER_CARRINHO_LOCAL, true));
+                    Intent intent = new Intent(SimulaActivity.this, CarrinhoActivity.class).putExtra(CarrinhoActivity.LER_CARRINHO_LOCAL, true);
+                    abrirFluxoApostaComResultado(intent);
 
                 } else {
 
@@ -1444,8 +1457,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_FINISH) {
-            finish();
+        if (resultCode == ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA) {
+            resetarTelaAposRetornoDeActivity();
         }
     }
 
@@ -1641,8 +1654,20 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             );
         }
 
-        switchSurpresinha.setOnCheckedChangeListener((buttonView, isChecked) -> viewModel.onEvent(new SimulaUiEvent.AlterarSurpresinha(isChecked)));
-    }
+        switchSurpresinha.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+
+                    if (!buttonView.isPressed()) {
+                        return;
+                    }
+
+                    viewModel.onEvent(
+                            new SimulaUiEvent.AlterarSurpresinha(
+                                    isChecked
+                            )
+                    );
+                }
+        );    }
 
     private void abrirDialogQuantidadeNumeros(SimulaUiState state) {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));
@@ -1900,5 +1925,12 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         viewModel.onEvent(
                 new SimulaUiEvent.CarregarCarrinho()
         );
+    }
+    public void abrirFluxoApostaComResultado(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+
+        fluxoApostaLauncher.launch(intent);
     }
 }

@@ -348,13 +348,16 @@ public class AdicionarApostaCarrinhoHelper {
             }
         }
 
-        if(AdicionarApostaCarrinhoHelper.activity instanceof SimulaActivity){
-            AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
-                ((SimulaActivity) AdicionarApostaCarrinhoHelper.activity).zerarApostas();
+        if (AdicionarApostaCarrinhoHelper.activity instanceof SimulaActivity) {
+            if (telaConfirmacao != null) {
+                ((SimulaActivity) AdicionarApostaCarrinhoHelper.activity)
+                        .abrirFluxoApostaComResultado(telaConfirmacao);
+            }
         } else {
-            if(AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
-                if (telaConfirmacao != null){
-                    ((OnCompraBolaoListener) AdicionarApostaCarrinhoHelper.activity).compraSucesso(telaConfirmacao);
+            if (AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
+                if (telaConfirmacao != null) {
+                    ((OnCompraBolaoListener) AdicionarApostaCarrinhoHelper.activity)
+                            .compraSucesso(telaConfirmacao);
                 }
             } else {
                 AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
