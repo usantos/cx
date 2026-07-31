@@ -88,11 +88,28 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 				//txtNumero.setTextColor(config.getColor());
 				txtNumero.setTextColor(ContextCompat.getColor(context, config.getShapeConfig().getTextoSelecionadoColor()));
 			}
-		} else {
-			shape = VectorUtils.getShape(config.getDrawable(), config.getColorDefault());
-			txtNumero.setTextColor(ContextCompat.getColor(context, config.getColorDefault()));
-		}
+		}  else {
+			if (!config.isShapePadrao()
+					&& config.getDrawable() == R.drawable.ic_trevo) {
 
+				shape = AppCompatResources.getDrawable(
+						context,
+						config.getDrawable()
+				);
+
+				txtNumero.setTextColor(
+						ContextCompat.getColor(
+								context,
+								config.getShapeConfig().getTextoColor()
+						)
+				);
+
+			}
+			else{
+				shape = VectorUtils.getShape(config.getDrawable(), config.getColorDefault());
+				txtNumero.setTextColor(ContextCompat.getColor(context, config.getColorDefault()));
+			}
+		}
 		txtNumero.setBackground(shape);
 	}
 

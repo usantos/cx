@@ -305,7 +305,7 @@ public class FluxoApostaReducer {
                 atual.getTextoSelecionados();
 
         if (etapa == EtapaAposta.TREVOS) {
-            textoSelecionados = "Selecione os trevos:";
+            textoSelecionados = "";
         } else if (etapa == EtapaAposta.MES_SORTE) {
             textoSelecionados = "Selecione o mes de sorte:";
         } else if (etapa == EtapaAposta.TIME_CORACAO) {

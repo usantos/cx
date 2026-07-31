@@ -492,7 +492,7 @@ public class TrevosReducer {
     ) {
 
         if (quantidadeSelecionada <= 0) {
-            return "Selecione os trevos:";
+            return "";
         }
 
         return "Trevos selecionados: "

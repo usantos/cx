@@ -197,8 +197,8 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
     private void initRecyclerView(){
         DezenaConfig dezenaConfig = new DezenaConfig(false, R.color.milionaria_escuro_mkp,
                 R.layout.item_dezena_trevo,
-                new ShapeConfig(R.drawable.ic_item_trevo,
-                        R.drawable.ic_item_trevo_selecionado,
+                new ShapeConfig(R.drawable.ic_trevo,
+                        R.drawable.ic_trevo_selecionado,
                         R.color.milionaria_escuro_mkp, R.color.milionaria_escuro_mkp),
                 true);
         adapter = new ListaDezenaRecyclerView(getListaDezenas(), getTrevosSelecionados(), dezenaConfig, this);

@@ -677,7 +677,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 break;
 
             case TREVOS:
-                texto = "Selecione os trevos:";
+                texto = "";
                 break;
 
             case TIME_CORACAO:
