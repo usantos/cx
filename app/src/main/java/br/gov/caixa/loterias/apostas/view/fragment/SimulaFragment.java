@@ -1747,7 +1747,9 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         listaGridsSuperSete = cartelaModel.getListGridSuperSete(viewLayout);
 
         listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorLight, parentActivity);
-
+        for (ExpandableHeightGridView grid : listaGridsSuperSete) {
+            grid.setExpanded(true);
+        }
         cartelaModel.preencheGridComListaSuperSete(listaGridsSuperSete, listaAdaptersSuperSete);
 
         for (ExpandableHeightGridView listaNumeros : listaGridsSuperSete) {

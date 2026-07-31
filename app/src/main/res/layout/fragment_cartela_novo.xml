@@ -16,13 +16,13 @@
             android:id="@+id/rl_colunas_super_7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/cinza"
             android:visibility="gone">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_super_sete_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/branco">
 
                 <!--<TextView
@@ -42,17 +42,16 @@
                     android:id="@+id/ll_numeros_colunas_super_sete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
                     android:background="@color/branco"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_margin="5dp"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:layout_margin="1dp"
                         android:background="@drawable/rounded_text_view_colunas_super_sete"
                         android:fontFamily="@font/caixa_std_bold"
                         android:gravity="center"
@@ -60,10 +59,10 @@
                         android:textColor="@color/branco" />
 
                     <TextView
-                        android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_margin="5dp"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:layout_margin="1dp"
                         android:background="@drawable/rounded_text_view_colunas_super_sete"
                         android:fontFamily="@font/caixa_std_bold"
                         android:gravity="center"
@@ -71,10 +70,10 @@
                         android:textColor="@color/branco" />
 
                     <TextView
-                        android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_margin="5dp"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:layout_margin="1dp"
                         android:background="@drawable/rounded_text_view_colunas_super_sete"
                         android:fontFamily="@font/caixa_std_bold"
                         android:gravity="center"
@@ -82,10 +81,10 @@
                         android:textColor="@color/branco" />
 
                     <TextView
-                        android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_margin="5dp"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:layout_margin="1dp"
                         android:background="@drawable/rounded_text_view_colunas_super_sete"
                         android:fontFamily="@font/caixa_std_bold"
                         android:gravity="center"
@@ -93,10 +92,10 @@
                         android:textColor="@color/branco" />
 
                     <TextView
-                        android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_margin="5dp"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:layout_margin="1dp"
                         android:background="@drawable/rounded_text_view_colunas_super_sete"
                         android:fontFamily="@font/caixa_std_bold"
                         android:gravity="center"
@@ -104,10 +103,10 @@
                         android:textColor="@color/branco" />
 
                     <TextView
-                        android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_margin="5dp"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:layout_margin="1dp"
                         android:background="@drawable/rounded_text_view_colunas_super_sete"
                         android:fontFamily="@font/caixa_std_bold"
                         android:gravity="center"
@@ -115,10 +114,10 @@
                         android:textColor="@color/branco" />
 
                     <TextView
-                        android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_margin="5dp"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:layout_margin="1dp"
                         android:background="@drawable/rounded_text_view_colunas_super_sete"
                         android:fontFamily="@font/caixa_std_bold"
                         android:gravity="center"
@@ -180,110 +179,110 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="800dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:paddingBottom="250dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="0dp"
+                            android:paddingBottom="16dp"
                             android:orientation="horizontal">
 
                             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                                 android:id="@+id/ehgv_super_sete_primeiro"
                                 android:layout_width="0dp"
-                                android:layout_height="500dp"
+                                android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:layout_margin="3dp"
+                                android:layout_margin="1dp"
                                 android:layout_weight="1"
                                 android:background="@color/supersete_claro_transparente"
                                 android:isScrollContainer="false"
                                 android:numColumns="1"
                                 android:scrollbars="none"
                                 android:stretchMode="columnWidth"
-                                android:verticalSpacing="10dp" />
+                                android:verticalSpacing="15dp" />
 
                             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                                 android:id="@+id/ehgv_super_sete_segundo"
                                 android:layout_width="0dp"
-                                android:layout_height="500dp"
+                                android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:layout_margin="3dp"
+                                android:layout_margin="1dp"
                                 android:layout_weight="1"
                                 android:background="@color/supersete_claro_transparente"
                                 android:isScrollContainer="false"
                                 android:numColumns="1"
                                 android:scrollbars="none"
                                 android:stretchMode="columnWidth"
-                                android:verticalSpacing="10dp" />
+                                android:verticalSpacing="15dp" />
 
                             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                                 android:id="@+id/ehgv_super_sete_terceiro"
                                 android:layout_width="0dp"
-                                android:layout_height="500dp"
+                                android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:layout_margin="3dp"
+                                android:layout_margin="1dp"
                                 android:layout_weight="1"
                                 android:background="@color/supersete_claro_transparente"
                                 android:isScrollContainer="false"
                                 android:numColumns="1"
                                 android:scrollbars="none"
                                 android:stretchMode="columnWidth"
-                                android:verticalSpacing="10dp" />
+                                android:verticalSpacing="15dp" />
 
                             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                                 android:id="@+id/ehgv_super_sete_quarto"
                                 android:layout_width="0dp"
-                                android:layout_height="500dp"
+                                android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:layout_margin="3dp"
+                                android:layout_margin="1dp"
                                 android:layout_weight="1"
                                 android:background="@color/supersete_claro_transparente"
                                 android:isScrollContainer="false"
                                 android:numColumns="1"
                                 android:scrollbars="none"
                                 android:stretchMode="columnWidth"
-                                android:verticalSpacing="10dp" />
+                                android:verticalSpacing="15dp" />
 
                             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                                 android:id="@+id/ehgv_super_sete_quinto"
                                 android:layout_width="0dp"
-                                android:layout_height="500dp"
+                                android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:layout_margin="3dp"
+                                android:layout_margin="1dp"
                                 android:layout_weight="1"
                                 android:background="@color/supersete_claro_transparente"
                                 android:isScrollContainer="false"
                                 android:numColumns="1"
                                 android:scrollbars="none"
                                 android:stretchMode="columnWidth"
-                                android:verticalSpacing="10dp" />
+                                android:verticalSpacing="15dp" />
 
                             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                                 android:id="@+id/ehgv_super_sete_sexto"
                                 android:layout_width="0dp"
-                                android:layout_height="500dp"
+                                android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:layout_margin="3dp"
+                                android:layout_margin="1dp"
                                 android:layout_weight="1"
                                 android:background="@color/supersete_claro_transparente"
                                 android:isScrollContainer="false"
                                 android:numColumns="1"
                                 android:scrollbars="none"
                                 android:stretchMode="columnWidth"
-                                android:verticalSpacing="10dp" />
+                                android:verticalSpacing="15dp" />
 
                             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                                 android:id="@+id/ehgv_super_sete_setimo"
                                 android:layout_width="0dp"
-                                android:layout_height="500dp"
+                                android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:layout_margin="3dp"
+                                android:layout_margin="1dp"
                                 android:layout_weight="1"
                                 android:background="@color/supersete_claro_transparente"
                                 android:isScrollContainer="false"
                                 android:numColumns="1"
                                 android:scrollbars="none"
                                 android:stretchMode="columnWidth"
-                                android:verticalSpacing="10dp" />
+                                android:verticalSpacing="15dp" />
                         </LinearLayout>
                     </ScrollView>
 

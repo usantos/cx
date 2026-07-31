@@ -1308,27 +1308,17 @@ public class SimulaViewModel extends AndroidViewModel {
 
         if (event.isEspecial()) {
 
-            if (tipoJogoAtual == ModalidadeEnum.LOTECA) {
+            if (tipoJogoAtual == ModalidadeEnum.LOTOFACIL) {
 
                 exibirAnimacao =
                         true;
 
                 animacaoRes =
-                        R.raw.copa_loteca_3;
+                        R.raw.lotofacil_independencia;
 
                 velocidadeAnimacao =
-                        1.75f;
+                        0.60f;
 
-            } else if (tipoJogoAtual == ModalidadeEnum.QUINA) {
-
-                exibirAnimacao =
-                        true;
-
-                animacaoRes =
-                        R.raw.quina_sao_joao_1;
-
-                velocidadeAnimacao =
-                        1.5f;
             }
         }
 

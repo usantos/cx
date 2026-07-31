@@ -54,7 +54,7 @@ public class SuperSeteAdapter extends BaseAdapter {
 	public View getView(int i, View view, ViewGroup viewGroup) {
 		TextView         textView;
 		GradientDrawable shape     = new GradientDrawable();
-		int              sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, context.getResources().getDisplayMetrics());
+		int              sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 44, context.getResources().getDisplayMetrics());
 
 		if (view == null) {
 			textView = new TextView(this.context);
