@@ -739,4 +739,82 @@ public class FluxoApostaReducer {
             this.apostaPronta = apostaPronta;
         }
     }
+    public SimulaUiState recalcularEstadoCartela(
+            SimulaUiState state,
+            ModalidadeEnum tipoJogoAtual
+    ) {
+        if (state == null) {
+            return null;
+        }
+
+        int qtdSelecionadas =
+                obterQuantidadeSelecionadaParaCartela(
+                        state,
+                        tipoJogoAtual
+                );
+
+        int qtdPossiveis =
+                state.getQtdDezenasPossiveisSelecionado();
+
+        SimulaUiEvent.CartelaAlterada event =
+                new SimulaUiEvent.CartelaAlterada(
+                        tipoJogoAtual,
+                        qtdSelecionadas,
+                        qtdPossiveis,
+                        state.getQtdTotalSelecionadosSuperSete(),
+                        0,
+                        state.getJogosLoteca(),
+                        state.getDuplasLoteca(),
+                        state.getTriplasLoteca(),
+                        false,
+                        state.getEquipeSelecionada() != null,
+                        state.isEscolhaTimeCoracaoSurpresinha(),
+                        state.isOpcaoOutrosNumerosSelecionada(),
+                        state.isExibirOpcaoOutrosNumeros(),
+                        calcularEtapaComplementarCompleta(
+                                state,
+                                tipoJogoAtual
+                        ),
+                        state.getDezenasSelecionadas()
+                );
+
+        return cartelaAlterada(
+                state,
+                event
+        );
+    }
+    private int obterQuantidadeSelecionadaParaCartela(
+            SimulaUiState state,
+            ModalidadeEnum tipoJogoAtual
+    ) {
+        if (tipoJogoAtual == ModalidadeEnum.SUPER_7) {
+            return state.getQtdTotalSelecionadosSuperSete();
+        }
+
+        if (state.getDezenasSelecionadas() == null) {
+            return 0;
+        }
+
+        return state.getDezenasSelecionadas().size();
+    }
+
+    private boolean calcularEtapaComplementarCompleta(
+            SimulaUiState state,
+            ModalidadeEnum tipoJogoAtual
+    ) {
+        if (tipoJogoAtual == ModalidadeEnum.DIA_DE_SORTE) {
+            return state.getMesSelecionado() != null;
+        }
+
+        if (tipoJogoAtual == ModalidadeEnum.TIMEMANIA) {
+            return state.getEquipeSelecionada() != null;
+        }
+
+        if (tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA) {
+            return state.getQuantidadeTrevosSelecionada() > 0;
+        }
+
+        return true;
+    }
+
 }

@@ -39,7 +39,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
-import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
@@ -1050,6 +1049,12 @@ public class SimulaViewModel extends AndroidViewModel {
                 quantidadeNumerosReducer.confirmar(
                         getCurrentState(),
                         event,
+                        tipoJogoAtual
+                );
+
+        novoEstado =
+                fluxoApostaReducer.recalcularEstadoCartela(
+                        novoEstado,
                         tipoJogoAtual
                 );
 
