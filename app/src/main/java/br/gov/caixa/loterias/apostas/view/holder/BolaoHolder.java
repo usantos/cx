@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.math.BigDecimal;
 
@@ -18,6 +19,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
@@ -43,6 +45,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private TextView textQtdDezenas;
 	private TextView textQtdCotas;
 	private ImageView seta;
+	private ConstraintLayout containerResumo;
 	private ConstraintLayout verMais;
 	private TextView qtdCotas;
 	private Button btnDetalhes;
@@ -53,15 +56,17 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private EstiloModalidadeMKP estilo;
 	private BotaoFavoritar botaoFavoritar;
 	private OnItemBolaoListener listener;
-	private FiltroAplicadoMarketplace filtro;
+    private final Boolean isShowCotasRestantes;
+    private FiltroAplicadoMarketplace filtro;
 	private TextView modalidade;
 	private TextView valorPremio;
 	private TextView valorPremioPorExtenso;
 	private TextView concurso;
     private Boolean isMega30 = false;
+    private Boolean isLotecaPais = false;
 
 
-	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener, FiltroAplicadoMarketplace filtro) {
+	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener, FiltroAplicadoMarketplace filtro, Boolean isShowCotasRestantes) {
 		super(itemView);
 		this.activity = activity;
 		this.filtro = filtro;
@@ -79,6 +84,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		textQtdCotas = itemView.findViewById(R.id.descricao_qtd_cotas_disponiveis_it);
 
 		seta 		= itemView.findViewById(R.id.seta_bolao);
+		containerResumo = itemView.findViewById(R.id.container_resumo_item_list_bolao);
 		verMais 	= itemView.findViewById(R.id.container_ver_mais);
 		btnDetalhes = itemView.findViewById(R.id.detalhes);
 		btnDiminui 	= itemView.findViewById(R.id.diminui_cota);
@@ -88,7 +94,9 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		linhaNumero		= itemView.findViewById(R.id.linha_numero);
 
 		this.listener = listener;
-		seta.setOnClickListener(this);
+        this.isShowCotasRestantes = isShowCotasRestantes;
+        seta.setOnClickListener(this);
+		containerResumo.setOnClickListener(this);
 		btnDetalhes.setOnClickListener(this);
 		btnDiminui.setOnClickListener(this);
 		btnAumenta.setOnClickListener(this);
@@ -99,8 +107,12 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
-		isMega30 = EspecialUtils.isMega30(bolao.getConcurso(),bolao.getTipoConcurso());
-		estilo = new EstiloModalidadeMKP(bolao.getModalidade(),isMega30);
+		//isMega30 = EspecialUtils.isMega30(bolao.getConcurso(), bolao.getTipoConcurso());
+		isMega30 = EspecialUtils.isMega30(bolao.getModalidade(), bolao.getConcurso(), bolao.getTipoConcurso().toString().equals(TipoConcursoEnum.ESPECIAL.getValor()));
+		isLotecaPais = EspecialUtils.isLotecaPais(bolao.getModalidade(), bolao.getConcurso(), bolao.getTipoConcurso().toString().equals(TipoConcursoEnum.ESPECIAL.getValor()));
+		//estilo = new EstiloModalidadeMKP(bolao.getModalidade(), isMega30);
+		estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(bolao.getModalidade(),bolao.getConcurso(), bolao.getTipoConcurso().toString().equals(TipoConcursoEnum.ESPECIAL.getValor()));
+
 
 		aplicaEstilo();
 		if (isFiltradoLoterica()) {
@@ -110,15 +122,16 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 			if (isEspecial(bolao.getTipoConcurso())){
                 if(isMega30) {
                     modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
-                }
-                else {
+                } else if (isLotecaPais) {
+					modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS,""));
+				} else {
                     modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
                 }
             } else {
 				modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
 			}
 			cidade.setVisibility(View.GONE);
-			cotasEDezenas.setVisibility(View.GONE);
+			showCotasRestantes(false);
 			valorPremio.setVisibility(View.VISIBLE);
 			valorPremio.setText(ViewUtils.getMoedaFormatComCentavos(bolao.getVrPremioEstimado(), 2));
 			String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado());
@@ -142,7 +155,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 			valorPremio.setVisibility(View.GONE);
 			valorPremioPorExtenso.setVisibility(View.GONE);
 			cidade.setVisibility(View.VISIBLE);
-			cotasEDezenas.setVisibility(View.VISIBLE);
+			showCotasRestantes(true);
 			String cidadeUf = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
 			if (cidadeUf.length() > 14) {
 				cidade.setText(cidadeUf.substring(0,14).concat("..."));
@@ -172,8 +185,11 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		botaoFavoritar.setState(bolao.isLotericaFavorita());
 
 		botaoFavoritar.setOnStateChangeListener(isFavoritado -> {
-			if(listener != null){
-				listener.onFavoritarClick(position);
+
+			int pos = getBindingAdapterPosition();
+
+			if (pos != RecyclerView.NO_POSITION) {
+				listener.onFavoritarClick(pos);
 			}
 		});
 
@@ -209,30 +225,33 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.seta_bolao:
-				listener.verMais(this, getAbsoluteAdapterPosition());
+				listener.verMais(this, getBindingAdapterPosition());
 				break;
 			case R.id.detalhes:
-				listener.detalhes(getAbsoluteAdapterPosition());
+				listener.detalhes(getBindingAdapterPosition());
 				break;
 			case R.id.diminui_cota:
-				listener.diminui(this, getAbsoluteAdapterPosition());
+				listener.diminui(this, getBindingAdapterPosition());
 				break;
 			case R.id.aumenta_cota:
-				listener.aumenta(this, getAbsoluteAdapterPosition());
+				listener.aumenta(this, getBindingAdapterPosition());
 				break;
 			case R.id.adicionar_carrinho:
-				listener.adicionarCarrinho(getAbsoluteAdapterPosition());
+				listener.adicionarCarrinho(getBindingAdapterPosition());
+				break;
+			case R.id.container_resumo_item_list_bolao:
+				listener.verMais(this, getBindingAdapterPosition());
 				break;
 		}
 	}
 
 	public void mostrarDetalhes(Boolean aberto) {
 		if (aberto){
-			cotasEDezenas.setVisibility(View.GONE);
+			showCotasRestantes(false);
 			seta.setBackground(VectorUtils.getShape(R.drawable.seta_cima_lista_boloes, R.color.azulBolao));
 			verMais.setVisibility(View.VISIBLE);
 		} else {
-			cotasEDezenas.setVisibility(View.VISIBLE);
+			showCotasRestantes(true);
 			seta.setBackground(VectorUtils.getShape(R.drawable.seta_baixo_lista_boloes, R.color.azulBolao));
 			verMais.setVisibility(View.GONE);
 		}
@@ -279,4 +298,15 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private ColorStateList getCor(int cor) {
 		return ContextCompat.getColorStateList(activity, cor);
 	}
+
+	public void showCotasRestantes(boolean isShow) {
+		if (cotasEDezenas != null){
+			if (isShowCotasRestantes != null && isShowCotasRestantes && isShow){
+				cotasEDezenas.setVisibility(View.VISIBLE);
+			} else {
+				cotasEDezenas.setVisibility(View.GONE);
+			}
+		}
+	}
+
 }

@@ -70,14 +70,14 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
-import br.gov.caixa.loterias.apostas.utils.SelecaoConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
-import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
-import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.SelecaoConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
@@ -310,10 +310,11 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             if (NovaApiUtils.isPossoBuscarNovaAPI()) {
                 requestApostasNovaApi();
             } else if (Boolean.TRUE.equals(
-                    SharedPreferencesUtils.getValorBoolean(
+                            SharedPreferencesUtils.getValorBoolean(
                             ConfiguracoesEnum.IS_MICRO_SERVICO.get(),
                             ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean()
-                    ))){
+                    ))
+            ){
                 requestApostasMicroServico();
             }else {
                 requesteApostasSilce();

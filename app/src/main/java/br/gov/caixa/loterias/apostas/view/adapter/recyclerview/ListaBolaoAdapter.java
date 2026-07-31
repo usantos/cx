@@ -23,19 +23,21 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 	private OnItemBolaoListener listener;
 	private Activity activity;
 	private FiltroAplicadoMarketplace filtro;
+    private Boolean showCotasRestantes;
 
-	public ListaBolaoAdapter(List<CotasBolaoDTO> bolaoList, OnItemBolaoListener listener, Activity activity, @Nullable FiltroAplicadoMarketplace filtro){
+	public ListaBolaoAdapter(List<CotasBolaoDTO> bolaoList, OnItemBolaoListener listener, Activity activity, @Nullable FiltroAplicadoMarketplace filtro, Boolean showCotasRestantes){
 		this.bolaoList = bolaoList;
 		this.listener = listener;
 		this.activity = activity;
 		this.filtro = filtro;
-	}
+        this.showCotasRestantes = showCotasRestantes;
+    }
 
 	@NonNull
 	@Override
 	public BolaoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_bolao, parent, false);
-		return new BolaoHolder(activity, view, listener, filtro);
+		return new BolaoHolder(activity, view, listener, filtro, showCotasRestantes);
 	}
 
 	@Override
@@ -48,12 +50,8 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 	public int getItemCount() {
 		return bolaoList.size();
 	}
-
-	public void atualizaLista(int inicioRange, List<CotasBolaoDTO> novosBoloes, FiltroAplicadoMarketplace filtro) {
+	public void atualizarFiltro(FiltroAplicadoMarketplace filtro) {
 		this.filtro = filtro;
-		if (bolaoList != null){
-			bolaoList.addAll(novosBoloes);
-			notifyItemRangeInserted(inicioRange, bolaoList.size());
-		}
+		notifyDataSetChanged();
 	}
 }

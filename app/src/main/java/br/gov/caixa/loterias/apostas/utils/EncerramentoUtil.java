@@ -60,7 +60,7 @@ public class EncerramentoUtil {
                                                            Integer concurso) {
 
         //Verifica se Bolao Habilitado
-        if (!SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(),ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean())) {
+        if (checkBolaoHabilitado()) {
             return null;
         }
 
@@ -99,7 +99,7 @@ public class EncerramentoUtil {
     public static void verificaSeCriaCardTemporario() {
 
         //Verifica se Bolao Habilitado
-        if (!SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(),ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean())) {
+        if (checkBolaoHabilitado()) {
             return;
         }
 
@@ -130,6 +130,11 @@ public class EncerramentoUtil {
             }
         }
     }
+
+    private static boolean checkBolaoHabilitado() {
+        return !SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(), ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean());
+    }
+
     private static void criarCardTemporario(ModalidadeDisponivelCota modalidadeDC) {
 
         ConcursoDTO concursoDTO = new ConcursoDTO();

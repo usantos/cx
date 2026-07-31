@@ -10,9 +10,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnu
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoMicroServicoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingleton;
-import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 
 public class ApostaMicroServicoBO extends BaseBO {
     private static ApostaMicroServicoBO instance;

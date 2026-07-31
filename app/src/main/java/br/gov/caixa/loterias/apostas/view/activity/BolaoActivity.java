@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -187,11 +188,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
         bolaoFooterAdapter = new BolaoFooterAdapter();
 
+        bolaoList = new ArrayList<>();
+
         listAdapter = new ListaBolaoAdapter(
-                new ArrayList<>(),
+                bolaoList,
                 onItemBolaoListener(),
                 this,
-                filtro
+                filtro,
+                true
         );
 
         concatBolaoAdapter = new ConcatAdapter(
@@ -296,8 +300,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, cotasDisponiveis.get(0).isLotericaFavorita());
             selectFiltroLoterica();
         } else {
-            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
             boolean isEspecial = tipoConcurso == TipoConcursoEnum.ESPECIAL;
+
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+            //EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(modalidade,  parametroJogo.getConcurso().getNumero(), isEspecial);
+
             FragmentUtils.startFragmentBarraTituloBolao(
                     getSupportFragmentManager(),
                     R.id.barra_titulo_mkp,
@@ -448,16 +455,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                     initLotericasVazia();
                 }
 
-                //Animação Copa da Loteca
-                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.LOTECA) {
-                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.copa_loteca_3);
-                    lottieManager.setSpeed(1.75f);
-                    lottieManager.start();
-                }
-                //Animação Quina de São João
-                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.QUINA) {
-                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.quina_sao_joao_1);
-                    lottieManager.setSpeed(1.5f);
+                //Animação Lotofacil da Independencia
+                if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.LOTOFACIL) {
+                    lottieManager = new LottieManager(BolaoActivity.this, R.raw.lotofacil_independencia);
+                    lottieManager.setSpeed(0.60f);
                     lottieManager.start();
                 }
 
@@ -826,27 +827,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         if (bolaoList == null) {
             bolaoList = new ArrayList<>();
         }
+        List<CotasBolaoDTO> novaListaCompleta =
+                model.getBolaoList(cotas);
 
-        List<CotasBolaoDTO> novaListaCompleta = model.getBolaoList(cotas);
+        bolaoList.clear();
+        bolaoList.addAll(novaListaCompleta);
 
-        if (listAdapter == null) {
-            bolaoList = novaListaCompleta;
-            listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), this, filtro);
-        } else {
-            int inicioRange = bolaoList.size();
-            bolaoList.clear();
-            bolaoList.addAll(novaListaCompleta);
-
-            if (inicioRange < bolaoList.size()) {
-                listAdapter.atualizaLista(
-                        inicioRange,
-                        bolaoList.subList(inicioRange, bolaoList.size()),
-                        filtro
-                );
-            } else {
-                listAdapter.notifyDataSetChanged();
-            }
-        }
+        listAdapter.notifyDataSetChanged();
 
         bolaoFooterAdapter.mostrarLoading(false);
         bolaoFooterAdapter.mostrarFimLista(!bolaoList.isEmpty() && model.isAcabouRegistros());
@@ -915,7 +902,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 cotasDisponiveis = null;
 
                 buscaBoloesFiltro();
-                listAdapter = null;
                 bolaoFooterAdapter.mostrarLoading(false);
                 rvConteudoBoloes.scrollToPosition(0);
             }
@@ -982,7 +968,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             if (result.getResultCode() == Activity.RESULT_OK) {
                 AlertDialogUtils.show(BolaoActivity.this);
                 model.zeraPaginacao();
-                listAdapter = null;
                 cotasDisponiveis = null;
                 if (isFiltrando) {
                     buscaBoloesFiltro();
@@ -1103,9 +1088,18 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private OnItemBolaoListener onItemBolaoListener() {
         return new OnItemBolaoListener() {
             @Override
-            public void verMais(BolaoHolder holder, int position) {
-                bolaoList.get(position).setAbertoParaMostrarDetalhes(!bolaoList.get(position).isAbertoParaMostrarDetalhes());
-                holder.mostrarDetalhes(bolaoList.get(position).isAbertoParaMostrarDetalhes());
+            public void verMais(
+                    BolaoHolder holder,
+                    int position
+            ) {
+                CotasBolaoDTO item =
+                        bolaoList.get(position);
+
+                item.setAbertoParaMostrarDetalhes(
+                        !item.isAbertoParaMostrarDetalhes()
+                );
+
+                listAdapter.notifyItemChanged(position);
             }
 
             @Override

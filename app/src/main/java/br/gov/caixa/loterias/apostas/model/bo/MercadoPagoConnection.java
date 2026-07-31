@@ -30,6 +30,8 @@ import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
@@ -49,7 +51,9 @@ public class MercadoPagoConnection {
 
 	public static void callWebServicePayment_method(final String bin , String jsonObject, Context ctx, MercadoPagoListener listener) {
 		String publicKey = MercadoPagoUtil.getPublicKeyMercadoPago();
-		if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_ATUALIZA_PUBLIC_KEY.get(), ConfiguracoesDefaultEnum.IS_ATUALIZA_PUBLIC_KEY.asBoolean()) || publicKey == null || publicKey.isEmpty()){
+
+		if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_ATUALIZA_PUBLIC_KEY.get(),
+				ConfiguracoesDefaultEnum.IS_ATUALIZA_PUBLIC_KEY.asBoolean()) || publicKey == null || publicKey.isEmpty()){
 			silceBuscaKeyPublic(onSilceKeyPaymentMethodListener(bin, jsonObject, ctx, listener));
 		}else {
 			String	url = BuildConfigManager.getVariavel("MP_PAYMENT_URL") + ctx.getResources().getString(R.string.bin) +
@@ -144,7 +148,8 @@ public class MercadoPagoConnection {
 
 		final CardTokenResponse[] cardResponse = {null};
 
-		if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_ATUALIZA_PUBLIC_KEY.get(), ConfiguracoesDefaultEnum.IS_ATUALIZA_PUBLIC_KEY.asBoolean()) || publicKey == null || publicKey.isEmpty()){
+		if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_ATUALIZA_PUBLIC_KEY.get(),
+				ConfiguracoesDefaultEnum.IS_ATUALIZA_PUBLIC_KEY.asBoolean()) || publicKey == null || publicKey.isEmpty()){
 			silceBuscaKeyPublic(onBuscaSilceCreateTokenListener(jsonObject, ctx, listener, rQueue, payment_method_id));
 		} else {
 			String url2 = BuildConfigManager.getVariavel("MP_CREATE_TOKEN_URL") +  ctx.getResources().getString(R.string.public_key) +

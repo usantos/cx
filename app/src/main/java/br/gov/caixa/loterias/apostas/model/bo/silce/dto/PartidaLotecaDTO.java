@@ -97,6 +97,16 @@ public class PartidaLotecaDTO implements Serializable {
         this.letraLegenda = letraLegenda;
     }
 
+    @ApiModelProperty(value = "")
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+
     public String getLegendaAbreviada() {
         if (descricaoLegenda != null && descricaoLegenda.length() > 4)
             return descricaoLegenda.substring(4);
@@ -130,15 +140,6 @@ public class PartidaLotecaDTO implements Serializable {
                 (this.equipe2 == null ? partidaLotecaDTO.equipe2 == null : this.equipe2.customEquals(partidaLotecaDTO.equipe2)) &&
                 (this.numero == null ? partidaLotecaDTO.numero == null : this.numero.equals(partidaLotecaDTO.numero)) &&
                 (this.empate == null ? partidaLotecaDTO.empate == null : this.empate.equals(partidaLotecaDTO.empate));
-    }
-
-    @ApiModelProperty(value = "")
-    public Integer getNumero() {
-        return numero;
-    }
-
-    public void setNumero(Integer numero) {
-        this.numero = numero;
     }
 
     @Override

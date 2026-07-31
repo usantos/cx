@@ -218,14 +218,22 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     private void setPickerTeimosinhas(Integer position, View view){
         picker_qnt_teimosinhas = view.findViewById(R.id.picker_qnt_teimosinhas);
         listaTeimosinhas = new ArrayList<>();
-        for (int i= 0;  i < arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().size(); i++){
-            listaTeimosinhas.add( arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().get( i ).toString() );
+        for ( int i = 0;  i < arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().size(); i++ ){
+            if (isDadosValidos(arrayConcursos.get(position))) {
+                listaTeimosinhas.add( arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().get( i ).toString() );
+            }
         }
         picker_qnt_teimosinhas.setDisplayedValues(null);
         picker_qnt_teimosinhas.setMinValue(0);
         picker_qnt_teimosinhas.setMaxValue(listaTeimosinhas.size()-1);
         picker_qnt_teimosinhas.setDisplayedValues( listaTeimosinhas.toArray(new String[listaTeimosinhas.size()]));
         picker_qnt_teimosinhas.refreshDrawableState();
+    }
+
+    private boolean isDadosValidos(ParametroSimulacao parametroSimulacao) {
+        return parametroSimulacao != null & parametroSimulacao.getParametroJogo() != null &&
+                parametroSimulacao.getParametroJogo().getTeimosinhas() != null &&
+                !parametroSimulacao.getParametroJogo().getTeimosinhas().isEmpty();
     }
 
     private void setarAlturaConteudo(Integer alturaConteudo, final View view){
