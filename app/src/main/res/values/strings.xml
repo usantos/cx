@@ -93,10 +93,10 @@
     <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
     <string name="compra_sendo_processada">Sua compra está sendo processada</string>
     <string name="confirmacaoPagamentoProcessamento">Estamos processando sua compra.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, a aposta precisa estar _EFETIVADA_.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo2">O pagamento realizado _não garante_ automaticamente a efetivação da aposta.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo3">Se a aposta não for registrada, o valor será devolvido.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo4">Você pode acompanhar tudo em _Minhas Compras_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, sua aposta precisa estar com status _efetivada_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo2">Após a conclusão do pagamento, sua aposta será enviada para processamento.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo3">Você pode acompanhar o andamento em _Minhas Compras_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo4">Se a aposta não for efetivada, o valor será devolvido.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">Voltar ao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
