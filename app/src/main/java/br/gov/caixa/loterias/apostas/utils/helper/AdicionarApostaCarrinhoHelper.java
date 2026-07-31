@@ -79,6 +79,7 @@ public class AdicionarApostaCarrinhoHelper {
      */
     public static void incluirApostaCarrinho(Activity actv, Object objectAposta) {
         activity = actv;
+        if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(activity, 2)) return;
         aposta = getApostaPreenchida(objectAposta);
         AlertDialogUtils.show(activity);
         if (aposta != null && !checarApostasRepetidas(activity, aposta, ApostaOrigem.LISTA_APOSTA)) {

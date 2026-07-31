@@ -41,6 +41,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
@@ -418,9 +419,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.botaoAdicionarCompletarCartela: {
-                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
+                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
                     adicionarSurpresinhaNoCarrinho();
-                //}
+                }
             }
             break;
         }
