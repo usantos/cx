@@ -93,6 +93,8 @@ public class SimulaUiState {
     private final boolean atualizarValorApostaPorQuantidadeNumeros;
     private final boolean resetarTrevosPorQuantidadeNumeros;
     private final String textoSelecionados;
+    private final String textoCompletar;
+
     private final String textoEscolha;
     private final boolean abrirCarrinho;
     private final ScreenSimulaEffect screenSimulaEffect;
@@ -283,6 +285,11 @@ public class SimulaUiState {
                         ? builder.textoSelecionados
                         : "Selecione os números:";
 
+        this.textoCompletar =
+                builder.textoCompletar != null
+                        ? builder.textoCompletar
+                        : "Aposta aleatória";
+
         this.textoEscolha =
                 builder.textoEscolha != null
                         ? builder.textoEscolha
@@ -343,6 +350,7 @@ public class SimulaUiState {
                 .setQtdDezenasPossiveisSelecionado(0)
                 .setQtdConcursoSelecionado(0)
                 .setTextoSelecionados("Selecione os números:")
+                .setTextoCompletar("Aposta aleatória")
                 .setTextoEscolha("Escolha")
                 .setMostrarBotaoLimparAposta(false)
                 .setMostrarSalvarAposta(false)
@@ -408,6 +416,9 @@ public class SimulaUiState {
 
     public String getTextoSelecionados() {
         return textoSelecionados;
+    }
+    public String getTextoCompletar() {
+        return textoCompletar;
     }
     public String getTextoEscolha(){return textoEscolha;}
     public boolean isExibirDialogQuantidadeTrevos() {
@@ -777,6 +788,7 @@ public class SimulaUiState {
         private boolean atualizarValorApostaPorQuantidadeNumeros;
         private boolean resetarTrevosPorQuantidadeNumeros;
         private String textoSelecionados = "Selecione os números:";
+        private String textoCompletar = "Aposta aleatória";
         private String textoEscolha = "Escolha";
         private boolean abrirCarrinho;
         private boolean surpresinhaHabilitada;
@@ -879,6 +891,7 @@ public class SimulaUiState {
             this.carregandoCarrinho = state.carregandoCarrinho;
             this.exibirCarrinho = state.exibirCarrinho;
             this.textoSelecionados = state.textoSelecionados;
+            this.textoCompletar = state.textoCompletar;
             this.textoEscolha = state.textoEscolha;
             this.carrinho = state.carrinho;
             this.etapaAposta = state.etapaAposta;
@@ -1193,6 +1206,15 @@ public class SimulaUiState {
                     textoSelecionados != null
                             ? textoSelecionados
                             : "Selecione os números:";
+            return this;
+        }
+        public Builder setTextoCompletar(
+                String textoCompletar
+        ) {
+            this.textoCompletar =
+                    textoCompletar != null
+                            ? textoCompletar
+                            : "Aposta aleatória";
             return this;
         }
         public Builder setApostaFavoritada(boolean apostaFavoritada) {

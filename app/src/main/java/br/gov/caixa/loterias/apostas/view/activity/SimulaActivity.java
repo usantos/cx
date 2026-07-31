@@ -836,6 +836,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             botaoCompletar.setVisibility(mostrarCompletar ? View.VISIBLE : View.GONE);
 
             botaoCompletar.setEnabled(state.isBotaoCompletarHabilitado());
+            botaoCompletar.setText(
+                    state.getTextoCompletar()
+            );
         }
 
         if (botaoLimparAposta != null) {

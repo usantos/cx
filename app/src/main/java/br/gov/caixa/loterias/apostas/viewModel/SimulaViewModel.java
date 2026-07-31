@@ -1742,6 +1742,49 @@ public class SimulaViewModel extends AndroidViewModel {
                 surpresinhaReducer::voltarParaSurpresinha
         );
     }
+    private String obterTextoCompletar(
+            SimulaUiState state
+    ) {
+        if (state == null) {
+            return "Aposta aleatória";
+        }
+
+        switch (state.getEtapaAposta()) {
+
+            case TIME_CORACAO:
+                return "Time aleatório";
+
+            case MES_SORTE:
+                return "Mês aleatório";
+
+            case TREVOS:
+
+                int quantidadeTrevosSelecionados =
+                        state.getTrevosSelecionados() != null
+                                ? state.getTrevosSelecionados().size()
+                                : 0;
+
+                return quantidadeTrevosSelecionados
+                        > 0
+                        ? "Completar trevos"
+                        : "Trevos aleatórios";
+
+            default:
+                break;
+        }
+
+        boolean possuiDezenasSelecionadas =
+                state.getDezenasSelecionadas() != null
+                        && !state.getDezenasSelecionadas().isEmpty();
+
+        boolean possuiSuperSeteSelecionado =
+                state.getQtdTotalSelecionadosSuperSete() > 0;
+
+        return possuiDezenasSelecionadas
+                || possuiSuperSeteSelecionado
+                ? "Completar jogo"
+                : "Aposta aleatória";
+    }
 
     private void updateState(
             SimulaUiState novoEstado
@@ -1750,8 +1793,17 @@ public class SimulaViewModel extends AndroidViewModel {
             return;
         }
 
+        SimulaUiState estadoFinal =
+                novoEstado.toBuilder()
+                        .setTextoCompletar(
+                                obterTextoCompletar(
+                                        novoEstado
+                                )
+                        )
+                        .build();
+
         uiState.setValue(
-                novoEstado
+                estadoFinal
         );
     }
 

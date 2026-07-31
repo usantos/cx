@@ -23,7 +23,7 @@
                 android:id="@+id/btnCompletar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/completar"
+                android:text="@string/aposta_aleatoria"
                 android:textAllCaps="false"
                 android:textColor="@color/text_rodape"
                 android:fontFamily="@font/caixa_std_regular"
