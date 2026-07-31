@@ -15,24 +15,19 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
-            android:text="@string/label_nome_do_seu_time"
-            android:textColor="@color/azulFormNovoTipoPagamento"
-            android:textSize="16sp"
-            android:fontFamily="@font/caixa_std_regular"/>
-
         <EditText
             android:id="@+id/informe_nome_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
+            android:minHeight="40dp"
+            android:layout_margin="16dp"
             android:maxLines="1"
-            android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+            android:drawableStart="@drawable/ic_lupa"
+            android:drawableTint="@color/cinza110"
+            android:drawablePadding="8dp"
+            android:background="@drawable/bg_edit_favoritar"
+            android:hint="@string/label_nome_do_time"
+            android:textColor="@color/cinza110"
             android:textSize="16sp"
             android:fontFamily="@font/caixa_std_regular"/>
 
@@ -43,7 +38,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:nestedScrollingEnabled="false"
-            android:paddingBottom="119dp"/>
+            android:layout_marginBottom="16dp"
+            />
 
     </LinearLayout>
 

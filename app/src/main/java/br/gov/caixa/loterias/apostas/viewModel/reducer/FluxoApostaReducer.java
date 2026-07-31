@@ -309,7 +309,7 @@ public class FluxoApostaReducer {
         } else if (etapa == EtapaAposta.MES_SORTE) {
             textoSelecionados = "Selecione o mes de sorte:";
         } else if (etapa == EtapaAposta.TIME_CORACAO) {
-            textoSelecionados = "Selecione o time do coracao:";
+            textoSelecionados = "Escolha o time do coracao:";
         }
 
         return atual.toBuilder()

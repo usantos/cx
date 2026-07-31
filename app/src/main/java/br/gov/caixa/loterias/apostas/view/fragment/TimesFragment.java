@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -340,6 +341,23 @@ public class TimesFragment extends BaseEtapaFragment {
                         QUANTIDADE_COLUNA_LISTA
                 )
         );
+        gridTimes.addItemDecoration(
+                new RecyclerView.ItemDecoration() {
+                    @Override
+                    public void getItemOffsets(
+                            Rect outRect,
+                            View view,
+                            RecyclerView parent,
+                            RecyclerView.State state
+                    ) {
+
+                        outRect.left = 8;
+                        outRect.right = 8;
+                        outRect.top = 8;
+                        outRect.bottom = 8;
+                    }
+                }
+        );
 
         gridTimes.setAdapter(
                 timeCoracaoAdapter
@@ -471,7 +489,7 @@ public class TimesFragment extends BaseEtapaFragment {
                 .setCompoundDrawablesWithIntrinsicBounds(
                         0,
                         0,
-                        R.drawable.icon_input_ok,
+                        R.drawable.ic_check_time,
                         0
                 );
     }
@@ -713,7 +731,7 @@ public class TimesFragment extends BaseEtapaFragment {
 
             informeNomeTime
                     .setCompoundDrawablesWithIntrinsicBounds(
-                            0,
+                            R.drawable.ic_lupa,
                             0,
                             0,
                             0
@@ -721,8 +739,7 @@ public class TimesFragment extends BaseEtapaFragment {
         }
 
         if (timeCoracaoAdapter != null) {
-            timeCoracaoAdapter
-                    .notifyDataSetChanged();
+            timeCoracaoAdapter.notifyDataSetChanged();
         }
     }
 

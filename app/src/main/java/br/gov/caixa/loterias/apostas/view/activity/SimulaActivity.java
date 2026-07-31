@@ -681,7 +681,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 break;
 
             case TIME_CORACAO:
-                texto = "Selecione o time do coração:";
+                texto = "Escolha o time do coração:";
                 break;
 
             default:
@@ -1699,6 +1699,16 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 "Cancelar",
                 onQuantidadeNumerosDialogListener()
         );
+//        DialogUtils.showDialogListItensNovo(
+//                SimulaActivity.this,
+//                getString(R.string.quant_de_numeros),
+//                subtitulo,
+//                getString(R.string.numeros_text),
+//                state.getLabelsQuantidadeNumeros(),
+//                "Confirmar",
+//                "Cancelar",
+//                onQuantidadeNumerosDialogListener()
+//        );
     }
     private OnDialogListener onQuantidadeTrevosDialogListener() {
 

@@ -65,6 +65,7 @@ import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
@@ -1441,8 +1442,22 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         recyclerViewPartida = fragmentView.findViewById(R.id.recyclerViewPartida);
 
         if (dezenas != null && !dezenas.isEmpty() && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-            simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, getDezenasSelecionadasState(),
-                    corFonteFundoBranco, onItemClickListener());
+            if(parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)){
+                simularDezenasAdapter = new ListaDezenaRecyclerView(
+                        dezenas,
+                        getDezenasSelecionadasState(),
+                        new DezenaConfig(
+                                true,
+                                corFonteFundoBranco,
+                                R.color.timemania_letra_mkp,
+                                true
+                        ),
+                        onItemClickListener());
+            }
+            else {
+                simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, getDezenasSelecionadasState(),
+                        corFonteFundoBranco, onItemClickListener());
+            }
             listaDezenas.setAdapter(simularDezenasAdapter);
 
             RecyclerView.LayoutManager layoutDezenas = new GridLayoutManager(context, QUANTIDADE_COLUNA_LISTA);

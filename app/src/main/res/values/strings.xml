@@ -195,6 +195,7 @@
     <string name="label_encontre_lotorica_atraves_endereco_cep_codigo">Para isso, encontre a lotérica através\nde seu endereço, CEP ou código.</string>
     <string name="label_empate">Empate</string>
     <string name="label_nome_do_seu_time">Nome do seu time</string>
+    <string name="label_nome_do_time">Nome do time</string>
     <string name="label_suas_apostas">Suas apostas</string>
     <string name="label_suas_apostas_loteca">Loteca</string>
     <string name="label_suas_apostas_explica">Escolha os resultados dos jogos abaixo.\nVocê precisa apostar em todos os jogos, sendo que pelo menos 1 palpite deve ser duplo
@@ -1044,9 +1045,11 @@
     <string name="extra_type_game_color_Dark">typeGameColorDark</string>
     <string name="evento_entrou_selecao_prognosticos">ENTROU_SELECAO_PROGNOSTICOS</string>
     <string name="quant_de_numeros">Quantidade de números</string>
+    <string name="numeros_text">Escolha em quantos números você quer jogar:</string>
     <string name="espaco_numeros">&#160;números</string>
     <string name="evento_entrou_popup_teimosinha">ENTROU_POPUP_TEIMOSINHA</string>
     <string name="teimosinhas_maiusculo">Teimosinhas</string>
+    <string name="teimosinhas_text">Escolha em quantos números você quer jogar:</string>
     <string name="teimosinhas_descricao">Escolha em quantos concursos você quer participar com este mesmo jogo:</string>
     <string name="extra_ajuda">ajuda</string>
     <string name="mailto_dois_pontos">mailto:</string>
