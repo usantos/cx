@@ -871,6 +871,7 @@ public class SimulaUiState {
             this.trevosSelecionados = new ArrayList<>();
             this.quantidadeTrevosSelecionada = 0;
             this.quantidadeSurpresinhas = 0;
+            this.qtdTotalSelecionadosSuperSete = 0;
             this.quantidadeNumerosSurpresinha = 0;
             this.mesSelecionado = null;
             this.quantidadeTrevosSurpresinha = 0;

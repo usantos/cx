@@ -26,6 +26,7 @@
         android:paddingTop="12dp"
         android:paddingEnd="16dp"
         android:paddingBottom="16dp"
+        android:layout_marginBottom="2dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

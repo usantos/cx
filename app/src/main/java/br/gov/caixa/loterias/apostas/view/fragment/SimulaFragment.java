@@ -98,7 +98,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
     private ArrayList<SuperSeteAdapter> listaAdaptersSuperSete;
     private ExpandableHeightRecyclerView recyclerViewPartida;
-    private int qtdTotalSelecionadosSuperSete = 0;
 
     private boolean isEcolhaTimeBtnAtivado;
     private boolean isAvisou = false;
@@ -641,7 +640,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         parametroJogo.getConcurso().getModalidade(),
                         getDezenasSelecionadasState() != null ? getDezenasSelecionadasState().size() : 0,
                         getStateAtual().getQtdDezenasPossiveisSelecionado(),
-                        qtdTotalSelecionadosSuperSete,
+                        getStateAtual().getQtdTotalSelecionadosSuperSete(),
                         qtdPartidasSelecionadas,
                         qtdPartidasTotal,
                         getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
@@ -699,7 +698,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         parametroJogo.getConcurso().getModalidade(),
                         getDezenasSelecionadasState() != null ? getDezenasSelecionadasState().size() : 0,
                         getStateAtual().getQtdDezenasPossiveisSelecionado(),
-                        qtdTotalSelecionadosSuperSete,
+                        getStateAtual().getQtdTotalSelecionadosSuperSete(),
                         qtdPartidasSelecionadas,
                         qtdPartidasTotal,
                         duplosLoteca,
@@ -771,7 +770,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                                 ? getDezenasSelecionadasState().size()
                                 : 0,
                         qtdDezenasPossiveisParaEstado,
-                        qtdTotalSelecionadosSuperSete,
+                        getQtdSuperSeteAtual(),
                         qtdPartidasSelecionadas,
                         qtdPartidasTotal,
                         duplosLoteca,
@@ -1030,10 +1029,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 }
             }
         }
-
-        qtdTotalSelecionadosSuperSete =
-                state.getQtdTotalSelecionadosSuperSete();
-
     }
 
     private void renderLimparLoteca() {
@@ -1201,7 +1196,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             atualizarQuantidadeSelecionada(
                     qtdSelecionada
             );
-            qtdTotalSelecionadosSuperSete = 0;
             limpaNumerosSuperSete();
         }
 
@@ -1217,13 +1211,11 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
     private void preencheSuperSete(List<List<Integer>> numerosSelecionados) {
         int coluna = 0;
-        qtdTotalSelecionadosSuperSete = 0;
         if (matrizSelecionada != null) {
             matrizSelecionada = null;
         }
         for (SuperSeteAdapter adapter : listaAdaptersSuperSete) {
             adapter.dezenasSelecionadas = numerosSelecionados.get(coluna);
-            qtdTotalSelecionadosSuperSete += adapter.dezenasSelecionadas.size();
             adapter.notifyDataSetChanged();
             coluna++;
         }
@@ -1325,8 +1317,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 quantidadeMinima
         );
 
-        qtdTotalSelecionadosSuperSete = 0;
-
         atualizaValorTotalAposta(
                 quantidadeMinima,
                 getStateAtual()
@@ -1366,7 +1356,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 preencheSuperSete(matrizSelecionada);
                 matrizSelecionada = null;
             }
-            if (validaSelecaoSuperSete() && qtdTotalSelecionadosSuperSete == getStateAtual().getQtdDezenasPossiveisSelecionado()) {
+            if (validaSelecaoSuperSete() && getStateAtual().getQtdTotalSelecionadosSuperSete() == getStateAtual().getQtdDezenasPossiveisSelecionado()) {
                 atualizarValorENotificarEstadoCartela();
             } else {
                 atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
@@ -1612,7 +1602,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
                         qtdDezenasPossiveis,
 
-                        qtdTotalSelecionadosSuperSete,
+                        getQtdSuperSeteAtual(),
 
                         qtdPartidasSelecionadas,
 
@@ -1742,6 +1732,31 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         recyclerViewPartida.setAdapter(lotecaAdapter);
         recyclerViewPartida.setExpanded(true);
     }
+    private void atualizarQtdSuperSeteState() {
+        dispatch(
+                new SimulaUiEvent.CartelaAlterada(
+                        parametroJogo.getConcurso().getModalidade(),
+                        getDezenasSelecionadasState().size(),
+                        getStateAtual().getQtdDezenasPossiveisSelecionado(),
+                        getQtdSuperSeteAtual(),
+                        partidasSelecionadas != null
+                                ? partidasSelecionadas.size()
+                                : 0,
+                        parametroJogo.getPartidas() != null
+                                ? parametroJogo.getPartidas().size()
+                                : 0,
+                        0,
+                        0,
+                        possuiPlacarLotogol(),
+                        getStateAtual().getEquipeSelecionada() != null,
+                        getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
+                        false,
+                        false,
+                        calcularEtapaComplementarCompleta(),
+                        getDezenasSelecionadasState()
+                )
+        );
+    }
 
     private void configuraSuperSete(View viewLayout) {
         listaGridsSuperSete = cartelaModel.getListGridSuperSete(viewLayout);
@@ -1763,12 +1778,12 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 if (listaSelecionados.contains(valorSelecionado)) {
                     if (listaSelecionados.size() == adapter.getQtdColunasMaximas(getStateAtual().getQtdDezenasPossiveisSelecionado())) {
                         listaSelecionados.remove(valorSelecionado);
-                        qtdTotalSelecionadosSuperSete--;
-                        if (qtdTotalSelecionadosSuperSete >= parametroJogo.getQuantidadeMinima()) {
+                        atualizarQtdSuperSeteState();
+                        if (getStateAtual().getQtdTotalSelecionadosSuperSete() >= parametroJogo.getQuantidadeMinima()) {
                             atualizarQuantidadeSelecionada(getStateAtual().getQtdDezenasPossiveisSelecionado() - 1);
                             int novaQuantidade =
                                     parentActivity.verificaNovoQtdDezenasMax(
-                                            qtdTotalSelecionadosSuperSete
+                                            getStateAtual().getQtdTotalSelecionadosSuperSete()
                                     );
 
                             atualizarQuantidadeSelecionada(
@@ -1784,7 +1799,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                     }
                 } else {
                     int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
-                    if (qtdTotalSelecionadosSuperSete == getStateAtual().getQtdDezenasPossiveisSelecionado()) {
+                    if (getStateAtual().getQtdTotalSelecionadosSuperSete() == getStateAtual().getQtdDezenasPossiveisSelecionado()) {
                         // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
 
                         int quantidadeAtual =
@@ -1803,9 +1818,9 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                                     atualizarQuantidadeSelecionada(novaQuantidade);
                                     atualizarValorENotificarEstadoCartela();
                                     listaSelecionados.add(valorSelecionado);
-                                    qtdTotalSelecionadosSuperSete++;
+                                    atualizarQtdSuperSeteState();
 
-                                    if ((qtdTotalSelecionadosSuperSete == (getStateAtual().getQtdDezenasPossiveisSelecionado())) && (!isAvisou)) {
+                                    if ((getStateAtual().getQtdTotalSelecionadosSuperSete() == (getStateAtual().getQtdDezenasPossiveisSelecionado())) && (!isAvisou)) {
                                         DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_qtd_max_ultrapassada));
                                         isAvisou = true;
                                     }
@@ -1824,7 +1839,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         if (listaSelecionados.size() < SuperSeteAdapter.QTD_MAX_POR_COLUNA) {
                             if (listaSelecionados.size() < adapter.getQtdColunasMaximas(getStateAtual().getQtdDezenasPossiveisSelecionado())) {
                                 listaSelecionados.add(valorSelecionado);
-                                qtdTotalSelecionadosSuperSete++;
+                                atualizarQtdSuperSeteState();
                             } else {
                                 DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
                                         "{qtdColunas}",
@@ -1995,10 +2010,29 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
         if (parentActivity.getAposta().getModalidade() == ModalidadeEnum.SUPER_7) {
 
-            qtdTotalSelecionadosSuperSete =
+            int qtdSuperSete =
                     getQtdTotalSelecionadosSuperSete(
                             apostaSuperSete.getMatrizNumerosSelecionados()
                     );
+            dispatch(
+                    new SimulaUiEvent.CartelaAlterada(
+                            parametroJogo.getConcurso().getModalidade(),
+                            0,
+                            apostaSuperSete.getQuantidadeNumeros(),
+                            qtdSuperSete,
+                            0,
+                            0,
+                            0,
+                            0,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            getDezenasSelecionadasState()
+                    )
+            );
 
             configuraSuperSete(view);
 
@@ -2011,7 +2045,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                     apostaSuperSete.getQuantidadeNumeros());
 
             atualizarQtdConcurso(apostaSuperSete.getQuantidadeTeimosinhas());
-
+            preencheSuperSete(matrizSelecionada);
             publicarValorAposta(aposta.getValor());
 
             Button botaoLimpar =
@@ -2020,9 +2054,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             if (botaoLimpar != null) {
                 botaoLimpar.setEnabled(mostraLimparSuperSete());
             }
-            notificarEstadoCartelaAlterado(
-                    apostaSuperSete.getQuantidadeNumeros()
-            );
 
             return;
         }
@@ -2100,6 +2131,18 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     @Override
     public EtapaAposta getEtapa() {
         return EtapaAposta.NUMEROS;
+    }
+    private int getQtdSuperSeteAtual() {
+
+        if (listaAdaptersSuperSete == null) {
+            return getStateAtual().getQtdTotalSelecionadosSuperSete();
+        }
+
+        return getQtdTotalSelecionadosSuperSete(
+                ListaUtils.pegaListaSuperSete(
+                        listaAdaptersSuperSete
+                )
+        );
     }
 
 }
