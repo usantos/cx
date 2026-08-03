@@ -137,6 +137,10 @@ public class SomadorCarrinhoFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		atualizaCarrinho();
+	}
+
+	public void atualizaCarrinho() {
 		if(LoginSP.isLoginRealizado()){
 			if(carregouDoServico){
 				atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
