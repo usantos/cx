@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -71,7 +68,6 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.BolaoFooterAdapte
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.BolaoHeaderAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaLotericasAdapter;
-import br.gov.caixa.loterias.apostas.view.custom.AccessibleSpringDotsIndicator;
 import br.gov.caixa.loterias.apostas.view.custom.LottieManager;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
@@ -278,6 +274,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        buscaLotericas();
+    }
 
     private void loadParametroJogo(ModalidadeEnum modalidade) {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
@@ -342,6 +343,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             initLotericasVazia();
         }
         hideFiltrar(true);
+        hideSearch(false);
     }
 
     private void seletorBoloes() {
@@ -352,6 +354,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             apresentanEstadoVazio();
         }
         hideFiltrar(false);
+        hideSearch(true);
     }
 
 
@@ -439,10 +442,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 if (payload == null) {
                     payload = simulaPayloadLoterica();
                 }
-                if (lotericasAdapter == null) {
-                    setLotericasFavoritas(payload);
-                    configuraListView();
-                }
+
+                setLotericasFavoritas(payload);
+                configuraListView();
 
                 if (lotericasList == null || lotericasList.isEmpty()) {
                     initLotericasVazia();

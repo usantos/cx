@@ -649,6 +649,10 @@ public class DialogUtils {
                 labelBtnNegativo, listener::NegativeButton, null, null);
     }
 
+    public static Dialog dialogTituloConfirmarReturn(Context context, String titulo, String conteudo, OnDialogBotaoListener onPositivoListener){
+        return buildDialogReturn(context, titulo, conteudo, BTN_CONFIRMAR, onPositivoListener::onButtonClick, BTN_CANCELAR, null, null, null);
+    }
+
     public static Dialog dialogRateUtils(Context context, String titulo, String conteudo,String labelBtnPositivo, String labelBtnNegativo, OnDialogDoisBotoesListener listener) {
         return buildDialogReturn(context, titulo, conteudo,
                 labelBtnPositivo, listener::PositiveButton,
