@@ -1175,6 +1175,7 @@
     <string name="valores_para_apostas_com_2_trevos">* Valores para apostas com 2 trevos</string>
     <string name="voce_escolheu_x_numeros">Você escolheu _x_ números</string>
     <string name="subtitulo_trevos">Agora escolha de 2 a 6 trevos \npara marcar nesta aposta</string>
+    <string name="text_trevos">Escolha de 2 a 6 trevos \npara marcar nesta aposta</string>
     <string name="trevos">trevos</string>
     <string name="para_aposta_com_x_numeros">Para a aposta com x números</string>
     <string name="quant_de_trevos">Quantidade de trevos</string>
