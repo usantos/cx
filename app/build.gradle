@@ -394,7 +394,7 @@ repositories {
         //implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
         implementation fileTree('libs/QRGenearator-1.0.3.aar')
 
-        implementation 'com.mercadolibre.android.device:sdk:3.0.5'
+        implementation 'com.mercadolibre.android.device:sdk:6.0.0'
 
         //Apache commons
         implementation 'org.apache.commons:commons-collections4:4.5.0'
