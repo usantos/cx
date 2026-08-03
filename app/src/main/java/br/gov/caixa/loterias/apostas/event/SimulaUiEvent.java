@@ -58,36 +58,15 @@ public abstract class SimulaUiEvent {
         private final ModalidadeEnum tipoJogo;
         private final int qtdDezenasSelecionadas;
         private final int qtdDezenasPossiveisSelecionado;
-        private final int qtdTotalSelecionadosSuperSete;
-        private final int qtdPartidasSelecionadas;
-        private final int qtdPartidasTotal;
-        private final boolean escolhaTimeCoracaoSurpresinha;
-        private final boolean escolhaTimeBtnAtivado;
-        private final boolean equipeSelecionadaValida;
-        private final boolean fragmentCartela;
 
         public CompletarApostaClicado(
                 ModalidadeEnum tipoJogo,
                 int qtdDezenasSelecionadas,
-                int qtdDezenasPossiveisSelecionado,
-                int qtdTotalSelecionadosSuperSete,
-                int qtdPartidasSelecionadas,
-                int qtdPartidasTotal,
-                boolean escolhaTimeCoracaoSurpresinha,
-                boolean escolhaTimeBtnAtivado,
-                boolean equipeSelecionadaValida,
-                boolean fragmentCartela
+                int qtdDezenasPossiveisSelecionado
         ) {
             this.tipoJogo = tipoJogo;
             this.qtdDezenasSelecionadas = qtdDezenasSelecionadas;
             this.qtdDezenasPossiveisSelecionado = qtdDezenasPossiveisSelecionado;
-            this.qtdTotalSelecionadosSuperSete = qtdTotalSelecionadosSuperSete;
-            this.qtdPartidasSelecionadas = qtdPartidasSelecionadas;
-            this.qtdPartidasTotal = qtdPartidasTotal;
-            this.escolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
-            this.escolhaTimeBtnAtivado = escolhaTimeBtnAtivado;
-            this.equipeSelecionadaValida = equipeSelecionadaValida;
-            this.fragmentCartela = fragmentCartela;
         }
 
         public ModalidadeEnum getTipoJogo() {
@@ -102,34 +81,6 @@ public abstract class SimulaUiEvent {
             return qtdDezenasPossiveisSelecionado;
         }
 
-        public int getQtdTotalSelecionadosSuperSete() {
-            return qtdTotalSelecionadosSuperSete;
-        }
-
-        public int getQtdPartidasSelecionadas() {
-            return qtdPartidasSelecionadas;
-        }
-
-        public int getQtdPartidasTotal() {
-            return qtdPartidasTotal;
-        }
-
-        public boolean isEscolhaTimeCoracaoSurpresinha() {
-            return escolhaTimeCoracaoSurpresinha;
-        }
-
-        public boolean isEscolhaTimeBtnAtivado() {
-            return escolhaTimeBtnAtivado;
-        }
-
-
-        public boolean isEquipeSelecionadaValida() {
-            return equipeSelecionadaValida;
-        }
-
-        public boolean isFragmentCartela() {
-            return fragmentCartela;
-        }
     }
     public static final class NextStepClicado
             extends SimulaUiEvent {
@@ -255,8 +206,8 @@ public abstract class SimulaUiEvent {
         private final boolean possuiPlacarLotogol;
         private final boolean equipeSelecionadaValida;
         private final boolean escolhaTimeCoracaoSurpresinha;
-        private boolean etapaComplementarCompleta;
-        private List<Integer> dezenasSelecionadas;
+        private final boolean etapaComplementarCompleta;
+        private final List<Integer> dezenasSelecionadas;
 
         public CartelaAlterada(
                 ModalidadeEnum tipoJogo,
@@ -377,8 +328,8 @@ public abstract class SimulaUiEvent {
                 boolean especial,
                 String textoInicialTeimosinha
         ) {
-            this.qntTeimosinhas = qntTeimosinhas != null ? qntTeimosinhas : new ArrayList<String>();
-            this.qntConcursos = qntConcursos != null ? qntConcursos : new ArrayList<Integer>();
+            this.qntTeimosinhas = qntTeimosinhas != null ? qntTeimosinhas : new ArrayList<>();
+            this.qntConcursos = qntConcursos != null ? qntConcursos : new ArrayList<>();
             this.qntConcursoSelecionado = qntConcursoSelecionado;
             this.especial = especial;
             this.textoInicialTeimosinha = textoInicialTeimosinha;
@@ -703,19 +654,6 @@ public abstract class SimulaUiEvent {
         private final List<Integer> trevosSelecionados;
 
         public TrevosAlterados(
-                int quantidadeTrevosSelecionados,
-                int quantidadeTrevosNecessaria,
-                ParametroValorApostaDTO valorAposta
-        ) {
-            this(
-                    new ArrayList<Integer>(),
-                    quantidadeTrevosSelecionados,
-                    quantidadeTrevosNecessaria,
-                    valorAposta
-            );
-        }
-
-        public TrevosAlterados(
                 List<Integer> trevosSelecionados,
                 int quantidadeTrevosNecessaria,
                 ParametroValorApostaDTO valorAposta
@@ -945,22 +883,7 @@ public abstract class SimulaUiEvent {
             return equipe;
         }
     }
-    public static final class CompletarMesDaSorte
-            extends SimulaUiEvent {
-    }
-    public static final class RecalcularSurpresinha
-            extends SimulaUiEvent {
-    }
-    public static final class AdicionarSurpresinhaAoCarrinho
-            extends SimulaUiEvent {
-    }
-    public static final class LimparConfiguracaoSurpresinha
-            extends SimulaUiEvent {
-    }
     public static final class SolicitarSelecaoTimeCoracao
-            extends SimulaUiEvent {
-    }
-    public static final class InicializarSurpresinha
             extends SimulaUiEvent {
     }
     public static class VoltarEtapa extends SimulaUiEvent {

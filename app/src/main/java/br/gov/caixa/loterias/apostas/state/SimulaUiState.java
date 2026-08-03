@@ -318,7 +318,10 @@ public class SimulaUiState {
 
         this.valorTrevosSelecionado =
                 builder.valorTrevosSelecionado;
-        this.trevosSelecionados = builder.trevosSelecionados;
+        this.trevosSelecionados =
+                builder.trevosSelecionados != null
+                        ? new ArrayList<>(builder.trevosSelecionados)
+                        : new ArrayList<>();
         this.quantidadeTrevosSelecionada = builder.quantidadeTrevosSelecionada;
         this.quantidadeSurpresinhas = builder.quantidadeSurpresinhas;
         this.quantidadeNumerosSurpresinha = builder.quantidadeNumerosSurpresinha;
@@ -462,11 +465,11 @@ public class SimulaUiState {
     }
 
     public List<String> getLabelsTeimosinhas() {
-        return labelsTeimosinhas;
+        return new ArrayList<>(labelsTeimosinhas);
     }
 
     public List<Integer> getConcursosTeimosinhas() {
-        return concursosTeimosinhas;
+        return new ArrayList<>(concursosTeimosinhas);
     }
 
     public String getTextoBotaoTeimosinhas() {
@@ -875,6 +878,7 @@ public class SimulaUiState {
             this.quantidadeNumerosSurpresinha = 0;
             this.mesSelecionado = null;
             this.quantidadeTrevosSurpresinha = 0;
+            this.favoritarApostaEffect = null;
         }
 
         public Builder(

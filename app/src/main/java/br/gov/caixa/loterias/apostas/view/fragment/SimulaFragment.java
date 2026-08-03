@@ -99,7 +99,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     private ArrayList<SuperSeteAdapter> listaAdaptersSuperSete;
     private ExpandableHeightRecyclerView recyclerViewPartida;
 
-    private boolean isEcolhaTimeBtnAtivado;
     private boolean isAvisou = false;
     public BigDecimal valorTotalAposta;
     public int typeGameColorLight, typeGameColorDark;
@@ -294,7 +293,10 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             }
         }
 
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
+        if (parametroJogo != null
+                && parametroJogo.isTipoJogo(
+                ModalidadeEnum.LOTOMANIA
+        ))  {
 
             opcaoOutrosNumerosLayout =
                     parentActivity.findViewById(
@@ -350,9 +352,8 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     }
 
     protected ApostaFavoritaDTO criarApostaFavoritaDTO() {
-        ApostaFavoritaDTO apostaFavorita = new ApostaFavoritaDTO();
 
-        return apostaFavorita;
+        return new ApostaFavoritaDTO();
     }
 
     @Override
@@ -639,14 +640,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 new SimulaUiEvent.CompletarApostaClicado(
                         parametroJogo.getConcurso().getModalidade(),
                         getDezenasSelecionadasState() != null ? getDezenasSelecionadasState().size() : 0,
-                        getStateAtual().getQtdDezenasPossiveisSelecionado(),
-                        getStateAtual().getQtdTotalSelecionadosSuperSete(),
-                        qtdPartidasSelecionadas,
-                        qtdPartidasTotal,
-                        getStateAtual().isEscolhaTimeCoracaoSurpresinha(),
-                        isEcolhaTimeBtnAtivado,
-                        equipeSelecionadaValida,
-                        true
+                        getStateAtual().getQtdDezenasPossiveisSelecionado()
                 )
         );
     }
@@ -981,7 +975,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         }
 
         if (state.isLimparSuperSete()) {
-            renderLimparSuperSete(state);
+            renderLimparSuperSete();
             executouLimpeza = true;
         }
 
@@ -1020,7 +1014,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
     }
 
     private void renderLimparSuperSete(
-            SimulaUiState state
     ) {
         if (listaGridsSuperSete != null) {
             for (ExpandableHeightGridView grid : listaGridsSuperSete) {
@@ -1149,7 +1142,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                     @Override
                     public void success(List<Integer> list) {
                         AlertDialogUtils.dismiss();
-                        isEcolhaTimeBtnAtivado = true;
                         simularDezenasAdapter.atualizaSelecionados(list);
                         atualizarDezenasSelecionadas(list);
                         atualizarValorENotificarEstadoCartela();
@@ -1170,7 +1162,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                     @Override
                     public void success(List<List<Integer>> payload) {
                         AlertDialogUtils.dismiss();
-                        isEcolhaTimeBtnAtivado = true;
 
                         preencheSuperSete(payload);
                         atualizarValorENotificarEstadoCartela();
@@ -1181,24 +1172,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         AlertDialogUtils.dismiss();
                     }
                 });
-    }
-
-    private void atualizaSuperSetePrognosticoMaior(ArrayList<ArrayList<Integer>> listaInteiros) {
-        int qtdSelecionada =
-                getQtdTotalSelecionadosSuperSete(
-                        listaInteiros
-                );
-
-        if (qtdSelecionada
-                > getStateAtual()
-                .getQtdDezenasPossiveisSelecionado()) {
-
-            atualizarQuantidadeSelecionada(
-                    qtdSelecionada
-            );
-            limpaNumerosSuperSete();
-        }
-
     }
 
     private int getQtdTotalSelecionadosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros) {
@@ -1220,35 +1193,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             coluna++;
         }
     }
-
-    private boolean validaSelecaoSuperSete() {
-        //lista de cima igual aos selecionados e no minimo 1 por coluna
-        boolean mostraSalvar = false;
-        int contColunasComSelecao = 0;
-        ArrayList<ArrayList<Integer>> listaSuperSete = ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete);
-        for (ArrayList<Integer> listaSelecionados : listaSuperSete) {
-            if (!listaSelecionados.isEmpty()) {
-                contColunasComSelecao++;
-            }
-        }
-        if (contColunasComSelecao == 7) {
-            mostraSalvar = true;
-        }
-        return mostraSalvar;
-    }
-
-
-//    private void configuraBotoesLotecaOuLotogol() {
-//        botaoCompletar = parentActivity.getBotaoCompletar();
-//        botaoCompletar.setVisibility(View.INVISIBLE);
-//        String textoBotao;
-//        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-//            textoBotao = getString(R.string.label_selecionar_times_aleatoriamente);
-//        } else {
-//            textoBotao = getString(R.string.label_complete_placar_aleatoriamente);
-//        }
-//        botaoCompletar.setText(ViewUtils.textCaixaSTDBold(getActivity(), textoBotao));
-//    }
 
     private void atualizarValorENotificarEstadoCartela() {
 
@@ -1295,39 +1239,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         );
     }
 
-    private void limpaNumerosSuperSete() {
-        if (listaGridsSuperSete != null) {
-            for (ExpandableHeightGridView grid : listaGridsSuperSete) {
-                ((SuperSeteAdapter) grid.getAdapter()).limpaNumeros();
-            }
-        }
-        Button botaoLimpar =
-                getBotaoLimparAposta();
-
-        if (botaoLimpar != null) {
-            botaoLimpar.setEnabled(false);
-        }
-
-        int quantidadeMinima =
-                parametroJogo.getQuantidadeMinima() != null
-                        ? parametroJogo.getQuantidadeMinima()
-                        : 0;
-
-        atualizarQuantidadeSelecionada(
-                quantidadeMinima
-        );
-
-        atualizaValorTotalAposta(
-                quantidadeMinima,
-                getStateAtual()
-                        .getQtdConcursoSelecionado()
-        );
-
-        notificarEstadoCartelaAlterado(
-                quantidadeMinima
-        );
-    }
-
     private boolean mostraLimparSuperSete() {
         if (listaGridsSuperSete != null) {
             for (ExpandableHeightGridView grid : listaGridsSuperSete) {
@@ -1337,33 +1248,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             }
         }
         return false;
-    }
-
-
-    public void atualizaStatusBotaoFinalizar(Boolean isPickerPrognosticos) {
-
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
-            if (partidasSelecionadas.size() < parametroJogo.getPartidas().size()) {
-                setBotaoCompletarEnabled(false);
-            } else {
-                setBotaoCompletarEnabled(true);
-                atualizarValorENotificarEstadoCartela();
-            }
-        } else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-            atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
-        } else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-            if (matrizSelecionada != null) {
-                preencheSuperSete(matrizSelecionada);
-                matrizSelecionada = null;
-            }
-            if (validaSelecaoSuperSete() && getStateAtual().getQtdTotalSelecionadosSuperSete() == getStateAtual().getQtdDezenasPossiveisSelecionado()) {
-                atualizarValorENotificarEstadoCartela();
-            } else {
-                atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
-            }
-        } else {
-            atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
-        }
     }
 
     private void atualizaStatusBotaoFinalizarLoteca(Boolean mostrarBotao) {
@@ -1393,37 +1277,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
         if (button != null) {
             button.setEnabled(enabled);
-        }
-    }
-
-    private void atualizarAdicionarCarinhoCompletarCartela(Boolean isPickerPrognosticos) {
-        if (getDezenasSelecionadasState().size() == getStateAtual().getQtdDezenasPossiveisSelecionado() || getStateAtual().isEscolhaTimeCoracaoSurpresinha()) {
-            if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
-                atualizarValorENotificarEstadoCartela();
-            } else if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
-                atualizarValorENotificarEstadoCartela();
-            } else {
-                atualizarValorENotificarEstadoCartela();
-            }
-
-        } else if (getDezenasSelecionadasState().size() > getStateAtual().getQtdDezenasPossiveisSelecionado()) {
-            List<Integer> dezenasSelecionadas = getDezenasSelecionadasState();
-            dezenasSelecionadas.clear();
-            atualizarDezenasSelecionadas(dezenasSelecionadas);
-            simularDezenasAdapter.notifyDataSetChanged();
-            atualizarValorENotificarEstadoCartela();
-
-            Button botaoLimpar =
-                    getBotaoLimparAposta();
-
-            if (botaoLimpar != null) {
-                botaoLimpar.setEnabled(false);
-            }
-        } else {
-            if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7) && isPickerPrognosticos) {
-                atualizaSuperSetePrognosticoMaior(ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
-            }
-            atualizarValorENotificarEstadoCartela();
         }
     }
 
@@ -1511,10 +1364,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                     );
                 }
 
-                if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-                    isEcolhaTimeBtnAtivado = true;
-                }
-
 
                 if (simularDezenasAdapter != null) {
                     simularDezenasAdapter.atualizaSelecionados(
@@ -1526,8 +1375,10 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
             } catch (Exception e) {
                 Log.d(
-                        "",
-                        e.getLocalizedMessage()
+                        "ERRO_ITEM_CLICK",
+                        e.getLocalizedMessage() != null
+                                ? e.getLocalizedMessage()
+                                : "Erro sem mensagem"
                 );
             }
         };
@@ -2074,7 +1925,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
 
             if (aposta.getTimeDoCoracao() != null) {
-                isEcolhaTimeBtnAtivado = true;
 
                 dispatch(
                         new SimulaUiEvent

@@ -11,7 +11,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -39,7 +40,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.TutorialSuperSeteActivity;
 import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
 import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
 import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
@@ -89,8 +89,6 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.SimulaViewModel;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 
 public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFragmentListener, SurpresinhaFragmentListener {
 
@@ -121,7 +119,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private String textoBotaoTeimosinhas;
     private ParametroJogoDTO parametroSimulacao;
     private ParametroMesDeSorte mesDeSorteCartela;
-    private ParametroMesDeSorte mesDeSorteSurpresinha;
     private Boolean isEspecial = false;
 
     //TODO: MEGA 30 ANOS//
@@ -228,10 +225,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             mesDeSorteCartela = aposta.getMesDeSorte();
         }
 
-        if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.SUPER_SETE_TUTORIAL)) {
-            Intent intent = new Intent(this,TutorialSuperSeteActivity.class);
-            abrirFluxoApostaComResultado(intent);
-        }
         inicializarTela();
     }
     private void inicializarTela(){
@@ -421,15 +414,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void render(SimulaUiState state) {
-        Log.e(
-                "TIME_SURP",
-                "etapa="
-                        + state.getEtapaAposta()
-                        + " escolha="
-                        + state.isEscolhaTimeCoracaoSurpresinha()
-                        + " surpresinha="
-                        + state.isSurpresinhaHabilitada()
-        );
         sincronizarFragmento(state);
         renderAnimacao(state);
         barraTituloDTO = state.getBarraTituloDTO();
@@ -1100,7 +1084,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         textoBotaoPrognosticosSelecionado = state.getTextoBotaoPrognosticosSelecionado();
 
         String textoQuantidadeNumeros;
-        String textoQuantidadeTrevos = state.getTextoBotaoQuantidadeTrevos();
 
         if (textoBotaoPrognosticosSelecionado != null && !textoBotaoPrognosticosSelecionado.trim().isEmpty()) {
 
@@ -1263,7 +1246,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         qtdConcursosList = new ArrayList<>();
         textoBotaoTeimosinhas = getString(R.string.label_sem_teimosinha);
         mesDeSorteCartela = null;
-        mesDeSorteSurpresinha = null;
         configuraParametrosJogo();
         configuraFragments();
         configuraActivity();
@@ -1355,9 +1337,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         int quantidadeMaxima = parametroSimulacao.getQuantidadeMaxima();
 
-        int novaQuantidade = Math.min(qtdDezenasAtual + 1, quantidadeMaxima);
-
-        return novaQuantidade;
+        return Math.min(qtdDezenasAtual + 1, quantidadeMaxima);
     }
 
     @Override
@@ -1667,18 +1647,35 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         switchSurpresinha.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> {
-
                     if (!buttonView.isPressed()) {
                         return;
                     }
 
+                    SimulaUiState state = viewModel.getUiState().getValue();
+
+                    if (state != null
+                            && state.getPossuiAlteracoesPendentes()) {
+
+                        DialogUtils.dialogConfirmar(
+                                this,
+                                getString(R.string.text_descartar),
+                                (dialog, which) -> {
+                                    viewModel.onEvent(
+                                            new SimulaUiEvent.AlterarSurpresinha(isChecked)
+                                    );
+                                }
+                        );
+
+                        switchSurpresinha.setChecked(!isChecked);
+                        return;
+                    }
+
                     viewModel.onEvent(
-                            new SimulaUiEvent.AlterarSurpresinha(
-                                    isChecked
-                            )
+                            new SimulaUiEvent.AlterarSurpresinha(isChecked)
                     );
                 }
-        );    }
+        );
+    }
 
     private void abrirDialogQuantidadeNumeros(SimulaUiState state) {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));

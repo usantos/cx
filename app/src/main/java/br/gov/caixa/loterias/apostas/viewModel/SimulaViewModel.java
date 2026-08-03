@@ -692,16 +692,6 @@ public class SimulaViewModel extends AndroidViewModel {
                 )
         );
     }
-    private void recalcularValorSurpresinha() {
-
-        updateState( state ->
-                surpresinhaReducer.recalcularValorSurpresinha(
-                        state,
-                        parametroJogoAtual,
-                        tipoJogoAtual
-                )
-        );
-    }
 
     private void handleToggleTrevo(
             SimulaUiEvent.ToggleTrevo event
@@ -987,12 +977,12 @@ public class SimulaViewModel extends AndroidViewModel {
     private void handleAlterarSurpresinha(
             boolean habilitada
     ) {
-
         updateState(state ->
                 surpresinhaReducer.alterarSurpresinha(
                         state,
                         habilitada,
-                        tipoJogoAtual
+                        tipoJogoAtual,
+                        parametroJogoAtual
                 )
         );
     }

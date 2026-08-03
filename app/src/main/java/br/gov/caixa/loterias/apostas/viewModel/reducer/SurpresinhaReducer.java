@@ -15,12 +15,20 @@ public class SurpresinhaReducer {
     public SimulaUiState alterarSurpresinha(
             SimulaUiState atual,
             boolean habilitada,
-            ModalidadeEnum tipoJogoAtual
+            ModalidadeEnum tipoJogoAtual,
+            ParametroJogoDTO parametroJogoAtual
     ) {
 
         if (atual == null) {
             return null;
         }
+
+        int qtdTrevosInicial =
+                obterQuantidadeTrevosInicial(
+                        parametroJogoAtual
+                );
+
+
 
         if (habilitada) {
 
@@ -33,12 +41,34 @@ public class SurpresinhaReducer {
             return atual.toBuilder()
                     .setSurpresinhaHabilitada(true)
                     .setComandoTelaSimula(comando)
+                    // Ao ligar surpresinha, nao pode manter estado manual
+                    .setExibirOpcaoOutrosNumeros(false)
+                    .setOpcaoOutrosNumerosSelecionada(false)
+                    .setLimparOpcaoOutrosNumeros(true)
+                    // Reseta campos da surpresinha para o estado inicial
+                    .setQuantidadeSurpresinhas(1)
+                    .setQuantidadeNumerosSurpresinha(atual.getQtdDezenasPossiveisSelecionado())
+                    .setQuantidadeTrevosSurpresinha(qtdTrevosInicial)
+                    // Limpa selecoes manuais que estavam na cartela
+                    .setDezenasSelecionadas(new ArrayList<Integer>())
+                    .setTrevosSelecionados(new ArrayList<Integer>())
+                    .setQuantidadeTrevosSelecionada(0)
+                    .setValorTrevosSelecionado(null)
+                    .setValoresTrevos(new ArrayList<>())
+                    .setLabelsQuantidadeTrevos(new ArrayList<String>())
+                    .setPosicaoTrevosSelecionada(0)
+                    .setTextoBotaoQuantidadeTrevos("2 trevos")
+                    .setEquipeSelecionada(null)
+                    .setMesSelecionado(null)
                     .setMostrarSalvarAposta(false)
                     .setMostrarBotaoLimparAposta(false)
                     .setBotaoLimparHabilitado(false)
                     .setBotaoCompletarVisivel(false)
                     .setBotaoCompletarHabilitado(false)
+                    .setBotaoNextStepHabilitado(false)
                     .setBotaoAdicionarHabilitado(true)
+                    .setApostaFavoritada(false)
+                    .setPossuiAlteracoesPendentes(false)
                     .build();
         }
 
@@ -59,6 +89,9 @@ public class SurpresinhaReducer {
                 .setEscolhaTimeCoracaoSurpresinha(false)
                 .setEquipeSelecionada(null)
                 .setMesSelecionado(null)
+                .setExibirOpcaoOutrosNumeros(false)
+                .setOpcaoOutrosNumerosSelecionada(false)
+                .setLimparOpcaoOutrosNumeros(true)
                 // limpar estado visual
                 .setBotaoNextStepHabilitado(false)
                 .setMostrarBotaoLimparAposta(true)
@@ -166,6 +199,9 @@ public class SurpresinhaReducer {
         SimulaUiState novoEstado =
                 atual.toBuilder()
                         .setQuantidadeNumerosSurpresinha(
+                                quantidade
+                        )
+                        .setQtdDezenasPossiveisSelecionado(
                                 quantidade
                         )
                         .setPossuiAlteracoesPendentes(true)
@@ -362,5 +398,33 @@ public class SurpresinhaReducer {
                 .setBotaoAdicionarHabilitado(false)
 
                 .build();
+    }
+    private int obterQuantidadeNumerosInicial(
+            SimulaUiState atual,
+            ParametroJogoDTO parametroJogoAtual
+    ) {
+        if (parametroJogoAtual != null
+                && parametroJogoAtual.getQuantidadeMinima() != null) {
+            return parametroJogoAtual.getQuantidadeMinima();
+        }
+
+        if (atual != null
+                && atual.getQtdDezenasPossiveisSelecionado() > 0) {
+            return atual.getQtdDezenasPossiveisSelecionado();
+        }
+
+        return 0;
+    }
+
+    private int obterQuantidadeTrevosInicial(
+            ParametroJogoDTO parametroJogoAtual
+    ) {
+        if (parametroJogoAtual == null
+                || parametroJogoAtual.getTrevos() == null
+                || parametroJogoAtual.getTrevos().getQtdMinima() == null) {
+            return 0;
+        }
+
+        return parametroJogoAtual.getTrevos().getQtdMinima();
     }
 }
