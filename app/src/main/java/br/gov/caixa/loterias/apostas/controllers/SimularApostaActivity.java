@@ -134,8 +134,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private List<String> qtdNumerosList;
     private List<String> qtdConcursosList;
     private ModalidadeEnum tipoJogo;
-    private String textoBotaoPrognosticosSelecionado;
-    private String textoBotaoTeimosinhas;
+    private String textoBotaoPrognosticosSelecionado = "";
+    private String textoBotaoTeimosinhas = "";
     private ParametroJogoDTO parametroSimulacao;
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
@@ -158,7 +158,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private boolean isLotecaPais;
     private EstiloModalidadeMKP estilo;
     private LottieManager lottieManager;
-    String numeroConcurso;
+    String numeroConcurso = "";
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

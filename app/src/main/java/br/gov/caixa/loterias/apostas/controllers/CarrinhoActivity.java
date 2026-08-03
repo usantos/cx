@@ -378,21 +378,26 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         }
     }
 
-    private void logCart(){
-        if(carrinho != null) {
-            AnalyticsHelper.getInstance().logInteraction(
-                    AnalyticsHelper.EventCategoryParams.CTA,
-                    AnalyticsHelper.EventActionParams.CLICK,
-                    AnalyticsHelper.EventLabelParams.PAYMENT,
-                    AnalyticsHelper.JourneyParams.APOSTAR,
-                    AnalyticsHelper.SubJourneyParams.CARRINHO,
-                    AnalyticsHelper.Tela.BETS_CART,
-                    ViewUtils.getMoedaFormat(carrinho.getValorTotal()),
-                    String.valueOf(carrinho.getApostas().size()),
-                    String.valueOf(carrinho.getApostasIndividuais().size()),
-                    String.valueOf(carrinho.getBoloes().size())
-        );
+    private void logCart() {
+        if (carrinho == null) {
+            return;
         }
+        String total = ViewUtils.getMoedaFormat(carrinho.getValorTotal());
+        int apostas = carrinho.getApostas() != null ? carrinho.getApostas().size() : 0;
+        int apostasIndividuais = carrinho.getApostasIndividuais() != null ? carrinho.getApostasIndividuais().size() : 0;
+        int boloes = carrinho.getBoloes() != null ? carrinho.getBoloes().size() : 0;
+        AnalyticsHelper.getInstance().logInteraction(
+                AnalyticsHelper.EventCategoryParams.CTA,
+                AnalyticsHelper.EventActionParams.CLICK,
+                AnalyticsHelper.EventLabelParams.PAYMENT,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.CARRINHO,
+                AnalyticsHelper.Tela.BETS_CART,
+                total,
+                String.valueOf(apostas),
+                String.valueOf(apostasIndividuais),
+                String.valueOf(boloes)
+        );
     }
 
     private void trataPermissao() {
@@ -585,12 +590,14 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 setCarrinho(payload);
                 atualizaLayout(offSet);
 
-                AnalyticsHelper.getInstance().logViewCartScreen(
-                        AnalyticsHelper.JourneyParams.APOSTAR,
-                        AnalyticsHelper.SubJourneyParams.CARRINHO,
-                        AnalyticsHelper.Tela.BETS_CART,
-                        payload
-                );
+                if (payload != null) {
+                    AnalyticsHelper.getInstance().logViewCartScreen(
+                            AnalyticsHelper.JourneyParams.APOSTAR,
+                            AnalyticsHelper.SubJourneyParams.CARRINHO,
+                            AnalyticsHelper.Tela.BETS_CART,
+                            payload
+                    );
+                }
 
                 if (payload.getMsgCotaExcluida() != null && payload.getMsgCotaExcluida()) {
                     notificationCotasExcluidas();
@@ -631,13 +638,15 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 ocorrendoValidacao = false;
                 AlertDialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
-                AnalyticsHelper.getInstance().logFlowEnd(
-                        AnalyticsHelper.JourneyParams.APOSTAR,
-                        AnalyticsHelper.JourneyParams.APOSTAR,
-                        AnalyticsHelper.SubJourneyParams.CARRINHO,
-                        AnalyticsHelper.Tela.BETS_CART,
-                        carrinho
-                );
+                if (carrinho != null) {
+                    AnalyticsHelper.getInstance().logFlowEnd(
+                            AnalyticsHelper.JourneyParams.APOSTAR,
+                            AnalyticsHelper.JourneyParams.APOSTAR,
+                            AnalyticsHelper.SubJourneyParams.CARRINHO,
+                            AnalyticsHelper.Tela.BETS_CART,
+                            carrinho
+                    );
+                }
                 startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
             }
 
