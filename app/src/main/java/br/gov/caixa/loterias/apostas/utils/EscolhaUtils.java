@@ -14,7 +14,7 @@ public class EscolhaUtils {
         }
 
         if (modalidade == ModalidadeEnum.TIMEMANIA) {
-            return "Escolher time do Coração";
+            return "Escolher Time do Coração";
         }
 
         return "Escolha";
