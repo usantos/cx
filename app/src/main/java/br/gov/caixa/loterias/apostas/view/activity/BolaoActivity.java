@@ -139,7 +139,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private BarraTituloFiltroLotericaFragment fragBarraTituloFiltroLoterica;
     private LottieManager lottieManager;
     String numeroConcurso;
-    String nomeModalidade;
+    String nomeModalidade = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,15 +255,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 && parametroJogo.getConcurso().getNumero() != null) {
 
             numeroConcurso = parametroJogo.getConcurso().getNumero().toString();
+            AnalyticsHelper.getInstance().logViewScreenAposta(
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.BOLAO,
+                    AnalyticsHelper.Tela.BOLAO,
+                    nomeModalidade != null ? nomeModalidade : "",
+                    numeroConcurso
+            );
         }
-
-        AnalyticsHelper.getInstance().logViewScreenAposta(
-                AnalyticsHelper.JourneyParams.APOSTAR,
-                AnalyticsHelper.SubJourneyParams.BOLAO,
-                AnalyticsHelper.Tela.BOLAO,
-                nomeModalidade,
-                numeroConcurso
-        );
     }
 
     @Override
@@ -1251,49 +1250,54 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     }
 
     private void adicionarNoCarrinho(CotasBolaoDTO bolao) {
-        if(ModalidadeEnum.fromInteger(idModalidade) == ModalidadeEnum.LOTECA){
-            AnalyticsHelper.getInstance().logInteractionAddLoteca(
-                    AnalyticsHelper.Tela.BOLAO,
-                    ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
-                    AnalyticsHelper.EventCategoryParams.CTA,
-                    AnalyticsHelper.EventActionParams.CLICK,
-                    AnalyticsHelper.EventLabelParams.ADD_BOLAO,
-                    AnalyticsHelper.JourneyParams.APOSTAR,
-                    AnalyticsHelper.SubJourneyParams.BOLAO,
-                    bolao.getLoterica(),
-                    bolao.getNomeFantasia(),
-                    bolao.getUf().getNome(),
-                    String.valueOf(bolao.getQtdApostas()),
-                    String.valueOf(bolao.getQtdNumeros()),
-                    ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()),
-                    ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()),
-                    ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()),
-                    String.valueOf(bolao.getQtdCotaTotal()),
-                    String.valueOf(bolao.getQtdCotasBolao()),
-                    numeroConcurso
-            );
-        }
-        else {
-            AnalyticsHelper.getInstance().logInteractionAddBolao(
-                    AnalyticsHelper.Tela.BOLAO,
-                    ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
-                    AnalyticsHelper.EventCategoryParams.CTA,
-                    AnalyticsHelper.EventActionParams.CLICK,
-                    AnalyticsHelper.EventLabelParams.ADD_BOLAO,
-                    AnalyticsHelper.JourneyParams.APOSTAR,
-                    AnalyticsHelper.SubJourneyParams.BOLAO,
-                    bolao.getLoterica(),
-                    bolao.getNomeFantasia(),
-                    bolao.getUf().getNome(),
-                    String.valueOf(bolao.getQtdApostas()),
-                    String.valueOf(bolao.getQtdNumeros()),
-                    ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()),
-                    ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()),
-                    ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()),
-                    String.valueOf(bolao.getQtdCotaTotal()),
-                    String.valueOf(bolao.getQtdCotasBolao()),
-                    numeroConcurso
-            );
+        if (bolao != null && bolao.getLoterica() != null && bolao.getNomeFantasia() != null
+            && bolao.getUf() != null && bolao.getUf().getNome() != null && bolao.getQtdApostas() != null
+            && bolao.getQtdNumeros() != null && bolao.getQtdCotaTotal() != null && bolao.getQtdCotasBolao() != null
+            && numeroConcurso != null) {
+            if(ModalidadeEnum.fromInteger(idModalidade) == ModalidadeEnum.LOTECA){
+                AnalyticsHelper.getInstance().logInteractionAddLoteca(
+                        AnalyticsHelper.Tela.BOLAO,
+                        ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
+                        AnalyticsHelper.EventCategoryParams.CTA,
+                        AnalyticsHelper.EventActionParams.CLICK,
+                        AnalyticsHelper.EventLabelParams.ADD_BOLAO,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.BOLAO,
+                        bolao.getLoterica(),
+                        bolao.getNomeFantasia(),
+                        bolao.getUf().getNome(),
+                        String.valueOf(bolao.getQtdApostas()),
+                        String.valueOf(bolao.getQtdNumeros()),
+                        ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()),
+                        ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()),
+                        ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()),
+                        String.valueOf(bolao.getQtdCotaTotal()),
+                        String.valueOf(bolao.getQtdCotasBolao()),
+                        numeroConcurso
+                );
+            }
+            else {
+                AnalyticsHelper.getInstance().logInteractionAddBolao(
+                        AnalyticsHelper.Tela.BOLAO,
+                        ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
+                        AnalyticsHelper.EventCategoryParams.CTA,
+                        AnalyticsHelper.EventActionParams.CLICK,
+                        AnalyticsHelper.EventLabelParams.ADD_BOLAO,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.BOLAO,
+                        bolao.getLoterica(),
+                        bolao.getNomeFantasia(),
+                        bolao.getUf().getNome(),
+                        String.valueOf(bolao.getQtdApostas()),
+                        String.valueOf(bolao.getQtdNumeros()),
+                        ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()),
+                        ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()),
+                        ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()),
+                        String.valueOf(bolao.getQtdCotaTotal()),
+                        String.valueOf(bolao.getQtdCotasBolao()),
+                        numeroConcurso
+                );
+            }
         }
 
         model.addBolaoCarrinho(bolao);
