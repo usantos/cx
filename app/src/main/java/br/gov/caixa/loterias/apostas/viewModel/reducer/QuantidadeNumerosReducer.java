@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.viewModel.reducer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
@@ -146,6 +147,15 @@ public class QuantidadeNumerosReducer {
         if (qtdPrognosticos == null) {
             return atual;
         }
+        int quantidadeSelecionadaAtual =
+                obterQuantidadeSelecionadaAtual(
+                        atual,
+                        tipoJogoAtual
+                );
+
+        boolean deveLimparSelecao =
+                confirmar
+                        && quantidadeSelecionadaAtual > qtdPrognosticos;
 
         String textoBotao =
                 montarTextoQuantidadeNumeros(
@@ -190,14 +200,58 @@ public class QuantidadeNumerosReducer {
         }
 
         if (confirmar) {
+            if (deveLimparSelecao) {
+                builder
+                        .setDezenasSelecionadas(
+                                new ArrayList<Integer>()
+                        )
+                        .setLimparNumerosCartela(true)
+                        .setTextoSelecionados(
+                                "Selecione os numeros:"
+                        )
+                        .setBotaoAdicionarHabilitado(false)
+                        .setBotaoNextStepHabilitado(false)
+                        .setBotaoLimparHabilitado(false)
+                        .setMostrarBotaoLimparAposta(false)
+                        .setMostrarSalvarAposta(false)
+                        .setApostaFavoritada(false)
+                        .setPossuiAlteracoesPendentes(false);
+
+                if (tipoJogoAtual == ModalidadeEnum.SUPER_7) {
+                    builder
+                            .setQtdTotalSelecionadosSuperSete(0)
+                            .setLimparSuperSete(true);
+                }
+
+                if (tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA) {
+                    builder
+                            .setTrevosSelecionados(
+                                    new ArrayList<Integer>()
+                            )
+                            .setQuantidadeTrevosSelecionada(0)
+                            .setValorTrevosSelecionado(null)
+                            .setValoresTrevos(
+                                    new ArrayList<>()
+                            )
+                            .setLabelsQuantidadeTrevos(
+                                    new ArrayList<String>()
+                            )
+                            .setPosicaoTrevosSelecionada(0)
+                            .setTextoBotaoQuantidadeTrevos(
+                                    "2 trevos"
+                            )
+                            .setResetarTrevosPorQuantidadeNumeros(true);
+                }
+            }
 
             builder
                     .setExibirDialogQuantidadeNumeros(false)
-                    .setAtualizarValorApostaPorQuantidadeNumeros(true)
-                    .setResetarTrevosPorQuantidadeNumeros(
-                            tipoJogoAtual
-                                    == ModalidadeEnum.MAIS_MILIONARIA
-                    );
+                    .setAtualizarValorApostaPorQuantidadeNumeros(true);
+
+            if (tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA
+                    && !deveLimparSelecao) {
+                builder.setResetarTrevosPorQuantidadeNumeros(true);
+            }
 
             if (!atual.isSurpresinhaHabilitada()) {
                 builder.setComandoAnalytics(
@@ -212,7 +266,24 @@ public class QuantidadeNumerosReducer {
 
         return builder.build();
     }
+    private int obterQuantidadeSelecionadaAtual(
+            SimulaUiState atual,
+            ModalidadeEnum tipoJogoAtual
+    ) {
+        if (atual == null) {
+            return 0;
+        }
 
+        if (tipoJogoAtual == ModalidadeEnum.SUPER_7) {
+            return atual.getQtdTotalSelecionadosSuperSete();
+        }
+
+        if (atual.getDezenasSelecionadas() == null) {
+            return 0;
+        }
+
+        return atual.getDezenasSelecionadas().size();
+    }
     public SimulaUiState consumirDialog(
             SimulaUiState atual
     ) {

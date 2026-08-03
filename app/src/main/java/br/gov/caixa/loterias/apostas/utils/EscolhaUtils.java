@@ -10,11 +10,11 @@ public class EscolhaUtils {
         }
 
         if (modalidade == ModalidadeEnum.DIA_DE_SORTE) {
-            return "Escolher mes da sorte";
+            return "Escolher Mês da Sorte";
         }
 
         if (modalidade == ModalidadeEnum.TIMEMANIA) {
-            return "Escolher time do coracao";
+            return "Escolher time do Coração";
         }
 
         return "Escolha";
