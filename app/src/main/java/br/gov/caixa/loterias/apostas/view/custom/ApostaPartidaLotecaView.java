@@ -71,7 +71,7 @@ public class ApostaPartidaLotecaView extends LinearLayout {
 
         EquipeDTO equipeDTOEmpate = new EquipeDTO();
         equipeDTOEmpate.setVitoria(partidaLotecaDTO.getEmpate());
-        equipeDTOEmpate.setNome(Constantes.X_STRING);
+        equipeDTOEmpate.setNome(Constantes.EMPATE_STRING);
         this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewEmpate, equipeDTOEmpate, null);
     }
 
@@ -84,7 +84,6 @@ public class ApostaPartidaLotecaView extends LinearLayout {
             } else {
                 apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));
             }
-            //TODO//
             //apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO) + " " + legenda);
         } else {
             apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));

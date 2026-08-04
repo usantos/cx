@@ -26,7 +26,27 @@ public class DetalheApostaLotecaAdapter extends RecyclerView.Adapter<DetalheApos
     @Override
     public ApostaLotecaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        ApostaPartidaLotecaView view = ApostaPartidaLotecaView.build(parent.getContext());
+        ApostaPartidaLotecaView view =
+                ApostaPartidaLotecaView.build(parent.getContext());
+
+        RecyclerView.LayoutParams params =
+                new RecyclerView.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        view.setLayoutParams(params);
+
+        float density = parent.getContext().getResources().getDisplayMetrics().density;
+
+        int paddingStart = (int) (8 * density);
+        int paddingEnd = (int) (24 * density);
+
+        view.setPadding(
+                paddingStart,
+                view.getPaddingTop(),
+                paddingEnd,
+                view.getPaddingBottom()
+        );
 
         return new ApostaLotecaHolder(view);
     }

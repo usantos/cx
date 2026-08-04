@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
+import static android.view.View.VISIBLE;
+
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -58,6 +60,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private RelativeLayout containerFragment;
 	private RelativeLayout layoutCabecalhoLoteca;
 	private LinearLayout dadosApostaCarrinho;
+	private LinearLayout lnrLegendaApostaCarrinho;
 	private LinearLayout dadosCarrinho;
 	private TextView textViewNumeroConcurso, tvNumeroConcursoNovo;
 	private ImageView iconTimer, imageDetalheBoloes;
@@ -88,6 +91,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		valorAposta = view.findViewById(R.id.valorAposta);
 		recycleViewDetalheAposta = view.findViewById(R.id.recycleViewDetalheAposta);
 		layoutCabecalhoLoteca = view.findViewById(R.id.layoutCabecalhoLoteca);
+		lnrLegendaApostaCarrinho = view.findViewById(R.id.lnrLegendaApostaCarrinho);
 		dadosApostaCarrinho = view.findViewById(R.id.dadosApostaCarrinho);
 		dadosCarrinho = view.findViewById(R.id.dadosCarrinho);
 		textViewNumeroConcurso = view.findViewById(R.id.numeroConcurso);
@@ -151,9 +155,10 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		TextView     quantidadeSorteios  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
 		//Button       buttonApostaEspelho = this.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
 		LinearLayout layoutTimeCoracao   = this.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
+		LinearLayout lnrLegendaApostaCarrinho   = this.dadosApostaCarrinho.findViewById(R.id.lnrLegendaApostaCarrinho);
 		TextView     labelTimeCoracao    = this.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
 		TextView     textViewTimeCoracao = this.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
-		ImageButton iconExcluir = this.itemView.findViewById(R.id.excluirApostaCarrinho);
+		ImageButton excluirApostaCarrinho = this.itemView.findViewById(R.id.excluirApostaCarrinho);
 
 		String quantidadeApostadasString;
 		String quantidadeSorteiosString;
@@ -185,8 +190,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 //			buttonApostaEspelho.setVisibility(View.VISIBLE);
 //		}
 
-		iconExcluir.setOnClickListener(view -> listener.onDeletaAposta(aposta));
-		iconExcluir.setContentDescription("Excluir");
+		excluirApostaCarrinho.setOnClickListener(view -> listener.onDeletaAposta(aposta));
+		excluirApostaCarrinho.setContentDescription("Excluir");
 
 		if (isBolao) {
 			imageDetalheBoloes.setOnClickListener(view -> listenerBolao.onCotaClick(aposta));
@@ -200,14 +205,18 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			animacao = Boolean.FALSE;
 			swipeLayout.setSwipeEnabled(animacao);
 
-			this.layoutCabecalhoLoteca.setVisibility(View.VISIBLE);
+			this.layoutCabecalhoLoteca.setVisibility(VISIBLE);
+			excluirApostaCarrinho.setBackground(null);
+			excluirApostaCarrinho.setImageResource(R.drawable.ic_lixeira_nova_mkp);
+			excluirApostaCarrinho.setColorFilter(ContextCompat.getColor(context, estiloMKP.getCorEscura()));
+			this.lnrLegendaApostaCarrinho.setVisibility(VISIBLE);
 		} else if (aposta.getPartidasLotogol() != null && !aposta.getPartidasLotogol().isEmpty()) {
 			DetalheApostaLotogolAdapter detalheApostaLotogolAdapter = new DetalheApostaLotogolAdapter(aposta.getPartidasLotogol());
 			this.recycleViewDetalheAposta.setLayoutManager(new LinearLayoutManager(context));
 			this.recycleViewDetalheAposta.setAdapter(detalheApostaLotogolAdapter);
 			this.recycleViewDetalheAposta.setExpanded(true);
 
-			this.layoutCabecalhoLoteca.setVisibility(View.VISIBLE);
+			this.layoutCabecalhoLoteca.setVisibility(VISIBLE);
 			this.layoutCabecalhoLoteca.getLayoutParams().height = 0;
 			RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			relativeLayoutParams.addRule(RelativeLayout.START_OF, R.id.valorAposta);
@@ -219,7 +228,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		}
 
 	if(ModalidadeEnum.MAIS_MILIONARIA == aposta.getModalidade()){
-			layoutTimeCoracao.setVisibility(View.VISIBLE);
+			layoutTimeCoracao.setVisibility(VISIBLE);
 
 			int quantidade = 0;
 			if (aposta.getTrevosSelecionados() != null && !((List<Integer>)aposta.getTrevosSelecionados()).isEmpty()){
@@ -249,7 +258,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 							//this.tvNumeroConcursoNovo.setVisibility(View.VISIBLE);
 							//this.textViewNumeroConcurso.setVisibility(View.GONE);
 							this.tvNumeroConcursoNovo.setVisibility(View.GONE);
-							this.textViewNumeroConcurso.setVisibility(View.VISIBLE);
+							this.textViewNumeroConcurso.setVisibility(VISIBLE);
 						}
 
 						//this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
@@ -320,8 +329,6 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			}
 		}
 
-
-
 		if(aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE && !aposta.getIndicadorCotaBolao()){
 			String mesDeSorte = aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNome() != null ? aposta.getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes);
 			String label = context.getString(R.string.label_dia_sorte_dois_pontos) + mesDeSorte;
@@ -352,7 +359,10 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		if (isBolao) {
 			ViewUtils.setMoedaFormatHtml(aposta.getReservaCotaBolao().getVrTotalCota(), this.valorAposta);
 		} else {
-			ViewUtils.setMoedaFormatHtml(aposta.getValor(), this.valorAposta);
+			if (aposta.getPartidasLoteca() == null || aposta.getPartidasLoteca().isEmpty()) {
+				ViewUtils.setMoedaFormatHtml(aposta.getValor(), this.valorAposta);
+			}
+
 			String numeros = numeroStr != null
 					? removeUltimoTraco(numeroStr.toString())
 					: "";
@@ -393,7 +403,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		}
 
 		if (listTipoApostaLinha.size() > 0) {
-			tipoApostaLinhaView.setVisibility(View.VISIBLE);
+			tipoApostaLinhaView.setVisibility(VISIBLE);
 			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha_clara, R.color.cinzaescuro, estiloMKP.getCorLetraLista(), TipoApostaLinhaView.TriangleDirection.UP);
 		}
 	}
