@@ -38,20 +38,22 @@ public class SurpresinhaReducer {
                             true
                     );
 
-            return atual.toBuilder()
+            SimulaUiState state =  atual.toBuilder()
                     .setSurpresinhaHabilitada(true)
                     .setComandoTelaSimula(comando)
                     // Ao ligar surpresinha, nao pode manter estado manual
                     .setExibirOpcaoOutrosNumeros(false)
                     .setOpcaoOutrosNumerosSelecionada(false)
+                    .setExibirInfoEtapa(false)
+                    .setTextoInfoEtapa("")
                     .setLimparOpcaoOutrosNumeros(true)
                     // Reseta campos da surpresinha para o estado inicial
                     .setQuantidadeSurpresinhas(1)
                     .setQuantidadeNumerosSurpresinha(atual.getQtdDezenasPossiveisSelecionado())
                     .setQuantidadeTrevosSurpresinha(qtdTrevosInicial)
                     // Limpa selecoes manuais que estavam na cartela
-                    .setDezenasSelecionadas(new ArrayList<Integer>())
-                    .setTrevosSelecionados(new ArrayList<Integer>())
+                    .setDezenasSelecionadas(new ArrayList<>())
+                    .setTrevosSelecionados(new ArrayList<>())
                     .setQuantidadeTrevosSelecionada(0)
                     .setValorTrevosSelecionado(null)
                     .setValoresTrevos(new ArrayList<>())
@@ -70,6 +72,11 @@ public class SurpresinhaReducer {
                     .setApostaFavoritada(false)
                     .setPossuiAlteracoesPendentes(false)
                     .build();
+            return recalcularValorSurpresinha(
+                    state,
+                    parametroJogoAtual,
+                    tipoJogoAtual
+            );
         }
 
 
@@ -113,6 +120,8 @@ public class SurpresinhaReducer {
                 .setTelaSelecaoTimeAtivado(false)
                 .setEscolhaTimeCoracaoSurpresinha(false)
                 .setEtapaAposta(EtapaAposta.NUMEROS)
+                .setExibirInfoEtapa(false)
+                .setTextoInfoEtapa("")
                 .setComandoTelaSimula(
                         new ScreenSimulaEffect.AbrirSurpresinha(
                                 false,

@@ -468,19 +468,11 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         if (textInfoEtapa == null) {
             return;
         }
-
-        boolean escolhaTimeSurpresinha =
-                state.isSurpresinhaHabilitada()
-                        && state.isEscolhaTimeCoracaoSurpresinha()
-                        && state.getEtapaAposta() == EtapaAposta.TIME_CORACAO;
-
-        if (escolhaTimeSurpresinha) {
-            textInfoEtapa.setVisibility(View.GONE);
-            return;
-        }
+        boolean ocultarInfo =
+                state.isSurpresinhaHabilitada();
 
         textInfoEtapa.setVisibility(
-                state.getExibirInfoEtapa()
+                !ocultarInfo && state.getExibirInfoEtapa()
                         ? View.VISIBLE
                         : View.GONE
         );
@@ -678,87 +670,68 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     private void renderEstadoBotoes(SimulaUiState state) {
         boolean modalidadeComSegundaEtapa = state.getTipoJogo() == ModalidadeEnum.MAIS_MILIONARIA || state.getTipoJogo() == ModalidadeEnum.DIA_DE_SORTE || state.getTipoJogo() == ModalidadeEnum.TIMEMANIA;
+        int corIcon = ContextCompat.getColor(this, estilo.getCorFonteFundoClaro());
 
         EtapaAposta etapaAtual = state.getEtapaAposta() != null ? state.getEtapaAposta() : EtapaAposta.NUMEROS;
 
         boolean etapaNumeros = etapaAtual == EtapaAposta.NUMEROS;
-
-        boolean mostrarNextStep =
-                modalidadeComSegundaEtapa
-                        && etapaNumeros
-                        && !state.isSurpresinhaHabilitada();
-
-        boolean mostrarAdicionar = !mostrarNextStep;
-
-        boolean mostrarFavoritar = state.isMostrarSalvarAposta() || state.isApostaFavoritada();
 
 
         boolean mostrarBtnQuantidadeTrevos =
                 state.getTipoJogo() == ModalidadeEnum.MAIS_MILIONARIA
                         && etapaAtual == EtapaAposta.TREVOS;
 
-        boolean mostrarBtnQuantidadeNumeros =
-                !mostrarBtnQuantidadeTrevos;
-
-        int corIcon = ContextCompat.getColor(this, estilo.getCorFonteFundoClaro());
-
         boolean escolhaTimeSurpresinha =
                 state.isSurpresinhaHabilitada()
                         && state.isEscolhaTimeCoracaoSurpresinha()
                         && etapaAtual == EtapaAposta.TIME_CORACAO;
 
-        if (escolhaTimeSurpresinha) {
-            if (btnTeimosinha != null) {
-                btnTeimosinha.setVisibility(View.GONE);
-            }
+        boolean mostrarTeimosinha =
+                !escolhaTimeSurpresinha;
 
-            if (btnQuantidadeNumeros != null) {
-                btnQuantidadeNumeros.setVisibility(View.GONE);
-            }
+        boolean mostrarQuantidadeNumeros =
+                !escolhaTimeSurpresinha
+                        && !mostrarBtnQuantidadeTrevos;
 
-            if (btnQuantidadeTrevos != null) {
-                btnQuantidadeTrevos.setVisibility(View.GONE);
-            }
+        boolean mostrarQuantidadeTrevos =
+                !state.isSurpresinhaHabilitada()
+                        && mostrarBtnQuantidadeTrevos;
 
-            if (textInfoEtapa != null) {
-                textInfoEtapa.setVisibility(View.GONE);
-            }
+        boolean mostrarNextStep =
+                !escolhaTimeSurpresinha
+                        && modalidadeComSegundaEtapa
+                        && etapaNumeros
+                        && !state.isSurpresinhaHabilitada();
+        boolean mostrarFavoritar =
+                !escolhaTimeSurpresinha
+                        && (state.isMostrarSalvarAposta()
+                        || state.isApostaFavoritada());
 
-            if (botaoNextStep != null) {
-                botaoNextStep.setVisibility(View.GONE);
-            }
+        boolean mostrarCompletar =
+                !escolhaTimeSurpresinha
+                        && state.isBotaoFinalizarVisivel()
+                        && !mostrarFavoritar
+                        && !state.isSurpresinhaHabilitada();
 
-            if (botaoCompletar != null) {
-                botaoCompletar.setVisibility(View.GONE);
-            }
+        boolean mostrarLimpar =
+                !escolhaTimeSurpresinha && !state.isSurpresinhaHabilitada();
 
-            if (botaoLimparAposta != null) {
-                botaoLimparAposta.setVisibility(View.GONE);
-            }
+        boolean mostrarAdicionar =
+                escolhaTimeSurpresinha || !mostrarNextStep;
 
-            if (botaoFavoritar != null) {
-                botaoFavoritar.setVisibility(View.GONE);
-            }
+        if(btnTeimosinha != null){
 
-            if (botaoAdicionar != null) {
-                botaoAdicionar.setVisibility(View.VISIBLE);
-                botaoAdicionar.setEnabled(state.isBotaoAdicionarHabilitado());
-
-                if (botaoAdicionar instanceof MaterialButton) {
-                    visualModalidadeBotao(
-                            state.isBotaoAdicionarHabilitado(),
-                            (MaterialButton) botaoAdicionar
-                    );
-                }
-            }
-
-            return;
+            btnTeimosinha.setVisibility(
+                    mostrarTeimosinha
+                            ? View.VISIBLE
+                            : View.GONE
+            );
         }
 
         if (btnQuantidadeNumeros != null) {
 
             btnQuantidadeNumeros.setVisibility(
-                    mostrarBtnQuantidadeNumeros
+                    mostrarQuantidadeNumeros
                             ? View.VISIBLE
                             : View.GONE
             );
@@ -774,7 +747,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         if (btnQuantidadeTrevos != null) {
 
             btnQuantidadeTrevos.setVisibility(
-                    mostrarBtnQuantidadeTrevos
+                    mostrarQuantidadeTrevos
                             ? View.VISIBLE
                             : View.GONE
             );
@@ -813,10 +786,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
 
         if (botaoCompletar != null) {
-            boolean surpresinhaHabilitada = state.isSurpresinhaHabilitada();
-
-            boolean mostrarCompletar = state.isBotaoFinalizarVisivel() && !mostrarFavoritar && !surpresinhaHabilitada;
-
             botaoCompletar.setVisibility(mostrarCompletar ? View.VISIBLE : View.GONE);
 
             botaoCompletar.setEnabled(state.isBotaoCompletarHabilitado());
@@ -826,6 +795,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
 
         if (botaoLimparAposta != null) {
+            botaoLimparAposta.setVisibility(mostrarLimpar ? View.VISIBLE : View.GONE);
             botaoLimparAposta.setEnabled(state.isBotaoLimparHabilitado());
         }
     }
