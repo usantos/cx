@@ -4,6 +4,7 @@ package br.gov.caixa.loterias.apostas.view.holder;
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,16 +44,9 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private TextView cotasEDezenas;
 	private TextView valor;
 	private TextView textQtdDezenas;
-	private TextView textQtdCotas;
 	private ImageView seta;
-	private ConstraintLayout containerResumo;
-	private ConstraintLayout verMais;
-	private TextView qtdCotas;
-	private Button btnDetalhes;
-	private Button btnDiminui;
-	private Button btnAumenta;
+    private ConstraintLayout containerResumo;
 	private Button btnAdd;
-	private View linhaNumero;
 	private EstiloModalidadeMKP estilo;
 	private BotaoFavoritar botaoFavoritar;
 	private OnItemBolaoListener listener;
@@ -65,6 +59,22 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
     private Boolean isMega30 = false;
     private Boolean isLotecaPais = false;
 
+	//ViewStub e flag de controle
+	private final ViewStub verMaisStub;
+	private View verMaisContainer;//raiz inflada (inicialmente null)
+	private boolean verMaisInflado = false;
+
+	/**
+	 * Views do ver mais só existem depois de inflar o stub.
+	 */
+	//private ConstraintLayout verMais;
+	private Button btnDetalhes;
+	private TextView textQtdCotas;
+	private Button btnDiminui;
+	private TextView qtdCotas;
+	private View linhaNumero;
+	private Button btnAumenta; /** Fim */
+
 
 	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener, FiltroAplicadoMarketplace filtro, Boolean isShowCotasRestantes) {
 		super(itemView);
@@ -74,6 +84,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		botaoFavoritar = itemView.findViewById(R.id.btn_favoritar_mkp);
 		loterica 	= itemView.findViewById(R.id.loterica_bolao);
 		cidade 		= itemView.findViewById(R.id.cidade_bolao);
+		containerResumo = itemView.findViewById(R.id.container_resumo_item_list_bolao);
 		cotasEDezenas = itemView.findViewById(R.id.cotas_e_dezenas);
 		modalidade 	= itemView.findViewById(R.id.modalidade_bolao);
 		valorPremio = itemView.findViewById(R.id.valor_estimado_premio_bolao);
@@ -84,23 +95,13 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		textQtdCotas = itemView.findViewById(R.id.descricao_qtd_cotas_disponiveis_it);
 
 		seta 		= itemView.findViewById(R.id.seta_bolao);
-		containerResumo = itemView.findViewById(R.id.container_resumo_item_list_bolao);
-		verMais 	= itemView.findViewById(R.id.container_ver_mais);
-		btnDetalhes = itemView.findViewById(R.id.detalhes);
-		btnDiminui 	= itemView.findViewById(R.id.diminui_cota);
-		btnAumenta 	= itemView.findViewById(R.id.aumenta_cota);
-		qtdCotas 	= itemView.findViewById(R.id.quantidade_cotas);
-		btnAdd		= itemView.findViewById(R.id.adicionar_carrinho);
-		linhaNumero		= itemView.findViewById(R.id.linha_numero);
+
+		verMaisStub = itemView.findViewById(R.id.verMaisStub);
 
 		this.listener = listener;
         this.isShowCotasRestantes = isShowCotasRestantes;
-        seta.setOnClickListener(this);
-		containerResumo.setOnClickListener(this);
-		btnDetalhes.setOnClickListener(this);
-		btnDiminui.setOnClickListener(this);
-		btnAumenta.setOnClickListener(this);
-		btnAdd.setOnClickListener(this);
+        containerResumo.setOnClickListener(this);
+		seta.setOnClickListener(this);
 		ViewCompat.setAccessibilityHeading(loterica,true);
 		ViewCompat.setAccessibilityHeading(modalidade,true);
 	}
@@ -141,8 +142,6 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 			} else {
 				valorPremioPorExtenso.setVisibility(View.GONE);
 			}
-			concurso.setVisibility(View.VISIBLE);
-			concurso.setText(String.valueOf("Concurso " + bolao.getConcurso()));
 		} else {
 			botaoFavoritar.setVisibility(View.VISIBLE);
 			modalidade.setVisibility(View.GONE);
@@ -167,21 +166,11 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 					resumoCotas + getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()).replace("_", "") :
 					resumoCotas + getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()).replace("_", "");
 			cotasEDezenas.setText(resumoCotasEDezenas);
-			concurso.setVisibility(View.GONE);
 		}
 		valor.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrUltimaCotaComTarifa().doubleValue()));
 
-		textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
-				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
-						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
-						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 18, 16));
+		mostrarDetalhes(bolao);
 
-		textQtdCotas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
-				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18));
-
-		atualizaBotoesQtdCotas(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
-		mostrarDetalhes(bolao.isAbertoParaMostrarDetalhes());
-		qtdCotas.setText(Integer.toString(bolao.getQtdCotasBolao()));
 		botaoFavoritar.setState(bolao.isLotericaFavorita());
 
 		botaoFavoritar.setOnStateChangeListener(isFavoritado -> {
@@ -195,6 +184,31 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	}
 
+	private void garantirVerMaisInflado(){
+		if (verMaisInflado) return;
+
+		verMaisContainer = verMaisStub.inflate();
+
+		btnDetalhes = verMaisContainer.findViewById(R.id.detalhes);
+		textQtdCotas = verMaisContainer.findViewById(R.id.descricao_qtd_cotas_disponiveis_it);
+		btnDiminui 	= verMaisContainer.findViewById(R.id.diminui_cota);
+		qtdCotas 	= verMaisContainer.findViewById(R.id.quantidade_cotas);
+		linhaNumero	= verMaisContainer.findViewById(R.id.linha_numero);
+		btnAumenta 	= verMaisContainer.findViewById(R.id.aumenta_cota);
+		btnAdd		= verMaisContainer.findViewById(R.id.adicionar_carrinho);
+		concurso = verMaisContainer.findViewById(R.id.concurso_bolao);
+		textQtdDezenas = verMaisContainer.findViewById(R.id.descricao_qtd_dezenas_it);
+
+		btnDetalhes.setOnClickListener(this);
+		btnDiminui.setOnClickListener(this);
+		btnAumenta.setOnClickListener(this);
+		btnAdd.setOnClickListener(this);
+
+		aplicaEstiloVerMais();
+
+		verMaisInflado = true;
+
+	}
 	private boolean isFiltradoLoterica() {
 		return (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null);
 	}
@@ -203,12 +217,16 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	}
 
 	private void aplicaEstilo() {
+		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
+
+		modalidade.setTextColor(corLetraLista);
+	}
+
+	private void aplicaEstiloVerMais() {
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
 		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
 		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
 
-		modalidade.setTextColor(corLetraLista);
-		concurso.setTextColor(corLetraLista);
 		btnDetalhes.setTextColor(corLetraLista);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);
@@ -216,6 +234,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		btnAumenta.setBackgroundColor(corEscura);
 		btnAdd.setBackground(VectorUtils.getShape(R.drawable.btn_rounded_blue, estilo.getCorEscura()));
 		btnAdd.setTextColor(corFonteFundoEscuro);
+		concurso.setTextColor(corLetraLista);
 
 		btnAumenta.setTextColor(corFonteFundoEscuro);
 		linhaNumero.setBackgroundColor(corEscura);
@@ -245,17 +264,47 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		}
 	}
 
-	public void mostrarDetalhes(Boolean aberto) {
-		if (aberto){
-			showCotasRestantes(false);
+	public void mostrarDetalhes(CotasBolaoDTO bolao) {
+		if (bolao.isAbertoParaMostrarDetalhes()){
+            garantirVerMaisInflado();
+            bindDadosVerMais(bolao);
+            showCotasRestantes(false);
 			seta.setBackground(VectorUtils.getShape(R.drawable.seta_cima_lista_boloes, R.color.azulBolao));
-			verMais.setVisibility(View.VISIBLE);
+            if (verMaisContainer != null) {
+                verMaisContainer.setVisibility(View.VISIBLE);
+            }
+            if(isFiltradoLoterica()){
+                concurso.setVisibility(View.VISIBLE);
+                concurso.setText(String.valueOf("Concurso " + bolao.getConcurso()));
+            }else{
+                concurso.setVisibility(View.GONE);
+            }
 		} else {
-			showCotasRestantes(true);
+			if(isFiltradoLoterica()){
+				showCotasRestantes(false);
+			}else{
+				showCotasRestantes(true);
+			}
+
 			seta.setBackground(VectorUtils.getShape(R.drawable.seta_baixo_lista_boloes, R.color.azulBolao));
-			verMais.setVisibility(View.GONE);
+
+			if(verMaisInflado && verMaisContainer != null){
+				verMaisContainer.setVisibility(View.GONE);
+			}
 		}
 	}
+
+    private void bindDadosVerMais(CotasBolaoDTO bolao){
+        if (bolao == null || textQtdCotas == null || qtdCotas == null || textQtdDezenas == null) return;
+        textQtdCotas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
+                getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18));
+        atualizaBotoesQtdCotas(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
+        qtdCotas.setText(String.valueOf(bolao.getQtdCotasBolao()));
+        textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
+                bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
+                        getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
+                        getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 18, 16));
+    }
 
 	@Override
 	public void atualizaQuantidadeTextView(int quantidade, int maxPermitido) {
