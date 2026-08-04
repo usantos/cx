@@ -19,6 +19,7 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.utils.DescricaoLoteca;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
@@ -110,14 +111,12 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida> {
 	}
 
 	private void bindTitulo(int position, ParametroPartida item) {
-		String legenda = item != null ? item.getLegendaAbreviada() : null;
-
-		String jogoTitle = String.format(Locale.getDefault(), "Jogo %02d ", position + 1);
+		String jogoTitle = String.format(Locale.getDefault(), "Jogo %02d", position + 1);
 
 		//TODO: VOLTAR COM A LEGENDA//
-//		if (!("(MAS)".equals(legenda))) {
-//			jogoTitle += StringUtils.capitalizerNovo(legenda);
-//		}
+		if(item != null) {
+			jogoTitle += DescricaoLoteca.descricaoPartida(item);
+		}
 
 		tvTitulo.setText(jogoTitle);
 	}
