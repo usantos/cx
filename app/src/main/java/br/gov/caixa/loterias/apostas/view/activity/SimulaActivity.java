@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -115,8 +116,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private List<String> qtdNumerosList;
     private List<String> qtdConcursosList;
     private ModalidadeEnum tipoJogo;
-    private String textoBotaoPrognosticosSelecionado;
-    private String textoBotaoTeimosinhas;
+    private String textoBotaoPrognosticosSelecionado = "";
+    private String textoBotaoTeimosinhas = "";
     private ParametroJogoDTO parametroSimulacao;
     private ParametroMesDeSorte mesDeSorteCartela;
     private Boolean isEspecial = false;
@@ -139,7 +140,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private LinearLayout opcaoOutrosNumerosLayout;
     private AppCompatCheckBox selecioneOutrosNumeros;
     private boolean mudouTamanhoValor = false;
-    String numeroConcurso;
+    String numeroConcurso = "";
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     private TextView textInfoEtapa;
     private EtapaAposta etapaRenderizada;
@@ -535,6 +536,26 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     AnalyticsHelper.ContentCategoryParams.CONFIG,
                     c.getModalidade(),
                     c.getValorSelecionado()
+            );
+        }
+        else if (comando
+                instanceof AnalyticsEffect
+                .AdicionarCarrinho) {
+
+            logAdicionarAoCarrinho();
+        }
+        else if(comando instanceof  AnalyticsEffect.QtdSurpresinhas){
+            AnalyticsEffect.QtdSurpresinhas c =
+                    (AnalyticsEffect.QtdSurpresinhas)
+                            comando;
+
+            AnalyticsHelper.getInstance().logSelectContent(
+                    AnalyticsHelper.Tela.MONTAR_APOSTA,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                    AnalyticsHelper.ContentCategoryParams.CONFIG,
+                    ModalidadeEnum.fromString(tipoJogo),
+                    String.format(Locale.getDefault(), "%d", c.getQtdSurpresinhas())
             );
         }
 
@@ -1112,7 +1133,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         if (comando instanceof CarrinhoEffect.ExecutarAdicionarCarrinhoEffect) {
 
             CarrinhoEffect.ExecutarAdicionarCarrinhoEffect add = (CarrinhoEffect.ExecutarAdicionarCarrinhoEffect) comando;
-
             model.adicionaApostaNoCarrinho(this, add.getAposta(), add.getBarraTituloDTO());
 
             viewModel.onEvent(new SimulaUiEvent.ComandoCarrinhoConsumido());
@@ -1181,12 +1201,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         if (containerComoJogar != null) {
             AccessibilityUtils.setBotao(containerComoJogar);
-            containerComoJogar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    viewModel.onEvent(new SimulaUiEvent.ComoJogarClicado());
-                }
-            });
+            containerComoJogar.setOnClickListener(view -> viewModel.onEvent(new SimulaUiEvent.ComoJogarClicado()));
         }
         if(frameCarrinho != null){
             AccessibilityUtils.setBotao(frameCarrinho);
@@ -1536,7 +1551,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         bundle.putInt(COR_FONTE_FUNDO_ESCURO, estilo.getCorFonteFundoEscuro());
 
         cartelaFragment.cartelaFragmentBuilder(bundle);
-        surpresinhaFragment.surpresinhaFragmentBuilder(bundle);
 
         configuraBotoesListeners();
     }
@@ -1629,11 +1643,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                         DialogUtils.dialogConfirmar(
                                 this,
                                 getString(R.string.text_descartar),
-                                (dialog, which) -> {
-                                    viewModel.onEvent(
-                                            new SimulaUiEvent.AlterarSurpresinha(isChecked)
-                                    );
-                                }
+                                (dialog, which) -> viewModel.onEvent(
+                                        new SimulaUiEvent.AlterarSurpresinha(isChecked)
+                                )
                         );
 
                         switchSurpresinha.setChecked(!isChecked);
@@ -1666,16 +1678,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 "Cancelar",
                 onQuantidadeNumerosDialogListener()
         );
-//        DialogUtils.showDialogListItensNovo(
-//                SimulaActivity.this,
-//                getString(R.string.quant_de_numeros),
-//                subtitulo,
-//                getString(R.string.numeros_text),
-//                state.getLabelsQuantidadeNumeros(),
-//                "Confirmar",
-//                "Cancelar",
-//                onQuantidadeNumerosDialogListener()
-//        );
     }
     private OnDialogListener onQuantidadeTrevosDialogListener() {
 
@@ -1908,5 +1910,40 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
 
         fluxoApostaLauncher.launch(intent);
+    }
+
+    private void logAdicionarAoCarrinho(
+    ) {
+        SimulaUiState state =
+                viewModel.getUiState().getValue();
+
+        if (state == null) {
+            return;
+        }
+
+        AnalyticsHelper.getInstance().logInteraction(
+                AnalyticsHelper.EventCategoryParams.CTA,
+                AnalyticsHelper.EventActionParams.CLICK,
+                AnalyticsHelper.EventLabelParams.ADD_TO_CART,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                AnalyticsHelper.Tela.MONTAR_APOSTA,
+                ModalidadeEnum.fromString(
+                        tipoJogo
+                ),
+                numeroConcurso,
+                String.valueOf(
+                        state.getQuantidadeSurpresinhas()
+                ),
+                String.valueOf(
+                        state.getQtdDezenasPossiveisSelecionado()
+                ),
+                String.valueOf(
+                        state.getQtdConcursoSelecionado()
+                ),
+                ViewUtils.getMoedaFormat(
+                        state.getValorAposta()
+                )
+        );
     }
 }

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
 import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
 import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
 import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
@@ -1415,12 +1416,19 @@ public class SimulaViewModel extends AndroidViewModel {
         if (dto == null) {
             return;
         }
+        ModalidadeEnum tipoJogoAnalytics =
+                tipoJogoAtual != null
+                        ? tipoJogoAtual
+                        : state.getTipoJogo();
 
         updateState(
                 atual -> atual.toBuilder()
                         .setComandoCarrinho(
                                 new CarrinhoEffect
                                         .AdicionarSurpresinha(dto)
+                        )
+                        .setComandoAnalytics(
+                                new AnalyticsEffect.AdicionarCarrinho(tipoJogoAnalytics)
                         )
                         .build()
         );

@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.viewModel.reducer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
 import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
@@ -46,6 +47,12 @@ public class SurpresinhaReducer {
                     .setOpcaoOutrosNumerosSelecionada(false)
                     .setExibirInfoEtapa(false)
                     .setTextoInfoEtapa("")
+                    .setComandoAnalytics(
+                            new AnalyticsEffect.QtdSurpresinhas(
+                                    tipoJogoAtual,
+                                    1
+                            )
+                    )
                     .setLimparOpcaoOutrosNumeros(true)
                     // Reseta campos da surpresinha para o estado inicial
                     .setQuantidadeSurpresinhas(1)
@@ -183,6 +190,12 @@ public class SurpresinhaReducer {
                 atual.toBuilder()
                         .setQuantidadeSurpresinhas(
                                 quantidade
+                        )
+                        .setComandoAnalytics(
+                                new AnalyticsEffect.QtdSurpresinhas(
+                                        tipoJogoAtual,
+                                        quantidade
+                                )
                         )
                         .setPossuiAlteracoesPendentes(true)
                         .build();

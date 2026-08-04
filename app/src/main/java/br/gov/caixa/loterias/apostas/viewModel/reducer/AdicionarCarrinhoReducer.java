@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.viewModel.reducer;
 
+import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
 import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -143,6 +144,11 @@ public class AdicionarCarrinhoReducer {
                 .setBotaoAdicionarHabilitado(true)
                 .setBotaoLimparHabilitado(true)
                 .setMostrarBotaoLimparAposta(true)
+                .setComandoAnalytics(
+                        new AnalyticsEffect.AdicionarCarrinho(
+                                atual.getTipoJogo()
+                        )
+                )
                 .setComandoCompletarAposta(
                         new CompletarApostaEffect
                                 .ApostaEffectProntaParaAdicionar(

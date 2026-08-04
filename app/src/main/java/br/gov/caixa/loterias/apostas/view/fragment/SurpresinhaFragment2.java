@@ -15,8 +15,6 @@ import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import com.google.gson.Gson;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -24,7 +22,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -42,13 +39,9 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
 
     private TextView valorAposta;
     private SimulaActivity parentActivity;
-    private ParametroEquipe equipeSelecionada = null;
     private ModalidadeEnum tipoJogo;
     private ParametroJogoDTO parametroJogo;
-    private int typeGameColorLight;
-    private int corFonteFundoBranco;
     private SurpresinhaGridViewAdapter2 simularDezenasAdapter;
-    private BigDecimal valorTotalAposta;
     private boolean isAvisouT = false;
     private boolean isAvisouN = false;
     private View view;
@@ -183,9 +176,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
             parametroJogo = parentActivity.getParametroSimulacao();
         }
         Bundle bundle = getArguments();
-        if (bundle != null) {
-            equipeSelecionada = new Gson().fromJson(bundle.getString("equipeSelecionada"), ParametroEquipe.class);
-        }
 
         identificarTipoJogo();
         configuraListaDezenas();
@@ -266,18 +256,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     private boolean isDiaDeSorte() {
         return tipoJogo == ModalidadeEnum.DIA_DE_SORTE;
     }
-
-    public void surpresinhaFragmentBuilder(Bundle dataBundle) {
-        if (dataBundle == null) {
-            return;
-        }
-
-        typeGameColorLight = dataBundle.getInt("typeGameColorLight");
-
-        corFonteFundoBranco = dataBundle.getInt(SimulaActivity.COR_FONTE_FUNDO_BRANCO);
-
-    }
-
     private void identificarTipoJogo() {
         tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
     }
@@ -404,9 +382,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         return tipoJogo == ModalidadeEnum.LOTOMANIA;
     }
 
-    public void setEquipeSelecionada(ParametroEquipe equipeSelecionada) {
-        this.equipeSelecionada = equipeSelecionada;
-    }
 
     public ParametroJogoDTO getParametroJogo() {
         return parametroJogo;
@@ -600,21 +575,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         );
     }
 
-    public void resetQtdTrevos() {
-
-        if (parametroJogo == null || parametroJogo.getTrevos() == null) {
-            return;
-        }
-
-        dispatch(
-                new SimulaUiEvent
-                        .AtualizarQuantidadeTrevosSurpresinha(
-                        parametroJogo
-                                .getTrevos()
-                                .getQtdMinima()
-                )
-        );
-    }
     public void onAdicionarRodapeClicado() {
         dispatch(
                 new SimulaUiEvent.AdicionarSurpresinhaCarrinho(

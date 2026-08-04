@@ -50,6 +50,24 @@ public abstract class AnalyticsEffect {
         }
     }
 
+    public static class QtdSurpresinhas
+            extends AnalyticsEffect {
+
+        private final int qtdSurpresinhas;
+
+        public QtdSurpresinhas(
+                ModalidadeEnum modalidade,
+                int qtdSurpresinhas
+        ) {
+            super(modalidade);
+            this.qtdSurpresinhas = qtdSurpresinhas;
+        }
+
+        public int getQtdSurpresinhas() {
+            return qtdSurpresinhas;
+        }
+    }
+
     public static class FavoritarAposta
             extends AnalyticsEffect {
 
