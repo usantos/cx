@@ -82,6 +82,7 @@ import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
@@ -431,6 +432,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void adicionarApostaNoCarrinho() {
+		if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity(), 2)) return;
 		if(LoginSP.isLoginRealizado() && checaLimiteDiario()){
 			DialogUtils.dialogSim(getContext(),
 					getString(R.string.MA014),
