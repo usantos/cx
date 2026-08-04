@@ -116,7 +116,9 @@ public class TeimosinhaReducer {
                         new AnalyticsEffect
                                 .TeimosinhaConfirmada(
                                 modalidade,
-                                textoBotao
+                                String.valueOf(
+                                        qtdConcursoSelecionado
+                                )
                         )
                 )
                 .setAtualizarValorApostaPorTeimosinha(

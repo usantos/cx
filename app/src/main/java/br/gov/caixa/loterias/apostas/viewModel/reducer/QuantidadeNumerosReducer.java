@@ -246,21 +246,20 @@ public class QuantidadeNumerosReducer {
 
             builder
                     .setExibirDialogQuantidadeNumeros(false)
+                    .setComandoAnalytics(
+                            new AnalyticsEffect
+                                    .QuantidadeNumerosConfirmada(
+                                    tipoJogoAtual,
+                                    String.valueOf(
+                                            qtdPrognosticos
+                                    )
+                            )
+                    )
                     .setAtualizarValorApostaPorQuantidadeNumeros(true);
 
             if (tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA
                     && !deveLimparSelecao) {
                 builder.setResetarTrevosPorQuantidadeNumeros(true);
-            }
-
-            if (!atual.isSurpresinhaHabilitada()) {
-                builder.setComandoAnalytics(
-                        new AnalyticsEffect
-                                .QuantidadeNumerosConfirmada(
-                                tipoJogoAtual,
-                                textoBotao
-                        )
-                );
             }
         }
 
