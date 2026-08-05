@@ -47,14 +47,9 @@ public class DetalheApostaLotecaAdapter extends RecyclerView.Adapter<DetalheApos
                 32,
                 parent.getResources().getDisplayMetrics());
 
-        int paddingTop = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                8,
-                parent.getResources().getDisplayMetrics());
-
         view.setPaddingRelative(
                 paddingStart,
-                paddingTop,
+                0,
                 paddingEnd,
                 0
         );

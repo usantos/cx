@@ -4,6 +4,7 @@
     android:id="@+id/layout_row_apostas_partidas_loteca_list_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
     android:orientation="vertical">
 
     <TextView
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content" />
 
     <View
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divisor_cinza_escuro" />

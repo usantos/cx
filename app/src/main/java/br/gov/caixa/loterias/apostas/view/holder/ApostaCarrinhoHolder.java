@@ -206,10 +206,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		if (aposta.getPartidasLoteca() != null && !aposta.getPartidasLoteca().isEmpty()) {
 			DetalheApostaLotecaAdapter detalheApostaLotecaAdapter = new DetalheApostaLotecaAdapter(aposta.getPartidasLoteca());
-			this.recycleViewDetalheAposta.setLayoutManager(
-					new LinearLayoutManager(context)
-			);
-
+			this.recycleViewDetalheAposta.setLayoutManager(new LinearLayoutManager(context));
 			ViewGroup.MarginLayoutParams params =
 					(ViewGroup.MarginLayoutParams)
 							this.recycleViewDetalheAposta.getLayoutParams();
