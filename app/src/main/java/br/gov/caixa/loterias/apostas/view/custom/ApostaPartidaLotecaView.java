@@ -3,6 +3,9 @@ package br.gov.caixa.loterias.apostas.view.custom;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.Locale;
 
 import javax.annotation.Nullable;
 
@@ -21,6 +24,8 @@ import br.gov.caixa.loterias.apostas.utils.Utils;
 public class ApostaPartidaLotecaView extends LinearLayout {
 
     private boolean alreadyInflated = false;
+
+    private TextView tv_titulo;
 
     private ApostaEquipeLotecaView apostasPartidaLotecaViewUm, apostasPartidaLotecaViewEmpate, apostasPartidaLotecaViewDois;
 
@@ -42,6 +47,7 @@ public class ApostaPartidaLotecaView extends LinearLayout {
 
     //@AfterViews
     protected void init() {
+        this.tv_titulo = findViewById(R.id.tv_titulo);
         this.apostasPartidaLotecaViewUm = findViewById(R.id.apostas_partida_loteca_view_um);
         this.apostasPartidaLotecaViewEmpate = findViewById(R.id.apostas_partida_loteca_view_empate);
         this.apostasPartidaLotecaViewDois = findViewById(R.id.apostas_partida_loteca_view_dois);
@@ -63,21 +69,26 @@ public class ApostaPartidaLotecaView extends LinearLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public void setLayout(PartidaLotecaDTO partidaLotecaDTO) {
+    public void setLayout(PartidaLotecaDTO partidaLotecaDTO, int position) {
+        String jogoTitulo = String.format(Locale.getDefault(), "Jogo %02d ", position + 1);
         this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewUm, partidaLotecaDTO.getEquipe1(),
-                partidaLotecaDTO.getLegendaAbreviada());
-        this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewDois, partidaLotecaDTO.getEquipe2(),
-                partidaLotecaDTO.getLegendaAbreviada());
+                partidaLotecaDTO.getLegendaAbreviada(), jogoTitulo);
 
         EquipeDTO equipeDTOEmpate = new EquipeDTO();
         equipeDTOEmpate.setVitoria(partidaLotecaDTO.getEmpate());
         equipeDTOEmpate.setNome(Constantes.EMPATE_STRING);
-        this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewEmpate, equipeDTOEmpate, null);
+        this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewEmpate, equipeDTOEmpate, null, "Jogo 01");
+
+        this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewDois, partidaLotecaDTO.getEquipe2(),
+                partidaLotecaDTO.getLegendaAbreviada(), jogoTitulo);
     }
 
     private void setValueApostaEquipeLotecaView(ApostaEquipeLotecaView apostaEquipeLotecaView,
-                                                EquipeDTO equipeDTO, String legenda) {
+                                                EquipeDTO equipeDTO, String legenda, String jogoTitulo) {
         apostaEquipeLotecaView.getImageApostaPartidaLoteca().setSelected(equipeDTO.getVitoria());
+
+        tv_titulo.setText(jogoTitulo);
+
         if (legenda != null) {
             if (equipeDTO.getIndicadorSelecao()) {
                 apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeNome(equipeDTO));

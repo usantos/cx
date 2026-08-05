@@ -338,7 +338,6 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                     @Override
                     public void onButtonClick(DialogInterface dialog, int which) {
                         dialogFavoritar.show();
-
                     }
                 }
         );

@@ -678,6 +678,57 @@ public class DialogUtils {
         }
     }
 
+    public interface OnCustomDialogClickListener {
+        void onClick(Dialog dialog);
+    }
+
+    public static Dialog buildCustomDialog(
+            Context context,
+            int layoutResId,
+            boolean cancelable,
+            int buttonId,
+            OnCustomDialogClickListener listener
+    ) {
+
+        if (isContextInvalido(context)) {
+            return null;
+        }
+
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(layoutResId);
+        dialog.setCancelable(cancelable);
+
+        View button = dialog.findViewById(buttonId);
+
+        if (button != null) {
+            button.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onClick(dialog);
+                }
+            });
+        }
+
+        if (dialog.getWindow() != null) {
+            int screenWidth = context.getResources()
+                    .getDisplayMetrics()
+                    .widthPixels;
+
+            int dialogWidth =
+                    (int) (screenWidth * LARGURA_DIALOG_PADRAO);
+
+            dialog.getWindow().setLayout(
+                    dialogWidth,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+
+            dialog.getWindow().setBackgroundDrawableResource(
+                    R.drawable.rounded_dialog_background
+            );
+        }
+
+        return dialog;
+    }
+
     public static Dialog buildDialogListItensNovo(
             Context context,
             String titulo,

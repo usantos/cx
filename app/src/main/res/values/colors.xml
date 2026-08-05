@@ -165,6 +165,7 @@
     <color name="vermelho_dialog">#F60E0E</color>
     <color name="vermelho_borda_dialog">#D15973</color>
     <color name="azul_alterar">#004680</color>
+    <color name="cinza_titulo_jogo_loteca">#3f4b52</color>
 
     <!--Disque 180 -->
     <color name="rosa_radio_text">#E781A6</color>

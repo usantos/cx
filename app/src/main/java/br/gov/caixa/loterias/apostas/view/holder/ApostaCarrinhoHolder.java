@@ -2,8 +2,10 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import static android.view.View.VISIBLE;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.text.SpannableStringBuilder;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -31,6 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.SwipeLayout;
@@ -61,6 +64,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private RelativeLayout layoutCabecalhoLoteca;
 	private LinearLayout dadosApostaCarrinho;
 	private LinearLayout lnrLegendaApostaCarrinho;
+	private ImageButton iconLegenda;
+	private View vwLinhaAzulLoteca;
 	private LinearLayout dadosCarrinho;
 	private TextView textViewNumeroConcurso, tvNumeroConcursoNovo;
 	private ImageView iconTimer, imageDetalheBoloes;
@@ -92,6 +97,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		recycleViewDetalheAposta = view.findViewById(R.id.recycleViewDetalheAposta);
 		layoutCabecalhoLoteca = view.findViewById(R.id.layoutCabecalhoLoteca);
 		lnrLegendaApostaCarrinho = view.findViewById(R.id.lnrLegendaApostaCarrinho);
+		iconLegenda = view.findViewById(R.id.iconLegenda);
+		vwLinhaAzulLoteca = view.findViewById(R.id.vwLinhaAzulLoteca);
 		dadosApostaCarrinho = view.findViewById(R.id.dadosApostaCarrinho);
 		dadosCarrinho = view.findViewById(R.id.dadosCarrinho);
 		textViewNumeroConcurso = view.findViewById(R.id.numeroConcurso);
@@ -155,7 +162,6 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		TextView     quantidadeSorteios  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
 		//Button       buttonApostaEspelho = this.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
 		LinearLayout layoutTimeCoracao   = this.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
-		LinearLayout lnrLegendaApostaCarrinho   = this.dadosApostaCarrinho.findViewById(R.id.lnrLegendaApostaCarrinho);
 		TextView     labelTimeCoracao    = this.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
 		TextView     textViewTimeCoracao = this.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
 		ImageButton excluirApostaCarrinho = this.itemView.findViewById(R.id.excluirApostaCarrinho);
@@ -210,6 +216,20 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			excluirApostaCarrinho.setImageResource(R.drawable.ic_lixeira_nova_mkp);
 			excluirApostaCarrinho.setColorFilter(ContextCompat.getColor(context, estiloMKP.getCorEscura()));
 			this.lnrLegendaApostaCarrinho.setVisibility(VISIBLE);
+			this.vwLinhaAzulLoteca.setVisibility(VISIBLE);
+			this.iconLegenda.setOnClickListener(view -> {
+				Dialog dialog = DialogUtils.buildCustomDialog(
+						context,
+						R.layout.dialog_legenda_loteca_novo,
+						true,
+						R.id.btnFechar,
+						d -> d.dismiss()
+				);
+
+				if (dialog != null) {
+					dialog.show();
+				}
+            });
 		} else if (aposta.getPartidasLotogol() != null && !aposta.getPartidasLotogol().isEmpty()) {
 			DetalheApostaLotogolAdapter detalheApostaLotogolAdapter = new DetalheApostaLotogolAdapter(aposta.getPartidasLotogol());
 			this.recycleViewDetalheAposta.setLayoutManager(new LinearLayoutManager(context));

@@ -40,10 +40,11 @@ public class DetalheApostaLotecaAdapter extends RecyclerView.Adapter<DetalheApos
 
         int paddingStart = (int) (8 * density);
         int paddingEnd = (int) (24 * density);
+        int paddingTop =  (int) (24 * density);
 
         view.setPadding(
                 paddingStart,
-                view.getPaddingTop(),
+                paddingTop,
                 paddingEnd,
                 view.getPaddingBottom()
         );
@@ -53,7 +54,7 @@ public class DetalheApostaLotecaAdapter extends RecyclerView.Adapter<DetalheApos
 
     @Override
     public void onBindViewHolder(ApostaLotecaHolder holder, int position) {
-        holder.apostaPartidaLotecaView.setLayout(listaPartidas.get(position));
+        holder.apostaPartidaLotecaView.setLayout(listaPartidas.get(position), position);
     }
 
     @Override

@@ -298,7 +298,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <!-- Linha Excluir -->
+                <!-- Excluir -->
                 <LinearLayout
                     android:layout_marginStart="12dp"
                     android:layout_width="wrap_content"
@@ -329,7 +329,7 @@
 
                 </LinearLayout>
 
-                <!-- Linha Legenda -->
+                <!-- Legenda -->
                 <LinearLayout
                     android:visibility="gone"
                     android:id="@+id/lnrLegendaApostaCarrinho"
@@ -364,6 +364,17 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <View
+                android:visibility="gone"
+                android:id="@+id/vwLinhaAzulLoteca"
+                app:layout_constraintTop_toBottomOf="@+id/excluirApostaCarrinhoLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/blue_caixa" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
