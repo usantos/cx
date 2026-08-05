@@ -467,7 +467,7 @@
     <string name="label_app_indisponivel">O aplicativo está temporariamente indisponível. Tente novamente mais tarde.</string>
 
     <string name="nao_concluiu_operacao">Não foi possível concluir esta operação. Por favor, tente novamente.</string>
-    <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Aguarde e tente novamente mais tarde.</string>
+    <string name="nao_concluiu_operacao_nova">Não foi possível concluir esta operação. Por favor, tente novamente mais tarde.</string>
     <string name="title_tente_novamente">Tentar novamente</string>
     <string name="label_rapidao_resolve">Deixa que o _Rapidão_ resolve!</string>
 
@@ -1648,6 +1648,11 @@
     <!-- MEGA 30 ANOS   -->
     <string name="mega_sena_30_anos">mega-sena 30 anos</string>
     <string name="mega_sena_30_anos_duas_linhas">mega-sena\n30 anos</string>
+
+    <!-- LOTECA PAIS -->
+    <string name="loteca_pais">loteca dos pais</string>
+    <string name="loteca_pais_duas_linhas">loteca\ndos pais</string>
+
     <string name="caixa_loterias">Você será direcionado para o site da CAIXA Loterias e sairá do aplicativo. Deseja continuar?</string>
     <string name="label_cancelar">Cancelar</string>
     <string name="label_confirmar">Confirmar</string>
@@ -1681,5 +1686,9 @@
     <string name="txt_choose_your_reward">Escolha como resgatar seu prêmio</string>
     <string name="txt_contest">Concurso</string>
     <string name="txt_concursos">Concursos</string>
+    <string name="receba_na_hora">Receba na hora</string>
+    <string name="retire_qualquer_loterica">Retire em qualquer lotérica</string>
+    <string name="valores_isencao_ir">Valores acima da isenção do IR</string>
+    <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Aguarde e tente novamente mais tarde.</string>
 
 </resources>

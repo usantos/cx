@@ -134,8 +134,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private List<String> qtdNumerosList;
     private List<String> qtdConcursosList;
     private ModalidadeEnum tipoJogo;
-    private String textoBotaoPrognosticosSelecionado;
-    private String textoBotaoTeimosinhas;
+    private String textoBotaoPrognosticosSelecionado = "";
+    private String textoBotaoTeimosinhas = "";
     private ParametroJogoDTO parametroSimulacao;
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
@@ -150,11 +150,15 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private Boolean flagApostaSalva = false;
 
     private Boolean isSurpresinha = false;
+
     //TODO: MEGA 30 ANOS//
     private boolean isMega30;
+
+    //TODO: LOTECA PAIS//
+    private boolean isLotecaPais;
     private EstiloModalidadeMKP estilo;
     private LottieManager lottieManager;
-    String numeroConcurso;
+    String numeroConcurso = "";
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,8 +178,13 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         } catch (Exception e){
             Log.e("ERROR", "Não foi possível adiquirir os elementos da barra de título");
         }
-        isMega30 = EspecialUtils.isMega30(numero_concurso, isEspecial);
-        estilo = new EstiloModalidadeMKP(tipoJogo, isMega30);
+        //TODO: LOTECA PAIS//
+        isMega30 = EspecialUtils.isMega30(tipoJogo, numero_concurso, isEspecial);
+        isLotecaPais = EspecialUtils.isLotecaPais(tipoJogo, numero_concurso, isEspecial);
+        //estilo = new EstiloModalidadeMKP(tipoJogo, isMega30);
+        estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(tipoJogo,
+                numero_concurso, isEspecial);
+
         preencheBarraTitulo();
         setViews();
 
@@ -190,16 +199,10 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             startActivity(new Intent(this,TutorialSuperSeteActivity.class));
         }
 
-        //Animação Copa da Loteca
-        if (tipoJogo == ModalidadeEnum.LOTECA && isEspecial) {
-            lottieManager = new LottieManager(this, R.raw.copa_loteca_3);
-            lottieManager.setSpeed(1.75f);
-            lottieManager.start();
-        }
-        //Animação Quina de São João
-        if (tipoJogo == ModalidadeEnum.QUINA && isEspecial) {
-            lottieManager = new LottieManager(this, R.raw.quina_sao_joao_1);
-            lottieManager.setSpeed(1.5f);
+        //Animação Lotofacil da Independencia
+        if (tipoJogo == ModalidadeEnum.LOTOFACIL && isEspecial) {
+            lottieManager = new LottieManager(this, R.raw.lotofacil_independencia);
+            lottieManager.setSpeed(0.60f);
             lottieManager.start();
         }
 
@@ -757,7 +760,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                 configuraTipoApostaTela(getResources().getString(R.string.underline_lotomania_underline), R.color.lotomania_claro_mkp, R.color.lotomania_escuro_mkp, View.VISIBLE, View.GONE);
                 break;
             case LOTECA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.loteca_claro_mkp, R.color.loteca_escuro_mkp, View.GONE, View.VISIBLE);
+                //TODO: LOTECA PAIS//
+                if(isLotecaPais) {
+                    configuraTipoApostaTela(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, ""), R.color.loteca_claro_mkp, R.color.loteca_escuro_mkp, View.GONE, View.VISIBLE);
+                } else {
+                    configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.loteca_claro_mkp, R.color.loteca_escuro_mkp, View.GONE, View.VISIBLE);
+                }
                 break;
             case DIA_DE_SORTE:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), R.color.dia_sorte_claro_mkp, R.color.dia_sorte_escuro_mkp, View.VISIBLE, View.GONE);
@@ -1000,7 +1008,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         }
 
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
-        if (isEspecial && !isMega30 && estilo.getImagemSubCabecalho() > 0) {
+        //TODO: LOTECA PAIS//
+        if (isEspecial && !isMega30 && !isLotecaPais && estilo.getImagemSubCabecalho() > 0) {
             toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, estilo.getImagemSubCabecalho()));
         }
         toolBarSimularAposta.setVisibility(visibilityToolBarSimularAposta);

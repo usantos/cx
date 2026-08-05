@@ -30,6 +30,8 @@ import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
@@ -61,6 +63,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private EstiloModalidadeMKP estiloModalidadeMKP;
 	private TipoApostaLinhaView tipoApostaLinhaView;
 	private Boolean isMega30 = false;
+	private Boolean isLotecaPais = false;
 
 	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity, ApostasConfirmadasFragment fragment) {
 		super(view);
@@ -95,10 +98,13 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 	@Override
 	public void bind(ApostaDTO aposta, int position) {
-		if(aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
-			isMega30 = EspecialUtils.isMega30(aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
-		}
-		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade(), isMega30);
+		//if(aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
+		//	isMega30 = EspecialUtils.isMega30(aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
+		//}
+		isMega30 = EspecialUtils.isMega30(aposta.getModalidade(), aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso().getDescricao().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.toString()));
+		isLotecaPais = EspecialUtils.isLotecaPais(aposta.getModalidade(), aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso().getDescricao().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.toString()));
+		//estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade(), isMega30);
+		estiloModalidadeMKP = EstiloModalidadeMKP.createModalidadeConcursoEsp(aposta.getModalidade(), aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso().getDescricao().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.toString()));
 
 		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorClara());
 
@@ -107,6 +113,9 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		this.modalidadeTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
 		if (isMega30) {
 			modalidadeTxt.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, ""));
+		} else if (isLotecaPais) {
+			//modalidadeTxt.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, ""));
+			modalidadeTxt.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, ""));
 		} else {
 			this.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
 		}
@@ -124,7 +133,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		preencheTeimosinha(aposta);
 		montaTipoApostaLinha(aposta, estiloModalidadeMKP.getCorLetraLista());
 
-		if (!SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean()) && !NovaApiUtils.isPossoBuscarNovaAPI() && ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial()) && isEfetivada(aposta)) {
+		if (!SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean()) && !NovaApiUtils.isPossoBuscarNovaAPI() && ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial()) && isEfetivada(aposta)){
 			fragment.conferirResultado(position, aposta, this);
 		}
 	}
@@ -200,7 +209,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 
 		if(parametroJogo != null && !ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial())){
-			if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_NOVA_API.get(), ConfiguracoesDefaultEnum.IS_NOVA_API.asBoolean())	 || SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean())){
+			if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_NOVA_API.get(), ConfiguracoesDefaultEnum.IS_NOVA_API.asBoolean())
+					|| SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean())){
 				descricaoStatus = ApostaUtils.descricaoCorrigida(aposta.getSituacao());
 			}else {
 				descricaoStatus = SituacaoAposta.EnumSituacaoAposta.CONCURSO_NAO_APURADO.getDescricao().toLowerCase();

@@ -73,6 +73,8 @@ import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -83,8 +85,6 @@ import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.SelecaoConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
-import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
-import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
@@ -156,6 +156,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     private Uri fileApostaUri;
     private Uri filePremioUri;
     private Boolean isMega30 = false;
+    private Boolean isLotecaPais = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -173,6 +174,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
         parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
         isMega30 = EspecialUtils.isMega30(aposta.getConcursoAlvo(), aposta.getTipoConcurso());
+        isLotecaPais = EspecialUtils.isLotecaPais(aposta.getModalidade(), aposta.getConcursoAlvo(), aposta.getTipoConcurso());
         setaViews();
         aplicaCorFontes();
         setupToolbar();
@@ -265,7 +267,8 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     }
 
     private void setaViews(){
-        estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade(), isMega30);
+        //estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade(), isMega30);
+        estiloMKP = EstiloModalidadeMKP.createModalidadeConcursoEsp(aposta.getModalidade(), aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso().getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor()));
         fragmentContainer       = findViewById(R.id.fragmentContainer);
         linearLayoutBottom      = findViewById(R.id.linearLayoutBottom);
         toolbar                 = findViewById(R.id.toolbar);
@@ -733,13 +736,14 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     }
 
     private void setupToolbar() {
-        if (isEspecial(aposta.getTipoConcurso().getValor()) && aposta.getModalidade() == ModalidadeEnum.MEGA_SENA) {
+        if (isEspecial(aposta.getTipoConcurso().getValor()) && (aposta.getModalidade() == ModalidadeEnum.MEGA_SENA || aposta.getModalidade() == ModalidadeEnum.LOTECA)) {
 //            toolbar.setBackgroundResource(R.drawable.cabecalho_mega_virada_detalhes_aposta);
-            if(isMega30) {
-                toolbar.setBackgroundResource(R.drawable.cabecalho_mega_trinta_anos_detalhe);
-            }
-            else {
-                toolbar.setBackgroundResource(R.drawable.mega_virada_simples);
+            if(isMega30 || isLotecaPais) {
+                //toolbar.setBackgroundResource(R.drawable.cabecalho_mega_trinta_anos_detalhe);
+                toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
+            } else {
+                //toolbar.setBackgroundResource(R.drawable.mega_virada_simples);
+                toolbar.setBackgroundResource(estiloMKP.getImagemEspecialSimples());
             }
         } else if (isEspecial(aposta.getTipoConcurso().getValor()) && estiloMKP.getImagemEspecialDetalhes() > 0) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
@@ -760,8 +764,10 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         }
         //setTitle(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
         //setTitle(ViewUtils.textFuturaAndFuturaBold(this, ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase()));
-        if (isMega30){
-            setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_LINHA, "") +"_"));
+        if (isMega30) {
+            setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_" + SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_LINHA, "") + "_"));
+        } else if (isLotecaPais) {
+            setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, "") +"_"));
         } else {
             setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase()+"_"));
         }

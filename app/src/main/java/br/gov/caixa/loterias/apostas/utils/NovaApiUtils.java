@@ -9,8 +9,7 @@ public class NovaApiUtils {
     }
 
     public static boolean isFinalCPFAcessaNovaApi() {
-
-        int finalCpf = SharedPreferencesUtils.getValorInt(ConfiguracoesEnum.GRUPO_CPF_NOVA_API.get(), ConfiguracoesDefaultEnum.GRUPO_CPF_NOVA_API.asInt());;
+        int finalCpf = SharedPreferencesUtils.getValorInt(ConfiguracoesEnum.GRUPO_CPF_NOVA_API.get(), ConfiguracoesDefaultEnum.GRUPO_CPF_NOVA_API.asInt());
 
         if (finalCpf == 0) {
             return false;

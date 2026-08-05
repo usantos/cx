@@ -21,7 +21,9 @@ import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -76,7 +78,8 @@ public class BarraTituloBolaoFragment extends Fragment {
             modalidade = new Gson().fromJson(getArguments().getString(ARG_MODALIDADE), ModalidadeEnum.class);
             corBackground = getArguments().getInt(ARG_COR_BACK);
             corBackgroundPremio = getArguments().getInt(ARG_COR_BACK_PREMIO);
-            estilo = new EstiloModalidadeMKP(modalidade);
+            //estilo = new EstiloModalidadeMKP(modalidade);
+            estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(modalidade, Integer.valueOf(concurso), isEspecial);
         }
     }
 
@@ -130,7 +133,7 @@ public class BarraTituloBolaoFragment extends Fragment {
 
         if(getContext() == null) return;
 
-        if (isEspecial){
+        if (isEspecial) {
             //if(estilo.getFundoEspecial() != -1) backgroundModalidade.setBackground(AppCompatResources.getDrawable(getContext(), estilo.getFundoEspecial()));
             if(estilo.getImagemEspecialSimples() != -1) backgroundModalidade.setBackground(AppCompatResources.getDrawable(getContext(), estilo.getImagemEspecialSimples()));
             if(estilo.getTrapezioEspecial() != -1) layoutTrevo.setBackground(ContextCompat.getDrawable(getContext(), estilo.getTrapezioEspecial()));
@@ -147,10 +150,12 @@ public class BarraTituloBolaoFragment extends Fragment {
             if(modalidade.equals(ModalidadeEnum.LOTOFACIL)) {
                 //TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -10);
                 tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
-            } else{
+            } else if (EspecialUtils.isLotecaPais(modalidade, Integer.valueOf(concurso), isEspecial)) {
+                //tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, ""));
+                tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, ""));
+            } else {
                 tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
             }
-
         } else {
             tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
         }

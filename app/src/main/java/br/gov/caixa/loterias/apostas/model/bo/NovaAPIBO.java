@@ -11,9 +11,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnu
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoNovaAPISingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.NovaAPISingleton;
-import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 
 public class NovaAPIBO extends BaseBO {
     private static NovaAPIBO instance;

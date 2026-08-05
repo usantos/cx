@@ -41,6 +41,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private ModalidadeEnum modalidade;
 	private EstiloModalidadeMKP estilo;
 	Boolean isMega30 = false;
+	Boolean isLotecaPais = false;
 
 	public SubBarraModalidadeFragment() {
 		// Required empty public constructor
@@ -66,8 +67,11 @@ public class SubBarraModalidadeFragment extends Fragment {
 			sorteio = getArguments().getString(ARG_SORTEIO);
 			isEspecial = getArguments().getBoolean(ARG_ESPECIAL);
 			modalidade = new Gson().fromJson(getArguments().getString(ARG_MODALIDADE), ModalidadeEnum.class);
-			isMega30 = EspecialUtils.isMega30(concurso,isEspecial);
-			estilo = new EstiloModalidadeMKP(modalidade,isMega30);
+			isMega30 = EspecialUtils.isMega30(modalidade, Integer.valueOf(concurso), isEspecial);
+			isLotecaPais = EspecialUtils.isLotecaPais(modalidade, Integer.valueOf(concurso), isEspecial);
+			//estilo = new EstiloModalidadeMKP(modalidade,isMega30);
+			estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(modalidade,
+					Integer.valueOf(concurso), isEspecial);
 		}
 	}
 
@@ -123,9 +127,11 @@ public class SubBarraModalidadeFragment extends Fragment {
 				//TODO: MEGA 30 ANOS//
 				if(isMega30) {
 					tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
-				}
-				else {
-						tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
+				} else if (isLotecaPais) {
+					//tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS,""));
+					tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA,""));
+				} else {
+					tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
 				}
 			}
 		} else {

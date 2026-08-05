@@ -1285,14 +1285,16 @@ public class ViewUtils {
     public static String getNomeModalidadePorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         Context context = Aplicacao.application.getBaseContext();
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
-        if(param != null){
+        if(param != null) {
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
 
             if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
                 return context.getString(R.string.label_mais_milionaria);
-            } else if (aposta.getModalidade() == ModalidadeEnum.MEGA_SENA){
-                if (aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
-                    Boolean isMega30 = EspecialUtils.isMega30(aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
+            }
+
+            if (aposta.getModalidade() == ModalidadeEnum.MEGA_SENA) {
+                if (aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")) {
+                    Boolean isMega30 = EspecialUtils.isMega30(aposta.getModalidade(), aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
                     if (isMega30){
                         return SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_LINHA,"");
                     } else {
@@ -1301,11 +1303,25 @@ public class ViewUtils {
                 } else {
                     return modalidadeDetalhada.getDescricao();
                 }
-            } else {
-                return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                        getNomeEspecialSemRespostaDoServico(aposta, modalidadeDetalhada):
-                        modalidadeDetalhada.getDescricao();
             }
+
+            if (aposta.getModalidade() == ModalidadeEnum.LOTECA) {
+                if (aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")) {
+                    Boolean isLotecaPais = EspecialUtils.isLotecaPais(aposta.getModalidade(), aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
+                    if (isLotecaPais){
+                        return SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA,"");
+                    } else {
+                        return ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade());
+                    }
+                } else {
+                    return modalidadeDetalhada.getDescricao();
+                }
+            }
+
+            return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                   getNomeEspecialSemRespostaDoServico(aposta, modalidadeDetalhada):
+                   modalidadeDetalhada.getDescricao();
+
         }
 
         return getNomeModalidadePorApostaMockada(aposta);
@@ -1319,8 +1335,10 @@ public class ViewUtils {
             if (modalidadeDetalhada.getValor() == 9){
                 return Aplicacao.application.getBaseContext().getString(R.string.label_mais_milionaria);
             } else {
-                if (EspecialUtils.isMega30(aposta.getConcursoAlvo(), aposta.getTipoConcurso())){
+                if (EspecialUtils.isMega30(aposta.getConcursoAlvo(), aposta.getTipoConcurso())) {
                     return SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, "");
+                } else if (EspecialUtils.isLotecaPais(aposta.getModalidade(), aposta.getConcursoAlvo(), aposta.getTipoConcurso())) {
+                    return SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, "");
                 } else {
                     return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
                             ModalidadeEnum.getDescricaoEspecialDuasLinhas(aposta.getModalidade()):
