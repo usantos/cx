@@ -104,7 +104,7 @@ public class LoginFragment extends Fragment {
         biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
 
         //Selecao ambiente se NAO PRD
-        if (!(BuildConfig.FLAVOR.equals("prd") ||  BuildConfig.FLAVOR.equals("net"))) {
+        if (!(BuildConfig.FLAVOR.equals("prd"))) {
             //Ambiente Selecao
             ambienteSpinner = v.findViewById(R.id.spin_ambiente);
             ambienteSpinner.setVisibility(View.VISIBLE);
