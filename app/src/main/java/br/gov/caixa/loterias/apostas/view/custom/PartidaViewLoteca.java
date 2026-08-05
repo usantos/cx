@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.DescricaoLoteca;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 
 /**
@@ -61,10 +62,8 @@ public class PartidaViewLoteca extends LinearLayout {
     }
 
     public void setLayout(PartidaLotecaDTO parametroPartida, int position) {
-
-        String tituloJogo = String.format(Locale.getDefault(), "Jogo %02d ", position + 1);
-        tv_titulo.setText(tituloJogo);
-
+        String jogoTitulo = "Jogo " + String.format("%02d", position + 1) + DescricaoLoteca.descricaoPartida(parametroPartida);
+        tv_titulo.setText(jogoTitulo);
         layout_row_apostas_partidas_loteca_list_view.setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_um.getTextApostaPartidaLoteca().setText(parametroPartida.getEquipe1().getNome());
         apostas_partida_loteca_view_um.getTextApostaPartidaLoteca().setTextColor(getContext().getResources().getColor(R.color.branco));

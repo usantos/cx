@@ -5,6 +5,7 @@ import static android.view.View.VISIBLE;
 import android.app.Dialog;
 import android.content.Context;
 import android.text.SpannableStringBuilder;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -205,7 +206,22 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		if (aposta.getPartidasLoteca() != null && !aposta.getPartidasLoteca().isEmpty()) {
 			DetalheApostaLotecaAdapter detalheApostaLotecaAdapter = new DetalheApostaLotecaAdapter(aposta.getPartidasLoteca());
-			this.recycleViewDetalheAposta.setLayoutManager(new LinearLayoutManager(context));
+			this.recycleViewDetalheAposta.setLayoutManager(
+					new LinearLayoutManager(context)
+			);
+
+			ViewGroup.MarginLayoutParams params =
+					(ViewGroup.MarginLayoutParams)
+							this.recycleViewDetalheAposta.getLayoutParams();
+
+			int marginTop = (int) TypedValue.applyDimension(
+					TypedValue.COMPLEX_UNIT_DIP,
+					24,
+					context.getResources().getDisplayMetrics());
+
+			params.topMargin = marginTop;
+
+			this.recycleViewDetalheAposta.setLayoutParams(params);
 			this.recycleViewDetalheAposta.setAdapter(detalheApostaLotecaAdapter);
 			this.recycleViewDetalheAposta.setExpanded(true);
 			animacao = Boolean.FALSE;

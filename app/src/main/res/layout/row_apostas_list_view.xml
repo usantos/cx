@@ -162,24 +162,16 @@
                     style="@style/editTextFuturaBoldTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxWidth="120dp"
-                    android:paddingEnd="4dp"
                     android:textSize="14.2sp"
                     tools:text="Lotofacil da Independencia" />
 
                 <TextView
                     android:id="@+id/numeroConcurso"
                     style="@style/editTextCaixaRegularTheme"
-                    android:layout_width="140dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tipoAposta"
-                    android:layout_marginBottom="13dp"
-                    android:lines="1"
-                    android:maxWidth="100dp"
-                    android:paddingEnd="0dp"
                     android:textSize="14.2sp"
-                    tools:text="Conc. 777" />
+                    tools:text="Concurso 7777" />
             </LinearLayout>
 
             <RelativeLayout
@@ -242,7 +234,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/modalidadeConcursoLayout"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:layout_below="@+id/modalidadeConcursoLayout"
                 android:clickable="false"
                 android:nestedScrollingEnabled="false"

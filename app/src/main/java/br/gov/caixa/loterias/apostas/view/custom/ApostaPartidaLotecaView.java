@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.DescricaoLoteca;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 
@@ -70,7 +71,7 @@ public class ApostaPartidaLotecaView extends LinearLayout {
     }
 
     public void setLayout(PartidaLotecaDTO partidaLotecaDTO, int position) {
-        String jogoTitulo = String.format(Locale.getDefault(), "Jogo %02d ", position + 1);
+        String jogoTitulo = "Jogo " + String.format("%02d", position + 1) + DescricaoLoteca.descricaoPartida(partidaLotecaDTO);
         this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewUm, partidaLotecaDTO.getEquipe1(),
                 partidaLotecaDTO.getLegendaAbreviada(), jogoTitulo);
 
