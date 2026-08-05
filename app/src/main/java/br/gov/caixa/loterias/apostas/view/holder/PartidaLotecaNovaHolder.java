@@ -3,25 +3,24 @@ package br.gov.caixa.loterias.apostas.view.holder;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.utils.Utils;
-import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 
+	private ConstraintLayout cl_partida;
 	private TextView labelJogo, labelVencedor, nomeEquipe1, nomeEquipe2, nomeEmpate;
-	private RadioButton checkEquipe1, checkEquipe2, checkEmpate;
+	private View checkEquipe1, checkEquipe2, checkEmpate;
 	private Context context;
 	private ConfiguracaoLoteca configuracaoLoteca;
 	private ResultadoConcursoDTO resultado;
@@ -31,6 +30,7 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 
 	public PartidaLotecaNovaHolder(View itemView, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso) {
 		super(itemView);
+		cl_partida = itemView.findViewById(R.id.cl_partida);
 		labelJogo = itemView.findViewById(R.id.label_jogo);
 		labelVencedor = itemView.findViewById(R.id.label_vencedor);
 		vLinhaDivisoria = itemView.findViewById(R.id.v_linha_divisoria_loteca);
@@ -65,9 +65,9 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 			labelJogo.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
 			labelVencedor.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
 			vLinhaDivisoria.setBackgroundColor(context.getColor(configuracaoLoteca.getCorTexto()));
-			checkEquipe1.setButtonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
-			checkEquipe2.setButtonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
-			checkEmpate.setButtonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
+			//checkEquipe1.setButtonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
+			//checkEquipe2.setButtonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
+			//checkEmpate.setBauttonTintList(ColorStateList.valueOf(context.getColor(configuracaoLoteca.getCorTexto())));
 			nomeEquipe1.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
 			nomeEquipe2.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
 			nomeEmpate.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
@@ -104,9 +104,12 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 		}
 
 		labelJogo.setText(jogo);
-		labelJogo.setContentDescription(descricaoAcessibilidade);
+		//labelJogo.setContentDescription(descricaoAcessibilidade);
+		//labelJogo.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+		cl_partida.setContentDescription(descricaoAcessibilidade);
+		//cl_partida.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
 
-		boolean sel1 = partida.getEquipe1().getVitoria();
+        boolean sel1 = partida.getEquipe1().getVitoria();
 		boolean sel2 = partida.getEquipe2().getVitoria();
 		boolean selEmpate = partida.getEmpate();
 
@@ -123,9 +126,36 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 	}
 
 	private void aplicaChecks(PartidaLotecaDTO partida) {
-		checkEquipe1.setChecked(partida.getEquipe1().getVitoria());
-		checkEmpate.setChecked(partida.getEmpate());
-		checkEquipe2.setChecked(partida.getEquipe2().getVitoria());
+		//checkEquipe1.setChecked(partida.getEquipe1().getVitoria());
+		//checkEmpate.setChecked(partida.getEmpate());
+		//checkEquipe2.setChecked(partida.getEquipe2().getVitoria());
+
+		if (partida.getEquipe1().getVitoria()) {
+			checkEquipe1.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_radio_checked));
+			checkEquipe1.setContentDescription("Selecionado");
+		} else {
+			checkEquipe1.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_radio_unchecked));
+			checkEquipe1.setContentDescription("Não Selecionado");
+		}
+		checkEquipe1.getBackground().setTint(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
+
+		if (partida.getEmpate()) {
+			checkEmpate.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_radio_checked));
+			checkEmpate.setContentDescription("Selecionado");
+		} else {
+			checkEmpate.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_radio_unchecked));
+			checkEmpate.setContentDescription("Não Selecionado");
+		}
+		checkEmpate.getBackground().setTint(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
+
+		if (partida.getEquipe2().getVitoria()) {
+			checkEquipe2.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_radio_checked));
+			checkEquipe2.setContentDescription("Selecionado");
+		} else {
+			checkEquipe2.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_radio_unchecked));
+			checkEquipe2.setContentDescription("Não Selecionado");
+		}
+		checkEquipe2.getBackground().setTint(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
 	}
 
 	private void aplicaLegenda(TextView tv, boolean selecionado, boolean acertou) {
