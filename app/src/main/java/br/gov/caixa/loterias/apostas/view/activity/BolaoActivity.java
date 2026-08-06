@@ -883,6 +883,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                     filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
                     if (filtro != null) {
                         isFiltrando = true;
+                        listAdapter.atualizarFiltro(filtro);
                         configFiltrar(launcherFiltro, filtro);
                         if (filtro.getModalidade() != null) {
                             idModalidade = ModalidadeEnum.fromStringToIdModalidade(filtro.getModalidade());
