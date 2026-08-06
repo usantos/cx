@@ -30,8 +30,6 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
-import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter2;
-import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 public class SurpresinhaFragment2 extends BaseEtapaFragment {
 
@@ -41,7 +39,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     private SimulaActivity parentActivity;
     private ModalidadeEnum tipoJogo;
     private ParametroJogoDTO parametroJogo;
-    private SurpresinhaGridViewAdapter2 simularDezenasAdapter;
     private boolean isAvisouT = false;
     private boolean isAvisouN = false;
     private View view;
@@ -52,7 +49,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     private Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha, btnMenosTrevos,
             btnMaisTrevos, btnNumerosMenos, btnNumerosMais;
     private LinearLayout escolhaItemLayout;
-    private ExpandableHeightGridView listaDezenasSurpresinha;
     private LinearLayout layoutEspelhoSurpresinha;
     private AppCompatCheckBox selcioneEspelhoSurpresinha;
     private ConstraintLayout maisMilionaria, numeroNovoConst;
@@ -148,7 +144,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         btnNumerosMenos = view.findViewById(R.id.btnNumerosMenos);
         btnNumerosMais = view.findViewById(R.id.btnNumerosMais);
         escolhaItemLayout = view.findViewById(R.id.escolhaItemLayout);
-        listaDezenasSurpresinha = view.findViewById(R.id.listaDezenasSurpresinha);
         layoutEspelhoSurpresinha = view.findViewById(R.id.layoutEspelhoSurpresinha);
         selcioneEspelhoSurpresinha = view.findViewById(R.id.selcioneEspelhoSurpresinha);
         maisMilionaria = view.findViewById(R.id.maisMilionaria);
@@ -178,8 +173,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         Bundle bundle = getArguments();
 
         identificarTipoJogo();
-        configuraListaDezenas();
-        atualizaDezenaAdapter();
         configuraBotoes();
 
         if (isLotomania()) {
@@ -237,10 +230,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         super.onDetach();
     }
 
-    // METODOS DE CONFIGURACOES
-    private void atualizaDezenaAdapter() {
-        simularDezenasAdapter.atualizaDezenas(montaListaDezenasSurpresinha());
-    }
 
     private void configuraBotoes() {
 
@@ -333,21 +322,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
 
     private ColorStateList getCor(int cor) {
         return ContextCompat.getColorStateList(getActivity(), cor);
-    }
-
-    private void configuraListaDezenas() {
-        listaDezenasSurpresinha.setExpanded(true);
-        simularDezenasAdapter = new SurpresinhaGridViewAdapter2(getActivity(), montaListaDezenasSurpresinha(), getActivity());
-        listaDezenasSurpresinha.setAdapter(simularDezenasAdapter);
-    }
-
-    private ArrayList<String> montaListaDezenasSurpresinha() {
-        ArrayList<String> arrayDezenas = new ArrayList<>();
-        for (int i = 0; i < Constantes.SEIS_INTEIRO; i++) {
-            arrayDezenas.add("XX");
-        }
-
-        return arrayDezenas;
     }
 
     private boolean isLotomania() {

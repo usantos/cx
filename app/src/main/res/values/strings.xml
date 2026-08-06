@@ -1709,4 +1709,5 @@
     <string name="valores_isencao_ir">Valores acima da isenção do IR</string>
     <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Aguarde e tente novamente mais tarde.</string>
     <string name="text_descartar">Ao voltar para a página inicial, sua aposta em edição será descartada. Deseja continuar?</string>
+    <string name="xx">XX</string>
 </resources>

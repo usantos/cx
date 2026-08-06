@@ -123,29 +123,85 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
-            android:id="@+id/listaDezenasSurpresinha"
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/containerDezenasSurpresinha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="24dp"
-            android:columnWidth="40dp"
-            android:clickable="false"
-            android:focusable="false"
+            app:flexWrap="wrap"
+            app:justifyContent="center"
             android:importantForAccessibility="noHideDescendants"
-            android:gravity="center"
-            android:horizontalSpacing="8dp"
-            android:numColumns="auto_fit"
-            android:paddingBottom="20dp"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="9dp"
-            app:layout_constraintTop_toBottomOf="@+id/surpresinhaInfo" />
+            app:alignItems="center"
+            app:layout_constraintTop_toBottomOf="@id/surpresinhaInfo">
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="@string/xx"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="XX"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="XX"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="XX"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="XX"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="XX"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+        </com.google.android.flexbox.FlexboxLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mesesContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/listaDezenasSurpresinha"
+            app:layout_constraintTop_toBottomOf="@id/containerDezenasSurpresinha"
             app:layout_constraintStart_toStartOf="parent"
             android:visibility="gone"
             tools:visibility="visible"
@@ -203,6 +259,7 @@
                 android:layout_height="48dp"
                 android:textAllCaps="false"
                 app:strokeWidth="1dp"
+                tools:visibility="gone"
                 app:cornerRadius="4dp"
                 android:backgroundTint="@color/button_rodape"
                 app:strokeColor="@color/text_timemania"
