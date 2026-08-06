@@ -481,7 +481,7 @@ public class FluxoApostaReducer {
             int qtdPrognosticos
     ) {
 
-        return qtdPrognosticos + " numeros";
+        return qtdPrognosticos + " números";
     }
 
     private ResultadoFluxoAposta resolverFluxoAposta(

@@ -226,6 +226,9 @@ public class SurpresinhaReducer {
                         .setQtdDezenasPossiveisSelecionado(
                                 quantidade
                         )
+                        .setTextoBotaoPrognosticosSelecionado(
+                                quantidade + " números"
+                        )
                         .setPossuiAlteracoesPendentes(true)
                         .build();
 
@@ -420,22 +423,6 @@ public class SurpresinhaReducer {
                 .setBotaoAdicionarHabilitado(false)
 
                 .build();
-    }
-    private int obterQuantidadeNumerosInicial(
-            SimulaUiState atual,
-            ParametroJogoDTO parametroJogoAtual
-    ) {
-        if (parametroJogoAtual != null
-                && parametroJogoAtual.getQuantidadeMinima() != null) {
-            return parametroJogoAtual.getQuantidadeMinima();
-        }
-
-        if (atual != null
-                && atual.getQtdDezenasPossiveisSelecionado() > 0) {
-            return atual.getQtdDezenasPossiveisSelecionado();
-        }
-
-        return 0;
     }
 
     private int obterQuantidadeTrevosInicial(

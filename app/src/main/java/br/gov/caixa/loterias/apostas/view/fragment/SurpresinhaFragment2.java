@@ -210,46 +210,18 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
     private void atualizaBotoesQtdNumeros(
             SimulaUiState state
     ) {
-
-        int qtdNumeros =
-                state.getQuantidadeNumerosSurpresinha();
-
-        int minimo =
-                parametroJogo.getQuantidadeMinima();
-
-        int maximo =
-                parametroJogo.getQuantidadeMaxima();
-
-        if (qtdNumeros > minimo
-                && qtdNumeros < maximo) {
-
-            btnNumerosMenos.setBackgroundTintList(
-                    getCor(R.color.cinza110)
-            );
-
-            btnNumerosMais.setBackgroundTintList(
-                    getCor(R.color.cinza110)
-            );
-
-        } else if (qtdNumeros == minimo) {
-
-            btnNumerosMenos.setBackgroundTintList(
-                    getCor(R.color.linhaDivisa)
-            );
-
-            btnNumerosMais.setBackgroundTintList(
-                    getCor(R.color.linhaDivisa)
-            );
-
+        int qtdNumeros = state.getQuantidadeNumerosSurpresinha();
+        int minimo = parametroJogo.getQuantidadeMinima();
+        int maximo = parametroJogo.getQuantidadeMaxima();
+        if (qtdNumeros == minimo) {
+            btnNumerosMenos.setBackgroundTintList(getCor(R.color.linhaDivisa));
+            btnNumerosMais.setBackgroundTintList(getCor(R.color.cinza110));
+        } else if (qtdNumeros == maximo) {
+            btnNumerosMenos.setBackgroundTintList(getCor(R.color.cinza110));
+            btnNumerosMais.setBackgroundTintList(getCor(R.color.linhaDivisa));
         } else {
-
-            btnNumerosMenos.setBackgroundTintList(
-                    getCor(R.color.cinza110)
-            );
-
-            btnNumerosMais.setBackgroundTintList(
-                    getCor(R.color.linhaDivisa)
-            );
+            btnNumerosMenos.setBackgroundTintList(getCor(R.color.cinza110));
+            btnNumerosMais.setBackgroundTintList(getCor(R.color.cinza110));
         }
     }
 

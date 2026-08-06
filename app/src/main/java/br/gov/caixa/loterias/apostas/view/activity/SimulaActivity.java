@@ -700,7 +700,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         boolean mostrarBtnQuantidadeTrevos =
                 state.getTipoJogo() == ModalidadeEnum.MAIS_MILIONARIA
-                        && etapaAtual == EtapaAposta.TREVOS;
+                        && etapaAtual == EtapaAposta.TREVOS && !state.isSurpresinhaHabilitada();
 
         boolean escolhaTimeSurpresinha =
                 state.isSurpresinhaHabilitada()

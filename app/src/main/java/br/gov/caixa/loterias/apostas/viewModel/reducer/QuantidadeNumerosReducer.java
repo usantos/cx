@@ -327,6 +327,6 @@ public class QuantidadeNumerosReducer {
             int qtdPrognosticos
     ) {
 
-        return qtdPrognosticos + " numeros";
+        return qtdPrognosticos + " números";
     }
 }
