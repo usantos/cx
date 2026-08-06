@@ -76,10 +76,10 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private Button btnAumenta; /** Fim */
 
 
-	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener, FiltroAplicadoMarketplace filtro, Boolean isShowCotasRestantes) {
+
+	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener, Boolean isShowCotasRestantes) {
 		super(itemView);
 		this.activity = activity;
-		this.filtro = filtro;
 
 		botaoFavoritar = itemView.findViewById(R.id.btn_favoritar_mkp);
 		loterica 	= itemView.findViewById(R.id.loterica_bolao);
@@ -350,12 +350,16 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	public void showCotasRestantes(boolean isShow) {
 		if (cotasEDezenas != null){
-			if (isShowCotasRestantes != null && isShowCotasRestantes && isShow){
+			if (isShowCotasRestantes != null && isShowCotasRestantes && isShow && !isFiltradoLoterica()){
 				cotasEDezenas.setVisibility(View.VISIBLE);
 			} else {
 				cotasEDezenas.setVisibility(View.GONE);
 			}
 		}
+	}
+
+	public void setFiltro(FiltroAplicadoMarketplace filtro){
+		this.filtro = filtro;
 	}
 
 }
