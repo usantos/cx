@@ -29,7 +29,7 @@ public class LimparReducer {
                 state.toBuilder()
                         .setMostrarSalvarAposta(false)
                         .setMostrarBotaoLimparAposta(false)
-                        .setTextoSelecionados("Selecione os numeros:")
+                        .setTextoSelecionados("Selecione os números:")
                         .setBotaoCompletarHabilitado(true)
                         .setBotaoAdicionarHabilitado(false)
                         .setBotaoLimparHabilitado(false)

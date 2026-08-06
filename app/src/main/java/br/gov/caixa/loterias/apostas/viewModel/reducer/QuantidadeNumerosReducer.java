@@ -207,7 +207,7 @@ public class QuantidadeNumerosReducer {
                         )
                         .setLimparNumerosCartela(true)
                         .setTextoSelecionados(
-                                "Selecione os numeros:"
+                                "Selecione os números:"
                         )
                         .setBotaoAdicionarHabilitado(false)
                         .setBotaoNextStepHabilitado(false)

@@ -413,7 +413,7 @@ public class FluxoApostaReducer {
 
         return builder
                 .setEtapaAposta(EtapaAposta.NUMEROS)
-                .setTextoSelecionados("Selecione os numeros:")
+                .setTextoSelecionados("Selecione os números:")
                 .setBotaoNextStepHabilitado(false)
                 .setBotaoAdicionarHabilitado(false)
                 .setBotaoCompletarHabilitado(true)
@@ -468,7 +468,7 @@ public class FluxoApostaReducer {
     ) {
 
         if (qtdSelecionados <= 0) {
-            return "Selecione os numeros:";
+            return "Selecione os números:";
         }
 
         return "Selecionados: "

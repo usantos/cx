@@ -118,7 +118,7 @@ public class TelaInicializadaReducer {
                         qtdConcurso
                 )
                 .setTextoSelecionados(
-                        "Selecione os numeros:"
+                        "Selecione os números:"
                 )
                 .setTextoBotaoPrognosticosSelecionado(
                         textoBotao

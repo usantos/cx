@@ -123,7 +123,7 @@ public class CabecalhoSimulacaoFragment extends Fragment {
 		labelConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 		labelSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 		btnDuvida.setImageDrawable(VectorUtils.getShape(R.drawable.duvidas_toolbar_icon, estilo.getCorFonteFundoClaro()));
-		btnVoltar.setImageDrawable(VectorUtils.getShape(R.drawable.seta_esquerda, estilo.getCorFonteFundoClaro()));
+		btnVoltar.setImageDrawable(VectorUtils.getShape(R.drawable.seta, estilo.getCorFonteFundoClaro()));
 	}
 
 	private void aplicaEstilo() {
