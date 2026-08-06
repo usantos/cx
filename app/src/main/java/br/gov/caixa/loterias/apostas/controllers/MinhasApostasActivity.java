@@ -388,6 +388,11 @@ public class MinhasApostasActivity extends AppCompatActivity {
 	}
 
 	private void setaApostasFragment() {
+
+		if(isDestroyed() || isFinishing()){
+			return;
+		}
+
 		try {
 			btnFiltro.setVisibility(View.VISIBLE);
 			Fragment frag = getSupportFragmentManager().findFragmentByTag(CONFIRMADAS_FRAGMENT);
@@ -398,7 +403,7 @@ public class MinhasApostasActivity extends AppCompatActivity {
 
 			getSupportFragmentManager().beginTransaction()
 									   .replace(R.id.container, frag, CONFIRMADAS_FRAGMENT)
-									   .commit();
+									   .commitAllowingStateLoss();
 
 			getSupportFragmentManager().executePendingTransactions();
 			fragmentApostas = (ApostasConfirmadasFragment) frag;
