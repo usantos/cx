@@ -458,13 +458,11 @@
         <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity" />
         <activity
             android:name=".controllers.DadosPessoaisActivity"
-            android:label="@string/title_activity_dados_pessoais"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".controllers.DadosPessoaisConfirmacaoActivity"
-            android:label="@string/title_activity_dados_pessoais"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
