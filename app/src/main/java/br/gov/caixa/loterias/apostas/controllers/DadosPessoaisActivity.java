@@ -434,6 +434,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     }
 
     private void cepInvalido(String msg) {
+        AlertDialogUtils.dismiss();
         labelCep.setTextColor(getColor(R.color.vermelho_erro));
         editTextCEPLayout.setBoxStrokeColor(getColor(R.color.vermelho_erro));
         txtValidaCep.setVisibility(VISIBLE);

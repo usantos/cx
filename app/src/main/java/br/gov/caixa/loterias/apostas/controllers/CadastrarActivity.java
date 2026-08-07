@@ -322,6 +322,7 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
     private void buscarBairroPorCep(String cep) {
+        AlertDialogUtils.show(CadastrarActivity.this);
         DadosCorporativosSilceBO.getInstance().bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
             @Override
             public void onResponse(BairroDTOResponse response) {
@@ -349,6 +350,7 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
     private void cepInvalido(String msg) {
+        AlertDialogUtils.dismiss();
         editTextUFContent.setText("");
         editTextMunicipioContent.setText("");
         labelCep.setTextColor(getColor(R.color.vermelho_erro));
