@@ -277,7 +277,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/labelCep">
 
-                <com.github.pinball83.maskededittext.MaskedEditText
+                <br.gov.caixa.loterias.apostas.view.components.MaskedEditText
                     android:id="@+id/editTextCepContent"
                     style="@style/editTextRegisterThemeCaixa"
                     android:layout_width="match_parent"
@@ -285,13 +285,13 @@
                     android:alpha="0.8"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:hint="01234-567"
                     android:inputType="number"
                     android:maxLines="1"
+                    app:mask="#####-###"
+                    android:textColorHint="@color/cinza_item_desabilitado"
+                    android:hint="@string/somente_numeros"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    app:mask="*****-***"
-                    app:notMaskedSymbol="*" />
+                    android:paddingEnd="10dp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -383,7 +383,7 @@
                     android:drawablePadding="12dp"
                     android:enabled="false"
                     android:gravity="center_vertical"
-                    tools:hint="PI"
+                    android:hint="@string/uf"
                     android:textColorHint="@color/cinza_item_desabilitado"
                     android:inputType="textPersonName"
                     android:maxLines="1"
@@ -439,7 +439,7 @@
                     android:drawablePadding="12dp"
                     android:enabled="false"
                     android:gravity="center_vertical"
-                    tools:hint="PI"
+                    android:hint="@string/municipio"
                     android:textColorHint="@color/cinza_item_desabilitado"
                     android:inputType="textPersonName"
                     android:maxLines="1"
@@ -574,7 +574,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/caixa_std_regular"
                     android:importantForAccessibility="no"
-                    android:text="@string/label_notificacoes"
+                    android:text="@string/aceito_receber_notificacoes"
                     android:textColor="@color/cinza_grafite_2"
                     android:textSize="16sp" />
 

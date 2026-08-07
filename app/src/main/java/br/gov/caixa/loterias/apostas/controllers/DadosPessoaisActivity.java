@@ -51,7 +51,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTOResponse;
@@ -70,10 +69,10 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     private TextInputLayout editTextLimiteLayout, editTextCEPLayout;
     private EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent, editTextLimiteContent;
     private MaterialTextView limiteTitulo, txtValidaCep, validaLimiteMinContent, validaLimiteMaxContent, labelCep;
-    private MaskedEditText editTextCpfContent, editTextCepContent;
+    private MaskedEditText editTextCpfContent;
+    private br.gov.caixa.loterias.apostas.view.components.MaskedEditText editTextCepContent;
     private SegmentedButtonGroup segmentedButtonSexo;
-    private Button updateDadosPessoaisButton, naoSeiCepButton;
-    MaterialButton updateDadosPessoaisLimiteButton;
+    private Button updateDadosPessoaisButton, naoSeiCepButton, updateDadosPessoaisLimiteButton;
 
     private List<String> listUFString, listMunicipios, listBairros;
     private List<MunicipioDTO> municipioDTOList;
@@ -168,7 +167,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         updateDadosPessoaisButton.setOnClickListener(view -> {
             if (validarCamposObrigatorios()){
                 ApostadorAlteracaoDTO apostadorAlteracaoDTO = new ApostadorAlteracaoDTO();
-                apostadorAlteracaoDTO.setCep( editTextCepContent.getUnmaskedText() );
+                apostadorAlteracaoDTO.setCep( editTextCepContent.getRawText() );
                 ApostadorAlteracaoDTO.SexoEnum sexoEnum;
                 if (segmentedButtonSexo.getPosition() == 0){
                     sexoEnum = ApostadorAlteracaoDTO.SexoEnum.M;
@@ -283,7 +282,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     private void atualizaLayout() {
         editTextCpfContent.setMaskedText( apostadorDTO.getCpf() );
         editTextNomeContent.setText( apostadorDTO.getNome() );
-        editTextCepContent.setMaskedText( apostadorDTO.getCep() );
+        editTextCepContent.setMask( apostadorDTO.getCep() );
         editTextEmailContent.setText( apostadorDTO.getEmail() );
         editTextLimiteContent.setText( NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiario()) );
         notificacaoSwitch.setChecked(apostadorDTO.getAceitaReceberNoticias());

@@ -26,11 +26,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.TextViewCompat;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -73,7 +71,8 @@ public class CadastrarActivity extends CadastroActivity {
 
     private TextInputLayout editTextCEPLayout;
     private EditText editTextNomeContent, editTextEmailContent, editTextMunicipioContent, editTextUFContent;
-    private MaskedEditText editTextCpfContent, editTextCepContent;
+    private MaskedEditText editTextCpfContent;
+    private br.gov.caixa.loterias.apostas.view.components.MaskedEditText editTextCepContent;
     private Button naoSeiCepButton, buttonFinalizarCadastro;
     private SegmentedButtonGroup segmentedButtonSexo;
     private TextView txtValidaCep, labelCep;
@@ -311,7 +310,7 @@ public class CadastrarActivity extends CadastroActivity {
             sexoEnum = CadastrarApostadorDTO.SexoEnum.F;
         }
         cadastrarApostadorDTO.setSexo( sexoEnum );
-        cadastrarApostadorDTO.setCep( editTextCepContent.getText().toString() );
+        cadastrarApostadorDTO.setCep( editTextCepContent.getRawText() );
 
         if (StringUtils.isEmpty(campos)) {
             return true;
@@ -326,6 +325,7 @@ public class CadastrarActivity extends CadastroActivity {
         DadosCorporativosSilceBO.getInstance().bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
             @Override
             public void onResponse(BairroDTOResponse response) {
+                AlertDialogUtils.dismiss();
                 if (response.getPayload() != null && !response.getPayload().isEmpty()) {
                     BairroDTO bairroDTO = response.getPayload().get(0);
                     editTextUFContent.setText(bairroDTO.getMunicipio().getUf().getSigla());

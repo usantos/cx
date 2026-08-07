@@ -265,7 +265,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/labelCep">
 
-                <com.github.pinball83.maskededittext.MaskedEditText
+
+                <br.gov.caixa.loterias.apostas.view.components.MaskedEditText
                     android:id="@+id/editTextCepContent"
                     style="@style/editTextRegisterThemeCaixa"
                     android:layout_width="match_parent"
@@ -273,13 +274,13 @@
                     android:alpha="0.8"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:hint="01234-567"
                     android:inputType="number"
                     android:maxLines="1"
+                    app:mask="#####-###"
+                    android:textColorHint="@color/cinza_item_desabilitado"
+                    android:hint="@string/somente_numeros"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    app:mask="*****-***"
-                    app:notMaskedSymbol="*" />
+                    android:paddingEnd="10dp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -371,8 +372,8 @@
                     android:drawableStart="@drawable/ic_check"
                     android:drawablePadding="12dp"
                     android:enabled="false"
+                    android:hint="@string/uf"
                     android:gravity="center_vertical"
-                    tools:hint="PI"
                     android:textColorHint="@color/cinza_item_desabilitado"
                     android:inputType="textPersonName"
                     android:maxLines="1"
@@ -429,7 +430,7 @@
                     android:drawablePadding="12dp"
                     android:enabled="false"
                     android:gravity="center_vertical"
-                    tools:hint="PI"
+                    android:hint="@string/municipio"
                     android:textColorHint="@color/cinza_item_desabilitado"
                     android:inputType="textPersonName"
                     android:maxLines="1"
@@ -602,7 +603,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Botão de solicitação de limite -->
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/updateDadosPessoaisLimiteButton"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
@@ -617,9 +618,9 @@
                 android:paddingEnd="12dp"
                 android:text="@string/dados_limite_compra"
                 android:textAllCaps="false"
-                android:textColor="@color/cinza_grafite"
+                android:textColor="@color/cinza_item_desabilitado"
                 android:textSize="15sp"
-                app:strokeColor="@color/cinza_grafite"
+                app:strokeColor="@color/cinza_item_desabilitado"
                 app:strokeWidth="1dp"
                 app:cornerRadius="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -661,8 +662,8 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/caixa_std_regular"
                     android:importantForAccessibility="no"
-                    android:text="@string/label_notificacoes"
-                    android:textColor="@color/cinza_grafite_2"
+                    android:text="@string/aceito_receber_notificacoes"
+                    android:textColor="@color/cinza_item_desabilitado"
                     android:textSize="16sp" />
 
             </LinearLayout>

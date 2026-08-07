@@ -864,6 +864,7 @@
     <string name="nome">Nome</string>
     <string name="barra_n">\n</string>
     <string name="uf">UF</string>
+    <string name="somente_numeros">Somente números</string>
     <string name="municipio">Município</string>
     <string name="email">E-mail</string>
     <string name="sucesso_cadastro">_Excelente_! Seu cadastro foi realizado com sucesso!</string>
@@ -1237,6 +1238,7 @@
     <string name="title_digiteSuaAposta">Digite a sua aposta</string>
     <string name="leitor_digital">Acessar com biometria</string>
     <string name="label_notificacoes">Receber notificações</string>
+    <string name="aceito_receber_notificacoes">Aceito receber notificações de Loterias.</string>
     <string name="entrar">Entrar como</string>
     <string name="ativar_biometria">Necessário habilitar biometria</string>
     <string name="habilitar">Habilitar</string>
