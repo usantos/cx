@@ -171,15 +171,6 @@ public class QuantidadeNumerosReducer {
                         .setPosicaoQuantidadeNumerosSelecionada(
                                 posicaoValida
                         )
-                        .setQuantidadeNumerosSurpresinha(
-                                qtdPrognosticos
-                        )
-                        .setQtdDezenasPossiveisSelecionado(
-                                qtdPrognosticos
-                        )
-                        .setTextoBotaoPrognosticosSelecionado(
-                                textoBotao
-                        )
                         .setExibirAvisoQuantidadeNumerosMaxima(
                                 deveExibirAviso
                         )
@@ -246,6 +237,15 @@ public class QuantidadeNumerosReducer {
 
             builder
                     .setExibirDialogQuantidadeNumeros(false)
+                    .setQuantidadeNumerosSurpresinha(
+                            qtdPrognosticos
+                    )
+                    .setQtdDezenasPossiveisSelecionado(
+                            qtdPrognosticos
+                    )
+                    .setTextoBotaoPrognosticosSelecionado(
+                            textoBotao
+                    )
                     .setComandoAnalytics(
                             new AnalyticsEffect
                                     .QuantidadeNumerosConfirmada(
