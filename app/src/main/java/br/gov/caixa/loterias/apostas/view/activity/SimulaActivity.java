@@ -1904,6 +1904,15 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 new SimulaUiEvent.CarregarCarrinho()
         );
     }
+    public void mostrarPopupApostaAdicionada() {
+        DialogUtils.dialogEntendi(
+                this,
+                getString(R.string.added_bet_to_cart)
+        );
+
+        resetarTelaAposRetornoDeActivity();
+    }
+
     public void abrirFluxoApostaComResultado(Intent intent) {
         if (intent == null) {
             return;

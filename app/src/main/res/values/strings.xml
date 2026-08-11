@@ -70,6 +70,7 @@
     <string name="label_de_nome">Dê um nome</string>
 
     <string name="verCarrinho">_Ver carrinho_\nde apostas</string>
+    <string name="added_bet_to_cart">Aposta adicionada ao carrinho com sucesso!</string>
     <string name="verCarrinhoVazio">OK</string>
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="infoConcluaPagamentoBolao">Conclua o pagamento de suas \napostas dentro do prazo</string>

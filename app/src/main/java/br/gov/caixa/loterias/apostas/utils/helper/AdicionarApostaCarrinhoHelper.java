@@ -349,10 +349,8 @@ public class AdicionarApostaCarrinhoHelper {
         }
 
         if (AdicionarApostaCarrinhoHelper.activity instanceof SimulaActivity) {
-            if (telaConfirmacao != null) {
-                ((SimulaActivity) AdicionarApostaCarrinhoHelper.activity)
-                        .abrirFluxoApostaComResultado(telaConfirmacao);
-            }
+            ((SimulaActivity) AdicionarApostaCarrinhoHelper.activity)
+                    .mostrarPopupApostaAdicionada();
         } else {
             if (AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
                 if (telaConfirmacao != null) {
