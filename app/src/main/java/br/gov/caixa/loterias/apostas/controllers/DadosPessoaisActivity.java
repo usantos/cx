@@ -37,6 +37,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -282,7 +283,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     private void atualizaLayout() {
         editTextCpfContent.setMaskedText( apostadorDTO.getCpf() );
         editTextNomeContent.setText( apostadorDTO.getNome() );
-        editTextCepContent.setMask( apostadorDTO.getCep() );
+        editTextCepContent.setText( apostadorDTO.getCep() );
         editTextEmailContent.setText( apostadorDTO.getEmail() );
         editTextLimiteContent.setText( NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiario()) );
         notificacaoSwitch.setChecked(apostadorDTO.getAceitaReceberNoticias());
@@ -427,7 +428,14 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                cepInvalido(MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this));
+                if(MensagensNetwork.getError(error) != null && !Objects.requireNonNull(MensagensNetwork.getError(error)).getCodigo().isEmpty()){
+                    String code = Objects.requireNonNull(MensagensNetwork.getError(error)).getCodigo();
+                    if(Objects.equals(code, "002021")){
+                        cepInvalido(getString(R.string.cep_invalido));
+                    }else{
+                        cepInvalido(Objects.requireNonNull(MensagensNetwork.getError(error)).getMensagem());
+                    }
+                }
             }
         });
     }

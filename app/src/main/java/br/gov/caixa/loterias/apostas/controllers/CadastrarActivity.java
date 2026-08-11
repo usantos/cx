@@ -36,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
@@ -344,15 +345,20 @@ public class CadastrarActivity extends CadastroActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                cepInvalido(MensagensNetwork.setMensagem(error, CadastrarActivity.this));
+                if(MensagensNetwork.getError(error) != null && !Objects.requireNonNull(MensagensNetwork.getError(error)).getCodigo().isEmpty()){
+                    String code = Objects.requireNonNull(MensagensNetwork.getError(error)).getCodigo();
+                    if(Objects.equals(code, "002021")){
+                        cepInvalido(getString(R.string.cep_invalido));
+                    }else{
+                        cepInvalido(Objects.requireNonNull(MensagensNetwork.getError(error)).getMensagem());
+                    }
+                }
             }
         });
     }
 
     private void cepInvalido(String msg) {
         AlertDialogUtils.dismiss();
-        editTextUFContent.setText("");
-        editTextMunicipioContent.setText("");
         labelCep.setTextColor(getColor(R.color.vermelho_erro));
         editTextCEPLayout.setBoxStrokeColor(getColor(R.color.vermelho_erro));
         txtValidaCep.setVisibility(VISIBLE);

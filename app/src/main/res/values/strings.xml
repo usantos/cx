@@ -695,7 +695,7 @@
     <string name="placeholder_two">Two</string>
     <string name="placeholder_three">three</string>
     <string name="atualizar">Atualizar</string>
-    <string name="cadastrar">Cadastrar dados pessoais</string>
+    <string name="cadastrar">Finalizar cadastro</string>
     <string name="limite_titulo">Limite Diário de Apostas</string>
     <string name="restringe_limite_ao_minimo">O valor mínimo é %1$s</string>
     <string name="restringe_limite_ao_maximo">O valor máximo é %1$s</string>
@@ -1564,7 +1564,7 @@
     <string name="mes_da_sorte_interrogacoes">\nMês de sorte: ???</string>
     <string name="time_do_coracao_interrogacoes">\nTime do coração: ???</string>
     <string name="apostas_inclu_das_no_combo">Apostas incluídas no combo</string>
-    <string name="cep_invalido">O CEP informado não foi localizado. Por favor, informe um CEP válido.</string>
+    <string name="cep_invalido">O CEP informado não foi localizado. Por favor, insira um CEP válido.</string>
     <string name="valor_do_credito">Valor do Crédito</string>
     <string name="resgate_processado_via">Resgate processado via</string>
     <string name="escolha_chave_pix_restae_premio">Escolha a chave Pix que deseja receber o resgate do prêmio.</string>
