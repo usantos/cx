@@ -13,7 +13,6 @@ public enum ConfiguracoesEnum {
     IS_RAPIDAO("isRapidaoHabilitado"),
     URL_BASE_CARRINHO_PILOTO("urlBaseCarrinhoPiloto"),
     URL_BASE_CARRINHO_PRODUCAO("urlBaseCarrinhoProducao"),
-    GRUPO_CPFS_AZURE("grupoDeCpfsQueAcessamOServicoDaAzure"),
     URL_BASE_APOSTADOR("urlBaseApostador"),
     GRUPO_CPFS_APOSTADOR("grupoDeCpfsApostador");
 

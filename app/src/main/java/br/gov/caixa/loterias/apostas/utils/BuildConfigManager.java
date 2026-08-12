@@ -21,7 +21,7 @@ public class BuildConfigManager {
 	}
 
 	public static String getVariavel(String variavel) {
-		if (BuildConfig.FLAVOR.equals("prd") || BuildConfig.FLAVOR.equals("automacao") || BuildConfig.FLAVOR.equals("net")) {
+		if (BuildConfig.FLAVOR.equals("prd") || BuildConfig.FLAVOR.equals("automacao")) {
 			return getAmbienteValorEspecifico(variavel, null);
 		} else {
 			String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO_ESTEIRA.name());
