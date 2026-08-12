@@ -156,6 +156,11 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), result.getPayload().getMapa().getUrlBaseApostador());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), result.getPayload().getMapa().getGrupoDeCpfsApostador());
 
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_BFF.get(), result.getPayload().getMapa().getUrlBaseBff());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_BFF.get(), result.getPayload().getMapa().getGrupoDeCpfsQueAcessamOBff());
+                        //SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_BFF_PILOTO.get(), result.getPayload().getMapa().getUrlBaseBffPiloto());
+                        //SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_BFF_PILOTO.get(), result.getPayload().getMapa().getGrupoDeCpfsQueAcessamOBffPiloto());
+
                         if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_VALOR,result.getPayload().getMapa().getConcursoMega30Anos());
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_LINHA,getString(R.string.mega_sena_30_anos));

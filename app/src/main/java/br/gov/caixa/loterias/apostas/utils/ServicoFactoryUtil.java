@@ -20,4 +20,12 @@ public class ServicoFactoryUtil {
 		}
 	}
 
+	public static ComprasRepository getComprasService() {
+		if (ServicoBffUtil.isServicoBff()) {
+			return ComprasBffBO.getInstance();
+		} else {
+			return ComprasNuvemBO.getInstance();
+		}
+	}
+
 }

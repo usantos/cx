@@ -16,7 +16,9 @@ public enum ConfiguracoesDefaultEnum {
     URL_BASE_CARRINHO_PILOTO(""),
     URL_BASE_CARRINHO_PRODUCAO(""),
     URL_BASE_APOSTADOR(""),
-    GRUPO_CPFS_APOSTADOR("");
+    GRUPO_CPFS_APOSTADOR(""),
+    URL_BASE_BFF(""),
+    GRUPO_CPFS_BFF("");
 
     private final Boolean boolValue;
     private final Integer intValue;

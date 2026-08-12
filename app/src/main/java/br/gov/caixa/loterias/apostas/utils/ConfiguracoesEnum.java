@@ -14,7 +14,11 @@ public enum ConfiguracoesEnum {
     URL_BASE_CARRINHO_PILOTO("urlBaseCarrinhoPiloto"),
     URL_BASE_CARRINHO_PRODUCAO("urlBaseCarrinhoProducao"),
     URL_BASE_APOSTADOR("urlBaseApostador"),
-    GRUPO_CPFS_APOSTADOR("grupoDeCpfsApostador");
+    GRUPO_CPFS_APOSTADOR("grupoDeCpfsApostador"),
+    URL_BASE_BFF("urlBaseBff"),
+    GRUPO_CPFS_BFF("GrupoCpfBff");
+    //URL_BASE_BFF_PILOTO("urlBaseBffPiloto");
+    //GRUPO_CPFS_BFF_PILOTO("GrupoCpfBffPiloto");
 
     private final String key;
 

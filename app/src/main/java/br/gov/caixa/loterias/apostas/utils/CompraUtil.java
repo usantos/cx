@@ -18,7 +18,8 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 public class CompraUtil {
 
     private static void verificaCompraProcessamento(final Context context, Long idCompraCarrinho, int posicao, final OnCompraAsync listener) {
-        ServicoFactoryUtil.getApostaService().verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
+        //ServicoFactoryUtil.getApostaService().verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
+        ServicoFactoryUtil.getComprasService().verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
             @Override
             public void onResponse(CompraAsyncResponse result) {
                 listener.successCompra();
@@ -36,7 +37,8 @@ public class CompraUtil {
         MeioPagamento meioPagamento = new MeioPagamento(meioPag, parametroPagamento);
 
         Context context = Aplicacao.application.getApplicationContext();
-        ServicoFactoryUtil.getApostaService().postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
+        //ServicoFactoryUtil.getApostaService().postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
+        ServicoFactoryUtil.getComprasService().postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
             @Override
             public void onResponse(CompraAsyncResponse response) {
                 if (verificaRedirect(response)) {

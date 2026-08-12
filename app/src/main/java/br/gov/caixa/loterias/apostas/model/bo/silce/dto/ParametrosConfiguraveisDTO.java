@@ -26,7 +26,14 @@ public class ParametrosConfiguraveisDTO {
     private String urlBaseCarrinhoPiloto;
     @SerializedName("hostMicroServicoCarrinhoProducao")
     private String urlBaseCarrinhoProducao;
-
+    @SerializedName("hostMicroServicoBff")
+    private String urlBaseBff;
+    //@SerializedName("hostMicroServicoBffPiloto")
+    //private String urlBaseBffPiloto;
+    @SerializedName("grupoDeCpfsQueAcessamOBff")
+    private String grupoDeCpfsQueAcessamOBff;
+    //@SerializedName("grupoDeCpfsQueAcessamOBffPiloto")
+    //private String grupoDeCpfsQueAcessamOBffPiloto;
     @SerializedName("hostNovoMicroServicoConferenciaApostaProducao")
     private String urlBaseNovaApiPRD;
     @SerializedName("hostNovoMicroServicoConferenciaApostaPiloto")
@@ -215,4 +222,36 @@ public class ParametrosConfiguraveisDTO {
     public void setConcursoLotecaPais(Integer concursoLotecaPais) {
         this.concursoLotecaPais = concursoLotecaPais;
     }
+
+    public String getUrlBaseBff() {
+        return urlBaseBff;
+    }
+
+    public void setUrlBaseBff(String urlBaseBff) {
+        this.urlBaseBff = urlBaseBff;
+    }
+
+    public String getGrupoDeCpfsQueAcessamOBff() {
+        return grupoDeCpfsQueAcessamOBff;
+    }
+
+    public void setGrupoDeCpfsQueAcessamOBff(String grupoDeCpfsQueAcessamOBff) {
+        this.grupoDeCpfsQueAcessamOBff = grupoDeCpfsQueAcessamOBff;
+    }
+
+//    public String getUrlBaseBffPiloto() {
+//        return urlBaseBffPiloto;
+//    }
+//
+//    public void setUrlBaseBffPiloto(String urlBaseBffPiloto) {
+//        this.urlBaseBffPiloto = urlBaseBffPiloto;
+//    }
+//
+//    public String getGrupoDeCpfsQueAcessamOBffPiloto() {
+//        return grupoDeCpfsQueAcessamOBffPiloto;
+//    }
+//
+//    public void setGrupoDeCpfsQueAcessamOBffPiloto(String grupoDeCpfsQueAcessamOBffPiloto) {
+//        this.grupoDeCpfsQueAcessamOBffPiloto = grupoDeCpfsQueAcessamOBffPiloto;
+//    }
 }
