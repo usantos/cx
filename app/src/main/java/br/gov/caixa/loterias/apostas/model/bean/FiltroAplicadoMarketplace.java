@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.bean;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -112,5 +113,43 @@ public class FiltroAplicadoMarketplace implements Serializable {
 
     public void setTipoConcurso(TipoConcursoEnum tipoConcurso) {
         this.tipoConcurso = tipoConcurso;
+    }
+
+    public boolean isEqualsTo(FiltroAplicadoMarketplace other) {
+        return this.equals(other);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FiltroAplicadoMarketplace)) return false;
+        FiltroAplicadoMarketplace that = (FiltroAplicadoMarketplace) o;
+
+        return Objects.equals(valorMinimoAposta, that.valorMinimoAposta)
+                && Objects.equals(valorMaximoAposta, that.valorMaximoAposta)
+                && Objects.equals(qtdMinCotas, that.qtdMinCotas)
+                && Objects.equals(qtdMaxCotas, that.qtdMaxCotas)
+                && Objects.equals(qtdDezenas, that.qtdDezenas)
+                && Objects.equals(numerosQuero, that.numerosQuero)
+                && Objects.equals(numerosNaoQuero, that.numerosNaoQuero)
+                && Objects.equals(lotericaDTO, that.lotericaDTO)
+                && modalidade == that.modalidade
+                && tipoConcurso == that.tipoConcurso;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                valorMinimoAposta,
+                valorMaximoAposta,
+                qtdMinCotas,
+                qtdMaxCotas,
+                qtdDezenas,
+                numerosQuero,
+                numerosNaoQuero,
+                lotericaDTO,
+                modalidade,
+                tipoConcurso
+        );
     }
 }

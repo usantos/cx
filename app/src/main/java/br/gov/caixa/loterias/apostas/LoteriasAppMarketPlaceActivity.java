@@ -41,16 +41,16 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 		}
 	}
 
-	public void configFiltrar(ActivityResultLauncher<Intent> launcher, FiltroAplicadoMarketplace filtro) {
+	public void configFiltrar(ActivityResultLauncher<Intent> launcher, FiltroAplicadoMarketplace filtro, FiltroAplicadoMarketplace filtroLimpo) {
         ImageView btnFiltrar = findViewById(R.id.icone_filtrar);
-		if (filtro == null) {
+		if (filtro.isEqualsTo(filtroLimpo)) {
 			btnFiltrar.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.botao_filtro_mkp));
 		} else {
 			btnFiltrar.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.botao_filtro_selecionado_mkp));
 		}
 
 		if (btnFiltrar != null){
-			btnFiltrar.setOnClickListener(onFiltrarListener(launcher, filtro));
+			btnFiltrar.setOnClickListener(onFiltrarListener(launcher, filtro, filtroLimpo));
 		}
 		configMenu();
 	}
@@ -78,9 +78,10 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 		}
 	}
 
-	private View.OnClickListener onFiltrarListener(ActivityResultLauncher<Intent> launcher,  FiltroAplicadoMarketplace filtro) {
+	private View.OnClickListener onFiltrarListener(ActivityResultLauncher<Intent> launcher,  FiltroAplicadoMarketplace filtro, FiltroAplicadoMarketplace filtroLimpo) {
 		Bundle args = new Bundle();
 		args.putSerializable(BolaoActivity.ARG_FILTRO_MARKETPLACE, filtro);
+		args.putSerializable(BolaoActivity.ARG_FILTRO_LIMPO, filtroLimpo);
 		Intent intent = IntentUtil.getIntentOrigemDestino(LoteriasAppMarketPlaceActivity.this, FiltraMarketplaceActivity.class);
 		intent.putExtras(args);
 		return v -> IntentUtil.startActivityForResult(launcher, intent);
