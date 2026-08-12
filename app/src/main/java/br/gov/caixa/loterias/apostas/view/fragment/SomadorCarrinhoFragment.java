@@ -39,7 +39,6 @@ import br.gov.caixa.loterias.apostas.view.listener.OnVaiParaCarrinhoListener;
  * create an instance of this fragment.
  */
 public class SomadorCarrinhoFragment extends Fragment {
-	public static final String ARG_CARRINHO = "ARG_CARRINHO";
 	public static final String ARG_TELA = "ARG_TELA";
 	public static final String ARG_IR_CARRINHO = "ARG_IR_CARRINHO";
 
@@ -63,23 +62,20 @@ public class SomadorCarrinhoFragment extends Fragment {
 	 * Use this factory method to create a new instance of
 	 * this fragment using the provided parameters.
 	 *
-	 * @param carrinho Parameter 1.
 	 * @return A new instance of fragment SomadorCarrinhoFragment.
 	 */
-	public static SomadorCarrinhoFragment newInstance(CarrinhoDTO carrinho, String TAG) {
+	public static SomadorCarrinhoFragment newInstance(String TAG) {
 		SomadorCarrinhoFragment fragment = new SomadorCarrinhoFragment();
 		Bundle                  args     = new Bundle();
 		args.putString(ARG_TELA, TAG);
-		args.putSerializable(ARG_CARRINHO, carrinho);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
-	public static SomadorCarrinhoFragment newInstance(CarrinhoDTO carrinho, Boolean irCarrinho) {
+	public static SomadorCarrinhoFragment newInstance(Boolean irCarrinho) {
 		SomadorCarrinhoFragment fragment = new SomadorCarrinhoFragment();
 		Bundle                  args     = new Bundle();
 		args.putBoolean(ARG_IR_CARRINHO, irCarrinho);
-		args.putSerializable(ARG_CARRINHO, carrinho);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -107,7 +103,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 		if (getArguments() != null) {
 			TAG = getArguments().getString(ARG_TELA);
 			podeIrCarrinho = getArguments().getBoolean(ARG_IR_CARRINHO);
-			carrinho = (CarrinhoDTO) getArguments().getSerializable(ARG_CARRINHO);
+			carrinho = CarrinhoSingleton.getInstance().getCarrinho();
 			if (carrinho == null) {
 				carregouDoServico = false;
 			} else {

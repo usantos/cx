@@ -14,12 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -44,9 +43,7 @@ import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
 public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity implements OnClickListener {
@@ -255,9 +252,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                     @Override
                     public void onResponse(CarrinhoDTOResponse response) {
                         AlertDialogUtils.dismiss();
-                        Bundle args = new Bundle();
-                        args.putSerializable(CARRINHO, (Serializable) response.getPayload());
-                        startActivityForResult(new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtras(args),0);
+                        CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+                        startActivityForResult(new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class),0);
                         if (response.getRedirect() != null){
                             RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ConfirmadoInclusaoCarrinhoActivity.this);
                         }
