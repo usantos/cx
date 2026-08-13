@@ -47,7 +47,7 @@ public class ComboModel {
 		});
 	}
 
-	public void adicionaComboCarrinho(IncluirComboDTO incluirComboDTO, OnSilceListener listener) {
+	public void adicionaComboCarrinho(IncluirComboDTO incluirComboDTO, RequestListener<CarrinhoDTOResponse> listener) {
 		ServicoFactoryUtil.getApostaService().adicionarComboNoCarrinho(incluirComboDTO, new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse result) {
@@ -60,13 +60,13 @@ public class ComboModel {
 				}
 
 				//activity.startActivity(new Intent(activity, CarrinhoActivity.class));
-				listener.success(result.getPayload());
+				listener.onResponse(result);
 			}
 
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				RedirectNetwork.checkRedirect(error, activity);
-				listener.error(error);
+				listener.onErrorResponse(error);
 			}
 		});
 	}

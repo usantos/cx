@@ -70,10 +70,10 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
                         if (result.getResultCode()
-                                == ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA) {
+                                == ResultadoNavegacaoAposta.RESULT_RESET) {
 
                             setResult(
-                                    ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA
+                                    ResultadoNavegacaoAposta.RESULT_RESET
                             );
                             finish();
                         }
@@ -109,7 +109,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                     @Override
                     public void handleOnBackPressed() {
                         setResult(
-                                ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA
+                                ResultadoNavegacaoAposta.RESULT_RESET
                         );
                         finish();
                     }
@@ -219,7 +219,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     @Override
     public boolean onSupportNavigateUp() {
         setResult(
-                ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA
+                ResultadoNavegacaoAposta.RESULT_RESET
         );
         finish();
         return true;

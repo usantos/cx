@@ -1,13 +1,15 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import static java.lang.String.format;
+import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -23,7 +25,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -58,10 +59,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
-import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
-import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
@@ -88,9 +89,6 @@ import br.gov.caixa.loterias.apostas.view.listener.OnPaginacaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
-
-import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
-import static java.lang.String.format;
 
 public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener, OnPaginacaoListener {
 
@@ -600,6 +598,14 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                 }
             }
         });
+    }
+    public void mostrarPopupApostaAdicionada() {
+        DialogUtils.dialogEntendi(
+                this,
+                getString(R.string.added_bet_to_cart)
+        );
+
+        zerarApostasLoteca();
     }
 
     private void salvarAposta(ApostaFavoritaDTO aposta){
