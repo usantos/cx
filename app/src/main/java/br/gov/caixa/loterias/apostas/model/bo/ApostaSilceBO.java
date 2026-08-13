@@ -402,18 +402,18 @@ public class ApostaSilceBO extends SilceBO {
 //        getServiceConnection().request(request, listener);
 //    }
 
-    public void getDetalhesCompras(final String idSelecionado, final RequestListener<AgrupadorApostaCompraDTOResponse> listener) {
-        String url = ServerMethods.DETALHES_COMPRAS_PATH.replace("{id}", idSelecionado);
-        final GsonRequest request = getServiceConnection().buildGetRequest(url,
-                new LinkedHashMap<>(),
-                AgrupadorApostaCompraDTOResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                getHeaderToken());
-
-        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
-        getServiceConnection().request(request, listener);
-    }
+//    public void getDetalhesCompras(final String idSelecionado, final RequestListener<AgrupadorApostaCompraDTOResponse> listener) {
+//        String url = ServerMethods.DETALHES_COMPRAS_PATH.replace("{id}", idSelecionado);
+//        final GsonRequest request = getServiceConnection().buildGetRequest(url,
+//                new LinkedHashMap<>(),
+//                AgrupadorApostaCompraDTOResponse.class,
+//                listener.getSilceListener(),
+//                listener.getErrorListener(),
+//                getHeaderToken());
+//
+//        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+//        getServiceConnection().request(request, listener);
+//    }
 
     public void getMesesCompras(final RequestListener<MesAnoDTOResponse> listener) {
         final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.COMPRAS_MESES_PATH,

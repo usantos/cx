@@ -24,7 +24,7 @@ public class ServicoNuvemUtil {
 		return false;
 	}
 
-	private static boolean isAmbienteTQS() {
+	public static boolean isAmbienteTQS() {
 		return !(BuildConfig.FLAVOR.equalsIgnoreCase("prd"));
 	}
 

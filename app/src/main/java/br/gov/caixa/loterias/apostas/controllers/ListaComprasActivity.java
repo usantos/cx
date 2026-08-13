@@ -602,7 +602,8 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
     private void pegaApostasDaCompra() {
 
         AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
-        ApostaSilceBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        //ApostaSilceBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        ServicoFactoryUtil.getComprasLegadoService().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 AlertDialogUtils.dismiss();

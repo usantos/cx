@@ -6,12 +6,13 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamentoPix;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 
-public class ComprasSilceBO extends BffBO implements ComprasLegadoRepository {
+public class ComprasSilceBO extends SilceBO implements ComprasLegadoRepository {
     private static ComprasSilceBO instance;
 
     private ComprasSilceBO(){
@@ -48,6 +49,20 @@ public class ComprasSilceBO extends BffBO implements ComprasLegadoRepository {
                 getHeaderToken());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    @Override
+    public void getDetalhesCompras(final String idSelecionado, final RequestListener<AgrupadorApostaCompraDTOResponse> listener) {
+        String url = ServerMethods.DETALHES_COMPRAS_PATH.replace("{id}", idSelecionado);
+        final GsonRequest request = getServiceConnection().buildGetRequest(url,
+                new LinkedHashMap<>(),
+                AgrupadorApostaCompraDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
