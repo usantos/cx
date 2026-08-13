@@ -239,8 +239,6 @@ public class SurpresinhaFragment2 extends BaseEtapaFragment {
         }
 
         valorAposta = parentActivity.getValorApostaCartela();
-        dispatch(new SimulaUiEvent.SurpresinhaAberta());
-
     }
 
     private void atualizaBotoesQtdSurpresinha(

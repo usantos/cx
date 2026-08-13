@@ -899,7 +899,12 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private void renderSwitchSurpresinha(SimulaUiState state) {
 
         boolean surpresinhaHabilitada = state.isSurpresinhaHabilitada();
-        switchSurpresinha.setChecked(state.isSurpresinhaHabilitada());
+        if (switchSurpresinha.isChecked()
+                != state.isSurpresinhaHabilitada()) {
+            switchSurpresinha.setChecked(
+                    state.isSurpresinhaHabilitada()
+            );
+        }
         if (simulaToolbar != null) {
 
             if (surpresinhaHabilitada) {

@@ -537,17 +537,6 @@ public class SimulaViewModel extends AndroidViewModel {
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.SurpresinhaAberta) {
-
-            handleSurpresinhaAberta();
-            return true;
-        }
-
-        if (event instanceof SimulaUiEvent.SurpresinhaFechada) {
-
-            handleSurpresinhaFechada();
-            return true;
-        }
         if (event instanceof
                 SimulaUiEvent.AtualizarQuantidadeSurpresinhas) {
 
@@ -963,16 +952,6 @@ public class SimulaViewModel extends AndroidViewModel {
     private void consumirDialogFavoritarAposta() {
 
        updateState(favoritarApostaReducer::consumirDialog);
-    }
-
-    private void handleSurpresinhaAberta() {
-
-        updateState(surpresinhaReducer::surpresinhaAberta);
-    }
-
-    private void handleSurpresinhaFechada() {
-
-        updateState(surpresinhaReducer::surpresinhaFechada);
     }
 
     private void handleAlterarSurpresinha(

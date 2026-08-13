@@ -520,13 +520,6 @@ public abstract class SimulaUiEvent {
             return habilitada;
         }
     }
-    public static final class SurpresinhaAberta
-            extends SimulaUiEvent {
-    }
-
-    public static final class SurpresinhaFechada
-            extends SimulaUiEvent {
-    }
     public static class FavoritarApostaClicado extends SimulaUiEvent {
     }
 

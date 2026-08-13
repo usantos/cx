@@ -138,43 +138,6 @@ public class SurpresinhaReducer {
                 .build();
     }
 
-    public SimulaUiState surpresinhaAberta(
-            SimulaUiState atual
-    ) {
-
-        if (atual == null) {
-            return null;
-        }
-
-        return atual.toBuilder()
-                .setSurpresinhaHabilitada(true)
-                .setMostrarSalvarAposta(false)
-                .setMostrarBotaoLimparAposta(false)
-                .setBotaoLimparHabilitado(false)
-                .setBotaoCompletarVisivel(false)
-                .setBotaoCompletarHabilitado(false)
-                .setBotaoAdicionarHabilitado(true)
-                .build();
-    }
-
-    public SimulaUiState surpresinhaFechada(
-            SimulaUiState atual
-    ) {
-
-        if (atual == null) {
-            return null;
-        }
-
-        return atual.toBuilder()
-                .setSurpresinhaHabilitada(false)
-                .setBotaoCompletarVisivel(true)
-                .setBotaoCompletarHabilitado(true)
-                .setTelaSelecaoTimeAtivado(false)
-                .setEscolhaTimeCoracaoSurpresinha(false)
-                .setBotaoAdicionarHabilitado(false)
-                .build();
-    }
-
     public SimulaUiState atualizarQuantidadeSurpresinhas(
             SimulaUiState atual,
             int quantidade,
