@@ -28,4 +28,12 @@ public class ServicoFactoryUtil {
 		}
 	}
 
+	public static ComprasLegadoRepository getComprasLegadoService() {
+		if (ServicoBffUtil.isServicoBff()) {
+			return ComprasLegadoBffBO.getInstance();
+		} else {
+			return ComprasSilceBO.getInstance();
+		}
+	}
+
 }
