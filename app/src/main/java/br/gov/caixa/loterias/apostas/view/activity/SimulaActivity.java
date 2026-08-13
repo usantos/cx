@@ -11,6 +11,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -24,6 +25,8 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -145,6 +148,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private TextView textInfoEtapa;
     private EtapaAposta etapaRenderizada;
     private boolean renderizacaoSurpresinhaTime;
+    private ConstraintLayout simulaToolbar;
     private SurpresinhaApostaModel surpresinhaModel = new SurpresinhaApostaModel(this);
     private final ActivityResultLauncher<Intent> fluxoApostaLauncher =
             registerForActivityResult(
@@ -285,6 +289,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         this.botaoNextStep = findViewById(R.id.btnNextStep);
         this.opcaoOutrosNumerosLayout = findViewById(R.id.opcaoOutrosNumerosLayout);
         this.selecioneOutrosNumeros = findViewById(R.id.selcioneOutrosNumeros);
+        this.simulaToolbar = findViewById(R.id.simulaToolbar);
         textInfoEtapa = findViewById(R.id.textInfoEtapa);
         opcaoOutrosNumerosLayout.setVisibility(View.GONE);
     }
@@ -307,9 +312,22 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         switchSurpresinha.setUseMaterialThemeColors(false);
 
-        ColorStateList trackTint = new ColorStateList(new int[][]{new int[]{android.R.attr.state_checked}, new int[]{}}, new int[]{ContextCompat.getColor(this, estilo.getCorClara()), ContextCompat.getColor(this, R.color.cinza70)});
+        StateListDrawable track = new StateListDrawable();
 
-        switchSurpresinha.setTrackTintList(trackTint);
+        track.addState(
+                new int[]{android.R.attr.state_checked},
+                criarTrackChecked()
+        );
+
+        track.addState(
+                new int[]{},
+                AppCompatResources.getDrawable(
+                        this,
+                        R.drawable.surpresinha_track
+                )
+        );
+
+        switchSurpresinha.setTrackDrawable(track);
 
         StateListDrawable thumb = new StateListDrawable();
 
@@ -670,7 +688,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         switch (state.getEtapaAposta()) {
 
             case MES_SORTE:
-                texto = "Selecione o mês de sorte:";
+                texto = "Escolha o mês de sorte:";
                 break;
 
             case TREVOS:
@@ -789,6 +807,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             if (botaoNextStep instanceof MaterialButton) {
                 visualModalidadeBotao(state.isBotaoNextStepHabilitado(), (MaterialButton) botaoNextStep);
+                fonteBotaoBold(state.isBotaoNextStepHabilitado(), (MaterialButton) botaoNextStep);
             }
         }
 
@@ -799,6 +818,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             if (botaoAdicionar instanceof MaterialButton) {
                 visualModalidadeBotao(state.isBotaoAdicionarHabilitado(), (MaterialButton) botaoAdicionar);
+                fonteBotaoBold(state.isBotaoAdicionarHabilitado(), (MaterialButton) botaoAdicionar);
             }
         }
 
@@ -820,6 +840,24 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             botaoLimparAposta.setEnabled(state.isBotaoLimparHabilitado());
         }
     }
+    private void fonteBotaoBold(boolean habilitado, MaterialButton button){
+        if(habilitado){
+            button.setTypeface(
+                    ResourcesCompat.getFont(
+                            this,
+                            R.font.caixa_std_semi_bold
+                    )
+            );
+        }
+        else {
+            button.setTypeface(
+                    ResourcesCompat.getFont(
+                            this,
+                            R.font.caixa_std_regular
+                    )
+            );
+        }
+    }
 
     private void visualModalidadeBotao(boolean habilitado, MaterialButton button) {
         if (habilitado) {
@@ -828,11 +866,10 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             button.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
 
-            button.setStrokeColor(ContextCompat.getColorStateList(this, estilo.getCorEscura()));
+            button.setStrokeColor(ContextCompat.getColorStateList(this, estilo.getCorClara()));
 
         } else {
 
-            // volta para o visual original do XML
 
             button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.disabled)));
 
@@ -840,12 +877,51 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             button.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.cinza70)));
         }
+        button.setStateListAnimator(null);
+        button.setElevation(0f);
+        button.setTranslationZ(0f);
+    }
+    private int getCorClaraVolante(ModalidadeEnum modalidade){
+        if(modalidade == ModalidadeEnum.TIMEMANIA || modalidade == ModalidadeEnum.DIA_DE_SORTE){
+            return ContextCompat.getColor(
+                    this,
+                    estilo.getCorFonteFundoClaro()
+            );
+        }
+        else {
+            return ContextCompat.getColor(
+                    this,
+                    estilo.getCorClara()
+            );
+        }
     }
 
     private void renderSwitchSurpresinha(SimulaUiState state) {
 
         boolean surpresinhaHabilitada = state.isSurpresinhaHabilitada();
         switchSurpresinha.setChecked(state.isSurpresinhaHabilitada());
+        if (simulaToolbar != null) {
+
+            if (surpresinhaHabilitada) {
+                int corSwitch = getCorClaraVolante(tipoJogo);
+
+                simulaToolbar.setBackgroundColor(
+                        ColorUtils.setAlphaComponent(
+                                corSwitch,
+                                26
+                        )
+                );
+
+            } else {
+
+                simulaToolbar.setBackgroundColor(
+                        ContextCompat.getColor(
+                                this,
+                                R.color.cinza_corner
+                        )
+                );
+            }
+        }
 
         if (botaoCompletar != null) {
             botaoCompletar.setVisibility(surpresinhaHabilitada ? View.GONE : View.VISIBLE);
@@ -859,9 +935,44 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             textSelecionados.setVisibility(surpresinhaHabilitada ? View.GONE : View.VISIBLE);
         }
     }
+    private Drawable criarTrackChecked() {
+        Drawable drawable = AppCompatResources.getDrawable(
+                this,
+                R.drawable.surpresinha_track
+        );
+
+        if (!(drawable instanceof StateListDrawable)) {
+            return drawable;
+        }
+
+        Drawable current =
+                ((StateListDrawable) drawable).getCurrent();
+
+        if (current instanceof GradientDrawable) {
+            int corTrack = getCorClaraVolante(tipoJogo);
+
+            GradientDrawable gradient =
+                    (GradientDrawable) current.mutate();
+
+            gradient.setColor(
+                    corTrack
+            );
+            gradient.setStroke(
+                    (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            1,
+                            getResources().getDisplayMetrics()
+                    ),
+                    corTrack
+            );
+
+            return gradient;
+        }
+
+        return drawable;
+    }
 
     private Drawable criarThumbChecked() {
-
         Drawable drawableBase =
                 AppCompatResources.getDrawable(
                         this,
@@ -875,14 +986,33 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         LayerDrawable drawable =
                 (LayerDrawable) drawableBase.mutate();
 
-        Drawable layer = drawable.getDrawable(0);
+        Drawable background = drawable.getDrawable(0);
+        Drawable icon = drawable.getDrawable(1);
+        int corThumb = getCorClaraVolante(tipoJogo);
 
-        if (layer instanceof GradientDrawable) {
-            ((GradientDrawable) layer).setColor(
+
+        if (background instanceof GradientDrawable) {
+            ((GradientDrawable) background).setColor(
                     ContextCompat.getColor(
                             this,
-                            estilo.getCorEscura()
+                            R.color.branco
                     )
+            );
+            ((GradientDrawable) background).setStroke(
+                    (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            2,
+                            getResources().getDisplayMetrics()
+                    ),
+                    corThumb
+            );
+
+        }
+
+        if (icon != null) {
+            icon = icon.mutate();
+            icon.setTint(
+                    corThumb
             );
         }
 

@@ -5,12 +5,19 @@
         <layer-list>
 
             <item>
+                android:left="2dp"
+                android:right="2dp"
+                android:top="2dp"
+                android:bottom="2dp">
                 <shape android:shape="oval">
                     <size
                         android:width="24dp"
                         android:height="24dp"/>
 
                     <solid android:color="@color/branco"/>
+                    <stroke
+                        android:width="2dp"
+                        android:color="@color/cinza110"/>
                 </shape>
             </item>
 
@@ -25,12 +32,19 @@
         <layer-list>
 
             <item>
+                android:left="2dp"
+                android:right="2dp"
+                android:top="2dp"
+                android:bottom="2dp">
                 <shape android:shape="oval">
                     <size
                         android:width="24dp"
                         android:height="24dp"/>
 
                     <solid android:color="@color/cinza110"/>
+                    <stroke
+                        android:width="2dp"
+                        android:color="@color/cinza110"/>
                 </shape>
             </item>
 

@@ -289,7 +289,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.dia_sorte_letra_mkp;
-                corItemDezena= R.color.dia_sorte_cor_mkp;
+                corItemDezena= R.color.dia_sorte_claro_mkp;
                 corFonteFundoClaro = R.color.dia_sorte_letra_mkp;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_dia_de_sorte_fundo_branco;

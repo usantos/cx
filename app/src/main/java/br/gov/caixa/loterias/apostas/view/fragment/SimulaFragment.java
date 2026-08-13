@@ -1279,28 +1279,43 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             button.setEnabled(enabled);
         }
     }
+    private ListaDezenaRecyclerView getCorFonte(ModalidadeEnum modalidade){
+        if(modalidade == ModalidadeEnum.TIMEMANIA){
+            return new ListaDezenaRecyclerView(
+                    dezenas,
+                    getDezenasSelecionadasState(),
+                    new DezenaConfig(
+                            true,
+                            corFonteFundoBranco,
+                            R.color.timemania_letra_mkp,
+                            true
+                    ),
+                    onItemClickListener());
+        }
+        else if(modalidade == ModalidadeEnum.DIA_DE_SORTE){
+                return new ListaDezenaRecyclerView(
+                        dezenas,
+                        getDezenasSelecionadasState(),
+                        new DezenaConfig(
+                                true,
+                                corFonteFundoBranco,
+                                corFonteFundoClaro,
+                                true
+                        ),
+                        onItemClickListener());
+        }
+        else{
+            return new ListaDezenaRecyclerView(dezenas, getDezenasSelecionadasState(),
+                    corFonteFundoBranco, onItemClickListener());
+        }
+    }
 
     private void configuraListaDezenas(View fragmentView) {
         RecyclerView listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
         recyclerViewPartida = fragmentView.findViewById(R.id.recyclerViewPartida);
 
         if (dezenas != null && !dezenas.isEmpty() && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-            if(parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)){
-                simularDezenasAdapter = new ListaDezenaRecyclerView(
-                        dezenas,
-                        getDezenasSelecionadasState(),
-                        new DezenaConfig(
-                                true,
-                                corFonteFundoBranco,
-                                R.color.timemania_letra_mkp,
-                                true
-                        ),
-                        onItemClickListener());
-            }
-            else {
-                simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, getDezenasSelecionadasState(),
-                        corFonteFundoBranco, onItemClickListener());
-            }
+            simularDezenasAdapter = getCorFonte(parametroJogo.getConcurso().getModalidade());
             listaDezenas.setAdapter(simularDezenasAdapter);
 
             RecyclerView.LayoutManager layoutDezenas = new GridLayoutManager(context, QUANTIDADE_COLUNA_LISTA);
