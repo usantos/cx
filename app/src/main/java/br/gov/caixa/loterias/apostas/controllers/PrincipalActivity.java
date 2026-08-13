@@ -860,7 +860,23 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         //TODO: MEGA 30 ANOS//
         //TODO: LOTECA PAIS//
-        //boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
+        Modalidade item = (data != null && adapterPosition >= 0 && adapterPosition < data.size())
+                ? data.get(adapterPosition)
+                : null;
+
+        ConcursoDTO concurso = item != null ? item.getConcurso() : null;
+
+        numeroConcurso = concurso != null ? concurso.getNumero() : null;
+        tipoModalidade = item != null ? item.getTipoModalidade() : null;
+
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.SELECIONAR,
+                AnalyticsHelper.Tela.HOME,
+                tipoModalidade != null ? ModalidadeEnum.fromString(tipoModalidade) : "",
+                numeroConcurso != null ? numeroConcurso.toString() : ""
+        );
+
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
                 //TODO: MEGA 30 ANOS//
