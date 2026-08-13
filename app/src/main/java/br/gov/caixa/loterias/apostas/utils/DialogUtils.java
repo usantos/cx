@@ -9,7 +9,6 @@ import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -44,7 +43,6 @@ public class DialogUtils {
     private static final String BTN_CANCELAR = "Cancelar";
     private static final String BTN_SIM = "Sim";
     private static final String BTN_NAO = "Não";
-    private static final float LARGURA_DIALOG_PADRAO = 0.85f; // Define a largura da dialog como 85% da largura da tela
 
  // PADRONIZAÇÃO DAS DIALOGS
 
@@ -65,7 +63,7 @@ public class DialogUtils {
         View dialogView = inflater.inflate(R.layout.layout_dialog_padrao, null);
 
         //Inicializa o Builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogUtilsTheme);
         builder.setView(dialogView);
         builder.setCancelable(false); // Impede que a dialog seja fechada ao clicar fora dela
 
@@ -74,6 +72,7 @@ public class DialogUtils {
         //Configura os elementos da dialog
         TextView tvTitulo = dialogView.findViewById(R.id.titulo_dialog_padrao);
         TextView tvConteudo = dialogView.findViewById(R.id.conteudo_dialog_padrao);
+        View dividerDialog = dialogView.findViewById(R.id.divider_dialog_padrao);
 
         LinearLayout layoutTresBotoes = dialogView.findViewById(R.id.layout_tres_botoes);
         LinearLayout layoutBotoesPadrao = dialogView.findViewById(R.id.layout_botoes_padrao);
@@ -96,7 +95,8 @@ public class DialogUtils {
         layoutBotoesPadrao.setVisibility(isTresBotoes ? View.GONE : View.VISIBLE);
         layoutTresBotoes.setVisibility(isTresBotoes ? View.VISIBLE : View.GONE);
 
-        if(titulo != null && !titulo.isEmpty()){
+        boolean temTitulo = titulo != null && !titulo.trim().isEmpty();
+        if(temTitulo){
             tvTitulo.setText(titulo);
             tvTitulo.setVisibility(View.VISIBLE);
         } else {
@@ -104,6 +104,7 @@ public class DialogUtils {
         }
 
         tvConteudo.setText(conteudo != null ? conteudo : "");
+        dividerDialog.setVisibility(temTitulo ? View.VISIBLE : View.GONE);
 
         if(isTresBotoes){
             configuraBotao(btnTop, labelBotaoPositivo, DialogInterface.BUTTON_POSITIVE, onPositivoListener, dialog);
@@ -123,7 +124,6 @@ public class DialogUtils {
                     );
                 });
             }
-
         });
 
         try {
@@ -134,14 +134,6 @@ public class DialogUtils {
             return;
         }
 
-        if(dialog.getWindow() != null){
-            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
-            int dialogWidth = (int) (screenWidth * LARGURA_DIALOG_PADRAO);
-
-            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
-
-        }
     }
 
     /*
@@ -162,7 +154,7 @@ public class DialogUtils {
         View dialogView = inflater.inflate(R.layout.layout_dialog_padrao, null);
 
         //Inicializa o Builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogUtilsTheme);
         builder.setView(dialogView);
         builder.setCancelable(false); // Impede que a dialog seja fechada ao clicar fora dela
 
@@ -171,6 +163,7 @@ public class DialogUtils {
         //Configura os elementos da dialog
         TextView tvTitulo = dialogView.findViewById(R.id.titulo_dialog_padrao);
         TextView tvConteudo = dialogView.findViewById(R.id.conteudo_dialog_padrao);
+        View dividerDialog = dialogView.findViewById(R.id.divider_dialog_padrao);
         LinearLayout layoutTresBotoes = dialogView.findViewById(R.id.layout_tres_botoes);
         LinearLayout layoutBotoesPadrao = dialogView.findViewById(R.id.layout_botoes_padrao);
 
@@ -191,7 +184,8 @@ public class DialogUtils {
         layoutBotoesPadrao.setVisibility(isTresBotoes ? View.GONE : View.VISIBLE);
         layoutTresBotoes.setVisibility(isTresBotoes ? View.VISIBLE : View.GONE);
 
-        if(titulo != null && !titulo.isEmpty()){
+        boolean temTitulo = titulo != null && !titulo.trim().isEmpty();
+        if(temTitulo){
             tvTitulo.setText(titulo);
             tvTitulo.setVisibility(View.VISIBLE);
         } else {
@@ -199,6 +193,7 @@ public class DialogUtils {
         }
 
         tvConteudo.setText(conteudo != null ? conteudo : "");
+        dividerDialog.setVisibility(temTitulo ? View.VISIBLE : View.GONE);
 
         if(isTresBotoes){
             configuraBotao(btnTop, labelBotaoPositivo,DialogInterface.BUTTON_POSITIVE, onPositivoListener, dialog);
@@ -210,24 +205,16 @@ public class DialogUtils {
         }
 
         dialog.setOnShowListener(d -> {
-            tvTitulo.post(() -> {
-                tvTitulo.performAccessibilityAction(
-                        android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                        null
-                );
-            });
+            if (tvTitulo.getVisibility() == View.VISIBLE) {
+                tvTitulo.post(() -> {
+                    tvTitulo.performAccessibilityAction(
+                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
+                            null
+                    );
+                });
+            }
         });
 
-
-        if(dialog.getWindow() != null){
-
-            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
-            int dialogWidth = (int) (screenWidth * 0.85); // Define a largura da dialog como 85% da largura da tela
-
-            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
-
-        }
         return dialog;
     }
 
@@ -247,13 +234,14 @@ public class DialogUtils {
             return;
         }
 
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context, R.style.DialogUtilsTheme);
         dialog.setContentView(R.layout.layout_dialog_itens);
         dialog.setCancelable(false);
 
         final ListView listViewItens = dialog.findViewById(R.id.lista_itens_dialog_itens);
 
         TextView       tituloDialog  = dialog.findViewById(R.id.titulo_dialog_itens);
+        View dividerDialog = dialog.findViewById(R.id.divider_dialog_itens);
         tituloDialog.setText(titulo);
 
         if (subtitulo != null && !subtitulo.isEmpty()){
@@ -294,6 +282,10 @@ public class DialogUtils {
             dialogButtonCancelar.setText(labelBotaoNegativo);
         }
 
+        dividerDialog.setVisibility(
+                titulo != null && !titulo.trim().isEmpty() ? View.VISIBLE : View.GONE
+        );
+
         dialog.setOnShowListener(dialogInterface -> {
             if (tituloDialog.getVisibility() == View.VISIBLE){
                 tituloDialog.post(() -> {
@@ -324,13 +316,6 @@ public class DialogUtils {
             return;
         }
 
-        if (dialog.getWindow() != null) {
-            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
-            int dialogWidth = (int) (screenWidth * LARGURA_DIALOG_PADRAO);
-
-            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
-        }
 
     }
 
@@ -346,7 +331,7 @@ public class DialogUtils {
             return null;
         }
 
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context, R.style.DialogUtilsTheme);
         dialog.setContentView(R.layout.layout_dialog_favoritar);
 
         dialog.setCancelable(false);
@@ -404,13 +389,6 @@ public class DialogUtils {
                 });
             }
 
-            if (dialog.getWindow() != null) {
-                int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
-                int dialogWidth = (int) (screenWidth * LARGURA_DIALOG_PADRAO);
-
-                dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
-            }
         });
 
         return dialog;
@@ -697,7 +675,7 @@ public class DialogUtils {
             return null;
         }
 
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context, R.style.DialogUtilsTheme);
         dialog.setContentView(R.layout.layout_dialog_itens_novo);
         dialog.setCancelable(false);
 
@@ -793,13 +771,6 @@ public class DialogUtils {
             dialog.dismiss();
         });
 
-        if (dialog.getWindow() != null) {
-            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
-            int dialogWidth = (int) (screenWidth * LARGURA_DIALOG_PADRAO);
-
-            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
-        }
 
         return dialog;
     }
