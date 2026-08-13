@@ -17,9 +17,14 @@ public class FiltroAplicadoMarketplace implements Serializable {
     private String numerosNaoQuero;
     private LotericaDTO lotericaDTO;
     private ModalidadeEnum modalidade;
+    private boolean todasModalidades = false;
     private TipoConcursoEnum tipoConcurso;
 
     public FiltroAplicadoMarketplace(){
+    }
+
+    public void setTodasModalidades(boolean todasModalidades) {
+        this.todasModalidades = todasModalidades;
     }
 
     public FiltroAplicadoMarketplace(LotericaDTO lotericaDTO, String valorMinimoAposta, String valorMaximoAposta, Integer qtdMinCotas, Integer qtdMaxCotas, Integer qtdDezenas, String numerosQuero, String numerosNaoQuero, ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
@@ -151,5 +156,9 @@ public class FiltroAplicadoMarketplace implements Serializable {
                 modalidade,
                 tipoConcurso
         );
+    }
+
+    public boolean isTodasAsModalidades() {
+        return todasModalidades;
     }
 }

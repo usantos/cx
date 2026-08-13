@@ -113,8 +113,10 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
             tipoConcurso = getIntent().getExtras().getInt(ARG_TIPO_CONCURSO);
             dtoLoterica = (LotericaDTO) getIntent().getSerializableExtra(ARG_DTO_LOTERICA);
             filtro.setLotericaDTO(dtoLoterica);
-
+        } else {
+            filtro.setTodasModalidades(true);
         }
+
         launcherFiltro = IntentUtil.registerLauncherActivityForResult(this, OnActivityForResult());
         launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
         launcherCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
@@ -163,8 +165,7 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
                 bolaoList,
                 onItemBolaoListener(),
                 this,
-                filtro,
-                false
+                filtro
         );
 
         concatBolaoAdapter = new ConcatAdapter(
@@ -334,7 +335,7 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
         bolaoList.clear();
         bolaoList.addAll(novaListaCompleta);
 
-        listAdapter.notifyDataSetChanged();
+        listAdapter.atualizarFiltro(filtro);
 
         bolaoFooterAdapter.mostrarLoading(false);
         bolaoFooterAdapter.mostrarFimLista(!bolaoList.isEmpty() && model.isAcabouRegistros());

@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -196,8 +197,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 bolaoList,
                 onItemBolaoListener(),
                 this,
-                filtro,
-                true
+                filtro
         );
 
         concatBolaoAdapter = new ConcatAdapter(
@@ -838,6 +838,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
         bolaoList.clear();
         bolaoList.addAll(novaListaCompleta);
+
+        listAdapter.atualizarFiltro(filtro);
 
         listAdapter.notifyDataSetChanged();
 

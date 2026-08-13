@@ -645,6 +645,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private FiltroAplicadoMarketplace getExtraFiltro() {
         String qtdCotasMin, qtdCotasMax, qtdDezenas, numerosQuero = "",numerosNaoQuero = "";
+        if (filtroLimpo==null) filtroLimpo = new FiltroAplicadoMarketplace();
         filtroLimpo.setNumerosQuero("");
         filtroLimpo.setNumerosNaoQuero("");
         filtroLimpo.setValorMinimoAposta("");
@@ -703,7 +704,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 Integer.valueOf(qtdCotasMax),
                 Integer.valueOf(qtdDezenas),
                 numerosQuero, numerosNaoQuero,
-                selectModalidade, selectTipoConcurso);
+                selectModalidade, selectTipoConcurso, todasModalidadesAtiva);
     }
 
 
