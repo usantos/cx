@@ -1326,7 +1326,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 EscudoBO.getInstance().carregaEscudos(context, this::configurarTimesLoteca);
                 //configurarTimesLoteca();
 
-                fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
             } else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
                 configuraSuperSete(fragmentView);
             }
