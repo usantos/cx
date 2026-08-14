@@ -17,7 +17,12 @@ public class FiltroAplicadoMarketplace implements Serializable {
     private String numerosNaoQuero;
     private LotericaDTO lotericaDTO;
     private ModalidadeEnum modalidade;
-    private boolean todasModalidades = false;
+    /***
+     * null = não recebeu param (PADRÃO)
+     * true = recebeu param, são todas as modalidades
+     * false = recebeu param, modalidade específica
+    ***/
+    private Boolean todasModalidades = null;
     private TipoConcursoEnum tipoConcurso;
 
     public FiltroAplicadoMarketplace(){
@@ -158,7 +163,7 @@ public class FiltroAplicadoMarketplace implements Serializable {
         );
     }
 
-    public boolean isTodasAsModalidades() {
+    public Boolean isTodasAsModalidades() {
         return todasModalidades;
     }
 }

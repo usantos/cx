@@ -39,6 +39,8 @@ import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaListaColaps
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
 public class BolaoHolder extends FiltroHolder<CotasBolaoDTO> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
+    public static final int MODALIDADE_MARGIN_START = 24;
+    public static final int LOTERICA_MARGIN_START = 56;
     private Activity activity;
     private static final int QUANTIDADE_MINIMA = 1;
     private TextView loterica;
@@ -115,7 +117,7 @@ public class BolaoHolder extends FiltroHolder<CotasBolaoDTO> implements View.OnC
 
         aplicaEstilo();
         showContainer(filtro);
-        if (isFiltradoLoterica(filtro) && filtro.isTodasAsModalidades()) {
+        if (isFiltradoLoterica(filtro) && !Boolean.FALSE.equals(filtro.isTodasAsModalidades())) {
             botaoFavoritar.setVisibility(View.GONE);
             loterica.setVisibility(View.GONE);
             modalidade.setVisibility(View.VISIBLE);
@@ -181,9 +183,10 @@ public class BolaoHolder extends FiltroHolder<CotasBolaoDTO> implements View.OnC
     }
 
     private void showContainer(FiltroAplicadoMarketplace filtro) {
-        containerModalidade.setVisibility(filtro.isTodasAsModalidades()? View.VISIBLE:View.GONE);
-        containerLoterica.setVisibility(filtro.isTodasAsModalidades()? View.GONE:View.VISIBLE);
-        int dp = isFiltradoLoterica(filtro)? 24:56;
+        boolean conjuntoVerdade = !Boolean.FALSE.equals(filtro.isTodasAsModalidades());
+        containerModalidade.setVisibility(isFiltradoLoterica(filtro) && conjuntoVerdade? View.VISIBLE:View.GONE);
+        containerLoterica.setVisibility(isFiltradoLoterica(filtro) && conjuntoVerdade? View.GONE:View.VISIBLE);
+        int dp = isFiltradoLoterica(filtro)? MODALIDADE_MARGIN_START : LOTERICA_MARGIN_START;
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) cotasEDezenas.getLayoutParams();
         params.setMarginStart(dpToPx(dp, cotasEDezenas.getContext()));
     }
