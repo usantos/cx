@@ -11,7 +11,7 @@ public class FiltroAplicadoMarketplace implements Serializable {
     private String valorMaximoAposta;
     private Integer qtdMinCotas;
     private Integer qtdMaxCotas;
-    private Integer qtdDezenas;
+    private Integer qtdApostas;
     private String numerosQuero;
     private String numerosNaoQuero;
     private LotericaDTO lotericaDTO;
@@ -21,12 +21,12 @@ public class FiltroAplicadoMarketplace implements Serializable {
     public FiltroAplicadoMarketplace(){
     }
 
-    public FiltroAplicadoMarketplace(LotericaDTO lotericaDTO, String valorMinimoAposta, String valorMaximoAposta, Integer qtdMinCotas, Integer qtdMaxCotas, Integer qtdDezenas, String numerosQuero, String numerosNaoQuero, ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
+    public FiltroAplicadoMarketplace(LotericaDTO lotericaDTO, String valorMinimoAposta, String valorMaximoAposta, Integer qtdMinCotas, Integer qtdMaxCotas, Integer qtdApostas, String numerosQuero, String numerosNaoQuero, ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
         this.valorMinimoAposta = valorMinimoAposta;
         this.valorMaximoAposta = valorMaximoAposta;
         this.qtdMinCotas = qtdMinCotas;
         this.qtdMaxCotas = qtdMaxCotas;
-        this.qtdDezenas = qtdDezenas;
+        this.qtdApostas = qtdApostas;
         this.numerosQuero = numerosQuero;
         this.numerosNaoQuero = numerosNaoQuero;
         this.lotericaDTO = lotericaDTO;
@@ -74,10 +74,6 @@ public class FiltroAplicadoMarketplace implements Serializable {
         this.qtdMaxCotas = qtdMaxCotas;
     }
 
-    public Integer getQtdDezenas() {
-        return qtdDezenas;
-    }
-
     public String getNumerosQuero() {
         return numerosQuero;
     }
@@ -94,8 +90,12 @@ public class FiltroAplicadoMarketplace implements Serializable {
         this.numerosNaoQuero = numerosNaoQuero;
     }
 
-    public void setQtdDezenas(Integer qtdDezenas) {
-        this.qtdDezenas = qtdDezenas;
+    public Integer getQtdApostas() {
+        return qtdApostas;
+    }
+
+    public void setQtdApostas(Integer qtdApostas) {
+        this.qtdApostas = qtdApostas;
     }
 
     public ModalidadeEnum getModalidade() {

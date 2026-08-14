@@ -368,14 +368,13 @@
                     app:layout_constraintGuide_begin="197dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <TextView
-                android:id="@+id/text_quantidade_dezenas"
+                android:id="@+id/text_quantidade_apostas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/quantidade_dezenas"
+                android:text="@string/quantidade_de_apostas"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="12sp"
@@ -387,7 +386,7 @@
                 app:layout_constraintTop_toBottomOf="@id/containerValidaQtdCotas" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/quant_dezenas"
+                android:id="@+id/rv_qtde_apostas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
@@ -396,7 +395,7 @@
                 android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineCentroFiltro"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_quantidade_dezenas" />
+                app:layout_constraintTop_toBottomOf="@+id/text_quantidade_apostas" />
 
             <View
                 android:id="@+id/view_div_qtd_dezenas"
@@ -406,7 +405,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:background="@color/bolao_linha"
-                app:layout_constraintTop_toBottomOf="@+id/quant_dezenas" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_qtde_apostas" />
 
 
             <TextView

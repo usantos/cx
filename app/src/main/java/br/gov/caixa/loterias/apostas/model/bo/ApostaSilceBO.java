@@ -605,6 +605,9 @@ public class ApostaSilceBO extends SilceBO {
         if(filtro.getQtdDezenas() > 0){
             queryParams.put("qtdDezenas", String.valueOf(filtro.getQtdDezenas()));
         }
+        if(filtro.getQtdApostas() > 0){
+            queryParams.put("qtdApostas", String.valueOf(filtro.getQtdApostas()));
+        }
         if(filtro.getNumerosQuero() != null && !filtro.getNumerosQuero().isEmpty()){
             queryParams.put("numerosEscolhidos", filtro.getNumerosQuero());
         }

@@ -24,6 +24,8 @@ public class FiltroMarketPlace implements Serializable {
     private int qtdMaximaCota;
     @SerializedName("quantidadeDezena")
     private int qtdDezenas;
+    @SerializedName("quantidadeAposta")
+    private int qtdApostas;
     @SerializedName("numerosEscolhidos")
     private String numerosQuero;
     @SerializedName("numerosNaoEscolhidos")
@@ -48,6 +50,7 @@ public class FiltroMarketPlace implements Serializable {
         this.qtdMinimaCota = 0;
         this.qtdMaximaCota = 0;
         this.qtdDezenas = 0;
+        this.qtdApostas = 0;
         this.valorMinimoCota = null;
         this.valorMaximoCota = null;
         this.numeroLoterico = null;
@@ -114,6 +117,9 @@ public class FiltroMarketPlace implements Serializable {
     public int getQtdDezenas() {return qtdDezenas;}
 
     public void setQtdDezenas(int qtdDezenas) {this.qtdDezenas = qtdDezenas;}
+
+    public int getQtdApostas() {return qtdApostas;}
+    public void setQtdApostas(int qtdApostas) {this.qtdApostas = qtdApostas;}
 
     public String getNumerosQuero() {
         return numerosQuero;

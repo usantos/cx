@@ -33,7 +33,7 @@ public class BolaoRepository extends AppRepository {
         FiltroMarketPlace filtro = getFiltroMarketPlace(paginacao);
 
         if (filtroAplicado != null){
-            if (filtroAplicado.getQtdMinCotas() !=null && filtroAplicado.getQtdMinCotas() > 0){
+            if (filtroAplicado.getQtdMinCotas() != null && filtroAplicado.getQtdMinCotas() > 0){
                 filtro.setQtdMinimaCota(filtroAplicado.getQtdMinCotas());
             }
 
@@ -41,12 +41,12 @@ public class BolaoRepository extends AppRepository {
                 filtro.setQtdMaximaCota(filtroAplicado.getQtdMaxCotas());
             }
 
-            if(filtroAplicado.getQtdDezenas() != null && filtroAplicado.getQtdDezenas() > 0){
-                filtro.setQtdDezenas(filtroAplicado.getQtdDezenas());
-            }
-
             if(filtroAplicado.getNumerosQuero() !=null && !filtroAplicado.getNumerosQuero().isEmpty()){
                 filtro.setNumerosQuero(filtroAplicado.getNumerosQuero());
+            }
+
+            if(filtroAplicado.getQtdApostas() !=null && filtroAplicado.getQtdApostas() > 0){
+                filtro.setQtdApostas(filtroAplicado.getQtdApostas());
             }
 
             if(filtroAplicado.getNumerosNaoQuero() !=null && !filtroAplicado.getNumerosNaoQuero().isEmpty()){
