@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_caixa"
+    android:orientation="vertical">
+
+    <!-- Barra de Modalidade -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/blue_caixa">
+
+        <TextView
+            android:id="@+id/tv_title_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:text="Loterias"
+            android:textColor="@color/branco"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/iv_logo_clover"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="24dp"
+            android:contentDescription="Logo Loterias"
+            android:src="@drawable/icon_loteria" />
+
+    </RelativeLayout>
+
+    <!-- Imagem de ilustração (nuvem com ponto de exclamação) -->
+    <ImageView
+        android:id="@+id/iv_error_illustration"
+        android:layout_width="202dp"
+        android:layout_height="127dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="136dp"
+        android:contentDescription="Aplicativo indisponível"
+        android:src="@drawable/app_indisponivel" />
+
+    <!-- Mensagem principal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_unavailable_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/app_indisponivel"
+            android:textColor="@color/branco"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Divisor -->
+        <View
+            android:layout_width="276dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="#47FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_unavailable_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/pedido_desculpas"
+            android:textColor="@color/branco"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!-- Espaço flexível -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Botão e info de versão -->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="40dp"-->
+<!--        android:layout_marginStart="24dp"-->
+<!--        android:layout_marginEnd="24dp"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:orientation="vertical">-->
+
+<!--        &lt;!&ndash; Botão Tentar novamente &ndash;&gt;-->
+<!--        <Button-->
+<!--            android:id="@+id/btn_retry"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="44dp"-->
+<!--            android:background="@drawable/btn_round_laranja"-->
+<!--            android:drawableStart="@drawable/ic_refresh"-->
+<!--            android:drawablePadding="8dp"-->
+<!--            android:fontFamily="@font/caixa_std_semi_bold"-->
+<!--            android:gravity="center"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:text="@string/tentar_novamente"-->
+<!--            android:textColor="@color/branco"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textSize="16sp" />-->
+
+
+<!--        &lt;!&ndash; Versão e código de erro &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/tv_version_info"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="36dp"-->
+<!--            android:fontFamily="@font/caixa_std_regular"-->
+<!--            android:gravity="center"-->
+<!--            android:lineSpacingMultiplier="1.5"-->
+<!--            android:text="v. 1.23.5\nCódigo do erro: LTR-503"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textSize="14sp" />-->
+
+<!--    </LinearLayout>-->
+    <LinearLayout
+        android:id="@+id/container_retry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_retry"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@drawable/btn_round_laranja"
+            android:drawableStart="@drawable/ic_refresh"
+            android:drawablePadding="8dp"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:gravity="center"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/tentar_novamente"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_version_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="40dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.5"
+        android:text="v. 1.23.5&#10;Código do erro: LTR-503"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
+
+
+
+</LinearLayout>
