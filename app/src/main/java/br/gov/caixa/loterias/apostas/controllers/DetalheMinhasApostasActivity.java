@@ -1027,7 +1027,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     private void preencheCentroLoteca() {
         //Top
         cl_loteca_top.setVisibility(View.VISIBLE);
-        llLegendaButton.setOnClickListener(v-> dialogLegendaLoteca());
+        llLegendaButton.setOnClickListener(v-> DialogUtils.dialogLegendaLoteca(this));
 
         RecyclerView recyclerView = findViewById(R.id.rv_centro_detalhe_minhas_apostas);
         if (isBolao()) {
@@ -1110,35 +1110,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             }
         }
         return acertosString;
-    }
-
-    private void dialogLegendaLoteca() {
-
-        if (isFinishing()) return;
-
-        View view = LayoutInflater.from(this)
-                .inflate(R.layout.dialog_legenda_loteca, null);
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(view)
-                .setCancelable(false)
-                .create();
-
-        Button btnFechar = view.findViewById(R.id.btnFechar);
-        btnFechar.setOnClickListener(v -> dialog.dismiss());
-
-        try {
-            dialog.show();
-        } catch (Exception e) {
-            return;
-        }
-
-        if (dialog.getWindow() != null) {
-            int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
-            dialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        }
-
     }
 
 }
