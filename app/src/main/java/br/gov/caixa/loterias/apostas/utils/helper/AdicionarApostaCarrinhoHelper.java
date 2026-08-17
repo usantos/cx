@@ -297,7 +297,9 @@ public class AdicionarApostaCarrinhoHelper {
             if (AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
                 goToCarrinho();
             } else if(AdicionarApostaCarrinhoHelper.activity instanceof SimularApostaActivity) {
-                ((SimularApostaActivity<?>) AdicionarApostaCarrinhoHelper.activity).mostrarPopupApostaAdicionada();
+                ((SimularApostaActivity<?>) AdicionarApostaCarrinhoHelper.activity).mostrarPopupApostaAdicionada(
+                        carrinhoDtoResponse
+                );
             }
         }
     }

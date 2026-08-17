@@ -51,6 +51,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -599,13 +600,18 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             }
         });
     }
-    public void mostrarPopupApostaAdicionada() {
+    public void mostrarPopupApostaAdicionada(
+            CarrinhoDTOResponse carrinhoDTOResponse
+    ) {
         DialogUtils.dialogEntendi(
                 this,
                 getString(R.string.added_bet_to_cart)
         );
 
         zerarApostasLoteca();
+        if(carrinhoDTOResponse != null){
+            atualizaDados(carrinhoDTOResponse.getPayload());
+        }
     }
 
     private void salvarAposta(ApostaFavoritaDTO aposta){
