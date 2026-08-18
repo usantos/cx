@@ -289,7 +289,7 @@
     <string name="label_digite_aposta_realizada">_Digitar_ sua aposta realizada</string>
 
     <!-- Minhas apostas -->
-    <string name="label_aqui_voce_pode_acompanhar">Aqui você pode acompanhar todas as apostas que já realizou no aplicativo. Boa sorte!</string>
+    <string name="label_aqui_voce_pode_acompanhar">Aqui você pode acompanhar todas suas apostas realizadas nos últimos 6 meses. Boa sorte!</string>
     <string name="label_ver_resultados">Ver resultados</string>
     <string name="label_historico_de_apostas">Histórico de apostas</string>
     <string name="label_para_a_sorte_todo_mundo">O próximo ganhador pode ser você. Já pensou?</string>
@@ -1703,6 +1703,12 @@
 
     <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
     <string name="txt_como_jogar">Como jogar</string>
+    <string name="added_bet_to_cart">Aposta adicionada ao carrinho com sucesso!</string>
+    <string name="txt_buscar_exemplo">Insira o nome da lotérica ou o código somente com os números do segundo campo, com 6 dígitos, Exemplo: E.Lotérico 10.000004-01, digite 000004.</string>
+    <string name="txt_name_code">Nome ou código</string>
+    <string name="txt_lotericas">Lotéricas</string>
+    <string name="txt_buscar_lotericas">Buscar Lotericas</string>
+    <string name="txt_back">Voltar</string>
     <string name="txt_choose_your_reward">Escolha como resgatar seu prêmio</string>
     <string name="txt_contest">Concurso</string>
     <string name="txt_concursos">Concursos</string>

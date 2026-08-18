@@ -280,9 +280,20 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         nomeCaixa.setHint("Título, Botão, Recolhido");
         nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
 
-        buttonHomeBet.setOnClickListener(view -> clickButtonHomeBet());
+        buttonHomeBet.setOnClickListener(view ->
+                {
+                    if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(PrincipalActivity.this, 2)) return;
+                    clickButtonHomeBet();
+                }
 
-        buttonHomeBolao.setOnClickListener(view -> clickButtonBolao());
+        );
+
+        buttonHomeBolao.setOnClickListener(view ->
+                {
+                    if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(PrincipalActivity.this, 2)) return;
+                    clickButtonBolao();
+                }
+        );
 
         relativeLayoutContentRepassados.setOnClickListener(view -> clickRelativeLayoutContentRepassados());
 
