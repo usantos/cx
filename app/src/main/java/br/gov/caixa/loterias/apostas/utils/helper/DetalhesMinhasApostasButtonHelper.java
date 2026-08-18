@@ -60,6 +60,7 @@ import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.SelecaoConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
@@ -183,8 +184,8 @@ public class DetalhesMinhasApostasButtonHelper {
     }
     private void goToEditarAposta(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
-            Intent intent = IntentUtil.getIntentOrigemDestino(activity, SimularApostaActivity.class);
-            intent.putExtra(SimularApostaActivity.APOSTA_EXTRA, ((Serializable) aposta));
+            Intent intent = IntentUtil.getIntentOrigemDestino(activity, SimulaActivity.class);
+            intent.putExtra(SimulaActivity.APOSTA_EXTRA, aposta);
             intent.putExtra("tipoAposta", ((Serializable) aposta.getModalidade()));
             intent.putExtra("modalidade", ((Serializable) (new Gson()).toJson(parametroSimulacaoTrocado.getParametroJogo())));
             intent.putExtra("especial", isEspecial(aposta.getTipoConcurso().getValor()));

@@ -1402,7 +1402,7 @@ private void zeraLoteca(){
 	private void configuraSuperSete(View viewLayout) {
 		listaGridsSuperSete = cartelaModel.getListGridSuperSete(viewLayout);
 
-		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorLight, parentActivity);
+		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorDark, parentActivity);
 
 		cartelaModel.preencheGridComListaSuperSete(listaGridsSuperSete, listaAdaptersSuperSete);
 
