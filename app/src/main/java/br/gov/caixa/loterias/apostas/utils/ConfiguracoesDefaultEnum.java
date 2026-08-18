@@ -15,7 +15,6 @@ public enum ConfiguracoesDefaultEnum {
     URL_BASE_BUSCA_APOSTAS(""),
     URL_BASE_CARRINHO_PILOTO(""),
     URL_BASE_CARRINHO_PRODUCAO(""),
-    GRUPO_CPFS_AZURE(""),
     URL_BASE_APOSTADOR(""),
     GRUPO_CPFS_APOSTADOR("");
 

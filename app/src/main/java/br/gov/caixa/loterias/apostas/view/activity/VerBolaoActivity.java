@@ -498,7 +498,7 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
             @Override
             public void verMais(BolaoHolder holder, int position) {
                 bolaoList.get(position).setAbertoParaMostrarDetalhes(!bolaoList.get(position).isAbertoParaMostrarDetalhes());
-                holder.mostrarDetalhes(bolaoList.get(position).isAbertoParaMostrarDetalhes());
+                holder.mostrarDetalhes(bolaoList.get(position));
             }
 
             @Override

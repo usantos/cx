@@ -13,6 +13,6 @@ public class TestVisao {
 	}
 
 	public static boolean isTeste(){
-		return BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd") && !BuildConfig.FLAVOR.equalsIgnoreCase("net");
+		return BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd");
 	}
 }

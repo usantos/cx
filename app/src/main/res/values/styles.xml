@@ -425,6 +425,14 @@
         <item name="android:fontFamily">@font/caixa_std_regular</item>
     </style>
 
+    <style name="DialogUtilsTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/rounded_dialog_background</item>
+        <item name="android:windowMinWidthMajor">85%</item>
+        <item name="android:windowMinWidthMinor">85%</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@color/verde_card</item>
         <item name="android:textSize">18sp</item>

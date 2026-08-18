@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
@@ -24,7 +23,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ItemDuvidaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
@@ -60,7 +58,7 @@ public class DuvidasActivity extends LoteriasBaseAppActivity {
 
     private void configurarToolbar(){
         TextView textTitulo = findViewById(R.id.textCustom);
-        textTitulo.setHint(getString(R.string.titulo));
+        textTitulo.setText(getString(R.string.duvidas));
         customButton = findViewById(R.id.customButton);
         customButton.setContentDescription(getString(R.string.voltar));
         customButton.setOnClickListener(v -> onBackPressed());

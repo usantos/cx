@@ -1671,6 +1671,7 @@
     <string name="loteca_pais_duas_linhas">loteca\ndos pais</string>
 
     <string name="caixa_loterias">Você será direcionado para o site da CAIXA Loterias e sairá do aplicativo. Deseja continuar?</string>
+    <string name="hyperlink_generico">Você será direcionado para a WEB. Deseja continuar?</string>
     <string name="label_cancelar">Cancelar</string>
     <string name="label_confirmar">Confirmar</string>
     <string name="contest_example">1234 - 4321</string>

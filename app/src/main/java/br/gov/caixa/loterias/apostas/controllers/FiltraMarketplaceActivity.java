@@ -821,9 +821,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 QtdDezenaSelecionada = prognosticoMaximo;
             }
 
-            qtdDezenas = ModalidadeEnum.LOTECA.equals(modalidade)
-                    ? model.getListaQtdDezenas(modalidade)
-                    : getQtdDezenas(listValorAposta);
+            qtdDezenas = getQtdDezenasDisponiveis(modalidade, listValorAposta);
 
         } else {
 
@@ -833,6 +831,17 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
             qtdDezenas = model.getListaQtdDezenas(modalidade);
 
+        }
+
+    }
+
+    private List<Integer> getQtdDezenasDisponiveis(ModalidadeEnum modalidade, List<ParametroValorApostaDTO> listValorAposta) {
+        if (listValorAposta != null && !listValorAposta.isEmpty()){
+            return ModalidadeEnum.LOTECA.equals(modalidade)
+                    ? model.getListaQtdDezenas(modalidade)
+                    : getQtdDezenas(listValorAposta);
+        } else {
+            return model.getListaQtdDezenas(modalidade);
         }
 
     }
