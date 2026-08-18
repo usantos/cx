@@ -37,12 +37,13 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 	@Override
 	public BolaoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_bolao, parent, false);
-		return new BolaoHolder(activity, view, listener, filtro, showCotasRestantes);
+		return new BolaoHolder(activity, view, listener, showCotasRestantes);
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull BolaoHolder holder, int position) {
 		CotasBolaoDTO cotaBolao = bolaoList.get(position);
+		holder.setFiltro(filtro);
 		holder.bind(cotaBolao, position);
 	}
 
@@ -52,6 +53,5 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 	}
 	public void atualizarFiltro(FiltroAplicadoMarketplace filtro) {
 		this.filtro = filtro;
-		notifyDataSetChanged();
 	}
 }

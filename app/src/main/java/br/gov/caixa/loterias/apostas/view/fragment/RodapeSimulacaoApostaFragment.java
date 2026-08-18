@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
 import android.content.Intent;
@@ -21,7 +20,6 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -30,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
@@ -143,9 +142,8 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
 				AlertDialogUtils.dismiss();
-				Bundle args = new Bundle();
-				args.putSerializable(CARRINHO, (Serializable) response.getPayload());
-				startActivity(new Intent(getActivity(), CarrinhoActivity.class).putExtras(args));
+				CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+				startActivity(new Intent(getActivity(), CarrinhoActivity.class));
 				if (response.getRedirect() != null){
 					RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
 				}
