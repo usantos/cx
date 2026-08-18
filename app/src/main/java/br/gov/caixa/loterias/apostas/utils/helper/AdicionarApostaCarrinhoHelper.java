@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -79,6 +79,7 @@ public class AdicionarApostaCarrinhoHelper {
      */
     public static void incluirApostaCarrinho(Activity actv, Object objectAposta) {
         activity = actv;
+        if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(activity, 2)) return;
         aposta = getApostaPreenchida(objectAposta);
         AlertDialogUtils.show(activity);
         if (aposta != null && !checarApostasRepetidas(activity, aposta, ApostaOrigem.LISTA_APOSTA)) {
@@ -204,11 +205,16 @@ public class AdicionarApostaCarrinhoHelper {
                     AlertDialogUtils.dismiss();
                     AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
                     CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
+                    CarrinhoSingleton.getInstance().getCarrinho().setValorTotal(result.getPayload().getValorTotal());
                 } catch (Exception e){
                     Log.d("", e.getLocalizedMessage());
                 }
 
-                activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+                DialogUtils.dialogEntendiListener(activity, activity.getString(R.string.added_bet_to_cart), (dialog, which) -> {
+                    if (activity instanceof MinhasApostasActivity) {
+                        ((MinhasApostasActivity) activity).outDialogEntendiListener();
+                    }
+                });
             }
 
             @Override

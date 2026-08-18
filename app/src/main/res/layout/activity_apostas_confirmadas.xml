@@ -11,4 +11,5 @@
     <include layout="@layout/app_bar_degrade_pesquisa"/>
     <include layout="@layout/content_apostas_confirmadas" />
 
+
 </LinearLayout>

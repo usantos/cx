@@ -202,7 +202,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         setSupportActionBar(toolbar);
 
-        if (!(BuildConfig.FLAVOR.equals("prd") ||  BuildConfig.FLAVOR.equals("net"))) {
+        if (!(BuildConfig.FLAVOR.equals("prd"))) {
             String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO.name());
             txtAmbiente.setText(ambienteSalvo);
             txtAmbiente.setVisibility(View.VISIBLE);
@@ -279,9 +279,20 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         nomeCaixa.setHint("Título, Botão, Recolhido");
         nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
 
-        buttonHomeBet.setOnClickListener(view -> clickButtonHomeBet());
+        buttonHomeBet.setOnClickListener(view ->
+                {
+                    if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(PrincipalActivity.this, 2)) return;
+                    clickButtonHomeBet();
+                }
 
-        buttonHomeBolao.setOnClickListener(view -> clickButtonBolao());
+        );
+
+        buttonHomeBolao.setOnClickListener(view ->
+                {
+                    if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(PrincipalActivity.this, 2)) return;
+                    clickButtonBolao();
+                }
+        );
 
         relativeLayoutContentRepassados.setOnClickListener(view -> clickRelativeLayoutContentRepassados());
 
@@ -860,7 +871,23 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         //TODO: MEGA 30 ANOS//
         //TODO: LOTECA PAIS//
-        //boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
+        Modalidade item = (data != null && adapterPosition >= 0 && adapterPosition < data.size())
+                ? data.get(adapterPosition)
+                : null;
+
+        ConcursoDTO concurso = item != null ? item.getConcurso() : null;
+
+        numeroConcurso = concurso != null ? concurso.getNumero() : null;
+        tipoModalidade = item != null ? item.getTipoModalidade() : null;
+
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.SELECIONAR,
+                AnalyticsHelper.Tela.HOME,
+                tipoModalidade != null ? ModalidadeEnum.fromString(tipoModalidade) : "",
+                numeroConcurso != null ? numeroConcurso.toString() : ""
+        );
+
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
                 //TODO: MEGA 30 ANOS//
