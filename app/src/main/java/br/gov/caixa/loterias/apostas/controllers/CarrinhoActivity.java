@@ -117,6 +117,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinho);
         model = new CarrinhoModel(CarrinhoActivity.this);
+        carrinho = CarrinhoSingleton.getInstance().getCarrinho();
         pegaExtras();
         timerExcluiCotasExpiradas();
         setaViews();
@@ -240,7 +241,6 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     private void pegaExtras() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            carrinho = (CarrinhoDTO) bundle.getSerializable(CARRINHO);
             lerCarrinhoLocal = bundle.getBoolean(LER_CARRINHO_LOCAL);
             origem = bundle.getString(ORIGEM);
         }

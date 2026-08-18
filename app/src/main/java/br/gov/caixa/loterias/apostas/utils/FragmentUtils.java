@@ -19,7 +19,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
@@ -66,7 +65,7 @@ public class FragmentUtils {
 
 	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, String TAG) {
 		if(fragment == null){
-			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), TAG);
+			fragment = SomadorCarrinhoFragment.newInstance(TAG);
 			FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		}
 		return fragment;
@@ -74,7 +73,7 @@ public class FragmentUtils {
 
 	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, Boolean irCarrinho) {
 		if(fragment == null){
-			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), irCarrinho);
+			fragment = SomadorCarrinhoFragment.newInstance(irCarrinho);
 			FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		}
 		return fragment;

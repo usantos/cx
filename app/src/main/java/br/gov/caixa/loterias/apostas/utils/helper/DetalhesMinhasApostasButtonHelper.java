@@ -1,13 +1,11 @@
 package br.gov.caixa.loterias.apostas.utils.helper;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -51,6 +49,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
@@ -162,9 +161,8 @@ public class DetalhesMinhasApostasButtonHelper {
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }
-                Bundle args = new Bundle();
-                args.putSerializable(CARRINHO, (Serializable) response.getPayload());
-                activity.startActivity(new Intent(activity, CarrinhoActivity.class).putExtras(args));
+                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+                activity.startActivity(new Intent(activity, CarrinhoActivity.class));
             }
 
             @Override

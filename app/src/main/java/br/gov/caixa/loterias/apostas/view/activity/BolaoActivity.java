@@ -275,7 +275,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         }
     }
 
-
     private void loadParametroJogo(ModalidadeEnum modalidade) {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametro = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidade,tipoConcurso.toString());
@@ -342,6 +341,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             initLotericasVazia();
         }
         hideFiltrar(true);
+        hideSearch(false);
     }
 
     private void seletorBoloes() {
@@ -352,6 +352,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             apresentanEstadoVazio();
         }
         hideFiltrar(false);
+        hideSearch(true);
     }
 
 
@@ -439,10 +440,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 if (payload == null) {
                     payload = simulaPayloadLoterica();
                 }
-                if (lotericasAdapter == null) {
-                    setLotericasFavoritas(payload);
-                    configuraListView();
-                }
+
+                setLotericasFavoritas(payload);
+                configuraListView();
 
                 if (lotericasList == null || lotericasList.isEmpty()) {
                     initLotericasVazia();
