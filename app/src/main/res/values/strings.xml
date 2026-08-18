@@ -1703,7 +1703,6 @@
 
     <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
     <string name="txt_como_jogar">Como jogar</string>
-    <string name="added_bet_to_cart">Aposta adicionada ao carrinho com sucesso!</string>
     <string name="txt_buscar_exemplo">Insira o nome da lotérica ou o código somente com os números do segundo campo, com 6 dígitos, Exemplo: E.Lotérico 10.000004-01, digite 000004.</string>
     <string name="txt_name_code">Nome ou código</string>
     <string name="txt_lotericas">Lotéricas</string>

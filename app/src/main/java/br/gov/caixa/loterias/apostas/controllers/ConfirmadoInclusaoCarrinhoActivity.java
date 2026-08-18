@@ -25,6 +25,7 @@ import br.gov.caixa.loterias.apostas.utils.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
