@@ -80,12 +80,10 @@ public class ApostaPartidaLotecaView extends LinearLayout {
         apostaEquipeLotecaView.getImageApostaPartidaLoteca().setSelected(equipeDTO.getVitoria());
         if (legenda != null) {
             if (equipeDTO.getIndicadorSelecao()) {
-                apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeNome(equipeDTO));
+                apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeNome(equipeDTO) + " " + legenda);
             } else {
-                apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));
+                apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO) + " " + legenda);
             }
-            //TODO//
-            //apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO) + " " + legenda);
         } else {
             apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));
         }

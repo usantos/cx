@@ -42,21 +42,17 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 	@Override
 	public void bind(PartidaLotecaDTO partida, int position) {
 		//TODO//
-		//String nomeequipe1 = Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()) + " " + partida.getLegendaAbreviada();
-		//String nomeequipe2 = Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()) + " " + partida.getLegendaAbreviada();
-
-		//if (partida.getEquipe1().getIndicadorSelecao() == null || partida.getEquipe1().getIndicadorSelecao()) {
-		if (isEspecial != null && isEspecial) {
-			nomeEquipe1.setText(Utils.getEquipeNome(partida.getEquipe1().getParametroEquipe()));
+		String legenda = " " + partida.getLegendaAbreviada();
+		if (partida.getEquipe1().getIndicadorSelecao() != null || partida.getEquipe1().getIndicadorSelecao()) {
+			nomeEquipe1.setText(Utils.getEquipeNome(partida.getEquipe1().getParametroEquipe()) + legenda);
 		} else {
-			nomeEquipe1.setText(Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()));
+			nomeEquipe1.setText(Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()) + legenda);
 		}
 
-		//if (partida.getEquipe2().getIndicadorSelecao() == null || partida.getEquipe2().getIndicadorSelecao()) {
-		if (isEspecial != null && isEspecial) {
-			nomeEquipe2.setText(Utils.getEquipeNome(partida.getEquipe2().getParametroEquipe()));
+		if (partida.getEquipe2().getIndicadorSelecao() != null || partida.getEquipe2().getIndicadorSelecao()) {
+			nomeEquipe2.setText(Utils.getEquipeNome(partida.getEquipe2().getParametroEquipe()) + legenda);
 		} else {
-			nomeEquipe2.setText(Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()));
+			nomeEquipe2.setText(Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()) + legenda);
 		}
 
 		if (configuracaoLoteca != null) {
