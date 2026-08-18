@@ -435,7 +435,7 @@
         android:textAllCaps="false"
         android:textColor="@color/laranjacaixa"
         android:textSize="16sp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:text=""
         android:fontFamily="@font/caixa_std_regular" />
 

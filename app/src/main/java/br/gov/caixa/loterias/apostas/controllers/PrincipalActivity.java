@@ -879,7 +879,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 //TODO: LOTECA PAIS//
                 EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(adapterPosition).getTipoModalidade(),
                                                 data.get(adapterPosition).getConcurso().getNumero(),
-                                                data.get(adapterPosition).getConcurso().getTipoConcurso());                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                                                data.get(adapterPosition).getConcurso().getTipoConcurso());
+                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 buttonHomeBet.setTag(adapterPosition);
                 buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
