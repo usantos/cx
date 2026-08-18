@@ -295,7 +295,7 @@
     <string name="label_para_a_sorte_todo_mundo">O próximo ganhador pode ser você. Já pensou?</string>
     <string name="label_selecione_mes_ano">Selecione o período</string>
     <string name="label_selecione_mes">Selecione o mês</string>
-    <string name="label_aposta_concurso">Conc. %d</string>
+    <string name="label_aposta_concurso">Concurso %d</string>
     <string name="label_aposta_concurso_bold">Conc. _%d_</string>
     <string name="label_aposta_concursos">Conc. %d a %d</string>
     <string name="label_adicionar">Adicionar</string>

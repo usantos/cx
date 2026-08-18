@@ -19,6 +19,7 @@
     <color name="branco">#ffffff</color>
     <color name="lightRed">#FEF3F4</color>
     <color name="laranja">#d87b00</color>
+    <color name="divisor_cinza_escuro">#647479</color>
     <color name="branco_transparente">#99ffffff</color>
     <color name="cinza">#48586c</color>
     <color name="grafite">#637A97</color>
@@ -168,6 +169,7 @@
     <color name="vermelho_dialog">#F60E0E</color>
     <color name="vermelho_borda_dialog">#D15973</color>
     <color name="azul_alterar">#004680</color>
+    <color name="cinza_titulo_jogo_loteca">#3f4b52</color>
 
     <!--Disque 180 -->
     <color name="rosa_radio_text">#E781A6</color>
