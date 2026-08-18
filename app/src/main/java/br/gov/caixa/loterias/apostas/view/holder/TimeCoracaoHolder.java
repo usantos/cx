@@ -16,12 +16,16 @@ public class TimeCoracaoHolder extends LoteriasHolder<ParametroEquipe> implement
 	private ImageView imageTime;
 	private Context context;
 	private OnItemClickListener listener;
+	private View container;
 
 	public TimeCoracaoHolder(View itemView, Context context, OnItemClickListener listener) {
 		super(itemView);
 		nameTime = itemView.findViewById(R.id.timeCoracaoNome);
 		ufTime = itemView.findViewById(R.id.timeCoracaoUf);
 		imageTime = itemView.findViewById(R.id.time_coracao_image);
+		container = itemView.findViewById(
+				R.id.itemTimeCoracaoLinearLayout
+		);
 		this.context = context;
 		this.listener = listener;
 		itemView.setOnClickListener(this);
@@ -33,10 +37,13 @@ public class TimeCoracaoHolder extends LoteriasHolder<ParametroEquipe> implement
 		equipe.setBrasaoId(R.drawable.time);
 
 		EscudoEquipeUtil.setEscudo(context, equipe, imageTime);
+		container.setSelected(
+				equipe.isSelecionado()
+		);
 
 		if (equipe.isSelecionado()) {
-			nameTime.setTextColor(context.getResources().getColor(R.color.borderImageTimeColor));
-			ufTime.setTextColor(context.getResources().getColor(R.color.borderImageTimeColor));
+			nameTime.setTextColor(context.getResources().getColor(R.color.timemaniaCorTexto));
+			ufTime.setTextColor(context.getResources().getColor(R.color.timemaniaCorTexto));
 		} else {
 			nameTime.setTextColor(context.getResources().getColor(R.color.cinza));
 			ufTime.setTextColor(context.getResources().getColor(R.color.cinza));

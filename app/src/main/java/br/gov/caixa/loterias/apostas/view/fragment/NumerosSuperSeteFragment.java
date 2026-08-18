@@ -130,8 +130,13 @@ public class NumerosSuperSeteFragment extends Fragment {
 				dip,
 				r.getDisplayMetrics());
 
-		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams param =
+				new LinearLayout.LayoutParams(
+						ViewGroup.LayoutParams.MATCH_PARENT,
+						ViewGroup.LayoutParams.WRAP_CONTENT);
+
 		param.height = px;
+
 		view.setLayoutParams(param);
 
 	}

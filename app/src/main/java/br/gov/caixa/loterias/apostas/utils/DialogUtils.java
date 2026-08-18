@@ -6,9 +6,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,10 +20,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +48,7 @@ public class DialogUtils {
     private static final String BTN_CANCELAR = "Cancelar";
     private static final String BTN_SIM = "Sim";
     private static final String BTN_NAO = "Não";
+    private static final float LARGURA_DIALOG_PADRAO = 0.85f; // Define a largura da dialog como 85% da largura da tela
 
  // PADRONIZAÇÃO DAS DIALOGS
 
@@ -325,8 +331,15 @@ public class DialogUtils {
 
      */
 
-    public static Dialog buildDialogFavoritar(Context context, String titulo, OnDialogFavoritarListener listener, boolean manterSurpresinhas) {
-
+    public static Dialog buildDialogFavoritar(
+            Context context,
+            String titulo,
+            String hintInput,
+            String description,
+            OnDialogFavoritarListener listener,
+            boolean manterSurpresinhas
+    )
+    {
         if (isContextInvalido(context)) {
             return null;
         }
@@ -339,6 +352,9 @@ public class DialogUtils {
         TextView       tituloDialog  = dialog.findViewById(R.id.titulo_dialog_favoritar);
         tituloDialog.setText(titulo);
 
+        TextView descriptionDialog = dialog.findViewById(R.id.description_dialog_favoritar);
+        descriptionDialog.setText(description);
+
         EditText editTextFavoritar = dialog.findViewById(R.id.edit_dialog_favoritar);
 
         LinearLayout layoutManterSurpresinhas = dialog.findViewById(R.id.layout_manter_surpresinhas);
@@ -346,6 +362,9 @@ public class DialogUtils {
 
         Button btnConfirmar = dialog.findViewById(R.id.btn_positivo);
         Button btnCancelar = dialog.findViewById(R.id.btn_negativo);
+        if (!TextUtils.isEmpty(hintInput)) {
+            editTextFavoritar.setHint(hintInput);
+        }
 
         layoutManterSurpresinhas.setVisibility(manterSurpresinhas ? View.VISIBLE : View.GONE);
 
@@ -376,7 +395,7 @@ public class DialogUtils {
         });
 
         layoutManterSurpresinhas.setOnClickListener(v ->
-             checkManterSurpresinhas.toggle()
+                checkManterSurpresinhas.toggle()
         );
 
         dialog.setOnShowListener(dialogInterface -> {
@@ -626,9 +645,13 @@ public class DialogUtils {
                 labelBtnPositivo, listener::PositiveButton,
                 labelBtnNegativo, listener::NegativeButton, null, null);
     }
-
     public static Dialog dialogTituloConfirmarReturn(Context context, String titulo, String conteudo, OnDialogBotaoListener onPositivoListener){
         return buildDialogReturn(context, titulo, conteudo, BTN_CONFIRMAR, onPositivoListener::onButtonClick, BTN_CANCELAR, null, null, null);
+    }
+
+
+    public static void dialogHtml(Context context, String titulo, String conteudo){
+        buildAndShowDialogHtml(context, titulo, conteudo, BTN_ENTENDI, null, null, null, null, null);
     }
 
     public static Dialog dialogRateUtils(Context context, String titulo, String conteudo,String labelBtnPositivo, String labelBtnNegativo, OnDialogDoisBotoesListener listener) {
@@ -777,5 +800,103 @@ public class DialogUtils {
 
 
         return dialog;
+    }
+
+    private static void buildAndShowDialogHtml(Context context, String titulo, String conteudo,
+                                                 String labelBotaoPositivo, DialogInterface.OnClickListener onPositivoListener,
+                                                 String labelBotaoNegativo, DialogInterface.OnClickListener onNegativoListener,
+                                                 String labelBotaoNeutro, DialogInterface.OnClickListener onNeutroListener){
+
+        if (isContextInvalido(context)) {
+            return ;
+        }
+
+        //Infla o layout da dialog
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.layout_dialog_padrao, null);
+
+        //Inicializa o Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogView);
+        builder.setCancelable(false); // Impede que a dialog seja fechada ao clicar fora dela
+
+        final AlertDialog dialog = builder.create();
+
+        //Configura os elementos da dialog
+        TextView tvTitulo = dialogView.findViewById(R.id.titulo_dialog_padrao);
+        TextView tvConteudo = dialogView.findViewById(R.id.conteudo_dialog_padrao);
+
+        LinearLayout layoutTresBotoes = dialogView.findViewById(R.id.layout_tres_botoes);
+        LinearLayout layoutBotoesPadrao = dialogView.findViewById(R.id.layout_botoes_padrao);
+
+        ViewCompat.setAccessibilityHeading(tvTitulo,true);
+        tvTitulo.setFocusableInTouchMode(true);
+        tvTitulo.requestFocus();
+
+        //Caso com dois botões
+        Button btnPositivo = dialogView.findViewById(R.id.button_positivo);
+        Button btnNegativo = dialogView.findViewById(R.id.button_negativo);
+
+        //Caso com três botões
+        Button btnTop = dialogView.findViewById(R.id.btn_top);
+        Button btnCenter = dialogView.findViewById(R.id.btn_center);
+        Button btnBottom = dialogView.findViewById(R.id.btn_bottom);
+
+        boolean isTresBotoes = labelBotaoNeutro !=null && !labelBotaoNeutro.trim().isEmpty();
+
+        layoutBotoesPadrao.setVisibility(isTresBotoes ? View.GONE : View.VISIBLE);
+        layoutTresBotoes.setVisibility(isTresBotoes ? View.VISIBLE : View.GONE);
+
+        if(titulo != null && !titulo.isEmpty()){
+            tvTitulo.setText(titulo);
+            tvTitulo.setVisibility(View.VISIBLE);
+        } else {
+            tvTitulo.setVisibility(View.GONE);
+        }
+
+        tvConteudo.setText(
+                HtmlCompat.fromHtml(
+                conteudo != null ? conteudo : "",
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
+                )
+        );
+
+        if(isTresBotoes){
+            configuraBotao(btnTop, labelBotaoPositivo, DialogInterface.BUTTON_POSITIVE, onPositivoListener, dialog);
+            configuraBotao(btnCenter, labelBotaoNegativo, DialogInterface.BUTTON_NEGATIVE, onNegativoListener, dialog);
+            configuraBotao(btnBottom, labelBotaoNeutro, DialogInterface.BUTTON_NEUTRAL, onNeutroListener, dialog);
+        }else{
+            configuraBotao(btnPositivo, labelBotaoPositivo,DialogInterface.BUTTON_POSITIVE, onPositivoListener, dialog);
+            configuraBotao(btnNegativo, labelBotaoNegativo,DialogInterface.BUTTON_NEGATIVE, onNegativoListener, dialog);
+        }
+
+        dialog.setOnShowListener(d -> {
+            if (tvTitulo.getVisibility() == View.VISIBLE){
+                tvTitulo.post(() -> {
+                    tvTitulo.performAccessibilityAction(
+                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
+                            null
+                    );
+                });
+            }
+
+        });
+
+        try {
+            if (!isContextInvalido(context)) {
+                dialog.show();
+            }
+        } catch (WindowManager.BadTokenException | IllegalStateException e) {
+            return;
+        }
+
+        if(dialog.getWindow() != null){
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * LARGURA_DIALOG_PADRAO);
+
+            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
     }
 }

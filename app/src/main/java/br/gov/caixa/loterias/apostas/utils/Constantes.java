@@ -26,4 +26,5 @@ public class Constantes {
     public static final BigDecimal DOIS_BIG_DECIMAL = new BigDecimal(2);
 
     public static final int CINCO_INTEIRO = 5;
+    public static final int SEIS_INTEIRO = 6;
 }

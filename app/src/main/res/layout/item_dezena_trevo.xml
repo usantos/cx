@@ -12,7 +12,7 @@
         tools:textOff="1"
         android:textAlignment="center"
         android:gravity="center"
-        android:textSize="26sp"
+        android:textSize="16sp"
         android:layout_margin="8dp"
         android:fontFamily="@font/caixa_std_bold"
         android:background="@drawable/ic_item_dezena"

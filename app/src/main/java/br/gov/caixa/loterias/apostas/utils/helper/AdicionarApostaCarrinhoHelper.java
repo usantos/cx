@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
@@ -353,13 +354,14 @@ public class AdicionarApostaCarrinhoHelper {
             }
         }
 
-        if(AdicionarApostaCarrinhoHelper.activity instanceof SimularApostaActivity){
-            AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
-                ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).zerarApostas();
+        if (AdicionarApostaCarrinhoHelper.activity instanceof SimulaActivity) {
+            ((SimulaActivity) AdicionarApostaCarrinhoHelper.activity)
+                    .mostrarPopupApostaAdicionada();
         } else {
-            if(AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
-                if (telaConfirmacao != null){
-                    ((OnCompraBolaoListener) AdicionarApostaCarrinhoHelper.activity).compraSucesso(telaConfirmacao);
+            if (AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
+                if (telaConfirmacao != null) {
+                    ((OnCompraBolaoListener) AdicionarApostaCarrinhoHelper.activity)
+                            .compraSucesso(telaConfirmacao);
                 }
             } else {
                 AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);

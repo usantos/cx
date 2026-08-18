@@ -116,6 +116,7 @@ import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
+import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
@@ -1062,21 +1063,31 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             } else {
                 AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false, null);
             }
-        } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
-            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
-            Intent activity = new Intent(PrincipalActivity.this, clazz);
-            activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
-            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
-            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
-            startActivity(activity);
-        } else {
-            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
-
+        }
+//        else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
+//            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
+//            Intent activity = new Intent(PrincipalActivity.this, clazz);
+//            activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
+//            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+//            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
+//            startActivity(activity);}
+        else if (modalidade == ModalidadeEnum.LOTECA) {
             Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
             //TODO: MEGA 30 ANOS//
             //TODO: LOTECA PAIS//
+            activity.putExtra(getString(R.string.numero_concurso), numeroConcurso);
+            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
+            startActivity(activity);
+        }
+        else {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
+
+            Intent activity = new Intent(PrincipalActivity.this, SimulaActivity.class);
+            activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
+            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+            //TODO: MEGA 30 ANOS//
             activity.putExtra(getString(R.string.numero_concurso), numeroConcurso);
             activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
             startActivity(activity);
