@@ -30,7 +30,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="24dp"
-            android:contentDescription="Logo Loterias"
+            android:importantForAccessibility="no"
             android:src="@drawable/icon_loteria" />
 
     </RelativeLayout>
@@ -42,7 +42,7 @@
         android:layout_height="127dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="136dp"
-        android:contentDescription="Aplicativo indisponível"
+        android:importantForAccessibility="no"
         android:src="@drawable/app_indisponivel" />
 
     <!-- Mensagem principal -->
@@ -55,7 +55,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_unavailable_title"
+            android:id="@+id/tv_mensagem1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/caixa_std_semi_bold"
@@ -75,7 +75,7 @@
             android:background="#47FFFFFF" />
 
         <TextView
-            android:id="@+id/tv_unavailable_subtitle"
+            android:id="@+id/tv_mensagem2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -134,7 +134,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_versao"
+            android:id="@+id/txtVersao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
@@ -156,4 +156,13 @@
     </LinearLayout>
 
 
+    <Spinner
+        android:id="@+id/spin_ambiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:backgroundTint="@color/colorAccent"
+        android:dropDownWidth="wrap_content"
+        android:visibility="gone" />
 </LinearLayout>

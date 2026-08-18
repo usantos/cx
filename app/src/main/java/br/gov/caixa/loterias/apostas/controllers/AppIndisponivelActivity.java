@@ -37,12 +37,14 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
 
-    //private Button buttonTentarNovamente;
-    private LinearLayout buttonTentarNovamente;
     private Boolean isBuscaParametro;
     private AlertDialog loadViewProgress;
     private TextView txtVersion, tvMensagem;
+
+    private TextView tvMensagem1, tvMensagem2;
     private Spinner ambienteSpinner;
+
+    private View buttonTentarNovamente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,33 +57,33 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
         atualizaMsg();
         setaMetodos();
 
-//        if (!(BuildConfig.FLAVOR.equals("prd"))){
-//            //Ambiente Selecao
-//            ambienteSpinner.setVisibility(View.VISIBLE);
-//            AmbienteEnum[] ambienteEnums = AmbienteEnum.values();
-//            ArrayAdapter<AmbienteEnum> adapter = new ArrayAdapter<>(AppIndisponivelActivity.this,
-//                    R.layout.spinner_item_ambiente, ambienteEnums);
-//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//            ambienteSpinner.setAdapter(adapter);
-//            //Carrega selecao salva no SharedPreferences
-//            String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO_ESTEIRA.name());
-//            AmbienteEnum ambienteAtual = AmbienteEnum.valueOf(ambienteSalvo);
-//            ambienteSpinner.setSelection(adapter.getPosition(ambienteAtual));
-//            //Listener salvar a selecao
-//            ambienteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                @Override
-//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    AmbienteEnum selectedAmbiente = (AmbienteEnum) parent.getItemAtPosition(position);
-//                    SharedPreferencesUtils.setValor("AMBIENTE_SELECIONADO", selectedAmbiente.name());
-//                    if (!selectedAmbiente.name().equals(ambienteSalvo)) {
-//                        showAlertAndExit(selectedAmbiente);
-//                    }
-//                }
-//                @Override
-//                public void onNothingSelected(AdapterView<?> parent) {
-//                }
-//            });
-//        }
+        if (!(BuildConfig.FLAVOR.equals("prd"))){
+            //Ambiente Selecao
+            ambienteSpinner.setVisibility(View.VISIBLE);
+            AmbienteEnum[] ambienteEnums = AmbienteEnum.values();
+            ArrayAdapter<AmbienteEnum> adapter = new ArrayAdapter<>(AppIndisponivelActivity.this,
+                    R.layout.spinner_item_ambiente, ambienteEnums);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ambienteSpinner.setAdapter(adapter);
+            //Carrega selecao salva no SharedPreferences
+            String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO_ESTEIRA.name());
+            AmbienteEnum ambienteAtual = AmbienteEnum.valueOf(ambienteSalvo);
+            ambienteSpinner.setSelection(adapter.getPosition(ambienteAtual));
+            //Listener salvar a selecao
+            ambienteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    AmbienteEnum selectedAmbiente = (AmbienteEnum) parent.getItemAtPosition(position);
+                    SharedPreferencesUtils.setValor("AMBIENTE_SELECIONADO", selectedAmbiente.name());
+                    if (!selectedAmbiente.name().equals(ambienteSalvo)) {
+                        showAlertAndExit(selectedAmbiente);
+                    }
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }
     }
 
     private void showAlertAndExit(AmbienteEnum selectedAmbiete) {
@@ -98,12 +100,14 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
     }
 
     private void setaViews(){
-        //txtVersion = findViewById(R.id.txtVersao);
-        txtVersion = findViewById(R.id.tv_versao);
-        //tvMensagem = findViewById(R.id.tv_mensagem);
-        buttonTentarNovamente = findViewById(R.id.tenteNovamenteButton);
-        //ambienteSpinner = findViewById(R.id.spin_ambiente);
+        tvMensagem = findViewById(R.id.tv_mensagem);
+        tvMensagem1 = findViewById(R.id.tv_mensagem1);
+        tvMensagem2 = findViewById(R.id.tv_mensagem2);
 
+        buttonTentarNovamente = findViewById(R.id.tenteNovamenteButton);
+        ambienteSpinner = findViewById(R.id.spin_ambiente);
+
+        txtVersion = findViewById(R.id.txtVersao);
         txtVersion.setText( TextUtils.concat( getResources().getString(R.string.v) ,BuildConfig.VERSION_NAME));
     }
 
@@ -112,11 +116,24 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
     }
 
     private void atualizaMsg() {
-//        if (!AppUtils.isNetworkAvailable(AppIndisponivelActivity.this)) {
-//            tvMensagem.setText(getResources().getString(R.string.seminternet));
-//        } else {
-//            tvMensagem.setText(getResources().getString(R.string.label_app_indisponivel));
-//        }
+        //Tela antiga activity_app_indisponivel
+        if (tvMensagem != null) {
+            if (!AppUtils.isNetworkAvailable(AppIndisponivelActivity.this)) {
+                tvMensagem.setText(getResources().getString(R.string.seminternet));
+            } else {
+                tvMensagem.setText(getResources().getString(R.string.label_app_indisponivel));
+            }
+        }
+        //Tela nova activity_app_indisponivel_novo
+        if (tvMensagem1 != null) {
+            if (!AppUtils.isNetworkAvailable(AppIndisponivelActivity.this)) {
+                tvMensagem1.setText(getResources().getString(R.string.internet_instavel));
+                tvMensagem2.setText(getResources().getString(R.string.verifique_conexao));
+            } else {
+                tvMensagem1.setText(getResources().getString(R.string.app_indisponivel));
+                tvMensagem2.setText(getResources().getString(R.string.pedido_desculpas));
+            }
+        }
     }
 
     private void setaMetodos() {

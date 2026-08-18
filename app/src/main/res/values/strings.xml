@@ -1694,4 +1694,7 @@
 
     <string name="pedido_desculpas">Pedimos desculpas pelo transtorno.\nTente novamente em breve</string>
     <string name="app_indisponivel">O aplicativo está\ntemporariamente indisponível</string>
+    <string name="internet_instavel">Parece que sua internet\nestá com alguma instabilidade</string>
+    <string name="verifique_conexao">Verifique sua conexão\ne tente novamente</string>
+
 </resources>
