@@ -51,6 +51,10 @@ public class ParametrosConfiguraveisDTO {
     private Integer concursoMega30Anos;
     @SerializedName("concursoLotecaPais")
     private Integer concursoLotecaPais;
+    @SerializedName("qtdeMinimaApostaBolaoFiltro")
+    private Integer qtdeMinimaApostaBolaoFiltro;
+    @SerializedName("qtdeMaximaApostaBolaoFiltro")
+    private Integer qtdeMaximaApostaBolaoFiltro;
 
     public String getUrlBaseApostadorPiloto() {
         return urlBaseApostadorPiloto;
@@ -214,5 +218,21 @@ public class ParametrosConfiguraveisDTO {
 
     public void setConcursoLotecaPais(Integer concursoLotecaPais) {
         this.concursoLotecaPais = concursoLotecaPais;
+    }
+
+    public Integer getQtdeMinimaApostaBolaoFiltro() {
+        return qtdeMinimaApostaBolaoFiltro;
+    }
+
+    public void setQtdeMinimaApostaBolaoFiltro(Integer qtdeMinimaApostaBolaoFiltro) {
+        this.qtdeMinimaApostaBolaoFiltro = qtdeMinimaApostaBolaoFiltro;
+    }
+
+    public Integer getQtdeMaximaApostaBolaoFiltro() {
+        return qtdeMaximaApostaBolaoFiltro;
+    }
+
+    public void setQtdeMaximaApostaBolaoFiltro(Integer qtdeMaximaApostaBolaoFiltro) {
+        this.qtdeMaximaApostaBolaoFiltro = qtdeMaximaApostaBolaoFiltro;
     }
 }

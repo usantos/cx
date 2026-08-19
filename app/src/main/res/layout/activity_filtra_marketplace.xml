@@ -407,6 +407,71 @@
                 android:background="@color/bolao_linha"
                 app:layout_constraintTop_toBottomOf="@+id/rv_qtde_apostas" />
 
+            <TextView
+                android:id="@+id/txt_quantidade_dezenas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/quantidade_dezenas"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_div_qtd_dezenas" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_accordion_qtd_dezenas"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_accordion_plus_azul"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_div_qtd_dezenas" />
+
+            <LinearLayout
+                android:id="@+id/accordionContentQtdDezenas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_quantidade_dezenas">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_qtd_dezenas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+                <Button
+                    android:id="@+id/btn_excluir_qtd_dezenas"
+                    android:layout_width="220dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                    android:background="@drawable/btn_round_outlined"
+                    android:fontFamily="@font/caixa_std_semi_bold"
+                    android:text="@string/excluir_quantidade"
+                    android:textColor="@color/azulFiltro"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_div_qtd_dezenas_selecionada"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@id/accordionContentQtdDezenas" />
+
 
             <TextView
                 android:id="@+id/txt_numeros_quero"
@@ -422,7 +487,7 @@
                 android:fontFamily="@font/caixa_std_bold"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_div_qtd_dezenas" />
+                app:layout_constraintTop_toBottomOf="@id/view_div_qtd_dezenas_selecionada" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_accordion_quero"
@@ -433,7 +498,7 @@
                 android:background="@drawable/ic_accordion_plus_azul"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/view_div_qtd_dezenas" />
+                app:layout_constraintTop_toTopOf="@+id/view_div_qtd_dezenas_selecionada" />
 
             <LinearLayout
                 android:id="@+id/accordionContentQuero"

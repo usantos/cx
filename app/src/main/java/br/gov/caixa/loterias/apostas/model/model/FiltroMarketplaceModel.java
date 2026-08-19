@@ -54,7 +54,8 @@ public class FiltroMarketplaceModel extends AppModel{
 													   String valorMax,
 													   Integer qtdMin,
 													   Integer qtdMax,
-													   Integer qtdApostas,
+												   Integer qtdApostas,
+												   Integer qtdDezenas,
 													   String numerosQuero,
 													   String numerosNaoQuero,
 													   ModalidadeEnum selectModalidade,
@@ -67,6 +68,7 @@ public class FiltroMarketplaceModel extends AppModel{
 				qtdMin,
 				qtdMax,
 				qtdApostas,
+				qtdDezenas,
 				numerosQuero,
 				numerosNaoQuero,
 				selectModalidade,
@@ -136,6 +138,13 @@ public class FiltroMarketplaceModel extends AppModel{
 
 	public List<Integer> getLista1A15(){
 		return geraIntervalo(1, 15);
+	}
+
+	public List<Integer> getIntervalo(int inicio, int fim) {
+		if (inicio <= 0 || fim < inicio) {
+			return new ArrayList<>();
+		}
+		return geraIntervalo(inicio, fim);
 	}
 
 	private List<Integer> geraIntervalo(int start, int end) {

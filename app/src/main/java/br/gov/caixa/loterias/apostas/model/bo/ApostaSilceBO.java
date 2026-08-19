@@ -603,10 +603,10 @@ public class ApostaSilceBO extends SilceBO {
             queryParams.put("qtdMaximaCota",String.valueOf(filtro.getQtdMaximaCota()));
         }
         if(filtro.getQtdDezenas() > 0){
-            queryParams.put("qtdDezenas", String.valueOf(filtro.getQtdDezenas()));
+            queryParams.put("quantidadeDezena", String.valueOf(filtro.getQtdDezenas()));
         }
         if(filtro.getQtdApostas() > 0){
-            queryParams.put("qtdApostas", String.valueOf(filtro.getQtdApostas()));
+            queryParams.put("quantidadeAposta", String.valueOf(filtro.getQtdApostas()));
         }
         if(filtro.getNumerosQuero() != null && !filtro.getNumerosQuero().isEmpty()){
             queryParams.put("numerosEscolhidos", filtro.getNumerosQuero());

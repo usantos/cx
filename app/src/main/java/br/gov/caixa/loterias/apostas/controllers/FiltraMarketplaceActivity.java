@@ -60,6 +60,9 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     public static final String ARG_TITULO_QUERO_NAO_QUERO = "titulo";
     public static final String ARG_QUERO = "quero";
     public static final String ARG_NAO_QUERO = "naoQuero";
+    public static final String ARG_QUANTIDADE_DEZENAS = "quantidadeDezenas";
+    public static final String ARG_OPCOES_QUANTIDADE_DEZENAS = "opcoesQuantidadeDezenas";
+    public static final String ARG_QUANTIDADE_DEZENAS_SELECIONADA = "quantidadeDezenasSelecionada";
     public static final String ARG_DEZENAS_SELECIONADAS = "dezenasSelecionadas";
     public static final String ARG_DEZENAS_QUERO = "dezenasQuero";
     public static final String ARG_DEZENAS_NAO_QUERO = "dezenasNaoQuero";
@@ -67,6 +70,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     public static final int ARG_QUANTIDADE_COLUNA_LISTAS = 6;
     private List<Integer> dezenasSelecionadasQuero = new ArrayList<>();
     private List<Integer> dezenasSelecionadasNaoQuero = new ArrayList<>();
+    private List<Integer> opcoesQtdDezenas = new ArrayList<>();
     private RecyclerView listView;
     private ListaModalidadesAdapter listaModalidadesAdapter;
     private EditText editValMin, editValMax, editQtdCotasMin, editQtdCotasMax;
@@ -76,12 +80,12 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private TextView textLotericaDescritivo;
 
     private TextView validaQtdCotaMin, validaQtdCotaMax, txtQtdApostas;
-    private RecyclerView recyclerViewLoterica, recyclerViewQuero, recyclerViewNaoQuero, recyclerQtdApostas;
+    private RecyclerView recyclerViewLoterica, recyclerViewQuero, recyclerViewNaoQuero, recyclerQtdApostas, recyclerQtdDezenas;
     private LotericaAdapter lotericaAdapter;
-    private QueroNaoQueroAdapter queroAdapter, naoQueroAdapter;
+    private QueroNaoQueroAdapter queroAdapter, naoQueroAdapter, qtdDezenasAdapter;
     private LinearLayout accordionQuero, accordionNaoQuero;
-    private Button btnLimpaFiltros, btnAplicar, btnExcluirQuero, btnExcluirNaoQuero;
-    private AppCompatImageView btnPlusQuero, btnPlusNaoQuero;
+    private Button btnLimpaFiltros, btnAplicar, btnExcluirQuero, btnExcluirNaoQuero, btnExcluirQtdDezenas;
+    private AppCompatImageView btnPlusQuero, btnPlusNaoQuero, btnPlusQtdDezenas;
     private ActivityResultLauncher<Intent> launcher;
     private List<LotericaDTO> listLotericaDTO = new ArrayList<>();
     private LotericaDTO selectLotericaDTO = null;
@@ -98,6 +102,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private List<Dezena> listaQtdApostas = new ArrayList<>();
     private ListaDezenaRecyclerView qtdApostasAdapter = null;
     private Integer qtdApostasSelecionadas = null;
+    private Integer qtdDezenasSelecionada = null;
     private boolean todasModalidadesAtiva = false;
     private boolean desativarFiltro = false;
 
@@ -176,6 +181,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
         btnPlusQuero = findViewById(R.id.img_accordion_quero);
         btnPlusNaoQuero = findViewById(R.id.img_accordion_nao_quero);
+        btnPlusQtdDezenas = findViewById(R.id.img_accordion_qtd_dezenas);
 
         accordionQuero = findViewById(R.id.accordionContentQuero);
         accordionQuero.setVisibility(View.VISIBLE);
@@ -187,9 +193,11 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         recyclerViewQuero = findViewById(R.id.rcv_quero);
         recyclerViewNaoQuero = findViewById(R.id.rcv_nao_quero);
         recyclerQtdApostas = findViewById(R.id.rv_qtde_apostas);
+        recyclerQtdDezenas = findViewById(R.id.rcv_qtd_dezenas);
 
         btnExcluirQuero = findViewById(R.id.btn_excluir_num_quero);
         btnExcluirNaoQuero = findViewById(R.id.btn_excluir_num_nao_quero);
+        btnExcluirQtdDezenas = findViewById(R.id.btn_excluir_qtd_dezenas);
         btnLimpaFiltros = findViewById(R.id.btn_limpar_filtros);
         btnAplicar = findViewById(R.id.btn_aplicar);
     }
@@ -216,9 +224,11 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
         btnPlusQuero.setOnClickListener(v -> abreActivityQueroNaoQuero(ARG_QUERO));
         btnPlusNaoQuero.setOnClickListener(v -> abreActivityQueroNaoQuero(ARG_NAO_QUERO));
+        btnPlusQtdDezenas.setOnClickListener(v -> abreQuantidadeDezenas());
 
         btnExcluirQuero.setOnClickListener(v -> excluirNumerosQuero());
         btnExcluirNaoQuero.setOnClickListener(v -> excluirNumerosNaoQuero());
+        btnExcluirQtdDezenas.setOnClickListener(v -> atualizaQuantidadeDezenas(null));
 
         recuperaEstadoFiltros();
 
@@ -240,6 +250,14 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         recyclerViewNaoQuero.setAdapter(naoQueroAdapter);
         recyclerViewNaoQuero.setLayoutManager(new GridLayoutManager(FiltraMarketplaceActivity.this, ARG_QUANTIDADE_COLUNA_LISTAS));
         recyclerViewNaoQuero.setNestedScrollingEnabled(false);
+
+        List<Integer> qtdDezenasIniciais = qtdDezenasSelecionada == null
+                ? new ArrayList<>() : Collections.singletonList(qtdDezenasSelecionada);
+        qtdDezenasAdapter = new QueroNaoQueroAdapter(qtdDezenasIniciais, (holder, position) -> atualizaQuantidadeDezenas(null));
+        recyclerQtdDezenas.setAdapter(qtdDezenasAdapter);
+        recyclerQtdDezenas.setLayoutManager(new GridLayoutManager(this, ARG_QUANTIDADE_COLUNA_LISTAS));
+        recyclerQtdDezenas.setNestedScrollingEnabled(false);
+        atualizaQuantidadeDezenas(qtdDezenasSelecionada);
 
         lotericaAdapter = new LotericaAdapter(listLotericaDTO, onItemClickListener());
         recyclerViewLoterica.setLayoutManager(new LinearLayoutManager(this));
@@ -285,11 +303,22 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         if(filtro.getTipoConcurso() != null){
             selectTipoConcurso = filtro.getTipoConcurso();
         }
+        if (filtro.getQtdApostas() != null && filtro.getQtdApostas() > 0) qtdApostasSelecionadas = filtro.getQtdApostas();
+        if (filtro.getQtdDezenas() != null && filtro.getQtdDezenas() > 0) atualizaQuantidadeDezenas(filtro.getQtdDezenas());
     }
 
     private void configuraQtdApostasRcv(){
 
-        listaQtdApostas = montaListDezena(model.getLista1A15());
+        if (selectModalidade == null) {
+            opcoesQtdDezenas = model.getListaTodasModalidades();
+        } else {
+            ParametroSimulacao parametro = ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), selectModalidade);
+            if (parametro != null && parametro.getParametroJogo() != null) {
+                opcoesQtdDezenas = getQtdDezenas(parametro.getParametroJogo().getValoresAposta());
+            }
+        }
+
+        listaQtdApostas = montaListDezena(getOpcoesQtdApostas());
 
         DezenaConfig dezenaConfig = new DezenaConfig(true, R.color.azulFiltro, Color.WHITE, true);
         qtdApostasAdapter = new ListaDezenaRecyclerView(listaQtdApostas, new ArrayList<>(), dezenaConfig, onItemClickListenerQtdApostas());
@@ -381,12 +410,35 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                         expandeContraiAccordionQueroNaoQuero();
                         Log.d("Dezenas Não Quero", String.valueOf(dezenasSelecionadasNaoQuero));
 
+                    } else if (ARG_QUANTIDADE_DEZENAS.equals(temp)) {
+                        ArrayList<Integer> selecionadas = args.getIntegerArrayList(ARG_DEZENAS_SELECIONADAS);
+                        atualizaQuantidadeDezenas(selecionadas == null || selecionadas.isEmpty() ? null : selecionadas.get(0));
+
                     }else{
                         Log.d("DezenasQueroNaoQuero", getString(R.string.Quero_Nao_Quero_Impossivel_de_Identificar));
                     }
                 }
             }
         };
+    }
+
+    private void abreQuantidadeDezenas() {
+        Bundle args = new Bundle();
+        args.putString(ARG_TITULO_QUERO_NAO_QUERO, ARG_QUANTIDADE_DEZENAS);
+        args.putIntegerArrayList(ARG_OPCOES_QUANTIDADE_DEZENAS, new ArrayList<>(opcoesQtdDezenas));
+        if (qtdDezenasSelecionada != null) args.putInt(ARG_QUANTIDADE_DEZENAS_SELECIONADA, qtdDezenasSelecionada);
+        Intent intent = IntentUtil.getIntentOrigemDestino(this, QueroNaoQueroActivity.class);
+        intent.putExtras(args);
+        IntentUtil.startActivityForResult(launcher, intent);
+    }
+
+    private void atualizaQuantidadeDezenas(Integer quantidade) {
+        qtdDezenasSelecionada = quantidade;
+        if (qtdDezenasAdapter != null) {
+            qtdDezenasAdapter.atualizaSelecionados(quantidade == null ? new ArrayList<>() : Collections.singletonList(quantidade));
+        }
+        View accordion = findViewById(R.id.accordionContentQtdDezenas);
+        if (accordion != null) accordion.setVisibility(quantidade == null ? GONE : View.VISIBLE);
     }
     private void excluirNumerosQuero(){
         if(queroAdapter != null) {
@@ -468,6 +520,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
             qtdApostasSelecionadas = null;
             qtdApostasAdapter.atualizaSelecionados(new ArrayList<>());
         }
+        atualizaQuantidadeDezenas(null);
         if(dezenasSelecionadasNaoQuero != null && !dezenasSelecionadasNaoQuero.isEmpty()){
             excluirNumerosNaoQuero();
         }
@@ -672,6 +725,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 Integer.valueOf(qtdCotasMin),
                 Integer.valueOf(qtdCotasMax),
                 Integer.valueOf(qtdApostas),
+                qtdDezenasSelecionada == null ? 0 : qtdDezenasSelecionada,
                 numerosQuero,
                 numerosNaoQuero,
                 selectModalidade,
@@ -686,6 +740,8 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         if(qtdApostasAdapter != null){
             qtdApostasAdapter.atualizaSelecionados(new ArrayList<>());
         }
+        qtdApostasSelecionadas = null;
+        atualizaQuantidadeDezenas(null);
         editValMin.setText("");
         editValMax.setText("");
         if(!desativarFiltro) {
@@ -771,6 +827,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                             AlertDialogUtils.dismiss();
                             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
                             SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
+                            configuraQtdApostasRcv();
                         }
 
                         @Override
@@ -797,6 +854,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
             ParametroJogoDTO parametroJogo = params.getParametroJogo();
             List<ParametroValorApostaDTO> listValorAposta = parametroJogo.getValoresAposta();
+            opcoesQtdDezenas = getQtdDezenas(listValorAposta);
 
             Log.d("FiltraMarketplace", "Parametro Jogo carregado: " + parametroJogo);
 
@@ -809,9 +867,6 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 }
             }
 
-            if (ModalidadeEnum.TIMEMANIA.equals(modalidade)) {
-                qtdApostasSelecionadas = prognosticoMaximo;
-            }
         } else {
 
             if (!ModalidadeEnum.LOTECA.equals(modalidade)) {
@@ -819,8 +874,16 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
             }
         }
 
-        qtdApostas = model.getLista1A15();
+    }
 
+    private List<Integer> getOpcoesQtdApostas() {
+        int minimo = SharedPreferencesUtils.getValorInt(
+                ConfiguracoesEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.get(),
+                ConfiguracoesDefaultEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.asInt());
+        int maximo = SharedPreferencesUtils.getValorInt(
+                ConfiguracoesEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.get(),
+                ConfiguracoesDefaultEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.asInt());
+        return model.getIntervalo(minimo, maximo);
     }
 
     private List<Integer> getQtdDezenas(List<ParametroValorApostaDTO> listValorAposta){

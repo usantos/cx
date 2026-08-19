@@ -36,6 +36,7 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
     private static final int COR_QUERO_NAO_QUERO = R.color.azulFiltro;
     boolean isQuero = false;
     boolean isNaoQuero = false;
+    boolean isQuantidadeDezenas = false;
     private List<Dezena> dezenas = new ArrayList<>();
     private List<Integer> dezenasSelecionadas = new ArrayList<>();
     private List<Integer> dezenasIniciais;
@@ -71,6 +72,7 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
                dezenasQuero = getIntent().getIntegerArrayListExtra(FiltraMarketplaceActivity.ARG_DEZENAS_QUERO);
               dezenasNaoQuero = getIntent().getIntegerArrayListExtra(FiltraMarketplaceActivity.ARG_DEZENAS_NAO_QUERO);
               prognosticosMaximo = getIntent().getIntExtra(FiltraMarketplaceActivity.ARG_QTD_MAX_PROGNOSTICOS, 80);
+              ArrayList<Integer> opcoesQuantidade = getIntent().getIntegerArrayListExtra(FiltraMarketplaceActivity.ARG_OPCOES_QUANTIDADE_DEZENAS);
 
             if(getTitulo !=null && getTitulo.equals(FiltraMarketplaceActivity.ARG_QUERO)){
                 title.setText(getString(R.string.numeros_quero));
@@ -84,6 +86,17 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
                 dezenasIniciais = new ArrayList<>(dezenasNaoQuero);
                 dezenasSelecionadas = new ArrayList<>(dezenasIniciais);
                 isNaoQuero = true;
+            } else if (getTitulo != null && getTitulo.equals(FiltraMarketplaceActivity.ARG_QUANTIDADE_DEZENAS)) {
+                title.setText(getString(R.string.quantidade_dezenas));
+                titulo = getTitulo;
+                dezenas = montaOpcoesQuantidade(opcoesQuantidade);
+                Integer selecionada = getIntent().hasExtra(FiltraMarketplaceActivity.ARG_QUANTIDADE_DEZENAS_SELECIONADA)
+                        ? getIntent().getIntExtra(FiltraMarketplaceActivity.ARG_QUANTIDADE_DEZENAS_SELECIONADA, 0)
+                        : null;
+                dezenasIniciais = new ArrayList<>();
+                if (selecionada != null && selecionada > 0) dezenasIniciais.add(selecionada);
+                dezenasSelecionadas = new ArrayList<>(dezenasIniciais);
+                isQuantidadeDezenas = true;
             }else{
                 isQuero = false;
                 isNaoQuero = false;
@@ -118,7 +131,9 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
 
     private void configuraCartela(){
 
-        dezenas = VolanteUtils.getDezenas(ModalidadeEnum.QUINA, prognosticosMaximo);
+        if (!isQuantidadeDezenas) {
+            dezenas = VolanteUtils.getDezenas(ModalidadeEnum.QUINA, prognosticosMaximo);
+        }
 
         DezenaConfig dezenaConfig = new DezenaConfig(true, COR_QUERO_NAO_QUERO, Color.WHITE, true, true);
 
@@ -143,6 +158,10 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
                 }else if(isNaoQuero){
                     adicionaNumeroSelecionado(valorSelecionado, dezenasQuero);
 
+                }else if(isQuantidadeDezenas){
+                    dezenasSelecionadas.clear();
+                    dezenasSelecionadas.add(valorSelecionado);
+
                 }else{
                     Log.d("Erro","Titulo pagina quero nao quero desconhecido");
                 }
@@ -153,6 +172,14 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
                 Log.d("", Objects.requireNonNull(e.getLocalizedMessage()));
             }
         };
+    }
+
+    private List<Dezena> montaOpcoesQuantidade(List<Integer> opcoes) {
+        List<Dezena> resultado = new ArrayList<>();
+        if (opcoes != null) {
+            for (Integer opcao : opcoes) resultado.add(new Dezena(String.valueOf(opcao), false));
+        }
+        return resultado;
     }
 
     private void adicionaNumeroSelecionado(Integer valorSelecionado, List<Integer> dezenasJaEscolhidasOutroFiltro){

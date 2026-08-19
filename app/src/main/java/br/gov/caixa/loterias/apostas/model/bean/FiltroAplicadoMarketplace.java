@@ -12,6 +12,7 @@ public class FiltroAplicadoMarketplace implements Serializable {
     private Integer qtdMinCotas;
     private Integer qtdMaxCotas;
     private Integer qtdApostas;
+    private Integer qtdDezenas;
     private String numerosQuero;
     private String numerosNaoQuero;
     private LotericaDTO lotericaDTO;
@@ -21,12 +22,13 @@ public class FiltroAplicadoMarketplace implements Serializable {
     public FiltroAplicadoMarketplace(){
     }
 
-    public FiltroAplicadoMarketplace(LotericaDTO lotericaDTO, String valorMinimoAposta, String valorMaximoAposta, Integer qtdMinCotas, Integer qtdMaxCotas, Integer qtdApostas, String numerosQuero, String numerosNaoQuero, ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
+    public FiltroAplicadoMarketplace(LotericaDTO lotericaDTO, String valorMinimoAposta, String valorMaximoAposta, Integer qtdMinCotas, Integer qtdMaxCotas, Integer qtdApostas, Integer qtdDezenas, String numerosQuero, String numerosNaoQuero, ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
         this.valorMinimoAposta = valorMinimoAposta;
         this.valorMaximoAposta = valorMaximoAposta;
         this.qtdMinCotas = qtdMinCotas;
         this.qtdMaxCotas = qtdMaxCotas;
         this.qtdApostas = qtdApostas;
+        this.qtdDezenas = qtdDezenas;
         this.numerosQuero = numerosQuero;
         this.numerosNaoQuero = numerosNaoQuero;
         this.lotericaDTO = lotericaDTO;
@@ -96,6 +98,14 @@ public class FiltroAplicadoMarketplace implements Serializable {
 
     public void setQtdApostas(Integer qtdApostas) {
         this.qtdApostas = qtdApostas;
+    }
+
+    public Integer getQtdDezenas() {
+        return qtdDezenas;
+    }
+
+    public void setQtdDezenas(Integer qtdDezenas) {
+        this.qtdDezenas = qtdDezenas;
     }
 
     public ModalidadeEnum getModalidade() {

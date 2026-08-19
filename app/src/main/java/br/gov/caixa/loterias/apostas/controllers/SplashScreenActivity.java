@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
@@ -155,6 +156,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_RAPIDAO.get(), result.getPayload().getMapa().isRapidaoHabilitado());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), result.getPayload().getMapa().getUrlBaseApostador());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), result.getPayload().getMapa().getGrupoDeCpfsApostador());
+                        salvaParametrosFiltroBolao(result.getPayload().getMapa());
 
                         if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_VALOR,result.getPayload().getMapa().getConcursoMega30Anos());
@@ -188,6 +190,19 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         return temDadosPayloadMapa(result) && result.getPayload().getMapa().getBolaoHabilitado() != null;
     }
 
+    private void salvaParametrosFiltroBolao(ParametrosConfiguraveisDTO parametros) {
+        if (parametros.getQtdeMinimaApostaBolaoFiltro() != null) {
+            SharedPreferencesUtils.setValor(
+                    ConfiguracoesEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.get(),
+                    parametros.getQtdeMinimaApostaBolaoFiltro());
+        }
+        if (parametros.getQtdeMaximaApostaBolaoFiltro() != null) {
+            SharedPreferencesUtils.setValor(
+                    ConfiguracoesEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.get(),
+                    parametros.getQtdeMaximaApostaBolaoFiltro());
+        }
+    }
+
     private boolean precisaAtualizarPublicKey(ParametrosConfiguraveisDTOResponse result) {
         return temDadosPayloadMapa(result) && result.getPayload().getMapa().isAtualizaPublicKey() != null;
     }
@@ -208,6 +223,8 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_BUSCA_APOSTAS.get(), ConfiguracoesDefaultEnum.URL_BASE_BUSCA_APOSTAS.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PILOTO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PILOTO.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PRODUCAO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PRODUCAO.asString());
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.get(), ConfiguracoesDefaultEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.asInt());
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.get(), ConfiguracoesDefaultEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.asInt());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), ConfiguracoesDefaultEnum.URL_BASE_APOSTADOR.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_APOSTADOR.asString());
     }
