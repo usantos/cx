@@ -2,16 +2,17 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
 
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
+import br.gov.caixa.loterias.apostas.LoteriasAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -19,18 +20,18 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DuvidaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTOResponse;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheDuvidaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-public class DetalheDuvidaActivity extends LoteriasBaseAppActivity {
+public class DetalheDuvidaActivity extends LoteriasAppActivity {
 
     public final static String SECAO_DTO_EXTRA = "secaoDTO";
 
     private ExpandableHeightRecyclerView recyclerViewDetalhesDuvida;
     private ListSecaoDTO secaoDTO;
-
+    ImageButton customButton;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhe_duvida);
@@ -42,7 +43,7 @@ public class DetalheDuvidaActivity extends LoteriasBaseAppActivity {
         getExtras();
         setViews();
         callWebservice();
-        createToolBar();
+        configurarToolbar();
     }
 
     private void getExtras() {
@@ -98,15 +99,16 @@ public class DetalheDuvidaActivity extends LoteriasBaseAppActivity {
         recyclerViewDetalhesDuvida.setExpanded(Boolean.TRUE);
     }
 
-    private void createToolBar() {
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.texto_caixaStd_bold, secaoDTO.getNome())));
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setElevation(0);
-            getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
-        }
+    private void configurarToolbar(){
+        TextView textTitulo = findViewById(R.id.textCustom);
+        textTitulo.setText(StringUtils.capitalizerNovo(secaoDTO.getNome()));
+        customButton = findViewById(R.id.customButton);
+        customButton.setContentDescription(getString(R.string.voltar));
+        customButton.setOnClickListener(v -> onSupportNavigateUp());
+        customButton.setFocusable(true);
+        customButton.setFocusableInTouchMode(true);
+        customButton.requestFocus();
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         finish();

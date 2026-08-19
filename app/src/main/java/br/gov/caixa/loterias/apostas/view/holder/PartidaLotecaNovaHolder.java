@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
+import br.gov.caixa.loterias.apostas.utils.DescricaoLoteca;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -73,7 +74,7 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 			nomeEmpate.setTextColor(context.getColor(configuracaoLoteca.getCorTexto()));
 		}
 
-		String jogo = "Jogo " + String.format("%02d", position + 1) + descricaoPartida(partida);
+		String jogo = "Jogo " + String.format("%02d", position + 1) + DescricaoLoteca.descricaoPartida(partida);
 		String descricaoAcessibilidade = jogo;
 
 		boolean acerto1 = false;
@@ -161,20 +162,4 @@ public class PartidaLotecaNovaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 		tv.setContentDescription(descricaoAcessibilidade);
 	}
 
-	private String descricaoPartida(PartidaLotecaDTO partida) {
-		if (partida.getDescricaoLegenda() != null) {
-			if (partida.getDescricaoLegenda().toString().contains("FEM.") ||
-					partida.getDescricaoLegenda().toString().contains("FEMININO")) {
-				return " (feminino)";
-			}
-			if (partida.getDescricaoLegenda().toString().contains("SUB17")) {
-				return " (sub 17)";
-			}
-			if (partida.getDescricaoLegenda().toString().contains("SUB20")) {
-				return " (sub 20)";
-			}
-		}
-
-		return "";
-	}
 }

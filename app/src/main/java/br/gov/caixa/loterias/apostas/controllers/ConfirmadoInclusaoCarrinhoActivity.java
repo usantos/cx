@@ -1,5 +1,8 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
+import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -10,11 +13,14 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -35,18 +41,20 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
-import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
+import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.ResultadoNavegacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
+import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
 public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity implements OnClickListener {
@@ -61,6 +69,20 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     private Boolean isMega30 = false;
     String numeroConcurso;
     String value;
+    private final ActivityResultLauncher<Intent> carrinhoLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode()
+                                == ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA) {
+
+                            setResult(
+                                    ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA
+                            );
+                            finish();
+                        }
+                    }
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +104,21 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         preencheBarraTitulo();
         configuraActivityIncluidoApostaCarrinho();
         fragmentSomadorCarrinho();
+        configurarBackPress();
+    }
+    private void configurarBackPress() {
+        getOnBackPressedDispatcher().addCallback(
+                this,
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        setResult(
+                                ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA
+                        );
+                        finish();
+                    }
+                }
+        );
     }
 
     @Override
@@ -185,6 +222,9 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
 
     @Override
     public boolean onSupportNavigateUp() {
+        setResult(
+                ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA
+        );
         finish();
         return true;
     }
@@ -257,7 +297,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                         AlertDialogUtils.dismiss();
                         Bundle args = new Bundle();
                         args.putSerializable(CARRINHO, (Serializable) response.getPayload());
-                        startActivityForResult(new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtras(args),0);
+                        Intent intent = new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtras(args);
+                        carrinhoLauncher.launch(intent);
                         if (response.getRedirect() != null){
                             RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ConfirmadoInclusaoCarrinhoActivity.this);
                         }
@@ -267,7 +308,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                     public void onErrorResponse(VolleyError error) {
                         AlertDialogUtils.dismiss();
                         if (MensagensNetwork.isUnauthorizedError(error)) {
-                            startActivityForResult((new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true)),0);
+                            Intent intent = new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true);
+                            carrinhoLauncher.launch(intent);
                         } else {
                             RedirectNetwork.checkRedirect( error, ConfirmadoInclusaoCarrinhoActivity.this );
                         }
@@ -283,15 +325,6 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                 startActivity(intent);
             }
             break;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == 2) {
-            finish();
         }
     }
 }
