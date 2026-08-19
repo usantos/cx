@@ -116,6 +116,9 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 
 		aplicaEstilo();
+		if (verMaisInflado) {
+			aplicaEstiloVerMais();
+		}
 		if (isFiltradoLoterica()) {
 			botaoFavoritar.setVisibility(View.GONE);
 			loterica.setVisibility(View.GONE);

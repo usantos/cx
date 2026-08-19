@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.core.view.ViewCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -717,28 +719,7 @@ public class DialogUtils {
         LinearSnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(picker);
 
-        WheelController wheelController =
-                new WheelController(picker, layoutManager, snapHelper, dialogListener);
-
-        ListStringAdapter adapter = new ListStringAdapter(list, wheelController::onItemClicked);
-
-        if (!list.isEmpty()) {
-            picker.post(() -> {
-                int initialPos = 0;
-
-                adapter.setSelectedPosition(initialPos);
-
-                picker.scrollToPosition(initialPos);
-
-                wheelController.onItemClicked(initialPos);
-            });
-        }
-
-        wheelController.attachAdapter(adapter);
-        picker.setAdapter(adapter);
-        wheelController.setupRecyclerForWheel();
-
-        Button dialogButtonConfirmar       = dialog.findViewById(R.id.button_positivo_itens);
+        Button dialogButtonConfirmar = dialog.findViewById(R.id.button_positivo_itens);
         Button dialogButtonCancelar = dialog.findViewById(R.id.button_negativo_itens);
 
         //Caso seja necessário Personalizar o texto dos botões "Confirmar" e "Cancelar" em cenários específicos,
@@ -749,6 +730,37 @@ public class DialogUtils {
         if(labelBotaoNegativo != null && !labelBotaoNegativo.isEmpty()) {
             dialogButtonCancelar.setText(labelBotaoNegativo);
         }
+
+        ColorStateList confirmarTextColor = dialogButtonConfirmar.getTextColors();
+        dialogButtonConfirmar.setEnabled(false);
+        dialogButtonConfirmar.setTextColor(ContextCompat.getColor(context, R.color.cinza_button));
+        dialogButtonConfirmar.setAlpha(0.6f);
+
+        WheelController wheelController =
+                new WheelController(picker, layoutManager, snapHelper, new OnDialogListener() {
+                    @Override
+                    public void itemSelecionado(int position) {
+                        dialogButtonConfirmar.setEnabled(true);
+                        dialogButtonConfirmar.setTextColor(confirmarTextColor);
+                        dialogButtonConfirmar.setAlpha(1f);
+                        dialogListener.itemSelecionado(position);
+                    }
+
+                    @Override
+                    public void ok(int position) {
+                        dialogListener.ok(position);
+                    }
+
+                    @Override
+                    public void cancelar() {
+                        dialogListener.cancelar();
+                    }
+                });
+
+        ListStringAdapter adapter = new ListStringAdapter(list, wheelController::onItemClicked);
+        wheelController.attachAdapter(adapter);
+        picker.setAdapter(adapter);
+        wheelController.setupRecyclerForWheel();
 
         dialog.setOnShowListener(dialogInterface -> {
             if (tituloDialog.getVisibility() == View.VISIBLE){
@@ -762,7 +774,9 @@ public class DialogUtils {
         });
 
         dialogButtonConfirmar.setOnClickListener(v -> {
-            dialogListener.ok(adapter.getSafeSelectedPosition());
+            int selectedPosition = adapter.getSelectedPosition();
+            if (selectedPosition == RecyclerView.NO_POSITION) return;
+            dialogListener.ok(selectedPosition);
             dialog.dismiss();
         });
 

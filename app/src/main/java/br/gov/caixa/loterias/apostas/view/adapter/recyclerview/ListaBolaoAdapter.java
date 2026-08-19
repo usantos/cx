@@ -53,5 +53,6 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 	}
 	public void atualizarFiltro(FiltroAplicadoMarketplace filtro) {
 		this.filtro = filtro;
+		notifyDataSetChanged();
 	}
 }
