@@ -5,6 +5,10 @@ import android.animation.AnimatorSet;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +43,7 @@ import androidx.lifecycle.Lifecycle;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
@@ -139,7 +144,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     public DiscreteScrollView homeCarousel;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    private Button buttonHomeBet, buttonHomeBolao;
+    private MaterialButton buttonHomeBet, buttonHomeBolao;
     private TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes,
             textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, txtAmbiente;
     private RelativeLayout relativeContentPrincipal,
@@ -811,30 +816,27 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         DialogUtils.dialogSim(
                 PrincipalActivity.this,
                 getResources().getString(R.string.MA008),
-                new OnDialogBotaoListener() {
-                    @Override
-                    public void onButtonClick(DialogInterface dialog, int which) {
+                (dialog, which) -> {
 
-                        if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
-                            AlertDialogUtils.show(PrincipalActivity.this);
+                    if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
+                        AlertDialogUtils.show(PrincipalActivity.this);
 
-                            new LoginSilceModel(PrincipalActivity.this).sair(new OnSilceListener<NetworkResponse>() {
-                                @Override
-                                public void success(NetworkResponse payload) {
-                                    realizandoLogin = true;
-                                    AlertDialogUtils.dismiss();
-                                }
+                        new LoginSilceModel(PrincipalActivity.this).sair(new OnSilceListener<NetworkResponse>() {
+                            @Override
+                            public void success(NetworkResponse payload) {
+                                realizandoLogin = true;
+                                AlertDialogUtils.dismiss();
+                            }
 
-                                @Override
-                                public void error(VolleyError error) {
-                                    AlertDialogUtils.dismiss();
-                                }
-                            });
-                        } else {
-                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_logout_offline_sucesso));
-                            startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                            finish();
-                        }
+                            @Override
+                            public void error(VolleyError error) {
+                                AlertDialogUtils.dismiss();
+                            }
+                        });
+                    } else {
+                        AppCenterManager.registraEvento(getResources().getString(R.string.evento_logout_offline_sucesso));
+                        startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+                        finish();
                     }
                 }
         );
@@ -869,35 +871,23 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
 
-        //TODO: MEGA 30 ANOS//
-        //TODO: LOTECA PAIS//
-        //boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
+        EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(adapterPosition).getTipoModalidade(),
+                data.get(adapterPosition).getConcurso().getNumero(),
+                data.get(adapterPosition).getConcurso().getTipoConcurso());
+
+        int cor = ContextCompat.getColor(this, estilo.getCorEscura());
+        buttonHomeBolao.setBackgroundTintList(ColorStateList.valueOf(cor));
+        buttonHomeBet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.branco)));
+        buttonHomeBet.setStrokeColor(ColorStateList.valueOf(cor));
+        buttonHomeBet.setTextColor(cor);
+        buttonHomeBet.setStrokeWidth(2);
+
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
-                data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
-                //TODO: MEGA 30 ANOS//
-                //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
-                //TODO: LOTECA PAIS//
-                EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(adapterPosition).getTipoModalidade(),
-                                                data.get(adapterPosition).getConcurso().getNumero(),
-                                                data.get(adapterPosition).getConcurso().getTipoConcurso());
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+            data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
                 buttonHomeBet.setTag(adapterPosition);
-                buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
                 buttonHomeBolao.setVisibility(View.GONE);
             } else {
-                //TODO: MEGA 30 ANOS//
-                //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
-                //TODO: LOTECA PAIS//
-                EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(adapterPosition).getTipoModalidade(),
-                                                data.get(adapterPosition).getConcurso().getNumero(),
-                                                data.get(adapterPosition).getConcurso().getTipoConcurso());
-                if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
-                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-                } else {
-                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, R.color.branco));
-                }
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 buttonHomeBet.setTag(adapterPosition);
                 if (modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima() == null ||
                     modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima().compareTo(BigDecimal.ZERO) == 0) {
