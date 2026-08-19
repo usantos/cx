@@ -880,7 +880,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         buttonHomeBet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.branco)));
         buttonHomeBet.setStrokeColor(ColorStateList.valueOf(cor));
         buttonHomeBet.setTextColor(cor);
-        buttonHomeBet.setStrokeWidth(2);
+        buttonHomeBet.setStrokeWidth(12);
 
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
             data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
