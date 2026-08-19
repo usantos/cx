@@ -1,16 +1,23 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Build;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.core.content.res.ResourcesCompat;
 
 import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.utils.CustomTypefaceSpan;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -202,17 +209,49 @@ public class PartidaView extends LinearLayout {
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1(), lotecaTimeUm.getItemImage());
 
         lotecaTimeUm.getItemTitle().setText(parametroPartida.getEquipe1().getNome());
+        String legendaAbreviada = parametroPartida.getLegendaAbreviada();
+        Typeface caixaBold = ResourcesCompat.getFont(
+                getContext(),
+                R.font.caixa_std_bold
+        );
         //TODO//
-        String nomeTime = Utils.getUfTime(parametroPartida.getEquipe1())+" "+parametroPartida.getLegendaAbreviada();
-        lotecaTimeUm.getItemDescription().setText(nomeTime);
+        String uf1 = Utils.getUfTime(parametroPartida.getEquipe1());
+        SpannableStringBuilder builder1 = new SpannableStringBuilder();
+        if(parametroPartida.getEquipe1() != null && parametroPartida.getEquipe1().getIndicadorSelecao() != null && parametroPartida.getEquipe1().getIndicadorSelecao()) {
+           builder1.append(legendaAbreviada);
+        }
+        else {
+            builder1.append(uf1);
+            builder1.setSpan(
+                    new CustomTypefaceSpan("", caixaBold),
+                    0,
+                    uf1.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+           builder1.append(legendaAbreviada);
+        }
+
+        lotecaTimeUm.getItemDescription().setText(builder1);
 
         lotecaTimeDois.setSelected(parametroPartida.getEquipe2().isSelecionado());
 //        lotecaTimeDois.getItemImage().setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe2(), lotecaTimeDois.getItemImage());
         lotecaTimeDois.getItemTitle().setText(parametroPartida.getEquipe2().getNome());
         //TODO//
-        String nomeTime2 = Utils.getUfTime(parametroPartida.getEquipe2())+" "+parametroPartida.getLegendaAbreviada();
-        lotecaTimeDois.getItemDescription().setText(nomeTime2);
+        String uf2 = Utils.getUfTime(parametroPartida.getEquipe2());
+        SpannableStringBuilder builder2 = new SpannableStringBuilder();
+        if(parametroPartida.getEquipe2() != null && parametroPartida.getEquipe2().getIndicadorSelecao() != null && parametroPartida.getEquipe2().getIndicadorSelecao()) {
+            builder2.append(legendaAbreviada);
+        }
+        else {
+            builder2.append(uf2);
+            builder2.setSpan(
+                    new CustomTypefaceSpan("", caixaBold),
+                    0,
+                    uf2.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder2.append(legendaAbreviada);
+        }
+        lotecaTimeDois.getItemDescription().setText(builder2);
 
         lotecaEmpate.setSelected(parametroPartida.isEmpate());
 //        lotecaEmpate.getItemImage().setPadding(14,18,14,18);

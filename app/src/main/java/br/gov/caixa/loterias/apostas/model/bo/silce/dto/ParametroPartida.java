@@ -96,9 +96,9 @@ public class ParametroPartida implements Serializable {
 
     public String getLegendaAbreviada() {
         if (descricaoLegenda != null && descricaoLegenda.length() > 4)
-            return descricaoLegenda.substring(4);
+            return " (" + descricaoLegenda.substring(4) + ")";
         else
-            return "(MAS)";
+            return "";
     }
 
     @Override
