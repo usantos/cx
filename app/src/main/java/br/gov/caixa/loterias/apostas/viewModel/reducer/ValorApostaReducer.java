@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.viewModel.reducer;
 import java.math.BigDecimal;
+
+import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
@@ -240,5 +242,63 @@ public class ValorApostaReducer {
     ) {
         return valor != null
                 && valor.doubleValue() > 999.99;
+    }
+    private BigDecimal calcularValorLoteca(
+            ParametroJogoDTO parametroJogo,
+            int duplos,
+            int triplos
+    ) {
+        if (parametroJogo == null) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal valorCalculado = BigDecimal.ZERO;
+
+        if (duplos > 0 || triplos > 0) {
+            if (parametroJogo.getValoresAposta() != null) {
+                for (ParametroValorApostaDTO valorAposta
+                        : parametroJogo.getValoresAposta()) {
+
+                    if (valorAposta == null) {
+                        continue;
+                    }
+
+                    if (valorAposta.getQuantidadeDuplos() != null
+                            && valorAposta.getQuantidadeTriplos() != null
+                            && valorAposta.getQuantidadeDuplos().equals(duplos)
+                            && valorAposta.getQuantidadeTriplos().equals(triplos)) {
+
+                        valorCalculado = valorAposta.getValor();
+                        break;
+                    }
+                }
+            }
+        } else if (parametroJogo.getValorApostaMinima() != null) {
+            valorCalculado = parametroJogo.getValorApostaMinima();
+        }
+
+        return valorCalculado != null
+                ? valorCalculado
+                : BigDecimal.ZERO;
+    }
+
+    public SimulaUiState atualizarLoteca(
+            SimulaUiState state,
+            SimulaUiEvent.LotecaAtualizada event,
+            ParametroJogoDTO parametro
+    ){
+        BigDecimal valor = calcularValorLoteca(
+                parametro,
+                event.getDuplas(),
+                event.getTriplas()
+        );
+
+        return state.toBuilder()
+                .setJogosLoteca(event.getJogos())
+                .setSimplesLoteca(event.getSimples())
+                .setDuplasLoteca(event.getDuplas())
+                .setTriplasLoteca(event.getTriplas())
+                .setValorAposta(valor)
+                .build();
     }
 }

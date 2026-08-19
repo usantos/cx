@@ -179,7 +179,9 @@ public class FluxoApostaReducer {
         if (tipoJogo == ModalidadeEnum.SUPER_7) {
             possuiAlteracoesPendentes =
                     event.getQtdTotalSelecionadosSuperSete() > 0;
-        } else {
+        } else if(tipoJogo == ModalidadeEnum.LOTECA){
+            possuiAlteracoesPendentes = event.getQtdPartidasSelecionadas() > 0;
+        }else {
             possuiAlteracoesPendentes =
                     event.getQtdDezenasSelecionadas() > 0;
         }
@@ -246,6 +248,10 @@ public class FluxoApostaReducer {
                 .setDezenasSelecionadas(
                         event.getDezenasSelecionadas()
                 )
+                .setJogosLoteca(event.getQtdPartidasSelecionadas())
+                .setDuplasLoteca(event.getDuplosLoteca())
+                .setTriplasLoteca(event.getTriplosLoteca())
+                .setSimplesLoteca(event.getQtdPartidasTotal())
                 .build();
     }
 

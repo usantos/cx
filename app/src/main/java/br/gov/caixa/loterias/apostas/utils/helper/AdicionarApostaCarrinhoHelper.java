@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.LotecaActivity;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
@@ -357,7 +358,10 @@ public class AdicionarApostaCarrinhoHelper {
         if (AdicionarApostaCarrinhoHelper.activity instanceof SimulaActivity) {
             ((SimulaActivity) AdicionarApostaCarrinhoHelper.activity)
                     .mostrarPopupApostaAdicionada();
-        } else {
+        }else if(AdicionarApostaCarrinhoHelper.activity instanceof LotecaActivity){
+            ((LotecaActivity) AdicionarApostaCarrinhoHelper.activity)
+                    .mostrarPopupApostaAdicionada();
+        }else {
             if (AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
                 if (telaConfirmacao != null) {
                     ((OnCompraBolaoListener) AdicionarApostaCarrinhoHelper.activity)

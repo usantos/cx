@@ -80,7 +80,6 @@ public class LimparReducer {
 
         return builder.build();
     }
-
     public SimulaUiState limparFlagsDeRenderizacao(
             SimulaUiState state
     ) {
@@ -110,6 +109,7 @@ public class LimparReducer {
                 .setSimplesLoteca(0)
                 .setDuplasLoteca(0)
                 .setTriplasLoteca(0)
+                .setMostrarBotaoLimparAposta(false)
                 .setBotaoCompletarVisivel(false);
     }
 
@@ -185,6 +185,7 @@ public class LimparReducer {
                 .setDezenasSelecionadas(new ArrayList<Integer>())
                 .setLimparNumerosCartela(true)
                 .setMostrarBotaoLimparAposta(false)
+                .setLimparLoteca(true)
                 .setMostrarSalvarAposta(false);
     }
 

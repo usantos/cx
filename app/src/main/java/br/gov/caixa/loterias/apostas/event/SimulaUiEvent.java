@@ -313,6 +313,41 @@ public abstract class SimulaUiEvent {
 
     public static final class DialogComoJogarConsumido extends SimulaUiEvent {
     }
+    public static class LotecaAtualizada extends SimulaUiEvent {
+
+        private final int jogos;
+        private final int simples;
+        private final int duplas;
+        private final int triplas;
+
+        public LotecaAtualizada(
+                int jogos,
+                int simples,
+                int duplas,
+                int triplas
+        ) {
+            this.jogos = jogos;
+            this.simples = simples;
+            this.duplas = duplas;
+            this.triplas = triplas;
+        }
+
+        public int getJogos() {
+            return jogos;
+        }
+
+        public int getSimples() {
+            return simples;
+        }
+
+        public int getDuplas() {
+            return duplas;
+        }
+
+        public int getTriplas() {
+            return triplas;
+        }
+    }
 
     public static final class InicializarTeimosinhas extends SimulaUiEvent {
         private final List<String> qntTeimosinhas;
