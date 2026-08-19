@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
@@ -70,7 +72,7 @@ public class CadastroActivity extends LoteriasBaseAppActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setCustomView(imageView);
             getSupportActionBar().setDisplayShowCustomEnabled(true);
-            getSupportActionBar().setBackgroundDrawable(getResources().getDrawable((R.drawable.background_gradient_verde)));
+            getSupportActionBar().setBackgroundDrawable(getResources().getDrawable((R.drawable.background_app_bar_azul)));
         }
         ufSelect = getResources().getString(R.string.string_vazia);
         municipioSelect = getResources().getString(R.string.string_vazia);
@@ -83,27 +85,35 @@ public class CadastroActivity extends LoteriasBaseAppActivity {
         return true;
     }
 
-    protected void addRightImg(EditText textField) {
-        textField.setOnFocusChangeListener((v, hasFocus) -> {
-        /* When focus is lost check that the text field
-        * has valid values.
-        */
-            if (!hasFocus) {
-                if (v.getClass() == MaskedEditText.class) {
-                    if (((MaskedEditText) v).getUnmaskedText().toString().equals("")) {
-                        ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    } else {
-                        ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-                    }
-                } else {
-                    if (((EditText) v).getText().toString().equals("")) {
-                        ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    } else {
-                        ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-                    }
-                }
-            }
-        });
+    protected void addLeftImg(EditText textField) {
+        if (!textField.getText().toString().trim().isEmpty()) {
+
+            textField.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_check, 0, 0, 0);
+
+            TextViewCompat.setCompoundDrawableTintList(
+                    textField,
+                    ContextCompat.getColorStateList(
+                            textField.getContext(),
+                            R.color.cinza_item_desabilitado
+                    )
+            );
+
+            textField.setHintTextColor(
+                    ContextCompat.getColor(
+                            textField.getContext(),
+                            R.color.cinza_item_desabilitado
+                    )
+            );
+
+        } else {
+            textField.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+            TextViewCompat.setCompoundDrawableTintList(
+                    textField,
+                    null
+            );
+        }
     }
 
     protected void addListenerUF(EditText editTextUF, List<String> listUFString) {

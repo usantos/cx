@@ -57,6 +57,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SelecaoModalidadesRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRecyclerViewAdapter;
@@ -322,9 +323,9 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
             @Override
             public void onAdd(int position) {
-                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
-                model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
-                //}
+                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
+                    model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
+                }
             }
 
         };

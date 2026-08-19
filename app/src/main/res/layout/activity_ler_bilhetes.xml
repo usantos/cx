@@ -10,9 +10,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        >
+        android:layout_height="match_parent">
 
         <androidx.camera.view.PreviewView
             android:id="@+id/previewView"
@@ -21,8 +19,8 @@
             android:layout_centerInParent="true" />
 
         <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -82,22 +80,6 @@
             android:gravity="center"
 
             android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonBarCode"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:background="@drawable/button_border_amareloqueimado_arredondado"
-                android:drawableLeft="@drawable/ic_barcode"
-                android:drawablePadding="8dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:fontFamily="@font/caixa_std_regular"
-                android:text="@string/title_CodigoBarras"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/amareloQueimado"
-                android:textSize="14.2sp" />
 
             <android.widget.Space
                 android:layout_width="32dp"

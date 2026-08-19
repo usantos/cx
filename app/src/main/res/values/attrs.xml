@@ -27,6 +27,11 @@
         <attr name="clickToClose" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="MaskedEditText">
+        <attr name="mask" format="string" />
+        <attr name="maskColor" format="color" />
+    </declare-styleable>
+
     <declare-styleable name="SegmentedButton">
 
         <attr name="sb_rippleColor" format="color" />
