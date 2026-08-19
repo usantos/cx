@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -109,8 +110,6 @@ import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
-import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
-import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -191,6 +190,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.principal, menu);
+        if (EspecialUtils.isOutubroRosa()){
+            menu.findItem(R.id.action_apresentar_trevo).setIcon(AppCompatResources.getDrawable(this, R.drawable.icon_trevo_outubro_rosa));
+            menu.findItem(R.id.action_outubro_rosa).setVisible(true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -229,7 +232,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
 
         TimerNotificarCotasExpiradasSingleton.getInstance(this).iniciarVerificacao();
+        aplicaOutubroRosa();
     }
+
+    private void aplicaOutubroRosa() {
+    }
+
     private boolean veioDoCarrinho() {
         String origem = getIntent() != null
                 ? getIntent().getStringExtra("ORIGEM_TELA")
