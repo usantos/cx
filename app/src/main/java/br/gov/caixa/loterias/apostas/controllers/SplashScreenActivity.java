@@ -154,7 +154,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_RAPIDAO.get(), result.getPayload().getMapa().isRapidaoHabilitado());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), result.getPayload().getMapa().getUrlBaseApostador());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), result.getPayload().getMapa().getGrupoDeCpfsApostador());
-                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), true);
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), true);
 
                         if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_VALOR,result.getPayload().getMapa().getConcursoMega30Anos());
