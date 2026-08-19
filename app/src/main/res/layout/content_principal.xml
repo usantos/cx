@@ -419,7 +419,7 @@
         android:textAllCaps="false"
         android:textColor="@color/branco"
         android:textSize="16sp"
-        app:cornerRadius="12dp"
+        app:cornerRadius="4dp"
         android:fontFamily="@font/caixa_std_regular"
         tools:text="Aposta\npor R$ 2,00" />
 
@@ -429,7 +429,7 @@
         android:id="@+id/buttonHomeBolao"
         android:layout_width="match_parent"
         android:layout_height="84dp"
-        app:cornerRadius="12dp"
+        app:cornerRadius="4dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="88dp"
