@@ -22,7 +22,6 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -32,9 +31,9 @@ import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.FilaBRAListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 
 public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
@@ -115,14 +114,44 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
     }
 
     private void redirectApp(){
-        if(!DadosUsuarioBO.checarFecharIntroducao()) {
-            startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+        if (!BuildVersionUtil.isPRD() && !SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false)){
+            DialogUtils.dialogDoisBotoesPersonalizados(this, "Mock Outubro Rosa", "Outubro Rosa se encontra desativado. Deseja ativar?",
+                    "Sim, tivar", "Não", new OnDialogDoisBotoesListener() {
+                        @Override
+                        public void PositiveButton(DialogInterface dialog, int which) {
+                            SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), true);
+                            if(!DadosUsuarioBO.checarFecharIntroducao()) {
+                                startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+                            }
+                            else{
+                                startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+                            }
+                            //}
+                            finish();
+                        }
+
+                        @Override
+                        public void NegativeButton(DialogInterface dialog, int which) {
+                            if(!DadosUsuarioBO.checarFecharIntroducao()) {
+                                startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+                            }
+                            else{
+                                startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+                            }
+                            //}
+                            finish();
+                        }
+                    });
+        } else {
+            if(!DadosUsuarioBO.checarFecharIntroducao()) {
+                startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+            }
+            else{
+                startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+            }
+            //}
+            finish();
         }
-        else{
-            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-        }
-        //}
-        finish();
     }
     private void callConfiguracoesApp() {
         try {
@@ -154,7 +183,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_RAPIDAO.get(), result.getPayload().getMapa().isRapidaoHabilitado());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), result.getPayload().getMapa().getUrlBaseApostador());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), result.getPayload().getMapa().getGrupoDeCpfsApostador());
-                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), true);
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false));
 
                         if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_VALOR,result.getPayload().getMapa().getConcursoMega30Anos());
@@ -183,6 +212,14 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
             redirectApp();
         }
     }
+
+//    private void atualizaIconeApp() {
+//        if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false)){
+//            IconeAppUtils.atualizaIcone(IconeAppEnum.OUTUBRO_ROSA);
+//        } else {
+//            IconeAppUtils.atualizaIcone(IconeAppEnum.DEFAULT);
+//        }
+//    }
 
     private boolean temInformacaoBolao(ParametrosConfiguraveisDTOResponse result) {
         return temDadosPayloadMapa(result) && result.getPayload().getMapa().getBolaoHabilitado() != null;

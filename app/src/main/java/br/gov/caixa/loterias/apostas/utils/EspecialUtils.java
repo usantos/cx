@@ -109,4 +109,8 @@ public class EspecialUtils {
         }
 
     }
+
+    public static Boolean isOutubroRosa(){
+        return SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false);
+    }
 }

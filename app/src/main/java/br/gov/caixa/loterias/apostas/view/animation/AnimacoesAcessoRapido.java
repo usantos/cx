@@ -30,7 +30,7 @@ public class AnimacoesAcessoRapido {
     private RelativeLayout relativePrincipal;
     private List<View> animationViewList;
     private RelativeLayout relativeBlankView;
-    private LinearLayout linearAtalhoRapidoLoterias;
+    private View containerView;
     private Button buttonHomeBet;
     private Activity activity;
     private View trevoToolbar;
@@ -42,14 +42,14 @@ public class AnimacoesAcessoRapido {
     public AnimacoesAcessoRapido(View v, RelativeLayout relativePrincipal,
                                  List<View> viewList,
                                  RelativeLayout relativeBlankView,
-                                 LinearLayout linearAtalhoRapidoLoterias,
+                                 View containerView,
                                  Button buttonHomeBet,
                                  View trevoToolbar,
                                  Activity activity, EstiloModalidadeMKP estilo, OnAnimacaoViewListener listener) {
         this.v = v;
         this.relativePrincipal = relativePrincipal;
         this.animationViewList = viewList;
-        this.linearAtalhoRapidoLoterias = linearAtalhoRapidoLoterias;
+        this.containerView = containerView;
         this.relativeBlankView = relativeBlankView;
         this.buttonHomeBet = buttonHomeBet;
         this.trevoToolbar = trevoToolbar;
@@ -110,7 +110,7 @@ public class AnimacoesAcessoRapido {
         AnimacaoUtils.fadeIn(relativePrincipal, TRANSLATION_X, TRANSLATION_Y, DURACAO_LONGA, () -> {
 //                relativeBlankView.setVisibility(View.GONE);
 
-            linearAtalhoRapidoLoterias.setVisibility(View.GONE);
+            containerView.setVisibility(View.GONE);
             trevoToolbar.setEnabled(true);
             listener.animacaoFinalizada();            
         });

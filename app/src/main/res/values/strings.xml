@@ -1698,4 +1698,10 @@
     <string name="internet_instavel">Parece que sua internet\nestá com alguma instabilidade</string>
     <string name="verifique_conexao">Verifique sua conexão\ne tente novamente</string>
 
+    <string name="text_descartar">Ao voltar para a página inicial, sua aposta em edição será descartada. Deseja continuar?</string>
+    <string name="xx">XX</string>
+    <string name="outubro_rosa">Outubro Rosa</string>
+    <string name="outubro_rosa_paragrafo_1">Campanha anual que conscientiza sobre a\n_importância da prevenção, do diagnóstico precoce e do tratamento adequado_ do câncer\nde mama e do câncer do colo do útero.</string>
+    <string name="outubro_rosa_paragrafo_2">O Ministério da Saúde orienta 3 dicas para\nmelhorar a qualidade de vida e aumentar as\nchances de cura: _manter hábitos saudáveis, ter atenção aos sinais do corpo e fazer exames regulares._</string>
+
 </resources>

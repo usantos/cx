@@ -153,7 +153,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             rlMsgDisque180;
     private LinearLayout atalhoRapidoLoterias;
     private ExpandableListView sideMenuExpandableListView;
-    private ConstraintLayout viewSair;
+    private ConstraintLayout viewSair, atalhoOutubroRosa, containerDescricaoOutubroRosa, containerAtivaOutubroRosaTeste;
     private ConstraintLayout recolherMenu;
 
     //fragments
@@ -220,6 +220,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        if (EspecialUtils.isOutubroRosa()){
+            toggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
+        }
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toolbarListener();
@@ -248,6 +251,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             textoInformativoCaixa.setTextColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
             nomeCaixa.setTextColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
             iconeTrevoDrawer.setBackground(ContextCompat.getDrawable(this, R.drawable.icon_trevo_rosa));
+            ((TextView) findViewById(R.id.paragrafo_1)).setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.outubro_rosa_paragrafo_1), R.color.outubro_rosa_secundario));
+            ((TextView) findViewById(R.id.paragrafo_2)).setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.outubro_rosa_paragrafo_2), R.color.outubro_rosa_secundario));
+            drawerLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
         }
     }
 
@@ -290,7 +296,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         this.relativeLayoutContentFavoritas = findViewById(R.id.relativeLayoutContentFavoritas);
         this.relativeLayoutContentRepassados = findViewById(R.id.relativeLayoutContentRepassados);
         this.rlMsgDisque180 = findViewById(R.id.rlMsgDisque180);
+        this.containerDescricaoOutubroRosa = findViewById(R.id.container_descricao);
+        this.containerAtivaOutubroRosaTeste = findViewById(R.id.container_ativa_teste);
+        this.rlMsgDisque180 = findViewById(R.id.rlMsgDisque180);
         this.atalhoRapidoLoterias = findViewById(R.id.atalhoRapidoLoterias);
+        this.atalhoOutubroRosa = findViewById(R.id.atalhoRapidoOutubroRosa);
         this.sideMenuExpandableListView = findViewById(R.id.sideMenuExpandableListView);
         this.viewSair = findViewById(R.id.viewSair);
         View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
@@ -305,7 +315,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 {
                     if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(PrincipalActivity.this, 2)) return;
                     clickButtonHomeBet();
-                }
+                });
 
         buttonHomeBolao.setOnClickListener(view -> clickButtonBolao());
 
@@ -629,8 +639,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 repassesSociais = response.getPayload();
                 layoutTrevoAcessoRapido();
                 AlertDialogUtils.dismiss();
-                PrincipalActivity.this.animacoesAcessoRapido = createAnimacaoTrevo(actionApresentarTrevo, animacoesAcessoRapido);
-                showMenu(actionApresentarTrevo, animacoesAcessoRapido);
+                PrincipalActivity.this.animacoesAcessoRapido = createAnimacaoTrevo(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias,getMenuRapidoViewList());
+                showMenu(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias);
             }
 
             @Override
@@ -639,10 +649,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             }
         });
     }
-    private void showMenu(View view, AnimacoesAcessoRapido animacoes) {
+    private void showMenu(View view, AnimacoesAcessoRapido animacoes, View containerView) {
         if (relativeContentPrincipal.isEnabled()) {
             if (infiniteAdapter != null){
-                AnimacaoAbrirMenuRapido(view, animacoes);
+                AnimacaoAbrirMenuRapido(animacoes, containerView);
                 buttonHomeBet.setVisibility(View.GONE);
                 buttonHomeBolao.setVisibility(View.GONE);
             }
@@ -712,13 +722,13 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
                     actionApresentarTrevo.setOnClickListener(view -> {
-                        PrincipalActivity.this.animacoesAcessoRapido = createAnimacaoTrevo(actionApresentarTrevo, animacoesAcessoRapido);
+                        PrincipalActivity.this.animacoesAcessoRapido = createAnimacaoTrevo(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias, getMenuRapidoViewList());
                         if (modalidadesParaListar != null && modalidadesParaListar.size() > 0) {
                             if(precisaBuscarRepasses){
                                 precisaBuscarRepasses = false;
                                 callRepassesSociais();
                             }else {
-                                showMenu(actionApresentarTrevo, animacoesAcessoRapido);
+                                showMenu(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias);
                             }
                         }
                     });
@@ -729,19 +739,19 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 if (actionOutubroRosa != null) {
                     toolbar.removeOnLayoutChangeListener(this);
                     actionOutubroRosa.setOnClickListener(view -> {
-                        PrincipalActivity.this.animacoesOutubroRosa = createAnimacaoTrevo(actionOutubroRosa, animacoesOutubroRosa);
-                        showMenu(actionOutubroRosa, animacoesOutubroRosa);
+                        PrincipalActivity.this.animacoesOutubroRosa = createAnimacaoTrevo(actionOutubroRosa, animacoesOutubroRosa, atalhoOutubroRosa, getMenuOutubroRosaViewList());
+                        showMenu(actionOutubroRosa, animacoesOutubroRosa, atalhoOutubroRosa);
                     });
                 }
             }
         });
     }
 
-    private void AnimacaoAbrirMenuRapido(View v, AnimacoesAcessoRapido animacoes) {
+    private void AnimacaoAbrirMenuRapido(AnimacoesAcessoRapido animacoes, View containerView) {
         if(infiniteAdapter != null){
             relativeContentPrincipal.setEnabled(false);
             actionApresentarTrevo.setEnabled(false);
-            atalhoRapidoLoterias.setVisibility(View.VISIBLE);
+            containerView.setVisibility(View.VISIBLE);
             int positionTopRodape = (int) relativeBlankView.getY();
 
             int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
@@ -777,14 +787,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     @NonNull
-    private AnimacoesAcessoRapido createAnimacaoTrevo(View v, AnimacoesAcessoRapido animacoes) {
+    private AnimacoesAcessoRapido createAnimacaoTrevo(View v, AnimacoesAcessoRapido animacoes, View containerView,List<View> viewList) {
         if (animacoes == null){
             return new AnimacoesAcessoRapido(
                     v,
                     relativeContentPrincipal,
-                    getViewList(),
+                    viewList,
                     relativeBlankView,
-                    atalhoRapidoLoterias,
+                    containerView,
                     buttonHomeBet,
                     actionApresentarTrevo,
                     PrincipalActivity.this,
@@ -794,12 +804,37 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         return animacoes;
     }
 
-    private List<View> getViewList() {
+    private List<View> getMenuRapidoViewList() {
         ArrayList<View> list = new ArrayList<>();
         list.add(relativeLayoutContentLerBilhetes);
         list.add(rlJogoResponsavel);
         list.add(relativeLayoutContentRepassados);
         list.add(rlMsgDisque180);
+        return list;
+    }
+
+    private List<View> getMenuOutubroRosaViewList() {
+        ArrayList<View> list = new ArrayList<>();
+        list.add(containerDescricaoOutubroRosa);
+        if (!BuildVersionUtil.isPRD()){
+            containerAtivaOutubroRosaTeste.setVisibility(View.VISIBLE);
+            String status = "Status: ";
+            if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false)){
+                status += "Ativado";
+            } else {
+                status += "Desativado";
+            }
+            ((TextView) findViewById(R.id.status_teste)).setText(status);
+            containerAtivaOutubroRosaTeste.setOnClickListener(view ->{
+                DialogUtils.dialogConfirmar(PrincipalActivity.this, "Deseja realmente mudar o status do outubro rosa?", (dialog, which) -> {
+                    SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(),
+                            !SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false));
+                    DialogUtils.dialogEntendiListener(PrincipalActivity.this, "Ao clicar aqui, vc mudou o status. Para ver o resultado, é preciso entrar novamente no app.",
+                            (dialog2, which2) -> finishAndRemoveTask());
+                });
+            });
+            list.add(containerAtivaOutubroRosaTeste);
+        }
         return list;
     }
 
@@ -1101,25 +1136,25 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     protected void clickRelativeLayoutContentRepassados() {
-        showMenu(actionApresentarTrevo, animacoesAcessoRapido);
+        showMenu(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias);
         Intent activity = new Intent(PrincipalActivity.this, RepassesSociaisActivity.class);
         startActivity(activity);
     }
 
     protected void clickRelativeLayoutContentRapidao() {
-        showMenu(actionApresentarTrevo, animacoesAcessoRapido);
+        showMenu(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias);
         if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
             redirecionaRapidao();
         }
     }
 
     protected void clickrlJogoResponsavel() {
-        showMenu(actionApresentarTrevo, animacoesAcessoRapido);
+        showMenu(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias);
         redirecionaJogoResponsavel();
     }
 
     protected void clickrlMsgDisque180() {
-        showMenu(actionApresentarTrevo, animacoesAcessoRapido);
+        showMenu(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias);
         redirecionaMsgDisque180();
     }
 
@@ -1138,7 +1173,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     protected void clickRelativeLayoutContentLerBilhetes() {
-        showMenu(actionApresentarTrevo, animacoesAcessoRapido);
+        showMenu(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias);
         if (ContextCompat.checkSelfPermission(PrincipalActivity.this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(PrincipalActivity.this,

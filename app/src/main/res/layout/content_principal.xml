@@ -9,6 +9,7 @@
     tools:showIn="@layout/app_bar_principal">
 
     <include layout="@layout/content_principal_menu_rapido"/>
+    <include layout="@layout/content_principal_menu_rapido_outubro_rosa"/>
 
     <RelativeLayout
         android:id="@+id/relativeContentPrincipal"
