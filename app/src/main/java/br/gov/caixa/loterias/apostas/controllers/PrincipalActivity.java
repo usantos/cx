@@ -182,7 +182,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private ModalidadeEnum tipoModalidade = null;
     private TextView textoInformativoCaixa, nomeCaixa;
     private AppCompatImageView arrow, iconeTrevoDrawer;
-    private AnimacoesAcessoRapido animacoesAcessoRapido;
+    private AnimacoesAcessoRapido animacoesAcessoRapido, animacoesOutubroRosa;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -629,7 +629,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 repassesSociais = response.getPayload();
                 layoutTrevoAcessoRapido();
                 AlertDialogUtils.dismiss();
-                showMenu(actionApresentarTrevo);
+                PrincipalActivity.this.animacoesAcessoRapido = createAnimacaoTrevo(actionApresentarTrevo, animacoesAcessoRapido);
+                showMenu(actionApresentarTrevo, animacoesAcessoRapido);
             }
 
             @Override
@@ -638,15 +639,15 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             }
         });
     }
-    private void showMenu(View view) {
+    private void showMenu(View view, AnimacoesAcessoRapido animacoes) {
         if (relativeContentPrincipal.isEnabled()) {
             if (infiniteAdapter != null){
-                AnimacaoAbrirMenuRapido(view, infiniteAdapter);
+                AnimacaoAbrirMenuRapido(view, animacoes);
                 buttonHomeBet.setVisibility(View.GONE);
                 buttonHomeBolao.setVisibility(View.GONE);
             }
         } else {
-            AnimacaoFecharMenuRapido(view);
+            AnimacaoFecharMenuRapido(view, animacoes);
         }
     }
 
@@ -711,12 +712,13 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
                     actionApresentarTrevo.setOnClickListener(view -> {
+                        PrincipalActivity.this.animacoesAcessoRapido = createAnimacaoTrevo(actionApresentarTrevo, animacoesAcessoRapido);
                         if (modalidadesParaListar != null && modalidadesParaListar.size() > 0) {
                             if(precisaBuscarRepasses){
                                 precisaBuscarRepasses = false;
                                 callRepassesSociais();
                             }else {
-                                showMenu(actionApresentarTrevo);
+                                showMenu(actionApresentarTrevo, animacoesAcessoRapido);
                             }
                         }
                     });
@@ -727,24 +729,24 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 if (actionOutubroRosa != null) {
                     toolbar.removeOnLayoutChangeListener(this);
                     actionOutubroRosa.setOnClickListener(view -> {
-                        showMenu(actionOutubroRosa);
+                        PrincipalActivity.this.animacoesOutubroRosa = createAnimacaoTrevo(actionOutubroRosa, animacoesOutubroRosa);
+                        showMenu(actionOutubroRosa, animacoesOutubroRosa);
                     });
                 }
             }
         });
     }
 
-    private void AnimacaoAbrirMenuRapido(View v, InfiniteScrollAdapter infiniteScrollAdapter) {
-        if(infiniteScrollAdapter != null){
+    private void AnimacaoAbrirMenuRapido(View v, AnimacoesAcessoRapido animacoes) {
+        if(infiniteAdapter != null){
             relativeContentPrincipal.setEnabled(false);
             actionApresentarTrevo.setEnabled(false);
             atalhoRapidoLoterias.setVisibility(View.VISIBLE);
-            createAnimacaoTrevo(v);
             int positionTopRodape = (int) relativeBlankView.getY();
 
             int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
 
-            this.animacoesAcessoRapido.animacaoDescerContent(positionTopRodape - itemSize);
+            animacoes.animacaoDescerContent(positionTopRodape - itemSize);
         }
     }
 
@@ -758,13 +760,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         };
     }
 
-    private void AnimacaoFecharMenuRapido(View v) {
+    private void AnimacaoFecharMenuRapido(View v, AnimacoesAcessoRapido animacoes) {
         relativeContentPrincipal.setEnabled(true);
         actionApresentarTrevo.setEnabled(false);
-        if (this.animacoesAcessoRapido == null){
-            createAnimacaoTrevo(v);
-        }
-        animacoesAcessoRapido.animacaoSubirContent();
+        animacoes.animacaoSubirContent();
     }
 
     @NonNull
@@ -778,9 +777,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     @NonNull
-    private void createAnimacaoTrevo(View v) {
-        if (this.animacoesAcessoRapido == null){
-            this.animacoesAcessoRapido = new AnimacoesAcessoRapido(
+    private AnimacoesAcessoRapido createAnimacaoTrevo(View v, AnimacoesAcessoRapido animacoes) {
+        if (animacoes == null){
+            return new AnimacoesAcessoRapido(
                     v,
                     relativeContentPrincipal,
                     getViewList(),
@@ -792,6 +791,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                     getEstiloModalidadeMKP(),
                     onAnimacaoAcessoRapido());
         }
+        return animacoes;
     }
 
     private List<View> getViewList() {
@@ -1101,29 +1101,25 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     protected void clickRelativeLayoutContentRepassados() {
-        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
-        showMenu(actionApresentarTrevo);
+        showMenu(actionApresentarTrevo, animacoesAcessoRapido);
         Intent activity = new Intent(PrincipalActivity.this, RepassesSociaisActivity.class);
         startActivity(activity);
     }
 
     protected void clickRelativeLayoutContentRapidao() {
-        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
-        showMenu(actionApresentarTrevo);
+        showMenu(actionApresentarTrevo, animacoesAcessoRapido);
         if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
             redirecionaRapidao();
         }
     }
 
     protected void clickrlJogoResponsavel() {
-        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
-        showMenu(actionApresentarTrevo);
+        showMenu(actionApresentarTrevo, animacoesAcessoRapido);
         redirecionaJogoResponsavel();
     }
 
     protected void clickrlMsgDisque180() {
-        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
-        showMenu(actionApresentarTrevo);
+        showMenu(actionApresentarTrevo, animacoesAcessoRapido);
         redirecionaMsgDisque180();
     }
 
@@ -1137,18 +1133,18 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     protected void clickRelativeLayoutContentFavoritas() {
-        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        AnimacaoFecharMenuRapido(relativeContentPrincipal, animacoesAcessoRapido);
         startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
     }
 
     protected void clickRelativeLayoutContentLerBilhetes() {
-        showMenu(actionApresentarTrevo);
+        showMenu(actionApresentarTrevo, animacoesAcessoRapido);
         if (ContextCompat.checkSelfPermission(PrincipalActivity.this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(PrincipalActivity.this,
                     new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
         } else {
-            AnimacaoFecharMenuRapido(relativeContentPrincipal);
+            AnimacaoFecharMenuRapido(relativeContentPrincipal, animacoesAcessoRapido);
             startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
         }
     }
@@ -1283,14 +1279,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private void redirecionaRapidao() {
         if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
-            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+            AnimacaoFecharMenuRapido(actionApresentarTrevo, animacoesAcessoRapido);
             if (DadosUsuarioBO.checarTutorialRapidao()) {
                 startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
             } else {
                 startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
             }
         } else {
-            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+            AnimacaoFecharMenuRapido(actionApresentarTrevo, animacoesAcessoRapido);
         }
     }
 
@@ -1350,7 +1346,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         switch (requestCode) {
             case ZXING_CAMERA_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    AnimacaoFecharMenuRapido(relativeContentPrincipal);
+                    AnimacaoFecharMenuRapido(relativeContentPrincipal, animacoesAcessoRapido);
                     startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
                 } else {
                     Toast.makeText(this, R.string.label_conceda_permissao_camera, Toast.LENGTH_SHORT).show();
