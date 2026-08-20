@@ -176,12 +176,13 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private static int contRegressivo = 1;
     private int anInt;
     private int ano;
-    Boolean expandido = false;
+    private Boolean expandido = false;
     private static final int REQ_CARRINHO = 1001;
     private Integer numeroConcurso = null;
     private ModalidadeEnum tipoModalidade = null;
     private TextView textoInformativoCaixa, nomeCaixa;
     private AppCompatImageView arrow, iconeTrevoDrawer;
+    private AnimacoesAcessoRapido animacoesAcessoRapido;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -738,33 +739,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             relativeContentPrincipal.setEnabled(false);
             actionApresentarTrevo.setEnabled(false);
             atalhoRapidoLoterias.setVisibility(View.VISIBLE);
-            //TODO: MEGA 30 ANOS//
-            //TODO: LOTECA PAIS//
-            EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(),
-                    data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(),
-                    data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
-            //boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
-            //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
-            AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
-                    v,
-                    relativeContentPrincipal,
-                    relativeLayoutContentRapidao,
-                    relativeLayoutContentLerBilhetes,
-                    rlJogoResponsavel,
-                    relativeLayoutContentRepassados,
-                    rlMsgDisque180,
-                    relativeBlankView,
-                    atalhoRapidoLoterias,
-                    buttonHomeBet,
-                    actionApresentarTrevo,
-                    PrincipalActivity.this,
-                    estilo,
-                    onAnimacaoAcessoRapido());
+            createAnimacaoTrevo(v);
             int positionTopRodape = (int) relativeBlankView.getY();
 
             int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
 
-            animacoesAcessoRapido.animacaoDescerContent(positionTopRodape - itemSize);
+            this.animacoesAcessoRapido.animacaoDescerContent(positionTopRodape - itemSize);
         }
     }
 
@@ -781,29 +761,46 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private void AnimacaoFecharMenuRapido(View v) {
         relativeContentPrincipal.setEnabled(true);
         actionApresentarTrevo.setEnabled(false);
-        //TODO: MEGA 30 ANOS//
-        //TODO: LOTECA PAIS//
+        if (this.animacoesAcessoRapido == null){
+            createAnimacaoTrevo(v);
+        }
+        animacoesAcessoRapido.animacaoSubirContent();
+    }
+
+    @NonNull
+    private EstiloModalidadeMKP getEstiloModalidadeMKP() {
         EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(),
                 data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(),
                 data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
         //boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
         //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
-        AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
-                v,
-                relativeContentPrincipal,
-                relativeLayoutContentRapidao,
-                relativeLayoutContentLerBilhetes,
-                rlJogoResponsavel,
-                relativeLayoutContentRepassados,
-                rlMsgDisque180,
-                relativeBlankView,
-                atalhoRapidoLoterias,
-                buttonHomeBet,
-                actionApresentarTrevo,
-                PrincipalActivity.this,
-                estilo,
-                onAnimacaoAcessoRapido());
-        animacoesAcessoRapido.animacaoSubirContent();
+        return estilo;
+    }
+
+    @NonNull
+    private void createAnimacaoTrevo(View v) {
+        if (this.animacoesAcessoRapido == null){
+            this.animacoesAcessoRapido = new AnimacoesAcessoRapido(
+                    v,
+                    relativeContentPrincipal,
+                    getViewList(),
+                    relativeBlankView,
+                    atalhoRapidoLoterias,
+                    buttonHomeBet,
+                    actionApresentarTrevo,
+                    PrincipalActivity.this,
+                    getEstiloModalidadeMKP(),
+                    onAnimacaoAcessoRapido());
+        }
+    }
+
+    private List<View> getViewList() {
+        ArrayList<View> list = new ArrayList<>();
+        list.add(relativeLayoutContentLerBilhetes);
+        list.add(rlJogoResponsavel);
+        list.add(relativeLayoutContentRepassados);
+        list.add(rlMsgDisque180);
+        return list;
     }
 
     @Override
