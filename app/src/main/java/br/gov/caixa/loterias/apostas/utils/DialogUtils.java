@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -118,9 +119,8 @@ public class DialogUtils {
         dialog.setOnShowListener(d -> {
             if (tvTitulo.getVisibility() == View.VISIBLE) {
                 tvTitulo.post(() -> {
-                    tvTitulo.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
+                    tvTitulo.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
                     );
                 });
             }
@@ -212,9 +212,8 @@ public class DialogUtils {
 
         dialog.setOnShowListener(d -> {
             tvTitulo.post(() -> {
-                tvTitulo.performAccessibilityAction(
-                        android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                        null
+                tvTitulo.sendAccessibilityEvent(
+                        AccessibilityEvent.TYPE_VIEW_FOCUSED
                 );
             });
         });
@@ -298,9 +297,8 @@ public class DialogUtils {
         dialog.setOnShowListener(dialogInterface -> {
             if (tituloDialog.getVisibility() == View.VISIBLE) {
                 tituloDialog.post(() -> {
-                    tituloDialog.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
+                    tituloDialog.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
                     );
                 });
             }
@@ -398,9 +396,8 @@ public class DialogUtils {
         dialog.setOnShowListener(dialogInterface -> {
             if (tituloDialog.getVisibility() == View.VISIBLE) {
                 tituloDialog.post(() -> {
-                    tituloDialog.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
+                    tituloDialog.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
                     );
                 });
             }
@@ -783,9 +780,8 @@ public class DialogUtils {
         dialog.setOnShowListener(dialogInterface -> {
             if (tituloDialog.getVisibility() == View.VISIBLE) {
                 tituloDialog.post(() -> {
-                    tituloDialog.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
+                    tituloDialog.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
                     );
                 });
             }
@@ -834,9 +830,8 @@ public class DialogUtils {
         dialog.setOnShowListener(d -> {
             if (tvTitulo.getVisibility() == View.VISIBLE) {
                 tvTitulo.post(() -> {
-                    tvTitulo.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
+                    tvTitulo.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
                     );
                 });
             }
