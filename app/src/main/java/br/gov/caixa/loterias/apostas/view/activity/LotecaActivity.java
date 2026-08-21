@@ -195,7 +195,9 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         viewModel = new ViewModelProvider(this).get(LotecaViewModel.class);
         observeState();
-        configurarEventosViewModel();
+        if(frameCarrinho != null){
+            AccessibilityUtils.setBotao(frameCarrinho);
+        }
         textSelecionados.setVisibility(View.GONE);
 
         estilo = new EstiloModalidadeMKP(tipoJogo);
@@ -249,7 +251,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
         this.tvValorAposta = findViewById(R.id.tvValorAposta);
         this.tvValorCarrinho = findViewById(R.id.tvTotalCarrinho);
-        this.containerComoJogar = findViewById(R.id.containerComoJogar);
+        this.containerComoJogar = findViewById(R.id.containerComoJogarLoteca);
         this.btnQuantidadeNumeros = findViewById(R.id.btnQuantidadeNumeros);
         this.btnQuantidadeTrevos = findViewById(R.id.btnQuantidadeTrevos);
         this.btnTeimosinha = findViewById(R.id.btnTeimosinha);
@@ -893,17 +895,6 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
     }
 
-    private void configurarEventosViewModel() {
-
-        if (containerComoJogar != null) {
-            AccessibilityUtils.setBotao(containerComoJogar);
-            containerComoJogar.setOnClickListener(view -> viewModel.onEvent(new SimulaUiEvent.ComoJogarClicado()));
-        }
-        if(frameCarrinho != null){
-            AccessibilityUtils.setBotao(frameCarrinho);
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -1233,6 +1224,10 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
                         }
                     }
             );
+        }
+        if (containerComoJogar != null) {
+            AccessibilityUtils.setBotao(containerComoJogar);
+            containerComoJogar.setOnClickListener(view -> viewModel.onEvent(new SimulaUiEvent.ComoJogarClicado()));
         }
 
         if (botaoAdicionar != null) {
