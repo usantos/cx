@@ -75,7 +75,7 @@ import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
-public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterListener, LotogolListener {
+public class SimulaFragment extends BaseEtapaFragment {
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
     private SensorManager mSensorManager;
 
@@ -287,12 +287,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
         loadParametroJogo();
 
-        if (parentActivity != null && parametroJogo != null) {
-            if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
-//                configuraBotoesLotecaOuLotogol();
-            }
-        }
-
         if (parametroJogo != null
                 && parametroJogo.isTipoJogo(
                 ModalidadeEnum.LOTOMANIA
@@ -390,10 +384,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             return;
         }
 
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-            atualizaValorApostaLoteca();
-            return;
-        }
 
         int qtdMinima =
                 getStateAtual().getQtdDezenasPossiveisSelecionado() > 0
@@ -595,11 +585,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         return valorAtual;
     }
 
-    private void zeraLoteca() {
-        limparPartidadasSelecionasLoteca();
-        limparOpcaoOutrosNumerosLayout();
-        atualizarValorENotificarEstadoCartela();
-    }
 
     @Override
     public void onViewCreated(
@@ -897,9 +882,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
             solicitarAdicionarCarrinho();
 
-            if (comando.isLimparLotecaDepois()) {
-                zeraLoteca();
-            }
 
             return;
         }
@@ -948,13 +930,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             return;
         }
 
-        if (state.getComandoCompletarAposta()
-                instanceof CompletarApostaEffect.ZerarLoteca) {
-
-            zeraLoteca();
-
-            consumirComandoCompletarAposta();
-        }
     }
 
     private void consumirComandoCompletarAposta() {
@@ -1110,19 +1085,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         );
     }
 
-
-    private void limparOpcaoOutrosNumerosLayout() {
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && opcaoOutrosNumerosLayout.getVisibility() == View.VISIBLE) {
-            setVisibilityCheckedNumerosLayout();
-            atualizarValorENotificarEstadoCartela();
-        }
-    }
-
-    private void setVisibilityCheckedNumerosLayout() {
-        opcaoOutrosNumerosLayout.setVisibility(View.GONE);
-        selecioneOutrosNumeros.setChecked(Boolean.FALSE);
-    }
-
     private void onClickOutrosNumerosLayout() {
         opcaoOutrosNumerosLayout.setOnClickListener(v -> {
             dispatch(
@@ -1203,22 +1165,17 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         int qtdPossivelParaEstado =
                 getStateAtual().getQtdDezenasPossiveisSelecionado();
 
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 
-            atualizaValorApostaLoteca();
-
-        } else {
-
-            int qtdParaCalculo =
+        int qtdParaCalculo =
                     qtdPossivelParaEstado > 0
                             ? qtdPossivelParaEstado
                             : getQuantidadeMinimaSafe();
 
-            atualizaValorTotalAposta(
+        atualizaValorTotalAposta(
                     qtdParaCalculo,
                     getStateAtual().getQtdConcursoSelecionado()
             );
-        }
+
 
         atualizarQuantidadeSelecionada(
                 qtdPossivelParaEstado);
@@ -1250,35 +1207,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         return false;
     }
 
-    private void atualizaStatusBotaoFinalizarLoteca(Boolean mostrarBotao) {
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-            int duplo = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
-            int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
 
-            if (partidasSelecionadas.size() == parametroJogo.getPartidas().size() && (duplo > 0 || triplo > 0)) {
-                if (mostrarBotao) {
-                    setBotaoCompletarEnabled(true);
-                    atualizarValorENotificarEstadoCartela();
-                } else {
-                    setBotaoCompletarEnabled(false);
-                }
-
-            } else {
-                setBotaoCompletarEnabled(false);
-            }
-        }
-    }
-
-    private void setBotaoCompletarEnabled(
-            boolean enabled
-    ) {
-        Button button =
-                getBotaoCompletar();
-
-        if (button != null) {
-            button.setEnabled(enabled);
-        }
-    }
     private ListaDezenaRecyclerView getCorFonte(ModalidadeEnum modalidade){
         if(modalidade == ModalidadeEnum.TIMEMANIA){
             return new ListaDezenaRecyclerView(
@@ -1322,11 +1251,7 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
             listaDezenas.setLayoutManager(layoutDezenas);
             listaDezenas.setNestedScrollingEnabled(false);
         } else {
-            if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-                EscudoBO.getInstance().carregaEscudos(context, this::configurarTimesLoteca);
-                //configurarTimesLoteca();
-
-            } else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
+            if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
                 configuraSuperSete(fragmentView);
             }
         }
@@ -1591,12 +1516,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         //            voltaSalvarApostaParaLayoutInicial();
     }
 
-    private void configurarTimesLoteca() {
-        LotecaAdapter lotecaAdapter = new LotecaAdapter(parametroJogo, this);
-        recyclerViewPartida.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerViewPartida.setAdapter(lotecaAdapter);
-        recyclerViewPartida.setExpanded(true);
-    }
     private void atualizarQtdSuperSeteState() {
         dispatch(
                 new SimulaUiEvent.CartelaAlterada(
@@ -1724,143 +1643,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
         }
     }
 
-    @Override
-    public void clickEquipeLoteca(ParametroPartida parametroPartida) {
-        if (parametroPartida.isSelecionado()) {
-            if (parametroPartida.getQtdItensSelecionados() == 1) {
-                parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) + 1));
-                if (parametroPartida.getQtdItensSelecionadosAnterior() == 2) {
-                    parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) - 1));
-                }
-            } else if (parametroPartida.getQtdItensSelecionados() == 2) {
-                parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) + 1));
-                if (parametroPartida.getQtdItensSelecionadosAnterior() == 3) {
-                    parentActivity.setLabelValueTriplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()) - 1));
-                } else {
-                    parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) - 1));
-                }
-            } else if (parametroPartida.getQtdItensSelecionados() == 3) {
-                parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) - 1));
-                parentActivity.setLabelValueTriplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()) + 1));
-            }
-            partidasSelecionadas.add(parametroPartida);
-        } else {
-            parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) - 1));
-            partidasSelecionadas.remove(parametroPartida);
-        }
-        int somaTotais;
-        int valueSimples = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()))));
-        int valueDuplas = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()))));
-        int valueTriplas = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()))));
-        somaTotais = valueSimples + valueDuplas + valueTriplas;
-
-        parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(String.valueOf(somaTotais))));
-
-        valorTotalJogos = parentActivity.getLabelValueJogosLoteca();
-        valorTotalSimples = parentActivity.getLabelValueSimplesLoteca();
-        valorTotalDuplas = parentActivity.getLabelValueDuplasLoteca();
-        valorTotalTriplas = parentActivity.getLabelValueTriplasLoteca();
-
-
-        if (somaTotais >= 14) {
-            valorTotalJogos.setTextColor(ContextCompat.getColor(context, R.color.verdeazul));
-            valorTotalSimples.setTextColor(ContextCompat.getColor(context, R.color.verdeazul));
-        } else {
-            valorTotalJogos.setTextColor(ContextCompat.getColor(context, R.color.loteca_claro_mkp));
-            valorTotalSimples.setTextColor(ContextCompat.getColor(context, R.color.loteca_claro_mkp));
-        }
-        if (valueDuplas == 0 && valueTriplas == 0) {
-            valorTotalDuplas.setTextColor(ContextCompat.getColor(context, R.color.loteca_claro_mkp));
-            valorTotalTriplas.setTextColor(ContextCompat.getColor(context, R.color.loteca_claro_mkp));
-        } else {
-            valorTotalDuplas.setTextColor(ContextCompat.getColor(context, R.color.verdeazul));
-            valorTotalTriplas.setTextColor(ContextCompat.getColor(context, R.color.verdeazul));
-        }
-
-
-        Boolean mostraBotao = atualizaValorApostaLoteca();
-        atualizaStatusBotaoFinalizarLoteca(mostraBotao);
-        atualizarValorENotificarEstadoCartela();
-    }
-
-    private void limparPartidadasSelecionasLoteca() {
-        for (ParametroPartida partida : parametroJogo.getPartidas()) {
-            partida.setEmpate(Boolean.FALSE);
-            partida.getEquipe1().setSelecionado(Boolean.FALSE);
-            partida.getEquipe2().setSelecionado(Boolean.FALSE);
-            partida.setSelecionado(Boolean.FALSE);
-            partida.setQtdItensSelecionadosAnterior(0);
-            partida.setQtdItensSelecionados(0);
-        }
-        recyclerViewPartida.getAdapter().notifyDataSetChanged();
-        partidasSelecionadas.clear();
-        parentActivity.zerarApostasLoteca();
-        atualizaValorApostaLoteca();
-        setBotaoCompletarEnabled(false);
-    }
-
-    @Override
-    public void partidaSelecionada() {
-    }
-
-    @Override
-    public void atualizarParametrosLotogol(ParametroPartida parametroPartida) {
-        if (parametroPartida.isSelecionado()) {
-            partidasSelecionadas.add(parametroPartida);
-        } else {
-            partidasSelecionadas.remove(parametroPartida);
-        }
-        atualizarValorENotificarEstadoCartela();
-    }
-
-    private boolean atualizaValorApostaLoteca() {
-
-        boolean mostraBotao = false;
-
-        int duplos =
-                getIntTextSafe(
-                        parentActivity.getLabelValueDuplasLoteca()
-                );
-
-        int triplos =
-                getIntTextSafe(
-                        parentActivity.getLabelValueTriplasLoteca()
-                );
-
-        BigDecimal valorCalculado =
-                BigDecimal.ZERO;
-
-        if (duplos > 0 || triplos > 0) {
-
-            for (ParametroValorApostaDTO parametroValorApostaDTO
-                    : parametroJogo.getValoresAposta()) {
-
-                if (parametroValorApostaDTO.getQuantidadeDuplos().equals(duplos)
-                        && parametroValorApostaDTO.getQuantidadeTriplos().equals(triplos)) {
-
-                    valorCalculado =
-                            parametroValorApostaDTO.getValor();
-
-                    mostraBotao = true;
-                    break;
-                }
-            }
-
-        } else if (parametroJogo.getValorApostaMinima() != null) {
-
-            valorCalculado =
-                    parametroJogo.getValorApostaMinima();
-        }
-
-        BigDecimal valorEmReais = valorCalculado != null
-                ? valorCalculado
-                : BigDecimal.ZERO;
-
-        publicarValorAposta(valorEmReais);
-
-        return mostraBotao;
-    }
-
     private void editaAposta() {
 
         if (parentActivity.getAposta() == null) {
@@ -1966,12 +1748,6 @@ public class SimulaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         quantidade
                 )
         );
-    }
-
-    private Button getBotaoCompletar() {
-        return parentActivity != null
-                ? parentActivity.getBotaoCompletar()
-                : null;
     }
 
     private Button getBotaoLimparAposta() {

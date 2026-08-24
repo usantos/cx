@@ -27,6 +27,7 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
     private final List<ParametroPartida> listaPartidas;
     private final ParametroJogoDTO parametroJogo;
     private final LocateAdapterListener listener;
+    private RecyclerView recyclerView;
 
     public LotecaAdapter(ParametroJogoDTO parametroJogo, LocateAdapterListener listener) {
         this.parametroJogo = parametroJogo;
@@ -164,6 +165,38 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
             item.setSelecionado(true);
             item.setQtdItensSelecionados(item.getQtdItensSelecionados() + 1);
         }
+    }
+    public void atualizarEstadoVisual(int position) {
+        if (position < 0 || position >= listaPartidas.size()) {
+            return;
+        }
+        RecyclerView recyclerView = getRecyclerView();
+        if (recyclerView == null) {
+            return;
+        }
+
+        RecyclerView.ViewHolder viewHolder =
+                recyclerView.findViewHolderForAdapterPosition(position);
+        if (!(viewHolder instanceof LotecaHolder)) {
+            return;
+        }
+        LotecaHolder holder = (LotecaHolder) viewHolder;
+        ParametroPartida item = listaPartidas.get(position);
+        Context context = holder.itemView.getContext();
+        holder.bindEstadoVisual(context, item);
+    }
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
+    }
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        this.recyclerView = null;
+        super.onDetachedFromRecyclerView(recyclerView);
+    }
+    private RecyclerView getRecyclerView() {
+        return recyclerView;
     }
 
     private enum TipoSelecao {

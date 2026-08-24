@@ -1343,13 +1343,14 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void resetarTelaAposRetornoDeActivity() {
-        zerarApostas();
+        zerarApostasLoteca();
         inicializarTela();
 
         etapaRenderizada = null;
         renderizacaoSurpresinhaTime = false;
 
         abrirTelaCartela();
+        cartelaFragment.zeraLoteca();
 
         viewModel.onEvent(
                 new SimulaUiEvent.CarregarCarrinho()

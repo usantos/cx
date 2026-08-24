@@ -10,21 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatCheckBox;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.volley.VolleyError;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -34,6 +28,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
@@ -41,7 +36,6 @@ import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
-import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -53,21 +47,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.activity.LotecaActivity;
-import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
-import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
@@ -512,7 +502,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         return valorAtual;
     }
 
-    private void zeraLoteca() {
+    public void zeraLoteca() {
         limparPartidadasSelecionasLoteca();
         atualizarValorENotificarEstadoCartela();
     }
@@ -579,9 +569,13 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                    getStateAtual().getTriplasLoteca();
         }
 
-        int qtdPartidasSelecionadas = getStateAtual().getSimplesLoteca();
+        int qtdPartidasSelecionadas =
+                getStateAtual().getJogosLoteca();
 
-        int qtdPartidasTotal = getStateAtual().getJogosLoteca();
+        int qtdPartidasTotal =
+                parametroJogo.getPartidas() != null
+                        ? parametroJogo.getPartidas().size()
+                        : 0;
 
         boolean equipeSelecionadaValida =
                 getStateAtual().getEquipeSelecionada() != null
@@ -753,7 +747,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         if (state.getComandoCompletarAposta()
                 instanceof CompletarApostaEffect.PreencherNumerosAleatorios) {
 
-            preencheNumerosAleatorios();
+            preencherPartidasAleatoriasLoteca();
             consumirComandoCompletarAposta();
             return;
         }
@@ -777,49 +771,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             return;
         }
 
-        if (state.getComandoCompletarAposta()
-                instanceof CompletarApostaEffect.AbrirMesDeSorte) {
-
-            parentActivity.mesDeSorteFragment(
-                    getDezenasSelecionadasState()
-            );
-
-            consumirComandoCompletarAposta();
-            return;
-        }
-
-        if (state.getComandoCompletarAposta()
-                instanceof CompletarApostaEffect.AbrirTrevos) {
-
-            parentActivity.trevosFragment(
-                    getDezenasSelecionadasState()
-            );
-
-            consumirComandoCompletarAposta();
-            return;
-        }
-
-        if (state.getComandoCompletarAposta()
-                instanceof CompletarApostaEffect.MostrarEscolhaTimeCoracao) {
-
-            parentActivity.timesFragment(
-                    getDezenasSelecionadasState()
-            );
-
-            consumirComandoCompletarAposta();
-            return;
-        }
-
-        if (state.getComandoCompletarAposta()
-                instanceof CompletarApostaEffect.AdicionarTimeSurpresa) {
-
-            parentActivity.adicionarTimeSurpresa(
-                    getStateAtual().getEquipeSelecionada()
-            );
-
-            consumirComandoCompletarAposta();
-            return;
-        }
 
         if (state.getComandoCompletarAposta()
                 instanceof CompletarApostaEffect.ZerarLoteca) {
@@ -897,27 +848,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         valorSeguro
                 )
         );
-    }
-
-    private void preencheNumerosAleatorios() {
-        AlertDialogUtils.show(getActivity());
-        List<Integer> selecionadas = getDezenasSelecionadasState();
-        selecionadas = ListaUtils.orderAscDezenas(selecionadas);
-        model.preencheNumerosAleatorios(getStateAtual().getQtdDezenasPossiveisSelecionado(), selecionadas, parametroJogo.getPrognosticoMaximo(),
-                new OnSilceListener<List<Integer>>() {
-                    @Override
-                    public void success(List<Integer> list) {
-                        AlertDialogUtils.dismiss();
-                        simularDezenasAdapter.atualizaSelecionados(list);
-                        atualizarDezenasSelecionadas(list);
-                        atualizarValorENotificarEstadoCartela();
-                    }
-
-                    @Override
-                    public void error(VolleyError error) {
-                        AlertDialogUtils.dismiss();
-                    }
-                });
     }
 
     private void atualizarValorENotificarEstadoCartela() {
@@ -1359,7 +1289,371 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         }
         atualizarValorENotificarEstadoCartela();
     }
+    private void preencherPartidasAleatoriasLoteca() {
+        if (parametroJogo == null
+                || parametroJogo.getPartidas() == null
+                || parametroJogo.getPartidas().isEmpty()
+                || recyclerViewPartida == null
+                || !(recyclerViewPartida.getAdapter() instanceof LotecaAdapter)) {
+            return;
+        }
 
+        List<ParametroPartida> partidas =
+                parametroJogo.getPartidas();
+
+        List<Integer> posicoesAlteradas =
+                new ArrayList<>();
+
+        int totalPalpitesDesejado =
+                getStateAtual().getPalpitesLoteca();
+
+        Random random = new Random();
+
+        for (int i = 0; i < partidas.size(); i++) {
+            ParametroPartida partida = partidas.get(i);
+
+            if (partida == null
+                    || partida.getEquipe1() == null
+                    || partida.getEquipe2() == null) {
+                continue;
+            }
+
+            int quantidadeSelecionada =
+                    calcularQuantidadeSelecionada(partida);
+
+            if (quantidadeSelecionada > 0) {
+                continue;
+            }
+
+            selecionarResultadoSimplesAleatorio(
+                    partida,
+                    random
+            );
+
+            posicoesAlteradas.add(i);
+        }
+
+        int totalPalpitesAtual =
+                contarTotalPalpitesLoteca(partidas);
+
+        int palpitesFaltantes =
+                totalPalpitesDesejado - totalPalpitesAtual;
+
+        while (palpitesFaltantes > 0) {
+            List<ParametroPartida> partidasDisponiveis =
+                    obterPartidasQueAceitamMaisUmPalpite(
+                            partidas
+                    );
+
+            if (partidasDisponiveis.isEmpty()) {
+                break;
+            }
+
+            ParametroPartida partidaSorteada =
+                    partidasDisponiveis.get(
+                            random.nextInt(
+                                    partidasDisponiveis.size()
+                            )
+                    );
+
+            adicionarResultadoAleatorio(
+                    partidaSorteada,
+                    random
+            );
+
+            int position = partidas.indexOf(partidaSorteada);
+
+            if (position >= 0
+                    && !posicoesAlteradas.contains(position)) {
+                posicoesAlteradas.add(position);
+            }
+
+            palpitesFaltantes--;
+        }
+
+        reconstruirEstadoLoteca();
+
+        LotecaAdapter adapter =
+                (LotecaAdapter) recyclerViewPartida.getAdapter();
+
+        for (Integer position : posicoesAlteradas) {
+            adapter.atualizarEstadoVisual(position);
+        }
+    }
+
+    private void selecionarResultadoSimplesAleatorio(
+            ParametroPartida partida,
+            Random random
+    ) {
+        limparSelecoesDaPartida(partida);
+
+        int resultado = random.nextInt(3);
+
+        partida.getEquipe1().setSelecionado(
+                resultado == 0
+        );
+
+        partida.setEmpate(
+                resultado == 1
+        );
+
+        partida.getEquipe2().setSelecionado(
+                resultado == 2
+        );
+
+        partida.setSelecionado(true);
+        partida.setQtdItensSelecionados(1);
+        partida.setQtdItensSelecionadosAnterior(1);
+    }
+    private void limparSelecoesDaPartida(
+            ParametroPartida partida
+    ) {
+        partida.getEquipe1().setSelecionado(false);
+        partida.setEmpate(false);
+        partida.getEquipe2().setSelecionado(false);
+    }
+    private int contarTotalPalpitesLoteca(
+            List<ParametroPartida> partidas
+    ) {
+        int total = 0;
+
+        for (ParametroPartida partida : partidas) {
+            if (partida == null) {
+                continue;
+            }
+
+            total += calcularQuantidadeSelecionada(
+                    partida
+            );
+        }
+
+        return total;
+    }
+    private List<ParametroPartida>
+    obterPartidasQueAceitamMaisUmPalpite(
+            List<ParametroPartida> partidas
+    ) {
+        List<ParametroPartida> disponiveis =
+                new ArrayList<>();
+
+        for (ParametroPartida partida : partidas) {
+            if (partida == null) {
+                continue;
+            }
+
+            int quantidadeSelecionada =
+                    calcularQuantidadeSelecionada(partida);
+
+            if (quantidadeSelecionada > 0
+                    && quantidadeSelecionada < 3) {
+                disponiveis.add(partida);
+            }
+        }
+
+        return disponiveis;
+    }
+    private void adicionarResultadoAleatorio(
+            ParametroPartida partida,
+            Random random
+    ) {
+        List<Integer> resultadosDisponiveis =
+                new ArrayList<>();
+
+        if (!partida.getEquipe1().isSelecionado()) {
+            resultadosDisponiveis.add(0);
+        }
+
+        if (!partida.isEmpate()) {
+            resultadosDisponiveis.add(1);
+        }
+
+        if (!partida.getEquipe2().isSelecionado()) {
+            resultadosDisponiveis.add(2);
+        }
+
+        if (resultadosDisponiveis.isEmpty()) {
+            return;
+        }
+
+        int resultado =
+                resultadosDisponiveis.get(
+                        random.nextInt(
+                                resultadosDisponiveis.size()
+                        )
+                );
+
+        if (resultado == 0) {
+            partida.getEquipe1().setSelecionado(true);
+        } else if (resultado == 1) {
+            partida.setEmpate(true);
+        } else {
+            partida.getEquipe2().setSelecionado(true);
+        }
+
+        int quantidadeSelecionada =
+                calcularQuantidadeSelecionada(partida);
+
+        partida.setSelecionado(true);
+        partida.setQtdItensSelecionados(
+                quantidadeSelecionada
+        );
+        partida.setQtdItensSelecionadosAnterior(
+                quantidadeSelecionada
+        );
+    }
+    private void reconstruirEstadoLoteca(
+            ) {
+        if (parametroJogo == null
+                || parametroJogo.getPartidas() == null) {
+            return;
+        }
+
+        List<ParametroPartida> partidas =
+                parametroJogo.getPartidas();
+
+        int partidasSelecionadasTotal = 0;
+        int simples = 0;
+        int duplas = 0;
+        int triplas = 0;
+
+        if (partidasSelecionadas == null) {
+            partidasSelecionadas = new HashSet<>();
+        } else {
+            partidasSelecionadas.clear();
+        }
+
+        for (ParametroPartida partida : partidas) {
+            if (partida == null) {
+                continue;
+            }
+
+            int quantidadeSelecionada =
+                    calcularQuantidadeSelecionada(partida);
+
+            boolean selecionada =
+                    quantidadeSelecionada > 0;
+
+            partida.setSelecionado(selecionada);
+            partida.setQtdItensSelecionados(
+                    quantidadeSelecionada
+            );
+
+            /*
+             * Depois da reconstrução, o valor anterior precisa
+             * corresponder ao valor atual para o próximo item click.
+             */
+            partida.setQtdItensSelecionadosAnterior(
+                    quantidadeSelecionada
+            );
+
+            if (!selecionada) {
+                continue;
+            }
+
+            partidasSelecionadas.add(partida);
+            partidasSelecionadasTotal++;
+
+            switch (quantidadeSelecionada) {
+                case 1:
+                    simples++;
+                    break;
+
+                case 2:
+                    duplas++;
+                    break;
+
+                case 3:
+                    triplas++;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        int jogos = simples + duplas + triplas;
+        publicarEstadoLoteca(
+                jogos,
+                simples,
+                duplas,
+                triplas
+        );
+
+    }
+    private void publicarEstadoLoteca(
+            int jogosSelecionados,
+            int simples,
+            int duplas,
+            int triplas
+    ) {
+        /*
+         * Primeiro atualiza os valores da Loteca no state.
+         *
+         * Isso precisa acontecer antes do CartelaAlterada porque o
+         * FluxoApostaReducer usa os valores atuais do state para
+         * decidir o estado dos botoes do rodape.
+         */
+        dispatch(
+                new SimulaUiEvent.LotecaAtualizada(
+                        jogosSelecionados,
+                        simples,
+                        duplas,
+                        triplas
+                )
+        );
+
+        /*
+         * Depois recalcula o fluxo e o estado dos botoes.
+         *
+         * Para Loteca:
+         * qtdPartidasSelecionadas = jogosSelecionados
+         * qtdPartidasTotal = simples
+         */
+        dispatch(
+                new SimulaUiEvent.CartelaAlterada(
+                        parametroJogo
+                                .getConcurso()
+                                .getModalidade(),
+                        0,
+                        getStateAtual()
+                                .getQtdDezenasPossiveisSelecionado(),
+                        0,
+                        jogosSelecionados,
+                        simples,
+                        duplas,
+                        triplas,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        getDezenasSelecionadasState()
+                )
+        );
+    }
+
+    private int calcularQuantidadeSelecionada(
+            ParametroPartida partida
+    ) {
+        int quantidade = 0;
+
+        if (partida.getEquipe1() != null
+                && partida.getEquipe1().isSelecionado()) {
+            quantidade++;
+        }
+
+        if (partida.isEmpate()) {
+            quantidade++;
+        }
+
+        if (partida.getEquipe2() != null
+                && partida.getEquipe2().isSelecionado()) {
+            quantidade++;
+        }
+
+        return quantidade;
+    }
     private void atualizaValorApostaLoteca() {
 
         dispatch(new SimulaUiEvent.LotecaAtualizada(
@@ -1428,18 +1722,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         quantidade
                 )
         );
-    }
-
-    private Button getBotaoCompletar() {
-        return parentActivity != null
-                ? parentActivity.getBotaoCompletar()
-                : null;
-    }
-
-    private Button getBotaoLimparAposta() {
-        return parentActivity != null
-                ? parentActivity.getBotaoLimparAposta()
-                : null;
     }
 
     @Override

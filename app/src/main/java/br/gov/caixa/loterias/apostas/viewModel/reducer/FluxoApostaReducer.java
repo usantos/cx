@@ -519,6 +519,13 @@ public class FluxoApostaReducer {
             );
         }
 
+        if (tipoJogo == ModalidadeEnum.LOTECA){
+            return resolverFluxoLoteca(
+                    atual,
+                    event
+            );
+        }
+
 
         if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE) {
 
@@ -606,6 +613,34 @@ public class FluxoApostaReducer {
         );
     }
 
+    private ResultadoFluxoAposta resolverFluxoLoteca(
+            SimulaUiState atual,
+            SimulaUiEvent.CartelaAlterada event
+    ) {
+        int simples = event.getQtdPartidasTotal();
+        int duplas = event.getDuplosLoteca();
+        int triplas = event.getTriplosLoteca();
+
+        int totalPalpitesSelecionados =
+                simples
+                        + (duplas * 2)
+                        + (triplas * 3);
+
+        boolean todasPartidasPreenchidas =
+                event.getQtdPartidasSelecionadas()
+                        == atual.getJogosLoteca();
+
+        boolean apostaCompleta =
+                todasPartidasPreenchidas
+                        && totalPalpitesSelecionados
+                        == atual.getPalpitesLoteca();
+
+        return new ResultadoFluxoAposta(
+                EtapaAposta.NUMEROS,
+                apostaCompleta,
+                apostaCompleta
+        );
+    }
     private boolean isSelecaoPrincipalCompleta(
             SimulaUiEvent.CartelaAlterada event
     ) {
@@ -616,20 +651,6 @@ public class FluxoApostaReducer {
         if (tipoJogo == ModalidadeEnum.SUPER_7) {
             return event.getQtdTotalSelecionadosSuperSete()
                     == event.getQtdDezenasPossiveisSelecionado();
-        }
-
-        if (tipoJogo == ModalidadeEnum.LOTECA) {
-
-            boolean partidasCompletas =
-                    event.getQtdPartidasSelecionadas()
-                            == event.getQtdPartidasTotal();
-
-            boolean possuiDuploOuTriplo =
-                    event.getDuplosLoteca() > 0
-                            || event.getTriplosLoteca() > 0;
-
-            return partidasCompletas
-                    && possuiDuploOuTriplo;
         }
 
         if (tipoJogo == ModalidadeEnum.LOTOGOL) {
