@@ -27,6 +27,8 @@ import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.FilaBRAManager;
+import br.gov.caixa.loterias.apostas.utils.IconAliasManager;
+import br.gov.caixa.loterias.apostas.utils.IconeAppEnum;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
@@ -116,10 +118,11 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
     private void redirectApp(){
         if (!BuildVersionUtil.isPRD() && !SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false)){
             DialogUtils.dialogDoisBotoesPersonalizados(this, "Mock Outubro Rosa", "Outubro Rosa se encontra desativado. Deseja ativar?",
-                    "Sim, tivar", "Não", new OnDialogDoisBotoesListener() {
+                    "Sim, ativar", "Não", new OnDialogDoisBotoesListener() {
                         @Override
                         public void PositiveButton(DialogInterface dialog, int which) {
                             SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), true);
+                            atualizaIconeApp();
                             if(!DadosUsuarioBO.checarFecharIntroducao()) {
                                 startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
                             }
@@ -197,6 +200,8 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                             SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_LINHA, getString(R.string.loteca_pais));
                             SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, getString(R.string.loteca_pais_duas_linhas));
                         }
+
+                        atualizaIconeApp();
                     }
                     redirectApp();
                 }
@@ -213,13 +218,23 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         }
     }
 
-//    private void atualizaIconeApp() {
-//        if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false)){
-//            IconeAppUtils.atualizaIcone(IconeAppEnum.OUTUBRO_ROSA);
-//        } else {
-//            IconeAppUtils.atualizaIcone(IconeAppEnum.DEFAULT);
-//        }
-//    }
+    private void atualizaIconeApp() {
+        IconeAppEnum icone;
+        if (EspecialUtils.isOutubroRosa() && !isIconeAPP(IconeAppEnum.OUTUBRO_ROSA)) {
+            icone = IconeAppEnum.OUTUBRO_ROSA;
+        } else {
+            icone = IconeAppEnum.DEFAULT_DISABLED;
+        }
+
+        if (!icone.get().equalsIgnoreCase(SharedPreferencesUtils.getValorString(ConfiguracoesEnum.LAUNCHER_ICON.get(), ""))){
+            IconAliasManager.applyIcon(this, icone);
+            SharedPreferencesUtils.setValor(ConfiguracoesEnum.LAUNCHER_ICON.get(), icone.get());
+        }
+    }
+
+    private boolean isIconeAPP(IconeAppEnum icone) {
+        return SharedPreferencesUtils.getValorString(ConfiguracoesEnum.LAUNCHER_ICON.get(), "").equalsIgnoreCase(icone.get());
+    }
 
     private boolean temInformacaoBolao(ParametrosConfiguraveisDTOResponse result) {
         return temDadosPayloadMapa(result) && result.getPayload().getMapa().getBolaoHabilitado() != null;

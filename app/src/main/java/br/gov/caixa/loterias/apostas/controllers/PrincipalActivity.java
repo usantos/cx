@@ -106,6 +106,8 @@ import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IconAliasManager;
+import br.gov.caixa.loterias.apostas.utils.IconeAppEnum;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MessagingToken;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
@@ -829,6 +831,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 DialogUtils.dialogConfirmar(PrincipalActivity.this, "Deseja realmente mudar o status do outubro rosa?", (dialog, which) -> {
                     SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(),
                             !SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false));
+                    IconAliasManager.applyIcon(this, IconeAppEnum.DEFAULT_DISABLED);
+                    SharedPreferencesUtils.setValor(ConfiguracoesEnum.LAUNCHER_ICON.get(), IconeAppEnum.DEFAULT_DISABLED.get());
                     DialogUtils.dialogEntendiListener(PrincipalActivity.this, "Ao clicar aqui, vc mudou o status. Para ver o resultado, é preciso entrar novamente no app.",
                             (dialog2, which2) -> finishAndRemoveTask());
                 });

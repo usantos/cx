@@ -15,7 +15,8 @@ public enum ConfiguracoesEnum {
     URL_BASE_CARRINHO_PRODUCAO("urlBaseCarrinhoProducao"),
     URL_BASE_APOSTADOR("urlBaseApostador"),
     GRUPO_CPFS_APOSTADOR("grupoDeCpfsApostador"),
-    PARAMETRO_1_OUTUBRO_ROSA("outubroRosa1");
+    PARAMETRO_1_OUTUBRO_ROSA("outubroRosa1"),
+    LAUNCHER_ICON("LAUNCHER_ICON");
 
     private final String key;
 
