@@ -1245,6 +1245,51 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         );
     }
 
+    @Override
+    public boolean podeAdicionarResultadoLoteca() {
+        SimulaUiState state = getStateAtual();
+
+        if (state == null) {
+            return true;
+        }
+
+        int totalPalpites =
+                state.getSimplesLoteca()
+                        + (state.getDuplasLoteca() * 2)
+                        + (state.getTriplasLoteca() * 3);
+
+        return totalPalpites < state.getPalpitesLoteca();
+    }
+
+    @Override
+    public void onLimitePalpitesLotecaAtingido() {
+        SimulaUiState state = getStateAtual();
+
+        int limite = state != null
+                ? state.getPalpitesLoteca()
+                : 15;
+
+        if (limite < 26) {
+            DialogUtils.dialogEntendi(
+                    getActivity(),
+                    getString(R.string.msg_qtd_max_ultrapassada)
+            );
+
+            dispatch(
+                    new SimulaUiEvent.PalpitesLotecaAtualizado(
+                            limite + 1
+                    )
+            );
+
+            return;
+        }
+
+        DialogUtils.dialogEntendi(
+                getActivity(),
+                "Voce atingiu o limite maximo de " + limite + " palpites."
+        );
+    }
+
     private void limparPartidadasSelecionasLoteca() {
         for (ParametroPartida partida : parametroJogo.getPartidas()) {
             partida.setEmpate(Boolean.FALSE);

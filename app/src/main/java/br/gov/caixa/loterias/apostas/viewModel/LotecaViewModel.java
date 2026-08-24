@@ -262,6 +262,13 @@ public class LotecaViewModel extends SimulaViewModel {
             return true;
         }
 
+        if (event instanceof SimulaUiEvent.PalpitesLotecaAtualizado) {
+            handlePalpitesLotecaAtualizado(
+                    (SimulaUiEvent.PalpitesLotecaAtualizado) event
+            );
+            return true;
+        }
+
         if (event instanceof SimulaUiEvent.InicializarParametrosAposta) {
             inicializarParametrosAposta(
                     (SimulaUiEvent
@@ -1589,6 +1596,59 @@ public class LotecaViewModel extends SimulaViewModel {
                 )
         );
     }
+
+    private void handlePalpitesLotecaAtualizado(
+            SimulaUiEvent.PalpitesLotecaAtualizado event
+    ) {
+        if (event == null) {
+            return;
+        }
+
+        int quantidade = event.getQuantidadePalpites();
+
+        if (quantidade < 15 || quantidade > 26) {
+            return;
+        }
+
+        updateState(state -> state.toBuilder()
+                .setPalpitesLoteca(quantidade)
+                .build()
+        );
+
+        recalcularFluxoLotecaComEstadoAtual();
+    }
+
+    private void recalcularFluxoLotecaComEstadoAtual() {
+        SimulaUiState atual = getCurrentState();
+
+        if (atual == null) {
+            return;
+        }
+
+        updateState(state ->
+                fluxoApostaReducer.cartelaAlterada(
+                        state,
+                        new SimulaUiEvent.CartelaAlterada(
+                                ModalidadeEnum.LOTECA,
+                                0,
+                                state.getQtdDezenasPossiveisSelecionado(),
+                                0,
+                                state.getJogosLoteca(),
+                                state.getSimplesLoteca(),
+                                state.getDuplasLoteca(),
+                                state.getTriplasLoteca(),
+                                false,
+                                false,
+                                state.isEscolhaTimeCoracaoSurpresinha(),
+                                false,
+                                false,
+                                false,
+                                state.getDezenasSelecionadas()
+                        )
+                )
+        );
+    }
+
     private String formatarDataSorteio(ParametroJogoDTO parametro) {
 
         try {

@@ -18,9 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
@@ -39,7 +37,6 @@ import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
@@ -64,14 +61,11 @@ import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
-import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
-import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
@@ -103,7 +97,7 @@ public class SimulaFragment extends BaseEtapaFragment {
     public BigDecimal valorTotalAposta;
     public int typeGameColorLight, typeGameColorDark;
     public int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
-    public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
+    public TextView valorAposta;
     public ListaDezenaRecyclerView simularDezenasAdapter;
     public String dataSorteioAtual;
 
@@ -315,12 +309,13 @@ public class SimulaFragment extends BaseEtapaFragment {
 
             onClickOutrosNumerosLayout();
         }
-
-        if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-            RelativeLayout rlColunasSuperSete = view.findViewById(R.id.rl_colunas_super_7);
-            ScrollView svSuperSete = view.findViewById(R.id.sv_super_sete);
-            rlColunasSuperSete.setVisibility(View.VISIBLE);
-            svSuperSete.setVisibility(View.VISIBLE);
+        if(parametroJogo != null) {
+            if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
+                RelativeLayout rlColunasSuperSete = view.findViewById(R.id.rl_colunas_super_7);
+                ScrollView svSuperSete = view.findViewById(R.id.sv_super_sete);
+                rlColunasSuperSete.setVisibility(View.VISIBLE);
+                svSuperSete.setVisibility(View.VISIBLE);
+            }
         }
 
         notificarEstadoCartelaAlterado();

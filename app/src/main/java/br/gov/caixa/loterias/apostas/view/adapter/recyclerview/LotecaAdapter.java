@@ -75,6 +75,16 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
                 return;
             }
 
+            boolean resultadoJaSelecionado =
+                    isResultadoSelecionado(item, tipoSelecao);
+
+            if (!resultadoJaSelecionado
+                    && listener != null
+                    && !listener.podeAdicionarResultadoLoteca()) {
+                listener.onLimitePalpitesLotecaAtingido();
+                return;
+            }
+
             alternarSelecao(item, tipoSelecao);
             holder.bindEstadoVisual(context, item);
             notificarClique(item);
@@ -166,6 +176,29 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
             item.setQtdItensSelecionados(item.getQtdItensSelecionados() + 1);
         }
     }
+
+    private boolean isResultadoSelecionado(
+            ParametroPartida item,
+            TipoSelecao tipoSelecao
+    ) {
+        if (item == null) {
+            return false;
+        }
+
+        switch (tipoSelecao) {
+            case TIME_UM:
+                return item.getEquipe1() != null
+                        && item.getEquipe1().isSelecionado();
+            case TIME_DOIS:
+                return item.getEquipe2() != null
+                        && item.getEquipe2().isSelecionado();
+            case EMPATE:
+                return item.isEmpate();
+            default:
+                return false;
+        }
+    }
+
     public void atualizarEstadoVisual(int position) {
         if (position < 0 || position >= listaPartidas.size()) {
             return;
