@@ -30,7 +30,7 @@ public class LotecaComprasAdapter extends RecyclerView.Adapter<LotecaComprasAdap
 
     @Override
     public void onBindViewHolder(LotecaHolder holder, int position) {
-        holder.partidaRow.setLayout(listaPartidas.get(position));
+        holder.partidaRow.setLayout(listaPartidas.get(position), position);
     }
 
     @Override
@@ -52,7 +52,4 @@ public class LotecaComprasAdapter extends RecyclerView.Adapter<LotecaComprasAdap
             partidaRow = (PartidaViewLoteca) itemView;
         }
     }
-
-
-
 }
