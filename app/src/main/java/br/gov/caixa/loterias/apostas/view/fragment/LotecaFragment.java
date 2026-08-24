@@ -1236,29 +1236,13 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         }
         jogos = simples + duplas + triplas;
 
-        dispatch(
-                new SimulaUiEvent.CartelaAlterada(
-                        parametroJogo.getConcurso().getModalidade(),
-                        getDezenasSelecionadasState() != null
-                                ? getDezenasSelecionadasState().size()
-                                : 0,
-                        getStateAtual().getQtdDezenasPossiveisSelecionado(),
-                        0,
-                        jogos,
-                        simples,
-                        duplas,
-                        triplas,
-                        false,
-                        false,
-                       false,
-                        false,
-                        false,
-                        false,
-                        getDezenasSelecionadasState()
-                )
+        // Mantem o mesmo contrato de eventos usado no preenchimento aleatorio.
+        publicarEstadoLoteca(
+                jogos,
+                simples,
+                duplas,
+                triplas
         );
-
-        atualizarValorENotificarEstadoCartela();
     }
 
     private void limparPartidadasSelecionasLoteca() {
@@ -1511,7 +1495,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         List<ParametroPartida> partidas =
                 parametroJogo.getPartidas();
 
-        int partidasSelecionadasTotal = 0;
         int simples = 0;
         int duplas = 0;
         int triplas = 0;
@@ -1551,7 +1534,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             }
 
             partidasSelecionadas.add(partida);
-            partidasSelecionadasTotal++;
 
             switch (quantidadeSelecionada) {
                 case 1:
