@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -57,12 +56,11 @@ import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.model.model.LotericaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
-import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
-import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.ResultadoNavegacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.FavoritarLotericaHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.BolaoFooterAdapter;
@@ -873,7 +871,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             rvConteudoBoloes.setVisibility(VISIBLE);
             layoutBoloes.setVisibility(VISIBLE);
 
-            if (result.getResultCode() == Activity.RESULT_OK) {
+            if (result.getResultCode() == RESULT_OK) {
                 Intent data = result.getData();
                 if (data != null) {
                     filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
@@ -906,7 +904,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
     private OnActivityForResult OnReturnActivity() {
         return result -> {
-            if (result.getResultCode() == Activity.RESULT_OK) {
+            if (result.getResultCode() == RESULT_OK) {
                 Intent data = result.getData();
                 if (data != null) {
                     Long id = data.getLongExtra("ID_LOTERICA", -1L);
@@ -961,7 +959,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
     private OnActivityForResult onAtualizaListasDeCotas() {
         return result -> {
-            if (result.getResultCode() == Activity.RESULT_OK) {
+            if (result.getResultCode() == RESULT_OK || result.getResultCode() == ResultadoNavegacaoAposta.RESULT_RESET) {
                 AlertDialogUtils.show(BolaoActivity.this);
                 model.zeraPaginacao();
                 cotasDisponiveis = null;
