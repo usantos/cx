@@ -62,7 +62,7 @@ android {
 
         //                   23                 1.23.6 = 01 023               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 23123600
+        versionCode 230123600
         versionName "1.23.6"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
