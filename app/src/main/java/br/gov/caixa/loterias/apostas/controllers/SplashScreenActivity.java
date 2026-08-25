@@ -59,8 +59,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                             @Override
                             public void onButtonClick(DialogInterface dialog, int which) {
                                 finish();
-                            }
-                        }
+                            }                        }
                 );
                 return;
             }
