@@ -30,7 +30,7 @@ public class ParametrosConfiguraveisDTO {
     private String urlBaseBff;
     //@SerializedName("hostMicroServicoBffPiloto")
     //private String urlBaseBffPiloto;
-    @SerializedName("grupoDeCpfsQueAcessamOBff")
+        @SerializedName("grupoDeCpfsQueAcessamOBffMobile")
     private String grupoDeCpfsQueAcessamOBff;
     //@SerializedName("grupoDeCpfsQueAcessamOBffPiloto")
     //private String grupoDeCpfsQueAcessamOBffPiloto;
