@@ -107,9 +107,6 @@ public class TermosUsoActivity extends LoteriasBaseAppActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
-        // Configurações de performance
-        webViewConteudo.getSettings().setRenderPriority(android.webkit.WebSettings.RenderPriority.HIGH);
-        webViewConteudo.getSettings().setCacheMode(android.webkit.WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
         webViewConteudo.setWebViewClient(new WebViewClient() {
 

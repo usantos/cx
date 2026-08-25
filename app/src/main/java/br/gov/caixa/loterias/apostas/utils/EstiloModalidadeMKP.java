@@ -18,6 +18,7 @@ public class EstiloModalidadeMKP {
     private int imagemEspecialQuadrada;
     private int imagemEspecialDetalhes;
     private int corLetraLista;
+    private int corItemDezena;
     private int corFonteFundoClaro;
     private int corFonteFundoEscuro;
     private int trevoFundoClaro;
@@ -106,6 +107,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDupla = R.drawable.quina_sao_joao_dupla;
                 imagemEspecialQuadrada = R.drawable.quina_sao_joao_quadrado;
                 corLetraLista = R.color.quina_claro_mkp;
+                corItemDezena = R.color.quina_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_quina_fundo_branco;
@@ -129,6 +131,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialQuadrada = R.drawable.dupla_pascoa_quadrado;
                 imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_carrossel;
                 corLetraLista = R.color.dupla_sena_claro_mkp;
+                corItemDezena = R.color.dupla_sena_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_dupla_sena_fundo_branco;
@@ -152,6 +155,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialQuadrada = R.drawable.lotofacil_independencia_quadrado;
                 imagemEspecialDetalhes = R.drawable.lotofacil_indepedencia_simples;
                 corLetraLista = R.color.lotofacil_claro_mkp;
+                corItemDezena = R.color.lotofacil_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_lotofacil_fundo_branco;
@@ -174,6 +178,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.lotomania_claro_mkp;
+                corItemDezena = R.color.lotomania_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_lotomania_fundo_branco;
@@ -195,6 +200,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.milionaria_claro_mkp;
+                corItemDezena = R.color.milionaria_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_milionaria_fundo_branco;
@@ -216,6 +222,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.super_sete_letra_mkp;
+                corItemDezena = R.color.super_sete_letra_mkp;
                 corFonteFundoClaro = R.color.super_sete_letra_mkp;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_super_sete_fundo_branco;
@@ -238,6 +245,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialQuadrada = R.drawable.loteca_copa_quadrado;
                 imagemEspecialDetalhes = R.drawable.loteca_copa_simples;
                 corLetraLista = R.color.loteca_claro_mkp;
+                corItemDezena = R.color.loteca_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_loteca_fundo_branco;
@@ -259,6 +267,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.timemania_letra_mkp;
+                corItemDezena = R.color.timemania_claro_mkp;
                 corFonteFundoClaro = R.color.timemania_letra_mkp;
                 corFonteFundoEscuro = R.color.timemania_letra_mkp;
                 trevoFundoClaro = R.drawable.trevo_timemania_fundo_branco;
@@ -280,6 +289,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.dia_sorte_letra_mkp;
+                corItemDezena= R.color.dia_sorte_claro_mkp;
                 corFonteFundoClaro = R.color.dia_sorte_letra_mkp;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_dia_de_sorte_fundo_branco;
@@ -301,6 +311,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.instantanea_claro;
+                corItemDezena = R.color.instantanea_claro;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevos_instantanea_fundo_branco;
@@ -322,6 +333,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.combo_claro;
+                corItemDezena = R.color.combo_claro;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevos_combo_fundo_escuro;
@@ -345,6 +357,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialQuadrada = R.drawable.mega_virada_quadrado;
                 imagemEspecialDetalhes = R.drawable.cabecalho_mega_da_virada_detalhe_aposta;
                 corLetraLista = R.color.mega_verde_claro_mkp;
+                corItemDezena = R.color.mega_verde_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_megasena_fundo_branco;
@@ -397,6 +410,10 @@ public class EstiloModalidadeMKP {
 
     public int getCorLetraLista() {
         return corLetraLista;
+    }
+
+    public int getCorItemDezena() {
+        return corItemDezena;
     }
 
     public int getCorFonteFundoClaro() {

@@ -57,7 +57,10 @@ public class PickerApostaParamsManager {
                     }
 
                     @Override
-                    public void NegativeButton(DialogInterface dialog, int which) {}
+                    public void NegativeButton(DialogInterface dialog, int which) {
+                        espelho = false;
+                        proximoPasso();
+                    }
                 });
     }
 

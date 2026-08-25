@@ -156,7 +156,10 @@ public class DigitarCvvActivity extends LoteriasBaseAppActivity {
 		cvv1.addTextChangedListener(cvvWatcher);
 		cvv2.addTextChangedListener(cvvWatcher);
 		cvv3.addTextChangedListener(cvvWatcher);
-		if (isAmex) cvv4.addTextChangedListener(cvvWatcher);
+		if (isAmex) {
+			cvv4.setVisibility(View.VISIBLE);
+			cvv4.addTextChangedListener(cvvWatcher);
+		}
 	}
 
 	private void moveFoco() {

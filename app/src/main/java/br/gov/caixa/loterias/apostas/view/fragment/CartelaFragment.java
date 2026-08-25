@@ -82,6 +82,7 @@ import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
@@ -431,6 +432,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void adicionarApostaNoCarrinho() {
+		if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity(), 2)) return;
 		if(LoginSP.isLoginRealizado() && checaLimiteDiario()){
 			DialogUtils.dialogSim(getContext(),
 					getString(R.string.MA014),
@@ -615,8 +617,13 @@ private void zeraLoteca(){
 	}
 
 	private void logAposta(){
+		if (parametroJogo.getConcurso() == null || parametroJogo.getConcurso().getModalidade() == null
+			|| parametroJogo.getConcurso().getNumero() == null || parentActivity.getLabelValueJogosLoteca().getText() == null
+			|| parentActivity.getLabelValueSimplesLoteca().getText() == null || parentActivity.getLabelValueDuplasLoteca().getText() == null
+			|| parentActivity.getLabelValueTriplasLoteca().getText() == null || valorTotalAposta == null){
+			return;
+		}
 		if(parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)){
-
 			AnalyticsHelper.getInstance().logInteraction(
 					AnalyticsHelper.EventCategoryParams.CTA,
 					AnalyticsHelper.EventActionParams.CLICK,
@@ -750,7 +757,7 @@ private void zeraLoteca(){
 		}
 		dezenasSelecionadas = listaOrdenadaAsc;
 	}
-	
+
 	private void adicionarApostaPreencherNumerosLotomania() {
 		if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 			//verifica se foi marcada a opção para gerar outros números
@@ -1395,7 +1402,7 @@ private void zeraLoteca(){
 	private void configuraSuperSete(View viewLayout) {
 		listaGridsSuperSete = cartelaModel.getListGridSuperSete(viewLayout);
 
-		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorLight, parentActivity);
+		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorDark, parentActivity);
 
 		cartelaModel.preencheGridComListaSuperSete(listaGridsSuperSete, listaAdaptersSuperSete);
 

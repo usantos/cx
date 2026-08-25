@@ -489,7 +489,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
             @Override
             public void onReload(int position) {
-                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
+                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
                     AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(apostasList.get(position).getModalidade(), new OnModalidadesAbertasListener() {
                         @Override
                         public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
@@ -533,7 +533,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         }
                     });
 
-                //}
+                }
             }
 
             @Override
@@ -656,6 +656,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
                         //SERVICO /apostas/:idAposta/comprovante  Informacao COMBO está errada
                         comprovante.getAposta().setCombo(apostaDTO.getCombo());
+
+                        if (NovaApiUtils.isPossoBuscarNovaAPI()){
+                            comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                        }
 
                         startDetalheComprovante(comprovante);
                     }

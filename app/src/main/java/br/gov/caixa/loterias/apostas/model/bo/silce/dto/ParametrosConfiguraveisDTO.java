@@ -26,8 +26,6 @@ public class ParametrosConfiguraveisDTO {
     private String urlBaseCarrinhoPiloto;
     @SerializedName("hostMicroServicoCarrinhoProducao")
     private String urlBaseCarrinhoProducao;
-    @SerializedName("grupoDeCpfsQueAcessamOServicoDaAzure")
-    private String grupoDeCpfsQueAcessamOServicoDaAzure;
 
     @SerializedName("hostNovoMicroServicoConferenciaApostaProducao")
     private String urlBaseNovaApiPRD;
@@ -134,14 +132,6 @@ public class ParametrosConfiguraveisDTO {
 
     public void setUrlBaseCarrinhoProducao(String urlBaseCarrinhoProducao) {
         this.urlBaseCarrinhoProducao = urlBaseCarrinhoProducao;
-    }
-
-    public String getGrupoDeCpfsQueAcessamOServicoDaAzure() {
-        return grupoDeCpfsQueAcessamOServicoDaAzure;
-    }
-
-    public void setGrupoDeCpfsQueAcessamOServicoDaAzure(String grupoDeCpfsQueAcessamOServicoDaAzure) {
-        this.grupoDeCpfsQueAcessamOServicoDaAzure = grupoDeCpfsQueAcessamOServicoDaAzure;
     }
 
     public Boolean getComboApostasHabilitado() {

@@ -68,9 +68,6 @@ public class LerBilhetesActivity extends LoteriasBaseAppActivity {
         Button buttonQrCode = findViewById(R.id.buttonQrCode);
         buttonQrCode.setOnClickListener(v -> setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 
-        Button buttonBarCode = findViewById(R.id.buttonBarCode);
-        buttonBarCode.setOnClickListener(v -> setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
-
         startCamera();
     }
 

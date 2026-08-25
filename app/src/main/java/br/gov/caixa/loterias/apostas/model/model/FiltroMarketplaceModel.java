@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 
 public class FiltroMarketplaceModel extends AppModel{
 	public FiltroMarketplaceModel(Activity activity) {

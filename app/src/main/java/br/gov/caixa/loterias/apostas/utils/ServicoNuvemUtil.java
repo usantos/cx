@@ -25,34 +25,7 @@ public class ServicoNuvemUtil {
 	}
 
 	private static boolean isAmbienteTQS() {
-		return !(BuildConfig.FLAVOR.equalsIgnoreCase("prd") ||  BuildConfig.FLAVOR.equalsIgnoreCase("net"));
-	}
-
-	private static boolean cpfAcessamNuvem() {
-		String cpfAcessam[] = SharedPreferencesUtils.getValorString(ConfiguracoesEnum.GRUPO_CPFS_AZURE.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_AZURE.asString()).split(";");
-		int finalCpfAcessamNuvem = new Integer(cpfAcessam[0]);
-
-		if (finalCpfAcessamNuvem == 100) {
-			return true;
-		}
-
-		String cpf = DadosUsuarioBO.obterCpf();
-		if (cpf != null && !cpf.isEmpty() && cpf.length() >= 2) {
-
-			//Verifica lista branca
-			for (int i = 1; i < cpfAcessam.length; i++) {
-				if (cpf.equals(cpfAcessam[i])) {
-					return true;
-				}
-			}
-
-			//Verifica se o final do CPF < finalCpfAcessamNuvem
-			if (Integer.parseInt(cpf.substring(cpf.length() -2)) < finalCpfAcessamNuvem) {
-				return true;
-			}
-		}
-
-		return false;
+		return !(BuildConfig.FLAVOR.equalsIgnoreCase("prd"));
 	}
 
 	public static void apresentaCaminhoTQS(String caminhoCompeto) {
@@ -87,25 +60,4 @@ public class ServicoNuvemUtil {
 		return baseUrlCarrinho;
 	}
 
-	public static boolean isServicoNuvemAtivo() {
-		String baseUrlCarrinho = getBaseUrlNuvem();
-
-		if (baseUrlCarrinho == null || baseUrlCarrinho.isEmpty() || baseUrlCarrinho.equals("-")) {
-			return false;
-		}
-
-		return true;
-	}
-
-	public static boolean isServicoNuvem() {
-		if (!isServicoNuvemAtivo()) {
-			return false;
-		}
-
-		if (cpfAcessamNuvem()) {
-			return true;
-		}
-
-		return false;
-	}
 }
