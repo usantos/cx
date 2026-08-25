@@ -349,6 +349,21 @@ public abstract class SimulaUiEvent {
         }
     }
 
+    public static final class PalpitesLotecaAtualizado extends SimulaUiEvent {
+
+        private final int quantidadePalpites;
+
+        public PalpitesLotecaAtualizado(
+                int quantidadePalpites
+        ) {
+            this.quantidadePalpites = quantidadePalpites;
+        }
+
+        public int getQuantidadePalpites() {
+            return quantidadePalpites;
+        }
+    }
+
     public static final class InicializarTeimosinhas extends SimulaUiEvent {
         private final List<String> qntTeimosinhas;
         private final List<Integer> qntConcursos;

@@ -5,7 +5,6 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -43,7 +42,6 @@ import br.gov.caixa.loterias.apostas.model.model.AccordionModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
-import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.AdicionarCarrinhoReducer;
 import br.gov.caixa.loterias.apostas.viewModel.reducer.CarrinhoReducer;
@@ -261,6 +259,13 @@ public class LotecaViewModel extends SimulaViewModel {
 
         if(event instanceof SimulaUiEvent.LotecaAtualizada){
             handleLotecaAtualizada((SimulaUiEvent.LotecaAtualizada) event);
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.PalpitesLotecaAtualizado) {
+            handlePalpitesLotecaAtualizado(
+                    (SimulaUiEvent.PalpitesLotecaAtualizado) event
+            );
             return true;
         }
 
@@ -1422,10 +1427,6 @@ public class LotecaViewModel extends SimulaViewModel {
     private void handleAdicionarCarrinhoSolicitado(
             SimulaUiEvent.AdicionarCarrinhoSolicitado event
     ) {
-        if (event.isEscolhaTimeCoracaoSurpresinha()) {
-            handleAdicionarSurpresinhaTimemaniaComTime(event);
-            return;
-        }
 
         apostaPendente = event.getAposta();
         barraTituloPendente = getBarraTituloSafe(event.getBarraTituloDTO());
@@ -1437,57 +1438,7 @@ public class LotecaViewModel extends SimulaViewModel {
 
         executarAdicionarCarrinhoPendente();
     }
-    private void handleAdicionarSurpresinhaTimemaniaComTime(
-            SimulaUiEvent.AdicionarCarrinhoSolicitado event
-    ) {
-        updateState(state -> {
-            SimulaUiState stateComTime =
-                    state.toBuilder()
-                            .setEquipeSelecionada(event.getEquipeSelecionada())
 
-                            // sai do modo "escolha de time vindo da surpresinha"
-                            .setTelaSelecaoTimeAtivado(false)
-                            .setEscolhaTimeCoracaoSurpresinha(false)
-
-                            // mantém a surpresinha ligada
-                            .setSurpresinhaHabilitada(true)
-
-                            // volta para etapa base depois do comando
-                            .setEtapaAposta(EtapaAposta.NUMEROS)
-                            .setExibirInfoEtapa(false)
-                            .setTextoInfoEtapa("")
-
-                            // estado visual do rodapé
-                            .setBotaoAdicionarHabilitado(true)
-                            .setBotaoCompletarVisivel(false)
-                            .setBotaoCompletarHabilitado(false)
-                            .setBotaoNextStepHabilitado(false)
-                            .setBotaoLimparHabilitado(false)
-                            .setMostrarBotaoLimparAposta(false)
-                            .setMostrarSalvarAposta(false)
-                            .setApostaFavoritada(false)
-                            .build();
-
-            IncluirSurpresinhaDTO dto =
-                    surpresinhaCarrinhoReducer.criar(
-                            stateComTime,
-                            parametroJogoAtual,
-                            tipoJogoAtual,
-                            false
-                    );
-
-            if (dto == null) {
-                return state;
-            }
-
-            return stateComTime
-                    .toBuilder()
-                    .setComandoCarrinho(
-                            new CarrinhoEffect.AdicionarSurpresinha(dto)
-                    )
-                    .build();
-        });
-    }
 
     private void executarAdicionarCarrinhoPendente() {
 
@@ -1645,6 +1596,59 @@ public class LotecaViewModel extends SimulaViewModel {
                 )
         );
     }
+
+    private void handlePalpitesLotecaAtualizado(
+            SimulaUiEvent.PalpitesLotecaAtualizado event
+    ) {
+        if (event == null) {
+            return;
+        }
+
+        int quantidade = event.getQuantidadePalpites();
+
+        if (quantidade < 15 || quantidade > 26) {
+            return;
+        }
+
+        updateState(state -> state.toBuilder()
+                .setPalpitesLoteca(quantidade)
+                .build()
+        );
+
+        recalcularFluxoLotecaComEstadoAtual();
+    }
+
+    private void recalcularFluxoLotecaComEstadoAtual() {
+        SimulaUiState atual = getCurrentState();
+
+        if (atual == null) {
+            return;
+        }
+
+        updateState(state ->
+                fluxoApostaReducer.cartelaAlterada(
+                        state,
+                        new SimulaUiEvent.CartelaAlterada(
+                                ModalidadeEnum.LOTECA,
+                                0,
+                                state.getQtdDezenasPossiveisSelecionado(),
+                                0,
+                                state.getJogosLoteca(),
+                                state.getSimplesLoteca(),
+                                state.getDuplasLoteca(),
+                                state.getTriplasLoteca(),
+                                false,
+                                false,
+                                state.isEscolhaTimeCoracaoSurpresinha(),
+                                false,
+                                false,
+                                false,
+                                state.getDezenasSelecionadas()
+                        )
+                )
+        );
+    }
+
     private String formatarDataSorteio(ParametroJogoDTO parametro) {
 
         try {

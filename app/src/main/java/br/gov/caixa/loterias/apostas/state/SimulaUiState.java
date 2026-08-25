@@ -50,6 +50,7 @@ public class SimulaUiState {
     private final boolean limparOpcaoOutrosNumeros;
 
     private final int qtdTotalSelecionadosSuperSete;
+    private final int palpitesLoteca;
 
     private final int jogosLoteca;
     private final int simplesLoteca;
@@ -182,6 +183,7 @@ public class SimulaUiState {
 
         this.qtdTotalSelecionadosSuperSete = builder.qtdTotalSelecionadosSuperSete;
 
+        this.palpitesLoteca = builder.palpitesLoteca;
         this.jogosLoteca = builder.jogosLoteca;
         this.simplesLoteca = builder.simplesLoteca;
         this.duplasLoteca = builder.duplasLoteca;
@@ -364,6 +366,7 @@ public class SimulaUiState {
                 .setLimparLotogol(false)
                 .setLimparOpcaoOutrosNumeros(false)
                 .setQtdTotalSelecionadosSuperSete(0)
+                .setPalpitesLoteca(15)
                 .setJogosLoteca(0)
                 .setSimplesLoteca(0)
                 .setDuplasLoteca(0)
@@ -614,6 +617,7 @@ public class SimulaUiState {
     public int getJogosLoteca() {
         return jogosLoteca;
     }
+    public int getPalpitesLoteca(){return palpitesLoteca;}
 
     public int getSimplesLoteca() {
         return simplesLoteca;
@@ -745,6 +749,7 @@ public class SimulaUiState {
         private boolean limparOpcaoOutrosNumeros;
 
         private int qtdTotalSelecionadosSuperSete;
+        private int palpitesLoteca;
 
         private int jogosLoteca;
         private int simplesLoteca;
@@ -932,6 +937,7 @@ public class SimulaUiState {
 
             this.qtdTotalSelecionadosSuperSete = state.qtdTotalSelecionadosSuperSete;
 
+            this.palpitesLoteca = state.palpitesLoteca;
             this.jogosLoteca = state.jogosLoteca;
             this.simplesLoteca = state.simplesLoteca;
             this.duplasLoteca = state.duplasLoteca;
@@ -1536,6 +1542,12 @@ public class SimulaUiState {
                 int qtdTotalSelecionadosSuperSete
         ) {
             this.qtdTotalSelecionadosSuperSete = qtdTotalSelecionadosSuperSete;
+            return this;
+        }
+        public Builder setPalpitesLoteca(
+                int palpitesLoteca
+        ) {
+            this.palpitesLoteca = palpitesLoteca;
             return this;
         }
 

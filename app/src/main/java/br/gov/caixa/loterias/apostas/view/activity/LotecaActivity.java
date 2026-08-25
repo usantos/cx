@@ -77,6 +77,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.LotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.TimesFragment;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.LotecaViewModel;
@@ -119,6 +120,9 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private LinearLayout containerComoJogar;
     private MaterialButton btnTeimosinha, btnQuantidadeNumeros, btnQuantidadeTrevos, botaoFavoritar, btnPalpites;
     private List<Integer> qtdPrognosticosQuantidadeNumerosList;
+    private List<Integer> qtdPalpitesLotecaList;
+    private List<String> labelsPalpitesLoteca;
+    private Integer minimoPalpitesParaAtualizar;
     private TextView textSelecionados;
     private FrameLayout frameCarrinho;
     private TextView tvQuantidadeApostas;
@@ -809,8 +813,13 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void renderParametrosAposta(SimulaUiState state) {
+        if (btnPalpites == null || state == null) {
+            return;
+        }
 
-
+        btnPalpites.setText(
+                state.getPalpitesLoteca() + " palpites"
+        );
     }
 
     private void renderComandoCarrinho(CarrinhoEffect comando) {
@@ -915,6 +924,8 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
     public void zerarApostas() {
         qtdNumerosList = new ArrayList<>();
         qtdPrognosticosQuantidadeNumerosList = new ArrayList<>();
+        qtdPalpitesLotecaList = new ArrayList<>();
+        labelsPalpitesLoteca = new ArrayList<>();
         qtdConcursosList = new ArrayList<>();
         configuraParametrosJogo();
         configuraFragments();
@@ -1154,6 +1165,11 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 }
             }
         }
+
+        for (int i = 15; i <= 26; i++) {
+            qtdPalpitesLotecaList.add(i);
+            labelsPalpitesLoteca.add(i + " palpites");
+        }
     }
 
     private void inicializarEstadoQuantidadeNumeros() {
@@ -1211,6 +1227,12 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 v -> viewModel.onEvent(new SimulaUiEvent.ClicarTeimosinhas())
         );
 
+        if (btnPalpites != null) {
+            btnPalpites.setOnClickListener(
+                    v -> abrirDialogQuantidadePalpites(null)
+            );
+        }
+
         frameCarrinho.setOnClickListener(
                 v -> viewModel.onEvent(new SimulaUiEvent.CarrinhoClicado())
         );
@@ -1252,6 +1274,74 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
             );
         }
 
+    }
+
+    public void abrirDialogQuantidadePalpitesParaAumentar(
+            int palpitesAtuais
+    ) {
+        abrirDialogQuantidadePalpites(
+                palpitesAtuais
+        );
+    }
+
+    private void abrirDialogQuantidadePalpites(
+            Integer minimoParaAtualizar
+    ) {
+        if (labelsPalpitesLoteca == null || labelsPalpitesLoteca.isEmpty()) {
+            return;
+        }
+
+        minimoPalpitesParaAtualizar = minimoParaAtualizar;
+
+        DialogUtils.showDialogListItens(
+                this,
+                getString(R.string.quantidade_de_palpites),
+                null,
+                labelsPalpitesLoteca,
+                "Confirmar",
+                "Cancelar",
+                onQuantidadePalpitesDialogListener()
+        );
+    }
+
+    private OnDialogListener onQuantidadePalpitesDialogListener() {
+        return new OnDialogListener() {
+            @Override
+            public void itemSelecionado(int position) {
+            }
+
+            @Override
+            public void ok(int position) {
+                if (qtdPalpitesLotecaList == null
+                        || position < 0
+                        || position >= qtdPalpitesLotecaList.size()) {
+                    minimoPalpitesParaAtualizar = null;
+                    return;
+                }
+
+                int novoValor =
+                        qtdPalpitesLotecaList.get(position);
+
+                if (minimoPalpitesParaAtualizar != null
+                        && novoValor <= minimoPalpitesParaAtualizar) {
+                    minimoPalpitesParaAtualizar = null;
+                    return;
+                }
+
+                viewModel.onEvent(
+                        new SimulaUiEvent.PalpitesLotecaAtualizado(
+                                novoValor
+                        )
+                );
+
+                minimoPalpitesParaAtualizar = null;
+            }
+
+            @Override
+            public void cancelar() {
+                minimoPalpitesParaAtualizar = null;
+            }
+        };
     }
 
     private void abrirTelaCartela() {
@@ -1343,13 +1433,14 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void resetarTelaAposRetornoDeActivity() {
-        zerarApostas();
+        zerarApostasLoteca();
         inicializarTela();
 
         etapaRenderizada = null;
         renderizacaoSurpresinhaTime = false;
 
         abrirTelaCartela();
+        cartelaFragment.zeraLoteca();
 
         viewModel.onEvent(
                 new SimulaUiEvent.CarregarCarrinho()
