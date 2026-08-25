@@ -45,7 +45,10 @@ public class LimparReducer {
 
         if (tipoJogo == ModalidadeEnum.LOTECA) {
 
-            limparLoteca(builder);
+            limparLoteca(
+                    builder,
+                    state.getPalpitesLoteca()
+            );
 
         } else if (tipoJogo == ModalidadeEnum.LOTOGOL) {
 
@@ -100,7 +103,8 @@ public class LimparReducer {
     }
 
     private void limparLoteca(
-            SimulaUiState.Builder builder
+            SimulaUiState.Builder builder,
+            int palpitesMaximos
     ) {
 
         builder
@@ -109,6 +113,11 @@ public class LimparReducer {
                 .setSimplesLoteca(0)
                 .setDuplasLoteca(0)
                 .setTriplasLoteca(0)
+                .setExibirInfoEtapa(true)
+                .setTextoInfoEtapa(
+                        "Selecionados: 0/"
+                                + Math.max(palpitesMaximos, 0)
+                )
                 .setMostrarBotaoLimparAposta(false)
                 .setBotaoCompletarVisivel(false);
     }

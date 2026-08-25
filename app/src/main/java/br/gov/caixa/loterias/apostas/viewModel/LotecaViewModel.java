@@ -1625,6 +1625,12 @@ public class LotecaViewModel extends SimulaViewModel {
             return;
         }
 
+        int qtdPartidasTotal =
+                parametroJogoAtual != null
+                        && parametroJogoAtual.getPartidas() != null
+                        ? parametroJogoAtual.getPartidas().size()
+                        : 0;
+
         updateState(state ->
                 fluxoApostaReducer.cartelaAlterada(
                         state,
@@ -1634,7 +1640,7 @@ public class LotecaViewModel extends SimulaViewModel {
                                 state.getQtdDezenasPossiveisSelecionado(),
                                 0,
                                 state.getJogosLoteca(),
-                                state.getSimplesLoteca(),
+                                qtdPartidasTotal,
                                 state.getDuplasLoteca(),
                                 state.getTriplasLoteca(),
                                 false,

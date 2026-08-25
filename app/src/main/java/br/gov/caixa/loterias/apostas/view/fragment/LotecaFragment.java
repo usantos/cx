@@ -1613,6 +1613,12 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             int duplas,
             int triplas
     ) {
+        int qtdPartidasTotal =
+                parametroJogo != null
+                        && parametroJogo.getPartidas() != null
+                        ? parametroJogo.getPartidas().size()
+                        : 0;
+
         /*
          * Primeiro atualiza os valores da Loteca no state.
          *
@@ -1634,7 +1640,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
          *
          * Para Loteca:
          * qtdPartidasSelecionadas = jogosSelecionados
-         * qtdPartidasTotal = simples
+         * qtdPartidasTotal = total de partidas do volante
          */
         dispatch(
                 new SimulaUiEvent.CartelaAlterada(
@@ -1646,7 +1652,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                                 .getQtdDezenasPossiveisSelecionado(),
                         0,
                         jogosSelecionados,
-                        simples,
+                        qtdPartidasTotal,
                         duplas,
                         triplas,
                         false,
