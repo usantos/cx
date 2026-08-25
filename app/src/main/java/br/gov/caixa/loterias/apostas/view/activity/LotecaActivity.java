@@ -386,6 +386,11 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
                         : View.GONE
         );
 
+        if (!TextUtils.isEmpty(state.getTextoInfoEtapa())) {
+            textInfoEtapa.setText(state.getTextoInfoEtapa());
+            return;
+        }
+
         String texto;
         switch (state.getEtapaAposta()) {
             case TREVOS:
