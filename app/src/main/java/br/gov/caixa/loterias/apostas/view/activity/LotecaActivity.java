@@ -249,10 +249,17 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         this.botaoLimparAposta = findViewById(R.id.btnLimpar);
         this.botaoCompletar = findViewById(R.id.btnCompletar);
         this.botaoAdicionar = findViewById(R.id.btnAdicionarCarrinho);
-        this.labelValueJogosLoteca = findViewById(R.id.labelValueJogosLoteca);
-        this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
-        this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
-        this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
+
+//        this.labelValueJogosLoteca = findViewById(R.id.labelValueJogosLoteca);
+//        this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
+//        this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
+//        this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
+
+        this.labelValueJogosLoteca = findViewById(R.id.txtPartidas);
+        this.labelValueSimplesLoteca = findViewById(R.id.txtSimples);
+        this.labelValueDuplasLoteca = findViewById(R.id.txtDuplas);
+        this.labelValueTriplasLoteca = findViewById(R.id.txtTriplas);
+
         this.tvValorAposta = findViewById(R.id.tvValorAposta);
         this.tvValorCarrinho = findViewById(R.id.tvTotalCarrinho);
         this.containerComoJogar = findViewById(R.id.containerComoJogarLoteca);
@@ -369,6 +376,8 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         renderDialogFavoritarAposta(state);
         renderComandoFavoritarAposta(state);
         renderInfoEtapa(state);
+
+        renderQtdApostas(state);
     }
 
     private void renderInfoEtapa(
@@ -571,6 +580,12 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     }
 
+    private void renderQtdApostas(SimulaUiState state) {
+        this.setLabelValueJogosLoteca(String.valueOf(state.getJogosLoteca()));
+        this.setLabelValueSimplesLoteca(String.valueOf(state.getSimplesLoteca()));
+        this.setLabelValueDuplasLoteca(String.valueOf(state.getDuplasLoteca()));
+        this.setLabelValueTriplasLoteca(String.valueOf(state.getTriplasLoteca()));
+    }
 
     private void renderEstadoBotoes(SimulaUiState state) {
         boolean isLoteca = state.getTipoJogo() == ModalidadeEnum.LOTECA;
@@ -943,7 +958,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         this.setLabelValueSimplesLoteca(Constantes.ZERO_STRING);
         this.setLabelValueDuplasLoteca(Constantes.ZERO_STRING);
         this.setLabelValueTriplasLoteca(Constantes.ZERO_STRING);
-        setColorValuesLoteca();
+        //setColorValuesLoteca();
         EtapaFragment etapa = getEtapaAtual();
         if(etapa != null){
             etapa.onLimparRodapeClicado();
@@ -1054,12 +1069,12 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         );
     }
 
-    public void setColorValuesLoteca() {
-        this.labelValueJogosLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-        this.labelValueSimplesLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-        this.labelValueDuplasLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-        this.labelValueTriplasLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-    }
+//    public void setColorValuesLoteca() {
+//        this.labelValueJogosLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
+//        this.labelValueSimplesLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
+//        this.labelValueDuplasLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
+//        this.labelValueTriplasLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
+//    }
 
     public void setLabelValueJogosLoteca(String labelValueJogosLoteca) {
         this.labelValueJogosLoteca.setText(labelValueJogosLoteca);
