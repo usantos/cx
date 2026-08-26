@@ -154,11 +154,6 @@ public class MinhasApostasActivity extends AppCompatActivity implements Boundari
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
 	public void outDialogEntendiListener() {
 		fragmentSomadorCarrinho();
 		somadorCarrinhoVisibility();

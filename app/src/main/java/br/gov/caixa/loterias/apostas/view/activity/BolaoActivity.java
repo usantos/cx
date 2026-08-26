@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -89,6 +90,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     public static final String ARG_TIPO_CONCURSO = "ARG_TIPO_CONCURSO";
 
     public static final String ARG_FILTRO_MARKETPLACE = "ARG_FILTRO_MARKETPLACE";
+    public static final String ARG_FILTRO_LIMPO = "ARG_FILTRO_LIMPO";
     public static final String ARG_DTO_LOTERICA = "ARG_DTO_LOTERICA";
     public static final String ARG_DESATIVAR_FILTRO = "DESATIVAR_FILTRO";
     private RecyclerView lotericasListView;
@@ -119,6 +121,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private FiltroVazioFragment filtroVazioFragment;
     private LotericaEmptyFragment lotericaVaziaFragment;
     private FiltroAplicadoMarketplace filtro = new FiltroAplicadoMarketplace();
+    private FiltroAplicadoMarketplace filtroLimpo = new FiltroAplicadoMarketplace();
     private List<CotasBolaoDTO> cotasDisponiveis;
 
     private Integer idModalidade, idModalidadeInicial;
@@ -162,7 +165,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         launcherDetalhes = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
         setTitle("");
         TextView toolBarTxt = findViewById(R.id.toolbar_title);
-        configFiltrar(launcherFiltro, filtro);
+        configFiltrar(launcherFiltro, filtro, filtroLimpo);
         toolBarTxt.setVisibility(VISIBLE);
         rvConteudoBoloes = findViewById(R.id.rv_conteudo_boloes);
         lotericasListView = findViewById(R.id.lista_lotericas);
@@ -188,8 +191,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 bolaoList,
                 onItemBolaoListener(),
                 this,
-                filtro,
-                true
+                filtro
         );
 
         concatBolaoAdapter = new ConcatAdapter(
@@ -219,10 +221,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         layoutBoloes = findViewById(R.id.contentBoloes);
         layoutLotericasFavoritas = findViewById(R.id.contentLotericasFavoritas);
 
-        if (idModalidadeInicial != null)
+        if (idModalidadeInicial != null){
             filtro.setModalidade(ModalidadeEnum.fromInteger(idModalidadeInicial));
-        if (tipoConcursoInicial != null)
+            filtroLimpo.setModalidade(ModalidadeEnum.fromInteger(idModalidadeInicial));
+        }
+        if (tipoConcursoInicial != null){
             filtro.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcursoInicial));
+            filtroLimpo.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcursoInicial));
+        }
         toolBarTxt.setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.label_bolao_bar_marketplace)));
         ViewCompat.setAccessibilityHeading(toolBarTxt,true);
 
@@ -826,6 +832,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         bolaoList.clear();
         bolaoList.addAll(novaListaCompleta);
 
+        listAdapter.atualizarFiltro(filtro);
+
         listAdapter.notifyDataSetChanged();
 
         bolaoFooterAdapter.mostrarLoading(false);
@@ -875,10 +883,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 Intent data = result.getData();
                 if (data != null) {
                     filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
+                    filtroLimpo = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_LIMPO_RETORNO);
                     if (filtro != null) {
                         isFiltrando = true;
                         listAdapter.atualizarFiltro(filtro);
-                        configFiltrar(launcherFiltro, filtro);
+                        configFiltrar(launcherFiltro, filtro, filtroLimpo);
                         if (filtro.getModalidade() != null) {
                             idModalidade = ModalidadeEnum.fromStringToIdModalidade(filtro.getModalidade());
                             tipoConcurso = TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso());
