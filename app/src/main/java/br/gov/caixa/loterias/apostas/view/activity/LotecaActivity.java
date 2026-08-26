@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -1260,6 +1261,11 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         if (botaoCompletar != null) {
             botaoCompletar.setOnClickListener(
                     v -> {
+
+                        if (!verificaAberto(this)) {
+                            return;
+                        }
+
                         EtapaFragment etapa = getEtapaAtual();
                         if(etapa != null){
                             etapa.onCompletarRodapeClicado();
@@ -1516,5 +1522,19 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
                         state.getValorAposta()
                 )
         );
+    }
+
+    private boolean verificaAberto(Context context) {
+        if (parametroSimulacao != null
+            && parametroSimulacao.getConcurso() != null
+            && parametroSimulacao.getConcurso().getAberto() != null
+            && !parametroSimulacao.getConcurso().getAberto()) {
+
+            DialogUtils.dialogEntendi(context, context.getString(R.string.msg_conc_nao_aberto)
+                            .replace("{num_concurso}", parametroSimulacao.getConcurso().getNumero().toString())
+            );
+            return false;
+        }
+        return true;
     }
 }

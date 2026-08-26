@@ -83,6 +83,7 @@
             android:id="@+id/txtPartidas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/loteca_claro_mkp"
             android:fontFamily="@font/caixa_std_semi_bold"
             android:gravity="right"
             android:text="0"/>
@@ -105,6 +106,7 @@
             android:id="@+id/txtSimples"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/loteca_claro_mkp"
             android:fontFamily="@font/caixa_std_semi_bold"
             android:gravity="right"
             android:text="0"/>
@@ -128,6 +130,7 @@
             android:id="@+id/txtDuplas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/loteca_claro_mkp"
             android:fontFamily="@font/caixa_std_semi_bold"
             android:gravity="right"
             android:text="0"/>
@@ -151,6 +154,7 @@
             android:id="@+id/txtTriplas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/loteca_claro_mkp"
             android:fontFamily="@font/caixa_std_semi_bold"
             android:gravity="right"
             android:text="0"/>
