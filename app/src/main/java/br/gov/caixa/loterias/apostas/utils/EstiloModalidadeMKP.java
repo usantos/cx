@@ -5,7 +5,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
 public class EstiloModalidadeMKP {
-
     private int corClara;
     private int corEscura;
     private int trapezio;
@@ -331,28 +330,57 @@ public class EstiloModalidadeMKP {
                 break;
             default:
                 //MEGASENA
-                corClara = R.color.mega_verde_claro_mkp;
-                corEscura = R.color.mega_verde_escuro_mkp;
-                trapezio = R.drawable.background_trapeze_megasena_mkp;
-                trapezioEspecial = R.drawable.mega_sena_trapezio;
-                fundoEspecial = R.drawable.mega_virada_background;
-                shapeBtnDetalhes = R.drawable.btn_rounded_green_outlined;
-                imagemTriangulo = R.drawable.ic_tag_bolao;
-                imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline;
-                imagemEspecialCarrossel = R.drawable.mega_virada_novo;
-                imagemEspecialSimples = R.drawable.mega_virada_simples;
-                imagemEspecialDupla = R.drawable.mega_virada_dupla;
-                imagemEspecialQuadrada = R.drawable.mega_virada_quadrado;
-                imagemEspecialDetalhes = R.drawable.cabecalho_mega_da_virada_detalhe_aposta;
-                corLetraLista = R.color.mega_verde_claro_mkp;
-                corFonteFundoClaro = R.color.branco;
-                corFonteFundoEscuro = R.color.branco;
-                trevoFundoClaro = R.drawable.trevo_megasena_fundo_branco;
-                trevoFundoEscuro = R.drawable.trevo_megasena_fundo_escuro;
-                tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_mega_especial_combos;
-                trevoFundoDetalheCombo = R.drawable.trevo_mega_sena_detalhe_combo;
-                imagemSubCabecalho = R.drawable.rodape_mega_da_virada_inferior;
+                if (EspecialUtils.isOutubroRosa()){
+                    preencheOutubroRosa();
+                } else {
+                    corClara = R.color.mega_verde_claro_mkp;
+                    corEscura = R.color.mega_verde_escuro_mkp;
+                    trapezio = R.drawable.background_trapeze_megasena_mkp;
+                    trapezioEspecial = R.drawable.mega_sena_trapezio;
+                    fundoEspecial = R.drawable.mega_virada_background;
+                    shapeBtnDetalhes = R.drawable.btn_rounded_green_outlined;
+                    imagemTriangulo = R.drawable.ic_tag_bolao;
+                    imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline;
+                    imagemEspecialCarrossel = R.drawable.mega_virada_novo;
+                    imagemEspecialSimples = R.drawable.mega_virada_simples;
+                    imagemEspecialDupla = R.drawable.mega_virada_dupla;
+                    imagemEspecialQuadrada = R.drawable.mega_virada_quadrado;
+                    imagemEspecialDetalhes = R.drawable.cabecalho_mega_da_virada_detalhe_aposta;
+                    corLetraLista = R.color.mega_verde_claro_mkp;
+                    corFonteFundoClaro = R.color.branco;
+                    corFonteFundoEscuro = R.color.branco;
+                    trevoFundoClaro = R.drawable.trevo_megasena_fundo_branco;
+                    trevoFundoEscuro = R.drawable.trevo_megasena_fundo_escuro;
+                    tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_mega_especial_combos;
+                    trevoFundoDetalheCombo = R.drawable.trevo_mega_sena_detalhe_combo;
+                    imagemSubCabecalho = R.drawable.rodape_mega_da_virada_inferior;
+                }
         }
+
+    }
+
+    private void preencheOutubroRosa(){
+        corClara = R.color.outubro_rosa_primario;
+        corEscura = R.color.outubro_rosa_secundario;
+        trapezio = R.drawable.background_trapeze_megasena_outubro_rosa;
+        trapezioEspecial = R.drawable.mega_sena_trapezio_outubro_rosa;
+        fundoEspecial = R.drawable.mega_virada_background;
+        shapeBtnDetalhes = R.drawable.btn_rounded_rosa_outlined;
+        imagemTriangulo = R.drawable.ic_tag_bolao_outubro_rosa;
+        imagemTrianguloOutline= R.drawable.ic_tag_bolao_rosa_outline;
+        imagemEspecialCarrossel = R.drawable.mega_virada_novo;
+        imagemEspecialSimples = R.drawable.mega_virada_simples;
+        imagemEspecialDupla = R.drawable.mega_virada_dupla;
+        imagemEspecialQuadrada = R.drawable.mega_virada_quadrado;
+        imagemEspecialDetalhes = R.drawable.cabecalho_mega_da_virada_detalhe_aposta;
+        corLetraLista = R.color.outubro_rosa_secundario;
+        corFonteFundoClaro = R.color.outubro_rosa_texto;
+        corFonteFundoEscuro = R.color.branco;
+        trevoFundoClaro = R.drawable.trevo_megasena_outubro_rosa_fundo_branco;
+        trevoFundoEscuro = R.drawable.trevo_megasena_outubro_rosa_fundo_escuro;
+        tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_mega_outubro_rosa_combos;
+        trevoFundoDetalheCombo = R.drawable.trevo_mega_sena_detalhe_combo_outubro_rosa;
+        imagemSubCabecalho = R.drawable.rodape_mega_da_virada_inferior;
     }
 
     public int getCorClara() {
