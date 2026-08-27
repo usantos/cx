@@ -875,14 +875,21 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 data.get(adapterPosition).getConcurso().getNumero(),
                 data.get(adapterPosition).getConcurso().getTipoConcurso());
 
+        int corText = ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro());
         int cor = ContextCompat.getColor(this, estilo.getCorEscura());
+
+        if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)) {
+            buttonHomeBet.setStrokeColor(ColorStateList.valueOf(corText));
+            buttonHomeBet.setTextColor(corText);
+        } else {
+            buttonHomeBet.setStrokeColor(ColorStateList.valueOf(cor));
+            buttonHomeBet.setTextColor(cor);
+        }
+
         buttonHomeBolao.setBackgroundTintList(ColorStateList.valueOf(cor));
         buttonHomeBet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.branco)));
-        buttonHomeBet.setStrokeColor(ColorStateList.valueOf(cor));
-        buttonHomeBet.setTextColor(cor);
         buttonHomeBet.setStrokeWidth(2);
 
-        int corText = ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro());
         buttonHomeBolao.setTextColor(corText);
 
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
