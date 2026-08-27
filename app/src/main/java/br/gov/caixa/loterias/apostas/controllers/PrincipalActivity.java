@@ -380,6 +380,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         fragmentSomadorCarrinho();
         checkRedirecionamento();
 
+        if (model == null) model = new CarrinhoModel(this);
         model.buscaCarrinhoSilce(new OnSilceListener<CarrinhoDTO>() {
             @Override
             public void success(CarrinhoDTO payload) {
