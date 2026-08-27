@@ -312,6 +312,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         this.nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
         this.nomeCaixa.setHint("Título, Botão, Recolhido");
         this.nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
+        arrow.setRotation(expandido ? 0f : 180f);
 
         this.buttonHomeBet.setOnClickListener(view ->
                 {
@@ -347,7 +348,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             nomeCaixa.setHint(hint);
             nomeCaixa.announceForAccessibility(getString(R.string.cef_id_tit) + hint);
             textoInformativoCaixa.setVisibility(expandido ? View.GONE : View.VISIBLE);
-            arrow.setRotation(expandido ? 0f : 180f);
+            arrow.setRotation(expandido ? 180f : 0f);
         });
     }
 
