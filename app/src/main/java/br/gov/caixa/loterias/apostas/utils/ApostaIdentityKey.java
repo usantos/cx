@@ -11,7 +11,7 @@ public class ApostaIdentityKey {
     public static String gerar(
             IdentificaoDeUmaApostaDas8Modalidades<?> aposta) {
 
-        if (aposta == null || aposta.getModalidade() == null) {
+        if (aposta == null || aposta.getModalidade() == null || aposta.getIndicadorCotaBolao()) {
             return "";
         }
 

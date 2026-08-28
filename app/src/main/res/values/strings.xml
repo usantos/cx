@@ -1673,5 +1673,6 @@
 
     <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
     <string name="txt_como_jogar">Como jogar</string>
+    <string name="txt_apostas_identicas">Existem apostas idênticas em seu carrinho, por favor verifique.</string>
 
 </resources>

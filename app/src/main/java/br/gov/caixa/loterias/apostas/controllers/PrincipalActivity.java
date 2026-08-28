@@ -385,7 +385,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             @Override
             public void success(CarrinhoDTO payload) {
                 if (possuiApostasDuplicadas(payload)) {
-                    Toast.makeText(getBaseContext(), "+", Toast.LENGTH_SHORT).show();
+                    DialogUtils.dialogEntendi(PrincipalActivity.this,getString(R.string.txt_apostas_identicas));
                 }
             }
 
@@ -404,7 +404,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         for (IdentificaoDeUmaApostaDas8Modalidades<?> aposta : carrinho.getApostas()) {
             String chave = ApostaIdentityKey.gerar(aposta);
 
-            if (!apostasExistentes.add(chave)) {
+            if (!chave.isEmpty() && !apostasExistentes.add(chave)) {
                 return true;
             }
         }
