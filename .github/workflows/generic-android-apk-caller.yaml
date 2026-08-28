@@ -99,7 +99,7 @@ permissions:
 jobs:
   CI_CD:
     name: CI_CD
-    uses: caixagithub/DevSecOps-Solutions/.github/workflows/generic-android-apk-pipelines.yaml@develop
+    uses: caixagithub/DevSecOps-Solutions/.github/workflows/generic-android-apk-pipelines.yaml@main
     secrets: inherit
     with:
       VERSION_NAME: ${{ inputs.VERSION_NAME }}
