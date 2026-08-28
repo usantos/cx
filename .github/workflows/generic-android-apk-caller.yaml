@@ -43,14 +43,6 @@ on:
         required: false
         type: string
         description: 'Nome customizado da run:'
-      VERSION_NAME:
-        required: false
-        type: string
-        description: 'Version Name:'
-      VERSION_CODE:
-        required: false
-        type: string
-        description: 'Version Code:'
 #  push:
 #    branches:
 #      - main
@@ -101,6 +93,3 @@ jobs:
     name: CI_CD
     uses: caixagithub/DevSecOps-Solutions/.github/workflows/generic-android-apk-pipelines.yaml@main
     secrets: inherit
-    with:
-      VERSION_NAME: ${{ inputs.VERSION_NAME }}
-      VERSION_CODE: ${{ inputs.VERSION_CODE }}
