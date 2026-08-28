@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -127,6 +128,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
 public class PrincipalActivity extends LoteriasBaseAppActivity
@@ -819,27 +821,59 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private List<View> getMenuOutubroRosaViewList() {
         ArrayList<View> list = new ArrayList<>();
         list.add(containerDescricaoOutubroRosa);
-        if (!BuildVersionUtil.isPRD()){
+        if (!BuildVersionUtil.isPRD()) {
             containerAtivaOutubroRosaTeste.setVisibility(View.VISIBLE);
-            String status = "Status: ";
-            if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false)){
-                status += "Ativado";
-            } else {
-                status += "Desativado";
-            }
-            ((TextView) findViewById(R.id.status_teste)).setText(status);
-            containerAtivaOutubroRosaTeste.setOnClickListener(view ->{
-                DialogUtils.dialogConfirmar(PrincipalActivity.this, "Deseja realmente mudar o status do outubro rosa?", (dialog, which) -> {
-                    SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(),
-                            !SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false));
-                    IconAliasManager.applyIcon(this, IconeAppEnum.DEFAULT_DISABLED);
-                    SharedPreferencesUtils.setValor(ConfiguracoesEnum.LAUNCHER_ICON.get(), IconeAppEnum.DEFAULT_DISABLED.get());
+
+            SwitchCompat switchParam1 = findViewById(R.id.s_parametro_1_teste);
+            SwitchCompat switchParam2 = findViewById(R.id.s_parametro_2_teste);
+            switchParam1.setChecked(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false));
+            switchParam2.setChecked(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_2_OUTUBRO_ROSA.get(), false));
+            switchParam1.setOnClickListener(view -> {
+                DialogUtils.dialogDoisBotoesPersonalizados(PrincipalActivity.this, "Parametro 1", "Deseja realmente desativar o parametro 1 do outubro rosa?",
+                        "SIM", "NÃO", new OnDialogDoisBotoesListener() {
+                            @Override
+                            public void PositiveButton(DialogInterface dialog, int which) {
+                                SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false);
+                                SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_2_OUTUBRO_ROSA.get(), false);
+                                IconAliasManager.applyIcon(PrincipalActivity.this, IconeAppEnum.DEFAULT_DISABLED);
+                                SharedPreferencesUtils.setValor(ConfiguracoesEnum.LAUNCHER_ICON.get(), IconeAppEnum.DEFAULT_DISABLED.get());
+                                DialogUtils.dialogEntendiListener(PrincipalActivity.this, "Ao clicar aqui, vc mudou o status. Para ver o resultado, é preciso entrar novamente no app.",
+                                        (dialog2, which2) -> finishAndRemoveTask());
+                            }
+
+                            @Override
+                            public void NegativeButton(DialogInterface dialog, int which) {
+                                switchParam1.setChecked(true);
+                            }
+                        });
+            });
+            switchParam2.setOnClickListener(view -> {
+                if (!switchParam2.isChecked()){
+                    // Estou desativando
+                    DialogUtils.dialogDoisBotoesPersonalizados(PrincipalActivity.this, "Parametro 2", "Deseja realmente desativar o parametro 2 do outubro rosa?",
+                            "SIM", "NÃO", new OnDialogDoisBotoesListener() {
+                                @Override
+                                public void PositiveButton(DialogInterface dialog, int which) {
+                                    SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_2_OUTUBRO_ROSA.get(), false);
+                                    DialogUtils.dialogEntendiListener(PrincipalActivity.this, "Ao clicar aqui, vc mudou o status. Para ver o resultado, é preciso entrar novamente no app.",
+                                            (dialog2, which2) -> finishAndRemoveTask());
+                                }
+
+                                @Override
+                                public void NegativeButton(DialogInterface dialog, int which) {
+                                    switchParam2.setChecked(true);
+                                }
+                            });
+                } else {
+                    // Estou ativando
+                    SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_2_OUTUBRO_ROSA.get(), true);
                     DialogUtils.dialogEntendiListener(PrincipalActivity.this, "Ao clicar aqui, vc mudou o status. Para ver o resultado, é preciso entrar novamente no app.",
                             (dialog2, which2) -> finishAndRemoveTask());
-                });
+                }
             });
             list.add(containerAtivaOutubroRosaTeste);
         }
+
         return list;
     }
 
