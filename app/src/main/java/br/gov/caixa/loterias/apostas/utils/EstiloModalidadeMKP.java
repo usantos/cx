@@ -1,6 +1,9 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import android.app.Activity;
+
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
@@ -381,6 +384,15 @@ public class EstiloModalidadeMKP {
         tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_mega_outubro_rosa_combos;
         trevoFundoDetalheCombo = R.drawable.trevo_mega_sena_detalhe_combo_outubro_rosa;
         imagemSubCabecalho = R.drawable.rodape_mega_da_virada_inferior;
+    }
+
+    public void alteraOutubroRosaPorTela(Activity act){
+        if(act instanceof CarrinhoActivity){
+            corLetraLista = R.color.outubro_rosa_texto;
+        } else {
+            corLetraLista = R.color.outubro_rosa_secundario;
+        }
+
     }
 
     public int getCorClara() {
