@@ -1016,7 +1016,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
             if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(), ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean()) &&
                     temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
-                if (EspecialUtils.isOutubroRosa() && data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA){
+                if (EspecialUtils.isParametrosOutubroRosa() && data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA){
                     buttonHomeBolao.setBackground(AppCompatResources.getDrawable(PrincipalActivity.this, R.drawable.btn_rounded_outubro_rosa_outlined));
                     buttonHomeBolao.setTextColor(ContextCompat.getColor(PrincipalActivity.this, R.color.outubro_rosa_secundario));
                 } else {

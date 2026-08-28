@@ -330,7 +330,7 @@ public class EstiloModalidadeMKP {
                 break;
             default:
                 //MEGASENA
-                if (EspecialUtils.isOutubroRosa()){
+                if (EspecialUtils.isParametrosOutubroRosa()){
                     preencheOutubroRosa();
                 } else {
                     corClara = R.color.mega_verde_claro_mkp;

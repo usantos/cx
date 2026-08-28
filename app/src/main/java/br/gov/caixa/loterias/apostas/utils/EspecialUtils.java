@@ -107,10 +107,17 @@ public class EspecialUtils {
         } catch (Exception e){
             return false;
         }
-
     }
 
     public static Boolean isOutubroRosa(){
         return SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false);
+    }
+
+    public static Boolean isOutubroRosaMegaSena(){
+        return SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_2_OUTUBRO_ROSA.get(), false);
+    }
+
+    public static Boolean isParametrosOutubroRosa(){
+        return isOutubroRosa() && isOutubroRosaMegaSena();
     }
 }
