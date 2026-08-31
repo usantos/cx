@@ -747,9 +747,6 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         bundle.putString(getResources().getString(R.string.extra_data_sorteio_atual), dataSorteioAtual);
         bundle.putSerializable(getResources().getString(R.string.extra_type_game_color_light), typeGameColorLight);
         bundle.putSerializable(getResources().getString(R.string.extra_type_game_color_Dark), typeGameColorDark);
-        if (EspecialUtils.isParametrosOutubroRosa()){
-            estilo.alteraOutubroRosaPorTela();
-        }
         bundle.putSerializable(COR_FONTE_FUNDO_BRANCO, estilo.getCorLetraLista());
         bundle.putSerializable(COR_FONTE_FUNDO_CLARO, estilo.getCorFonteFundoClaro());
         bundle.putSerializable(COR_FONTE_FUNDO_ESCURO, estilo.getCorFonteFundoEscuro());
