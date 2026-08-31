@@ -1262,31 +1262,68 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
     }
 
     @Override
-    public void onLimitePalpitesLotecaAtingido() {
-        SimulaUiState state = getStateAtual();
+    public boolean simulaVerificaPodeAdicionar(ParametroPartida parametroPartida) {
+        //int jogos = getStateAtual().getJogosLoteca();
+        //int simples = getStateAtual().getSimplesLoteca();
+        int duplas = getStateAtual().getDuplasLoteca();
+        int triplas = getStateAtual().getTriplasLoteca();
 
-        int limite = state != null
-                ? state.getPalpitesLoteca()
-                : 15;
+        int qtdSelecionada = parametroPartida.getQtdItensSelecionados() + 1;
 
-        if (limite < 26) {
-            DialogUtils.dialogEntendi(
-                    getActivity(),
-                    getString(R.string.msg_qtd_max_ultrapassada)
-            );
-
-            dispatch(
-                    new SimulaUiEvent.PalpitesLotecaAtualizado(
-                            limite + 1
-                    )
-            );
-
-            return;
+        if (qtdSelecionada == 1) {
+            //simples = simples + 1;
+        } else if (qtdSelecionada == 2) {
+            duplas = duplas + 1;
+            //simples = simples - 1;
+        } else if (qtdSelecionada == 3) {
+            triplas = triplas + 1;
+            duplas = duplas - 1;
         }
 
-        DialogUtils.dialogEntendi(
-                getActivity(),
-                "Voce atingiu o limite maximo de " + limite + " palpites."
+        if (duplas == 0 && triplas == 0) {
+            return true;
+        }
+
+        for (ParametroValorApostaDTO parametroValorApostaDTO : parametroJogo.getValoresAposta()) {
+            if (duplas == parametroValorApostaDTO.getQuantidadeDuplos() &&
+                triplas == parametroValorApostaDTO.getQuantidadeTriplos()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    public void onLimitePalpitesLotecaAtingido() {
+//        SimulaUiState state = getStateAtual();
+//
+//        int limite = state != null
+//                ? state.getPalpitesLoteca()
+//                : 15;
+//
+//        if (limite < 26) {
+//            DialogUtils.dialogEntendi(
+//                    getActivity(),
+//                    getString(R.string.msg_qtd_max_ultrapassada)
+//            );
+//
+//            dispatch(
+//                    new SimulaUiEvent.PalpitesLotecaAtualizado(
+//                            limite + 1
+//                    )
+//            );
+//
+//            return;
+//        }
+
+//        DialogUtils.dialogEntendi(
+//                getActivity(),
+//                "Voce atingiu o limite maximo de " + limite + " palpites."
+//        );
+
+        DialogUtils.dialogEntendi(getActivity(),
+                getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica)
         );
     }
 
