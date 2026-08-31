@@ -51,6 +51,10 @@ public class ParametrosConfiguraveisDTO {
     private Integer concursoMega30Anos;
     @SerializedName("concursoLotecaPais")
     private Integer concursoLotecaPais;
+    @SerializedName("vigenciaMesOutubroRosa")
+    private Boolean vigenciaMesOutubroRosa;
+    @SerializedName("vigenciaOutubroRosaMegaSena")
+    private Boolean vigenciaOutubroRosaMegaSena;
 
     public String getUrlBaseApostadorPiloto() {
         return urlBaseApostadorPiloto;
@@ -214,5 +218,13 @@ public class ParametrosConfiguraveisDTO {
 
     public void setConcursoLotecaPais(Integer concursoLotecaPais) {
         this.concursoLotecaPais = concursoLotecaPais;
+    }
+
+    public Boolean getVigenciaMesOutubroRosa() {
+        return vigenciaMesOutubroRosa;
+    }
+
+    public Boolean getVigenciaOutubroRosaMegaSena() {
+        return vigenciaOutubroRosaMegaSena;
     }
 }

@@ -110,11 +110,11 @@ public class EspecialUtils {
     }
 
     public static Boolean isOutubroRosa(){
-        return SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false);
+        return SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.OUTUBRO_ROSA.get(), false);
     }
 
     public static Boolean isOutubroRosaMegaSena(){
-        return SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_2_OUTUBRO_ROSA.get(), false);
+        return SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.OUTUBRO_ROSA_MEGA_SENA.get(), false);
     }
 
     public static Boolean isParametrosOutubroRosa(){

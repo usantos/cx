@@ -116,46 +116,13 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
     }
 
     private void redirectApp(){
-        if (!BuildVersionUtil.isPRD() && !SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false)){
-            DialogUtils.dialogDoisBotoesPersonalizados(this, "Mock Outubro Rosa", "Outubro Rosa se encontra desativado. Deseja ativar?",
-                    "Sim, ativar", "Não", new OnDialogDoisBotoesListener() {
-                        @Override
-                        public void PositiveButton(DialogInterface dialog, int which) {
-                            SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), true);
-                            SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_2_OUTUBRO_ROSA.get(), true);
-                            atualizaIconeApp();
-                            if(!DadosUsuarioBO.checarFecharIntroducao()) {
-                                startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
-                            }
-                            else{
-                                startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-                            }
-                            //}
-                            finish();
-                        }
-
-                        @Override
-                        public void NegativeButton(DialogInterface dialog, int which) {
-                            if(!DadosUsuarioBO.checarFecharIntroducao()) {
-                                startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
-                            }
-                            else{
-                                startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-                            }
-                            //}
-                            finish();
-                        }
-                    });
-        } else {
-            if(!DadosUsuarioBO.checarFecharIntroducao()) {
-                startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
-            }
-            else{
-                startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-            }
-            //}
-            finish();
+        if(!DadosUsuarioBO.checarFecharIntroducao()) {
+            startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
         }
+        else{
+            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+        }
+        finish();
     }
     private void callConfiguracoesApp() {
         try {
@@ -187,8 +154,8 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_RAPIDAO.get(), result.getPayload().getMapa().isRapidaoHabilitado());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), result.getPayload().getMapa().getUrlBaseApostador());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), result.getPayload().getMapa().getGrupoDeCpfsApostador());
-                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_1_OUTUBRO_ROSA.get(), false));
-                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.PARAMETRO_2_OUTUBRO_ROSA.get(), SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.PARAMETRO_2_OUTUBRO_ROSA.get(), false));
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.OUTUBRO_ROSA.get(), result.getPayload().getMapa().getVigenciaMesOutubroRosa());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.OUTUBRO_ROSA_MEGA_SENA.get(), result.getPayload().getMapa().getVigenciaOutubroRosaMegaSena());
 
                         if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_VALOR,result.getPayload().getMapa().getConcursoMega30Anos());
