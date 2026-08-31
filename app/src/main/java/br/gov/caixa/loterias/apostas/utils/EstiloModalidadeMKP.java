@@ -2,6 +2,9 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import android.app.Activity;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -386,13 +389,8 @@ public class EstiloModalidadeMKP {
         imagemSubCabecalho = R.drawable.rodape_mega_da_virada_inferior;
     }
 
-    public void alteraOutubroRosaPorTela(Activity act){
-        if(act instanceof CarrinhoActivity){
-            corLetraLista = R.color.outubro_rosa_texto;
-        } else {
-            corLetraLista = R.color.outubro_rosa_secundario;
-        }
-
+    public void alteraOutubroRosaPorTela(){
+        corLetraLista = R.color.outubro_rosa_texto;
     }
 
     public int getCorClara() {
