@@ -1309,14 +1309,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
         sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> AbrirMenusGroup(expandableListTitle.get(groupPosition)));
-        sideMenuExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                if (expandableListTitle.get(i) == DrawerEnum.MENU_SOBRE_CAIXA) {
+        sideMenuExpandableListView.setOnGroupClickListener((expandableListView, view, i, l) -> {
+            if (expandableListTitle.get(i) == DrawerEnum.MENU_SOBRE_CAIXA) {
 //                    ViewUtils.abrirMenuCaixa(PrincipalActivity.this);
-                }
-                return false;
             }
+            return false;
         });
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
