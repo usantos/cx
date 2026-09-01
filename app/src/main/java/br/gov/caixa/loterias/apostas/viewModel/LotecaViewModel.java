@@ -1747,39 +1747,11 @@ public class LotecaViewModel extends SimulaViewModel {
             return "Aposta aleatória";
         }
 
-        switch (state.getEtapaAposta()) {
+        boolean possuiTimesSelecionados =
+                state.getPossuiAlteracoesPendentes() != null
+                && state.getPossuiAlteracoesPendentes();
 
-            case TIME_CORACAO:
-                return "Time aleatório";
-
-            case MES_SORTE:
-                return "Mês aleatório";
-
-            case TREVOS:
-
-                int quantidadeTrevosSelecionados =
-                        state.getTrevosSelecionados() != null
-                                ? state.getTrevosSelecionados().size()
-                                : 0;
-
-                return quantidadeTrevosSelecionados
-                        > 0
-                        ? "Completar trevos"
-                        : "Trevos aleatórios";
-
-            default:
-                break;
-        }
-
-        boolean possuiDezenasSelecionadas =
-                state.getDezenasSelecionadas() != null
-                        && !state.getDezenasSelecionadas().isEmpty();
-
-        boolean possuiSuperSeteSelecionado =
-                state.getQtdTotalSelecionadosSuperSete() > 0;
-
-        return possuiDezenasSelecionadas
-                || possuiSuperSeteSelecionado
+        return possuiTimesSelecionados
                 ? "Completar jogo"
                 : "Aposta aleatória";
     }
