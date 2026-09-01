@@ -41,6 +41,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
@@ -392,20 +393,23 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         }
 
-        AnalyticsHelper.getInstance().logInteraction(
-                AnalyticsHelper.EventCategoryParams.CTA,
-                AnalyticsHelper.EventActionParams.CLICK,
-                AnalyticsHelper.EventLabelParams.ADD_TO_CART,
-                AnalyticsHelper.JourneyParams.APOSTAR,
-                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
-                AnalyticsHelper.Tela.MONTAR_APOSTA,
-                ModalidadeEnum.fromString(parametroJogo.getConcurso().getModalidade()),
-                parametroJogo.getConcurso().getNumero().toString(),
-                String.valueOf(qtdSurpresinhas),
-                String.valueOf(parentActivity.qtdDezenasPossiveisSelecionado),
-                String.valueOf(parentActivity.qtdConcursoSelecionado),
-                ViewUtils.getMoedaFormat(valorTotalAposta)
-        );
+        if (parametroJogo.getConcurso() != null && parametroJogo.getConcurso().getModalidade() != null
+            && parametroJogo.getConcurso().getNumero() != null) {
+            AnalyticsHelper.getInstance().logInteraction(
+                    AnalyticsHelper.EventCategoryParams.CTA,
+                    AnalyticsHelper.EventActionParams.CLICK,
+                    AnalyticsHelper.EventLabelParams.ADD_TO_CART,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                    AnalyticsHelper.Tela.MONTAR_APOSTA,
+                    ModalidadeEnum.fromString(parametroJogo.getConcurso().getModalidade()),
+                    parametroJogo.getConcurso().getNumero().toString(),
+                    String.valueOf(qtdSurpresinhas),
+                    String.valueOf(parentActivity.qtdDezenasPossiveisSelecionado),
+                    String.valueOf(parentActivity.qtdConcursoSelecionado),
+                    ViewUtils.getMoedaFormat(valorTotalAposta)
+            );
+        }
 
         model.addSurpresinhaCarrinho(surpresinha);
     }
@@ -418,9 +422,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.botaoAdicionarCompletarCartela: {
-                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
+                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
                     adicionarSurpresinhaNoCarrinho();
-                //}
+                }
             }
             break;
         }

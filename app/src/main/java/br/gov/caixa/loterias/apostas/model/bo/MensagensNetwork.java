@@ -186,6 +186,16 @@ public class MensagensNetwork {
 
     }
 
+    public static ErrorResponse getError(VolleyError error){
+        try{
+            String errorBody = Bin.fromBytes(error.networkResponse.data).toUtf8();
+            return new Gson().fromJson(errorBody, ErrorResponse.class);
+        } catch (Exception e){
+            return null;
+        }
+
+    }
+
     public static boolean isUnauthorizedError(VolleyError error){
         NetworkResponse response = error.networkResponse;
         if (response != null){

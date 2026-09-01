@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/simulaToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:background="@color/cinza_corner"
+    android:paddingHorizontal="16dp">
+
+
+    <LinearLayout
+        android:id="@+id/containerSurpresinha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchSurpresinha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:showText="false"
+            android:text=""
+            app:useMaterialThemeColors="false"
+            android:thumb="@drawable/surpresinha_thumb"
+            android:track="@drawable/surpresinha_track" />
+
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Surpresinha"
+            android:textColor="@color/cinza110"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/containerComoJogar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/containerSurpresinha"
+        app:layout_constraintBottom_toBottomOf="@id/containerSurpresinha">
+
+        <TextView
+            android:id="@+id/txtComoJogar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Como jogar"
+            android:textColor="@color/cinza110"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/imgInfo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_info"
+            app:tint="@color/cinza110" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

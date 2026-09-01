@@ -146,6 +146,7 @@
             android:layout_marginTop="14dp"
             android:background="@color/branco">
 
+            <!-- Nome e Numero do Concurso -->
             <LinearLayout
                 android:id="@+id/modalidadeConcursoLayout"
                 android:layout_width="wrap_content"
@@ -161,8 +162,6 @@
                     style="@style/editTextFuturaBoldTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxWidth="120dp"
-                    android:paddingEnd="4dp"
                     android:textSize="14.2sp"
                     tools:text="Lotofacil da Independencia" />
 
@@ -171,13 +170,8 @@
                     style="@style/editTextCaixaRegularTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tipoAposta"
-                    android:layout_marginBottom="13dp"
-                    android:lines="1"
-                    android:maxWidth="100dp"
-                    android:paddingEnd="0dp"
                     android:textSize="14.2sp"
-                    tools:text="Conc. 777" />
+                    tools:text="Concurso 7777" />
             </LinearLayout>
 
             <RelativeLayout
@@ -237,10 +231,10 @@
 
             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/recycleViewDetalheAposta"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/modalidadeConcursoLayout"
-                android:layout_marginLeft="35dp"
+                android:layout_marginTop="8dp"
                 android:layout_below="@+id/modalidadeConcursoLayout"
                 android:clickable="false"
                 android:nestedScrollingEnabled="false"
@@ -286,48 +280,93 @@
                     app:layout_constraintStart_toStartOf="parent"
                     />
 
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/excluirApostaCarrinhoLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="44dp"
-                android:clickable="true"
-                android:importantForAccessibility="no"
-                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                >
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/valorAposta"
-                    style="@style/editTextCaixaRegularTheme"
+                <!-- Excluir -->
+                <LinearLayout
+                    android:layout_marginStart="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:layout_marginEnd="16dp"
-                    android:focusable="true"
-                    android:text="@string/r_0_00"
-                    android:importantForAccessibility="yes"
-                    android:textAlignment="textEnd"
-                    android:textSize="14.2sp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/excluirApostaCarrinho"
-                    android:layout_width="18dp"
-                    android:layout_height="22dp"
-                    android:layout_marginTop="2dp"
-                    android:importantForAccessibility="yes"
-                    android:layout_marginEnd="16dp"
-                    android:background="@color/transparente"
-                    app:tint="@color/colorAccent"
-                    android:src="@drawable/ic_lixeira_mkp" />
+                    <TextView
+                        android:textAlignment="viewEnd"
+                        android:id="@+id/valorAposta"
+                        style="@style/editTextCaixaRegularTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/excluir"
+                        android:textSize="14.2sp" />
+
+                    <ImageButton
+                        android:layout_marginStart="4dp"
+                        android:id="@+id/excluirApostaCarrinho"
+                        android:layout_width="18dp"
+                        android:layout_height="22dp"
+                        android:layout_marginTop="2dp"
+                        android:importantForAccessibility="yes"
+                        android:layout_marginEnd="4dp"
+                        android:background="@color/transparente"
+                        app:tint="@color/colorAccent"
+                        android:src="@drawable/ic_lixeira_mkp" />
+
+                </LinearLayout>
+
+                <!-- Legenda -->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/lnrLegendaApostaCarrinho"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtLegenda"
+                        style="@style/editTextCaixaRegularTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_legenda"
+                        android:textColor="@color/loteca_claro_mkp"
+                        android:textSize="14.2sp"
+                        tools:text="Legenda" />
+
+                    <ImageButton
+                        android:layout_marginStart="4dp"
+                        android:contentDescription="@string/label_legenda"
+                        android:id="@+id/iconLegenda"
+                        android:layout_width="18dp"
+                        android:layout_height="22dp"
+                        android:importantForAccessibility="yes"
+                        android:layout_marginEnd="16dp"
+                        android:background="@color/transparente"
+                        app:tint="@color/loteca_escuro_mkp"
+                        android:src="@drawable/ic_lupa" />
+
+                </LinearLayout>
 
             </LinearLayout>
+
+            <View
+                android:visibility="gone"
+                android:id="@+id/vwLinhaAzulLoteca"
+                app:layout_constraintTop_toBottomOf="@+id/excluirApostaCarrinhoLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/blue_caixa" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

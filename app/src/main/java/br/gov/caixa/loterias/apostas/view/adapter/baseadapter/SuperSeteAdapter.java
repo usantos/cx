@@ -24,14 +24,14 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 public class SuperSeteAdapter extends BaseAdapter {
 	private Context context;
 	public List<Dezena> dezenas = new ArrayList<>();
-	private int typeGameColorLight;
+	private int typeGameColor;
 	public List<Integer> dezenasSelecionadas;
 	private static final int NUMERO_DEZENAS = 9;
 	public static final int QTD_MAX_POR_COLUNA = 3;
 
-	public SuperSeteAdapter(int typeGameColorLight, Activity parentActivity) {
+	public SuperSeteAdapter(int typeGameColor, Activity parentActivity) {
 		this.context = parentActivity;
-		this.typeGameColorLight = typeGameColorLight;
+		this.typeGameColor = typeGameColor;
 		preencheDezenas();
 	}
 
@@ -54,7 +54,7 @@ public class SuperSeteAdapter extends BaseAdapter {
 	public View getView(int i, View view, ViewGroup viewGroup) {
 		TextView         textView;
 		GradientDrawable shape     = new GradientDrawable();
-		int              sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, context.getResources().getDisplayMetrics());
+		int              sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 44, context.getResources().getDisplayMetrics());
 
 		if (view == null) {
 			textView = new TextView(this.context);
@@ -65,17 +65,17 @@ public class SuperSeteAdapter extends BaseAdapter {
 		}
 
 		if (dezenasSelecionadas.contains(Integer.valueOf(dezenas.get(i).getValue()))) {
-			shape.setColor(ContextCompat.getColor(context, typeGameColorLight));
-			textView.setTextColor(Color.WHITE);
+			shape.setColor(ContextCompat.getColor(context, typeGameColor));
+			textView.setTextColor(ContextCompat.getColor(context, R.color.verde_item_supersete));
 			dezenas.get(i).setSelected(Boolean.TRUE);
 		} else {
 			shape.setColor(Color.WHITE);
-			textView.setTextColor(ContextCompat.getColor(context, typeGameColorLight));
+			shape.setStroke(3, ContextCompat.getColor(context, R.color.cinza130_supersete));
+			textView.setTextColor(ContextCompat.getColor(context, R.color.cinza130_supersete));
 			dezenas.get(i).setSelected(Boolean.FALSE);
 		}
 
 		shape.setCornerRadius(sizeItens / 2);
-		shape.setStroke(1, Color.GRAY);
 		textView.setBackground(shape);
 		textView.setText(dezenas.get(i).getValue());
 		textView.setTypeface(ViewUtils.getFontFuturaBold(context));
