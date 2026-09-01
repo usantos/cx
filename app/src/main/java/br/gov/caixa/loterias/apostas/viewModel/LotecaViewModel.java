@@ -1,14 +1,11 @@
 package br.gov.caixa.loterias.apostas.viewModel;
 
-import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
-
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
@@ -20,19 +17,14 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
 import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
 import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
-import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
@@ -108,18 +100,6 @@ public class LotecaViewModel extends SimulaViewModel {
             return;
         }
         if(handleNumerosEvents(event)){
-            return;
-        }
-        if(handleSurpresinhaEvents(event)){
-            return;
-        }
-        if(handleTrevosEvents(event)){
-            return;
-        }
-        if(handleFavoritarEvents(event)){
-            return;
-        }
-        if(handleNextStepEvents(event)){
             return;
         }
     }
@@ -205,11 +185,6 @@ public class LotecaViewModel extends SimulaViewModel {
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.ComandoFavoritarApostaConsumido) {
-            limparComandoFavoritarAposta();
-            return true;
-        }
-
         if (event instanceof
                 SimulaUiEvent.LimparMesDaSorte) {
 
@@ -239,10 +214,6 @@ public class LotecaViewModel extends SimulaViewModel {
     private boolean handleCartelaEvents(
             SimulaUiEvent event
     ) {
-        if (event instanceof SimulaUiEvent.ToggleOutrosNumeros) {
-            toggleOutrosNumeros();
-            return true;
-        }
 
         if (event instanceof SimulaUiEvent.CartelaAlterada) {
 
@@ -266,6 +237,11 @@ public class LotecaViewModel extends SimulaViewModel {
             handlePalpitesLotecaAtualizado(
                     (SimulaUiEvent.PalpitesLotecaAtualizado) event
             );
+            return true;
+        }
+
+        if (event instanceof SimulaUiEvent.ResetarAvisoPalpitesLoteca) {
+            handleResetarAvisoPalpitesLoteca();
             return true;
         }
 
@@ -411,203 +387,7 @@ public class LotecaViewModel extends SimulaViewModel {
 
         return false;
     }
-    private boolean handleNextStepEvents(
-            SimulaUiEvent event
-    ) {
 
-        if (event instanceof SimulaUiEvent.NextStepClicado) {
-
-            handleNextStepClicado((SimulaUiEvent.NextStepClicado) event);
-
-            return true;
-        }
-
-        if (event instanceof SimulaUiEvent.MesSorteAlterado) {
-            handleMesSorteAlterado((SimulaUiEvent.MesSorteAlterado) event);
-            return true;
-        }
-
-
-
-        if (event instanceof
-                SimulaUiEvent.SelecionarMesDaSorte) {
-
-            handleSelecionarMesDaSorte(
-                    (SimulaUiEvent
-                            .SelecionarMesDaSorte)
-                            event
-            );
-
-            return true;
-        }
-        if (event instanceof SimulaUiEvent.VoltarEtapa) {
-
-            updateState(fluxoApostaReducer::voltarEtapa);
-
-            return true;
-        }
-
-        if (event instanceof
-                SimulaUiEvent.SelecionarTimeCoracao) {
-
-            handleSelecionarTimeCoracao(
-                    (SimulaUiEvent.SelecionarTimeCoracao)
-                            event
-            );
-            return true;
-        }
-
-        return false;
-    }
-    private boolean handleFavoritarEvents(
-            SimulaUiEvent event
-    ) {
-        if (event instanceof SimulaUiEvent.FavoritarApostaClicado) {
-            abrirDialogFavoritarAposta();
-            return true;
-        }
-
-        if (event instanceof SimulaUiEvent.DialogFavoritarApostaConsumido) {
-            consumirDialogFavoritarAposta();
-            return true;
-        }
-        if (event instanceof SimulaUiEvent.SalvarApostaFavoritaSolicitado) {
-            handleSalvarApostaFavoritaSolicitado((SimulaUiEvent.SalvarApostaFavoritaSolicitado) event);
-            return true;
-        }
-
-        if (event instanceof SimulaUiEvent.ConfirmarSalvarApostaFavorita) {
-            salvarApostaFavorita(((SimulaUiEvent.ConfirmarSalvarApostaFavorita) event).getApostaFavorita());
-            return true;
-        }
-
-        return false;
-    }
-    private boolean handleTrevosEvents(
-            SimulaUiEvent event
-    ) {
-
-        if (event instanceof SimulaUiEvent.QuantidadeTrevosAlterada) {
-            handleQuantidadeTrevosAlterada((SimulaUiEvent.QuantidadeTrevosAlterada) event);
-            return true;
-        }
-        if (event instanceof SimulaUiEvent.TrevosAlterados) {
-            handleTrevosAlterados((SimulaUiEvent.TrevosAlterados) event);
-            return true;
-        }
-        if (event instanceof SimulaUiEvent.ClicarQuantidadeTrevos) {
-            clicarQuantidadeTrevos(
-                    (SimulaUiEvent.ClicarQuantidadeTrevos) event
-            );
-            return true;
-        }
-
-        if (event instanceof SimulaUiEvent.SelecionarQuantidadeTrevos) {
-            selecionarQuantidadeTrevos(
-                    (SimulaUiEvent.SelecionarQuantidadeTrevos) event
-            );
-            return true;
-        }
-
-        if (event instanceof SimulaUiEvent.ConfirmarQuantidadeTrevos) {
-            confirmarQuantidadeTrevos(
-                    (SimulaUiEvent.ConfirmarQuantidadeTrevos) event
-            );
-            return true;
-        }
-
-        if (event instanceof SimulaUiEvent.DialogQuantidadeTrevosConsumido) {
-            consumirDialogQuantidadeTrevos();
-            return true;
-        }
-
-        if (event instanceof
-                SimulaUiEvent.AvisoTrevosMaximoConsumido) {
-
-            consumirAvisoTrevosMaximo();
-            return true;
-        }
-        if (event instanceof SimulaUiEvent.ToggleTrevo) {
-            handleToggleTrevo(
-                    (SimulaUiEvent.ToggleTrevo) event
-            );
-            return true;
-        }
-
-        return false;
-    }
-
-
-    private boolean handleSurpresinhaEvents(
-            SimulaUiEvent event
-    ) {
-        if (event instanceof SimulaUiEvent.AlterarSurpresinha) {
-
-            handleAlterarSurpresinha(((SimulaUiEvent.AlterarSurpresinha) event).isHabilitada());
-
-            return true;
-        }
-
-        if (event instanceof
-                SimulaUiEvent.AtualizarQuantidadeSurpresinhas) {
-
-            handleQuantidadeSurpresinhas(
-                    (SimulaUiEvent
-                            .AtualizarQuantidadeSurpresinhas)
-                            event
-            );
-            return true;
-        }
-        if (event instanceof
-                SimulaUiEvent.AtualizarQuantidadeNumerosSurpresinha) {
-
-            handleQuantidadeNumerosSurpresinha(
-                    (SimulaUiEvent
-                            .AtualizarQuantidadeNumerosSurpresinha)
-                            event
-            );
-            return true;
-        }
-        if (event instanceof SimulaUiEvent.AdicionarSurpresinhaCarrinho) {
-            handleAdicionarSurpresinhaCarrinho(
-                    (SimulaUiEvent.AdicionarSurpresinhaCarrinho) event
-            );
-            return true;
-        }
-        if (event instanceof SimulaUiEvent.SolicitarSelecaoTimeCoracao) {
-            handleSolicitarSelecaoTimeCoracao();
-            return true;
-        }
-        if (event instanceof SimulaUiEvent.VoltarParaSurpresinha) {
-            handleVoltarParaSurpresinha();
-            return true;
-        }
-        if (event instanceof
-                SimulaUiEvent.AtualizarQuantidadeTrevosSurpresinha) {
-
-            handleQuantidadeTrevosSurpresinha(
-                    (SimulaUiEvent
-                            .AtualizarQuantidadeTrevosSurpresinha)
-                            event
-            );
-            return true;
-        }
-
-        return false;
-    }
-
-    private void handleSelecionarTimeCoracao(
-            SimulaUiEvent.SelecionarTimeCoracao event
-    ){
-       updateState(state ->
-                state
-                        .toBuilder()
-                        .setEquipeSelecionada(
-                                event.getEquipe()
-                        )
-                        .build()
-        );
-    }
     private void inicializarParametrosAposta(
             SimulaUiEvent.InicializarParametrosAposta event
     ) {
@@ -769,212 +549,6 @@ public class LotecaViewModel extends SimulaViewModel {
                 state.toBuilder()
                         .setComandoAnimacao(null)
                         .build()
-        );
-    }
-
-    private void handleMesSorteAlterado(
-            SimulaUiEvent.MesSorteAlterado event
-    ) {
-
-        updateState(state ->
-                mesDaSorteReducer.mesSorteAlterado(
-                        state,
-                        event
-                )
-        );
-    }
-    private void handleSelecionarMesDaSorte(
-            SimulaUiEvent.SelecionarMesDaSorte event
-    ) {
-
-       updateState(state ->
-                mesDaSorteReducer.selecionarMesDaSorte(
-                        state,
-                        event
-                )
-        );
-    }
-
-    private void handleNextStepClicado(
-            SimulaUiEvent.NextStepClicado event
-    ) {
-
-        updateState(state ->
-                fluxoApostaReducer.nextStepClicado(
-                        state,
-                        event,
-                        tipoJogoAtual
-                )
-        );
-    }
-
-    private void handleTrevosAlterados(
-            SimulaUiEvent.TrevosAlterados event
-    ) {
-
-        updateState(state ->
-                trevosReducer.trevosAlterados(
-                        state,
-                        event
-                )
-        );
-    }
-
-    private void handleQuantidadeTrevosAlterada(
-            SimulaUiEvent.QuantidadeTrevosAlterada event
-    ) {
-
-        updateState(state ->
-                trevosReducer.quantidadeTrevosAlterada(
-                        state,
-                        event
-                )
-        );
-    }
-
-    private void clicarQuantidadeTrevos(
-            SimulaUiEvent.ClicarQuantidadeTrevos event
-    ) {
-
-        updateState(state ->
-                trevosReducer.clicarQuantidadeTrevos(
-                        state,
-                        event
-                )
-        );
-    }
-
-    private void confirmarQuantidadeTrevos(
-            SimulaUiEvent.ConfirmarQuantidadeTrevos event
-    ) {
-
-        updateState(state ->
-                trevosReducer.confirmarQuantidadeTrevos(
-                        state,
-                        event
-                )
-        );
-    }
-    private void handleSalvarApostaFavoritaSolicitado(SimulaUiEvent.SalvarApostaFavoritaSolicitado event) {
-
-        ApostaFavoritaDTO apostaFavorita = event.getApostaFavorita();
-
-        if (apostaFavorita == null || parametroJogoAtual == null) {
-            return;
-        }
-
-        prepararApostaFavorita(apostaFavorita, event.getNomeAposta(), event.getNumerosSelecionados());
-
-        validarApostaFavorita(apostaFavorita);
-    }
-
-    private void toggleOutrosNumeros() {
-
-        SimulaUiState atual = getCurrentState();
-
-        boolean novoValor = !atual.isOpcaoOutrosNumerosSelecionada();
-
-        updateState(atual.toBuilder().setOpcaoOutrosNumerosSelecionada(novoValor).build());
-    }
-
-    private void prepararApostaFavorita(
-            ApostaFavoritaDTO apostaFavorita,
-            String nomeAposta,
-            Object numerosSelecionados
-    ) {
-
-        favoritarApostaReducer
-                .prepararApostaFavorita(
-                        apostaFavorita,
-                        parametroJogoAtual,
-                        nomeAposta,
-                        numerosSelecionados
-                );
-    }
-
-    private void validarApostaFavorita(final ApostaFavoritaDTO apostaFavorita) {
-
-
-        ServicoFactoryUtil.getDadosCorporativoService().validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
-
-            @Override
-            public void onResponse(NetworkResponse response) {
-                salvarApostaFavorita(apostaFavorita);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-
-                if (isErroNegocial(error)) {
-
-                    publicarComandoFavoritar(new FavoritarApostaEffect.ConfirmarValidacaoNegocial(apostaFavorita, MensagensNetwork.getErrorMessage(error)));
-
-                    return;
-                }
-
-                publicarComandoFavoritar(new FavoritarApostaEffect.RedirecionarErro(error));
-            }
-        });
-    }
-
-    private void salvarApostaFavorita(final ApostaFavoritaDTO apostaFavorita) {
-
-
-        ServicoFactoryUtil.getDadosCorporativoService().salvarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
-
-            @Override
-            public void onResponse(NetworkResponse response) {
-                updateState(favoritarApostaReducer::sucessoFavoritar);
-                publicarComandoFavoritar(new FavoritarApostaEffect.Sucesso());
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-
-                publicarComandoFavoritar(new FavoritarApostaEffect.RedirecionarErro(error));
-            }
-        });
-    }
-
-    private void publicarComandoFavoritar(
-            FavoritarApostaEffect comando
-    ) {
-
-        updateState(state ->
-                favoritarApostaReducer.publicarComando(
-                        state,
-                        comando
-                )
-        );
-    }
-
-    private void limparComandoFavoritarAposta() {
-
-        updateState(favoritarApostaReducer::limparComando);
-    }
-
-    private void abrirDialogFavoritarAposta() {
-
-       updateState(favoritarApostaReducer::abrirDialog);
-    }
-
-    private void consumirDialogFavoritarAposta() {
-
-       updateState(favoritarApostaReducer::consumirDialog);
-    }
-
-    private void handleAlterarSurpresinha(
-            boolean habilitada
-    ) {
-        updateState(state ->
-                surpresinhaReducer.alterarSurpresinha(
-                        state,
-                        habilitada,
-                        tipoJogoAtual,
-                        parametroJogoAtual
-                )
         );
     }
 
@@ -1312,10 +886,8 @@ public class LotecaViewModel extends SimulaViewModel {
                 getQuantidadeMinimaSafe();
 
         int qtdConcurso =
-                getPrimeiraTeimosinhaSafe();
+                0;
 
-        int qtdTrevosMinima =
-                getQuantidadeTrevosMinimaSafe();
 
         BigDecimal valorInicialAposta =
                 obterValorApostaPorParametros(
@@ -1351,76 +923,9 @@ public class LotecaViewModel extends SimulaViewModel {
                         animacaoEffect,
                         qtdMinima,
                         qtdConcurso,
-                        qtdTrevosMinima,
+                        0,
                         textoBotaoQuantidadeNumeros
                 )
-        );
-    }
-    private int getPrimeiraTeimosinhaSafe() {
-
-        if (parametroJogoAtual == null
-                || parametroJogoAtual.getTeimosinhas() == null
-                || parametroJogoAtual.getTeimosinhas().isEmpty()) {
-            return 0;
-        }
-
-        Integer primeiraTeimosinha =
-                parametroJogoAtual
-                        .getTeimosinhas()
-                        .get(0);
-
-        return primeiraTeimosinha != null
-                ? primeiraTeimosinha
-                : 0;
-    }
-
-    private int getQuantidadeTrevosMinimaSafe() {
-
-        if (parametroJogoAtual == null
-                || parametroJogoAtual.getTrevos() == null
-                || parametroJogoAtual
-                .getTrevos()
-                .getQtdMinima() == null) {
-            return 0;
-        }
-
-        return parametroJogoAtual
-                .getTrevos()
-                .getQtdMinima();
-    }
-    private void handleAdicionarSurpresinhaCarrinho(
-            SimulaUiEvent.AdicionarSurpresinhaCarrinho event
-    ) {
-
-        SimulaUiState state =
-                getCurrentState();
-
-        IncluirSurpresinhaDTO dto =
-                surpresinhaCarrinhoReducer.criar(
-                        state,
-                        parametroJogoAtual,
-                        tipoJogoAtual,
-                        event.isEspelhoLotomania()
-                );
-
-        if (dto == null) {
-            return;
-        }
-        ModalidadeEnum tipoJogoAnalytics =
-                tipoJogoAtual != null
-                        ? tipoJogoAtual
-                        : state.getTipoJogo();
-
-        updateState(
-                atual -> atual.toBuilder()
-                        .setComandoCarrinho(
-                                new CarrinhoEffect
-                                        .AdicionarSurpresinha(dto)
-                        )
-                        .setComandoAnalytics(
-                                new AnalyticsEffect.AdicionarCarrinho(tipoJogoAnalytics)
-                        )
-                        .build()
         );
     }
 
@@ -1610,8 +1115,15 @@ public class LotecaViewModel extends SimulaViewModel {
             return;
         }
 
+        // Detectar se houve aumento de palpites
+        SimulaUiState estadoAnterior = getCurrentState();
+        boolean aumentouPalpites = estadoAnterior != null
+                && quantidade > estadoAnterior.getPalpitesLoteca()
+                && !estadoAnterior.isAvisouAumentoPalpitesLoteca();
+
         updateState(state -> state.toBuilder()
                 .setPalpitesLoteca(quantidade)
+                .setAvisouAumentoPalpitesLoteca(aumentouPalpites)
                 .build()
         );
 
@@ -1652,6 +1164,13 @@ public class LotecaViewModel extends SimulaViewModel {
                                 state.getDezenasSelecionadas()
                         )
                 )
+        );
+    }
+
+    private void handleResetarAvisoPalpitesLoteca() {
+        updateState(state -> state.toBuilder()
+                .setAvisouAumentoPalpitesLoteca(false)
+                .build()
         );
     }
 
@@ -1792,3 +1311,4 @@ public class LotecaViewModel extends SimulaViewModel {
     }
 
 }
+

@@ -947,4 +947,8 @@ public abstract class SimulaUiEvent {
             return espelhoLotomania;
         }
     }
+
+    public static final class ResetarAvisoPalpitesLoteca
+            extends SimulaUiEvent {
+    }
 }

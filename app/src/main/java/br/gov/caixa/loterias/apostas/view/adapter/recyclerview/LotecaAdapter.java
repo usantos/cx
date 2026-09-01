@@ -81,7 +81,13 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
             if (!resultadoJaSelecionado
                     && listener != null
                     && !listener.simulaVerificaPodeAdicionar(item)) {
-                    //&& !listener.podeAdicionarResultadoLoteca()) {
+                listener.onLimitePalpitesLotecaAtingido();
+                return;
+            }
+
+            if (!resultadoJaSelecionado
+                    && listener != null
+                    && !listener.podeAdicionarResultadoLoteca()) {
                 listener.onLimitePalpitesLotecaAtingido();
                 return;
             }

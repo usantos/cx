@@ -374,11 +374,9 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         renderComandoTelaSimula(state);
         renderEstadoBotoes(state);
         renderValorAposta(state);
-        renderDialogFavoritarAposta(state);
-        renderComandoFavoritarAposta(state);
         renderInfoEtapa(state);
-
         renderQtdApostas(state);
+        renderDialogAumentosPalpitesLoteca(state);
     }
 
     private void renderInfoEtapa(
@@ -487,75 +485,6 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         );
     }
 
-    private void renderComandoFavoritarAposta(SimulaUiState state) {
-        FavoritarApostaEffect comando = state.getComandoFavoritarAposta();
-
-        if (comando == null) {
-            return;
-        }
-
-        if (comando instanceof FavoritarApostaEffect.Sucesso) {
-            AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
-            viewModel.onEvent(new SimulaUiEvent.ComandoFavoritarApostaConsumido());
-            return;
-        }
-
-        if (comando instanceof FavoritarApostaEffect.ConfirmarValidacaoNegocial) {
-            FavoritarApostaEffect.ConfirmarValidacaoNegocial confirmar = (FavoritarApostaEffect.ConfirmarValidacaoNegocial) comando;
-
-            DialogUtils.dialogSim(this, confirmar.getMensagem(), (dialog, which) -> viewModel.onEvent(new SimulaUiEvent.ConfirmarSalvarApostaFavorita(confirmar.getApostaFavorita())));
-
-            viewModel.onEvent(new SimulaUiEvent.ComandoFavoritarApostaConsumido());
-            return;
-        }
-
-        if (comando instanceof FavoritarApostaEffect.RedirecionarErro) {
-            FavoritarApostaEffect.RedirecionarErro erro = (FavoritarApostaEffect.RedirecionarErro) comando;
-
-            RedirectNetwork.checkRedirect(erro.getError(), this);
-
-            viewModel.onEvent(new SimulaUiEvent.ComandoFavoritarApostaConsumido());
-        }
-    }
-
-    private void solicitarSalvarFavoritoDoFragmentAtual(
-            String nome
-    ) {
-        EtapaFragment etapa = getEtapaAtual();
-
-        if (etapa != null) {
-            etapa.onSalvarFavoritoRodapeConfirmado(nome);
-        }
-    }
-
-    private void renderDialogFavoritarAposta(SimulaUiState state) {
-        if (!state.isExibirDialogFavoritarAposta()) {
-            return;
-        }
-
-        Dialog dialog = DialogUtils.buildDialogFavoritar(this, getString(R.string.favoritar_aposta), getString(R.string.exemplo_aposta), getString(R.string.informe_favorita), new OnDialogFavoritarListener() {
-            @Override
-            public void Confirmar(String nome, boolean manterSurpresinhas) {
-                if (TextUtils.isEmpty(nome)) {
-                    DialogUtils.dialogEntendi(LotecaActivity.this, getString(R.string.msg_favor_inserir_nome_aposta));
-                    return;
-                }
-
-                solicitarSalvarFavoritoDoFragmentAtual(nome);
-            }
-
-            @Override
-            public void Cancelar() {
-            }
-        }, false);
-
-        if (dialog != null) {
-            dialog.show();
-        }
-
-        viewModel.onEvent(new SimulaUiEvent.DialogFavoritarApostaConsumido());
-    }
-
     private void renderValorAposta(SimulaUiState state) {
 
         BigDecimal valor = state.getValorAposta() != null ? state.getValorAposta() : BigDecimal.ZERO;
@@ -586,6 +515,22 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         this.setLabelValueSimplesLoteca(String.valueOf(state.getSimplesLoteca()));
         this.setLabelValueDuplasLoteca(String.valueOf(state.getDuplasLoteca()));
         this.setLabelValueTriplasLoteca(String.valueOf(state.getTriplasLoteca()));
+    }
+
+    private void renderDialogAumentosPalpitesLoteca(SimulaUiState state) {
+        if (state == null || !state.isAvisouAumentoPalpitesLoteca()) {
+            return;
+        }
+
+        DialogUtils.dialogEntendi(
+                this,
+                getString(R.string.msg_qtd_max_loteca)
+        );
+
+        // Reset do flag após mostrar o dialog
+        viewModel.onEvent(
+                new SimulaUiEvent.ResetarAvisoPalpitesLoteca()
+        );
     }
 
     private void renderEstadoBotoes(SimulaUiState state) {
@@ -1319,10 +1264,11 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         minimoPalpitesParaAtualizar = minimoParaAtualizar;
 
-        DialogUtils.showDialogListItens(
+        DialogUtils.showDialogListItensNovo(
                 this,
                 getString(R.string.quantidade_de_palpites),
                 null,
+                "Escolha em quantos palpites você quer jogar:",
                 labelsPalpitesLoteca,
                 "Confirmar",
                 "Cancelar",
@@ -1354,11 +1300,27 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     return;
                 }
 
+                SimulaUiState stateAtual =
+                        viewModel != null
+                                ? viewModel.getUiState().getValue()
+                                : null;
+
+                int valorAtualPalpites =
+                        stateAtual != null
+                                ? stateAtual.getPalpitesLoteca()
+                                : novoValor;
+
                 viewModel.onEvent(
                         new SimulaUiEvent.PalpitesLotecaAtualizado(
                                 novoValor
                         )
                 );
+
+                if (novoValor < valorAtualPalpites) {
+                    viewModel.onEvent(
+                            new SimulaUiEvent.LimparApostaSolicitado()
+                    );
+                }
 
                 minimoPalpitesParaAtualizar = null;
             }
@@ -1538,3 +1500,6 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         return true;
     }
 }
+
+
+

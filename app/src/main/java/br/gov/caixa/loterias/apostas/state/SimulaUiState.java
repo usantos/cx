@@ -117,6 +117,7 @@ public class SimulaUiState {
     private final ParametroValorApostaDTO valorTrevosSelecionado;
     private final boolean exibirAvisoTrevosMaximo;
     private final boolean avisouTrevosMaximo;
+    private final boolean avisouAumentoPalpitesLoteca;
     private final int quantidadeSurpresinhas;
     private final int quantidadeNumerosSurpresinha;
     private final int quantidadeTrevosSurpresinha;
@@ -147,6 +148,7 @@ public class SimulaUiState {
 
         this.exibirAvisoTrevosMaximo = builder.exibirAvisoTrevosMaximo;
         this.avisouTrevosMaximo = builder.avisouTrevosMaximo;
+        this.avisouAumentoPalpitesLoteca = builder.avisouAumentoPalpitesLoteca;
 
 
         this.carrinhoEffect = builder.carrinhoEffect;
@@ -708,6 +710,9 @@ public class SimulaUiState {
     public boolean isAvisouTrevosMaximo(){
         return avisouTrevosMaximo;
     }
+    public boolean isAvisouAumentoPalpitesLoteca(){
+        return avisouAumentoPalpitesLoteca;
+    }
     public AnimacaoEffect getComandoAnimacao(){
         return animacaoEffect;
     }
@@ -817,6 +822,7 @@ public class SimulaUiState {
         private ParametroValorApostaDTO valorTrevosSelecionado;
         private boolean exibirAvisoTrevosMaximo;
         private boolean avisouTrevosMaximo;
+        private boolean avisouAumentoPalpitesLoteca;
         private List<Integer> trevosSelecionados;
         private int quantidadeTrevosSelecionada;
         private int quantidadeSurpresinhas;
@@ -876,6 +882,7 @@ public class SimulaUiState {
             this.valorTrevosSelecionado = null;
             this.exibirAvisoTrevosMaximo = false;
             this.avisouTrevosMaximo = false;
+            this.avisouAumentoPalpitesLoteca = false;
             this.trevosSelecionados = new ArrayList<>();
             this.quantidadeTrevosSelecionada = 0;
             this.quantidadeSurpresinhas = 0;
@@ -1029,6 +1036,7 @@ public class SimulaUiState {
                     state.valorTrevosSelecionado;
             this.exibirAvisoTrevosMaximo = state.exibirAvisoTrevosMaximo;
             this.avisouTrevosMaximo = state.avisouTrevosMaximo;
+            this.avisouAumentoPalpitesLoteca = state.avisouAumentoPalpitesLoteca;
             this.quantidadeTrevosSelecionada = state.quantidadeTrevosSelecionada;
             this.quantidadeSurpresinhas = state.quantidadeSurpresinhas;
             this.quantidadeNumerosSurpresinha = state.quantidadeNumerosSurpresinha;
@@ -1084,6 +1092,14 @@ public class SimulaUiState {
         ) {
             this.avisouTrevosMaximo =
                     avisouTrevosMaximo;
+            return this;
+        }
+
+        public Builder setAvisouAumentoPalpitesLoteca(
+                boolean avisouAumentoPalpitesLoteca
+        ) {
+            this.avisouAumentoPalpitesLoteca =
+                    avisouAumentoPalpitesLoteca;
             return this;
         }
 

@@ -8,6 +8,7 @@
     android:background="@color/cinza_corner"
     android:paddingHorizontal="16dp">
 
+    <!-- Header com título e "Como jogar" -->
     <TextView
         android:id="@+id/txtSuasApostas"
         android:layout_width="wrap_content"
@@ -29,7 +30,6 @@
         android:gravity="center_vertical"
         android:clickable="true"
         android:focusable="true"
-        android:padding="0dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -53,111 +53,145 @@
 
     </LinearLayout>
 
+    <!-- Container das quantidades - estrutura em 1 linha com espaçamento mínimo -->
     <LinearLayout
         android:id="@+id/containerQuantidades"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:weightSum="4"
-        android:clickable="false"
-        android:focusable="true"
-        android:padding="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintStart_toStartOf="@+id/txtSuasApostas"
-        app:layout_constraintEnd_toEndOf="@+id/containerComoJogarLoteca"
         app:layout_constraintTop_toBottomOf="@+id/txtSuasApostas"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- Partidas -->
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/caixa_std_regular"
-            android:text="Partidas: "
-            android:textColor="@color/cinza110"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/txtPartidas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/loteca_claro_mkp"
-            android:fontFamily="@font/caixa_std_semi_bold"
-            android:gravity="right"
-            android:text="0"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="Partidas: "
+                android:textColor="@color/cinza110"
+                android:textSize="14sp" />
 
-        <TextView
-            android:text=" | "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtPartidas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/loteca_escuro_mkp"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:text="0"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <!-- Separador -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@color/cinza110"
+            android:alpha="0.3"/>
 
         <!-- Simples -->
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/caixa_std_regular"
-            android:text="Simples: "
-            android:textColor="@color/cinza110"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/txtSimples"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/loteca_claro_mkp"
-            android:fontFamily="@font/caixa_std_semi_bold"
-            android:gravity="right"
-            android:text="0"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="Simples: "
+                android:textColor="@color/cinza110"
+                android:textSize="14sp" />
 
-        <TextView
-            android:text=" | "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtSimples"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/loteca_escuro_mkp"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:text="0"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <!-- Separador -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@color/cinza110"
+            android:alpha="0.3"/>
 
         <!-- Duplas -->
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/caixa_std_regular"
-            android:text="Duplas: "
-            android:textColor="@color/cinza110"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/txtDuplas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/loteca_claro_mkp"
-            android:fontFamily="@font/caixa_std_semi_bold"
-            android:gravity="right"
-            android:text="0"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="Duplas: "
+                android:textColor="@color/cinza110"
+                android:textSize="14sp" />
 
-        <TextView
-            android:text=" | "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtDuplas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/loteca_escuro_mkp"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:text="0"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <!-- Separador -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@color/cinza110"
+            android:alpha="0.3"/>
 
         <!-- Triplas -->
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/caixa_std_regular"
-            android:text="Triplas: "
-            android:textColor="@color/cinza110"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/txtTriplas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/loteca_claro_mkp"
-            android:fontFamily="@font/caixa_std_semi_bold"
-            android:gravity="right"
-            android:text="0"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="Triplas: "
+                android:textColor="@color/cinza110"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtTriplas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/loteca_escuro_mkp"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:text="0"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

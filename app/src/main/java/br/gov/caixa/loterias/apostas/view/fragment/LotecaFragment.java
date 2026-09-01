@@ -70,6 +70,7 @@ import br.gov.caixa.loterias.apostas.viewModel.LotecaViewModel;
 
 public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterListener, LotogolListener {
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
+    private static final int MAXIMO_PALPITES_LOTECA = 26;
     private SensorManager mSensorManager;
 
     private final SensorEventListener mSensorListener = new LoteriasSensorEventListener(0.00f,
@@ -1164,7 +1165,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             if (!isAvisou) {
                 DialogUtils.dialogEntendi(
                         getActivity(),
-                        getString(R.string.msg_qtd_max_ultrapassada)
+                        getString(R.string.msg_qtd_max_loteca)
                 );
 
                 isAvisou = true;
@@ -1254,77 +1255,52 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             return true;
         }
 
-        int totalPalpites =
-                state.getSimplesLoteca()
-                        + (state.getDuplasLoteca() * 2)
-                        + (state.getTriplasLoteca() * 3);
+        int totalPalpitesSelecionados =
+                calcularTotalPalpitesLoteca(
+                        state.getSimplesLoteca(),
+                        state.getDuplasLoteca(),
+                        state.getTriplasLoteca()
+                );
 
-        return totalPalpites < state.getPalpitesLoteca();
-    }
+        int limiteAtual = state.getPalpitesLoteca();
 
-    @Override
-    public boolean simulaVerificaPodeAdicionar(ParametroPartida parametroPartida) {
-        //int jogos = getStateAtual().getJogosLoteca();
-        //int simples = getStateAtual().getSimplesLoteca();
-        int duplas = getStateAtual().getDuplasLoteca();
-        int triplas = getStateAtual().getTriplasLoteca();
-
-        int qtdSelecionada = parametroPartida.getQtdItensSelecionados() + 1;
-
-        if (qtdSelecionada == 1) {
-            //simples = simples + 1;
-        } else if (qtdSelecionada == 2) {
-            duplas = duplas + 1;
-            //simples = simples - 1;
-        } else if (qtdSelecionada == 3) {
-            triplas = triplas + 1;
-            duplas = duplas - 1;
-        }
-
-        if (duplas == 0 && triplas == 0) {
+        if (totalPalpitesSelecionados < limiteAtual) {
             return true;
         }
 
-        for (ParametroValorApostaDTO parametroValorApostaDTO : parametroJogo.getValoresAposta()) {
-            if (duplas == parametroValorApostaDTO.getQuantidadeDuplos() &&
-                triplas == parametroValorApostaDTO.getQuantidadeTriplos()) {
-                return true;
-            }
+        if (limiteAtual >= MAXIMO_PALPITES_LOTECA) {
+            return false;
         }
-        return false;
-    }
 
+        dispatch(
+                new SimulaUiEvent.PalpitesLotecaAtualizado(
+                        limiteAtual + 1
+                )
+        );
+
+        return true;
+    }
 
     @Override
     public void onLimitePalpitesLotecaAtingido() {
-//        SimulaUiState state = getStateAtual();
-//
-//        int limite = state != null
-//                ? state.getPalpitesLoteca()
-//                : 15;
-//
-//        if (limite < 26) {
-//            DialogUtils.dialogEntendi(
-//                    getActivity(),
-//                    getString(R.string.msg_qtd_max_ultrapassada)
-//            );
-//
-//            dispatch(
-//                    new SimulaUiEvent.PalpitesLotecaAtualizado(
-//                            limite + 1
-//                    )
-//            );
-//
-//            return;
-//        }
+        SimulaUiState state = getStateAtual();
 
-//        DialogUtils.dialogEntendi(
-//                getActivity(),
-//                "Voce atingiu o limite maximo de " + limite + " palpites."
-//        );
+        int limite = state != null
+                ? state.getPalpitesLoteca()
+                : 15;
 
-        DialogUtils.dialogEntendi(getActivity(),
-                getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica)
+        if (limite >= MAXIMO_PALPITES_LOTECA) {
+            DialogUtils.dialogEntendi(
+                    getActivity(),
+                    getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica)
+            );
+
+            return;
+        }
+
+        DialogUtils.dialogEntendi(
+                getActivity(),
+                getString(R.string.msg_qtd_max_loteca)
         );
     }
 
@@ -1369,274 +1345,364 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         }
 
         List<ParametroPartida> partidas = parametroJogo.getPartidas();
+        LotecaAdapter adapter = (LotecaAdapter) recyclerViewPartida.getAdapter();
 
-        List<Integer> posicoesAlteradas = new ArrayList<>();
+        int tamanho = partidas.size();
+        int[] qtdInicialPorPartida = new int[tamanho];
+
+        for (int i = 0; i < tamanho; i++) {
+            qtdInicialPorPartida[i] =
+                    calcularQuantidadeSelecionada(
+                            partidas.get(i)
+                    );
+        }
+
+        int palpitesAtuais =
+                getStateAtual().getPalpitesLoteca();
 
         Random random = new Random();
 
-        int totalPrognosticosDesejado = getStateAtual().getPalpitesLoteca();
+        // Ordem de prioridade:
+        // 1) tenta preservar com os palpites atuais
+        // 2) relaxa preservacao por prioridade (1 selecao, 2 selecoes, geral)
+        // 3) so depois aumenta palpites e repete a mesma ordem de preservacao
+        for (int alvoPalpites = palpitesAtuais;
+             alvoPalpites <= MAXIMO_PALPITES_LOTECA;
+             alvoPalpites++) {
 
-        ParametroValorApostaDTO configuracao = encontrarConfiguracaoValida(totalPrognosticosDesejado);
+            for (int estrategia = 0; estrategia <= 3; estrategia++) {
 
-        if (configuracao == null) {
-            return;
-        }
+                ResultadoPreenchimentoLoteca resultado =
+                        tentarPreencherPartidasLoteca(
+                                partidas,
+                                qtdInicialPorPartida,
+                                estrategia,
+                                alvoPalpites,
+                                random
+                        );
 
-        int duplasDesejadas = configuracao.getQuantidadeDuplos();
+                if (resultado == null || !resultado.isSucesso()) {
+                    continue;
+                }
 
-        int triplasDesejadas = configuracao.getQuantidadeTriplos();
+                if (alvoPalpites > palpitesAtuais) {
+                    dispatch(
+                            new SimulaUiEvent.PalpitesLotecaAtualizado(
+                                    alvoPalpites
+                            )
+                    );
+                }
 
-        //Limpa
-        for (ParametroPartida partida : partidas) {
+                reconstruirEstadoLoteca();
 
-            limparSelecoesDaPartida(partida);
+                for (Integer position : resultado.getPosicoesAlteradas()) {
+                    adapter.atualizarEstadoVisual(position);
+                }
 
-            partida.setSelecionado(false);
-            partida.setQtdItensSelecionados(0);
-            partida.setQtdItensSelecionadosAnterior(0);
-        }
-
-        //Simples todas as partidas.
-        for (int i = 0; i < partidas.size(); i++) {
-
-            ParametroPartida partida = partidas.get(i);
-
-            if (partida == null
-                    || partida.getEquipe1() == null
-                    || partida.getEquipe2() == null) {
-                continue;
+                return;
             }
-
-            selecionarResultadoSimplesAleatorio(
-                    partida,
-                    random
-            );
-
-            posicoesAlteradas.add(i);
-        }
-
-        int duplasParaCriar = duplasDesejadas + triplasDesejadas;
-
-        List<ParametroPartida> partidasSorteaveis =
-                new ArrayList<>(partidas);
-
-        Collections.shuffle(partidasSorteaveis,random);
-
-        //Cria as duplas
-        int duplasCriadas = 0;
-
-        for (ParametroPartida partida : partidasSorteaveis) {
-
-            if (duplasCriadas >= duplasParaCriar) {
-                break;
-            }
-
-            adicionarResultadoAleatorio(
-                    partida,
-                    random
-            );
-
-            duplasCriadas++;
-        }
-
-        //Recupera as que ficaram com 2 seleções.
-        List<ParametroPartida> partidasDuplas = new ArrayList<>();
-
-        for (ParametroPartida partida : partidas) {
-
-            if (calcularQuantidadeSelecionada(partida) == 2) {
-                partidasDuplas.add(partida);
-            }
-        }
-
-        Collections.shuffle(partidasDuplas,random);
-
-        //Converte parte das duplas em triplas
-        int triplasCriadas = 0;
-
-        for (ParametroPartida partida : partidasDuplas) {
-
-            if (triplasCriadas >= triplasDesejadas) {
-                break;
-            }
-
-            adicionarResultadoAleatorio(partida,random);
-
-            triplasCriadas++;
-        }
-
-        reconstruirEstadoLoteca();
-
-        LotecaAdapter adapter = (LotecaAdapter) recyclerViewPartida.getAdapter();
-
-        for (Integer position : posicoesAlteradas) {
-            adapter.atualizarEstadoVisual(position);
         }
     }
 
-    private ParametroValorApostaDTO encontrarConfiguracaoValida(int totalPrognosticosDesejado) {
+    private ResultadoPreenchimentoLoteca tentarPreencherPartidasLoteca(
+            List<ParametroPartida> partidas,
+            int[] qtdInicialPorPartida,
+            int estrategia,
+            int alvoPalpites,
+            Random random
+    ) {
+        int totalPartidas = partidas.size();
 
-        if (parametroJogo == null
-                || parametroJogo.getPartidas() == null
-                || parametroJogo.getValoresAposta() == null) {
+        List<Integer> indicesPreservados = new ArrayList<>();
+        List<Integer> indicesLivres = new ArrayList<>();
+
+        int preservadasSimples = 0;
+        int preservadasDuplas = 0;
+        int preservadasTriplas = 0;
+
+        for (int i = 0; i < totalPartidas; i++) {
+            int qtdInicial = qtdInicialPorPartida[i];
+
+            if (devePreservarLinha(qtdInicial, estrategia)) {
+                indicesPreservados.add(i);
+
+                if (qtdInicial == 1) {
+                    preservadasSimples++;
+                } else if (qtdInicial == 2) {
+                    preservadasDuplas++;
+                } else if (qtdInicial >= 3) {
+                    preservadasTriplas++;
+                }
+
+                continue;
+            }
+
+            indicesLivres.add(i);
+        }
+
+        ParametroValorApostaDTO configuracao =
+                encontrarConfiguracaoValida(
+                        alvoPalpites,
+                        totalPartidas,
+                        preservadasSimples,
+                        preservadasDuplas,
+                        preservadasTriplas,
+                        indicesLivres.size(),
+                        random
+                );
+
+        if (configuracao == null) {
             return null;
         }
 
-        int quantidadePartidas = parametroJogo.getPartidas().size();
+        Integer qtdDuplasConfig = configuracao.getQuantidadeDuplos();
+        Integer qtdTriplasConfig = configuracao.getQuantidadeTriplos();
+
+        int duplasAlvo = qtdDuplasConfig != null ? qtdDuplasConfig : 0;
+        int triplasAlvo = qtdTriplasConfig != null ? qtdTriplasConfig : 0;
+        int simplesAlvo = totalPartidas - duplasAlvo - triplasAlvo;
+
+        int duplasLivresNecessarias = duplasAlvo - preservadasDuplas;
+        int triplasLivresNecessarias = triplasAlvo - preservadasTriplas;
+        int simplesLivresNecessarias = simplesAlvo - preservadasSimples;
+
+        if (duplasLivresNecessarias < 0
+                || triplasLivresNecessarias < 0
+                || simplesLivresNecessarias < 0) {
+            return null;
+        }
+
+        if (duplasLivresNecessarias
+                + triplasLivresNecessarias
+                + simplesLivresNecessarias != indicesLivres.size()) {
+            return null;
+        }
+
+        List<Integer> posicoesAlteradas = new ArrayList<>();
+
+        Collections.shuffle(indicesLivres, random);
+
+        int cursor = 0;
+
+        for (int i = 0; i < triplasLivresNecessarias; i++) {
+            int index = indicesLivres.get(cursor++);
+            ParametroPartida partida = partidas.get(index);
+            if (aplicarSelecaoAleatoria(partida, 3, random)) {
+                posicoesAlteradas.add(index);
+            }
+        }
+
+        for (int i = 0; i < duplasLivresNecessarias; i++) {
+            int index = indicesLivres.get(cursor++);
+            ParametroPartida partida = partidas.get(index);
+            if (aplicarSelecaoAleatoria(partida, 2, random)) {
+                posicoesAlteradas.add(index);
+            }
+        }
+
+        for (int i = 0; i < simplesLivresNecessarias; i++) {
+            int index = indicesLivres.get(cursor++);
+            ParametroPartida partida = partidas.get(index);
+            if (aplicarSelecaoAleatoria(partida, 1, random)) {
+                posicoesAlteradas.add(index);
+            }
+        }
+
+        for (Integer index : indicesPreservados) {
+            ParametroPartida partida = partidas.get(index);
+            int quantidade = calcularQuantidadeSelecionada(partida);
+            atualizarContadoresPartida(partida, quantidade);
+        }
+
+        return new ResultadoPreenchimentoLoteca(
+                true,
+                posicoesAlteradas
+        );
+    }
+
+    private boolean devePreservarLinha(
+            int quantidadeInicial,
+            int estrategia
+    ) {
+        switch (estrategia) {
+            case 0:
+                return quantidadeInicial > 0;
+            case 1:
+                return quantidadeInicial >= 2;
+            case 2:
+                return quantidadeInicial >= 3;
+            default:
+                return false;
+        }
+    }
+
+    private ParametroValorApostaDTO encontrarConfiguracaoValida(
+            int alvoPalpites,
+            int totalPartidas,
+            int preservadasSimples,
+            int preservadasDuplas,
+            int preservadasTriplas,
+            int quantidadeLivres,
+            Random random
+    ) {
+
+        if (parametroJogo == null
+                || parametroJogo.getValoresAposta() == null
+                || parametroJogo.getValoresAposta().isEmpty()) {
+            return null;
+        }
 
         List<ParametroValorApostaDTO> candidatas = new ArrayList<>();
 
         for (ParametroValorApostaDTO valor : parametroJogo.getValoresAposta()) {
-
-            int duplas = valor.getQuantidadeDuplos();
-            int triplas = valor.getQuantidadeTriplos();
-
-            int simples = quantidadePartidas - duplas - triplas;
-
-            int prognosticos = simples
-                            + (duplas * 2)
-                            + (triplas * 3);
-
-            if (prognosticos == totalPrognosticosDesejado) {
-                candidatas.add(valor);
+            if (valor == null) {
+                continue;
             }
+
+            int duplas = valor.getQuantidadeDuplos() != null
+                    ? valor.getQuantidadeDuplos()
+                    : 0;
+
+            int triplas = valor.getQuantidadeTriplos() != null
+                    ? valor.getQuantidadeTriplos()
+                    : 0;
+
+            int simples = totalPartidas - duplas - triplas;
+
+            if (simples < 0) {
+                continue;
+            }
+
+            int totalPalpites = simples + (duplas * 2) + (triplas * 3);
+
+            if (totalPalpites != alvoPalpites) {
+                continue;
+            }
+
+            if (duplas < preservadasDuplas
+                    || triplas < preservadasTriplas
+                    || simples < preservadasSimples) {
+                continue;
+            }
+
+            int livresNecessarias =
+                    (duplas - preservadasDuplas)
+                            + (triplas - preservadasTriplas)
+                            + (simples - preservadasSimples);
+
+            if (livresNecessarias != quantidadeLivres) {
+                continue;
+            }
+
+            candidatas.add(valor);
         }
 
         if (candidatas.isEmpty()) {
             return null;
         }
 
-        return candidatas.get(new Random().nextInt(candidatas.size()));
+        return candidatas.get(
+                random.nextInt(candidatas.size())
+        );
     }
-private void selecionarResultadoSimplesAleatorio(
+
+    private boolean aplicarSelecaoAleatoria(
             ParametroPartida partida,
+            int quantidade,
             Random random
     ) {
+        if (partida == null
+                || partida.getEquipe1() == null
+                || partida.getEquipe2() == null) {
+            return false;
+        }
+
+        boolean antesEquipe1 = partida.getEquipe1().isSelecionado();
+        boolean antesEmpate = partida.isEmpate();
+        boolean antesEquipe2 = partida.getEquipe2().isSelecionado();
+
         limparSelecoesDaPartida(partida);
 
-        int resultado = random.nextInt(3);
+        if (quantidade >= 3) {
+            partida.getEquipe1().setSelecionado(true);
+            partida.setEmpate(true);
+            partida.getEquipe2().setSelecionado(true);
+            atualizarContadoresPartida(partida, 3);
+        } else if (quantidade == 2) {
+            int excluir = random.nextInt(3);
 
-        partida.getEquipe1().setSelecionado(
-                resultado == 0
-        );
+            partida.getEquipe1().setSelecionado(excluir != 0);
+            partida.setEmpate(excluir != 1);
+            partida.getEquipe2().setSelecionado(excluir != 2);
+            atualizarContadoresPartida(partida, 2);
+        } else {
+            int resultado = random.nextInt(3);
 
-        partida.setEmpate(
-                resultado == 1
-        );
+            partida.getEquipe1().setSelecionado(resultado == 0);
+            partida.setEmpate(resultado == 1);
+            partida.getEquipe2().setSelecionado(resultado == 2);
+            atualizarContadoresPartida(partida, 1);
+        }
 
-        partida.getEquipe2().setSelecionado(
-                resultado == 2
-        );
-
-        partida.setSelecionado(true);
-        partida.setQtdItensSelecionados(1);
-        partida.setQtdItensSelecionadosAnterior(1);
+        return antesEquipe1 != partida.getEquipe1().isSelecionado()
+                || antesEmpate != partida.isEmpate()
+                || antesEquipe2 != partida.getEquipe2().isSelecionado();
     }
+
+    private void atualizarContadoresPartida(
+            ParametroPartida partida,
+            int quantidadeSelecionada
+    ) {
+        partida.setSelecionado(quantidadeSelecionada > 0);
+        partida.setQtdItensSelecionados(quantidadeSelecionada);
+        partida.setQtdItensSelecionadosAnterior(quantidadeSelecionada);
+    }
+
+    private static final class ResultadoPreenchimentoLoteca {
+        private final boolean sucesso;
+        private final List<Integer> posicoesAlteradas;
+
+        private ResultadoPreenchimentoLoteca(
+                boolean sucesso,
+                List<Integer> posicoesAlteradas
+        ) {
+            this.sucesso = sucesso;
+            this.posicoesAlteradas =
+                    posicoesAlteradas != null
+                            ? posicoesAlteradas
+                            : new ArrayList<>();
+        }
+
+        private boolean isSucesso() {
+            return sucesso;
+        }
+
+        private List<Integer> getPosicoesAlteradas() {
+            return posicoesAlteradas;
+        }
+    }
+
     private void limparSelecoesDaPartida(
             ParametroPartida partida
     ) {
+        if (partida == null
+                || partida.getEquipe1() == null
+                || partida.getEquipe2() == null) {
+            return;
+        }
+
         partida.getEquipe1().setSelecionado(false);
         partida.setEmpate(false);
         partida.getEquipe2().setSelecionado(false);
     }
-    private int contarTotalPalpitesLoteca(
-            List<ParametroPartida> partidas
-    ) {
-        int total = 0;
 
-        for (ParametroPartida partida : partidas) {
-            if (partida == null) {
-                continue;
-            }
-
-            total += calcularQuantidadeSelecionada(
-                    partida
-            );
-        }
-
-        return total;
-    }
-    private List<ParametroPartida>
-    obterPartidasQueAceitamMaisUmPalpite(
-            List<ParametroPartida> partidas
-    ) {
-        List<ParametroPartida> disponiveis =
-                new ArrayList<>();
-
-        for (ParametroPartida partida : partidas) {
-            if (partida == null) {
-                continue;
-            }
-
-            int quantidadeSelecionada =
-                    calcularQuantidadeSelecionada(partida);
-
-            if (quantidadeSelecionada > 0
-                    && quantidadeSelecionada < 3) {
-                disponiveis.add(partida);
-            }
-        }
-
-        return disponiveis;
-    }
-    private void adicionarResultadoAleatorio(
-            ParametroPartida partida,
-            Random random
-    ) {
-        List<Integer> resultadosDisponiveis =
-                new ArrayList<>();
-
-        if (!partida.getEquipe1().isSelecionado()) {
-            resultadosDisponiveis.add(0);
-        }
-
-        if (!partida.isEmpate()) {
-            resultadosDisponiveis.add(1);
-        }
-
-        if (!partida.getEquipe2().isSelecionado()) {
-            resultadosDisponiveis.add(2);
-        }
-
-        if (resultadosDisponiveis.isEmpty()) {
-            return;
-        }
-
-        int resultado =
-                resultadosDisponiveis.get(
-                        random.nextInt(
-                                resultadosDisponiveis.size()
-                        )
-                );
-
-        if (resultado == 0) {
-            partida.getEquipe1().setSelecionado(true);
-        } else if (resultado == 1) {
-            partida.setEmpate(true);
-        } else {
-            partida.getEquipe2().setSelecionado(true);
-        }
-
-        int quantidadeSelecionada =
-                calcularQuantidadeSelecionada(partida);
-
-        partida.setSelecionado(true);
-        partida.setQtdItensSelecionados(
-                quantidadeSelecionada
-        );
-        partida.setQtdItensSelecionadosAnterior(
-                quantidadeSelecionada
-        );
-    }
-    private void reconstruirEstadoLoteca(
-            ) {
+    private void reconstruirEstadoLoteca() {
         if (parametroJogo == null
                 || parametroJogo.getPartidas() == null) {
             return;
         }
 
-        List<ParametroPartida> partidas =
-                parametroJogo.getPartidas();
+        List<ParametroPartida> partidas = parametroJogo.getPartidas();
 
         int simples = 0;
         int duplas = 0;
@@ -1660,17 +1726,8 @@ private void selecionarResultadoSimplesAleatorio(
                     quantidadeSelecionada > 0;
 
             partida.setSelecionado(selecionada);
-            partida.setQtdItensSelecionados(
-                    quantidadeSelecionada
-            );
-
-            /*
-             * Depois da reconstrução, o valor anterior precisa
-             * corresponder ao valor atual para o próximo item click.
-             */
-            partida.setQtdItensSelecionadosAnterior(
-                    quantidadeSelecionada
-            );
+            partida.setQtdItensSelecionados(quantidadeSelecionada);
+            partida.setQtdItensSelecionadosAnterior(quantidadeSelecionada);
 
             if (!selecionada) {
                 continue;
@@ -1682,29 +1739,27 @@ private void selecionarResultadoSimplesAleatorio(
                 case 1:
                     simples++;
                     break;
-
                 case 2:
                     duplas++;
                     break;
-
                 case 3:
                     triplas++;
                     break;
-
                 default:
                     break;
             }
         }
 
         int jogos = simples + duplas + triplas;
+
         publicarEstadoLoteca(
                 jogos,
                 simples,
                 duplas,
                 triplas
         );
-
     }
+
     private void publicarEstadoLoteca(
             int jogosSelecionados,
             int simples,
@@ -1717,13 +1772,13 @@ private void selecionarResultadoSimplesAleatorio(
                         ? parametroJogo.getPartidas().size()
                         : 0;
 
-        /*
-         * Primeiro atualiza os valores da Loteca no state.
-         *
-         * Isso precisa acontecer antes do CartelaAlterada porque o
-         * FluxoApostaReducer usa os valores atuais do state para
-         * decidir o estado dos botoes do rodape.
-         */
+        int totalPalpitesSelecionados =
+                calcularTotalPalpitesLoteca(
+                        simples,
+                        duplas,
+                        triplas
+                );
+
         dispatch(
                 new SimulaUiEvent.LotecaAtualizada(
                         jogosSelecionados,
@@ -1733,13 +1788,10 @@ private void selecionarResultadoSimplesAleatorio(
                 )
         );
 
-        /*
-         * Depois recalcula o fluxo e o estado dos botoes.
-         *
-         * Para Loteca:
-         * qtdPartidasSelecionadas = jogosSelecionados
-         * qtdPartidasTotal = total de partidas do volante
-         */
+        sincronizarPalpitesLotecaComSelecao(
+                totalPalpitesSelecionados
+        );
+
         dispatch(
                 new SimulaUiEvent.CartelaAlterada(
                         parametroJogo
@@ -1764,27 +1816,63 @@ private void selecionarResultadoSimplesAleatorio(
         );
     }
 
+    private int calcularTotalPalpitesLoteca(
+            int simples,
+            int duplas,
+            int triplas
+    ) {
+        return Math.max(simples, 0)
+                + (Math.max(duplas, 0) * 2)
+                + (Math.max(triplas, 0) * 3);
+    }
+
+    private void sincronizarPalpitesLotecaComSelecao(
+            int totalPalpitesSelecionados
+    ) {
+        SimulaUiState state = getStateAtual();
+
+        if (state == null) {
+            return;
+        }
+
+        int palpitesAtuais = state.getPalpitesLoteca();
+
+        if (totalPalpitesSelecionados <= palpitesAtuais
+                || totalPalpitesSelecionados > MAXIMO_PALPITES_LOTECA) {
+            return;
+        }
+
+        dispatch(
+                new SimulaUiEvent.PalpitesLotecaAtualizado(
+                        totalPalpitesSelecionados
+                )
+        );
+    }
+
     private int calcularQuantidadeSelecionada(
             ParametroPartida partida
     ) {
         int quantidade = 0;
 
-        if (partida.getEquipe1() != null
+        if (partida != null
+                && partida.getEquipe1() != null
                 && partida.getEquipe1().isSelecionado()) {
             quantidade++;
         }
 
-        if (partida.isEmpate()) {
+        if (partida != null && partida.isEmpate()) {
             quantidade++;
         }
 
-        if (partida.getEquipe2() != null
+        if (partida != null
+                && partida.getEquipe2() != null
                 && partida.getEquipe2().isSelecionado()) {
             quantidade++;
         }
 
         return quantidade;
     }
+
     private void atualizaValorApostaLoteca() {
 
         dispatch(new SimulaUiEvent.LotecaAtualizada(
@@ -1793,8 +1881,6 @@ private void selecionarResultadoSimplesAleatorio(
                 getStateAtual().getDuplasLoteca(),
                 getStateAtual().getTriplasLoteca()
         ));
-
-        return;
     }
 
     private void editaAposta() {
@@ -1806,18 +1892,16 @@ private void selecionarResultadoSimplesAleatorio(
         IdentificaoDeUmaApostaDas8Modalidades aposta =
                 parentActivity.getAposta();
 
-        IdentificaoDeUmaApostaDas8Modalidades apostaSuperSete =
-                parentActivity.getAposta();
-
-
         if (CollectionUtils.isNotEmpty(aposta.getListaNumerosSelecionados())) {
 
             List<Integer> selecionadas = aposta.getListaNumerosSelecionados();
             atualizarDezenasSelecionadas(selecionadas);
 
-            simularDezenasAdapter.atualizaSelecionados(
-                    selecionadas
-            );
+            if (simularDezenasAdapter != null) {
+                simularDezenasAdapter.atualizaSelecionados(
+                        selecionadas
+                );
+            }
 
             atualizarQuantidadeSelecionada(
                     aposta.getQuantidadeNumeros());
