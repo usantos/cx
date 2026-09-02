@@ -5,9 +5,12 @@ import android.net.Uri;
 import android.util.Base64;
 
 import android.util.Log;
+
+import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
@@ -30,12 +33,14 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class BiometriaLogin {
@@ -97,11 +102,18 @@ public class BiometriaLogin {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    boolean usuarioBloqueado = RedirectNetwork.trataBloqueioTotal(error, activity);
-                    if (!usuarioBloqueado) {
-                        Log.d("BiometriaLogin", "Falha na resposta do serviço");
-                        verificarCadastro(activity, listener);
-                    }
+                    FirebaseCrashlytics crash = FirebaseCrashlytics.getInstance();
+                    crash.setCustomKey(activity.getString(R.string.biometrialogin), "Erro na chamada de verificação de usuário bloqueado");
+                    crash.recordException(error);
+
+                    Log.e(activity.getString(R.string.biometrialogin), "Erro! BiometriaLogin: Erro na chamada de verificação de usuário bloqueado " + error);
+                    DialogUtils.dialogEntendiListener(
+                            activity,
+                            activity.getResources().getString(R.string.nao_concluiu_operacao_nova), (dialog, which) -> {
+                                new LoginSSOModel(activity).sair(LoginActivity.class, () -> {});
+                                DadosUsuarioBO.updateUsuarioLogado(activity, false);
+                                activity.finish();
+                            });
                 }
             });
 
