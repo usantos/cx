@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -33,6 +32,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -57,12 +57,11 @@ import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.model.model.LotericaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
-import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
-import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.ResultadoNavegacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.FavoritarLotericaHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.BolaoFooterAdapter;
@@ -91,6 +90,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     public static final String ARG_TIPO_CONCURSO = "ARG_TIPO_CONCURSO";
 
     public static final String ARG_FILTRO_MARKETPLACE = "ARG_FILTRO_MARKETPLACE";
+    public static final String ARG_FILTRO_LIMPO = "ARG_FILTRO_LIMPO";
     public static final String ARG_DTO_LOTERICA = "ARG_DTO_LOTERICA";
     public static final String ARG_DESATIVAR_FILTRO = "DESATIVAR_FILTRO";
     private RecyclerView lotericasListView;
@@ -121,6 +121,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private FiltroVazioFragment filtroVazioFragment;
     private LotericaEmptyFragment lotericaVaziaFragment;
     private FiltroAplicadoMarketplace filtro = new FiltroAplicadoMarketplace();
+    private FiltroAplicadoMarketplace filtroLimpo = new FiltroAplicadoMarketplace();
     private List<CotasBolaoDTO> cotasDisponiveis;
 
     private Integer idModalidade, idModalidadeInicial;
@@ -135,7 +136,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private BarraTituloFiltroLotericaFragment fragBarraTituloFiltroLoterica;
     private LottieManager lottieManager;
     String numeroConcurso;
-    String nomeModalidade;
+    String nomeModalidade = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +165,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         launcherDetalhes = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
         setTitle("");
         TextView toolBarTxt = findViewById(R.id.toolbar_title);
-        configFiltrar(launcherFiltro, filtro);
+        configFiltrar(launcherFiltro, filtro, filtroLimpo);
         toolBarTxt.setVisibility(VISIBLE);
         rvConteudoBoloes = findViewById(R.id.rv_conteudo_boloes);
         lotericasListView = findViewById(R.id.lista_lotericas);
@@ -190,8 +191,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 bolaoList,
                 onItemBolaoListener(),
                 this,
-                filtro,
-                true
+                filtro
         );
 
         concatBolaoAdapter = new ConcatAdapter(
@@ -221,10 +221,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         layoutBoloes = findViewById(R.id.contentBoloes);
         layoutLotericasFavoritas = findViewById(R.id.contentLotericasFavoritas);
 
-        if (idModalidadeInicial != null)
+        if (idModalidadeInicial != null){
             filtro.setModalidade(ModalidadeEnum.fromInteger(idModalidadeInicial));
-        if (tipoConcursoInicial != null)
+            filtroLimpo.setModalidade(ModalidadeEnum.fromInteger(idModalidadeInicial));
+        }
+        if (tipoConcursoInicial != null){
             filtro.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcursoInicial));
+            filtroLimpo.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcursoInicial));
+        }
         toolBarTxt.setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.label_bolao_bar_marketplace)));
         ViewCompat.setAccessibilityHeading(toolBarTxt,true);
 
@@ -251,15 +255,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 && parametroJogo.getConcurso().getNumero() != null) {
 
             numeroConcurso = parametroJogo.getConcurso().getNumero().toString();
+            AnalyticsHelper.getInstance().logViewScreenAposta(
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.BOLAO,
+                    AnalyticsHelper.Tela.BOLAO,
+                    nomeModalidade != null ? nomeModalidade : "",
+                    numeroConcurso
+            );
         }
-
-        AnalyticsHelper.getInstance().logViewScreenAposta(
-                AnalyticsHelper.JourneyParams.APOSTAR,
-                AnalyticsHelper.SubJourneyParams.BOLAO,
-                AnalyticsHelper.Tela.BOLAO,
-                nomeModalidade,
-                numeroConcurso
-        );
     }
 
     @Override
@@ -829,6 +832,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         bolaoList.clear();
         bolaoList.addAll(novaListaCompleta);
 
+        listAdapter.atualizarFiltro(filtro);
+
         listAdapter.notifyDataSetChanged();
 
         bolaoFooterAdapter.mostrarLoading(false);
@@ -874,13 +879,15 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             rvConteudoBoloes.setVisibility(VISIBLE);
             layoutBoloes.setVisibility(VISIBLE);
 
-            if (result.getResultCode() == Activity.RESULT_OK) {
+            if (result.getResultCode() == RESULT_OK) {
                 Intent data = result.getData();
                 if (data != null) {
                     filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
+                    filtroLimpo = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_LIMPO_RETORNO);
                     if (filtro != null) {
                         isFiltrando = true;
-                        configFiltrar(launcherFiltro, filtro);
+                        listAdapter.atualizarFiltro(filtro);
+                        configFiltrar(launcherFiltro, filtro, filtroLimpo);
                         if (filtro.getModalidade() != null) {
                             idModalidade = ModalidadeEnum.fromStringToIdModalidade(filtro.getModalidade());
                             tipoConcurso = TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso());
@@ -906,7 +913,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
     private OnActivityForResult OnReturnActivity() {
         return result -> {
-            if (result.getResultCode() == Activity.RESULT_OK) {
+            if (result.getResultCode() == RESULT_OK) {
                 Intent data = result.getData();
                 if (data != null) {
                     Long id = data.getLongExtra("ID_LOTERICA", -1L);
@@ -961,7 +968,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
     private OnActivityForResult onAtualizaListasDeCotas() {
         return result -> {
-            if (result.getResultCode() == Activity.RESULT_OK) {
+            if (result.getResultCode() == RESULT_OK || result.getResultCode() == ResultadoNavegacaoAposta.RESULT_RESET) {
                 AlertDialogUtils.show(BolaoActivity.this);
                 model.zeraPaginacao();
                 cotasDisponiveis = null;
@@ -1247,49 +1254,54 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     }
 
     private void adicionarNoCarrinho(CotasBolaoDTO bolao) {
-        if(ModalidadeEnum.fromInteger(idModalidade) == ModalidadeEnum.LOTECA){
-            AnalyticsHelper.getInstance().logInteractionAddLoteca(
-                    AnalyticsHelper.Tela.BOLAO,
-                    ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
-                    AnalyticsHelper.EventCategoryParams.CTA,
-                    AnalyticsHelper.EventActionParams.CLICK,
-                    AnalyticsHelper.EventLabelParams.ADD_BOLAO,
-                    AnalyticsHelper.JourneyParams.APOSTAR,
-                    AnalyticsHelper.SubJourneyParams.BOLAO,
-                    bolao.getLoterica(),
-                    bolao.getNomeFantasia(),
-                    bolao.getUf().getNome(),
-                    String.valueOf(bolao.getQtdApostas()),
-                    String.valueOf(bolao.getQtdNumeros()),
-                    ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()),
-                    ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()),
-                    ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()),
-                    String.valueOf(bolao.getQtdCotaTotal()),
-                    String.valueOf(bolao.getQtdCotasBolao()),
-                    numeroConcurso
-            );
-        }
-        else {
-            AnalyticsHelper.getInstance().logInteractionAddBolao(
-                    AnalyticsHelper.Tela.BOLAO,
-                    ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
-                    AnalyticsHelper.EventCategoryParams.CTA,
-                    AnalyticsHelper.EventActionParams.CLICK,
-                    AnalyticsHelper.EventLabelParams.ADD_BOLAO,
-                    AnalyticsHelper.JourneyParams.APOSTAR,
-                    AnalyticsHelper.SubJourneyParams.BOLAO,
-                    bolao.getLoterica(),
-                    bolao.getNomeFantasia(),
-                    bolao.getUf().getNome(),
-                    String.valueOf(bolao.getQtdApostas()),
-                    String.valueOf(bolao.getQtdNumeros()),
-                    ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()),
-                    ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()),
-                    ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()),
-                    String.valueOf(bolao.getQtdCotaTotal()),
-                    String.valueOf(bolao.getQtdCotasBolao()),
-                    numeroConcurso
-            );
+        if (bolao != null && bolao.getLoterica() != null && bolao.getNomeFantasia() != null
+            && bolao.getUf() != null && bolao.getUf().getNome() != null && bolao.getQtdApostas() != null
+            && bolao.getQtdNumeros() != null && bolao.getQtdCotaTotal() != null && bolao.getQtdCotasBolao() != null
+            && numeroConcurso != null) {
+            if(ModalidadeEnum.fromInteger(idModalidade) == ModalidadeEnum.LOTECA){
+                AnalyticsHelper.getInstance().logInteractionAddLoteca(
+                        AnalyticsHelper.Tela.BOLAO,
+                        ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
+                        AnalyticsHelper.EventCategoryParams.CTA,
+                        AnalyticsHelper.EventActionParams.CLICK,
+                        AnalyticsHelper.EventLabelParams.ADD_BOLAO,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.BOLAO,
+                        bolao.getLoterica(),
+                        bolao.getNomeFantasia(),
+                        bolao.getUf().getNome(),
+                        String.valueOf(bolao.getQtdApostas()),
+                        String.valueOf(bolao.getQtdNumeros()),
+                        ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()),
+                        ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()),
+                        ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()),
+                        String.valueOf(bolao.getQtdCotaTotal()),
+                        String.valueOf(bolao.getQtdCotasBolao()),
+                        numeroConcurso
+                );
+            }
+            else {
+                AnalyticsHelper.getInstance().logInteractionAddBolao(
+                        AnalyticsHelper.Tela.BOLAO,
+                        ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
+                        AnalyticsHelper.EventCategoryParams.CTA,
+                        AnalyticsHelper.EventActionParams.CLICK,
+                        AnalyticsHelper.EventLabelParams.ADD_BOLAO,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.BOLAO,
+                        bolao.getLoterica(),
+                        bolao.getNomeFantasia(),
+                        bolao.getUf().getNome(),
+                        String.valueOf(bolao.getQtdApostas()),
+                        String.valueOf(bolao.getQtdNumeros()),
+                        ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()),
+                        ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()),
+                        ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()),
+                        String.valueOf(bolao.getQtdCotaTotal()),
+                        String.valueOf(bolao.getQtdCotasBolao()),
+                        numeroConcurso
+                );
+            }
         }
 
         model.addBolaoCarrinho(bolao);

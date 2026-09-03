@@ -25,13 +25,26 @@
         android:layout_marginTop="17dp"
         android:background="@color/cinza70" />
 
+    <TextView
+        android:id="@+id/description_dialog_favoritar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        tools:text="Informações relevantes ao diálogo"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/cinza110"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_regular" />
+
     <EditText
         android:id="@+id/edit_dialog_favoritar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:minHeight="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:textAlignment="textStart"
         android:textColor="@color/cinza110"
+        android:background="@drawable/bg_edit_favoritar"
         android:hint="@string/nome_do_carrinho_favorito"
         android:textSize="16sp"
         android:inputType="text"

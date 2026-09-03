@@ -52,7 +52,7 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
         atualizaMsg();
         setaMetodos();
 
-        if (!(BuildConfig.FLAVOR.equals("prd") ||  BuildConfig.FLAVOR.equals("net"))){
+        if (!(BuildConfig.FLAVOR.equals("prd"))){
             //Ambiente Selecao
             ambienteSpinner.setVisibility(View.VISIBLE);
             AmbienteEnum[] ambienteEnums = AmbienteEnum.values();

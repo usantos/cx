@@ -657,6 +657,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         //SERVICO /apostas/:idAposta/comprovante  Informacao COMBO está errada
                         comprovante.getAposta().setCombo(apostaDTO.getCombo());
 
+                        if (NovaApiUtils.isPossoBuscarNovaAPI()){
+                            comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                        }
+
                         startDetalheComprovante(comprovante);
                     }
 

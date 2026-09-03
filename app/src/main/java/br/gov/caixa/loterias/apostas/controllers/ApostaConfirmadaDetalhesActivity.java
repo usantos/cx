@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
@@ -69,6 +68,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResp
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
@@ -90,6 +90,7 @@ import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.ResultadoApostaConfirmadaActivity;
+import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
@@ -372,9 +373,8 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ApostaConfirmadaDetalhesActivity.this);
                 }
-                Bundle args = new Bundle();
-                args.putSerializable(CARRINHO, (Serializable) response.getPayload());
-                startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtras(args));
+                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+                startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class));
             }
 
             @Override
@@ -421,9 +421,9 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
 
     private void goToEditarAposta(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
-            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
-            intent.putExtra(SimularApostaActivity.APOSTA_EXTRA, ((Serializable) aposta));
-            intent.putExtra("tipoAposta", ((Serializable) aposta.getModalidade()));
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimulaActivity.class);
+            intent.putExtra(SimulaActivity.APOSTA_EXTRA, aposta);
+            intent.putExtra("tipoAposta", aposta.getModalidade());
             intent.putExtra("modalidade", ((Serializable) (new Gson()).toJson(parametroSimulacaoTrocado.getParametroJogo())));
             intent.putExtra("especial", isEspecial(aposta.getTipoConcurso().getValor()));
             startActivity(intent);

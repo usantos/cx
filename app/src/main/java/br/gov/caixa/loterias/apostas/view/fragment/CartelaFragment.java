@@ -617,8 +617,13 @@ private void zeraLoteca(){
 	}
 
 	private void logAposta(){
+		if (parametroJogo.getConcurso() == null || parametroJogo.getConcurso().getModalidade() == null
+			|| parametroJogo.getConcurso().getNumero() == null || parentActivity.getLabelValueJogosLoteca().getText() == null
+			|| parentActivity.getLabelValueSimplesLoteca().getText() == null || parentActivity.getLabelValueDuplasLoteca().getText() == null
+			|| parentActivity.getLabelValueTriplasLoteca().getText() == null || valorTotalAposta == null){
+			return;
+		}
 		if(parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)){
-
 			AnalyticsHelper.getInstance().logInteraction(
 					AnalyticsHelper.EventCategoryParams.CTA,
 					AnalyticsHelper.EventActionParams.CLICK,
@@ -752,7 +757,7 @@ private void zeraLoteca(){
 		}
 		dezenasSelecionadas = listaOrdenadaAsc;
 	}
-	
+
 	private void adicionarApostaPreencherNumerosLotomania() {
 		if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 			//verifica se foi marcada a opção para gerar outros números
@@ -1397,7 +1402,7 @@ private void zeraLoteca(){
 	private void configuraSuperSete(View viewLayout) {
 		listaGridsSuperSete = cartelaModel.getListGridSuperSete(viewLayout);
 
-		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorLight, parentActivity);
+		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorDark, parentActivity);
 
 		cartelaModel.preencheGridComListaSuperSete(listaGridsSuperSete, listaAdaptersSuperSete);
 

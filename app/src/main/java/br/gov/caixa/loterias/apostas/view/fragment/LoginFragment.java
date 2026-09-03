@@ -57,6 +57,7 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -103,7 +104,7 @@ public class LoginFragment extends Fragment {
         biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
 
         //Selecao ambiente se NAO PRD
-        if (!(BuildConfig.FLAVOR.equals("prd") ||  BuildConfig.FLAVOR.equals("net"))) {
+        if (!(BuildConfig.FLAVOR.equals("prd"))) {
             //Ambiente Selecao
             ambienteSpinner = v.findViewById(R.id.spin_ambiente);
             ambienteSpinner.setVisibility(View.VISIBLE);
@@ -250,7 +251,7 @@ public class LoginFragment extends Fragment {
 
         rowBiometria.post(() -> {
             AccessibilityManager accessibilityManager =
-                    (AccessibilityManager) requireContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+                    (AccessibilityManager) Aplicacao.application.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
             if (accessibilityManager != null && accessibilityManager.isEnabled()) {
                 rowBiometria.announceForAccessibility(textoFinal);
