@@ -60,10 +60,10 @@ android {
         minSdkVersion 23
         targetSdkVersion 35
 
-        //                   23                 1.23.6 = 01 023               00
+        //                   23                 1.23.7 = 01 027               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 230123600
-        versionName "1.23.6"
+        versionCode 230123700
+        versionName "1.23.7"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
