@@ -10,6 +10,13 @@
     <string name="title_activity_confirmacao_pagamento">_Confirmação_</string>
     <string name="title_activity_minhas_apostas">Minhas _apostas_</string>
     <string name="title_activity_dados_pessoais">_Dados Pessoais_</string>
+    <string name="title_dados_pessoais">Dados Pessoais</string>
+    <string name="loterias_caixa">Loterias Caixa</string>
+    <string name="logo_caixa">Logo da Caixa</string>
+    <string name="label_receber_notificacoes">Receber notificações</string>
+    <string name="cadastro_atualizado_com_sucesso">
+    Seu cadastro foi atualizado com sucesso.
+</string>
 
     <string name="navigation_drawer_open">Menu principal</string>
     <string name="navigation_drawer_close">Fechar menu</string>
@@ -100,10 +107,10 @@
     <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
     <string name="compra_sendo_processada">Sua compra está sendo processada</string>
     <string name="confirmacaoPagamentoProcessamento">Estamos processando sua compra.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, a aposta precisa estar _EFETIVADA_.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo2">O pagamento realizado _não garante_ automaticamente a efetivação da aposta.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo3">Se a aposta não for registrada, o valor será devolvido.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo4">Você pode acompanhar tudo em _Minhas Compras_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, sua aposta precisa estar com status _efetivada_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo2">Após a conclusão do pagamento, sua aposta será enviada para processamento.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo3">Você pode acompanhar o andamento em _Minhas Compras_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo4">Se a aposta não for efetivada, o valor será devolvido.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">Voltar ao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -138,6 +145,7 @@
     <string name="btn_finalizar">Finalizar</string>
     <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com o</string>
     <string name="termo_de_uso_underline"><u>termo de uso</u>.</string>
+    <string name="declaracao_termo_uso_politica_privacidade_termos">Li e concordo com os termos de uso.</string>
     <string name="declaracao_notificacoes">Aceito receber notificações de loterias.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
@@ -519,7 +527,9 @@
     <string name="title_sorteio">Sorteio</string>
     <string name="title_apostasEncerram">Apostas se encerram em</string>
     <string name="title_cadastroRealizado">Seu cadastro foi realizado com sucesso.</string>
-    <string name="title_aguardeRedirecionamento">Aguarde apenas um instante enquanto te redirecionamos para a home. :)</string>
+    <string name="title_cadastroRealizadoExcelente">Excelente! Seu cadastro foi realizado com sucesso!</string>
+    <string name="title_cadastroAtualizado">Seu cadastro foi atualizado com sucesso.</string>
+    <string name="title_aguardeRedirecionamento">Aguarde apenas um instante enquanto te redirecionamos para a home.</string>
     <string name="title_informeNumBilhete">Por favor, informe o número do seu bilhete.</string>
     <string name="title_apostas_favoritas">Apostas favoritas</string>
     <string name="title_orientacaoRapidao">Selecione as opções que você quer contemplar no Rapidão.</string>
@@ -696,17 +706,19 @@
     <string name="placeholder_two">Two</string>
     <string name="placeholder_three">three</string>
     <string name="atualizar">Atualizar</string>
+    <string name="cadastrar">Finalizar cadastro</string>
     <string name="limite_titulo">Limite Diário de Apostas</string>
     <string name="restringe_limite_ao_minimo">O valor mínimo é %1$s</string>
     <string name="restringe_limite_ao_maximo">O valor máximo é %1$s</string>
-    <string name="limite_maximo_e_minimo">R$ 2,00 até R$ 9.300,00</string>
-    <string name="dados_limite_compra">Solicitar limite\nacima de\n%1$s</string>
+    <string name="limite_maximo_e_minimo">R$ %1$s até %2$s</string>
+    <string name="dados_limite_compra">Solicitar limite acima de %1$s</string>
     <string name="precisamos_que_voc_informe_numa_lot_rica_de_sua_prefer_ncia">Precisamos que você informe uma lotérica de sua preferência.</string>
     <string name="cidade">Cidade</string>
     <string name="bairro">Bairro</string>
     <string name="um_concurso">1 concurso</string>
     <string name="zero">0</string>
     <string name="mega_sena">Mega-sena</string>
+    <string name="cadastro_rapido">O cadastro é bem rápido. Para começar, informe os dados abaixo:</string>
     <string name="estes_s_o_seus_dados_pessoais_por_favor_mantenha_os_sempre_atualizados">Estes são seus dados pessoais. Por favor, mantenha-os sempre atualizados.</string>
     <string name="salvar">Salvar</string>
     <string name="nesta_rea_est_o_todas_as_suas_apostas_da_sorte_s_escolher_e_apostar_boa_sorte">Nesta área estão todas as suas apostas da sorte. É só escolher e apostar. Boa Sorte!</string>
@@ -856,16 +868,18 @@
     <string name="endereco_apk_caixa">http://www.caixa.gov.br/atendimento/aplicativos/Documents/aplicativo-loterias-online.apk</string>
     <string name="endereco_mobilidade_instalador">https://loja.mobilidade.caixa.gov.br/applicationcenter/installers.html</string>
     <string name="bom_ver_voce">Que bom ver _você por aqui_ :)</string>
+    <string name="bom_ver_voce_cadastro">Que bom ver você por aqui</string>
     <string name="traco">-</string>
     <string name="string_vazia" />
     <string name="cpf">CPF</string>
     <string name="nome">Nome</string>
     <string name="barra_n">\n</string>
     <string name="uf">UF</string>
+    <string name="somente_numeros">Somente números</string>
     <string name="municipio">Município</string>
     <string name="email">E-mail</string>
     <string name="sucesso_cadastro">_Excelente_! Seu cadastro foi realizado com sucesso!</string>
-    <string name="aguarde_redirecionamento">Aguarde apenas um instante enquanto te redirecionamos para suas apostas :)</string>
+    <string name="aguarde_redirecionamento">Aguarde apenas um instante enquanto te redirecionamos para suas apostas.</string>
     <string name="selecione_municipio_primeiro">Selecione primeiro o Município, assim nossa precisão de Bairros será incrível.</string>
     <string name="selecione_primeiro_uf">Selecione primeiro a UF, assim nossa precisão de municípios será incrível.</string>
     <string name="evento_carrinho_offline">ENTROU_CARRINHO_DE_APOSTAS_OFFLINE</string>
@@ -918,7 +932,7 @@
     <string name="evento_entrou_editar_cadastro">ENTROU_EDITAR_CADASTRO</string>
     <string name="evento_edicao_cadastro_sucesso">EFETUOU_EDICAO_CADASTRO_SUCESSO</string>
     <string name="cadastro_atualizado">_Seu cadastro_ foi atualizado com sucesso.</string>
-    <string name="aguarde_redirecionamento_tela_inicial">Aguarde apenas um instante enquanto te redirecionamos para a tela inicial. :)</string>
+    <string name="aguarde_redirecionamento_tela_inicial">Aguarde apenas um instante enquanto te redirecionamos para a tela inicial.</string>
     <string name="evento_entrou_lista_favoritos">ENTROU_LISTA_FAVORITOS</string>
     <string name="numeros_da_sorte_no_mesmo_lugar"> </string>
     <string name="nesta_area_estao_todas_suas_apostas">Seus números da sorte organizados para você escolher e repetir sempre que quiser.</string>
@@ -1240,12 +1254,14 @@
     <string name="title_digiteSuaAposta">Digite a sua aposta</string>
     <string name="leitor_digital">Acessar com biometria</string>
     <string name="label_notificacoes">Receber notificações</string>
+    <string name="aceito_receber_notificacoes">Aceito receber notificações de Loterias.</string>
     <string name="entrar">Entrar como</string>
     <string name="ativar_biometria">Necessário habilitar biometria</string>
     <string name="habilitar">Habilitar</string>
     <string name="desativar_biometria">Desativar biometria</string>
     <string name="desativar_biometria_mensagem">Desaja desativar a biometria e acessar apenas com o Login Caixa?</string>
     <string name="biometria_popup_titulo">Loterias Caixa</string>
+    <string name="loterias_caixa_titulo">Loterias Caixa</string>
     <string name="biometria_popup_descricao">Desbloqueie seu celular</string>
     <string name="trocar_de_usuario"><u>Trocar de usuário</u></string>
 
@@ -1538,6 +1554,7 @@
     <string name="nome_loteria">Nome da Lotérica:</string>
     <string name="codigo_loteria">Código:</string>
     <string name="nao_sei_cep">Não sei o meu CEP</string>
+    <string name="nao_sei_cep_dados_pessoais"><u>Não sei o meu CEP</u></string>
     <string name="jogo_responsavel">Jogo Responsável</string>
     <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
     <string name="voce_sera_redirecionado_para_o_site_dos_correios">Você será redirecionado para o site dos Correios</string>
@@ -1567,7 +1584,7 @@
     <string name="mes_da_sorte_interrogacoes">\nMês de sorte: ???</string>
     <string name="time_do_coracao_interrogacoes">\nTime do coração: ???</string>
     <string name="apostas_inclu_das_no_combo">Apostas incluídas no combo</string>
-    <string name="cep_invalido">O CEP informado não foi localizado. Por favor, informe um CEP válido.</string>
+    <string name="cep_invalido">O CEP informado não foi localizado. Por favor, insira um CEP válido.</string>
     <string name="valor_do_credito">Valor do Crédito</string>
     <string name="resgate_processado_via">Resgate processado via</string>
     <string name="escolha_chave_pix_restae_premio">Escolha a chave Pix que deseja receber o resgate do prêmio.</string>
@@ -1719,4 +1736,6 @@
     <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Aguarde e tente novamente mais tarde.</string>
     <string name="text_descartar">Ao voltar para a página inicial, sua aposta em edição será descartada. Deseja continuar?</string>
     <string name="xx">XX</string>
+    <string name="tokenactivity">TokenActivity</string>
+    <string name="biometrialogin">BiometriaLogin</string>
 </resources>

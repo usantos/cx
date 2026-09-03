@@ -155,7 +155,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
                         if (result.getResultCode()
-                                == ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA) {
+                                == ResultadoNavegacaoAposta.RESULT_RESET) {
 
                             resetarTelaAposRetornoDeActivity();
                         }
@@ -1568,7 +1568,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ResultadoNavegacaoAposta.RESULT_RESETAR_SIMULA) {
+        if (resultCode == ResultadoNavegacaoAposta.RESULT_RESET) {
             resetarTelaAposRetornoDeActivity();
         }
     }

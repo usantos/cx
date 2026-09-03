@@ -49,30 +49,17 @@ public class FiltroMarketplaceModel extends AppModel{
 
 	}
 
-	public FiltroAplicadoMarketplace getFiltroAplicado(LotericaDTO selectLotericaDTO,
-													   String valorMin,
-													   String valorMax,
-													   Integer qtdMin,
-													   Integer qtdMax,
-												   Integer qtdApostas,
-												   Integer qtdDezenas,
-													   String numerosQuero,
-													   String numerosNaoQuero,
-													   ModalidadeEnum selectModalidade,
-													   TipoConcursoEnum selectTipoConcurso
-	) {
-		return new FiltroAplicadoMarketplace(
+	public FiltroAplicadoMarketplace getFiltroAplicado(LotericaDTO selectLotericaDTO, String valorMin, String valorMax,
+													   Integer qtdMin, Integer qtdMax, Integer qtdDezenas, String numerosQuero,
+													   String numerosNaoQuero, ModalidadeEnum selectModalidade,
+													   TipoConcursoEnum selectTipoConcurso, boolean todasModalidadesAtiva) {
+		FiltroAplicadoMarketplace filtro = new FiltroAplicadoMarketplace(
 				selectLotericaDTO,
 				valorMin.replace(".","").replace(",","."),
 				valorMax.replace(".","").replace(",","."),
-				qtdMin,
-				qtdMax,
-				qtdApostas,
-				qtdDezenas,
-				numerosQuero,
-				numerosNaoQuero,
-				selectModalidade,
-				selectTipoConcurso);
+				qtdMin, qtdMax, qtdDezenas, numerosQuero, numerosNaoQuero, selectModalidade, selectTipoConcurso);
+		filtro.setTodasModalidades(todasModalidadesAtiva);
+		return filtro;
 	}
 
 	public enum PrognosticosMaximosQueroNaoQuero{
@@ -134,17 +121,6 @@ public class FiltroMarketplaceModel extends AppModel{
 
 	public List<Integer> getListaTodasModalidades(){
 		return geraIntervalo(5, 26);
-	}
-
-	public List<Integer> getLista1A15(){
-		return geraIntervalo(1, 15);
-	}
-
-	public List<Integer> getIntervalo(int inicio, int fim) {
-		if (inicio <= 0 || fim < inicio) {
-			return new ArrayList<>();
-		}
-		return geraIntervalo(inicio, fim);
 	}
 
 	private List<Integer> geraIntervalo(int start, int end) {

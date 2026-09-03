@@ -23,28 +23,25 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 	private OnItemBolaoListener listener;
 	private Activity activity;
 	private FiltroAplicadoMarketplace filtro;
-    private Boolean showCotasRestantes;
 
-	public ListaBolaoAdapter(List<CotasBolaoDTO> bolaoList, OnItemBolaoListener listener, Activity activity, @Nullable FiltroAplicadoMarketplace filtro, Boolean showCotasRestantes){
+	public ListaBolaoAdapter(List<CotasBolaoDTO> bolaoList, OnItemBolaoListener listener, Activity activity, @Nullable FiltroAplicadoMarketplace filtro){
 		this.bolaoList = bolaoList;
 		this.listener = listener;
 		this.activity = activity;
 		this.filtro = filtro;
-        this.showCotasRestantes = showCotasRestantes;
     }
 
 	@NonNull
 	@Override
 	public BolaoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_bolao, parent, false);
-		return new BolaoHolder(activity, view, listener, showCotasRestantes);
+		return new BolaoHolder(activity, view, listener);
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull BolaoHolder holder, int position) {
 		CotasBolaoDTO cotaBolao = bolaoList.get(position);
-		holder.setFiltro(filtro);
-		holder.bind(cotaBolao, position);
+		holder.bind(cotaBolao, position, filtro);
 	}
 
 	@Override
@@ -53,5 +50,6 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 	}
 	public void atualizarFiltro(FiltroAplicadoMarketplace filtro) {
 		this.filtro = filtro;
+		notifyDataSetChanged();
 	}
 }

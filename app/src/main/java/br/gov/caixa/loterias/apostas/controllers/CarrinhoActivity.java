@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
@@ -55,6 +56,7 @@ import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.PermissaoUtil;
 import br.gov.caixa.loterias.apostas.utils.RedirectUtils;
+import br.gov.caixa.loterias.apostas.utils.ResultadoNavegacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -166,15 +168,6 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         }
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        if (listBoloes == null || (listBoloes != null && listBoloes.isEmpty())){
-            setResult(RESULT_OK);
-        }
-        finish();
-        return true;
-    }
-
     private void lerCarrinho() {
         if (getIntent().getComponent().getClassName().equals(CarrinhoActivity.class.getName())) {
             lerCarrinhoLocal = false;
@@ -284,12 +277,30 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         ViewCompat.setAccessibilityHeading(titleToolbar,true);
         customButton = findViewById(R.id.customButton);
         customButton.setContentDescription(getString(R.string.voltar));
-        customButton.setOnClickListener(v -> onBackPressed());
         customButton.setFocusable(true);
         customButton.setFocusableInTouchMode(true);
         customButton.requestFocus();
         btnLimpar.setContentDescription(getString(R.string.excluir));
         btnFavoritar.setContentDescription(getString(R.string.favoritar_carrinho));
+        configurarBack();
+    }
+    private void configurarBack() {
+
+        getOnBackPressedDispatcher().addCallback(
+                this,
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+
+                        setResult(ResultadoNavegacaoAposta.RESULT_RESET);
+                        finish();
+                    }
+                }
+        );
+
+        customButton.setOnClickListener(
+                v -> getOnBackPressedDispatcher().onBackPressed()
+        );
     }
 
     private void setaMetodos() {
@@ -726,7 +737,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         } else {
-            setResult(2);
+            setResult(ResultadoNavegacaoAposta.RESULT_RESET);
             finish();
         }
     }

@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.utils.helper;
 
+import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +10,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -21,8 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
@@ -35,7 +35,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmBolao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
@@ -49,10 +48,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
-import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -116,7 +115,7 @@ public class AdicionarApostaCarrinhoHelper {
         activity = actv;
         aposta = objectAposta;
         AlertDialogUtils.show(activity);
-                prosseguirInclusaoAposta(actv, objectAposta, null);
+        prosseguirInclusaoAposta(actv, objectAposta, null);
     }
 
 
@@ -162,7 +161,7 @@ public class AdicionarApostaCarrinhoHelper {
                 AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
                 if (CarrinhoSingleton.getInstance().getCarrinho() != null &&
                         CarrinhoSingleton.getInstance().getCarrinho().getApostas() != null) {
-                        CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
+                    CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
                 } else {
                     if (CarrinhoSingleton.getInstance().getCarrinho() == null) {
                         CarrinhoSingleton.getInstance().zerarCarrinho();
@@ -287,7 +286,7 @@ public class AdicionarApostaCarrinhoHelper {
                         AlertDialogUtils.dismiss();
                     }
                 }
-         );
+        );
     }
 
     private static void telaConfirmarCarrinho(ModalidadeEnum modalidade, Object aposta) {
@@ -298,75 +297,55 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void telaConfirmarCarrinho(ModalidadeEnum modalidadeEnum,  Object aposta, CarrinhoDTOResponse carrinhoDtoResponse, BarraTituloDTO barraTituloDTO) {
-        BigDecimal valor = BigDecimal.ZERO;
-        Boolean espelho = false;
-        IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = null;
-        IncluirSurpresinhaDTO incluirSurpresinhaDTO = null;
-        if(aposta instanceof IdentificaoDeUmaApostaDas8Modalidades){
-            apostaDas8Modalidades = (IdentificaoDeUmaApostaDas8Modalidades) aposta;
-            if(apostaDas8Modalidades != null){
-                valor = apostaDas8Modalidades.getValor() != null ? apostaDas8Modalidades.getValor(): valor;
-                espelho = apostaDas8Modalidades.getGerarApostaEspelho()!= null ? apostaDas8Modalidades.getGerarApostaEspelho(): espelho;
-            }
-        }else if(aposta instanceof IncluirSurpresinhaDTO){
-            valor = ((IncluirSurpresinhaDTO)aposta).getValor();
-            incluirSurpresinhaDTO = (IncluirSurpresinhaDTO) aposta;
-        }
-
-        if(modalidadeEnum == ModalidadeEnum.LOTOMANIA && espelho){
-            valor = valor.multiply(Constantes.DOIS_BIG_DECIMAL);
-        }
-
-        Intent telaConfirmacao;
-        if (apostaDas8Modalidades instanceof IdentificaoDeUmBolao){
-            telaConfirmacao = new Intent(AdicionarApostaCarrinhoHelper.activity, ConfirmadoInclusaoBolaoCarrinhoActivity.class);
-        } else {
-            telaConfirmacao = new Intent(AdicionarApostaCarrinhoHelper.activity, ConfirmadoInclusaoCarrinhoActivity.class);
-        }
-        telaConfirmacao.putExtra("barraTituloModel", barraTituloDTO);
-        telaConfirmacao.putExtra("tipoAposta", modalidadeEnum);
-        telaConfirmacao.putExtra("valorAposta", valor);
-        if(apostaDas8Modalidades != null){
-            if (apostaDas8Modalidades instanceof IdentificaoDeUmBolao){
-                telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_numero_concurso_atual), apostaDas8Modalidades.getConcursoAlvo().toString());
-                if (apostaDas8Modalidades.getDataSorteio() != null && apostaDas8Modalidades.getDataSorteio().length() >= 5) {
-                    telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_sorteio_atual), apostaDas8Modalidades.getDataSorteio().substring(0, 5));
-                }
-                String expiracaoReserva = buscaBolaoCarrinho(((IdentificaoDeUmBolao) aposta).getIdBolao(), carrinhoDtoResponse);
-                if (expiracaoReserva != null){
-                    telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_hora_expiracao_reserva), expiracaoReserva);
-                    telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_especial_reserva), ((IdentificaoDeUmBolao) aposta).getTipoConcurso().getValor().equals("2"));
-                } else {
-                    telaConfirmacao = null;
-                }
-
-            } else {
-                //telaConfirmacao.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
-                ParametroSimulacao parametroSimulacao =  ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades);
-                if (parametroSimulacao != null) {
-                    telaConfirmacao.putExtra("modalidade", (new Gson()).toJson(parametroSimulacao.getParametroJogo()));
-                } else
-                    telaConfirmacao.putExtra("modalidade", "");
-            }
-        } else {
-            if(incluirSurpresinhaDTO != null){
-                telaConfirmacao.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, incluirSurpresinhaDTO).getParametroJogo()));
-            }
-        }
-
         if (AdicionarApostaCarrinhoHelper.activity instanceof SimulaActivity) {
             ((SimulaActivity) AdicionarApostaCarrinhoHelper.activity)
                     .mostrarPopupApostaAdicionada();
         } else {
             if (AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
-                if (telaConfirmacao != null) {
-                    ((OnCompraBolaoListener) AdicionarApostaCarrinhoHelper.activity)
-                            .compraSucesso(telaConfirmacao);
-                }
-            } else {
-                AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
+                goToCarrinho();
+            } else if(AdicionarApostaCarrinhoHelper.activity instanceof SimularApostaActivity) {
+                ((SimularApostaActivity<?>) AdicionarApostaCarrinhoHelper.activity).mostrarPopupApostaAdicionada(
+                        carrinhoDtoResponse
+                );
             }
         }
+    }
+    private static void goToCarrinho(){
+        ServicoFactoryUtil.getApostaService().buscaCarrinho(
+                new RequestListener<CarrinhoDTOResponse>() {
+                    @Override
+                    public void onResponse(CarrinhoDTOResponse response) {
+                        CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+
+                        Intent intent = new Intent(
+                                activity,
+                                CarrinhoActivity.class
+                        );
+
+                        if (activity instanceof OnCompraBolaoListener) {
+                            ((OnCompraBolaoListener) activity)
+                                    .compraSucesso(intent);
+                        } else {
+                            activity.startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Intent intent = new Intent(
+                                activity,
+                                CarrinhoActivity.class
+                        );
+
+                        intent.putExtra(LER_CARRINHO_LOCAL, true);
+                        if (activity instanceof OnCompraBolaoListener) {
+                            ((OnCompraBolaoListener) activity)
+                                    .compraSucesso(intent);
+                        } else {
+                            activity.startActivity(intent);
+                        }
+                    }
+                });
     }
 
     private static boolean inserirApostaCarrinhoLocal(Context contextParam, IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
