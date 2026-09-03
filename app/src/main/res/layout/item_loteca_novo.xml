@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:importantForAccessibility="no"
+    android:layout_marginTop="16dp">
+
+    <!-- Jogo X -->
+    <TextView
+        android:id="@+id/tv_titulo_jogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="yes"
+        android:text="Jogo 01"
+        android:textColor="@color/blue_caixa"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Linha dos times -->
+    <LinearLayout
+        android:id="@+id/containerJogos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:orientation="horizontal">
+
+        <!-- Time 1 -->
+        <LinearLayout
+            android:id="@+id/time_um"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:importantForAccessibility="yes"
+            android:layout_weight="1"
+            android:background="@drawable/item_loteca_selected_esq"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/img_time_um"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/txt_time_um"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/desc_time_um"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <!-- Empate -->
+        <!-- Empate -->
+        <LinearLayout
+            android:id="@+id/time_empate"
+            android:layout_width="0dp"
+            android:importantForAccessibility="yes"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/item_loteca_selected_cen"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/img_empate"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_empate"/>
+
+            <!-- MESMA LINHA DO NOME -->
+            <TextView
+                android:id="@+id/txt_empate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Empate"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+            <!-- PLACEHOLDER PRA IGUALAR ALTURA -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:text="placeholder"/>
+
+        </LinearLayout>
+
+
+        <!-- Time 2 -->
+        <LinearLayout
+            android:id="@+id/time_dois"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:importantForAccessibility="yes"
+            android:layout_weight="1"
+            android:background="@drawable/item_loteca_selected_dir"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/img_time_dois"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/txt_time_dois"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/desc_time_dois"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

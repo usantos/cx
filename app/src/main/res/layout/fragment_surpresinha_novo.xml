@@ -1,0 +1,491 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="false"
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/branco">
+
+        <TextView
+            android:id="@+id/surpresinhaInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"
+            android:text="@string/surpresinhaInfo"
+            android:textAlignment="center"
+            android:textColor="@color/cinza110"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/numeroNovoConst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/branco"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/escolhaItemLayout"
+            tools:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/numerosInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_marginHorizontal="45dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:text="@string/escolha_a_quantidade_de_n_meros"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/containerQtdNumeros"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="30dp"
+                app:layout_constraintTop_toBottomOf="@id/numerosInfo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNumerosMenos"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/cinza110"
+                android:text="@string/menos"
+                android:gravity="center"
+                android:textSize="12dp"
+                android:textColor="@color/branco"
+                android:fontFamily="@font/caixa_std_bold"
+                app:cornerRadius="4dp"
+                />
+
+            <LinearLayout
+                android:id="@+id/numberNumeros"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:importantForAccessibility="yes"
+                android:layout_marginHorizontal="16dp">
+
+                <TextView
+                    android:id="@+id/qtdNumerosSelecionadasNovo"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|bottom"
+                    android:textSize="18sp"
+                    android:text="6"
+                    android:textColor="@color/cinza110"
+                    android:fontFamily="@font/caixa_std_regular"/>
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center|bottom"
+                    android:background="@color/cinza110"/>
+
+            </LinearLayout>
+
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNumerosMais"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="@string/mais"
+                android:textSize="12dp"
+                android:gravity="center"
+                android:textColor="@color/branco"
+                app:cornerRadius="4dp"
+                android:fontFamily="@font/caixa_std_regular"
+                />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/containerDezenasSurpresinha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="24dp"
+            app:flexWrap="wrap"
+            app:justifyContent="center"
+            android:importantForAccessibility="noHideDescendants"
+            app:alignItems="center"
+            app:layout_constraintTop_toBottomOf="@id/surpresinhaInfo">
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="@string/xx"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="XX"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="XX"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="XX"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="XX"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_surpresinha_bolinha"
+                android:gravity="center"
+                android:text="XX"
+                android:textColor="@color/cinza70"
+                android:textStyle="bold" />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mesesContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/containerDezenasSurpresinha"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/mesesIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_calendar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/mesesLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/label_meses"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toEndOf="@id/mesesIcon"
+                app:layout_constraintTop_toTopOf="@id/mesesIcon"
+                app:layout_constraintBottom_toBottomOf="@id/mesesIcon"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/escolhaItemLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/mesesContainer"
+            android:visibility="gone"
+            android:orientation="vertical"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/TimeLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
+                android:text="@string/surpresinhaTime"
+                android:textAlignment="center"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_regular"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/escolherOutroItemBtn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:textAllCaps="false"
+                app:strokeWidth="1dp"
+                tools:visibility="gone"
+                app:cornerRadius="4dp"
+                android:backgroundTint="@color/button_rodape"
+                app:strokeColor="@color/text_timemania"
+                android:textColor="@color/text_timemania"
+                android:text="@string/label_escolher_time"
+                android:fontFamily="@font/caixa_std_regular"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:textSize="13sp"
+                android:enabled="true"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/maisMilionaria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/branco"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/numeroNovoConst"
+            tools:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/trevosInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_marginHorizontal="45dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:text="@string/trevosInfo"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <LinearLayout
+                android:id="@+id/containerQtdTrevos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@id/trevosInfo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMenosTrevos"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@color/cinza110"
+                    android:text="@string/menos"
+                    android:gravity="center"
+                    android:textSize="12dp"
+                    android:textColor="@color/branco"
+                    app:cornerRadius="4dp"
+                    android:fontFamily="@font/caixa_std_regular"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/numberTrevos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="16dp"
+                    android:importantForAccessibility="yes"
+                    >
+
+                    <TextView
+                        android:id="@+id/qtdSurpresinhasSelecionadasTrevos"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|bottom"
+                        android:textSize="18sp"
+                        android:text="2"
+                        android:textColor="@color/cinza110"
+                        android:fontFamily="@font/caixa_std_regular"/>
+
+                    <View
+                        android:layout_width="40dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center|bottom"
+                        android:background="@color/cinza110"/>
+
+                </LinearLayout>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMaisTrevos"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/mais"
+                    android:textSize="12dp"
+                    android:gravity="center"
+                    app:cornerRadius="4dp"
+                    android:textColor="@color/branco"
+                    android:fontFamily="@font/caixa_std_regular"
+                    />
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/surpresinhaQtdInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="45dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/cinza110"
+            android:textSize="16sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:text="@string/surpresinhaInfoNova"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/escolhaItemLayout" />
+
+        <LinearLayout
+            android:id="@+id/containerQtdSurpresinhas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/surpresinhaQtdInfo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMenosSurpresinha"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cornerRadius="4dp"
+                android:backgroundTint="@color/cinza110"
+                android:text="@string/menos"
+                android:gravity="center"
+                android:textSize="12dp"
+                android:textColor="@color/branco"
+                android:fontFamily="@font/caixa_std_regular"/>
+
+            <LinearLayout
+                android:id="@+id/numberSurpresinhas"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/qtdSurpresinhasSelecionadas"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/cinza110"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="1"/>
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/cinza110"/>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMaisSurpresinha"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cornerRadius="4dp"
+                android:backgroundTint="@color/cinza110"
+                android:text="@string/mais"
+                android:gravity="center"
+                android:textSize="12dp"
+                android:textColor="@color/branco"
+                android:fontFamily="@font/caixa_std_regular"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEspelhoSurpresinha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@id/containerQtdSurpresinhas"
+            app:layout_constraintTop_toBottomOf="@id/containerQtdSurpresinhas">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/selcioneEspelhoSurpresinha"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/check_box_selected_novo"
+                android:button="@null"
+                android:clickable="false" />
+
+            <TextView
+                android:id="@+id/textoEspelhoSurpresinha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:clickable="false"
+                android:text="@string/label_aposta_espelho"
+                android:textColor="@color/cinza110"
+                android:textSize="14.2sp"
+                android:fontFamily="@font/caixa_std_regular"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

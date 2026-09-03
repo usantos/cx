@@ -37,7 +37,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -125,8 +124,11 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         //contentResultadoPremiado.getPremioInfoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
         contentResultadoPremiado.getPremioInfoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorEscura()));
         String descricaoModalidade = "";
-        if (EspecialUtils.isMega30(detalhesPremioDTO.getAposta().getConcursoAlvo(), detalhesPremioDTO.getAposta().getTipoConcurso())){
+        if (EspecialUtils.isMega30(detalhesPremioDTO.getAposta().getModalidade(), detalhesPremioDTO.getAposta().getConcursoAlvo(), detalhesPremioDTO.getAposta().getTipoConcurso())) {
             descricaoModalidade = SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_LINHA, "");
+            contentResultadoPremiado.getTituloModalidadeTextView().setTextSize(20);
+        } else if (EspecialUtils.isLotecaPais(detalhesPremioDTO.getAposta().getModalidade(), detalhesPremioDTO.getAposta().getConcursoAlvo(), detalhesPremioDTO.getAposta().getTipoConcurso())) {
+            descricaoModalidade = SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_LINHA, "");
             contentResultadoPremiado.getTituloModalidadeTextView().setTextSize(20);
         } else {
             descricaoModalidade = ViewUtils.getNomeModalidadePorAposta(detalhesPremioDTO.getAposta()).toLowerCase();
@@ -165,6 +167,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         createListPremiacao();
         trataFormasDeResgate();
+        //RateUtils.avaliarAplicativo(this, true);
         setResult(RESULT_FIRST_USER);
     }
 
@@ -261,10 +264,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             public void onErrorResponse(VolleyError error) {
                 alertDialog.dismiss();
                 String msgError = MensagensNetwork.setMensagem(error, ResultadoApostaConfirmadaActivity.this);
-                DialogUtils.dialogEntendi(
-                        getContext(),
-                        msgError
-                );
+                ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, msgError, getContext().getResources().getString( R.string.ok ));
             }
         });
     }
@@ -294,25 +294,29 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         for (int i = 0; i < detalhesPremioDTO.getMeiosResgate().size(); i++){
             TipoPagamentoDTO meioPagamento = detalhesPremioDTO.getMeiosResgate().get(i);
             if (meioPagamento.getId().equals(MeioPagamentoUtil.PIX)) {
-                list.add(new OpcaoResgatePremio(getDrawable(R.drawable.icone_do_pix), getString(R.string.label_pix), v -> {
+                list.add(new OpcaoResgatePremio(getDrawable(R.drawable.icone_do_pix), getString(R.string.label_pix),
+                        getString(R.string.receba_na_hora), v -> {
                     Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);
                     intent.putExtra(ResgatePixActivity.ARG_VALOR, detalhesPremioDTO.getPremio().getValorLiquido());
                     intent.putExtra(ResgatePixActivity.ARG_ID_APOSTA, detalhesPremioDTO.getAposta().getId());
                     startActivity(intent);
                 }));
             } else if (meioPagamento.getId().equals(MeioPagamentoUtil.MERCADO_PAGO)) {
-                list.add(new OpcaoResgatePremio(null, getString(R.string.label_mercado_pago), v -> {
+                list.add(new OpcaoResgatePremio(null, getString(R.string.label_mercado_pago),
+                        getString(R.string.receba_na_hora),v -> {
                     Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
                     intent.putExtra( getResources().getString(R.string.extra_valor_premio), ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
                     intent.putExtra( getResources().getString(R.string.extra_id_aposta), detalhesPremioDTO.getAposta().getId() );
                     startActivityForResult(intent,RESGATOU_MERCADO_PAGO);
                 }));
             } else if (meioPagamento.getId().equals(MeioPagamentoUtil.AGENCIA)) {
-                list.add(new OpcaoResgatePremio(null, getString(R.string.label_agencia_maiuscula), v -> {
+                list.add(new OpcaoResgatePremio(null, getString(R.string.label_agencia_maiuscula),
+                        getString(R.string.valores_isencao_ir),v -> {
                     apresentaOrientacoesResgate(false);
                 }));
             } else if (meioPagamento.getId().equals(MeioPagamentoUtil.LOTERICA)) {
-                list.add(new OpcaoResgatePremio(null, getString(R.string.label_loterica), v -> {
+                list.add(new OpcaoResgatePremio(null, getString(R.string.label_loterica),
+                        getString(R.string.retire_qualquer_loterica),v -> {
                     apresentaOrientacoesResgate(true);
                 }));
             }

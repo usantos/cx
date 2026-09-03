@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
 import android.content.Intent;
@@ -8,15 +7,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -25,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
@@ -42,6 +46,7 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 	private TextView tvQtd;
 
 	private BigDecimal valorAposta, valorCarrinho;
+	private ConstraintLayout carrinhoApostas, containerValor;
 
 	public RodapeSimulacaoApostaFragment() {
 		// Required empty public constructor
@@ -84,7 +89,11 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		tvValorCarrinho = view.findViewById(R.id.valorAtualCarrinho);
 		circuloQtd = view.findViewById(R.id.circuloQuantidade);
 		tvQtd = view.findViewById(R.id.tvQuantidadeApostas);
-		view.findViewById(R.id.simularApostaLayoutCarrinhoApostas).setOnClickListener(v -> abreCarrinhoApostas());
+		carrinhoApostas = view.findViewById(R.id.simularApostaLayoutCarrinhoApostas);
+		containerValor = view.findViewById(R.id.container_valor_aposta);
+		carrinhoApostas.setOnClickListener(v -> abreCarrinhoApostas());
+		setAccessibility(containerValor);
+		setAccessibility(carrinhoApostas);
 
 		atualizaValorBolao(valorAposta);
 		atualizaValorCarrinho(valorCarrinho);
@@ -92,6 +101,15 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		return view;
 	}
 
+	private void setAccessibility(View view){
+		ViewCompat.setAccessibilityDelegate(view, new AccessibilityDelegateCompat() {
+			@Override
+			public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+				super.onInitializeAccessibilityNodeInfo(host, info);
+				info.setClassName(Button.class.getName());
+			}
+		});
+	}
 	public void atualizaValorBolao(BigDecimal valorApostaBolao){
 		if (valorApostaBolao != null && tvValorAposta != null){
 			ViewUtils.setMoedaFormatHtml(valorApostaBolao, tvValorAposta);
@@ -124,9 +142,8 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
 				AlertDialogUtils.dismiss();
-				Bundle args = new Bundle();
-				args.putSerializable(CARRINHO, (Serializable) response.getPayload());
-				startActivity(new Intent(getActivity(), CarrinhoActivity.class).putExtras(args));
+				CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+				startActivity(new Intent(getActivity(), CarrinhoActivity.class));
 				if (response.getRedirect() != null){
 					RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
 				}

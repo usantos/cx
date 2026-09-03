@@ -26,8 +26,6 @@ public class ParametrosConfiguraveisDTO {
     private String urlBaseCarrinhoPiloto;
     @SerializedName("hostMicroServicoCarrinhoProducao")
     private String urlBaseCarrinhoProducao;
-    @SerializedName("grupoDeCpfsQueAcessamOServicoDaAzure")
-    private String grupoDeCpfsQueAcessamOServicoDaAzure;
 
     @SerializedName("hostNovoMicroServicoConferenciaApostaProducao")
     private String urlBaseNovaApiPRD;
@@ -51,6 +49,8 @@ public class ParametrosConfiguraveisDTO {
     private Boolean comboApostasHabilitado;
     @SerializedName("concursoMega30Anos")
     private Integer concursoMega30Anos;
+    @SerializedName("concursoLotecaPais")
+    private Integer concursoLotecaPais;
 
     public String getUrlBaseApostadorPiloto() {
         return urlBaseApostadorPiloto;
@@ -134,14 +134,6 @@ public class ParametrosConfiguraveisDTO {
         this.urlBaseCarrinhoProducao = urlBaseCarrinhoProducao;
     }
 
-    public String getGrupoDeCpfsQueAcessamOServicoDaAzure() {
-        return grupoDeCpfsQueAcessamOServicoDaAzure;
-    }
-
-    public void setGrupoDeCpfsQueAcessamOServicoDaAzure(String grupoDeCpfsQueAcessamOServicoDaAzure) {
-        this.grupoDeCpfsQueAcessamOServicoDaAzure = grupoDeCpfsQueAcessamOServicoDaAzure;
-    }
-
     public Boolean getComboApostasHabilitado() {
         return comboApostasHabilitado;
     }
@@ -213,5 +205,14 @@ public class ParametrosConfiguraveisDTO {
 
     public void setConcursoMega30Anos(Integer concursoMega30Anos) {
         this.concursoMega30Anos = concursoMega30Anos;
+    }
+
+    //TODO: LOTECA PAIS//
+    public Integer getConcursoLotecaPais() {
+        return concursoLotecaPais;
+    }
+
+    public void setConcursoLotecaPais(Integer concursoLotecaPais) {
+        this.concursoLotecaPais = concursoLotecaPais;
     }
 }

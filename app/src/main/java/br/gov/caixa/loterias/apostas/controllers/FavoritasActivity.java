@@ -57,6 +57,8 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SelecaoModalidadesRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.ModalidadeHolder;
@@ -321,9 +323,9 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
             @Override
             public void onAdd(int position) {
-                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
-                model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
-                //}
+                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
+                    model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
+                }
             }
 
         };
@@ -348,6 +350,17 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         model.removeAposta(position);
         if (model.isListaVazia()) {
             buscaServicos();
+            adapterModalidades.selecionaOPrimeiro();
+            adapterModalidades.limpaSelecaoModalidades();
+            listTipoAposta.get(0).setSelect(true);
+            desativaIncluirAposta();
+            filtrarModalidade();
+            textFiltroSelecionado.requestFocus();
+
+
+            textFiltroSelecionado.setText(listTipoAposta.get(0).getTitulo());
+            String descricao = getString(R.string.selecione_modalidade) + ":Botão:" + listTipoAposta.get(0).getTitulo() + "Selecionada";
+            conteudoFiltro.setContentDescription(descricao);
         }
         favoritasAdapter.notifyItemRemoved(position);
         favoritasAdapter.notifyItemRangeChanged(position, model.getApostaList().size());
@@ -552,7 +565,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         ParametroJogoDTO parametroJogo = getParametroJogo(modalidadeEnum, SessaoUsuario.getInstance().getParametrosSimulacao().getParametros());
 
         if (parametroJogo != null) {
-            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimulaActivity.class);
             intent.putExtra("tipoAposta", modalidadeEnum);
             intent.putExtra("modalidade", (new Gson()).toJson(parametroJogo));
             intent.putExtra("especial", false);

@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.bean;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -16,9 +17,19 @@ public class FiltroAplicadoMarketplace implements Serializable {
     private String numerosNaoQuero;
     private LotericaDTO lotericaDTO;
     private ModalidadeEnum modalidade;
+    /***
+     * null = não recebeu param (PADRÃO)
+     * true = recebeu param, são todas as modalidades
+     * false = recebeu param, modalidade específica
+    ***/
+    private Boolean todasModalidades = null;
     private TipoConcursoEnum tipoConcurso;
 
     public FiltroAplicadoMarketplace(){
+    }
+
+    public void setTodasModalidades(boolean todasModalidades) {
+        this.todasModalidades = todasModalidades;
     }
 
     public FiltroAplicadoMarketplace(LotericaDTO lotericaDTO, String valorMinimoAposta, String valorMaximoAposta, Integer qtdMinCotas, Integer qtdMaxCotas, Integer qtdDezenas, String numerosQuero, String numerosNaoQuero, ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
@@ -112,5 +123,47 @@ public class FiltroAplicadoMarketplace implements Serializable {
 
     public void setTipoConcurso(TipoConcursoEnum tipoConcurso) {
         this.tipoConcurso = tipoConcurso;
+    }
+
+    public boolean isEqualsTo(FiltroAplicadoMarketplace other) {
+        return this.equals(other);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FiltroAplicadoMarketplace)) return false;
+        FiltroAplicadoMarketplace that = (FiltroAplicadoMarketplace) o;
+
+        return Objects.equals(valorMinimoAposta, that.valorMinimoAposta)
+                && Objects.equals(valorMaximoAposta, that.valorMaximoAposta)
+                && Objects.equals(qtdMinCotas, that.qtdMinCotas)
+                && Objects.equals(qtdMaxCotas, that.qtdMaxCotas)
+                && Objects.equals(qtdDezenas, that.qtdDezenas)
+                && Objects.equals(numerosQuero, that.numerosQuero)
+                && Objects.equals(numerosNaoQuero, that.numerosNaoQuero)
+                && Objects.equals(lotericaDTO, that.lotericaDTO)
+                && modalidade == that.modalidade
+                && tipoConcurso == that.tipoConcurso;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                valorMinimoAposta,
+                valorMaximoAposta,
+                qtdMinCotas,
+                qtdMaxCotas,
+                qtdDezenas,
+                numerosQuero,
+                numerosNaoQuero,
+                lotericaDTO,
+                modalidade,
+                tipoConcurso
+        );
+    }
+
+    public Boolean isTodasAsModalidades() {
+        return todasModalidades;
     }
 }

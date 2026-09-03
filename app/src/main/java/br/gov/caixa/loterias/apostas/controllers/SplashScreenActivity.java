@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.android.volley.VolleyError;
 import com.microsoft.appcenter.AppCenter;
@@ -23,6 +22,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -32,6 +32,7 @@ import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.FilaBRAListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
@@ -64,7 +65,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                 return;
             }
         }
-        
+
         AppCenter.start(getApplication(), BuildConfigManager.getVariavel("APP_CENTER_KEY"), Analytics.class, Crashes.class);
 
         //Cria canal de Notificacao
@@ -151,7 +152,6 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PILOTO.get(), result.getPayload().getMapa().getUrlBaseCarrinhoPiloto());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PRODUCAO.get(), result.getPayload().getMapa().getUrlBaseCarrinhoProducao());
-                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_AZURE.get(), result.getPayload().getMapa().getGrupoDeCpfsQueAcessamOServicoDaAzure());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_RAPIDAO.get(), result.getPayload().getMapa().isRapidaoHabilitado());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), result.getPayload().getMapa().getUrlBaseApostador());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), result.getPayload().getMapa().getGrupoDeCpfsApostador());
@@ -160,6 +160,13 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_VALOR,result.getPayload().getMapa().getConcursoMega30Anos());
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_LINHA,getString(R.string.mega_sena_30_anos));
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_DUAS_LINHAS,getString(R.string.mega_sena_30_anos_duas_linhas));
+                        }
+
+                        //TODO: LOTECA PAIS//
+                        if(result.getPayload().getMapa().getConcursoLotecaPais() != null && !result.getPayload().getMapa().getConcursoLotecaPais().toString().isEmpty()){
+                            SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_VALOR, result.getPayload().getMapa().getConcursoLotecaPais());
+                            SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_LINHA, getString(R.string.loteca_pais));
+                            SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, getString(R.string.loteca_pais_duas_linhas));
                         }
                     }
                     redirectApp();
@@ -190,33 +197,18 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
     }
 
     private void setPreferencesDefault() {
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.MOSTRA_MENU_APOSTA.get(), ConfiguracoesDefaultEnum.MOSTRA_MENU_APOSTAS.asBoolean());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_MICRO_SERVICO.get(), ConfiguracoesDefaultEnum.IS_MICRO_SERVICO.asBoolean());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.BOLAO.get(), ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.COMBO_APOSTAS.get(), ConfiguracoesDefaultEnum.COMBO_APOSTAS.asBoolean());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_ATUALIZA_PUBLIC_KEY.get(), ConfiguracoesDefaultEnum.IS_ATUALIZA_PUBLIC_KEY.asBoolean());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_NOVA_API.get(), ConfiguracoesDefaultEnum.IS_NOVA_API.asBoolean());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPF_NOVA_API.get(), ConfiguracoesDefaultEnum.GRUPO_CPF_NOVA_API.asInt());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_BUSCA_APOSTAS.get(), ConfiguracoesDefaultEnum.URL_BASE_BUSCA_APOSTAS.asString());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PILOTO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PILOTO.asString());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PRODUCAO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PRODUCAO.asString());
-
-        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_AZURE.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_AZURE.asString());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), ConfiguracoesDefaultEnum.URL_BASE_APOSTADOR.asString());
-
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_APOSTADOR.asString());
     }
     private void setMostraMenuApostas(Boolean habilitaMenuApostas) {

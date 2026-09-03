@@ -29,31 +29,27 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 		this.listener = listener;
 		this.activity = activity;
 		this.filtro = filtro;
-	}
+    }
 
 	@NonNull
 	@Override
 	public BolaoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_bolao, parent, false);
-		return new BolaoHolder(activity, view, listener, filtro);
+		return new BolaoHolder(activity, view, listener);
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull BolaoHolder holder, int position) {
 		CotasBolaoDTO cotaBolao = bolaoList.get(position);
-		holder.bind(cotaBolao, position);
+		holder.bind(cotaBolao, position, filtro);
 	}
 
 	@Override
 	public int getItemCount() {
 		return bolaoList.size();
 	}
-
-	public void atualizaLista(int inicioRange, List<CotasBolaoDTO> novosBoloes, FiltroAplicadoMarketplace filtro) {
+	public void atualizarFiltro(FiltroAplicadoMarketplace filtro) {
 		this.filtro = filtro;
-		if (bolaoList != null){
-			bolaoList.addAll(novosBoloes);
-			notifyItemRangeInserted(inicioRange, bolaoList.size());
-		}
+		notifyDataSetChanged();
 	}
 }

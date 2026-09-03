@@ -61,7 +61,11 @@ public class ParametroJogoDTO implements Serializable {
     @SerializedName("trevos")
     protected TrevosDTO trevos;
 
-    public boolean isTipoJogo(ModalidadeEnum tipo){
+    public boolean isTipoJogo(ModalidadeEnum tipo) {
+        if (tipo == null || getConcurso() == null) {
+            return false;
+        }
+
         return getConcurso().getModalidade() == tipo;
     }
 

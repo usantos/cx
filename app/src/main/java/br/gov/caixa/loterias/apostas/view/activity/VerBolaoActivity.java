@@ -28,15 +28,12 @@ import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
-import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -45,6 +42,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
+import br.gov.caixa.loterias.apostas.utils.ResultadoNavegacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.FavoritarLotericaHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.BolaoFooterAdapter;
@@ -52,7 +50,6 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.BolaoHeaderAdapte
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.LotericaEmptyFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoCarrosselHolder;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
@@ -113,8 +110,10 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
             tipoConcurso = getIntent().getExtras().getInt(ARG_TIPO_CONCURSO);
             dtoLoterica = (LotericaDTO) getIntent().getSerializableExtra(ARG_DTO_LOTERICA);
             filtro.setLotericaDTO(dtoLoterica);
-
+        } else {
+            filtro.setTodasModalidades(true);
         }
+
         launcherFiltro = IntentUtil.registerLauncherActivityForResult(this, OnActivityForResult());
         launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
         launcherCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
@@ -330,21 +329,10 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
 
         List<CotasBolaoDTO> novaListaCompleta = model.getBolaoList(cotas);
 
-        int tamanhoAnterior = bolaoList.size();
         bolaoList.clear();
         bolaoList.addAll(novaListaCompleta);
 
-        if (tamanhoAnterior == 0) {
-            listAdapter.notifyDataSetChanged();
-        } else if (tamanhoAnterior < bolaoList.size()) {
-            listAdapter.atualizaLista(
-                    tamanhoAnterior,
-                    bolaoList.subList(tamanhoAnterior, bolaoList.size()),
-                    filtro
-            );
-        } else {
-            listAdapter.notifyDataSetChanged();
-        }
+        listAdapter.atualizarFiltro(filtro);
 
         bolaoFooterAdapter.mostrarLoading(false);
         bolaoFooterAdapter.mostrarFimLista(!bolaoList.isEmpty() && model.isAcabouRegistros());
@@ -398,7 +386,7 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
             frameEstadoVazio.setVisibility(GONE);
             rvConteudoBoloes.setVisibility(VISIBLE);
 
-            if (result.getResultCode() == Activity.RESULT_OK) {
+            if (result.getResultCode() == RESULT_OK || result.getResultCode() == ResultadoNavegacaoAposta.RESULT_RESET) {
                 Intent data = result.getData();
                 if (data != null) {
                     filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
@@ -431,17 +419,18 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("ID_LOTERICA", lotericaId);
         returnIntent.putExtra("NOVO_ESTADO", novoEstado);
-        setResult(Activity.RESULT_OK, returnIntent);
+        setResult(RESULT_OK, returnIntent);
         finish();
     }
 
     private OnActivityForResult onAtualizaListasDeCotas() {
         return result -> {
-            if (result.getResultCode() == Activity.RESULT_OK) {
+            if (result.getResultCode() == RESULT_OK || result.getResultCode() == ResultadoNavegacaoAposta.RESULT_RESET) {
                 AlertDialogUtils.show(VerBolaoActivity.this);
                 model.zeraPaginacao();
-                listAdapter = null;
                 cotasDisponiveis = null;
+                bolaoList.clear();
+                carrosselList.clear();
                 buscaBoloesFiltro();
             }
         };
@@ -507,7 +496,7 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
             @Override
             public void verMais(BolaoHolder holder, int position) {
                 bolaoList.get(position).setAbertoParaMostrarDetalhes(!bolaoList.get(position).isAbertoParaMostrarDetalhes());
-                holder.mostrarDetalhes(bolaoList.get(position).isAbertoParaMostrarDetalhes());
+                holder.mostrarDetalhes(bolaoList.get(position), filtro);
             }
 
             @Override

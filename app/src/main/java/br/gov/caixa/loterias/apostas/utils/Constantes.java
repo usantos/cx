@@ -19,6 +19,7 @@ public class Constantes {
     public static final String TRES_STRING = "3";
     public static final String PLUS_STRING = "+";
     public static final String X_STRING = "x";
+    public static final String EMPATE_STRING = "EMPATE";
 
     public static final Long ZERO_LONG = 0L;
     public static final float ZERO_FLOAT = 0F;
@@ -26,4 +27,5 @@ public class Constantes {
     public static final BigDecimal DOIS_BIG_DECIMAL = new BigDecimal(2);
 
     public static final int CINCO_INTEIRO = 5;
+    public static final int SEIS_INTEIRO = 6;
 }

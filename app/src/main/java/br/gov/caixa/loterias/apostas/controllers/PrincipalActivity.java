@@ -72,6 +72,7 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnAnimacaoViewListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -94,10 +95,13 @@ import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.ApostaIdentityKey;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ComboUtil;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
@@ -118,6 +122,7 @@ import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
+import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
@@ -179,6 +184,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private int ano;
     Boolean expandido = false;
     private static final int REQ_CARRINHO = 1001;
+    private Integer numeroConcurso = null;
+    private ModalidadeEnum tipoModalidade = null;
 
     private CarrinhoModel model;
 
@@ -204,7 +211,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         setSupportActionBar(toolbar);
 
-        if (!(BuildConfig.FLAVOR.equals("prd") ||  BuildConfig.FLAVOR.equals("net"))) {
+        if (!(BuildConfig.FLAVOR.equals("prd"))) {
             String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO.name());
             txtAmbiente.setText(ambienteSalvo);
             txtAmbiente.setVisibility(View.VISIBLE);
@@ -281,9 +288,20 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         nomeCaixa.setHint("Título, Botão, Recolhido");
         nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
 
-        buttonHomeBet.setOnClickListener(view -> clickButtonHomeBet());
+        buttonHomeBet.setOnClickListener(view ->
+                {
+                    if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(PrincipalActivity.this, 2)) return;
+                    clickButtonHomeBet();
+                }
 
-        buttonHomeBolao.setOnClickListener(view -> clickButtonBolao());
+        );
+
+        buttonHomeBolao.setOnClickListener(view ->
+                {
+                    if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(PrincipalActivity.this, 2)) return;
+                    clickButtonBolao();
+                }
+        );
 
         relativeLayoutContentRepassados.setOnClickListener(view -> clickRelativeLayoutContentRepassados());
 
@@ -356,6 +374,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         super.onResume();
         String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase(new Locale(getResources().getString(R.string.pt), getResources().getString(R.string.br))).split(getResources().getString(R.string.espaco_em_branco));
         String nomeUsuario = StringUtils.capitalizer(separarNome[0]+getResources().getString(R.string.espaco_em_branco)+separarNome[separarNome.length - 1]);
+
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.SELECIONAR,
+                AnalyticsHelper.Tela.HOME,
+                tipoModalidade != null ? ModalidadeEnum.fromString(tipoModalidade) : "",
+                numeroConcurso != null ? numeroConcurso.toString() : ""
+        );
 
         if(!" ".equals(nomeUsuario)) {
             String texto = getResources().getString(R.string.ola_usuario);
@@ -515,7 +541,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
-        //Não apager (utilizado pra testes)
+        //Não apagar (utilizado pra testes)
         //EncerramentoUtil.mockApagaModalidadeNosParametroJogo(
         //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
         EncerramentoUtil.verificaSeCriaCardTemporario();
@@ -563,12 +589,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                     PrincipalActivity.this,
                     getString(R.string.alerta_descricao_pagamento_nao_identificado),
                     getString(R.string.acompanhe_suas_compras),
-                    new OnDialogBotaoListener() {
-                        @Override
-                        public void onButtonClick(DialogInterface dialog, int which) {
-                            startActivity(IntentUtil.getIntentOrigemDestino(PrincipalActivity.this, ListaComprasActivity.class));
-                        }
-                    }
+                    (dialog, which) -> startActivity(IntentUtil.getIntentOrigemDestino(PrincipalActivity.this, ListaComprasActivity.class))
             );
         } else if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
             if(getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){
@@ -738,8 +759,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             actionApresentarTrevo.setEnabled(false);
             atalhoRapidoLoterias.setVisibility(View.VISIBLE);
             //TODO: MEGA 30 ANOS//
-            boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
-            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
+            //TODO: LOTECA PAIS//
+            EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(),
+                    data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(),
+                    data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+            //boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+            //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
             AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                     v,
                     relativeContentPrincipal,
@@ -777,8 +802,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         relativeContentPrincipal.setEnabled(true);
         actionApresentarTrevo.setEnabled(false);
         //TODO: MEGA 30 ANOS//
-        boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
-        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
+        //TODO: LOTECA PAIS//
+        EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(),
+                data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(),
+                data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+        //boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+        //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,
@@ -881,19 +910,43 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
 
         //TODO: MEGA 30 ANOS//
-        boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
+        //TODO: LOTECA PAIS//
+        Modalidade item = (data != null && adapterPosition >= 0 && adapterPosition < data.size())
+                ? data.get(adapterPosition)
+                : null;
+
+        ConcursoDTO concurso = item != null ? item.getConcurso() : null;
+
+        numeroConcurso = concurso != null ? concurso.getNumero() : null;
+        tipoModalidade = item != null ? item.getTipoModalidade() : null;
+
+        AnalyticsHelper.getInstance().logViewScreenAposta(
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.SELECIONAR,
+                AnalyticsHelper.Tela.HOME,
+                tipoModalidade != null ? ModalidadeEnum.fromString(tipoModalidade) : "",
+                numeroConcurso != null ? numeroConcurso.toString() : ""
+        );
+
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
                 //TODO: MEGA 30 ANOS//
-                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
+                //TODO: LOTECA PAIS//
+                EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(adapterPosition).getTipoModalidade(),
+                                                data.get(adapterPosition).getConcurso().getNumero(),
+                                                data.get(adapterPosition).getConcurso().getTipoConcurso());                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 buttonHomeBet.setTag(adapterPosition);
                 buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
                 buttonHomeBolao.setVisibility(View.GONE);
             } else {
                 //TODO: MEGA 30 ANOS//
-                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
+                //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
+                //TODO: LOTECA PAIS//
+                EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(adapterPosition).getTipoModalidade(),
+                                                data.get(adapterPosition).getConcurso().getNumero(),
+                                                data.get(adapterPosition).getConcurso().getTipoConcurso());
                 if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
                     buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
                 } else {
@@ -957,11 +1010,29 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     protected void clickButtonBolao() {
-        if(DadosUsuarioBO.checarUsuarioLogado(this)){
-            int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
-            int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
-            TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
+        int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
+        int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
+        TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
 
+        if (modalidadesParaListar != null && selecionada >= 0 && selecionada < modalidadesParaListar.size()
+                && modalidadesParaListar.get(selecionada) != null
+                && modalidadesParaListar.get(selecionada).getParametroJogo() != null
+                && modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso() != null
+                && modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero() != null) {
+
+            AnalyticsHelper.getInstance().logInteraction(
+                    AnalyticsHelper.EventCategoryParams.CTA,
+                    AnalyticsHelper.EventActionParams.CLICK,
+                    AnalyticsHelper.EventLabelParams.BOLAO,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.SELECIONAR,
+                    AnalyticsHelper.Tela.HOME,
+                    ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(idModalidade)),
+                    modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero().toString()
+            );
+        }
+
+        if(DadosUsuarioBO.checarUsuarioLogado(this)){
             if (!DadosUsuarioBO.checarTutorial(DadosUsuarioBO.BOLAO_TUTORIAL)){
                 startActivity(IntentUtil.getIntentTutorial(this, ModalidadeEnum.BOLAO, idModalidade, tipoConcurso));
             } else {
@@ -973,9 +1044,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 //startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
             }
         } else {
-            int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
-            int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
-            TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
 
             Bundle bolao = new Bundle();
             bolao.putInt(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
@@ -990,7 +1058,21 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
         //TODO: MEGA 30 ANOS//
+        //TODO: LOTECA PAIS//
         int numeroConcurso = parametroJogo.getConcurso().getNumero();
+
+        if (modalidade != null ) {
+            AnalyticsHelper.getInstance().logInteraction(
+                    AnalyticsHelper.EventCategoryParams.CTA,
+                    AnalyticsHelper.EventActionParams.CLICK,
+                    AnalyticsHelper.EventLabelParams.SIMPLES,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.SELECIONAR,
+                    AnalyticsHelper.Tela.HOME,
+                    ModalidadeEnum.fromString(modalidade),
+                    String.valueOf(numeroConcurso)
+            );
+        }
 
         //
         Long tempoExtraRestanteAposEncerrmento = EncerramentoUtil.
@@ -1020,17 +1102,28 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             } else {
                 AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false, null);
             }
-        } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
-            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
-            Intent activity = new Intent(PrincipalActivity.this, clazz);
+        }
+//        else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
+//            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
+//            Intent activity = new Intent(PrincipalActivity.this, clazz);
+//            activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
+//            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+//            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
+//            startActivity(activity);}
+        else if (modalidade == ModalidadeEnum.LOTECA) {
+            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+            //TODO: MEGA 30 ANOS//
+            //TODO: LOTECA PAIS//
+            activity.putExtra(getString(R.string.numero_concurso), numeroConcurso);
             activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
             startActivity(activity);
-        } else {
+        }
+        else {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
 
-            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
+            Intent activity = new Intent(PrincipalActivity.this, SimulaActivity.class);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
             //TODO: MEGA 30 ANOS//

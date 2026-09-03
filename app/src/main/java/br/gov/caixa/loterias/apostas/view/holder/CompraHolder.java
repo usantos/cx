@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -52,7 +53,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		itemComprasContentModalideLinearLayout = itemView.findViewById(R.id.itemComprasContentModalideLinearLayout);
 		tvTeimosinhas = itemView.findViewById(R.id.tv_teimosinhas);
 		//tagBolao = itemView.findViewById(R.id.image_tag_bolao);
-		tipoApostaLinhaView = itemView.findViewById(R.id.tipo_aposta_linha_compras);
+		tipoApostaLinhaView = itemView.findViewById(R.id.talvHeader);
 		this.activity = activity;
 	}
 
@@ -68,8 +69,12 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 
 		this.tipoPremioListaComprasTextView.setTextColor(colorText);
 		String nomeAposta =  "";
-		if (EspecialUtils.isMega30(aposta.getConcursoAlvo(), aposta.getTipoConcurso())){
+		//if (EspecialUtils.isMega30(aposta.getConcursoAlvo(), aposta.getTipoConcurso())){
+		//TODO: LOTECA PAIS//
+		if (EspecialUtils.isMega30(aposta.getModalidade(), aposta.getConcursoAlvo(), aposta.getTipoConcurso().getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor()))) {
 			nomeAposta = SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, "");
+		} else if (EspecialUtils.isLotecaPais(aposta.getModalidade(), aposta.getConcursoAlvo(), aposta.getTipoConcurso().getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor()))) {
+			nomeAposta = SharedPreferencesUtils.getValorString(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, "");
 		} else {
 			nomeAposta = ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase();
 		}
