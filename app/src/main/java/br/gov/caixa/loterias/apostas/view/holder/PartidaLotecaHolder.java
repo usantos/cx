@@ -43,13 +43,13 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 	public void bind(PartidaLotecaDTO partida, int position) {
 		//TODO//
 		String legenda = " " + partida.getLegendaAbreviada();
-		if (partida.getEquipe1().getIndicadorSelecao() != null && partida.getEquipe1().getIndicadorSelecao()) {
+		if (partida.getEquipe1().getParametroEquipe().getIndicadorSelecao() != null && partida.getEquipe1().getParametroEquipe().getIndicadorSelecao()) {
 			nomeEquipe1.setText(Utils.getEquipeNome(partida.getEquipe1().getParametroEquipe()) + legenda);
 		} else {
 			nomeEquipe1.setText(Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()) + legenda);
 		}
 
-		if (partida.getEquipe2().getIndicadorSelecao() != null && partida.getEquipe2().getIndicadorSelecao()) {
+		if (partida.getEquipe2().getParametroEquipe().getIndicadorSelecao() != null && partida.getEquipe2().getParametroEquipe().getIndicadorSelecao()) {
 			nomeEquipe2.setText(Utils.getEquipeNome(partida.getEquipe2().getParametroEquipe()) + legenda);
 		} else {
 			nomeEquipe2.setText(Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()) + legenda);
