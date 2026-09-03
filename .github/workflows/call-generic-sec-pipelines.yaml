@@ -42,9 +42,9 @@ on:
     branches:
       - main
       - develop
-    # paths-ignore:
-    #   - '.github/**'
-    #   - 'catalog-info.yaml'
+     paths-ignore:
+       - '.github/**'
+       - 'catalog-info.yaml'
   pull_request:
     branches:
       - main
