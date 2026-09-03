@@ -86,12 +86,12 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
         //TODO//
         String legenda = " " + partidaLotecaDTO.getLegendaAbreviada();
 
-        if (partidaLotecaDTO.getEquipe1().getIndicadorSelecao() != null && partidaLotecaDTO.getEquipe1().getIndicadorSelecao()) {
+        if (partidaLotecaDTO.getEquipe1().getParametroEquipe().getIndicadorSelecao() != null && partidaLotecaDTO.getEquipe1().getParametroEquipe().getIndicadorSelecao()) {
             this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaUm, textApostaPartidaLotecaUm, partidaLotecaDTO.getEquipe1(), Utils.getEquipeNome(partidaLotecaDTO.getEquipe1()) + legenda, partidaLotecaDTO);
         } else {
             this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaUm, textApostaPartidaLotecaUm, partidaLotecaDTO.getEquipe1(), Utils.getEquipeComUf(partidaLotecaDTO.getEquipe1()) + legenda, partidaLotecaDTO);
         }
-        if (partidaLotecaDTO.getEquipe2().getIndicadorSelecao() != null && partidaLotecaDTO.getEquipe2().getIndicadorSelecao()) {
+        if (partidaLotecaDTO.getEquipe2().getParametroEquipe().getIndicadorSelecao() != null && partidaLotecaDTO.getEquipe2().getParametroEquipe().getIndicadorSelecao()) {
             this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaDois, textApostaPartidaLotecaDois, partidaLotecaDTO.getEquipe2(), Utils.getEquipeNome(partidaLotecaDTO.getEquipe2()) + legenda, partidaLotecaDTO);
         } else {
             this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaDois, textApostaPartidaLotecaDois, partidaLotecaDTO.getEquipe2(), Utils.getEquipeComUf(partidaLotecaDTO.getEquipe2()) + legenda, partidaLotecaDTO);
