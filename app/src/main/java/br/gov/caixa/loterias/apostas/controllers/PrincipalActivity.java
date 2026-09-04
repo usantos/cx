@@ -907,8 +907,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
 
         buttonHomeBolao.setBackgroundTintList(ColorStateList.valueOf(cor));
-        buttonHomeBet.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.branco)));
-        buttonHomeBet.setStrokeWidth(2);
+        buttonHomeBet.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.branco)));
+        buttonHomeBet.setStrokeWidth((int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                2,
+                getResources().getDisplayMetrics()));
 
         buttonHomeBolao.setTextColor(corText);
 
