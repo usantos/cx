@@ -1470,8 +1470,6 @@
     <string name="quantidade_min_cotas">Quant. de Cotas Mínima</string>
     <string name="quantidade_max_cotas">Quant. de Cotas Máxima</string>
     <string name="quantidade_dezenas">Quantidade de Dezenas</string>
-    <string name="excluir_quantidade">Excluir Quantidade</string>
-    <string name="quantidade_apostas">Quantidade de Apostas</string>
     <string name="qtd_min_menor_2">Quantidade mínima não pode ser menor que 2</string>
     <string name="qtd_min_maior_max">Quantidade mínima não pode ser maior que a máxima</string>
     <string name="qtd_max_menor_2">Quantidade máxima não pode ser menor que 2</string>
@@ -1500,7 +1498,7 @@
     <string name="label_bolao_bar_marketplace">_Bolão CAIXA_</string>
     <string name="alterar_pesquisa">_Alterar_\na pesquisa com novos filtros</string>
     <string name="pesquisar_novamente">_Pesquisar Novamente_\ncom os mesmos parâmetros</string>
-    <string name="descritivo_loterica">Informe o nome da lotérica ou o código (6 números), conforme exemplo: E. Lotérica 10.000004-1, digite: 000004.</string>
+    <string name="descritivo_loterica">Insira o nome da lotérica ou o código somente com os \nnúmeros do segundo campo, com 6 dígitos. Exemplo: \nE.Lotérico 10.000004-01, digite 000004.</string>
     <string name="atencao_descricao_gerar_pix">Caso precise recuperar este código ou consultar o status da compra acesse o menu \"Minhas Compras\".</string>
     <string name="ir_para_minhas_compras">Ir para as\n_Minhas Compras_</string>
     <string name="descricao_filtro_vazio">Não encontramos nenhum bolão que corresponda à sua pesquisa!</string>
@@ -1613,7 +1611,8 @@
     <string name="card_de_combo">Card de Combo</string>
     <string name="texto_header_detalhe_combo">Com esse pacote você garante apostas para todas as modalidades, incluindo teimosinhas para a semana inteira. Já pensou?</string>
     <string name="texto_ver_ou_nao_numeros_escolhidos_detalhe_combo">Os números dos jogos dos combos são escolhidos aleatoriamente pelo sistema. Mas antes de efetuar o pagamento é possível visualizar os números selecionados.</string>
-    <string name="quantidade_de_apostas">Quantidade de apostas</string>
+    <string name="quantidade_de_apostas">Quantidade de Apostas</string>
+    <string name="excluir_quantidade">Excluir Quantidade</string>
     <string name="ver_numeros_escolhidos_antes_de_pagar">Quero ver os números escolhidos antes de pagar.</string>
     <string name="adicionar_apostas">Adicionar apostas</string>
     <string name="remover_apostas">Remover apostas</string>
@@ -1722,7 +1721,7 @@
 
     <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
     <string name="txt_como_jogar">Como jogar</string>
-    <string name="txt_buscar_exemplo">Informe o nome da lotérica ou o código (6 números), conforme exemplo: E. Lotérica 10.000004-1, digite: 000004.</string>
+    <string name="txt_buscar_exemplo">Insira o nome da lotérica ou o código somente com os números do segundo campo, com 6 dígitos, Exemplo: E.Lotérico 10.000004-01, digite 000004.</string>
     <string name="txt_name_code">Nome ou código</string>
     <string name="txt_lotericas">Lotéricas</string>
     <string name="txt_buscar_lotericas">Buscar Lotericas</string>

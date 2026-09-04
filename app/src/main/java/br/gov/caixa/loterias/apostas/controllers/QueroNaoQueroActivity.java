@@ -86,15 +86,14 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
                 dezenasIniciais = new ArrayList<>(dezenasNaoQuero);
                 dezenasSelecionadas = new ArrayList<>(dezenasIniciais);
                 isNaoQuero = true;
-            } else if (getTitulo != null && getTitulo.equals(FiltraMarketplaceActivity.ARG_QUANTIDADE_DEZENAS)) {
+            } else if (FiltraMarketplaceActivity.ARG_QUANTIDADE_DEZENAS.equals(getTitulo)) {
                 title.setText(getString(R.string.quantidade_dezenas));
                 titulo = getTitulo;
                 dezenas = montaOpcoesQuantidade(opcoesQuantidade);
-                Integer selecionada = getIntent().hasExtra(FiltraMarketplaceActivity.ARG_QUANTIDADE_DEZENAS_SELECIONADA)
-                        ? getIntent().getIntExtra(FiltraMarketplaceActivity.ARG_QUANTIDADE_DEZENAS_SELECIONADA, 0)
-                        : null;
                 dezenasIniciais = new ArrayList<>();
-                if (selecionada != null && selecionada > 0) dezenasIniciais.add(selecionada);
+                if (getIntent().hasExtra(FiltraMarketplaceActivity.ARG_QUANTIDADE_DEZENAS_SELECIONADA)) {
+                    dezenasIniciais.add(getIntent().getIntExtra(FiltraMarketplaceActivity.ARG_QUANTIDADE_DEZENAS_SELECIONADA, 0));
+                }
                 dezenasSelecionadas = new ArrayList<>(dezenasIniciais);
                 isQuantidadeDezenas = true;
             }else{
@@ -131,9 +130,7 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
 
     private void configuraCartela(){
 
-        if (!isQuantidadeDezenas) {
-            dezenas = VolanteUtils.getDezenas(ModalidadeEnum.QUINA, prognosticosMaximo);
-        }
+        if (!isQuantidadeDezenas) dezenas = VolanteUtils.getDezenas(ModalidadeEnum.QUINA, prognosticosMaximo);
 
         DezenaConfig dezenaConfig = new DezenaConfig(true, COR_QUERO_NAO_QUERO, Color.WHITE, true, true);
 
@@ -176,9 +173,7 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
 
     private List<Dezena> montaOpcoesQuantidade(List<Integer> opcoes) {
         List<Dezena> resultado = new ArrayList<>();
-        if (opcoes != null) {
-            for (Integer opcao : opcoes) resultado.add(new Dezena(String.valueOf(opcao), false));
-        }
+        if (opcoes != null) for (Integer opcao : opcoes) resultado.add(new Dezena(String.valueOf(opcao), false));
         return resultado;
     }
 

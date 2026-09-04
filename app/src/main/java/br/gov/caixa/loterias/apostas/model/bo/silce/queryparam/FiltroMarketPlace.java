@@ -119,6 +119,7 @@ public class FiltroMarketPlace implements Serializable {
     public void setQtdDezenas(int qtdDezenas) {this.qtdDezenas = qtdDezenas;}
 
     public int getQtdApostas() {return qtdApostas;}
+
     public void setQtdApostas(int qtdApostas) {this.qtdApostas = qtdApostas;}
 
     public String getNumerosQuero() {

@@ -368,6 +368,7 @@
                     app:layout_constraintGuide_begin="197dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
             <TextView
                 android:id="@+id/text_quantidade_apostas"
                 android:layout_width="wrap_content"
@@ -413,10 +414,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/caixa_std_bold"
                 android:text="@string/quantidade_dezenas"
                 android:textColor="@color/black"
                 android:textSize="12sp"
-                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_div_qtd_dezenas" />
 
@@ -424,8 +425,8 @@
                 android:id="@+id/img_accordion_qtd_dezenas"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/ic_accordion_plus_azul"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_div_qtd_dezenas" />
@@ -450,11 +451,10 @@
 
                 <Button
                     android:id="@+id/btn_excluir_qtd_dezenas"
-                    android:layout_width="220dp"
+                    android:layout_width="127dp"
                     android:layout_height="34dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
                     android:background="@drawable/btn_round_outlined"
                     android:fontFamily="@font/caixa_std_semi_bold"
                     android:text="@string/excluir_quantidade"

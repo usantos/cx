@@ -220,19 +220,8 @@ public class ParametrosConfiguraveisDTO {
         this.concursoLotecaPais = concursoLotecaPais;
     }
 
-    public Integer getQtdeMinimaApostaBolaoFiltro() {
-        return qtdeMinimaApostaBolaoFiltro;
-    }
-
-    public void setQtdeMinimaApostaBolaoFiltro(Integer qtdeMinimaApostaBolaoFiltro) {
-        this.qtdeMinimaApostaBolaoFiltro = qtdeMinimaApostaBolaoFiltro;
-    }
-
-    public Integer getQtdeMaximaApostaBolaoFiltro() {
-        return qtdeMaximaApostaBolaoFiltro;
-    }
-
-    public void setQtdeMaximaApostaBolaoFiltro(Integer qtdeMaximaApostaBolaoFiltro) {
-        this.qtdeMaximaApostaBolaoFiltro = qtdeMaximaApostaBolaoFiltro;
-    }
+    public Integer getQtdeMinimaApostaBolaoFiltro() { return qtdeMinimaApostaBolaoFiltro; }
+    public void setQtdeMinimaApostaBolaoFiltro(Integer valor) { this.qtdeMinimaApostaBolaoFiltro = valor; }
+    public Integer getQtdeMaximaApostaBolaoFiltro() { return qtdeMaximaApostaBolaoFiltro; }
+    public void setQtdeMaximaApostaBolaoFiltro(Integer valor) { this.qtdeMaximaApostaBolaoFiltro = valor; }
 }

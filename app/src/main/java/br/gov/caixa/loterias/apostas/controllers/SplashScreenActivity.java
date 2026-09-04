@@ -192,14 +192,10 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
     private void salvaParametrosFiltroBolao(ParametrosConfiguraveisDTO parametros) {
         if (parametros.getQtdeMinimaApostaBolaoFiltro() != null) {
-            SharedPreferencesUtils.setValor(
-                    ConfiguracoesEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.get(),
-                    parametros.getQtdeMinimaApostaBolaoFiltro());
+            SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.get(), parametros.getQtdeMinimaApostaBolaoFiltro());
         }
         if (parametros.getQtdeMaximaApostaBolaoFiltro() != null) {
-            SharedPreferencesUtils.setValor(
-                    ConfiguracoesEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.get(),
-                    parametros.getQtdeMaximaApostaBolaoFiltro());
+            SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.get(), parametros.getQtdeMaximaApostaBolaoFiltro());
         }
     }
 
@@ -223,10 +219,10 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_BUSCA_APOSTAS.get(), ConfiguracoesDefaultEnum.URL_BASE_BUSCA_APOSTAS.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PILOTO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PILOTO.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PRODUCAO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PRODUCAO.asString());
-        SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.get(), ConfiguracoesDefaultEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.asInt());
-        SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.get(), ConfiguracoesDefaultEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.asInt());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), ConfiguracoesDefaultEnum.URL_BASE_APOSTADOR.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_APOSTADOR.asString());
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.get(), ConfiguracoesDefaultEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.asInt());
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.get(), ConfiguracoesDefaultEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.asInt());
     }
     private void setMostraMenuApostas(Boolean habilitaMenuApostas) {
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.MOSTRA_MENU_APOSTA.get(), habilitaMenuApostas);
