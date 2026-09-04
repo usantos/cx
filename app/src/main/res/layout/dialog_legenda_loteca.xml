@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@drawable/background_roudend_vermelho"
@@ -7,6 +8,7 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/legenda"
         android:text="Legenda"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,13 +29,12 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:clickable="false"
-            android:focusable="false"
-            android:buttonTint="@android:color/white"/>
+        <View
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:contentDescription="Selecionado"
+            android:background="@drawable/ic_radio_checked"
+            android:backgroundTint="@color/branco" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,7 +42,6 @@
             android:background="@drawable/background_roudend_less_branco"
             android:fontFamily="@font/caixa_std_bold"
             android:text="TIME/UF"
-            android:contentDescription="TIME UF, caixa branca sólida"
             android:importantForAccessibility="yes"
             android:textSize="16sp"
             android:paddingStart="8dp"
@@ -67,13 +67,12 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:clickable="false"
-            android:focusable="false"
-            android:buttonTint="@android:color/white"/>
+        <View
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:contentDescription="Selecionado"
+            android:background="@drawable/ic_radio_checked"
+            android:backgroundTint="@color/branco" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,7 +80,6 @@
             android:background="@drawable/button_rouded_border_white"
             android:fontFamily="@font/caixa_std_bold"
             android:text="TIME/UF"
-            android:contentDescription="TIME UF, caixa com borda"
             android:textSize="16sp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
@@ -106,20 +104,18 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:clickable="false"
-            android:focusable="false"
-            android:buttonTint="@android:color/white"/>
+        <View
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:contentDescription="Selecionado"
+            android:background="@drawable/ic_radio_checked"
+            android:backgroundTint="@color/branco" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/caixa_std_bold"
             android:text="TIME/UF"
-            android:contentDescription="TIME UF, negrito sem borda"
             android:textSize="16sp"
             android:textColor="@android:color/white"/>
 
@@ -140,13 +136,12 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:clickable="false"
-            android:focusable="false"
-            android:buttonTint="@android:color/white"/>
+        <View
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:contentDescription="Não Selecionado"
+            android:background="@drawable/ic_radio_unchecked"
+            android:backgroundTint="@color/branco" />
 
         <TextView
             android:layout_width="wrap_content"
