@@ -97,6 +97,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.ApostaIdentityKey;
+import br.gov.caixa.loterias.apostas.utils.ApostasIdenticasSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ComboUtil;
@@ -105,7 +106,6 @@ import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
-import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -115,8 +115,6 @@ import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
-import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
-import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -406,20 +404,25 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         fragmentSomadorCarrinho();
         checkRedirecionamento();
 
-        if (model == null) model = new CarrinhoModel(this);
-        model.buscaCarrinhoSilce(new OnSilceListener<CarrinhoDTO>() {
-            @Override
-            public void success(CarrinhoDTO payload) {
-                if (possuiApostasDuplicadas(payload)) {
-                    DialogUtils.dialogEntendi(PrincipalActivity.this,getString(R.string.txt_apostas_identicas));
+        if (ApostasIdenticasSingleton.getInstance().isValidacaoInicialPendente()) {
+            if (model == null) model = new CarrinhoModel(this);
+            model.buscaCarrinhoSilce(new OnSilceListener<CarrinhoDTO>() {
+                @Override
+                public void success(CarrinhoDTO payload) {
+                    if (possuiApostasDuplicadas(payload)) {
+                        DialogUtils.dialogEntendi(PrincipalActivity.this,getString(R.string.txt_apostas_identicas));
+                    }
+
+                    ApostasIdenticasSingleton.getInstance().setValidacaoInicialPendente(false);
                 }
-            }
 
-            @Override
-            public void error(VolleyError error) {
+                @Override
+                public void error(VolleyError error) {
+                    RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                }
+            });
+        }
 
-            }
-        });
     }
 
     private boolean possuiApostasDuplicadas(CarrinhoDTO carrinho) {
