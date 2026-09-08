@@ -256,19 +256,19 @@ jacoco {
 tasks.register('jacocoTestPrdReleaseUnitTestReport', JacocoReport) {
     dependsOn 'testPrdReleaseUnitTest'
 
-    def prdDebugClasses = layout.buildDirectory.dir(
-            'intermediates/javac/prdDebug/compilePrdDebugJavaWithJavac/classes'
+    def prdReleaseClasses = layout.buildDirectory.dir(
+            'intermediates/javac/prdDebug/compilePrdReleaseJavaWithJavac/classes'
     ).get().asFile
-    def prdDebugExecutionData = layout.buildDirectory.file(
-            'jacoco/testPrdDebugUnitTest.exec'
+    def prdReleaseExecutionData = layout.buildDirectory.file(
+            'jacoco/testPrdReleaseUnitTest.exec'
     ).get().asFile
 
     sourceDirectories.setFrom(files('src/main/java','src/main/kotlin'))
     classDirectories.setFrom(files(fileTree(
-            dir: prdDebugClasses,
+            dir: prdReleaseClasses,
             excludes: ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*']
     )))
-    executionData.setFrom(files(prdDebugExecutionData))
+    executionData.setFrom(files(prdReleaseExecutionData))
 
     reports {
         xml.required = true
