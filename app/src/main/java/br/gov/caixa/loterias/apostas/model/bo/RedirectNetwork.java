@@ -129,7 +129,8 @@ public class  RedirectNetwork {
                 }
                 switch (response.statusCode){
                     case 401:
-                        AlertDialogExperimenteLogarSingleton.show(activity, true, null);
+                        AlertDialogExperimenteLogarSingleton.showSessaoExpirada(activity,
+                                () -> connectKeycloak(activity, null));
                         return;
                     case 400:
                         treatNegotialErros(errorResponse, error, activity);
@@ -148,7 +149,8 @@ public class  RedirectNetwork {
             }
         }else {
             if (response.statusCode == 401){
-                AlertDialogExperimenteLogarSingleton.show(activity, true, null);
+                AlertDialogExperimenteLogarSingleton.showSessaoExpirada(activity,
+                                () -> connectKeycloak(activity, null));
             } else {
                 AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
             }
