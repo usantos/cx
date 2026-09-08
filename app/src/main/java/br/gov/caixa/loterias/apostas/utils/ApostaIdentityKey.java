@@ -64,7 +64,18 @@ public class ApostaIdentityKey {
             return sb.toString();
         }
         List<PartidaLotecaDTO> partidas = new ArrayList<>(partidasOriginais);
-        Collections.sort(partidas, (a, b) -> a.getNumero().compareTo(b.getNumero()));
+        // Ordena por número, tratando partidas/números nulos como "maiores" (vão para o final),
+        // evitando NullPointerException que o antigo (a, b) -> a.getNumero().compareTo(b.getNumero()) causaria.
+        // Comparator.nullsLast/comparing exigem API 24+; projeto tem minSdk 23, por isso a comparação manual abaixo.
+        Collections.sort(partidas, (a, b) -> {
+            Integer na = (a != null) ? a.getNumero() : null;
+            Integer nb = (b != null) ? b.getNumero() : null;
+            if (na == null && nb == null) return 0;
+            if (na == null) return 1;
+            if (nb == null) return -1;
+            return na.compareTo(nb);
+        });
+        
         for (PartidaLotecaDTO partida : partidas) {
             String array = getProg(partida);
             sb.append("|").append(partida.getNumero()).append("=").append(array);
