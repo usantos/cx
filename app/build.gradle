@@ -257,7 +257,7 @@ tasks.register('jacocoTestPrdReleaseUnitTestReport', JacocoReport) {
     dependsOn 'testPrdReleaseUnitTest'
 
     def prdReleaseClasses = layout.buildDirectory.dir(
-            'intermediates/javac/prdDebug/compilePrdReleaseJavaWithJavac/classes'
+            'intermediates/javac/prdRelease/compilePrdReleaseJavaWithJavac/classes'
     ).get().asFile
     def prdReleaseExecutionData = layout.buildDirectory.file(
             'jacoco/testPrdReleaseUnitTest.exec'
