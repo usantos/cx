@@ -143,10 +143,7 @@ class DetalheComboViewModelTest {
 
         viewModel.carregarCombo(combo)
 
-        try {
-            viewModel.incrementarApostas()
-        } catch (_: Exception) {
-        }
+        viewModel.incrementarApostas()
 
         val resultado =
             viewModel.getModalidadesComboLiveData()
