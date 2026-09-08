@@ -253,8 +253,8 @@ jacoco {
     toolVersion = '0.8.12'
 }
 
-tasks.register('jacocoTestPrdDebugUnitTestReport', JacocoReport) {
-    dependsOn 'testPrdDebugUnitTest'
+tasks.register('jacocoTestPrdReleaseUnitTestReport', JacocoReport) {
+    dependsOn 'testPrdReleaseUnitTest'
 
     def prdDebugClasses = layout.buildDirectory.dir(
             'intermediates/javac/prdDebug/compilePrdDebugJavaWithJavac/classes'
