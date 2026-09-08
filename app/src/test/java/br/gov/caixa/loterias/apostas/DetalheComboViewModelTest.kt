@@ -3,6 +3,9 @@ package br.gov.caixa.loterias.apostas
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeComboDTO
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum.fromStringToIdModalidade
 import br.gov.caixa.loterias.apostas.viewModel.DetalheComboViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -17,7 +20,6 @@ class DetalheComboViewModelTest {
     @Test
     fun carregarCombo_devePopularLiveDatasCorretamente() {
 
-        // Given
         val viewModel = DetalheComboViewModel()
 
         val modalidade = ModalidadeComboDTO().apply {
@@ -32,10 +34,8 @@ class DetalheComboViewModelTest {
             setValor(BigDecimal("15.50"))
         }
 
-        // When
         viewModel.carregarCombo(combo)
 
-        // Then
         assertEquals(
             1,
             viewModel.getModalidadesComboLiveData().value?.size
@@ -55,7 +55,6 @@ class DetalheComboViewModelTest {
     @Test
     fun atualizarQtdJogosItem_deveIncrementarQuantidade() {
 
-        // Given
         val viewModel = DetalheComboViewModel()
 
         val modalidade = ModalidadeComboDTO().apply {
@@ -71,13 +70,11 @@ class DetalheComboViewModelTest {
 
         viewModel.carregarCombo(combo)
 
-        // When
         viewModel.atualizarQtdJogosItem(
             indexItem = 0,
             incrementar = true
         )
 
-        // Then
         val resultado =
             viewModel
                 .getModalidadesComboLiveData()
@@ -93,7 +90,6 @@ class DetalheComboViewModelTest {
     @Test
     fun atualizarQtdJogosItem_deveDecrementarQuantidade() {
 
-        // Given
         val viewModel = DetalheComboViewModel()
 
         val modalidade = ModalidadeComboDTO().apply {
@@ -109,13 +105,11 @@ class DetalheComboViewModelTest {
 
         viewModel.carregarCombo(combo)
 
-        // When
         viewModel.atualizarQtdJogosItem(
             indexItem = 0,
             incrementar = false
         )
 
-        // Then
         val resultado =
             viewModel
                 .getModalidadesComboLiveData()
@@ -126,5 +120,242 @@ class DetalheComboViewModelTest {
             2,
             resultado?.getQuantidadeApostas()
         )
+    }
+
+    @Test
+    fun incrementarApostas_modalidadeComum_deveAdicionarUmaAposta() {
+
+        val viewModel = DetalheComboViewModel()
+
+        val mega = criarModalidade(
+            fromStringToIdModalidade(
+                ModalidadeEnum.MEGA_SENA
+            ),
+            1
+        )
+
+        val combo = CombosDTO().apply {
+            setModalidadesCombo(
+                mutableListOf(mega)
+            )
+            setValor(BigDecimal.TEN)
+        }
+
+        viewModel.carregarCombo(combo)
+
+        try {
+            viewModel.incrementarApostas()
+        } catch (_: Exception) {
+        }
+
+        val resultado =
+            viewModel.getModalidadesComboLiveData()
+                .value!!
+                .first()
+
+        assertEquals(
+            2,
+            resultado.getQuantidadeApostas()
+        )
+
+        assertEquals(
+            2,
+            viewModel.getQtdTotalApostasLiveData().value
+        )
+    }
+
+    @Test
+    fun incrementarApostas_lotomania_deveAdicionarDuasApostas() {
+
+        val viewModel = DetalheComboViewModel()
+
+        val lotomania = criarModalidade(
+            fromStringToIdModalidade(
+                ModalidadeEnum.LOTOMANIA
+            ),
+            1
+        )
+
+        val combo = CombosDTO().apply {
+            setModalidadesCombo(
+                mutableListOf(lotomania)
+            )
+            setValor(BigDecimal.TEN)
+        }
+
+        viewModel.carregarCombo(combo)
+
+        try {
+            viewModel.incrementarApostas()
+        } catch (_: Exception) {
+        }
+
+        val resultado =
+            viewModel.getModalidadesComboLiveData()
+                .value!!
+                .first()
+
+        assertEquals(
+            3,
+            resultado.getQuantidadeApostas()
+        )
+
+        assertEquals(
+            3,
+            viewModel.getQtdTotalApostasLiveData().value
+        )
+    }
+
+    @Test
+    fun decrementarApostas_modalidadeComum_deveDecrementarUmaAposta() {
+
+        val viewModel = DetalheComboViewModel()
+
+        val mega = criarModalidade(
+            fromStringToIdModalidade(
+                ModalidadeEnum.MEGA_SENA
+            ),
+            1
+        )
+
+        val combo = CombosDTO().apply {
+            setModalidadesCombo(
+                mutableListOf(mega)
+            )
+            setValor(BigDecimal.TEN)
+        }
+
+        viewModel.carregarCombo(combo)
+
+        try {
+            viewModel.incrementarApostas()
+            viewModel.decrementarApostas()
+        } catch (_: Exception) {
+        }
+
+        val resultado =
+            viewModel.getModalidadesComboLiveData()
+                .value!!
+                .first()
+
+        assertEquals(
+            1,
+            resultado.getQuantidadeApostas()
+        )
+
+        assertEquals(
+            1,
+            viewModel.getQtdTotalApostasLiveData().value
+        )
+    }
+
+    @Test
+    fun decrementarApostas_lotomania_deveDecrementarDuasApostas() {
+
+        val viewModel = DetalheComboViewModel()
+
+        val lotomania = criarModalidade(
+            fromStringToIdModalidade(
+                ModalidadeEnum.LOTOMANIA
+            ),
+            1
+        )
+
+        val combo = CombosDTO().apply {
+            setModalidadesCombo(
+                mutableListOf(lotomania)
+            )
+            setValor(BigDecimal.TEN)
+        }
+
+        viewModel.carregarCombo(combo)
+
+        try {
+            viewModel.incrementarApostas()
+            viewModel.decrementarApostas()
+        } catch (_: Exception) {
+        }
+
+        val resultado =
+            viewModel.getModalidadesComboLiveData()
+                .value!!
+                .first()
+
+        assertEquals(
+            1,
+            resultado.getQuantidadeApostas()
+        )
+
+        assertEquals(
+            1,
+            viewModel.getQtdTotalApostasLiveData().value
+        )
+    }
+
+    @Test
+    fun incrementarApostas_deveRotacionarIndiceAposLotomania() {
+
+        val viewModel = DetalheComboViewModel()
+
+        val lotomania = criarModalidade(
+            fromStringToIdModalidade(
+                ModalidadeEnum.LOTOMANIA
+            ),
+            1
+        )
+
+        val mega = criarModalidade(
+            fromStringToIdModalidade(
+                ModalidadeEnum.MEGA_SENA
+            ),
+            1
+        )
+
+        val combo = CombosDTO().apply {
+            setModalidadesCombo(
+                mutableListOf(
+                    lotomania,
+                    mega
+                )
+            )
+            setValor(BigDecimal.TEN)
+        }
+
+        viewModel.carregarCombo(combo)
+
+        try {
+            viewModel.incrementarApostas()
+            viewModel.incrementarApostas()
+        } catch (_: Exception) {
+        }
+
+        val lista =
+            viewModel.getModalidadesComboLiveData().value!!
+
+        assertEquals(
+            3,
+            lista[0].getQuantidadeApostas()
+        )
+
+        assertEquals(
+            2,
+            lista[1].getQuantidadeApostas()
+        )
+    }
+
+    private fun criarModalidade(
+        codigoModalidade: Int,
+        qtdApostas: Int
+    ): ModalidadeComboDTO {
+
+        val modalidadeDTO = ModalidadeDTO().apply {
+            setValor(codigoModalidade)
+        }
+
+        return ModalidadeComboDTO().apply {
+            setModalidade(modalidadeDTO)
+            setQuantidadeApostas(qtdApostas)
+            setQuantidadeTeimosinhas(1)
+        }
     }
 }

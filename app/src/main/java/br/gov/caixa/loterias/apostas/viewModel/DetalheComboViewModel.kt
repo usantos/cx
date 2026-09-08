@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeComboDTO
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum
 import br.gov.caixa.loterias.apostas.utils.ViewUtils
 import java.math.BigDecimal
@@ -99,9 +100,9 @@ class DetalheComboViewModel : ViewModel() {
 
             atualizarQtdJogosItem(index, false)
 
-            if (modalidades[index]
+            if (ModalidadeEnum.fromInteger(modalidades[index]
                     .modalidade
-                    .getValor() == 16
+                    .getValor()) == ModalidadeEnum.LOTOMANIA
             ) {
 
                 qtdTotalApostasLiveData.value =
