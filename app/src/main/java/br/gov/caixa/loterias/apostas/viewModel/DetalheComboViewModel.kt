@@ -34,7 +34,7 @@ class DetalheComboViewModel : ViewModel() {
         sessaoUsuario = SessaoUsuario.getInstance()
 
         val modalidades =
-            combo?.getModalidadesCombo()?.toMutableList()
+            combo?.modalidadesCombo?.toMutableList()
                 ?: return
 
         modalidadesComboLiveData.value = modalidades
@@ -44,7 +44,7 @@ class DetalheComboViewModel : ViewModel() {
         qtdTotalApostasLiveData.value = qtdInicialApostas
 
         valorComboLiveData.value =
-            combo.getValor() ?: BigDecimal.ZERO
+            combo.valor ?: BigDecimal.ZERO
     }
 
     fun getModalidadesComboLiveData(): LiveData<MutableList<ModalidadeComboDTO>> =
@@ -67,7 +67,7 @@ class DetalheComboViewModel : ViewModel() {
 
         val modalidadeAtual = modalidades[index]
 
-        if (modalidadeAtual.getModalidade().getValor() == 16) {
+        if (ModalidadeEnum.fromInteger(modalidadeAtual.modalidade?.getValor()) == ModalidadeEnum.LOTOMANIA) {
             qtdTotalApostasLiveData.value = qtdAtual + 1
             atualizarQtdJogosItem(index, true)
         }
@@ -100,7 +100,7 @@ class DetalheComboViewModel : ViewModel() {
             atualizarQtdJogosItem(index, false)
 
             if (modalidades[index]
-                    .getModalidade()
+                    .modalidade
                     .getValor() == 16
             ) {
 
@@ -120,13 +120,15 @@ class DetalheComboViewModel : ViewModel() {
         modalidadesCombo: List<ModalidadeComboDTO>
     ): Int {
         return modalidadesCombo.sumOf {
-            it.getQuantidadeApostas()
+            it.quantidadeApostas?:0
         }
     }
 
     private fun atualizarValorCombo() {
 
         var valorCombo = BigDecimal.ZERO
+
+        val usuario = sessaoUsuario ?: return
 
         val modalidades =
             modalidadesComboLiveData.value ?: return
@@ -135,12 +137,12 @@ class DetalheComboViewModel : ViewModel() {
 
             val modalidade =
                 ModalidadeEnum.fromInteger(
-                    modalidadeCombo.getModalidade().getValor()
-                )
+                    modalidadeCombo.modalidade?.getValor()
+                ) ?: continue
 
             val parametroSimulacao =
                 ViewUtils.getParametroSimulacao(
-                    sessaoUsuario,
+                    usuario,
                     modalidade
                 )
 
@@ -148,29 +150,29 @@ class DetalheComboViewModel : ViewModel() {
 
                 val valores =
                     parametroSimulacao
-                        .getParametroJogo()
+                        .parametroJogo
                         .getValoresAposta()
 
                 var valorAposta =
                     valores.first().getValor()
 
                 val qtdApostas =
-                    modalidadeCombo.getQuantidadeApostas()
+                    modalidadeCombo.quantidadeApostas
 
                 val qtdTeimosinhas =
                     max(
-                        modalidadeCombo.getQuantidadeTeimosinhas(),
+                        modalidadeCombo.quantidadeTeimosinhas,
                         1
                     )
 
                 for (valor in valores) {
 
                     if (modalidadeCombo
-                            .getModalidade()
+                            .modalidade
                             .getValor() != 9
                     ) {
 
-                        if (modalidadeCombo.getQuantidadeDezenas() ==
+                        if (modalidadeCombo.quantidadeDezenas ==
                             valor.getNumeroPrognosticos()
                         ) {
 
@@ -180,9 +182,9 @@ class DetalheComboViewModel : ViewModel() {
                     } else {
 
                         if (
-                            modalidadeCombo.getQuantidadeDezenas() ==
+                            modalidadeCombo.quantidadeDezenas ==
                             valor.getNumeroPrognosticos() &&
-                            modalidadeCombo.getQuantidadeDezenasTrevos() ==
+                            modalidadeCombo.quantidadeDezenasTrevos ==
                             valor.getNumeroTrevos()
                         ) {
 
@@ -228,9 +230,9 @@ class DetalheComboViewModel : ViewModel() {
 
         val novaQuantidade =
             if (incrementar) {
-                itemOriginal.getQuantidadeApostas() + 1
+                itemOriginal.quantidadeApostas + 1
             } else {
-                itemOriginal.getQuantidadeApostas() - 1
+                itemOriginal.quantidadeApostas - 1
             }
 
         val itemAtualizado =
@@ -254,19 +256,13 @@ class DetalheComboViewModel : ViewModel() {
         ): ModalidadeComboDTO {
 
             return ModalidadeComboDTO().apply {
-                setModalidade(itemOriginal.getModalidade())
-                setTipoConcurso(itemOriginal.getTipoConcurso())
-                setQuantidadeApostas(novaQuantidade)
-                setQuantidadeTeimosinhas(
-                    itemOriginal.getQuantidadeTeimosinhas()
-                )
-                setNumero(itemOriginal.getNumero())
-                setQuantidadeDezenas(
-                    itemOriginal.getQuantidadeDezenas()
-                )
-                setQuantidadeDezenasTrevos(
-                    itemOriginal.getQuantidadeDezenasTrevos()
-                )
+                modalidade = itemOriginal.modalidade
+                tipoConcurso = itemOriginal.tipoConcurso
+                quantidadeApostas = novaQuantidade
+                quantidadeTeimosinhas = itemOriginal.quantidadeTeimosinhas
+                numero = itemOriginal.numero
+                quantidadeDezenas = itemOriginal.quantidadeDezenas
+                quantidadeDezenasTrevos = itemOriginal.quantidadeDezenasTrevos
             }
         }
     }
