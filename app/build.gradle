@@ -263,11 +263,24 @@ tasks.register('jacocoTestPrdReleaseUnitTestReport', JacocoReport) {
             'jacoco/testPrdReleaseUnitTest.exec'
     ).get().asFile
 
-    sourceDirectories.setFrom(files('src/main/java','src/main/kotlin'))
-    classDirectories.setFrom(files(fileTree(
-            dir: prdReleaseClasses,
-            excludes: ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*']
-    )))
+    def exclusions = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*'
+    ]
+
+    sourceDirectories.setFrom(files('src/main/java', 'src/main/kotlin'))
+    classDirectories.setFrom(files(
+            fileTree(
+                dir: prdReleaseClasses,
+                excludes: exclusions
+            ),
+            fileTree(
+                    dir: "$buildDir/tmp/kotlin-classes/prdRelease",
+                    excludes: exclusions
+            )))
+
     executionData.setFrom(files(prdReleaseExecutionData))
 
     reports {
@@ -400,8 +413,8 @@ dependencies {
     // root check
     implementation 'com.scottyab:rootbeer-lib:0.1.2'
 
-        //Topaz OFD
-        implementation 'br.com.topaz:heartbeat:4.38.0.1658708'
+    //Topaz OFD
+    implementation 'br.com.topaz:heartbeat:4.38.0.1658708'
 
     //Biometria
     implementation 'androidx.biometric:biometric:1.1.0'
@@ -426,7 +439,7 @@ dependencies {
     //PlayStore
     implementation "com.google.android.play:review:2.0.2"
 
-        implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    }
+}
 
