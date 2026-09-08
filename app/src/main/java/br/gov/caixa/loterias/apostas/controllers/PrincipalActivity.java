@@ -405,20 +405,23 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         checkRedirecionamento();
 
         if (ApostasIdenticasSingleton.getInstance().isValidacaoInicialPendente()) {
+            // Evita múltiplas chamadas em onResume enquanto a requisição está em andamento
+            ApostasIdenticasSingleton.getInstance().setValidacaoInicialPendente(false);
+
             if (model == null) model = new CarrinhoModel(this);
             model.buscaCarrinhoSilce(new OnSilceListener<CarrinhoDTO>() {
                 @Override
                 public void success(CarrinhoDTO payload) {
                     if (possuiApostasDuplicadas(payload)) {
-                        DialogUtils.dialogEntendi(PrincipalActivity.this,getString(R.string.txt_apostas_identicas));
+                        DialogUtils.dialogEntendi(PrincipalActivity.this, getString(R.string.txt_apostas_identicas));
                     }
-
-                    ApostasIdenticasSingleton.getInstance().setValidacaoInicialPendente(false);
                 }
 
                 @Override
                 public void error(VolleyError error) {
                     RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                    // Permite tentar novamente em um próximo onResume
+                    ApostasIdenticasSingleton.getInstance().setValidacaoInicialPendente(true);
                 }
             });
         }
