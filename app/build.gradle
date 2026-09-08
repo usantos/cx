@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'org.sonarqube'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'org.jetbrains.kotlin.android'
+
 apply plugin: 'jacoco'
 def DES_VERSION_CODE = project.DES_VERSION_CODE
 def DES_VERSION_NAME = project.DES_VERSION_NAME
@@ -9,6 +11,7 @@ def PLT_VERSION_CODE = project.PLT_VERSION_CODE
 def PLT_VERSION_NAME = project.PLT_VERSION_NAME
 def PRD_VERSION_CODE = project.PRD_VERSION_CODE
 def PRD_VERSION_NAME = project.PRD_VERSION_NAME
+
 android {
     compileSdkVersion 37
     buildToolsVersion '36.0.0'
@@ -31,8 +34,12 @@ android {
         }
 
         compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_8
-            targetCompatibility JavaVersion.VERSION_1_8
+            sourceCompatibility JavaVersion.VERSION_17
+            targetCompatibility JavaVersion.VERSION_17
+        }
+
+        kotlinOptions {
+            jvmTarget = "17"
         }
 
         javaCompileOptions {
@@ -246,22 +253,35 @@ jacoco {
     toolVersion = '0.8.12'
 }
 
-tasks.register('jacocoTestPrdDebugUnitTestReport', JacocoReport) {
-    dependsOn 'testPrdDebugUnitTest'
+tasks.register('jacocoTestPrdReleaseUnitTestReport', JacocoReport) {
+    dependsOn 'testPrdReleaseUnitTest'
 
-    def prdDebugClasses = layout.buildDirectory.dir(
-            'intermediates/javac/prdDebug/compilePrdDebugJavaWithJavac/classes'
+    def prdReleaseClasses = layout.buildDirectory.dir(
+            'intermediates/javac/prdRelease/compilePrdReleaseJavaWithJavac/classes'
     ).get().asFile
-    def prdDebugExecutionData = layout.buildDirectory.file(
-            'jacoco/testPrdDebugUnitTest.exec'
+    def prdReleaseExecutionData = layout.buildDirectory.file(
+            'jacoco/testPrdReleaseUnitTest.exec'
     ).get().asFile
 
-    sourceDirectories.setFrom(files('src/main/java'))
-    classDirectories.setFrom(files(fileTree(
-            dir: prdDebugClasses,
-            excludes: ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*']
-    )))
-    executionData.setFrom(files(prdDebugExecutionData))
+    def exclusions = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*'
+    ]
+
+    sourceDirectories.setFrom(files('src/main/java', 'src/main/kotlin'))
+    classDirectories.setFrom(files(
+            fileTree(
+                dir: prdReleaseClasses,
+                excludes: exclusions
+            ),
+            fileTree(
+                    dir: "$buildDir/tmp/kotlin-classes/prdRelease",
+                    excludes: exclusions
+            )))
+
+    executionData.setFrom(files(prdReleaseExecutionData))
 
     reports {
         xml.required = true
@@ -380,6 +400,7 @@ dependencies {
     implementation 'net.danlew:android.joda:2.14.2.1'
 
     // testImplementation deps
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:5.23.0'
     testImplementation 'com.google.code.findbugs:jsr305:3.0.2'
@@ -393,7 +414,7 @@ dependencies {
     implementation 'com.scottyab:rootbeer-lib:0.1.2'
 
     //Topaz OFD
-    implementation 'br.com.topaz:heartbeat:4.+'
+    implementation 'br.com.topaz:heartbeat:4.38.0.1658708'
 
     //Biometria
     implementation 'androidx.biometric:biometric:1.1.0'
@@ -417,6 +438,8 @@ dependencies {
 
     //PlayStore
     implementation "com.google.android.play:review:2.0.2"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
 }
 
