@@ -7,7 +7,6 @@ import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +31,8 @@ import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
@@ -66,7 +67,8 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 
-public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implements OnCompraBolaoListener {
+public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implements OnCompraBolaoListener, OnSomadorListener {
+	private CarrinhoDTO carrinhoRodape;
 	public static final String ARG_CODIGO_BOLAO = "ARG_CODIGO_BOLAO";
 	public static final String ARG_MODALIDADE = "ARG_MODALIDADE";
 	public static final String ARG_MODO_VISUALIZACAO = "ARG_MODO_VISUALIZACAO";
@@ -77,8 +79,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private TextView tvNomeLoterica, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota, tvCodigoLoterica, tvCidadeUfLoterica, tvFavoritar;
 	private TextView textQtdDezenas, textQtdCotas;
 	private Button btnAdd, btnDiminui, btnAumenta;
-	private TextView tvValorCotaBtn, tvQtdCotas;
-	private TextView tvLabelQtdCotas;
+	private TextView tvQtdCotas;
 	private RecyclerView listaJogos;
 	private JogosBolaoRecyclerView listaAdapter;
 	private PartidasLotecaRecyclerViewAdapter partidasAdapter;
@@ -158,11 +159,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 
 		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
-		layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
-		tvValorCotaBtn.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-		tvLabelQtdCotas.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-		tvQtdCotas.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-		btnAdd.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
+		btnAdd.setBackground(VectorUtils.getShape(R.drawable.mkp_fundo_adicionar, estilo.getCorClara()));
 		btnAdd.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
 		textQtdDezenas.setTextColor(ContextCompat.getColor(this, R.color.cinza90));
 		textQtdCotas.setTextColor(ContextCompat.getColor(this, R.color.cinza90));
@@ -235,8 +232,6 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		tvValorTarifa = findViewById(R.id.id_valor_tarifa_servico);
 		tvValorTotal = findViewById(R.id.id_valor_total);
 		btnAdd = findViewById(R.id.id_btn_add);
-		tvValorCotaBtn = findViewById(R.id.valor_cota);
-		tvLabelQtdCotas = findViewById(R.id.label_quantidade_cotas);
 		tvQtdCotas = findViewById(R.id.quantidade_cotas);
 		btnDiminui = findViewById(R.id.diminui_cota);
 		btnAumenta = findViewById(R.id.aumenta_cota);
@@ -256,34 +251,16 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void atualizaValorAposta() {
-		Double qtdApostas = Double.valueOf(bolao.getQtdCotaDesejada() - 1);
-		BigDecimal valor = bolao.getVrUltimaCotaComTarifa().add(BigDecimal.valueOf(bolao.getVrCotaComTarifa().doubleValue() * qtdApostas));
+		BigDecimal qtdApostas = BigDecimal.valueOf(bolao.getQtdCotaDesejada() - 1);
+		BigDecimal valor = bolao.getVrUltimaCotaComTarifa().add(bolao.getVrCotaComTarifa().multiply(qtdApostas));
 		rodapeFragment.atualizaValorBolao(valor);
 	}
 
 	public void atualizaBotoesQtdCotas() {
-		if (bolao.getQtdCotaDesejada() == 1){
-			btnDiminui.setBackgroundTintList(getCor(R.color.cinza_desativado_mkp));
-			btnDiminui.setEnabled(false);
-			btnAumenta.setBackgroundTintList(getCor(estilo.getCorFonteFundoClaro()));
-			btnAumenta.setEnabled(true);
-		} else if (bolao.getQtdCotaDesejada() == bolao.getQtdCotaDisponivel()){
-			btnAumenta.setBackgroundTintList(getCor(R.color.cinza_desativado_mkp));
-			btnAumenta.setEnabled(false);
-			btnDiminui.setBackgroundTintList(getCor(estilo.getCorFonteFundoClaro()));
-			btnDiminui.setEnabled(true);
-		} else {
-			btnDiminui.setBackgroundTintList(getCor(estilo.getCorFonteFundoClaro()));
-			btnDiminui.setEnabled(true);
-			btnAumenta.setBackgroundTintList(getCor(estilo.getCorFonteFundoClaro()));
-			btnAumenta.setEnabled(true);
-		}
-		btnDiminui.setTextColor(ContextCompat.getColor(this, estilo.getCorClara()));
-		btnAumenta.setTextColor(ContextCompat.getColor(this, estilo.getCorClara()));
-	}
-	private ColorStateList getCor(int cor) {
-		return ContextCompat.getColorStateList(this, cor);
-	}
+        btnDiminui.setEnabled(bolao.getQtdCotaDesejada() > 1);
+        btnAumenta.setEnabled(bolao.getQtdCotaDesejada() < bolao.getQtdCotaDisponivel());
+        btnAdd.setEnabled(bolao.getQtdCotaDisponivel() > 0);
+    }
 
 	private OnSilceListener<DetalheBolaoDTO> onBuscaDetalheBolaoListener() {
 		return new OnSilceListener<DetalheBolaoDTO>() {
@@ -358,9 +335,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		tvValorCota.setText(valorCota);
 		tvValorTarifa.setText(valorTarifa);
 		tvValorTotal.setText(valorTotal);
-		btnAdd.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.adicionarAoCarrinho)));
+		btnAdd.setText(R.string.mkp_adicionar_carrinho);
 		atualizaLabelFavoritar();
-		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
 
 		if (bolao.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && bolao.getApostas() != null
 				&& !bolao.getApostas().isEmpty() && bolao.getApostas().get(0).getDezenas() != null &&
@@ -444,12 +420,26 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 			BigDecimal valorTotal = CarrinhoSingleton.getInstance().getCarrinho() != null ?
 									CarrinhoSingleton.getInstance().getCarrinho().getValorTotal()
 									: BigDecimal.ZERO;
-			rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(),
-					R.id.id_fg_rodape, getValorApostaBolao(), valorTotal);
+			rodapeFragment = RodapeSimulacaoApostaFragment.newInstanceDetalhesBolao(getValorApostaBolao(), valorTotal);
+			FragmentUtils.startFragmentAllowingStateLoss(getSupportFragmentManager(), R.id.id_fg_rodape, rodapeFragment);
+			atualizaDados(carrinhoRodape != null ? carrinhoRodape : CarrinhoSingleton.getInstance().getCarrinho());
 		} catch (Exception e){
 			Log.d("", e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage());
 		}
 	}
+
+    @Override
+    public void atualizaDados(CarrinhoDTO carrinho) {
+        carrinhoRodape = carrinho;
+        if (rodapeFragment == null) return;
+        BigDecimal total = carrinho != null && carrinho.getValorTotal() != null
+                ? carrinho.getValorTotal() : BigDecimal.ZERO;
+        int quantidade = carrinho != null && carrinho.getApostas() != null
+                ? carrinho.getApostas().size() : 0;
+        rodapeFragment.atualizaValorCarrinho(total);
+        rodapeFragment.apresentaQtdApostas(true, quantidade > 999
+                ? getString(R.string.mais_999) : String.valueOf(quantidade));
+    }
 
 	private BigDecimal getValorApostaBolao() {
 		return bolao.getVrUltimaCotaComTarifa();

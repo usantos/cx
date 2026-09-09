@@ -36,6 +36,8 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
 public class RodapeSimulacaoApostaFragment extends Fragment {
+	private static final String ARG_DETALHES_BOLAO = "DETALHES_BOLAO";
+	private String quantidadeApostas = "0";
 	private static final String ARG_VALOR_APOSTA = "VALOR_APOSTA";
 	private static final String ARG_VALOR_CARRINHO = "VALOR_CARRINHO";
 
@@ -61,6 +63,16 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		return fragment;
 	}
 
+    public static RodapeSimulacaoApostaFragment newInstanceDetalhesBolao(BigDecimal valorAposta, BigDecimal valorCarrinho) {
+        RodapeSimulacaoApostaFragment fragment = newInstance(valorAposta, valorCarrinho);
+        fragment.getArguments().putBoolean(ARG_DETALHES_BOLAO, true);
+        return fragment;
+    }
+
+    private boolean isDetalhesBolao() {
+        return getArguments() != null && getArguments().getBoolean(ARG_DETALHES_BOLAO);
+    }
+
 	public static RodapeSimulacaoApostaFragment newInstance(BigDecimal valorAposta) {
 		RodapeSimulacaoApostaFragment fragment = new RodapeSimulacaoApostaFragment();
 		Bundle                  args     = new Bundle();
@@ -73,8 +85,8 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			valorAposta = new BigDecimal(getArguments().getString(ARG_VALOR_APOSTA));
-			if (getArguments().getString(ARG_VALOR_CARRINHO) != null){
+			if (valorAposta == null) valorAposta = new BigDecimal(getArguments().getString(ARG_VALOR_APOSTA));
+			if (valorCarrinho == null && getArguments().getString(ARG_VALOR_CARRINHO) != null){
 				valorCarrinho = new BigDecimal(getArguments().getString(ARG_VALOR_CARRINHO));
 			}
 		}
@@ -83,7 +95,7 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_rodape_simulacao_aposta, container, false);
+		view = inflater.inflate(isDetalhesBolao() ? R.layout.fragment_rodape_detalhes_bolao : R.layout.fragment_rodape_simulacao_aposta, container, false);
 
 		tvValorAposta = view.findViewById(R.id.valorApostaCartela);
 		tvValorCarrinho = view.findViewById(R.id.valorAtualCarrinho);
@@ -92,11 +104,12 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		carrinhoApostas = view.findViewById(R.id.simularApostaLayoutCarrinhoApostas);
 		containerValor = view.findViewById(R.id.container_valor_aposta);
 		carrinhoApostas.setOnClickListener(v -> abreCarrinhoApostas());
-		setAccessibility(containerValor);
+		if (!isDetalhesBolao()) setAccessibility(containerValor);
 		setAccessibility(carrinhoApostas);
 
 		atualizaValorBolao(valorAposta);
 		atualizaValorCarrinho(valorCarrinho);
+		if (isDetalhesBolao()) apresentaQtdApostas(true, quantidadeApostas);
 
 		return view;
 	}
@@ -111,13 +124,18 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		});
 	}
 	public void atualizaValorBolao(BigDecimal valorApostaBolao){
+		valorAposta = valorApostaBolao;
 		if (valorApostaBolao != null && tvValorAposta != null){
 			ViewUtils.setMoedaFormatHtml(valorApostaBolao, tvValorAposta);
 		}
 	}
 
 	public void atualizaValorCarrinho(BigDecimal valorTotal){
+		valorCarrinho = valorTotal;
+		if (tvValorCarrinho == null) return;
 		if (valorTotal != null && tvValorCarrinho != null){
+			view.findViewById(R.id.tv_valor_atual_carrinho).setVisibility(View.VISIBLE);
+			tvValorCarrinho.setVisibility(View.VISIBLE);
 			ViewUtils.setMoedaFormatHtml(valorTotal, tvValorCarrinho);
 		} else {
 			view.findViewById(R.id.tv_valor_atual_carrinho).setVisibility(View.INVISIBLE);
@@ -126,6 +144,9 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 	}
 
 	public void apresentaQtdApostas(boolean isShow, String qtdApostas){
+		quantidadeApostas = qtdApostas;
+		if (tvQtd == null) return;
+		if (isDetalhesBolao()) carrinhoApostas.setContentDescription(getString(R.string.mkp_carrinho_quantidade, qtdApostas));
 		if (isShow){
 			circuloQtd.setVisibility(View.VISIBLE);
 			tvQtd.setVisibility(View.VISIBLE);
