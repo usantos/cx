@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.SwipeLayout;
@@ -104,7 +105,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	@Override
 	public void bind(IdentificaoDeUmaApostaDas8Modalidades aposta, int position) {
 		EstiloModalidadeMKP estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
-		estiloMKP.alteraOutubroRosaPorTela();
+		if (EspecialUtils.isParametrosOutubroRosa() && aposta.getModalidade() == ModalidadeEnum.MEGA_SENA){
+			estiloMKP.alteraOutubroRosaPorTela();
+		}
 
 		if (position >= 4) {
 			animacao = false;
