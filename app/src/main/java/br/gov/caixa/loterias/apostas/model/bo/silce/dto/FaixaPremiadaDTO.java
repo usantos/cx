@@ -183,6 +183,7 @@ public class FaixaPremiadaDTO implements Serializable {
                 "  sorteio: " + sorteio + "\n" +
                 "  nome: " + nome + "\n" +
                 "  valorLiquido: " + valorLiquido + "\n" +
+                "  descricaoAcerto: " + descricaoAcerto + "\n" +
                 "  valorPremioCota: " + valorPremioCota + "\n" +
                 "  QuantidadeAcertos: " + quantidadeAcertos + "\n" +
                 "}\n";

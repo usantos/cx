@@ -6,6 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.SearchEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.accessibility.AccessibilityEvent;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ProcessLifecycleOwner;
@@ -19,11 +29,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.LocalizacaoActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
+import br.gov.caixa.loterias.apostas.debug.helpers.ThreeFingerInterceptor;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -41,6 +53,7 @@ public class Aplicacao extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         application = this;
+        AnalyticsHelper.init(this);
         registerActivityLifecycleCallbacks(new br.gov.caixa.loterias.apostas.utils.ActivityLifecycleCallbacks());
         DeviceSDK.getInstance().execute(this);
 
@@ -48,7 +61,6 @@ public class Aplicacao extends MultiDexApplication {
                 .get()
                 .getLifecycle()
                 .addObserver(new AppLifecycleObserver());
-
 
     }
 
@@ -62,6 +74,8 @@ public class Aplicacao extends MultiDexApplication {
 class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
 
     private AlertDialog loadViewProgress;
+    private final ThreeFingerInterceptor interceptor = new ThreeFingerInterceptor();
+
     private int numStarted = 0;
     private boolean isRecreated = false;
 
@@ -110,6 +124,43 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
+        if (!BuildConfig.ENABLE_NETWORK_INSPECTOR) return;
+
+        final Window.Callback originalCallback = activity.getWindow().getCallback();
+        final ThreeFingerInterceptor interceptor = new ThreeFingerInterceptor();
+
+        activity.getWindow().setCallback(new Window.Callback() {
+
+            @Override
+            public boolean dispatchTouchEvent(MotionEvent event) {
+                interceptor.onTouch(activity, event);
+                return originalCallback.dispatchTouchEvent(event);
+            }
+
+            // delega o resto
+            @Override public boolean dispatchKeyEvent(KeyEvent event) { return originalCallback.dispatchKeyEvent(event); }
+            @Override public boolean dispatchKeyShortcutEvent(KeyEvent event) { return originalCallback.dispatchKeyShortcutEvent(event); }
+            @Override public boolean dispatchTrackballEvent(MotionEvent event) { return originalCallback.dispatchTrackballEvent(event); }
+            @Override public boolean dispatchGenericMotionEvent(MotionEvent event) { return originalCallback.dispatchGenericMotionEvent(event); }
+            @Override public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) { return originalCallback.dispatchPopulateAccessibilityEvent(event); }
+            @Override public View onCreatePanelView(int featureId) { return originalCallback.onCreatePanelView(featureId); }
+            @Override public boolean onCreatePanelMenu(int featureId, Menu menu) { return originalCallback.onCreatePanelMenu(featureId, menu); }
+            @Override public boolean onPreparePanel(int featureId, View view, Menu menu) { return originalCallback.onPreparePanel(featureId, view, menu); }
+            @Override public boolean onMenuOpened(int featureId, Menu menu) { return originalCallback.onMenuOpened(featureId, menu); }
+            @Override public boolean onMenuItemSelected(int featureId, MenuItem item) { return originalCallback.onMenuItemSelected(featureId, item); }
+            @Override public void onWindowAttributesChanged(WindowManager.LayoutParams attrs) { originalCallback.onWindowAttributesChanged(attrs); }
+            @Override public void onContentChanged() { originalCallback.onContentChanged(); }
+            @Override public void onWindowFocusChanged(boolean hasFocus) { originalCallback.onWindowFocusChanged(hasFocus); }
+            @Override public void onAttachedToWindow() { originalCallback.onAttachedToWindow(); }
+            @Override public void onDetachedFromWindow() { originalCallback.onDetachedFromWindow(); }
+            @Override public void onPanelClosed(int featureId, Menu menu) { originalCallback.onPanelClosed(featureId, menu); }
+            @Override public boolean onSearchRequested() { return originalCallback.onSearchRequested(); }
+            @Override public boolean onSearchRequested(SearchEvent searchEvent) { return originalCallback.onSearchRequested(searchEvent); }
+            @Override public ActionMode onWindowStartingActionMode(ActionMode.Callback callback) { return originalCallback.onWindowStartingActionMode(callback); }
+            @Override public ActionMode onWindowStartingActionMode(ActionMode.Callback callback, int type) { return originalCallback.onWindowStartingActionMode(callback, type); }
+            @Override public void onActionModeStarted(ActionMode mode) { originalCallback.onActionModeStarted(mode); }
+            @Override public void onActionModeFinished(ActionMode mode) { originalCallback.onActionModeFinished(mode); }
+        });
     }
 
     public void atualizaBuscaParametros(Activity activity) {

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
@@ -30,8 +32,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioIdDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 
 /**
  * Created by joafilho on 06/12/2017.
@@ -68,7 +72,7 @@ public class CadastroActivity extends LoteriasBaseAppActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setCustomView(imageView);
             getSupportActionBar().setDisplayShowCustomEnabled(true);
-            getSupportActionBar().setBackgroundDrawable(getResources().getDrawable((R.drawable.background_gradient_verde)));
+            getSupportActionBar().setBackgroundDrawable(getResources().getDrawable((R.drawable.background_app_bar_azul)));
         }
         ufSelect = getResources().getString(R.string.string_vazia);
         municipioSelect = getResources().getString(R.string.string_vazia);
@@ -81,27 +85,35 @@ public class CadastroActivity extends LoteriasBaseAppActivity {
         return true;
     }
 
-    protected void addRightImg(EditText textField) {
-        textField.setOnFocusChangeListener((v, hasFocus) -> {
-        /* When focus is lost check that the text field
-        * has valid values.
-        */
-            if (!hasFocus) {
-                if (v.getClass() == MaskedEditText.class) {
-                    if (((MaskedEditText) v).getUnmaskedText().toString().equals("")) {
-                        ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    } else {
-                        ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-                    }
-                } else {
-                    if (((EditText) v).getText().toString().equals("")) {
-                        ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    } else {
-                        ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-                    }
-                }
-            }
-        });
+    protected void addLeftImg(EditText textField) {
+        if (!textField.getText().toString().trim().isEmpty()) {
+
+            textField.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_check, 0, 0, 0);
+
+            TextViewCompat.setCompoundDrawableTintList(
+                    textField,
+                    ContextCompat.getColorStateList(
+                            textField.getContext(),
+                            R.color.cinza_item_desabilitado
+                    )
+            );
+
+            textField.setHintTextColor(
+                    ContextCompat.getColor(
+                            textField.getContext(),
+                            R.color.cinza_item_desabilitado
+                    )
+            );
+
+        } else {
+            textField.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+            TextViewCompat.setCompoundDrawableTintList(
+                    textField,
+                    null
+            );
+        }
     }
 
     protected void addListenerUF(EditText editTextUF, List<String> listUFString) {
@@ -190,7 +202,10 @@ public class CadastroActivity extends LoteriasBaseAppActivity {
         String idUf = "";
 
         if (ufSelect.isEmpty()) {
-            showDialog();
+            DialogUtils.dialogEntendi(
+                    CadastroActivity.this,
+                    getResources().getString(R.string.selecione_primeiro_uf)
+            );
         } else {
             for (UnidadeFederacaoDTO uf : listUf) {
                 if (uf.getSigla().equalsIgnoreCase(ufSelect)) {
@@ -208,7 +223,7 @@ public class CadastroActivity extends LoteriasBaseAppActivity {
                     for (MunicipioDTO municipio : municipioDTOList) {
                         listMunicipios.add(municipio.getNome());
                     }
-                    modalMunicipios();
+                    showDialogMunicipios();
                     if (response.getRedirect() != null){
                         RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CadastroActivity.this);
                     }
@@ -223,74 +238,52 @@ public class CadastroActivity extends LoteriasBaseAppActivity {
         }
     }
 
-    private AlertDialog myDialog;
 
-    public void showDialog() {
-        if (myDialog == null) {
-            myDialog = new AlertDialog.Builder(this)
-                    .setTitle(getResources().getString(R.string.label_atencao))
-                    .setMessage(getResources().getString(R.string.selecione_primeiro_uf))
-                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
-                    .create();
-        }
-        myDialog.show();
-    }
 
-    private void modalMunicipios() {
-        // custom dialog
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_list_view);
+    private void showDialogMunicipios(){
 
-        // set the custom dialog components - listview and button
+        DialogUtils.showDialogListItens(
+                CadastroActivity.this,
+                getString(R.string.cidade),
+                null,
+                listMunicipios,
+                getString(R.string.confirmar),
+                getString(R.string.cancelar),
+                new OnDialogListener() {
+                    @Override
+                    public void itemSelecionado(int position) {
 
-        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText(getString(R.string.cidade));
+                        // ListView Clicked item value
+                        String itemValue = listMunicipios.get(position);
+                        municipioSelect = itemValue;
+                    }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(CadastroActivity.this,
-                R.layout.item_text_popup, R.id.textList, listMunicipios);
+                    @Override
+                    public void ok(int position) {
+                        editTextMunicipioContent.setText(municipioSelect);
+                        if (isMunicipioUsuario) {
+                            for (MunicipioDTO municipio : municipioDTOList) {
+                                if (municipio.getNome().equals(municipioSelect)) {
+                                    cadastrarApostadorDTO.setMunicipioId(municipio.getId());
+                                    break;
+                                }
+                            }
+                        } else {
+                            for (MunicipioDTO municipio : municipioDTOList) {
+                                if (municipio.getNome().equals(municipioSelect)) {
+                                    municipioIdDTOLoteria = municipio.getId();
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
-        // Assign adapter to ListView
-        listViewItens.setAdapter(adapter);
-        // ListView Item Click Listener
-        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
-            // ListView Clicked item index
-            int itemPosition = position;
-
-            // ListView Clicked item value
-            String itemValue = (String) listViewItens.getItemAtPosition(position);
-            municipioSelect = itemValue;
-        });
-
-        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
-
-        // if button is clicked, close the custom dialog
-        dialogButtonOk.setOnClickListener(v -> {
-            editTextMunicipioContent.setText(municipioSelect);
-            if (isMunicipioUsuario) {
-                for (MunicipioDTO municipio : municipioDTOList) {
-                    if (municipio.getNome().equals(municipioSelect)) {
-                        cadastrarApostadorDTO.setMunicipioId(municipio.getId());
-                        break;
+                    @Override
+                    public void cancelar() {
+                        municipioSelect = getResources().getString(R.string.string_vazia);
                     }
                 }
-            } else {
-                for (MunicipioDTO municipio : municipioDTOList) {
-                    if (municipio.getNome().equals(municipioSelect)) {
-                        municipioIdDTOLoteria = municipio.getId();
-                        break;
-                    }
-                }
-            }
-            dialog.dismiss();
-        });
 
-        dialogButtonCancelar.setOnClickListener(v -> {
-            municipioSelect = getResources().getString(R.string.string_vazia);
-            dialog.dismiss();
-        });
-
-        dialog.show();
+        );
     }
 }

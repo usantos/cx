@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -53,13 +54,16 @@ import br.gov.caixa.loterias.apostas.model.model.FavoritaModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SelecaoModalidadesRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.ModalidadeHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaFavoritaListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 
@@ -304,19 +308,24 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             @Override
             public void onDeleta(int position) {
                 String nomeFavorita = model.getApostaList().get(position).getNome();
-                AlertDialog dialog = ViewUtils.dialogoNew(FavoritasActivity.this,
-                        getString(R.string.label_atencao), getString(R.string.exclui_favorita).replace("xxx", nomeFavorita),
-                        (dialogInterface, i) -> {excluiApostaFavorita(position); dialogInterface.dismiss();},
-                        (dialogInterface, i) -> dialogInterface.dismiss()
-                ,R.string.label_nao,R.string.label_sim);
-                dialog.show();
+                DialogUtils.dialogSim(FavoritasActivity.this,
+                        getString(R.string.exclui_favorita).replace("xxx", nomeFavorita),
+
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                excluiApostaFavorita(position);
+                            }
+                        }
+                );
+
             }
 
             @Override
             public void onAdd(int position) {
-                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
-                model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
-                //}
+                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
+                    model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
+                }
             }
 
         };
@@ -366,15 +375,9 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                     CarrinhoSingleton.getInstance().setCarrinho(payload);
                 }
 
-                ViewUtils.alertCustomDismiss(
-                        FavoritasActivity.this,
-                        R.string.apostas_favoritas,
-                        R.layout.dialog_alert_new,
-                        getString(R.string.label_new_favorita_no_carrinho),
-                        R.id.dialogTitle,
-                        R.id.dialogMessage,
-                        getString(R.string.ok)
-                );
+                DialogUtils.dialogTituloEntendi(FavoritasActivity.this,
+                        getString(R.string.apostas_favoritas),
+                        getString(R.string.label_new_favorita_no_carrinho));
             }
 
             @Override
@@ -562,7 +565,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         ParametroJogoDTO parametroJogo = getParametroJogo(modalidadeEnum, SessaoUsuario.getInstance().getParametrosSimulacao().getParametros());
 
         if (parametroJogo != null) {
-            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimulaActivity.class);
             intent.putExtra("tipoAposta", modalidadeEnum);
             intent.putExtra("modalidade", (new Gson()).toJson(parametroJogo));
             intent.putExtra("especial", false);

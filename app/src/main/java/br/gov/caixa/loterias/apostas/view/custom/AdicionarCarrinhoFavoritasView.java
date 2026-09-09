@@ -93,16 +93,14 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         TextView selectText = view.findViewById(R.id.selecioneText);
         selectText.requestFocus();
         selectText.setHint(getString(R.string.titulo));
-
-        picker_tipo_concurso                    = view.findViewById(R.id.picker_tipo_concurso);
-        adicionarCarrinhoFavoritosButton        = view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
+        picker_tipo_concurso = view.findViewById(R.id.picker_tipo_concurso);
+        adicionarCarrinhoFavoritosButton = view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
         cancelarModalFavoritosAddCarrinhoButton = view.findViewById(R.id.cancelarModalFavoritosAddCarrinhoButton);
-        selecioneConcursoButton                 = view.findViewById(R.id.selecioneConcursoButton);
-        selecioneQntTeimosinhaButton            = view.findViewById(R.id.selecioneQntTeimosinhaButton);
-        checkBox                                = view.findViewById(R.id.checkbox_aposta_espelho);
-
+        selecioneConcursoButton = view.findViewById(R.id.selecioneConcursoButton);
         selecioneConcursoButton.setHint("Recolhido");
+        selecioneQntTeimosinhaButton = view.findViewById(R.id.selecioneQntTeimosinhaButton);
         selecioneQntTeimosinhaButton.setHint("Recolhido");
+        checkBox = view.findViewById(R.id.checkbox_aposta_espelho);
 
         if (txtBotao != null){
             adicionarCarrinhoFavoritosButton.setText(txtBotao);
@@ -116,6 +114,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
                     && (arrayConcursos.get( 0 ).getParametroJogo().getTeimosinhas().size()) > 0 ){
                 selecioneConcursoButton.setVisibility( View.GONE );
                 apresentaQtdTeimosinha(TipoConcursoEnum.NORMAL);
+                habilitaBotaoAdicionar(true);
             }
         } else {
             if(arrayConcursos.get( 0 ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL
@@ -163,8 +162,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
 
         selecioneQntTeimosinhaButton.setOnClickListener(view1 -> {
-            habilitaBotaoAdicionar(true);
-            if (picker_qnt_teimosinhas.getVisibility() == View.VISIBLE && selecioneQntTeimosinhaButton.getHint().equals("Expandido")) {
+            if (picker_qnt_teimosinhas.getVisibility() == View.VISIBLE) {
                 selecioneQntTeimosinhaButton.setHint("Recolhido");
                 setarAlturaConteudo(0, picker_qnt_teimosinhas);
                 picker_qnt_teimosinhas.setVisibility(View.GONE);
@@ -220,14 +218,22 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     private void setPickerTeimosinhas(Integer position, View view){
         picker_qnt_teimosinhas = view.findViewById(R.id.picker_qnt_teimosinhas);
         listaTeimosinhas = new ArrayList<>();
-        for (int i= 0;  i < arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().size(); i++){
-            listaTeimosinhas.add( arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().get( i ).toString() );
+        for ( int i = 0;  i < arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().size(); i++ ){
+            if (isDadosValidos(arrayConcursos.get(position))) {
+                listaTeimosinhas.add( arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().get( i ).toString() );
+            }
         }
         picker_qnt_teimosinhas.setDisplayedValues(null);
         picker_qnt_teimosinhas.setMinValue(0);
         picker_qnt_teimosinhas.setMaxValue(listaTeimosinhas.size()-1);
         picker_qnt_teimosinhas.setDisplayedValues( listaTeimosinhas.toArray(new String[listaTeimosinhas.size()]));
         picker_qnt_teimosinhas.refreshDrawableState();
+    }
+
+    private boolean isDadosValidos(ParametroSimulacao parametroSimulacao) {
+        return parametroSimulacao != null & parametroSimulacao.getParametroJogo() != null &&
+                parametroSimulacao.getParametroJogo().getTeimosinhas() != null &&
+                !parametroSimulacao.getParametroJogo().getTeimosinhas().isEmpty();
     }
 
     private void setarAlturaConteudo(Integer alturaConteudo, final View view){

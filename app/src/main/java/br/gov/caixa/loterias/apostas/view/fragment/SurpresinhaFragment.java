@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
@@ -35,9 +35,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
@@ -255,7 +257,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             atualizaBotoesQtdTrevos();
         }
 
-        Button botaoAdicionarSurpresinhaAoCarrinho = parentActivity.getBotaoAdicionarCompletarCartela();
+        MaterialButton botaoAdicionarSurpresinhaAoCarrinho = parentActivity.getBotaoAdicionarCompletarCartela();
         //botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
         botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
         botaoAdicionarSurpresinhaAoCarrinho.setOnClickListener(this);
@@ -360,6 +362,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     public void adicionarSurpresinhaNoCarrinho() {
         IncluirSurpresinhaDTO surpresinha;
+        AnalyticsHelper.getInstance().logSelectContent(
+                AnalyticsHelper.Tela.MONTAR_APOSTA,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                AnalyticsHelper.ContentCategoryParams.CONFIG,
+                ModalidadeEnum.fromString(tipoJogo),
+                String.format(Locale.getDefault(), "%d", qtdSurpresinhas)
+        );
         switch (parametroJogo.getConcurso().getModalidade()){
             case TIMEMANIA:
                 surpresinha = ApostaUtils.getSurpresinhaTimemania(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
@@ -383,6 +393,24 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         }
 
+        if (parametroJogo.getConcurso() != null && parametroJogo.getConcurso().getModalidade() != null
+            && parametroJogo.getConcurso().getNumero() != null) {
+            AnalyticsHelper.getInstance().logInteraction(
+                    AnalyticsHelper.EventCategoryParams.CTA,
+                    AnalyticsHelper.EventActionParams.CLICK,
+                    AnalyticsHelper.EventLabelParams.ADD_TO_CART,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                    AnalyticsHelper.Tela.MONTAR_APOSTA,
+                    ModalidadeEnum.fromString(parametroJogo.getConcurso().getModalidade()),
+                    parametroJogo.getConcurso().getNumero().toString(),
+                    String.valueOf(qtdSurpresinhas),
+                    String.valueOf(parentActivity.qtdDezenasPossiveisSelecionado),
+                    String.valueOf(parentActivity.qtdConcursoSelecionado),
+                    ViewUtils.getMoedaFormat(valorTotalAposta)
+            );
+        }
+
         model.addSurpresinhaCarrinho(surpresinha);
     }
 
@@ -394,9 +422,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.botaoAdicionarCompletarCartela: {
-                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
+                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
                     adicionarSurpresinhaNoCarrinho();
-                //}
+                }
             }
             break;
         }
@@ -435,6 +463,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             }
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
+            AnalyticsHelper.getInstance().logSelectContent(
+                    AnalyticsHelper.Tela.MONTAR_APOSTA,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                    AnalyticsHelper.ContentCategoryParams.CONFIG,
+                    ModalidadeEnum.fromString(tipoJogo),
+                    String.format(Locale.getDefault(), "%d", qtdSurpresinhas)
+            );
         }
     }
 
@@ -448,6 +484,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
         btnMenosSurpresinha.setBackgroundTintList(getCor(corFonteFundoBranco));
+        AnalyticsHelper.getInstance().logSelectContent(
+                AnalyticsHelper.Tela.MONTAR_APOSTA,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.APOSTA_SIMPLES,
+                AnalyticsHelper.ContentCategoryParams.CONFIG,
+                ModalidadeEnum.fromString(tipoJogo),
+                String.format(Locale.getDefault(), "%d", qtdSurpresinhas)
+        );
 
     }
 
@@ -460,7 +504,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
         if 	((qtdTrevos > (2)) && (!isAvisouT))
         {
-            ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
+            DialogUtils.dialogEntendi(
+                    getActivity(),
+                    getString(R.string.msg_qtd_max_ultrapassada_milionaria)
+            );
             isAvisouT = true;
         }
 
@@ -487,7 +534,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         parentActivity.atualizaTextoBotoesQtdSelecionadas();
         if 	((getQtdNumeros > (6)) && (!isAvisouN))
         {
-            ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+           DialogUtils.dialogEntendi(
+                    getActivity(),
+                    getString(R.string.msg_qtd_max_ultrapassada)
+            );
             isAvisouN = true;
         }
 

@@ -44,6 +44,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
@@ -51,6 +52,7 @@ import br.gov.caixa.loterias.apostas.model.enums.TipoConsultaFiltroApostasEnum;
 import br.gov.caixa.loterias.apostas.model.model.ApostaConfirmadaModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.BoundariesInterface;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
@@ -61,16 +63,19 @@ import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 
 /**
  * Created by pmotta on 13/03/2018.
  * Class MinhasApostasActivity
  */
 
-public class MinhasApostasActivity extends AppCompatActivity {
+public class MinhasApostasActivity extends AppCompatActivity implements BoundariesInterface, OnSomadorListener {
 
 	private static final String CONFIRMADAS_FRAGMENT = "ConfirmadasFragment";
 	private static final String HISTORICO_FRAGMENT = "HistoricoFragment";
+	public static final String CAIXA_ACTION = "com.loterias.caixa";
 	private Dialog dialogFiltrar;
 	private ExpandableListView listViewFiltro;
 	private FiltroApostasAdapter filtroAdapter;
@@ -87,6 +92,10 @@ public class MinhasApostasActivity extends AppCompatActivity {
 	private ConfigConsultaDTO configConsulta;
 	private BotoesFiltroApostas botoesFiltroApostas;
 
+	private View somadorCarrinhoView;
+
+	private SomadorCarrinhoFragment somadorCarrinhoFragment;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_apostas_confirmadas);
@@ -100,6 +109,8 @@ public class MinhasApostasActivity extends AppCompatActivity {
 	}
 
 	private void setViews() {
+		this.somadorCarrinhoView = findViewById(R.id.id_fg_somador_carrinho);
+		somadorCarrinhoView.setOnClickListener(view -> vaiProCarrinho());
 		this.toolbar = findViewById(R.id.toolbar);
 		this.btnDuvidas = findViewById(R.id.ib_duvidas);
 		this.btnFiltro = findViewById(R.id.ib_filtrar);
@@ -114,10 +125,44 @@ public class MinhasApostasActivity extends AppCompatActivity {
 		//btnHistoricoApostas.setOnClickListener(view -> historicoApostasBtn()); Funcionalidade desabilitada, apenas mantido para referência futura
 	}
 
+	private void fragmentSomadorCarrinho() {
+		if(somadorCarrinhoFragment == null){
+			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment,R.id.id_fg_somador_carrinho,"TELA CONFIRMACAO INCLUSAO");
+		}
+	}
+
+	protected void vaiProCarrinho() {
+		if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
+			startActivity(new Intent(MinhasApostasActivity.this, CarrinhoActivity.class));
+		}
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		setupScrollView();
+		fragmentSomadorCarrinho();
+	}
+
+
+	private void somadorCarrinhoVisibility() {
+		if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.getQuantidadeApostas() > 0) {
+			somadorCarrinhoView.setVisibility(View.VISIBLE);
+		} else {
+			somadorCarrinhoView.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
+	public void outDialogEntendiListener() {
+		fragmentSomadorCarrinho();
+		somadorCarrinhoVisibility();
+		somadorCarrinhoFragment.atualizaCarrinho();
+	}
+
+	@Override
+	public void atualizaDados(CarrinhoDTO carrinho) {
+		somadorCarrinhoVisibility();
 	}
 
 	public interface OnScrollReachBottomListener {
@@ -274,7 +319,7 @@ public class MinhasApostasActivity extends AppCompatActivity {
 		//expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
 
 //		LinkedHashMap<Integer,String> mapSituacoes;
-//		if (ConfiguracaoAppSingleton.getInstance().isMicroServico()) {
+//		if (SharedPreferencesUtils.getValorBoolean(SingletonEnum.IS_MICRO_SERVICO.get(), SingletonDefaultEnum.IS_MICRO_SERVICO.asBoolean())) {
 //			mapSituacoes = SituacoesApostaFiltroEnum.getSituacoesMicroServico();
 //		} else {
 //			mapSituacoes = SituacoesApostaFiltroEnum.getSituacoes();
@@ -386,6 +431,11 @@ public class MinhasApostasActivity extends AppCompatActivity {
 	}
 
 	private void setaApostasFragment() {
+
+		if(isDestroyed() || isFinishing()){
+			return;
+		}
+
 		try {
 			btnFiltro.setVisibility(View.VISIBLE);
 			Fragment frag = getSupportFragmentManager().findFragmentByTag(CONFIRMADAS_FRAGMENT);
@@ -396,7 +446,7 @@ public class MinhasApostasActivity extends AppCompatActivity {
 
 			getSupportFragmentManager().beginTransaction()
 									   .replace(R.id.container, frag, CONFIRMADAS_FRAGMENT)
-									   .commit();
+									   .commitAllowingStateLoss();
 
 			getSupportFragmentManager().executePendingTransactions();
 			fragmentApostas = (ApostasConfirmadasFragment) frag;
@@ -442,7 +492,7 @@ public class MinhasApostasActivity extends AppCompatActivity {
 						}else if(result.getPayload().getMapa().getUrlBase().endsWith("/v2")) {
 							setConfiguracoesMicroServico(result);
 						}else {
-							if(BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")){
+							if(BuildConfig.DEBUG && !(BuildConfig.FLAVOR.equalsIgnoreCase("prd"))){
 								setConfiguracoesMicroServico(result);
 							}else {
 								setConfiguracoesSilce();
@@ -526,7 +576,6 @@ public class MinhasApostasActivity extends AppCompatActivity {
 	}
 
 	private boolean finalCPFAcessaNovaApi() {
-
 		int finalCpf = SharedPreferencesUtils.getValorInt(ConfiguracoesEnum.GRUPO_CPF_NOVA_API.get(), ConfiguracoesDefaultEnum.GRUPO_CPF_NOVA_API.asInt());
 
 		if (finalCpf == 0) {

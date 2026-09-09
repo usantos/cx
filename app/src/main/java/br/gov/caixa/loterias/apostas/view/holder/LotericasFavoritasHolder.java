@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemLotericaFavoritaListener;
 
 public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO> implements View.OnClickListener {
@@ -73,7 +75,7 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
             case R.id.ic_lixeira: {
                 String excluirFavorita = "Deseja excluir xxx da sua lista de favoritas?";
 
-                final int pos = getAbsoluteAdapterPosition();
+                final int pos = getBindingAdapterPosition();
                 if (pos == RecyclerView.NO_POSITION) {
                     break;
                 }
@@ -81,32 +83,22 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
                 final String nome = nomeLoterica.getText().toString();
                 final String mensagem = excluirFavorita.replace("xxx", nome);
 
-                DialogInterface.OnClickListener positive = (dialogInterface, which) -> {
-                    listener.excluir(this, pos);
-                    dialogInterface.dismiss();
-                };
-
-                DialogInterface.OnClickListener negative = (dialogInterface, which) -> {
-                    dialogInterface.dismiss();
-                };
-
-                AlertDialog dialog = ViewUtils.dialogoNew(
-                        activity,
-                        "Atenção",
-                        mensagem,
-                        positive,
-                        negative,
-                        R.string.cancelar,
-                        R.string.confirmar
-                );
-
-                dialog.show();
+				DialogUtils.dialogConfirmar(
+						activity,
+						mensagem,
+						new OnDialogBotaoListener() {
+							@Override
+							public void onButtonClick(DialogInterface dialog, int which) {
+								listener.excluir(LotericasFavoritasHolder.this, pos);
+							}
+						}
+				);
 
                 break;
             }
 
             case R.id.ver_bolao:
-				listener.verBoloes(this, getAbsoluteAdapterPosition());
+				listener.verBoloes(this, getBindingAdapterPosition());
 				break;
 		}
 	}

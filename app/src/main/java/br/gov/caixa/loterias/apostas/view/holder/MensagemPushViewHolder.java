@@ -15,6 +15,7 @@ import com.daimajia.swipe.SwipeLayout;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.MessagePush;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnMensagemPushListener;
 
@@ -175,8 +176,10 @@ public class MensagemPushViewHolder extends LoteriasHolder<MessagePush> implemen
 				listener.share(position);
 				break;
 			case R.id.buttonMsgExpandida:
-				ViewUtils.alert(contentTextView.getContext(),
-								contentTextView.getResources().getString(R.string.msg_push_botaocategoria));
+				DialogUtils.dialogEntendi(
+						contentTextView.getContext(),
+						contentTextView.getResources().getString(R.string.msg_push_botaocategoria)
+				);
 				break;
 			case R.id.btn_msg_eliminar:
 				listener.delete(position);

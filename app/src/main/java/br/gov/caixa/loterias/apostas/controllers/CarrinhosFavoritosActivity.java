@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import static br.gov.caixa.loterias.apostas.controllers.DetalhesCarrinhoFavoritoActivity.ID_CARRINHO;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
@@ -33,6 +35,8 @@ import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhosFavoritosAdapter;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 import br.gov.caixa.loterias.apostas.view.listener.OnCarrinhosFavoritosClickListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 
 public class CarrinhosFavoritosActivity extends LoteriasBaseAppActivity {
 	private final static int AMBAS = 0;
@@ -133,9 +137,9 @@ public class CarrinhosFavoritosActivity extends LoteriasBaseAppActivity {
 
 			@Override
 			public void onTransformaCarrinho(int position) {
-				//if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(CarrinhosFavoritosActivity.this)) {
+				if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(CarrinhosFavoritosActivity.this)) {
 					transformaCarrinho(position);
-				//}
+				}
 			}
 
 			@Override
@@ -156,10 +160,52 @@ public class CarrinhosFavoritosActivity extends LoteriasBaseAppActivity {
 				} else {
 					adapter.setListaApostasCarrinho(result);
 					if (adapter.temApostaEspecial() >= 2) {
-						dialogSegmentedControl = DialogUtils.showDialogSegmentedControl(CarrinhosFavoritosActivity.this,
-								adapter.getModadlidadeNormal(),
-								adapter.getModalidadeEspecial(),
-								opcaoSelecionada -> chamaTransformarCarrinho(idCarrinho, opcaoSelecionada));
+
+						String descricao = getString(R.string.carrinho_fav_segmented_desc);
+						descricao = descricao.replace("{modalidade}", adapter.getModadlidadeNormal());
+
+						List<String> list = new ArrayList();
+						list.add(0, "Ambas");
+						list.add(1, adapter.getModadlidadeNormal());
+						list.add(2, adapter.getModalidadeEspecial());
+
+						// Armazena a opção selecionada pelo usuário (-1 = nenhuma seleção)
+						final int[] opcaoSelecionada = {-1};
+
+						DialogUtils.showDialogListItensNovo(
+								CarrinhosFavoritosActivity.this,
+								"Atenção",
+								descricao,
+								"",
+								list,
+								"Confirmar",
+								"Cancelar",
+								new OnDialogListener() {
+									@Override
+									public void itemSelecionado(int position) {
+										opcaoSelecionada[0] = position;
+									}
+
+									@Override
+									public void ok(int position) {
+										if (opcaoSelecionada[0] == -1) {
+											// Nenhum item foi selecionado, alerta o usuário
+											DialogUtils.dialogEntendi(
+													CarrinhosFavoritosActivity.this,
+													"Nenhuma opção selecionada"
+											);
+											return;
+										}
+										chamaTransformarCarrinho(idCarrinho, opcaoSelecionada[0]);
+									}
+
+									@Override
+									public void cancelar() {
+										//Sem ação, apenas fechar o dialog
+									}
+								}
+
+						);
 					} else {
 						chamaTransformarCarrinho(idCarrinho, AMBAS);
 					}
@@ -203,11 +249,17 @@ public class CarrinhosFavoritosActivity extends LoteriasBaseAppActivity {
 	}
 
 	private void excluirCarrinho(int position) {
-		ViewUtils.alertTitleButtonYesOrNotListener(CarrinhosFavoritosActivity.this,
-				getResources().getString(R.string.carrinho_fav_deseja_excluir), (dialogInterface, i) -> {
-			AlertDialogUtils.show(CarrinhosFavoritosActivity.this);
-			model.excluirCarrinho(model.getIdCarrinhoByPosition(position), onExcluirCarrinhoListener());
-		});
+		DialogUtils.dialogSim(CarrinhosFavoritosActivity.this,
+				getResources().getString(R.string.carrinho_fav_deseja_excluir),
+
+				new OnDialogBotaoListener() {
+					@Override
+					public void onButtonClick(DialogInterface dialog, int which) {
+						AlertDialogUtils.show(CarrinhosFavoritosActivity.this);
+						model.excluirCarrinho(model.getIdCarrinhoByPosition(position), onExcluirCarrinhoListener());
+					}
+				}
+		);
 	}
 
 	private OnSilceListener<List<CarrinhoFavoritoDTO>> onExcluirCarrinhoListener() {
@@ -229,12 +281,15 @@ public class CarrinhosFavoritosActivity extends LoteriasBaseAppActivity {
 		if(!model.existeCarrinho(model.getIdCarrinhoByPosition(position))){
 			buscaApostas(null, null, false, model.getIdCarrinhoByPosition(position));
 		}else {
-			ViewUtils.alertTitleCustomPositiveListener(
-					this,
-					getString(R.string.cancelar), getString(R.string.carrinho_fav_incluir_carrinho),
+			DialogUtils.dialogSim(CarrinhosFavoritosActivity.this,
 					getString(R.string.carrinho_favorito_ja_adicionado),
-					(dialogInterface, i) ->
-							buscaApostas(null, null, false, model.getIdCarrinhoByPosition(position))
+
+					new OnDialogBotaoListener() {
+						@Override
+						public void onButtonClick(DialogInterface dialog, int which) {
+							buscaApostas(null, null, false, model.getIdCarrinhoByPosition(position));
+						}
+					}
 			);
 		}
 	}

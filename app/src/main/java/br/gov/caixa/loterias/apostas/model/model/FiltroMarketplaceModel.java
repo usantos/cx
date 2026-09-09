@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 
 public class FiltroMarketplaceModel extends AppModel{
 	public FiltroMarketplaceModel(Activity activity) {
@@ -51,12 +52,14 @@ public class FiltroMarketplaceModel extends AppModel{
 	public FiltroAplicadoMarketplace getFiltroAplicado(LotericaDTO selectLotericaDTO, String valorMin, String valorMax,
 													   Integer qtdMin, Integer qtdMax, Integer qtdDezenas, String numerosQuero,
 													   String numerosNaoQuero, ModalidadeEnum selectModalidade,
-													   TipoConcursoEnum selectTipoConcurso) {
-		return new FiltroAplicadoMarketplace(
+													   TipoConcursoEnum selectTipoConcurso, boolean todasModalidadesAtiva) {
+		FiltroAplicadoMarketplace filtro = new FiltroAplicadoMarketplace(
 				selectLotericaDTO,
 				valorMin.replace(".","").replace(",","."),
 				valorMax.replace(".","").replace(",","."),
 				qtdMin, qtdMax, qtdDezenas, numerosQuero, numerosNaoQuero, selectModalidade, selectTipoConcurso);
+		filtro.setTodasModalidades(todasModalidadesAtiva);
+		return filtro;
 	}
 
 	public enum PrognosticosMaximosQueroNaoQuero{

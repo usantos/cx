@@ -17,11 +17,18 @@
     <color name="black_overlay">#66000000</color>
     <color name="blackText">#22292E</color>
     <color name="branco">#ffffff</color>
+    <color name="lightRed">#FEF3F4</color>
     <color name="laranja">#d87b00</color>
+    <color name="divisor_cinza_escuro">#647479</color>
     <color name="branco_transparente">#99ffffff</color>
     <color name="cinza">#48586c</color>
+    <color name="cinza_grafite">#3f4b52</color>
+    <color name="cinza_grafite_2">#3a4859</color>
+    <color name="grafite">#637A97</color>
     <color name="linhaDivisa">#d0e0e3</color>
+    <color name="linhaLoteca">#AFCACF</color>
     <color name="fundoApostas">#f7fafa</color>
+    <color name="disabled">#f7fafa</color>
     <color name="cinza2">#d4dfe2</color>
     <color name="cinzaClaro">#EBF2F4</color>
     <color name="cinzaclaro">#eff5f6</color>
@@ -63,6 +70,7 @@
     <color name="lotomaniaEscuroToolBar">#f99d1c</color>
     <color name="timemaniamediaescuro">#B6B128</color>
     <color name="timemaniaClaroToolBar">#BEB92A</color>
+    <color name="timemaniaCorTexto">#2D8563</color>
     <color name="azulescuro">#3964a4</color>
     <color name="azulTexto">#004c8c</color>
     <color name="azulFormNovoTipoPagamento">#005cad</color>
@@ -138,8 +146,12 @@
     <color name="jr_nvl_4">#2C4F8B</color>
 
     <color name="verde_tutorial">#008254</color>
+    <color name="verde_item_supersete">#008254</color>
+    <color name="cinza130_supersete">#3f4b52</color>
     <color name="cinza_tutorial">#47586C</color>
     <color name="cinza_borda">#C4C4C4</color>
+    <color name="botao_desabilitado">#cfdfe2</color>
+    <color name="cinza_item_desabilitado">#767f8b</color>
     <color name="azul_mercado_pago">#50B4E9</color>
     <color name="laranja_recarga_pay">#FE8832</color>
     <color name="verde_pix">#32BCAD</color>
@@ -159,8 +171,20 @@
     <color name="amarelo_favoritado">#FDB932</color>
 
     <color name="vermelho_dialog">#F60E0E</color>
+    <color name="vermelho_erro">#b12b2b</color>
     <color name="vermelho_borda_dialog">#D15973</color>
     <color name="azul_alterar">#004680</color>
+    <color name="cinza_titulo_jogo_loteca">#3f4b52</color>
+    <color name="azul_neptune">#165285</color>
+    <color name="campo_desabilitado">#F3F5F5</color>
+    <color name="azul_caixa">#006BB6</color>
+    <color name="azul_header_caixa">#0865AE</color>
+    <color name="cinza_texto">#3F4B55</color>]
+    <color name="cinza_hint">#788994</color>
+    <color name="cinza_texto_desabilitado">#9BB0BA</color>
+    <color name="cinza_divisor">#E7ECEF</color>
+
+    <color name="verde_divisor_sucesso">#57C6BE</color>
 
     <!--Disque 180 -->
     <color name="rosa_radio_text">#E781A6</color>
@@ -216,6 +240,8 @@
     <color name="dia_sorte_claro_mkp">#E3C021</color>
     <color name="dia_sorte_escuro_mkp">#AE9319</color>
     <color name="dia_sorte_letra_mkp">#7E6906</color>
+    <color name="dia_sorte_letra_fundo_escuro_mkp">#038041</color>
+    <color name="dia_sorte_cor_mkp">#AE9318</color>
     <color name="super_sete_claro_mkp">#BED730</color>
     <color name="super_sete_escuro_mkp">#839F38</color>
     <color name="super_sete_letra_mkp">#038141</color>
@@ -224,6 +250,7 @@
     <color name="timemania_letra_mkp">#038141</color>
     <color name="loteca_claro_mkp">#ED1C24</color>
     <color name="loteca_escuro_mkp">#C61017</color>
+    <color name="loteca_numbers">#8C2424</color>
     <color name="mega_verde_opaco_mkp">#0F885C</color>
     <color name="bolao_azul_subtitulo">#095A9C</color>
     <color name="cor_bola_unselected">#ADC0C4</color>
@@ -258,9 +285,13 @@
     <color name="background_detalhe_combo">#FAFAFA </color>
     <color name="azul_detalhe_combo">#3162A4</color>
 
+    <color name="laranjaLoto">#FDF1E6</color>
+
     <!-- Apostas favoritas -->
     <color name="cinza130">#22292E</color>
     <color name="cinza110">#404B52</color>
     <color name="cinza90">#64747A</color>
-
+    <color name="cinza70">#9EB2B8</color>
+    <color name="cinza30">#EBF1F2</color>
+    <color name="cinza_corner">#F0F2F2</color>
 </resources>

@@ -1,21 +1,23 @@
 package br.gov.caixa.loterias.apostas.utils.helper;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -28,7 +30,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity;
+import br.gov.caixa.loterias.apostas.view.activity.ResultadoApostaConfirmadaActivity;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
@@ -47,15 +49,19 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
-import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
+import br.gov.caixa.loterias.apostas.utils.SelecaoConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
 
@@ -87,6 +93,8 @@ public class DetalhesMinhasApostasButtonHelper {
         ConstraintLayout comprovanteLayout = activity.findViewById(R.id.comprovanteLayout);
         ImageView salvarApostaImg = activity.findViewById(R.id.salvarApostaImg);
 
+        setAccessibility(carrinhoApostasBtn);
+
         favoritadoLayout = activity.findViewById(R.id.favoritadoLayout);
         favoriteBtn = activity.findViewById(R.id.favoriteBtn);
         layoutTextoSalveAposta  = activity.findViewById(R.id.layoutTextoSalveAposta);
@@ -112,6 +120,19 @@ public class DetalhesMinhasApostasButtonHelper {
         favoriteBtn.setOnClickListener(v-> favoriteBtn());
         favoritadoLayout.setOnClickListener(v -> favoritadoLayout());
         layoutTextoSalveAposta.setOnClickListener(v -> layoutTextoSalveAposta());
+    }
+
+    private void setAccessibility(RelativeLayout carrinhoApostasBtn) {
+        ViewCompat.setAccessibilityDelegate(carrinhoApostasBtn, new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+
+                info.setClassName(android.widget.Button.class.getName());
+                info.setClickable(true);
+                info.addAction(AccessibilityNodeInfoCompat.ACTION_CLICK);
+            }
+        });
     }
 
     public void setupDTO(ComprovanteApostaDTO comprovanteApostaDTO, DetalhesPremioDTO detalhesPremioDTO, IdentificaoDeUmaApostaDas8Modalidades aposta) {
@@ -140,9 +161,8 @@ public class DetalhesMinhasApostasButtonHelper {
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }
-                Bundle args = new Bundle();
-                args.putSerializable(CARRINHO, (Serializable) response.getPayload());
-                activity.startActivity(new Intent(activity, CarrinhoActivity.class).putExtras(args));
+                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+                activity.startActivity(new Intent(activity, CarrinhoActivity.class));
             }
 
             @Override
@@ -157,15 +177,15 @@ public class DetalhesMinhasApostasButtonHelper {
         });
     }
     private void editarApostaBtn() {
-        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(true, "Editar Aposta"));
+        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(true));
     }
     private void adicionarCarrinhoBtn() {
-        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false, "Adicionar ao\n carrinho"));
+        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false));
     }
     private void goToEditarAposta(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
-            Intent intent = IntentUtil.getIntentOrigemDestino(activity, SimularApostaActivity.class);
-            intent.putExtra(SimularApostaActivity.APOSTA_EXTRA, ((Serializable) aposta));
+            Intent intent = IntentUtil.getIntentOrigemDestino(activity, SimulaActivity.class);
+            intent.putExtra(SimulaActivity.APOSTA_EXTRA, aposta);
             intent.putExtra("tipoAposta", ((Serializable) aposta.getModalidade()));
             intent.putExtra("modalidade", ((Serializable) (new Gson()).toJson(parametroSimulacaoTrocado.getParametroJogo())));
             intent.putExtra("especial", isEspecial(aposta.getTipoConcurso().getValor()));
@@ -173,14 +193,12 @@ public class DetalhesMinhasApostasButtonHelper {
         }
     }
 
-    private OnModalidadesAbertasListener onChegagemModalidadesListener(boolean isEditing, String btnText){
+    private OnModalidadesAbertasListener onChegagemModalidadesListener(boolean isEditing){
         return new OnModalidadesAbertasListener() {
             @Override
             public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
-                AppCompatActivity appCompatActivity = (AppCompatActivity) activity;
-                DialogFragmentUtils.startEscolhaModalidade(appCompatActivity.getSupportFragmentManager(), arrayConcursos, aposta.getId(),
-                        activity.getResources().getString(R.string.adicionar_carrinho_favoritas_view), btnText,false, false,
-                        (tipoConcurso, teimosinha, espelho) -> {
+                SelecaoConcursoUtils.selecionarConcurso(activity, arrayConcursos,
+                        (tipoConcurso) -> {
                             IdentificaoDeUmaApostaDas8Modalidades clone = aposta;
                             if (!tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())) {
                                 clone = ApostaUtils.converteTipoDeConcurso(aposta);
@@ -197,7 +215,10 @@ public class DetalhesMinhasApostasButtonHelper {
             @Override
             public void ambasFechadas() {
                 AlertDialogUtils.dismiss();
-                ViewUtils.alertTitulo(activity, R.string.label_atencao,"Modalidade não disponível no momento.");
+                DialogUtils.dialogEntendi(
+                        activity,
+                        "Modalidade não disponível no momento."
+                );
             }
 
             @Override
@@ -211,15 +232,22 @@ public class DetalhesMinhasApostasButtonHelper {
                 } else {
                     String msg = MensagemUtils.getMensagemConverteModalidade(aposta.getModalidade(), aposta.getTipoConcurso().getValor());
 
-                    ViewUtils.alertTitleButtonPositiveListener(activity, R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
-                        IdentificaoDeUmaApostaDas8Modalidades clone =  ApostaUtils.converteTipoDeConcurso(aposta);
-                        parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, clone.getModalidade(), clone.getTipoConcurso().getValor());
-                        if (isEditing){
-                            goToEditarAposta(clone);
-                        } else {
-                            adicionaApostaCarrinho(clone);
-                        }
-                    });
+                    DialogUtils.dialogConfirmar(
+                            activity,
+                            msg,
+                            new OnDialogBotaoListener() {
+                                @Override
+                                public void onButtonClick(DialogInterface dialog, int which) {
+                                    IdentificaoDeUmaApostaDas8Modalidades clone =  ApostaUtils.converteTipoDeConcurso(aposta);
+                                    parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, clone.getModalidade(), clone.getTipoConcurso().getValor());
+                                    if (isEditing){
+                                        goToEditarAposta(clone);
+                                    } else {
+                                        adicionaApostaCarrinho(clone);
+                                    }
+                                }
+                            }
+                    );
                 }
             }
         };
@@ -359,7 +387,10 @@ public class DetalhesMinhasApostasButtonHelper {
             model.validaAposta(apostaFavoritaDTO, onValidaApostaListener());
 
         } else {
-            ViewUtils.alert(activity, activity.getString(R.string.msg_favor_inserir_nome_aposta));
+            DialogUtils.dialogEntendi(
+                    activity,
+                    activity.getString(R.string.msg_favor_inserir_nome_aposta)
+            );
         }
     }
     private OnSilceListener<NetworkResponse> onValidaApostaListener() {
@@ -373,10 +404,16 @@ public class DetalhesMinhasApostasButtonHelper {
             public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
                 if(isErroNegocial(error)){
-                    ViewUtils.alertTitleButtonYesOrNotListener(activity,
+                    DialogUtils.dialogSim(
+                            activity,
                             MensagensNetwork.getErrorMessage(error),
-                            (dialogInterface, i) ->
-                                    salvarAposta());
+                            new OnDialogBotaoListener() {
+                                @Override
+                                public void onButtonClick(DialogInterface dialog, int which) {
+                                    salvarAposta();
+                                }
+                            }
+                    );
                 } else {
                     RedirectNetwork.checkRedirect(error, activity);
                 };

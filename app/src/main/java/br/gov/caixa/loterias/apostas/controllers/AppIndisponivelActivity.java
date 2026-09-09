@@ -28,10 +28,11 @@ import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
 
@@ -51,7 +52,7 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
         atualizaMsg();
         setaMetodos();
 
-        if (!BuildConfig.FLAVOR.equals("prd")) {
+        if (!(BuildConfig.FLAVOR.equals("prd"))){
             //Ambiente Selecao
             ambienteSpinner.setVisibility(View.VISIBLE);
             AmbienteEnum[] ambienteEnums = AmbienteEnum.values();
@@ -81,16 +82,16 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
         }
 
     private void showAlertAndExit(AmbienteEnum selectedAmbiete) {
-        new android.app.AlertDialog.Builder(AppIndisponivelActivity.this)
-                .setTitle("Mudança de Ambiente")
-                .setMessage("O aplicativo será encerrado para aplicar as mudanças de ambeinte.")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        DialogUtils.dialogTituloEntendiListener(AppIndisponivelActivity.this,
+                "Mudança de Ambiente",
+                "O aplicativo será encerrado para aplicar as mudanças de ambiente.",
+                new OnDialogBotaoListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onButtonClick(DialogInterface dialog, int which) {
                         finishAffinity();
                     }
-                })
-                .show();
+                }
+        );
     }
 
     private void setaViews(){
@@ -127,7 +128,7 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
                             public void success(ParametrosSimulacao payload) {
                                 if (payload.getParametros().isEmpty()) {
                                     loadViewProgress.dismiss();
-                                    ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.nao_concluiu_operacao));
+                                    DialogUtils.dialogEntendi(AppIndisponivelActivity.this, getResources().getString(R.string.nao_concluiu_operacao));
                                 } else {
                                     SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
                                     loadViewProgress.dismiss();

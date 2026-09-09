@@ -234,8 +234,6 @@ public class ViewUtils {
         context.startActivity(i);
     }
 
-
-
     public static AlertDialog dialogoNewEntendi(Context context, int tituloResId, int layoutId, String mensagem) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -272,7 +270,6 @@ public class ViewUtils {
 
         return dialog;
     }
-
 
     public static AlertDialog.Builder dialogo(Context context, String titulo, String mensagem) {
 
@@ -383,7 +380,7 @@ public class ViewUtils {
                 listenerNo,
                 R.string.label_nao,
                 R.string.label_sim
-                );
+        );
         dialog.show();
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
@@ -399,10 +396,10 @@ public class ViewUtils {
                                                           DialogInterface.OnClickListener listenerYes,
                                                           DialogInterface.OnClickListener  listenerNo) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
-                                 .setCancelable(false)
-                                 .setNegativeButton (R.string.label_nao, listenerNo)
-                                 .setPositiveButton(R.string.label_sim, listenerYes)
-                                 .show();
+                .setCancelable(false)
+                .setNegativeButton (R.string.label_nao, listenerNo)
+                .setPositiveButton(R.string.label_sim, listenerYes)
+                .show();
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
@@ -415,10 +412,10 @@ public class ViewUtils {
                                                           String positiveButton, DialogInterface.OnClickListener listenerYes,
                                                           String negativeButton, DialogInterface.OnClickListener  listenerNo) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
-                                 .setCancelable(false)
-                                 .setNegativeButton (negativeButton, listenerNo)
-                                 .setPositiveButton(positiveButton, listenerYes)
-                                 .show();
+                .setCancelable(false)
+                .setNegativeButton (negativeButton, listenerNo)
+                .setPositiveButton(positiveButton, listenerYes)
+                .show();
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
@@ -429,9 +426,9 @@ public class ViewUtils {
 
     public static Dialog alertTitleButtonYesListener(Context context, String message, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
-                                 .setCancelable(false)
-                                 .setPositiveButton(R.string.ok, listener)
-                                 .show();
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok, listener)
+                .show();
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
@@ -483,10 +480,10 @@ public class ViewUtils {
 
     public static Dialog alertTitleCustomPositiveListener(Context context,String title,String negativeButton, String positiveButton, String message, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, title, message)
-                                 .setCancelable(false)
-                                 .setNegativeButton (negativeButton, (dialogInterface, i) -> dialogInterface.dismiss())
-                                 .setPositiveButton(positiveButton, listener)
-                                 .create();
+                .setCancelable(false)
+                .setNegativeButton (negativeButton, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(positiveButton, listener)
+                .create();
         return dialog;
     }
 

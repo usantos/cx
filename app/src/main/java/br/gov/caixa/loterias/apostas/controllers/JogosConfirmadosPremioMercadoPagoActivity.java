@@ -33,8 +33,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
+import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ValidacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -106,10 +108,11 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends LoteriasBaseAppAc
         resgatarPremioButton.setOnClickListener(view -> {
 
             if (!ValidacaoUtils.validarEmail(emailPremioMercadoPagoEditText.getText().toString())) {
-                ViewUtils.alertTitleButton(JogosConfirmadosPremioMercadoPagoActivity.this,
-                                           R.string.label_atencao,
-                                           getResources().getString(R.string.MA021),
-                                           getResources().getString(R.string.ok));
+                DialogUtils.dialogEntendi(
+                        JogosConfirmadosPremioMercadoPagoActivity.this,
+                        getResources().getString(R.string.MA021)
+                );
+
                 return;
             }
             callWebserviceResgatarPremio();
@@ -119,12 +122,14 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends LoteriasBaseAppAc
         voltarPremioButton.setOnClickListener(view -> {
             Intent intent = IntentUtil.getIntentOrigemDestino(JogosConfirmadosPremioMercadoPagoActivity.this, PrincipalActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("ORIGEM_TELA", "MERCADO");
             startActivity(intent);
         });
 
         resgatarNovoPremioButton.setOnClickListener(view ->{
             Intent intent = IntentUtil.getIntentOrigemDestino(JogosConfirmadosPremioMercadoPagoActivity.this, MinhasApostasActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("ORIGEM_TELA", "MERCADO");
             startActivity(intent);
         });
     }
@@ -154,13 +159,15 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends LoteriasBaseAppAc
                 viewCinzaBottom.setLayoutParams(layoutParams);
                 textoPremioConfirmado.setText(getResources().getString(R.string.email_enviado_para) + emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.com_o_passo_a_passo));
                 comprovanteLayout.setVisibility(View.VISIBLE);
+                RateUtils.solicitarReview(JogosConfirmadosPremioMercadoPagoActivity.this);
 
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 getSupportActionBar().setHomeButtonEnabled(false);
                 //((TextView) findViewById(R.id.voltarPremioButton)).setText(ViewUtils.textCaixaSTDBold(getApplicationContext(), getString(R.string.btn_title_voltarAoInicio)));
 
                 if(response.getPayload() != null && response.getPayload().equals("MI053") || response.getPayload().equals("MIO53")){
-                    ViewUtils.alertTitulo(JogosConfirmadosPremioMercadoPagoActivity.this, R.string.label_atencao, getResources().getString(R.string.MI053));
+//                    ViewUtils.alertTitulo(JogosConfirmadosPremioMercadoPagoActivity.this, R.string.label_atencao, getResources().getString(R.string.MI053));
+                    DialogUtils.dialogEntendi(JogosConfirmadosPremioMercadoPagoActivity.this, getResources().getString(R.string.MI053));
                 }
 
                 comprovanteLayout.setOnClickListener(view -> {

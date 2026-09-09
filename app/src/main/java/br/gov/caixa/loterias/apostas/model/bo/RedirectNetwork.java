@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -37,9 +38,12 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 
 
 /**
@@ -50,12 +54,18 @@ public class  RedirectNetwork {
 
     private static void  verificaRedirectTermo(Activity activity){
         if (!activity.getClass().equals(TermosUsoActivity.class)) {
-            ViewUtils.alertTitleButtonYesListener(activity,
-                                                  activity.getResources().getString(R.string.termo_novo),
-                                                  (dialogInterface, i) -> activity.startActivityForResult(
-                                                          new Intent(activity, TermosUsoActivity.class),
-                                                          1)
-                                                 );
+            DialogUtils.dialogEntendiListener(
+                    activity,
+                    activity.getResources().getString(R.string.termo_novo),
+                    new OnDialogBotaoListener() {
+                        @Override
+                        public void onButtonClick(DialogInterface dialog, int which) {
+                              activity.startActivityForResult(
+                              new Intent(activity, TermosUsoActivity.class),
+                              1);
+                        }
+                    }
+            );
         }
     }
 
@@ -66,11 +76,17 @@ public class  RedirectNetwork {
 
             if (!AppUtils.isNetworkAvailable(activity)) {
                 if (activity != null && !activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
-                    ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
+                    DialogUtils.dialogEntendi(
+                            activity,
+                            activity.getResources().getString(R.string.seminternet)
+                    );
                 }
                 return;
             } else {
-                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), activity.getResources().getString(R.string.ok));
+                DialogUtils.dialogEntendi(
+                        activity,
+                        MensagensNetwork.setMensagem(error, activity)
+                );
                 return;
             }
         }
@@ -150,7 +166,10 @@ public class  RedirectNetwork {
             AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO, error);
             if (!AppUtils.isNetworkAvailable(activity)) {
                 if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
-                    ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
+                    DialogUtils.dialogEntendi(
+                            activity,
+                            activity.getResources().getString(R.string.seminternet)
+                    );
                 }
                 return;
             } else {
@@ -158,8 +177,10 @@ public class  RedirectNetwork {
                 if (msg.equalsIgnoreCase(activity.getString(R.string.sistema_indisponivel))) {
                     showAlertToRedirectMinhasCompras(activity);
                 } else {
-                    ViewUtils.alertTitleButton(activity, R.string.label_atencao, msg,
-                            activity.getResources().getString(R.string.ok));
+                    DialogUtils.dialogEntendi(
+                            activity,
+                            msg
+                    );
                 }
                 return;
             }
@@ -230,11 +251,16 @@ public class  RedirectNetwork {
     }
 
     private static void showAlertToRedirectMinhasCompras(Activity activity){
-        ViewUtils.alertTitleButtonYesListener(activity,
-                                              activity.getResources().getString(R.string.verificamos_compra_demorando_ou_processando),
-                                              (dialog, which) -> {
-                                                  goToMinhasCompras(activity);
-                                              });
+        DialogUtils.dialogEntendiListener(
+                activity,
+                activity.getResources().getString(R.string.verificamos_compra_demorando_ou_processando),
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        goToMinhasCompras(activity);
+                    }
+                }
+        );
     }
 
     private static void goToMinhasCompras(Activity activity){
@@ -261,7 +287,10 @@ public class  RedirectNetwork {
                     if (activity.getClass() != AppIndisponivelActivity.class) {
                         activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
                     } else {
-                        ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> {});
+                        DialogUtils.dialogEntendi(
+                                activity,
+                                activity.getResources().getString(R.string.nao_concluiu_operacao)
+                        );
                     }
                     return;
                 case CARRINHO:
@@ -277,7 +306,10 @@ public class  RedirectNetwork {
             }
         } catch (Exception e){
             AppCenterManager.registraEventoErro(AppCenterManager.ERRO_RESPONSE, errorResponse);
-            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> {});
+            DialogUtils.dialogEntendi(
+                    activity,
+                    activity.getResources().getString(R.string.nao_concluiu_operacao)
+            );
         }
     }
 
@@ -292,16 +324,22 @@ public class  RedirectNetwork {
                 if (errorResponse != null) {
                     if (errorResponse.getRedirect() != null) {
                         if (errorResponse.getCodigo() != null && errorResponse.getCodigo().equals("002020")) {
-                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, errorResponse.getMensagem(),
-                                    "Ok", dialogInterface -> {
-                                        AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_logout_sucesso));
-                                        new LoginSSOModel(activity).sair(LoginActivity.class, () -> {});
-                                        DadosUsuarioBO.updateUsuarioLogado(activity, false);
-                                        activity.finish();
-                                        dialogInterface.dismiss();
-                                        //return;
+                            DialogUtils.dialogEntendiListener(
+                                    activity,
+                                    errorResponse.getMensagem(),
+                                    new OnDialogBotaoListener() {
+                                        @Override
+                                        public void onButtonClick(DialogInterface dialog, int which) {
+                                            AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_logout_sucesso));
+                                            new LoginSSOModel(activity).sair(LoginActivity.class, () -> {});
+                                            DadosUsuarioBO.updateUsuarioLogado(activity, false);
+                                            activity.finish();
+                                            dialog.dismiss();
+                                            //return;
+                                        }
                                     }
                             );
+
                             return true;
                         }
                     }
@@ -317,11 +355,16 @@ public class  RedirectNetwork {
         if (SessaoUsuario.getInstance().getSituacaoApostador() != null &&
             SessaoUsuario.getInstance().getSituacaoApostador().getEnum() != null && //Servico Nuvem (Erro)
             SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
-            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getString(R.string.usuario_bloqueio_parcial),
-                    "Ok", dialogInterface -> {
-                        activity.finish();
-                        dialogInterface.dismiss();
-                        return;
+            DialogUtils.dialogEntendiListener(
+                    activity,
+                    activity.getString(R.string.usuario_bloqueio_parcial),
+                    new OnDialogBotaoListener() {
+                        @Override
+                        public void onButtonClick(DialogInterface dialog, int which) {
+                            activity.finish();
+                            dialog.dismiss();
+                            return;
+                        }
                     }
             );
             return;
@@ -335,24 +378,45 @@ public class  RedirectNetwork {
                 case "011010":
                 case "011011":
                 case "011012":
-                    ViewUtils.alertTitleCustomPositiveListener(activity, "Ok", "Apostar mais",
-                                                               MensagensNetwork.setMensagem(volleyError, activity), (dialog, which) -> {
-                                //PrincipalActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
-                                Intent intent = IntentUtil.getIntentOrigemDestino(activity, PrincipalActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                activity.startActivity(intent);
-                            });
+                    DialogUtils.dialogDoisBotoesPersonalizados(
+                            activity,
+                            "Atenção",
+                            MensagensNetwork.setMensagem(volleyError, activity),
+                            "Apostar mais",
+                            "Entendi",
+                            new OnDialogDoisBotoesListener() {
+                                @Override
+                                public void PositiveButton(DialogInterface dialog, int which) {
+                                    //PrincipalActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                                    Intent intent = IntentUtil.getIntentOrigemDestino(activity, PrincipalActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    activity.startActivity(intent);
+                                }
+
+                                @Override
+                                public void NegativeButton(DialogInterface dialog, int which) {
+                                        //Sem ação, dialog.dismiss() já é chamado automaticamente após clicar no botão
+                                }
+                            }
+                    );
+
                     break;
                 case "018003":
                     enviaRegistrarMp(activity, volleyError);
                     break;
                 default:
-                    ViewUtils.alertTitleButton(activity, R.string.label_atencao, montarMensgem(activity, MensagensNetwork.setMensagem(volleyError, activity), error.getCodigo()), "Ok", dialog -> {});
+                    DialogUtils.dialogEntendi(
+                            activity,
+                            montarMensgem(activity, MensagensNetwork.setMensagem(volleyError, activity), error.getCodigo())
+                    );
                     break;
 
             }
         }else {
-            ViewUtils.alertTitleButton(activity, R.string.label_atencao, montarMensgem(activity, MensagensNetwork.setMensagem(volleyError, activity), error.getCodigo()), "Ok", dialog -> {});
+            DialogUtils.dialogEntendi(
+                    activity,
+                    montarMensgem(activity, MensagensNetwork.setMensagem(volleyError, activity), error.getCodigo())
+            );
         }
     }
 
@@ -386,9 +450,15 @@ public class  RedirectNetwork {
         } else {
             try {
                 if (activity != null) {
-                    ViewUtils.alert(activity, activity.getString(R.string.seminternet));
+                    DialogUtils.dialogEntendi(
+                            activity,
+                            activity.getString(R.string.seminternet)
+                    );
                 } else if (Aplicacao.application.getBaseContext() != null){
-                    ViewUtils.alert(Aplicacao.application.getBaseContext(), Aplicacao.application.getBaseContext().getString(R.string.seminternet));
+                    DialogUtils.dialogEntendi(
+                            Aplicacao.application.getBaseContext(),
+                            Aplicacao.application.getBaseContext().getString(R.string.seminternet)
+                    );
                 }
             } catch (Exception e){}
         }
@@ -397,7 +467,10 @@ public class  RedirectNetwork {
     public static void trataErro500(Activity activity, ErrorResponse error){
         if (error != null) {
             if (error.getCodigo() != null && error.getCodigo().equalsIgnoreCase("2067")) {
-                ViewUtils.alert(activity, MercadoPagoUtil.getMessageFromCode("2067"));
+                DialogUtils.dialogEntendi(
+                        activity,
+                        MercadoPagoUtil.getMessageFromCode("2067")
+                );
             } else if (error.getTipo() != null && error.getTipo().equalsIgnoreCase("1")) {
                 apresentaAlerta(activity, montarMensgem(activity, error.getMensagem(), error.getCodigo()));
             } else {
@@ -422,21 +495,24 @@ public class  RedirectNetwork {
     }
 
     private static void apresentaAlerta(Activity activity, String mensagem) {
-        ViewUtils.alertTitleButton(
+        DialogUtils.dialogEntendi(
                 activity,
-                R.string.label_atencao,
-                mensagem,
-                activity.getResources().getString( R.string.ok ) );
+                mensagem
+        );
     }
 
     private static void enviaRegistrarMp(Activity activity, VolleyError volleyError){
-        ViewUtils.alertTitleButtonYesOrNotListener(
+        DialogUtils.dialogSim(
                 activity,
                 MensagensNetwork.setMensagem(volleyError, activity),
-                (dialogInterface, i) -> {
-                    JogosConfirmadosPremioMercadoPagoActivity jcpmpa = ((JogosConfirmadosPremioMercadoPagoActivity)activity);
-                    jcpmpa.redirectMp();
-                });
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        JogosConfirmadosPremioMercadoPagoActivity jcpmpa = ((JogosConfirmadosPremioMercadoPagoActivity)activity);
+                        jcpmpa.redirectMp();
+                    }
+                }
+        );
     }
 
     private static void enviaEmail(Activity activity, ErrorResponse error) {
