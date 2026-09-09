@@ -1621,6 +1621,29 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         boolean antesEmpate = partida.isEmpate();
         boolean antesEquipe2 = partida.getEquipe2().isSelecionado();
 
+        int quantidadeAtual = 0;
+        if (antesEquipe1) {
+            quantidadeAtual++;
+        }
+        if (antesEmpate) {
+            quantidadeAtual++;
+        }
+        if (antesEquipe2) {
+            quantidadeAtual++;
+        }
+
+        if (quantidadeAtual > 0
+                && quantidade >= quantidadeAtual
+                && aplicarSelecaoAleatoriaPreservandoExistentes(
+                partida,
+                quantidade,
+                random
+        )) {
+            return antesEquipe1 != partida.getEquipe1().isSelecionado()
+                    || antesEmpate != partida.isEmpate()
+                    || antesEquipe2 != partida.getEquipe2().isSelecionado();
+        }
+
         limparSelecoesDaPartida(partida);
 
         if (quantidade >= 3) {
@@ -1647,6 +1670,64 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         return antesEquipe1 != partida.getEquipe1().isSelecionado()
                 || antesEmpate != partida.isEmpate()
                 || antesEquipe2 != partida.getEquipe2().isSelecionado();
+    }
+
+    private boolean aplicarSelecaoAleatoriaPreservandoExistentes(
+            ParametroPartida partida,
+            int quantidade,
+            Random random
+    ) {
+        List<Integer> selecionadas = new ArrayList<>(3);
+        List<Integer> livres = new ArrayList<>(3);
+
+        if (partida.getEquipe1().isSelecionado()) {
+            selecionadas.add(0);
+        } else {
+            livres.add(0);
+        }
+
+        if (partida.isEmpate()) {
+            selecionadas.add(1);
+        } else {
+            livres.add(1);
+        }
+
+        if (partida.getEquipe2().isSelecionado()) {
+            selecionadas.add(2);
+        } else {
+            livres.add(2);
+        }
+
+        if (quantidade < selecionadas.size()) {
+            return false;
+        }
+
+        Collections.shuffle(livres, random);
+
+        while (selecionadas.size() < quantidade && !livres.isEmpty()) {
+            selecionadas.add(livres.remove(0));
+        }
+
+        if (selecionadas.size() != quantidade) {
+            return false;
+        }
+
+        aplicarSelecaoNaPartida(partida, selecionadas);
+        atualizarContadoresPartida(partida, quantidade);
+        return true;
+    }
+
+    private void aplicarSelecaoNaPartida(
+            ParametroPartida partida,
+            List<Integer> selecoes
+    ) {
+        boolean selecionarEquipe1 = selecoes.contains(0);
+        boolean selecionarEmpate = selecoes.contains(1);
+        boolean selecionarEquipe2 = selecoes.contains(2);
+
+        partida.getEquipe1().setSelecionado(selecionarEquipe1);
+        partida.setEmpate(selecionarEmpate);
+        partida.getEquipe2().setSelecionado(selecionarEquipe2);
     }
 
     private void atualizarContadoresPartida(
