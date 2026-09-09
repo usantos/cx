@@ -105,7 +105,11 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		this.concursoListaComprasTextView.setTextColor(colorText);
 
 		this.statusResultadoApostaListaComprasTextView.setText(aposta.getSituacao().getDescricao());
-		this.statusResultadoApostaListaComprasTextView.setTextColor(itemView.getContext().getResources().getColor(estiloMKP.getCorFonteFundoClaro()));
+		if (EspecialUtils.isParametrosOutubroRosa() && aposta.getModalidade() == ModalidadeEnum.MEGA_SENA){
+			this.statusResultadoApostaListaComprasTextView.setTextColor(itemView.getContext().getResources().getColor(estiloMKP.getCorFonteFundoEscuro()));
+		} else {
+			this.statusResultadoApostaListaComprasTextView.setTextColor(itemView.getContext().getResources().getColor(estiloMKP.getCorFonteFundoClaro()));
+		}
 
 		this.topListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estiloMKP.getCorClara()));
 
@@ -136,7 +140,11 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		//TipoApostaLinha
 		if (listTipoApostaLinha.size() > 0) {
 			tipoApostaLinhaView.setVisibility(View.VISIBLE);
-			tipoApostaLinhaView.setupView(listTipoApostaLinha, estiloMKP.getCorEscura(), estiloMKP.getCorFonteFundoClaro(), estiloMKP.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.UP);
+			if (EspecialUtils.isParametrosOutubroRosa() && aposta.getModalidade() == ModalidadeEnum.MEGA_SENA){
+				tipoApostaLinhaView.setupView(listTipoApostaLinha, estiloMKP.getCorEscura(), estiloMKP.getCorFonteFundoEscuro(), estiloMKP.getCorFonteFundoEscuro(), TipoApostaLinhaView.TriangleDirection.UP);
+			} else {
+				tipoApostaLinhaView.setupView(listTipoApostaLinha, estiloMKP.getCorEscura(), estiloMKP.getCorFonteFundoClaro(), estiloMKP.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.UP);
+			}
 		}
 
 		View child = null;

@@ -12,11 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Shape;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -85,7 +85,13 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
         //this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
         //numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
         //this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
-        setupGridNumeros(recyclerNumerosResultado,Shape.NO_SHAPE,numberOfColumns, StringUtils.formatToStringList(modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio()),getContext().getColor(estilo.getCorFonteFundoClaro()), Color.TRANSPARENT, Color.TRANSPARENT);
+        int color;
+        if (EspecialUtils.isParametrosOutubroRosa() && modalidade.getTipoModalidade() == ModalidadeEnum.MEGA_SENA){
+            color = getContext().getColor(estilo.getCorFonteFundoEscuro());
+        } else {
+            color = getContext().getColor(estilo.getCorFonteFundoClaro());
+        }
+        setupGridNumeros(recyclerNumerosResultado,Shape.NO_SHAPE,numberOfColumns, StringUtils.formatToStringList(modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio()), color, Color.TRANSPARENT, Color.TRANSPARENT);
 
         if(modalidade.getNome().equalsIgnoreCase("Mais Milionária".toLowerCase())){
             tvTrevos.setVisibility(VISIBLE);
