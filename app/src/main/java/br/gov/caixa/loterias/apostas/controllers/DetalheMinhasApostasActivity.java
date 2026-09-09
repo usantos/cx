@@ -115,7 +115,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
     //Botoes
     DetalhesMinhasApostasButtonHelper detalhesMinhasApostasButtonHelper;
-    ConstraintLayout clbottons;
+    ConstraintLayout clbottons, clLotecaAcertos, clLotecaPremio;
     LinearLayout llAdicFav;
 
     @Override
@@ -280,8 +280,10 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         llLegendaButton = findViewById(R.id.ll_legenda_button);
         vLinhaLoteca = findViewById(R.id.v_linha_loteca);
         vLinhaLoteca2 = findViewById(R.id.v_linha_loteca2);
+        clLotecaAcertos = findViewById(R.id.cl_loteca_acertos);
         tvLabelLotecaAcertos = findViewById(R.id.tv_label_loteca_acertos);
         tvLotecaAcertos = findViewById(R.id.tv_loteca_acertos);
+        clLotecaPremio = findViewById(R.id.cl_loteca_premio);
         tvLabelLotecaPremio = findViewById(R.id.tv_label_loteca_premio);
         tvLotecaPremio = findViewById(R.id.tv_loteca_premio);
         vLinhaLoteca3 = findViewById(R.id.v_linha_loteca3);
@@ -1025,7 +1027,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     private void preencheCentroLoteca() {
         //Top
         cl_loteca_top.setVisibility(View.VISIBLE);
-        llLegendaButton.setOnClickListener(v-> dialogLegendaLoteca());
+        llLegendaButton.setOnClickListener(v-> DialogUtils.dialogLegendaLoteca(this));
 
         RecyclerView recyclerView = findViewById(R.id.rv_centro_detalhe_minhas_apostas);
         if (isBolao()) {
@@ -1049,16 +1051,20 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             } else {
                 tvLotecaAcertos.setText(calculaAcertos(getResultadoConcurso(), getPartidas()));
             }
+            clLotecaAcertos.setContentDescription(getString(R.string.label_acertos_dois_pontos)+","+tvLotecaAcertos.getText().toString());
+
 
             if (chamaServicoApostaDetalhePremio(aposta)) {
-                tvLabelLotecaPremio.setVisibility(View.VISIBLE);
-                tvLotecaPremio.setVisibility(View.VISIBLE);
+                clLotecaPremio.setVisibility(View.VISIBLE);
+                //tvLabelLotecaPremio.setVisibility(View.VISIBLE);
+                //tvLotecaPremio.setVisibility(View.VISIBLE);
 
                 BigDecimal valorPremio = BigDecimal.ZERO;
                 if (detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null) {
                     valorPremio = detalhesPremioDTO.getPremio().getValorLiquido();
                 }
                 tvLotecaPremio.setText(ViewUtils.getMoedaFormat(valorPremio));
+                clLotecaPremio.setContentDescription(getString(R.string.label_premio_dois_pontos)+","+tvLotecaPremio.getText().toString());
             }
         }
     }
@@ -1104,35 +1110,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             }
         }
         return acertosString;
-    }
-
-    private void dialogLegendaLoteca() {
-
-        if (isFinishing()) return;
-
-        View view = LayoutInflater.from(this)
-                .inflate(R.layout.dialog_legenda_loteca, null);
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(view)
-                .setCancelable(false)
-                .create();
-
-        Button btnFechar = view.findViewById(R.id.btnFechar);
-        btnFechar.setOnClickListener(v -> dialog.dismiss());
-
-        try {
-            dialog.show();
-        } catch (Exception e) {
-            return;
-        }
-
-        if (dialog.getWindow() != null) {
-            int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
-            dialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        }
-
     }
 
 }

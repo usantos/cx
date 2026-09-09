@@ -40,6 +40,10 @@ public class ParametroJogoDTO implements Serializable {
     protected Integer quantidadeMinima = null;
     @SerializedName("quantidadeMaxima")
     protected Integer quantidadeMaxima = null;
+    @SerializedName("qtdeMinimaApostaBolaoFiltro")
+    protected Integer qtdeMinimaApostaBolaoFiltro = null;
+    @SerializedName("qtdeMaximaApostaBolaoFiltro")
+    protected Integer qtdeMaximaApostaBolaoFiltro = null;
     @SerializedName("quantidadeSurpresinhas")
     protected Integer quantidadeSurpresinhas = null;
     @SerializedName("teimosinhas")
@@ -148,6 +152,22 @@ public class ParametroJogoDTO implements Serializable {
 
     public void setQuantidadeMaxima(Integer quantidadeMaxima) {
         this.quantidadeMaxima = quantidadeMaxima;
+    }
+
+    public Integer getQtdeMinimaApostaBolaoFiltro() {
+        return qtdeMinimaApostaBolaoFiltro;
+    }
+
+    public void setQtdeMinimaApostaBolaoFiltro(Integer qtdeMinimaApostaBolaoFiltro) {
+        this.qtdeMinimaApostaBolaoFiltro = qtdeMinimaApostaBolaoFiltro;
+    }
+
+    public Integer getQtdeMaximaApostaBolaoFiltro() {
+        return qtdeMaximaApostaBolaoFiltro;
+    }
+
+    public void setQtdeMaximaApostaBolaoFiltro(Integer qtdeMaximaApostaBolaoFiltro) {
+        this.qtdeMaximaApostaBolaoFiltro = qtdeMaximaApostaBolaoFiltro;
     }
 
     /**
@@ -276,6 +296,8 @@ public class ParametroJogoDTO implements Serializable {
                 (this.prognosticoMaximo == null ? parametroJogoDTO.prognosticoMaximo == null : this.prognosticoMaximo.equals(parametroJogoDTO.prognosticoMaximo)) &&
                 (this.quantidadeMinima == null ? parametroJogoDTO.quantidadeMinima == null : this.quantidadeMinima.equals(parametroJogoDTO.quantidadeMinima)) &&
                 (this.quantidadeMaxima == null ? parametroJogoDTO.quantidadeMaxima == null : this.quantidadeMaxima.equals(parametroJogoDTO.quantidadeMaxima)) &&
+                (this.qtdeMinimaApostaBolaoFiltro == null ? parametroJogoDTO.qtdeMinimaApostaBolaoFiltro == null : this.qtdeMinimaApostaBolaoFiltro.equals(parametroJogoDTO.qtdeMinimaApostaBolaoFiltro)) &&
+                (this.qtdeMaximaApostaBolaoFiltro == null ? parametroJogoDTO.qtdeMaximaApostaBolaoFiltro == null : this.qtdeMaximaApostaBolaoFiltro.equals(parametroJogoDTO.qtdeMaximaApostaBolaoFiltro)) &&
                 (this.quantidadeSurpresinhas == null ? parametroJogoDTO.quantidadeSurpresinhas == null : this.quantidadeSurpresinhas.equals(parametroJogoDTO.quantidadeSurpresinhas)) &&
                 (this.teimosinhas == null ? parametroJogoDTO.teimosinhas == null : this.teimosinhas.equals(parametroJogoDTO.teimosinhas)) &&
                 (this.valoresAposta == null ? parametroJogoDTO.valoresAposta == null : this.valoresAposta.equals(parametroJogoDTO.valoresAposta)) &&
@@ -296,6 +318,8 @@ public class ParametroJogoDTO implements Serializable {
         result = 31 * result + (this.prognosticoMaximo == null ? 0 : this.prognosticoMaximo.hashCode());
         result = 31 * result + (this.quantidadeMinima == null ? 0 : this.quantidadeMinima.hashCode());
         result = 31 * result + (this.quantidadeMaxima == null ? 0 : this.quantidadeMaxima.hashCode());
+        result = 31 * result + (this.qtdeMinimaApostaBolaoFiltro == null ? 0 : this.qtdeMinimaApostaBolaoFiltro.hashCode());
+        result = 31 * result + (this.qtdeMaximaApostaBolaoFiltro == null ? 0 : this.qtdeMaximaApostaBolaoFiltro.hashCode());
         result = 31 * result + (this.quantidadeSurpresinhas == null ? 0 : this.quantidadeSurpresinhas.hashCode());
         result = 31 * result + (this.teimosinhas == null ? 0 : this.teimosinhas.hashCode());
         result = 31 * result + (this.valoresAposta == null ? 0 : this.valoresAposta.hashCode());
@@ -318,6 +342,8 @@ public class ParametroJogoDTO implements Serializable {
                 "  prognosticoMaximo: " + prognosticoMaximo + "\n" +
                 "  quantidadeMinima: " + quantidadeMinima + "\n" +
                 "  quantidadeMaxima: " + quantidadeMaxima + "\n" +
+                "  qtdeMinimaApostaBolaoFiltro: " + qtdeMinimaApostaBolaoFiltro + "\n" +
+                "  qtdeMaximaApostaBolaoFiltro: " + qtdeMaximaApostaBolaoFiltro + "\n" +
                 "  quantidadeSurpresinhas: " + quantidadeSurpresinhas + "\n" +
                 "  teimosinhas: " + teimosinhas + "\n" +
                 "  valoresAposta: " + valoresAposta + "\n" +
