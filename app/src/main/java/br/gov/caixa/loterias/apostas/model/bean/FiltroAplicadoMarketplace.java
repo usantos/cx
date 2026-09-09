@@ -12,6 +12,7 @@ public class FiltroAplicadoMarketplace implements Serializable {
     private String valorMaximoAposta;
     private Integer qtdMinCotas;
     private Integer qtdMaxCotas;
+    private Integer qtdApostas;
     private Integer qtdDezenas;
     private String numerosQuero;
     private String numerosNaoQuero;
@@ -32,11 +33,12 @@ public class FiltroAplicadoMarketplace implements Serializable {
         this.todasModalidades = todasModalidades;
     }
 
-    public FiltroAplicadoMarketplace(LotericaDTO lotericaDTO, String valorMinimoAposta, String valorMaximoAposta, Integer qtdMinCotas, Integer qtdMaxCotas, Integer qtdDezenas, String numerosQuero, String numerosNaoQuero, ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
+    public FiltroAplicadoMarketplace(LotericaDTO lotericaDTO, String valorMinimoAposta, String valorMaximoAposta, Integer qtdMinCotas, Integer qtdMaxCotas, Integer qtdApostas, Integer qtdDezenas, String numerosQuero, String numerosNaoQuero, ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
         this.valorMinimoAposta = valorMinimoAposta;
         this.valorMaximoAposta = valorMaximoAposta;
         this.qtdMinCotas = qtdMinCotas;
         this.qtdMaxCotas = qtdMaxCotas;
+        this.qtdApostas = qtdApostas;
         this.qtdDezenas = qtdDezenas;
         this.numerosQuero = numerosQuero;
         this.numerosNaoQuero = numerosNaoQuero;
@@ -89,6 +91,14 @@ public class FiltroAplicadoMarketplace implements Serializable {
         return qtdDezenas;
     }
 
+    public Integer getQtdApostas() {
+        return qtdApostas;
+    }
+
+    public void setQtdApostas(Integer qtdApostas) {
+        this.qtdApostas = qtdApostas;
+    }
+
     public String getNumerosQuero() {
         return numerosQuero;
     }
@@ -139,6 +149,7 @@ public class FiltroAplicadoMarketplace implements Serializable {
                 && Objects.equals(valorMaximoAposta, that.valorMaximoAposta)
                 && Objects.equals(qtdMinCotas, that.qtdMinCotas)
                 && Objects.equals(qtdMaxCotas, that.qtdMaxCotas)
+                && Objects.equals(qtdApostas, that.qtdApostas)
                 && Objects.equals(qtdDezenas, that.qtdDezenas)
                 && Objects.equals(numerosQuero, that.numerosQuero)
                 && Objects.equals(numerosNaoQuero, that.numerosNaoQuero)
@@ -154,6 +165,7 @@ public class FiltroAplicadoMarketplace implements Serializable {
                 valorMaximoAposta,
                 qtdMinCotas,
                 qtdMaxCotas,
+                qtdApostas,
                 qtdDezenas,
                 numerosQuero,
                 numerosNaoQuero,
