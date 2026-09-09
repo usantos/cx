@@ -7,10 +7,23 @@ import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 
-public class ApostaIdentityKey {
+public final class ApostaIdentityKey {
+
+    private static final String NUMEROS = "|NUMEROS=";
+    private static final String TREVOS = "|TREVOS=";
+    private static final String TIME = "|TIME=";
+    private static final String MES = "|MES=";
+    private static final String MATRIZ = "|MATRIZ=";
+    private static final String SEP = "|";
+
+    private ApostaIdentityKey() {
+        // Classe utilitária para evitar instanciação
+    }
 
     public static String gerar(IdentificaoDeUmaApostaDas8Modalidades<?> aposta) {
 
@@ -51,7 +64,7 @@ public class ApostaIdentityKey {
             return sb.toString();
         }
         for (PartidaLotogolDTO partida : partidas) {
-            sb.append("|").append(String.valueOf(partida.getIndexPlacarEquipe1())).append("x").append(String.valueOf(partida.getIndexPlacarEquipe2()));
+            sb.append(SEP).append(partida.getIndexPlacarEquipe1()).append("x").append(partida.getIndexPlacarEquipe2());
         }
         return sb.toString();
     }
@@ -78,7 +91,8 @@ public class ApostaIdentityKey {
         
         for (PartidaLotecaDTO partida : partidas) {
             String array = getProg(partida);
-            sb.append("|").append(partida.getNumero()).append("=").append(array);
+            String numero = partida.getNumero() != null ? String.valueOf(partida.getNumero()) : "";
+            sb.append(SEP).append(numero).append("=").append(array);
         }
         return sb.toString();
     }
@@ -99,31 +113,44 @@ public class ApostaIdentityKey {
     }
 
     private static String gerarDiaDeSorte(IdentificaoDeUmaApostaDas8Modalidades<?> aposta) {
-        return aposta.getModalidade() + "|NUMEROS=" + normalizar(aposta.getListaNumerosSelecionados()) + "|MES=" + String.valueOf(aposta.getMesDeSorte());
+        return aposta.getModalidade() + NUMEROS + normalizar(aposta.getListaNumerosSelecionados())
+                + MES + extrairNumeroMes(aposta.getMesDeSorte());
     }
 
     private static String gerarTimemania(IdentificaoDeUmaApostaDas8Modalidades<?> aposta) {
-        return aposta.getModalidade() + "|NUMEROS=" + normalizar(aposta.getListaNumerosSelecionados()) + "|TIME=" + String.valueOf(aposta.getTimeDoCoracao());
+        return aposta.getModalidade() + NUMEROS + normalizar(aposta.getListaNumerosSelecionados())
+                + TIME + extrairNumeroTime(aposta.getTimeDoCoracao());
+    }
+
+    private static String extrairNumeroMes(ParametroMesDeSorte mes) {
+        return mes != null && mes.getNumero() != null ? String.valueOf(mes.getNumero()) : "";
+    }
+
+    private static String extrairNumeroTime(ParametroEquipe time) {
+        return time != null && time.getNumero() != null ? String.valueOf(time.getNumero()) : "";
     }
 
     private static String gerarMaisMilionaria(IdentificaoDeUmaApostaDas8Modalidades<?> aposta) {
-        return aposta.getModalidade() + "|NUMEROS=" + normalizar(aposta.getListaNumerosSelecionados()) + "|TREVOS=" + normalizar(aposta.getTrevosSelecionados());
+        return aposta.getModalidade() + NUMEROS + normalizar(aposta.getListaNumerosSelecionados()) + TREVOS + normalizar(aposta.getTrevosSelecionados());
     }
 
     private static String gerarSuperSete(IdentificaoDeUmaApostaDas8Modalidades<?> aposta) {
+        ArrayList<ArrayList<Integer>> matriz = aposta.getMatrizNumerosSelecionados();
         List<List<Integer>> copia = new ArrayList<>();
-        for (List<Integer> coluna : aposta.getMatrizNumerosSelecionados()) {
-            copia.add(new ArrayList<>(coluna));
+        if (matriz != null) {
+            for (List<Integer> coluna : matriz) {
+                copia.add(coluna != null ? new ArrayList<>(coluna) : new ArrayList<>());
+            }
         }
 
-        return aposta.getModalidade() + "|MATRIZ=" + Utils.ordenaMatrizInteiro(copia);
+        return aposta.getModalidade() + MATRIZ + Utils.ordenaMatrizInteiro(copia);
     }
 
     private static String gerarNumeros(IdentificaoDeUmaApostaDas8Modalidades<?> aposta) {
 
         List<Integer> numeros = aposta.getListaNumerosSelecionados();
 
-        return aposta.getModalidade() + "|" + normalizar(numeros);
+        return aposta.getModalidade() + SEP + normalizar(numeros);
     }
 
     private static List<Integer> normalizar(List<Integer> valores) {
