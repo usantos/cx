@@ -22,7 +22,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
+import br.gov.caixa.loterias.apostas.utils.ApostasIdenticasSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.FilaBRAListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
@@ -43,6 +42,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
     private VersionResponse responseVersao;
 
     private FilaBRAManager filaBRAManager;
+    private ApostasIdenticasSingleton apostasIdenticasSingleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,9 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                 return;
             }
         }
+
+        apostasIdenticasSingleton = ApostasIdenticasSingleton.getInstance();
+        apostasIdenticasSingleton.setValidacaoInicialPendente(true);
 
         AppCenter.start(getApplication(), BuildConfigManager.getVariavel("APP_CENTER_KEY"), Analytics.class, Crashes.class);
 
