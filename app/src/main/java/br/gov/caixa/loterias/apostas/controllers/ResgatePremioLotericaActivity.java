@@ -29,9 +29,9 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
-import static br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity.CODIGO_RESGATE;
-import static br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity.COMPROVANTE;
-import static br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity.DETALHES;
+import static br.gov.caixa.loterias.apostas.view.activity.ResultadoApostaConfirmadaActivity.CODIGO_RESGATE;
+import static br.gov.caixa.loterias.apostas.view.activity.ResultadoApostaConfirmadaActivity.COMPROVANTE;
+import static br.gov.caixa.loterias.apostas.view.activity.ResultadoApostaConfirmadaActivity.DETALHES;
 
 public class ResgatePremioLotericaActivity extends LoteriasAppActivity {
 

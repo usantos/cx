@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -48,18 +49,20 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.FavoritaModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SelecaoModalidadesRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.ModalidadeHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaFavoritaListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 
@@ -87,6 +90,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     private TextView semModalidade;
     private TextView btnIncApostaFav;
     ImageButton customButton;
+    private boolean restaurarFiltroTodasAposRecarga;
 
     LinearLayout conteudoFiltro;
 
@@ -227,10 +231,15 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                 AlertDialogUtils.dismiss();
 
                 if (listaUnificada.size() == 0) {
+                    restaurarFiltroTodasAposRecarga = false;
                     telaSemApostas();
                     return;
                 }
 
+                if (restaurarFiltroTodasAposRecarga) {
+                    restaurarFiltroParaTodas();
+                    restaurarFiltroTodasAposRecarga = false;
+                }
                 model.setApostaList(listaUnificada);
 
                 recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
@@ -304,12 +313,17 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             @Override
             public void onDeleta(int position) {
                 String nomeFavorita = model.getApostaList().get(position).getNome();
-                AlertDialog dialog = ViewUtils.dialogoNew(FavoritasActivity.this,
-                        getString(R.string.label_atencao), getString(R.string.exclui_favorita).replace("xxx", nomeFavorita),
-                        (dialogInterface, i) -> {excluiApostaFavorita(position); dialogInterface.dismiss();},
-                        (dialogInterface, i) -> dialogInterface.dismiss()
-                ,R.string.label_nao,R.string.label_sim);
-                dialog.show();
+                DialogUtils.dialogSim(FavoritasActivity.this,
+                        getString(R.string.exclui_favorita).replace("xxx", nomeFavorita),
+
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                excluiApostaFavorita(position);
+                            }
+                        }
+                );
+
             }
 
             @Override
@@ -340,21 +354,28 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     public void removeAt(int position) {
         model.removeAposta(position);
         if (model.isListaVazia()) {
+            restaurarFiltroTodasAposRecarga = true;
             buscaServicos();
-            adapterModalidades.selecionaOPrimeiro();
-            adapterModalidades.limpaSelecaoModalidades();
-            listTipoAposta.get(0).setSelect(true);
-            desativaIncluirAposta();
-            filtrarModalidade();
-            textFiltroSelecionado.requestFocus();
-
-
-            textFiltroSelecionado.setText(listTipoAposta.get(0).getTitulo());
-            String descricao = getString(R.string.selecione_modalidade) + ":Botão:" + listTipoAposta.get(0).getTitulo() + "Selecionada";
-            conteudoFiltro.setContentDescription(descricao);
         }
-        favoritasAdapter.notifyItemRemoved(position);
-        favoritasAdapter.notifyItemRangeChanged(position, model.getApostaList().size());
+        if (favoritasAdapter != null) {
+            favoritasAdapter.notifyItemRemoved(position);
+            favoritasAdapter.notifyItemRangeChanged(position, model.getApostaList().size());
+        }
+    }
+
+    private void restaurarFiltroParaTodas() {
+        if (listTipoAposta == null || listTipoAposta.isEmpty()
+                || !TODAS.equalsIgnoreCase(listTipoAposta.get(0).getTitulo())) {
+            criaListTipoAposta(true);
+        }
+
+        for (int position = 0; position < listTipoAposta.size(); position++) {
+            listTipoAposta.get(position).setSelect(position == 0);
+        }
+
+        textFiltroSelecionado.setText(listTipoAposta.get(0).getTitulo());
+        conteudoFiltro.setContentDescription(getString(R.string.selecione_modalidade)
+                + ":Botão:" + listTipoAposta.get(0).getTitulo() + "Selecionada");
     }
 
     private OnSilceListener<CarrinhoDTO> onAddCarrinhoListener() {
@@ -366,15 +387,9 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                     CarrinhoSingleton.getInstance().setCarrinho(payload);
                 }
 
-                ViewUtils.alertCustomDismiss(
-                        FavoritasActivity.this,
-                        R.string.apostas_favoritas,
-                        R.layout.dialog_alert_new,
-                        getString(R.string.label_new_favorita_no_carrinho),
-                        R.id.dialogTitle,
-                        R.id.dialogMessage,
-                        getString(R.string.ok)
-                );
+                DialogUtils.dialogTituloEntendi(FavoritasActivity.this,
+                        getString(R.string.apostas_favoritas),
+                        getString(R.string.label_new_favorita_no_carrinho));
             }
 
             @Override
@@ -559,25 +574,37 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     private void redirecionaSimulador(int codModalidade) {
         ModalidadeEnum modalidadeEnum = ModalidadeEnum.fromInteger(codModalidade);
 
-        ParametroJogoDTO parametroJogo = getParametroJogo(modalidadeEnum, SessaoUsuario.getInstance().getParametrosSimulacao().getParametros());
+        ParametroJogoDTO parametroJogo = getParametroJogoPreferencial(modalidadeEnum, SessaoUsuario.getInstance().getParametrosSimulacao().getParametros());
 
         if (parametroJogo != null) {
+            boolean isEspecial = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL;
             Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
             intent.putExtra("tipoAposta", modalidadeEnum);
             intent.putExtra("modalidade", (new Gson()).toJson(parametroJogo));
-            intent.putExtra("especial", false);
+            intent.putExtra("especial", isEspecial);
 
             startActivity(intent);
         }
         finish();
     }
-    private ParametroJogoDTO getParametroJogo(ModalidadeEnum modalidade, List<ParametroSimulacao> listParametroJogo) {
+    private ParametroJogoDTO getParametroJogoPreferencial(ModalidadeEnum modalidade, List<ParametroSimulacao> listParametroJogo) {
+        ParametroJogoDTO parametroEspecial = null;
+
         for (ParametroSimulacao parametroSimula : listParametroJogo) {
-            if (parametroSimula != null && parametroSimula.getParametroJogo().getConcurso().getModalidade() == modalidade) {
-                return parametroSimula.getParametroJogo();
+            if (parametroSimula != null
+                    && parametroSimula.getParametroJogo() != null
+                    && parametroSimula.getParametroJogo().getConcurso() != null
+                    && parametroSimula.getParametroJogo().getConcurso().getModalidade() == modalidade) {
+                TipoConcursoEnum tipoConcurso = parametroSimula.getParametroJogo().getConcurso().getTipoConcurso();
+                if (tipoConcurso == TipoConcursoEnum.NORMAL) {
+                    return parametroSimula.getParametroJogo();
+                }
+                if (tipoConcurso == TipoConcursoEnum.ESPECIAL) {
+                    parametroEspecial = parametroSimula.getParametroJogo();
+                }
             }
         }
-        return null;
+        return parametroEspecial;
     }
 
     private void ativaIncluirAposta(int codModalidade) {

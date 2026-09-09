@@ -43,6 +43,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PremiacaoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -245,7 +246,10 @@ public class VisualizarResultadosActivity extends LoteriasBaseAppActivity {
                 etPesquisar.setVisibility(View.GONE);
                 reestartActivity(etPesquisar.getText().toString(),ANIM_NULL);
             }else {
-                ViewUtils.alert(this,getString(R.string.resultados_validacao_concurso,String.valueOf(concursoAtual)));
+                DialogUtils.dialogEntendi(
+                        VisualizarResultadosActivity.this,
+                        getString(R.string.resultados_validacao_concurso,String.valueOf(concursoAtual))
+                );
             }
         }
     }

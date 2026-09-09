@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.utils.helper;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 
@@ -53,10 +54,13 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
 /**
@@ -257,20 +261,26 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void apresentaModalApostasRepetidas(ApostaOrigem origem) {
-        ViewUtils.alertTitleButtonYesOrNotListenerNew(AdicionarApostaCarrinhoHelper.activity, AdicionarApostaCarrinhoHelper.activity.getResources().getString(R.string.MA015),AdicionarApostaCarrinhoHelper.activity.getResources().getString(R.string.label_atencao), (dialog, which) -> {
-            switch (origem) {
-                case CARROSEL:
-                    postAdicionarApostaCarrinho(null);
-                    break;
-                case LISTA_APOSTA:
-                    postAdicionarApostaCarrinhoMinhasApostas();
-                    break;
-            }
-        },(dialog, which) ->{
+        DialogUtils.dialogSimNao(AdicionarApostaCarrinhoHelper.activity, activity.getResources().getString(R.string.MA015),
+                new OnDialogDoisBotoesListener() {
+                    @Override
+                    public void PositiveButton(DialogInterface dialog, int which) {
+                        switch (origem) {
+                            case CARROSEL:
+                                postAdicionarApostaCarrinho(null);
+                                break;
+                            case LISTA_APOSTA:
+                                postAdicionarApostaCarrinhoMinhasApostas();
+                                break;
+                        }
+                    }
 
-            AlertDialogUtils.dismiss();
-            dialog.dismiss();
-        } );
+                    @Override
+                    public void NegativeButton(DialogInterface dialog, int which) {
+                        AlertDialogUtils.dismiss();
+                    }
+                }
+         );
     }
 
     private static void telaConfirmarCarrinho(ModalidadeEnum modalidade, Object aposta) {
@@ -362,7 +372,7 @@ public class AdicionarApostaCarrinhoHelper {
         if (SessaoUsuario.getInstance().getParametrosSimulacao() != null &&
                 SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho() != null &&
                 quantidadeApostaCarrinho >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
-            ViewUtils.alert(contextParam, contextParam.getString(R.string.MA013));
+            DialogUtils.dialogEntendi(contextParam, contextParam.getString(R.string.MA013));
             return Boolean.FALSE;
         } else {
             if (aposta.getModalidade() == ModalidadeEnum.LOTOMANIA && aposta.getGerarApostaEspelho() && aposta.getNumerosSelecionados() != null) {
@@ -625,25 +635,27 @@ public class AdicionarApostaCarrinhoHelper {
 
     public static Boolean usuarioEstaSuspenso(Activity actv, int acaoPosDismiss) {
         if (SessaoUsuario.getInstance().getSuspensaoTemporariaApostador()) {
-            ViewUtils.alertTitleButton(actv, R.string.label_atencao,
-                    actv.getString(R.string.autosuspensao_alerta_nova),
-                    actv.getString(R.string.btn_entendi),
-                    dialogInterface -> {
-                        dialogInterface.dismiss();
-                        switch (acaoPosDismiss) {
-                            case 0:
-                                actv.finish();
-                                return;
-                            case 1:
-                                //PrincipalActivity_.intent(actv).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
-                                Intent intent = IntentUtil.getIntentOrigemDestino(actv, PrincipalActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                actv.startActivity(intent);
 
-                                actv.finish();
-                                return;
-                            default:
-                                return;
+            DialogUtils.dialogEntendiListener(actv, actv.getString(R.string.autosuspensao_alerta_nova),
+                    new OnDialogBotaoListener() {
+                        @Override
+                        public void onButtonClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            switch (acaoPosDismiss) {
+                                case 0:
+                                    actv.finish();
+                                    return;
+                                case 1:
+                                    //PrincipalActivity_.intent(actv).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                                    Intent intent = IntentUtil.getIntentOrigemDestino(actv, PrincipalActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    actv.startActivity(intent);
+
+                                    actv.finish();
+                                    return;
+                                default:
+                                    return;
+                            }
                         }
                     }
             );

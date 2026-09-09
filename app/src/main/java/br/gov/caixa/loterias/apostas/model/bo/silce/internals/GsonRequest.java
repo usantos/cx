@@ -12,105 +12,213 @@ import com.android.volley.toolbox.JsonRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
+    private static final String TAG = "GsonRequest";
     private final Gson gson = new Gson();
     private final Class<RSP> responseKlazz;
     private Map<String, String> headers;
     private Response.Listener<RSP> listener;
-    private Response.ErrorListener mErrorListener;
+    private Response.ErrorListener errorListener;
+    private OnHttpStatusListener httpStatusListener;
 
-    /**
-     * Make a GET request and return a parsed object from JSON.
-     *
-     * @param url URL of the request to make
-     * @param responseKlazz Relevant class object, for Gson's reflection
-     * @param headers Map of request headers
-     */
-    public GsonRequest(int method, String url, Class<RSP> responseKlazz, Map<String, String> headers,
-                       Response.Listener<RSP> listener, Response.ErrorListener mErrorListener) {
-        this(method, url, null, responseKlazz, headers, listener, mErrorListener);
+    public GsonRequest(
+            int method,
+            String url,
+            Class<RSP> responseKlazz,
+            Map<String, String> headers,
+            Response.Listener<RSP> listener,
+            Response.ErrorListener errorListener) {
+
+        this(
+                method,
+                url,
+                null,
+                responseKlazz,
+                headers,
+                listener,
+                errorListener
+        );
     }
 
-    public GsonRequest(int method, String url, REQ requestBody, Class<RSP> responseKlazz,
-                       Map<String, String> headers, Response.Listener<RSP> listener,
-                       Response.ErrorListener mErrorListener) {
-        super(method, url, bodyToJson(requestBody), listener, mErrorListener);
+    public GsonRequest(
+            int method,
+            String url,
+            REQ requestBody,
+            Class<RSP> responseKlazz,
+            Map<String, String> headers,
+            Response.Listener<RSP> listener,
+            Response.ErrorListener errorListener) {
 
-        Log.i("caixa", url);
+        super(
+                method,
+                url,
+                bodyToJson(requestBody),
+                listener,
+                errorListener
+        );
+
+        Log.i(TAG, "URL: " + url);
 
         this.responseKlazz = responseKlazz;
         this.headers = headers;
         this.listener = listener;
-        this.mErrorListener = mErrorListener;
+        this.errorListener = errorListener;
     }
 
     private static <T> String bodyToJson(T requestBody) {
         if (requestBody == null) {
             return null;
-        } else if (String.class.isAssignableFrom(requestBody.getClass())) {
+        }
+
+        if (requestBody instanceof String) {
             return (String) requestBody;
         }
 
-        return (new Gson()).toJson(requestBody);
+        return new Gson().toJson(requestBody);
     }
 
-    public void setHeaders(Map<String, String> headers){
+    public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
     }
 
-    public void setListener(Response.Listener<RSP> listener){
+    public void setListener(Response.Listener<RSP> listener) {
         this.listener = listener;
     }
 
-    public void setErrorListener(Response.ErrorListener listener){
-        this.mErrorListener = listener;
+    public void setErrorListener(Response.ErrorListener listener) {
+        this.errorListener = listener;
+    }
+
+    public void setOnHttpStatusListener(OnHttpStatusListener listener) {
+        this.httpStatusListener = listener;
     }
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return headers != null ? headers : super.getHeaders();
+        return headers != null
+                ? headers
+                : super.getHeaders();
     }
 
     @Override
     protected void deliverResponse(RSP response) {
-        if(listener != null){
+        if (listener != null) {
             listener.onResponse(response);
         }
     }
 
     @Override
     public void deliverError(VolleyError error) {
-        if (error != null && mErrorListener != null){
-            if (error.networkResponse != null) {
-                try {
-                    Log.d("ERROR_RESPONSE", new String(error.networkResponse.data, "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
 
-            mErrorListener.onErrorResponse(error);
+        logError(error);
+
+        if (errorListener != null) {
+            errorListener.onErrorResponse(error);
         }
     }
 
     @Override
     protected Response<RSP> parseNetworkResponse(NetworkResponse response) {
         try {
-            String json = new String(response.data, "UTF-8");
-            Log.i("caixa", json);
+
+            notifyStatusCode(response);
+
+            String json = new String(
+                    response.data,
+                    StandardCharsets.UTF_8
+            );
+
+            Log.i(TAG, json);
+
+            RSP result = gson.fromJson(
+                    json,
+                    responseKlazz
+            );
 
             return Response.success(
-                    gson.fromJson(json, responseKlazz),
-                    HttpHeaderParser.parseCacheHeaders(response));
-        } catch (UnsupportedEncodingException e) {
-            return Response.error(new ParseError(e));
+                    result,
+                    HttpHeaderParser.parseCacheHeaders(response)
+            );
+
         } catch (JsonSyntaxException e) {
-            return Response.error(new ParseError(e));
+
+            return Response.error(
+                    new ParseError(e)
+            );
         }
     }
 
+    @Override
+    protected VolleyError parseNetworkError(VolleyError volleyError) {
 
+        try {
+
+            if (volleyError != null
+                    && volleyError.networkResponse != null) {
+
+                notifyStatusCode(
+                        volleyError.networkResponse
+                );
+
+                Log.d(
+                        TAG,
+                        "HTTP ERROR: "
+                                + volleyError.networkResponse.statusCode
+                );
+            }
+
+        } catch (Exception ignored) {
+        }
+
+        return super.parseNetworkError(volleyError);
+    }
+
+    private void notifyStatusCode(NetworkResponse response) {
+
+        if (response == null) {
+            return;
+        }
+
+        if (httpStatusListener != null) {
+            httpStatusListener.onStatusCode(
+                    response.statusCode
+            );
+        }
+    }
+
+    private void logError(VolleyError error) {
+
+        if (error == null
+                || error.networkResponse == null
+                || error.networkResponse.data == null) {
+            return;
+        }
+
+        try {
+
+            String errorBody = new String(
+                    error.networkResponse.data,
+                    StandardCharsets.UTF_8
+            );
+
+            Log.d(
+                    "ERROR_RESPONSE",
+                    errorBody
+            );
+
+        } catch (Exception e) {
+            Log.e(
+                    TAG,
+                    "Erro ao logar body de erro",
+                    e
+            );
+        }
+    }
+
+    public interface OnHttpStatusListener {
+        void onStatusCode(int statusCode);
+    }
 }

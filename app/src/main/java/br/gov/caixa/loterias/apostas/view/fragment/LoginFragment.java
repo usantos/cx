@@ -14,7 +14,6 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ import androidx.biometric.BiometricPrompt;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
 
@@ -58,6 +56,8 @@ import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -65,8 +65,8 @@ import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 
 
 public class LoginFragment extends Fragment {
@@ -103,9 +103,8 @@ public class LoginFragment extends Fragment {
         biometriaLinearLayout = v.findViewById(R.id.biometriaLinearLayout);
         biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
 
-
         //Selecao ambiente se NAO PRD
-        if (!BuildConfig.FLAVOR.equals("prd")) {
+        if (!(BuildConfig.FLAVOR.equals("prd"))) {
             //Ambiente Selecao
             ambienteSpinner = v.findViewById(R.id.spin_ambiente);
             ambienteSpinner.setVisibility(View.VISIBLE);
@@ -177,6 +176,22 @@ public class LoginFragment extends Fragment {
         }
 
         buttonLogin.setOnClickListener(v12 -> {
+            AnalyticsHelper.getInstance().logInteraction(
+                    AnalyticsHelper.EventCategoryParams.CTA,
+                    AnalyticsHelper.EventActionParams.CLICK,
+                    AnalyticsHelper.EventLabelParams.ENTRY,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.SubJourneyParams.ENTRY,
+                    AnalyticsHelper.Tela.LOGIN
+            );
+
+            AnalyticsHelper.getInstance().logFlowStart(
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.Tela.LOGIN.nome,
+                    AnalyticsHelper.JourneyParams.APOSTAR,
+                    AnalyticsHelper.Tela.LOGIN.nome,
+                    AnalyticsHelper.Tela.LOGIN
+            );
 
             biometriaDTO = DadosBiometriaBO.obterBiometria();
 
@@ -236,7 +251,7 @@ public class LoginFragment extends Fragment {
 
         rowBiometria.post(() -> {
             AccessibilityManager accessibilityManager =
-                    (AccessibilityManager) requireContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+                    (AccessibilityManager) Aplicacao.application.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
             if (accessibilityManager != null && accessibilityManager.isEnabled()) {
                 rowBiometria.announceForAccessibility(textoFinal);
@@ -330,7 +345,10 @@ public class LoginFragment extends Fragment {
         }else{
             buttonLogin.setEnabled( true );
             Log.e("caixa", "Erro ao conexar com internet LoginFragment.connectKeycloak()");
-            ViewUtils.alert(getActivity(), getString(R.string.seminternet));
+            DialogUtils.dialogEntendi(
+                    getActivity(),
+                    getString(R.string.seminternet)
+            );
         }
     }
 
@@ -396,18 +414,15 @@ public class LoginFragment extends Fragment {
 
     private void ligaBiometria () {
         dialogBiometriaVisivel = true;
-
-        DialogUtils.showDialogLeftRight(getActivity(), getString(R.string.ativar_biometria),
-                null, getString(R.string.cancelar), getString(R.string.habilitar),
-                new OnDialogListenerLeftRight() {
+        DialogUtils.dialogDoisBotoesPersonalizados(
+                getActivity(),
+                getString(R.string.ativar_biometria),
+                "Deseja habilitar a biometria?",
+                getString(R.string.habilitar),
+                getString(R.string.cancelar),
+                new OnDialogDoisBotoesListener() {
                     @Override
-                    public void left() {
-                        biometriaDesligada();
-                        dialogBiometriaVisivel = false;
-                    }
-
-                    @Override
-                    public void right() {
+                    public void PositiveButton(DialogInterface dialog, int which) {
                         dialogBiometriaVisivel = false;
                         //Direcina para as configurações da Biometria
                         try {
@@ -419,31 +434,42 @@ public class LoginFragment extends Fragment {
                             startActivity(new Intent(Settings.ACTION_SETTINGS));
                         }
                     }
-                });
+
+                    @Override
+                    public void NegativeButton(DialogInterface dialog, int which) {
+                        biometriaDesligada();
+                        dialogBiometriaVisivel = false;
+                    }
+                }
+        );
+
     }
 
     private void desligaBiometria () {
         dialogBiometriaVisivel = true;
-        DialogUtils.showDialogLeftRight(getActivity(),
-                getString(R.string.desativar_biometria), getString(R.string.desativar_biometria_mensagem),
-                null,null,
-                new OnDialogListenerLeftRight() {
+        DialogUtils.dialogTituloSimNao(
+                getActivity(),
+                getString(R.string.desativar_biometria),
+                getString(R.string.desativar_biometria_mensagem),
+                new OnDialogDoisBotoesListener() {
                     @Override
-                    public void left() {
+                    public void PositiveButton(DialogInterface dialog, int which) {
+                        dialogBiometriaVisivel = false;
+                        biometriaDesligada();
+                    }
+
+                    @Override
+                    public void NegativeButton(DialogInterface dialog, int which) {
                         BiometriaBO.getInstance().setBiometriaHabilitada(true);
                         biometriaSwitch.setChecked(true);
                         if (temBiometria && biometriaDTO != null && biometriaDTO.getRefresh().length() > 0 ) {
                             setBotoesParaToken();
                         }
                         dialogBiometriaVisivel = false;
+                    }
+                }
 
-                    }
-                    @Override
-                    public void right() {
-                        dialogBiometriaVisivel = false;
-                        biometriaDesligada();
-                    }
-                });
+        );
     }
 
     private void biometriaDesligada() {
@@ -458,12 +484,17 @@ public class LoginFragment extends Fragment {
             public void successRefresh() {
                 if (SessaoUsuario.getInstance().getSituacaoApostador() != null &&
                         SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
-                    ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getActivity().getString(R.string.usuario_bloqueio_parcial),
-                            "Ok", dialogInterface -> {
-                                startActivity(new Intent(getContext(), PrincipalActivity.class));
-                                getActivity().finish();
-                                dialogInterface.dismiss();
-                                return;
+                    DialogUtils.dialogEntendiListener(
+                            getActivity(),
+                            getActivity().getString(R.string.usuario_bloqueio_parcial),
+
+                            new OnDialogBotaoListener() {
+                                @Override
+                                public void onButtonClick(DialogInterface dialog, int which) {
+                                    startActivity(new Intent(getContext(), PrincipalActivity.class));
+                                    getActivity().finish();
+                                    return;
+                                }
                             }
                     );
                     return;
@@ -482,17 +513,21 @@ public class LoginFragment extends Fragment {
     }
 
     private void showAlertAndExit(AmbienteEnum selectedAmbiete) {
-        new AlertDialog.Builder(getContext())
-                .setTitle("Mudança de Ambiente")
-                .setMessage("O aplicativo será encerrado para aplicar as mudanças de ambeinte.")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+        DialogUtils.dialogTituloEntendiListener(
+                getContext(),
+                "Mudança de Ambiente",
+                "O aplicativo será encerrado para aplicar as mudanças de ambiente.",
+
+                new OnDialogBotaoListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onButtonClick(DialogInterface dialog, int which) {
                         if (getActivity() != null) {
                             getActivity().finishAffinity();
                         }
+                        return;
                     }
-                })
-                .show();
+                }
+        );
     }
 }

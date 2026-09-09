@@ -11,7 +11,7 @@ public class SituacaoAposta {
 	public static final int EFETIVADA = 4;
 
 	public enum EnumSituacaoAposta {
-		PREMIADA(SituacaoAposta.PREMIADA, "Aposta premiada"),
+		PREMIADA(SituacaoAposta.PREMIADA, "Premiada"),
 		PREMIO_PAGO(SituacaoAposta.PREMIO_PAGO, "Prêmio pago"),
 		NAO_PREMIADA(SituacaoAposta.NAO_PREMIADA, "Aposta não premiada"),
 		CONCURSO_NAO_APURADO(SituacaoAposta.CONCURSO_NAO_APURADO, "Concurso não apurado"),

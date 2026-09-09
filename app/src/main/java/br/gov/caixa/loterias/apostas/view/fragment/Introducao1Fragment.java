@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,9 +13,11 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.controllers.IntroducaoActivity;
 import br.gov.caixa.loterias.apostas.controllers.RestritoDezoitoAnosActivity;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,10 +83,22 @@ public class Introducao1Fragment extends Fragment {
         textView1.setTextSize(20);
         textView1.setHint("Título");
 
-        ViewUtils.alertVerificarIdadeListener(getActivity(), (dialog, which) -> {
-            startActivity(new Intent(getActivity(), RestritoDezoitoAnosActivity.class));
-            getActivity().finish();
-        });
+        DialogUtils.dialogSimNao(
+                getActivity(),
+                getActivity().getString(R.string.MA003),
+                new OnDialogDoisBotoesListener() {
+                    @Override
+                    public void PositiveButton(DialogInterface dialog, int which) {
+                        //Apenas fecha a modal, sem realizar nenhuma ação
+                    }
+
+                    @Override
+                    public void NegativeButton(DialogInterface dialog, int which) {
+                        startActivity(new Intent(getActivity(), RestritoDezoitoAnosActivity.class));
+                        getActivity().finish();
+                    }
+                }
+        );
 
         return v;
     }

@@ -130,18 +130,6 @@ public class SwipeLayout extends FrameLayout {
         void onHandRelease(SwipeLayout layout, float xvel, float yvel);
     }
 
-    public void addSwipeListener(SwipeListener l) {
-        mSwipeListeners.add(l);
-    }
-
-    public void removeSwipeListener(SwipeListener l) {
-        mSwipeListeners.remove(l);
-    }
-
-    public void removeAllSwipeListener() {
-        mSwipeListeners.clear();
-    }
-
     public interface SwipeDenier {
         /*
          * Called in onInterceptTouchEvent Determines if this swipe event should
@@ -153,72 +141,9 @@ public class SwipeLayout extends FrameLayout {
         boolean shouldDenySwipe(MotionEvent ev);
     }
 
-    public void addSwipeDenier(SwipeDenier denier) {
-        mSwipeDeniers.add(denier);
-    }
-
-    public void removeSwipeDenier(SwipeDenier denier) {
-        mSwipeDeniers.remove(denier);
-    }
-
-    public void removeAllSwipeDeniers() {
-        mSwipeDeniers.clear();
-    }
 
     public interface OnRevealListener {
         void onReveal(View child, DragEdge edge, float fraction, int distance);
-    }
-
-    /**
-     * bind a view with a specific
-     * {@link com.daimajia.swipe.SwipeLayout.OnRevealListener}
-     *
-     * @param childId the view id.
-     * @param l       the target
-     *                {@link com.daimajia.swipe.SwipeLayout.OnRevealListener}
-     */
-    public void addRevealListener(int childId, OnRevealListener l) {
-        View child = findViewById(childId);
-        if (child == null) {
-            throw new IllegalArgumentException("Child does not belong to SwipeListener.");
-        }
-
-        if (!mShowEntirely.containsKey(child)) {
-            mShowEntirely.put(child, false);
-        }
-        if (mRevealListeners.get(child) == null)
-            mRevealListeners.put(child, new ArrayList<OnRevealListener>());
-
-        mRevealListeners.get(child).add(l);
-    }
-
-    /**
-     * bind multiple views with an
-     * {@link com.daimajia.swipe.SwipeLayout.OnRevealListener}.
-     *
-     * @param childIds the view id.
-     * @param l        the {@link com.daimajia.swipe.SwipeLayout.OnRevealListener}
-     */
-    public void addRevealListener(int[] childIds, OnRevealListener l) {
-        for (int i : childIds)
-            addRevealListener(i, l);
-    }
-
-    public void removeRevealListener(int childId, OnRevealListener l) {
-        View child = findViewById(childId);
-
-        if (child == null) return;
-
-        mShowEntirely.remove(child);
-        if (mRevealListeners.containsKey(child)) mRevealListeners.get(child).remove(l);
-    }
-
-    public void removeAllRevealListeners(int childId) {
-        View child = findViewById(childId);
-        if (child != null) {
-            mRevealListeners.remove(child);
-            mShowEntirely.remove(child);
-        }
     }
 
     private ViewDragHelper.Callback mDragHelperCallback = new ViewDragHelper.Callback() {
@@ -427,11 +352,6 @@ public class SwipeLayout extends FrameLayout {
         }
     }
 
-    /**
-     * the dispatchRevealEvent method may not always get accurate position, it
-     * makes the view may not always get the event when the view is totally
-     * show( fraction = 1), so , we need to calculate every time.
-     */
     protected boolean isViewTotallyFirstShowed(View child, Rect relativePosition, DragEdge edge, int surfaceLeft,
                                                int surfaceTop, int surfaceRight, int surfaceBottom) {
         if (mShowEntirely.get(child)) return false;
@@ -674,41 +594,14 @@ public class SwipeLayout extends FrameLayout {
         }
     }
 
-    /**
-     * {@link android.view.View.OnLayoutChangeListener} added in API 11. I need
-     * to support it from API 8.
-     */
     public interface OnLayout {
         void onLayout(SwipeLayout v);
     }
 
     private List<OnLayout> mOnLayoutListeners;
 
-    public void addOnLayoutListener(OnLayout l) {
-        if (mOnLayoutListeners == null) mOnLayoutListeners = new ArrayList<OnLayout>();
-        mOnLayoutListeners.add(l);
-    }
-
-    public void removeOnLayoutListener(OnLayout l) {
-        if (mOnLayoutListeners != null) mOnLayoutListeners.remove(l);
-    }
-
     public void clearDragEdge() {
         mDragEdges.clear();
-    }
-
-    public void setDrag(DragEdge dragEdge, int childId) {
-        clearDragEdge();
-        addDrag(dragEdge, childId);
-    }
-
-    public void setDrag(DragEdge dragEdge, View child) {
-        clearDragEdge();
-        addDrag(dragEdge, child);
-    }
-
-    public void addDrag(DragEdge dragEdge, int childId) {
-        addDrag(dragEdge, findViewById(childId), null);
     }
 
     public void addDrag(DragEdge dragEdge, View child) {
@@ -773,7 +666,6 @@ public class SwipeLayout extends FrameLayout {
         } else {
             for (Map.Entry<DragEdge, View> entry : mDragEdges.entrySet()) {
                 if (entry.getValue() == null) {
-                    //means used the drag_edge attr, the no gravity child should be use set
                     mDragEdges.put(entry.getKey(), child);
                     break;
                 }
@@ -923,7 +815,6 @@ public class SwipeLayout extends FrameLayout {
                 mIsBeingDragged = false;
                 sX = ev.getRawX();
                 sY = ev.getRawY();
-                //if the swipe is in middle state(scrolling), should intercept the touch
                 if (getOpenStatus() == Status.Middle) {
                     mIsBeingDragged = true;
                 }
@@ -938,8 +829,6 @@ public class SwipeLayout extends FrameLayout {
                     }
                 }
                 if (!beforeCheck && mIsBeingDragged) {
-                    //let children has one chance to catch the touch, and request the swipe not intercept
-                    //useful when swipeLayout wrap a swipeLayout or other gestural layout
                     return false;
                 }
                 break;
@@ -949,7 +838,7 @@ public class SwipeLayout extends FrameLayout {
                 mIsBeingDragged = false;
                 mDragHelper.processTouchEvent(ev);
                 break;
-            default://handle other action, such as ACTION_POINTER_DOWN/UP
+            default:
                 mDragHelper.processTouchEvent(ev);
         }
         return mIsBeingDragged;
@@ -972,7 +861,6 @@ public class SwipeLayout extends FrameLayout {
 
 
             case MotionEvent.ACTION_MOVE: {
-                //the drag state and the direction are already judged at onInterceptTouchEvent
                 checkCanDrag(event);
                 if (mIsBeingDragged) {
                     getParent().requestDisallowInterceptTouchEvent(true);
@@ -986,15 +874,11 @@ public class SwipeLayout extends FrameLayout {
                 mDragHelper.processTouchEvent(event);
                 break;
 
-            default://handle other action, such as ACTION_POINTER_DOWN/UP
+            default:
                 mDragHelper.processTouchEvent(event);
         }
 
         return super.onTouchEvent(event) || mIsBeingDragged || action == MotionEvent.ACTION_DOWN;
-    }
-
-    public boolean isClickToClose() {
-        return mClickToClose;
     }
 
     public void setClickToClose(boolean mClickToClose) {
@@ -1015,18 +899,10 @@ public class SwipeLayout extends FrameLayout {
                 && bottomView != getSurfaceView() && mSwipesEnabled[DragEdge.Left.ordinal()];
     }
 
-    public void setLeftSwipeEnabled(boolean leftSwipeEnabled) {
-        this.mSwipesEnabled[DragEdge.Left.ordinal()] = leftSwipeEnabled;
-    }
-
     public boolean isRightSwipeEnabled() {
         View bottomView = mDragEdges.get(DragEdge.Right);
         return bottomView != null && bottomView.getParent() == this
                 && bottomView != getSurfaceView() && mSwipesEnabled[DragEdge.Right.ordinal()];
-    }
-
-    public void setRightSwipeEnabled(boolean rightSwipeEnabled) {
-        this.mSwipesEnabled[DragEdge.Right.ordinal()] = rightSwipeEnabled;
     }
 
     public boolean isTopSwipeEnabled() {
@@ -1035,58 +911,10 @@ public class SwipeLayout extends FrameLayout {
                 && bottomView != getSurfaceView() && mSwipesEnabled[DragEdge.Top.ordinal()];
     }
 
-    public void setTopSwipeEnabled(boolean topSwipeEnabled) {
-        this.mSwipesEnabled[DragEdge.Top.ordinal()] = topSwipeEnabled;
-    }
-
     public boolean isBottomSwipeEnabled() {
         View bottomView = mDragEdges.get(DragEdge.Bottom);
         return bottomView != null && bottomView.getParent() == this
                 && bottomView != getSurfaceView() && mSwipesEnabled[DragEdge.Bottom.ordinal()];
-    }
-
-    public void setBottomSwipeEnabled(boolean bottomSwipeEnabled) {
-        this.mSwipesEnabled[DragEdge.Bottom.ordinal()] = bottomSwipeEnabled;
-    }
-
-    /***
-     * Returns the percentage of revealing at which the view below should the view finish opening
-     * if it was already open before dragging
-     *
-     * @returns The percentage of view revealed to trigger, default value is 0.25
-     */
-    public float getWillOpenPercentAfterOpen() {
-        return mWillOpenPercentAfterOpen;
-    }
-
-    /***
-     * Allows to stablish at what percentage of revealing the view below should the view finish opening
-     * if it was already open before dragging
-     *
-     * @param willOpenPercentAfterOpen The percentage of view revealed to trigger, default value is 0.25
-     */
-    public void setWillOpenPercentAfterOpen(float willOpenPercentAfterOpen) {
-        this.mWillOpenPercentAfterOpen = willOpenPercentAfterOpen;
-    }
-
-    /***
-     * Returns the percentage of revealing at which the view below should the view finish opening
-     * if it was already closed before dragging
-     *
-     * @returns The percentage of view revealed to trigger, default value is 0.25
-     */
-    public float getWillOpenPercentAfterClose() {
-        return mWillOpenPercentAfterClose;
-    }
-
-    /***
-     * Allows to stablish at what percentage of revealing the view below should the view finish opening
-     * if it was already closed before dragging
-     *
-     * @param willOpenPercentAfterClose The percentage of view revealed to trigger, default value is 0.75
-     */
-    public void setWillOpenPercentAfterClose(float willOpenPercentAfterClose) {
-        this.mWillOpenPercentAfterClose = willOpenPercentAfterClose;
     }
 
     private boolean insideAdapterView() {
@@ -1226,53 +1054,18 @@ public class SwipeLayout extends FrameLayout {
         }
     }
 
-    /**
-     * set the drag distance, it will force set the bottom view's width or
-     * height via this value.
-     *
-     * @param max max distance in dp unit
-     */
-    public void setDragDistance(int max) {
-        if (max < 0) max = 0;
-        mDragDistance = dp2px(max);
-        requestLayout();
-    }
-
-    /**
-     * There are 2 diffirent show mode.
-     * {@link com.daimajia.swipe.SwipeLayout.ShowMode}.PullOut and
-     * {@link com.daimajia.swipe.SwipeLayout.ShowMode}.LayDown.
-     *
-     * @param mode
-     */
-    public void setShowMode(ShowMode mode) {
-        mShowMode = mode;
-        requestLayout();
-    }
-
     public DragEdge getDragEdge() {
         return mCurrentDragEdge;
     }
-
-    public int getDragDistance() {
-        return mDragDistance;
-    }
-
     public ShowMode getShowMode() {
         return mShowMode;
     }
 
-    /**
-     * return null if there is no surface view(no children)
-     */
     public View getSurfaceView() {
         if (getChildCount() == 0) return null;
         return getChildAt(getChildCount() - 1);
     }
 
-    /**
-     * return null if there is no bottom view
-     */
     public View getCurrentBottomView() {
         List<View> bottoms = getBottomViews();
         if (mCurrentDragEdge.ordinal() < bottoms.size()) {
@@ -1281,9 +1074,6 @@ public class SwipeLayout extends FrameLayout {
         return null;
     }
 
-    /**
-     * @return all bottomViews: left, top, right, bottom (may null if the edge is not set)
-     */
     public List<View> getBottomViews() {
         ArrayList<View> bottoms = new ArrayList<View>();
         for (DragEdge dragEdge : DragEdge.values()) {
@@ -1298,12 +1088,6 @@ public class SwipeLayout extends FrameLayout {
         Close
     }
 
-    /**
-     * get the open status.
-     *
-     * @return {@link com.daimajia.swipe.SwipeLayout.Status} Open , Close or
-     * Middle.
-     */
     public Status getOpenStatus() {
         View surfaceView = getSurfaceView();
         if (surfaceView == null) {
@@ -1320,14 +1104,6 @@ public class SwipeLayout extends FrameLayout {
         return Status.Middle;
     }
 
-
-    /**
-     * Process the surface release event.
-     *
-     * @param xvel                 xVelocity
-     * @param yvel                 yVelocity
-     * @param isCloseBeforeDragged the open state before drag
-     */
     protected void processHandRelease(float xvel, float yvel, boolean isCloseBeforeDragged) {
         float minVelocity = mDragHelper.getMinVelocity();
         View surfaceView = getSurfaceView();
@@ -1370,10 +1146,6 @@ public class SwipeLayout extends FrameLayout {
             }
         }
     }
-
-    /**
-     * smoothly open surface.
-     */
     public void open() {
         open(true, true);
     }
@@ -1411,24 +1183,6 @@ public class SwipeLayout extends FrameLayout {
         invalidate();
     }
 
-    public void open(DragEdge edge) {
-        setCurrentDragEdge(edge);
-        open(true, true);
-    }
-
-    public void open(boolean smooth, DragEdge edge) {
-        setCurrentDragEdge(edge);
-        open(smooth, true);
-    }
-
-    public void open(boolean smooth, boolean notify, DragEdge edge) {
-        setCurrentDragEdge(edge);
-        open(smooth, notify);
-    }
-
-    /**
-     * smoothly close surface.
-     */
     public void close() {
         close(true, true);
     }
@@ -1437,12 +1191,6 @@ public class SwipeLayout extends FrameLayout {
         close(smooth, true);
     }
 
-    /**
-     * close surface
-     *
-     * @param smooth smoothly or not.
-     * @param notify if notify all the listeners.
-     */
     public void close(boolean smooth, boolean notify) {
         View surface = getSurfaceView();
         if (surface == null) {
@@ -1466,22 +1214,6 @@ public class SwipeLayout extends FrameLayout {
         invalidate();
     }
 
-    public void toggle() {
-        toggle(true);
-    }
-
-    public void toggle(boolean smooth) {
-        if (getOpenStatus() == Status.Open)
-            close(smooth);
-        else if (getOpenStatus() == Status.Close) open(smooth);
-    }
-
-
-    /**
-     * a helper function to compute the Rect area that surface will hold in.
-     *
-     * @param open open status or close status.
-     */
     private Rect computeSurfaceLayoutArea(boolean open) {
         int l = getPaddingLeft(), t = getPaddingTop();
         if (open) {
@@ -1549,10 +1281,6 @@ public class SwipeLayout extends FrameLayout {
         return new Rect(bl, bt, br, bb);
     }
 
-    public void setOnDoubleClickListener(DoubleClickListener doubleClickListener) {
-        mDoubleClickListener = doubleClickListener;
-    }
-
     public interface DoubleClickListener {
         void onDoubleClick(SwipeLayout layout, boolean surface);
     }
@@ -1561,10 +1289,6 @@ public class SwipeLayout extends FrameLayout {
         return (int) (dp * getContext().getResources().getDisplayMetrics().density + 0.5f);
     }
 
-
-    /**
-     * Deprecated, use {@link #setDrag(DragEdge, View)}
-     */
     @Deprecated
     public void setDragEdge(DragEdge dragEdge) {
         clearDragEdge();
@@ -1586,17 +1310,13 @@ public class SwipeLayout extends FrameLayout {
         return mDragEdges;
     }
 
-    /**
-     * Deprecated, use {@link #getDragEdgeMap()}
-     */
+
     @Deprecated
     public List<DragEdge> getDragEdges() {
         return new ArrayList<DragEdge>(mDragEdges.keySet());
     }
 
-    /**
-     * Deprecated, use {@link #setDrag(DragEdge, View)}
-     */
+
     @Deprecated
     public void setDragEdges(List<DragEdge> dragEdges) {
         clearDragEdge();
@@ -1611,20 +1331,14 @@ public class SwipeLayout extends FrameLayout {
         }
     }
 
-    /**
-     * Deprecated, use {@link #addDrag(DragEdge, View)}
-     */
+
     @Deprecated
     public void setDragEdges(DragEdge... mDragEdges) {
         clearDragEdge();
         setDragEdges(Arrays.asList(mDragEdges));
     }
 
-    /**
-     * Deprecated, use {@link #addDrag(DragEdge, View)}
-     * When using multiple drag edges it's a good idea to pass the ids of the views that
-     * you're using for the left, right, top bottom views (-1 if you're not using a particular view)
-     */
+
     @Deprecated
     public void setBottomViewIds(int leftId, int rightId, int topId, int bottomId) {
         addDrag(DragEdge.Left, findViewById(leftId));

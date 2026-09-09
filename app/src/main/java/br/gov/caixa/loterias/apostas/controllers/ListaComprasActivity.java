@@ -1,10 +1,12 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -47,12 +49,15 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
 
 public class ListaComprasActivity extends LoteriasBaseAppActivity {
@@ -428,6 +433,16 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
             dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
             dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
         });
+
+        if(dialogFavoritar.getWindow() != null){
+
+            int screenWidth = getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * 0.85); // Define a largura da dialog como 85% da largura da tela
+
+            dialogFavoritar.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialogFavoritar.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
     }
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
@@ -445,10 +460,15 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                ViewUtils.alertTitleButtonYesOrNotListener(
+               DialogUtils.dialogSim(
                         ListaComprasActivity.this,
                         MensagensNetwork.getErrorMessage(error),
-                        (dialogInterface, i) ->  favoritarCarrinho(nome,idFavorito)
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                favoritarCarrinho(nome,idFavorito);
+                            }
+                        }
                 );
             }
         });
@@ -464,11 +484,15 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( result.getRedirect(), ListaComprasActivity.this);
                 }
-                ViewUtils.alertTitleButton(ListaComprasActivity.this,
-                        R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
-                        getString(R.string.ok), dialogInterface -> {
-                            dialogFavoritar.dismiss();
-                            startActivity(new Intent(ListaComprasActivity.this, CarrinhosFavoritosActivity.class));
+                DialogUtils.dialogEntendiListener(
+                        ListaComprasActivity.this,
+                        getString(R.string.carrinho_fav_lbl_msg),
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                dialogFavoritar.dismiss();
+                                startActivity(new Intent(ListaComprasActivity.this, CarrinhosFavoritosActivity.class));
+                            }
                         }
                 );
             }

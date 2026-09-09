@@ -58,6 +58,8 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
@@ -274,7 +276,7 @@ public class MinhasApostasActivity extends AppCompatActivity {
 		//expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
 
 //		LinkedHashMap<Integer,String> mapSituacoes;
-//		if (ConfiguracaoAppSingleton.getInstance().isMicroServico()) {
+//		if (SharedPreferencesUtils.getValorBoolean(SingletonEnum.IS_MICRO_SERVICO.get(), SingletonDefaultEnum.IS_MICRO_SERVICO.asBoolean())) {
 //			mapSituacoes = SituacoesApostaFiltroEnum.getSituacoesMicroServico();
 //		} else {
 //			mapSituacoes = SituacoesApostaFiltroEnum.getSituacoes();
@@ -386,6 +388,11 @@ public class MinhasApostasActivity extends AppCompatActivity {
 	}
 
 	private void setaApostasFragment() {
+
+		if(isDestroyed() || isFinishing()){
+			return;
+		}
+
 		try {
 			btnFiltro.setVisibility(View.VISIBLE);
 			Fragment frag = getSupportFragmentManager().findFragmentByTag(CONFIRMADAS_FRAGMENT);
@@ -396,7 +403,7 @@ public class MinhasApostasActivity extends AppCompatActivity {
 
 			getSupportFragmentManager().beginTransaction()
 									   .replace(R.id.container, frag, CONFIRMADAS_FRAGMENT)
-									   .commit();
+									   .commitAllowingStateLoss();
 
 			getSupportFragmentManager().executePendingTransactions();
 			fragmentApostas = (ApostasConfirmadasFragment) frag;
@@ -442,7 +449,7 @@ public class MinhasApostasActivity extends AppCompatActivity {
 						}else if(result.getPayload().getMapa().getUrlBase().endsWith("/v2")) {
 							setConfiguracoesMicroServico(result);
 						}else {
-							if(BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")){
+							if(BuildConfig.DEBUG && !(BuildConfig.FLAVOR.equalsIgnoreCase("prd"))){
 								setConfiguracoesMicroServico(result);
 							}else {
 								setConfiguracoesSilce();
@@ -526,7 +533,6 @@ public class MinhasApostasActivity extends AppCompatActivity {
 	}
 
 	private boolean finalCPFAcessaNovaApi() {
-
 		int finalCpf = SharedPreferencesUtils.getValorInt(ConfiguracoesEnum.GRUPO_CPF_NOVA_API.get(), ConfiguracoesDefaultEnum.GRUPO_CPF_NOVA_API.asInt());
 
 		if (finalCpf == 0) {

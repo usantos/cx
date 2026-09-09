@@ -22,7 +22,7 @@ public final class AuthorizationServiceFactory {
 
 	public static AuthorizationService getAuthorizationService(Context context) {
 		AuthorizationService authorizationService;
-		if (BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")) {
+		if (BuildConfig.DEBUG && !(BuildConfig.FLAVOR.equalsIgnoreCase("prd"))) {
 			AppAuthConfiguration appAuthConfig = new AppAuthConfiguration.Builder().setConnectionBuilder(uri -> {
 				URL url = new URL(uri.toString());
 				HttpURLConnection connection =

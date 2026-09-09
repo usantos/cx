@@ -54,6 +54,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/trevo" />
+        <meta-data
+            android:name="google_analytics_automatic_screen_reporting_enabled"
+            android:value="false"/>
         <activity
             android:name=".controllers.QueroNaoQueroActivity"
             android:exported="false"
@@ -397,6 +400,7 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.DetalheDuvidaActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".controllers.MinhasApostasActivity"
@@ -441,7 +445,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".controllers.ResultadoApostaConfirmadaActivity"
+            android:name=".view.activity.ResultadoApostaConfirmadaActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait" />
         <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity" />
@@ -496,6 +500,20 @@
                 android:value="br.gov.caixa.loterias.apostas.controllers.RapidaoConfigActivity_" />
         </activity>
         -->
+        <activity
+            android:name=".debug.activity.NetworkInspectorDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+
+        <activity
+            android:name=".debug.activity.PayloadViewerActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+
+        <activity
+            android:name=".debug.activity.NetworkInspectorActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
 
         <activity
             android:name="com.filabra.adapter.android.FilaBRAActivity"

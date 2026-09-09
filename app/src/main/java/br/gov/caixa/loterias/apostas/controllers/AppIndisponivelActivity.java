@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -28,30 +29,35 @@ import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
 
-    private Button buttonTentarNovamente;
     private Boolean isBuscaParametro;
     private AlertDialog loadViewProgress;
     private TextView txtVersion, tvMensagem;
+
+    private TextView tvMensagem1, tvMensagem2;
     private Spinner ambienteSpinner;
+
+    private View buttonTentarNovamente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_app_indisponivel);
+        //setContentView(R.layout.activity_app_indisponivel);
+        setContentView(R.layout.activity_app_indisponivel_novo);
 
         pegaExtras();
         setaViews();
         atualizaMsg();
         setaMetodos();
 
-        if (!BuildConfig.FLAVOR.equals("prd")) {
+        if (!(BuildConfig.FLAVOR.equals("prd"))){
             //Ambiente Selecao
             ambienteSpinner.setVisibility(View.VISIBLE);
             AmbienteEnum[] ambienteEnums = AmbienteEnum.values();
@@ -78,27 +84,30 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
                 }
             });
         }
-        }
+    }
 
     private void showAlertAndExit(AmbienteEnum selectedAmbiete) {
-        new android.app.AlertDialog.Builder(AppIndisponivelActivity.this)
-                .setTitle("Mudança de Ambiente")
-                .setMessage("O aplicativo será encerrado para aplicar as mudanças de ambeinte.")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        DialogUtils.dialogTituloEntendiListener(AppIndisponivelActivity.this,
+                "Mudança de Ambiente",
+                "O aplicativo será encerrado para aplicar as mudanças de ambiente.",
+                new OnDialogBotaoListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onButtonClick(DialogInterface dialog, int which) {
                         finishAffinity();
                     }
-                })
-                .show();
+                }
+        );
     }
 
     private void setaViews(){
-        txtVersion = findViewById(R.id.txtVersao);
         tvMensagem = findViewById(R.id.tv_mensagem);
+        tvMensagem1 = findViewById(R.id.tv_mensagem1);
+        tvMensagem2 = findViewById(R.id.tv_mensagem2);
+
         buttonTentarNovamente = findViewById(R.id.tenteNovamenteButton);
         ambienteSpinner = findViewById(R.id.spin_ambiente);
 
+        txtVersion = findViewById(R.id.txtVersao);
         txtVersion.setText( TextUtils.concat( getResources().getString(R.string.v) ,BuildConfig.VERSION_NAME));
     }
 
@@ -107,10 +116,23 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
     }
 
     private void atualizaMsg() {
-        if (!AppUtils.isNetworkAvailable(AppIndisponivelActivity.this)) {
-            tvMensagem.setText(getResources().getString(R.string.seminternet));
-        } else {
-            tvMensagem.setText(getResources().getString(R.string.label_app_indisponivel));
+        //Tela antiga activity_app_indisponivel
+        if (tvMensagem != null) {
+            if (!AppUtils.isNetworkAvailable(AppIndisponivelActivity.this)) {
+                tvMensagem.setText(getResources().getString(R.string.seminternet));
+            } else {
+                tvMensagem.setText(getResources().getString(R.string.label_app_indisponivel));
+            }
+        }
+        //Tela nova activity_app_indisponivel_novo
+        if (tvMensagem1 != null) {
+            if (!AppUtils.isNetworkAvailable(AppIndisponivelActivity.this)) {
+                tvMensagem1.setText(getResources().getString(R.string.internet_instavel));
+                tvMensagem2.setText(getResources().getString(R.string.verifique_conexao));
+            } else {
+                tvMensagem1.setText(getResources().getString(R.string.app_indisponivel));
+                tvMensagem2.setText(getResources().getString(R.string.pedido_desculpas));
+            }
         }
     }
 
@@ -127,7 +149,7 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
                             public void success(ParametrosSimulacao payload) {
                                 if (payload.getParametros().isEmpty()) {
                                     loadViewProgress.dismiss();
-                                    ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.nao_concluiu_operacao));
+                                    DialogUtils.dialogEntendi(AppIndisponivelActivity.this, getResources().getString(R.string.nao_concluiu_operacao));
                                 } else {
                                     SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
                                     loadViewProgress.dismiss();

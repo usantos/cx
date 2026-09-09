@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.MesesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
@@ -153,9 +154,9 @@ public class MesesFragment extends Fragment {
     private void mostrarSalvarAposta() {
         if (dezenasSelecionadas != null && getItemSelecionado() != null) {
             if(parentActivity.getFlagApostaSalva()){
-                parentActivity.getSalvarApostaLayout().setBackgroundResource(R.color.cinza);
+                parentActivity.getSalvarApostaLayout().setBackgroundResource(R.drawable.bg_salvar_aposta);
                 parentActivity.getTextoSalveEstaAposta().setText(R.string.tituloSalvarAposta);
-                parentActivity.getIconStarSalvar().setBackgroundResource(R.drawable.icon_favoritar);
+                parentActivity.getIconStarSalvar().setBackgroundResource(R.drawable.icon_favoritar_novo);
             }
             parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
             tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 64);
@@ -175,7 +176,10 @@ public class MesesFragment extends Fragment {
                     aposta.setMesDeSorte(getItemSelecionado());
                     parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
                 } else {
-                    ViewUtils.alert(getActivity(), getString(R.string.msg_favor_inserir_nome_aposta));
+                    DialogUtils.dialogEntendi(
+                            getActivity(),
+                            getString(R.string.msg_favor_inserir_nome_aposta)
+                    );
                 }
             });
         }

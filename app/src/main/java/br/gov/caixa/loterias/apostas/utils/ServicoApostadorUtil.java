@@ -6,8 +6,6 @@ public class ServicoApostadorUtil {
 
 
     private static boolean cpfAcessamApostador() {
-
-
         String cpfAcessam[] = SharedPreferencesUtils.getValorString(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_APOSTADOR.asString()).split(";");
 
         int finalCpfAcessamApostador = new Integer(cpfAcessam[0]);

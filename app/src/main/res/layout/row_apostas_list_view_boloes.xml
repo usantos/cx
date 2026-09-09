@@ -148,6 +148,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:importantForAccessibility="yes"
+                android:focusable="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -261,6 +263,9 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_trevo_carrinho_bolao"
                 android:visibility="visible"
+                android:importantForAccessibility="yes"
+                android:focusable="true"
+                android:contentDescription="@string/detalhes_bolao"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/modalidadeConcursoLayout"
                 app:layout_constraintEnd_toStartOf="@+id/valorAposta"
@@ -300,6 +305,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
                 android:layout_marginEnd="0dp"
+                android:importantForAccessibility="yes"
+                android:focusable="true"
                 android:text="@string/r_0_00"
                 android:textAlignment="textStart"
                 android:textSize="14.2sp"
@@ -322,6 +329,8 @@
                 android:layout_width="wrap_content"
                 android:layout_toStartOf="@+id/imageViewRelogioBoloes"
                 android:text="@string/tempo_zerado"
+                android:importantForAccessibility="yes"
+                android:focusable="true"
                 android:fontFamily="@font/caixa_std_bold"
                 android:textAlignment="textStart"
                 android:textColor="@color/bolao_barra_titulo"
@@ -338,6 +347,8 @@
                 android:layout_width="wrap_content"
                 android:layout_toStartOf="@+id/excluirApostaCarrinhoLayout"
                 android:text="@string/cota_reservada"
+                android:importantForAccessibility="yes"
+                android:focusable="true"
                 android:fontFamily="@font/caixa_std_bold"
                 android:textAlignment="textStart"
                 android:textColor="@color/bolao_barra_titulo"
@@ -365,6 +376,7 @@
                     android:layout_height="22dp"
                     android:layout_marginTop="2dp"
                     android:importantForAccessibility="yes"
+                    android:focusable="true"
                     android:layout_marginEnd="16dp"
                     android:background="@color/transparente"
                     app:tint="@color/colorAccent"
@@ -393,6 +405,7 @@
                 android:id="@+id/v_div_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:importantForAccessibility="no"
                 android:background="@color/cinzaclaro"/>
 
         </RelativeLayout>

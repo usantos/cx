@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,8 +40,8 @@ import br.gov.caixa.loterias.apostas.controllers.DetalheMinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.NovaAPIBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -72,13 +72,13 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
-import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.SelecaoConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
@@ -86,6 +86,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapt
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
 /**
@@ -493,10 +494,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         @Override
                         public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
                             ApostaDTO apostaDTO = apostasList.get(position);
-                            FragmentManager fm = getActivity().getSupportFragmentManager();
-                            DialogFragmentUtils.startEscolhaModalidade(fm, arrayConcursos, apostaDTO.getId(),
-                                    getContext().getResources().getString(R.string.adicionar_carrinho_favoritas_view), null, false, false,
-                                    (tipoConcurso, teimosinha, espelho) -> {
+                            SelecaoConcursoUtils.selecionarConcurso(getActivity(), arrayConcursos,
+                                    (tipoConcurso) -> {
                                         if (tipoConcurso.toString().equalsIgnoreCase(apostaDTO.getTipoConcurso().getValor())){
                                             AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
                                         } else {
@@ -509,7 +508,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         @Override
                         public void ambasFechadas() {
                             AlertDialogUtils.dismiss();
-                            ViewUtils.alertTitulo(getContext(), R.string.label_atencao,"Modalidade não disponível no momento.");
+                            DialogUtils.dialogEntendi(getContext(),"Modalidade não disponível no momento.");
                         }
 
                         @Override
@@ -520,11 +519,16 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                                 AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
                             } else {
                                 String msg = MensagemUtils.getMensagemConverteModalidade(apostaDTO.getModalidade(), apostaDTO.getTipoConcurso().getValor());
+                                DialogUtils.dialogConfirmar(getContext(), msg,
 
-                                ViewUtils.alertTitleButtonPositiveListener(getContext(), R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
-                                    AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(),
-                                    ApostaUtils.converteTipoDeConcurso(apostaDTO));
-                                });
+                                        new OnDialogBotaoListener() {
+                                            @Override
+                                            public void onButtonClick(DialogInterface dialog, int which) {
+                                                AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(),
+                                                ApostaUtils.converteTipoDeConcurso(apostaDTO));
+                                            }
+                                        }
+                                );
                             }
                         }
                     });
@@ -612,20 +616,20 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         //SERVICO /apostas/{id}/comprovante-premio Informacao COMBO está errada
                         result.getPayload().getAposta().setCombo(apostaDTO.getCombo());
 
-                        boolean isTeimosinha = result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0;
-                        boolean isBolao = result.getPayload().getAposta().getIndicadorCotaBolao();
-                        boolean isSimples = !isTeimosinha && !isBolao;
-                        boolean isLoteca = result.getPayload().getAposta().getModalidade() == ModalidadeEnum.LOTECA;
-
-                        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
+//                        boolean isTeimosinha = result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0;
+//                        boolean isBolao = result.getPayload().getAposta().getIndicadorCotaBolao();
+//                        boolean isSimples = !isTeimosinha && !isBolao;
+//                        boolean isLoteca = result.getPayload().getAposta().getModalidade() == ModalidadeEnum.LOTECA;
+//
+//                        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
                             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
-                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+                                    DetalheMinhasApostasActivity.ARG_DETALHES_PREMIO, result.getPayload());
                             startActivity(intent);
-                        } else {
-                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
-                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
-                            startActivity(intent);
-                        }
+//                        } else {
+//                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+//                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+//                            startActivity(intent);
+//                        }
                     }
 
                     @Override
@@ -653,6 +657,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         //SERVICO /apostas/:idAposta/comprovante  Informacao COMBO está errada
                         comprovante.getAposta().setCombo(apostaDTO.getCombo());
 
+                        if (NovaApiUtils.isPossoBuscarNovaAPI()){
+                            comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                        }
+
                         startDetalheComprovante(comprovante);
                     }
 
@@ -667,20 +675,20 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private void startDetalheComprovante(ComprovanteApostaDTO comprovante) {
 
-        boolean isTeimosinha = comprovante.getAposta().getQuantidadeTeimosinhas() > 0;
-        boolean isBolao = comprovante.getAposta().getIndicadorCotaBolao();
-        boolean isSimples = !isTeimosinha && !isBolao;
-        boolean isLoteca = comprovante.getAposta().getModalidade() == ModalidadeEnum.LOTECA;
+//        boolean isTeimosinha = comprovante.getAposta().getQuantidadeTeimosinhas() > 0;
+//        boolean isBolao = comprovante.getAposta().getIndicadorCotaBolao();
+//        boolean isSimples = !isTeimosinha && !isBolao;
+//        boolean isLoteca = comprovante.getAposta().getModalidade() == ModalidadeEnum.LOTECA;
 
-        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
+//        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
-                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+                    DetalheMinhasApostasActivity.ARG_COMPROVANTE, comprovante);
             startActivity(intent);
-        } else {
-            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
-                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
-            startActivity(intent);
-        }
+//        } else {
+//            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+//                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+//            startActivity(intent);
+//        }
     }
 
     private void handleOnItemClickHistorico(ApostaDTO apostaDTO) {

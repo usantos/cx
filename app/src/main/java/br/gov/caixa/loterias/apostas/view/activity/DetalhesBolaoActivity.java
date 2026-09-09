@@ -5,6 +5,7 @@ import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpit
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
@@ -40,6 +41,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.DetalhesBolaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -60,6 +62,8 @@ import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+
 
 public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implements OnCompraBolaoListener {
 	public static final String ARG_CODIGO_BOLAO = "ARG_CODIGO_BOLAO";
@@ -307,13 +311,16 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 					layoutDetalhes.setVisibility(View.VISIBLE);
 					if (bolao.getQtdCotaDisponivel() == 0 && modoVisualizacao != null &&
 							modoVisualizacao == ModoVisualizacaoBolaoEnum.SIMULACAO) {
-						ViewUtils.alertTitleButton(DetalhesBolaoActivity.this,
-								R.string.label_atencao,
+						DialogUtils.dialogEntendiListener(DetalhesBolaoActivity.this,
 								getString(R.string.cota_zerou),
-								"Ok", dialogInterface -> {
-									dialogInterface.dismiss();
-									setResult(Activity.RESULT_OK);
-									finish();
+
+								new OnDialogBotaoListener() {
+									@Override
+									public void onButtonClick(DialogInterface dialog, int which) {
+										dialog.dismiss();
+										setResult(Activity.RESULT_OK);
+										finish();
+									}
 								}
 						);
 					}

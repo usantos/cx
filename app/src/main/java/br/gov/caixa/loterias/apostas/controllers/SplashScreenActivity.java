@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,8 +22,10 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.FilaBRAManager;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
@@ -31,6 +34,7 @@ import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.FilaBRAListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
@@ -48,10 +52,15 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         if (BuildVersionUtil.isPRD()) {
             RootBeer rootBeer = new RootBeer(this);
             if (rootBeer.isRooted() || isRootAvailable()) {
-                ViewUtils.alertTitleButton(this, R.string.label_atencao, "Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.",
-                                           getString(R.string.ok), dialog -> {
-                    finish();
-                });
+                DialogUtils.dialogEntendiListener(
+                        SplashScreenActivity.this,
+                        "Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.",
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                finish();
+                            }                        }
+                );
                 return;
             }
         }
@@ -142,7 +151,6 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PILOTO.get(), result.getPayload().getMapa().getUrlBaseCarrinhoPiloto());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PRODUCAO.get(), result.getPayload().getMapa().getUrlBaseCarrinhoProducao());
-                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_AZURE.get(), result.getPayload().getMapa().getGrupoDeCpfsQueAcessamOServicoDaAzure());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_RAPIDAO.get(), result.getPayload().getMapa().isRapidaoHabilitado());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), result.getPayload().getMapa().getUrlBaseApostador());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), result.getPayload().getMapa().getGrupoDeCpfsApostador());
@@ -199,7 +207,6 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_BUSCA_APOSTAS.get(), ConfiguracoesDefaultEnum.URL_BASE_BUSCA_APOSTAS.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PILOTO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PILOTO.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PRODUCAO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PRODUCAO.asString());
-        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_AZURE.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_AZURE.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), ConfiguracoesDefaultEnum.URL_BASE_APOSTADOR.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_APOSTADOR.asString());
     }

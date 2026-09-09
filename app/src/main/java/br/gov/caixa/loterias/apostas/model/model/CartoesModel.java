@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
 import br.gov.caixa.loterias.apostas.utils.DataUtil;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
@@ -209,8 +210,7 @@ public class CartoesModel extends AppModel {
 	}
 
 	private void apresentaModal(String msg) {
-		ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, msg,
-								   getActivity().getResources().getString( R.string.ok ));
+		DialogUtils.dialogEntendi(getActivity(), msg);
 	}
 
 	public void limparCarrinhoFavorito() {

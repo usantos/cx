@@ -1,10 +1,12 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,7 +23,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -40,6 +45,7 @@ import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -57,7 +63,9 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasLi
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewComboAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 
 
 public class CarrinhoActivity extends LoteriasBaseAppActivity {
@@ -107,6 +115,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinho);
         model = new CarrinhoModel(CarrinhoActivity.this);
+        carrinho = CarrinhoSingleton.getInstance().getCarrinho();
         pegaExtras();
         timerExcluiCotasExpiradas();
         setaViews();
@@ -144,8 +153,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         }
         if (ocorrendoValidacao && !onResume) {
             onResume = true;
-            ViewUtils.alertTitleButton(CarrinhoActivity.this, R.string.label_atencao, CarrinhoActivity.this.getResources().getString( R.string.label_verificar_valor_carrinho ),
-                    CarrinhoActivity.this.getResources().getString( R.string.ok ) );
+            DialogUtils.dialogEntendi(CarrinhoActivity.this, CarrinhoActivity.this.getResources().getString( R.string.label_verificar_valor_carrinho ));
         }
         lerCarrinho();
     }
@@ -224,12 +232,22 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             etCarrinho.setText("");
         });
         btnCancelar.setOnClickListener(v -> dialogFavoritar.dismiss());
+
+        if(dialogFavoritar.getWindow() != null){
+
+            int screenWidth = getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * 0.85); // Define a largura da dialog como 85% da largura da tela
+
+            dialogFavoritar.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialogFavoritar.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
+
     }
 
     private void pegaExtras() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            carrinho = (CarrinhoDTO) bundle.getSerializable(CARRINHO);
             lerCarrinhoLocal = bundle.getBoolean(LER_CARRINHO_LOCAL);
             origem = bundle.getString(ORIGEM);
         }
@@ -314,14 +332,20 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     private void onClickFavoritar() {
-        ViewUtils.alertTitleButton(this, R.string.label_atencao,
+        DialogUtils.dialogEntendiListener(CarrinhoActivity.this,
             getString(R.string.loteca_nao_favorita),
-            getResources().getString(R.string.title_entendi),
-                dialog -> dialogFavoritar.show()
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        dialogFavoritar.show();
+
+                    }
+                }
         );
     }
 
     private void onClickAvancaPagamento() {
+        logCart();
         if (LoginSP.isLoginRealizado() && RedirectUtils.temRedirectCadastrarApostador()){
             startActivity(IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, CadastrarActivity.class));
             finish();
@@ -354,19 +378,38 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         }
     }
 
+    private void logCart() {
+        if (carrinho == null) {
+            return;
+        }
+        String total = ViewUtils.getMoedaFormat(carrinho.getValorTotal());
+        int apostas = carrinho.getApostas() != null ? carrinho.getApostas().size() : 0;
+        int apostasIndividuais = carrinho.getApostasIndividuais() != null ? carrinho.getApostasIndividuais().size() : 0;
+        int boloes = carrinho.getBoloes() != null ? carrinho.getBoloes().size() : 0;
+        AnalyticsHelper.getInstance().logInteraction(
+                AnalyticsHelper.EventCategoryParams.CTA,
+                AnalyticsHelper.EventActionParams.CLICK,
+                AnalyticsHelper.EventLabelParams.PAYMENT,
+                AnalyticsHelper.JourneyParams.APOSTAR,
+                AnalyticsHelper.SubJourneyParams.CARRINHO,
+                AnalyticsHelper.Tela.BETS_CART,
+                total,
+                String.valueOf(apostas),
+                String.valueOf(apostasIndividuais),
+                String.valueOf(boloes)
+        );
+    }
+
     private void trataPermissao() {
         LocalizacaoUtils.checaStatusPermissaoAsync(this, result -> {
             if (result == LocalizacaoUtils.LOC_NAO_PERMITIDA ||
                     result == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE ||
                     result == LocalizacaoUtils.LOC_DESATIVADA) {
-                DialogUtils.showDialogDefault(this, 0,
-                        getResources().getString(R.string.label_atencao),
+                DialogUtils.dialogSimNao(CarrinhoActivity.this,
                         getString(R.string.posso_consultar_sua_localizacao),
-                        getResources().getString(R.string.label_sim),
-                        getResources().getString(R.string.label_nao),
-                        new OnDialogListenerLeftRight() {
+                        new OnDialogDoisBotoesListener() {
                             @Override
-                            public void left() {
+                            public void PositiveButton(DialogInterface dialog, int which) {
                                 if (result == LocalizacaoUtils.LOC_NAO_PERMITIDA) {
                                     PermissaoUtil.checkList(CarrinhoActivity.this, PermissaoUtil.getListaLocalizacaoPermissoes(), 123);
                                     LocalizacaoUtils.incrementContLocation();
@@ -378,7 +421,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                             }
 
                             @Override
-                            public void right() {
+                            public void NegativeButton(DialogInterface dialog, int which) {
                                 showAlertLocalizacao();
                             }
                         });
@@ -410,33 +453,41 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     private void showAlertLocalizacao() {
-        ViewUtils.alertTitleButton(this, R.string.label_atencao,
+        DialogUtils.dialogEntendiListener(CarrinhoActivity.this,
                 getString(R.string.alerta_precisa_estar_no_brasil),
-                getResources().getString(R.string.title_entendi),
-                dialog -> {
-                    //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
-                    Intent intent = IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, PrincipalActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                });
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                        Intent intent = IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, PrincipalActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                }
+        );
     }
 
     private void onFluxoLocalizacaoNoBrasil(){
         try {
             if (model.existeCompraMesmoValorEm24horas(carrinho.getValorTotal())){
                 //modal
-                ViewUtils.alertTitleButtonYesOrNotListener(CarrinhoActivity.this,
-                                                           getString(R.string.compra_existente_24_horas),
-                                                           (dialog, which) -> {
-                                                               dialog.dismiss();
-                                                           },
-                                                           (dialog, which) -> {
-                                                               if (DadosUsuarioBO.checarUsuarioLogado(this)) {
-                                                                   validarCarrinho();
-                                                               } else {
-                                                                   AlertDialogExperimenteLogarSingleton.show(this, true, null);
-                                                               }
-                                                           });
+                DialogUtils.dialogSimNao(CarrinhoActivity.this,
+                        getString(R.string.compra_existente_24_horas),
+                        new OnDialogDoisBotoesListener() {
+                            @Override
+                            public void PositiveButton(DialogInterface dialog, int which) {
+                                // sem ação, apenas fecha o dialog
+                            }
+
+                            @Override
+                            public void NegativeButton(DialogInterface dialog, int which) {
+                                if (DadosUsuarioBO.checarUsuarioLogado(CarrinhoActivity.this)) {
+                                    validarCarrinho();
+                                } else {
+                                    AlertDialogExperimenteLogarSingleton.show(CarrinhoActivity.this, true, null);
+                                }
+                            }
+                        });
             } else {
                 if (DadosUsuarioBO.checarUsuarioLogado(this)) {
                     validarCarrinho();
@@ -539,6 +590,15 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 setCarrinho(payload);
                 atualizaLayout(offSet);
 
+                if (payload != null) {
+                    AnalyticsHelper.getInstance().logViewCartScreen(
+                            AnalyticsHelper.JourneyParams.APOSTAR,
+                            AnalyticsHelper.SubJourneyParams.CARRINHO,
+                            AnalyticsHelper.Tela.BETS_CART,
+                            payload
+                    );
+                }
+
                 if (payload.getMsgCotaExcluida() != null && payload.getMsgCotaExcluida()) {
                     notificationCotasExcluidas();
                 }
@@ -578,6 +638,15 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 ocorrendoValidacao = false;
                 AlertDialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
+                if (carrinho != null) {
+                    AnalyticsHelper.getInstance().logFlowEnd(
+                            AnalyticsHelper.JourneyParams.APOSTAR,
+                            AnalyticsHelper.JourneyParams.APOSTAR,
+                            AnalyticsHelper.SubJourneyParams.CARRINHO,
+                            AnalyticsHelper.Tela.BETS_CART,
+                            carrinho
+                    );
+                }
                 startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
             }
 
@@ -608,9 +677,15 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
 
-                ViewUtils.alertTitleButtonYesOrNotListener(CarrinhoActivity.this,
-                                                           MensagensNetwork.getErrorMessage(error),
-                                                           (dialogInterface, i) -> favoritarCarrinho(nome));
+              DialogUtils.dialogSim(CarrinhoActivity.this,
+                        MensagensNetwork.getErrorMessage(error),
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                favoritarCarrinho(nome);
+                            }
+                        }
+                );
             }
         };
     }
@@ -626,9 +701,16 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             public void success(Object payload) {
                 AlertDialogUtils.dismiss();
 
-                ViewUtils.alertTitleButton(CarrinhoActivity.this,
-                                           R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
-                                           getString(R.string.ok), dialogInterface -> { dialogFavoritar.dismiss(); });
+               DialogUtils.dialogEntendiListener(CarrinhoActivity.this,
+                        getString(R.string.carrinho_fav_lbl_msg),
+
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                dialogFavoritar.dismiss();
+                            }
+                        }
+                );
             }
 
             @Override
@@ -651,10 +733,17 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     protected void clickLimparCarrinhoLinearLayout() {
-        ViewUtils.alertTitleButtonYesOrNotListener(this, getString(R.string.MA011), (dialogInterface, i) -> {
-            AlertDialogUtils.show(CarrinhoActivity.this);
-            model.limparCarrinho(onLimparCarrinhoListener());
-        });
+        DialogUtils.dialogSim(CarrinhoActivity.this,
+                getString(R.string.MA011),
+
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        AlertDialogUtils.show(CarrinhoActivity.this);
+                        model.limparCarrinho(onLimparCarrinhoListener());
+                    }
+                }
+        );
     }
 
     private OnSilceListener onLimparCarrinhoListener() {

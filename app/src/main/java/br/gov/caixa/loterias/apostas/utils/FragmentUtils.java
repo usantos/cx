@@ -19,15 +19,14 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoComboFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoSimulacaoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloComboFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloSimulacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ConfirmacaoChavePixResgateFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
@@ -61,7 +60,7 @@ public class FragmentUtils {
 
 	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, String TAG) {
 		if(fragment == null){
-			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), TAG);
+			fragment = SomadorCarrinhoFragment.newInstance(TAG);
 			FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		}
 		return fragment;
@@ -69,7 +68,7 @@ public class FragmentUtils {
 
 	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, Boolean irCarrinho) {
 		if(fragment == null){
-			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), irCarrinho);
+			fragment = SomadorCarrinhoFragment.newInstance(irCarrinho);
 			FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		}
 		return fragment;
@@ -138,9 +137,9 @@ public class FragmentUtils {
 		return frag;
 	}
 
-	public static BarraTitutoSimulacaoFragment startFragmentBarraTituloSimulacao(FragmentManager fm, int id, ModalidadeEnum modalidade,
+	public static BarraTituloSimulacaoFragment startFragmentBarraTituloSimulacao(FragmentManager fm, int id, ModalidadeEnum modalidade,
 																				 String concurso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
-		BarraTitutoSimulacaoFragment frag = BarraTitutoSimulacaoFragment.newInstance(modalidade, concurso, sorteio, especial, corBackground, showBGEspecial);
+		BarraTituloSimulacaoFragment frag = BarraTituloSimulacaoFragment.newInstance(modalidade, concurso, sorteio, especial, corBackground, showBGEspecial);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}
@@ -158,9 +157,9 @@ public class FragmentUtils {
 		return frag;
 	}
 
-	public static BarraTitutoComboFragment startFragmentBarraTituloCombo(FragmentManager fm, int id, ModalidadeEnum modalidade,
+	public static BarraTituloComboFragment startFragmentBarraTituloCombo(FragmentManager fm, int id, ModalidadeEnum modalidade,
 																		 int corBackground) {
-		BarraTitutoComboFragment frag = BarraTitutoComboFragment.newInstance(modalidade, corBackground);
+		BarraTituloComboFragment frag = BarraTituloComboFragment.newInstance(modalidade, corBackground);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}
