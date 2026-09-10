@@ -173,7 +173,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
-    private View actionApresentarTrevo, actionSettings; //, actionApresentarPush;
+    private View actionApresentarTrevo, actionSettings, actionCentralNotificacao;
     private InfiniteScrollAdapter infiniteAdapter;
     private HomeAdapter homeAdapter;
     private View viewNotification;
@@ -743,7 +743,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
 
                 actionApresentarTrevo = toolbar.findViewById(R.id.action_apresentar_trevo);
-                //actionApresentarPush = toolbar.findViewById(R.id.action_pushmsg);
+                actionCentralNotificacao = toolbar.findViewById(R.id.central_notificacao);
 
                 if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
@@ -756,6 +756,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                                 showMenu();
                             }
                         }
+                    });
+                }
+                if (actionCentralNotificacao != null) {
+                    //toolbar.removeOnLayoutChangeListener(this);
+                    actionCentralNotificacao.setOnClickListener(view -> {
+                        startActivity(new Intent(PrincipalActivity.this, CentralNotificacaoActivity.class));
                     });
                 }
             }
