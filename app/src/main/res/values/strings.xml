@@ -107,10 +107,10 @@
     <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
     <string name="compra_sendo_processada">Sua compra está sendo processada</string>
     <string name="confirmacaoPagamentoProcessamento">Estamos processando sua compra.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, a aposta precisa estar _EFETIVADA_.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo2">O pagamento realizado _não garante_ automaticamente a efetivação da aposta.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo3">Se a aposta não for registrada, o valor será devolvido.</string>
-    <string name="confirmacaoPagamentoProcessamentoInfo4">Você pode acompanhar tudo em _Minhas Compras_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, sua aposta precisa estar com status _efetivada_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo2">Após a conclusão do pagamento, sua aposta será enviada para processamento.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo3">Você pode acompanhar o andamento em _Minhas Compras_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo4">Se a aposta não for efetivada, o valor será devolvido.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">Voltar ao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -170,7 +170,7 @@
     <string name="MA011">Deseja remover todas as apostas do carrinho?</string>
     <string name="MA013">Não é permitido incluir uma nova aposta no carrinho, pois a quantidade máxima de aposta já foi atingida.</string>
     <string name="MA014"> O valor máximo de apostas permitida diariamente será excedido com a inclusão dessa aposta. Deseja prosseguir com a inclusão da aposta?</string>
-    <string name="MA015">Já existe uma aposta idêntica em seu carrinho. Deseja prosseguir com a inclusão?</string>
+    <string name="MA015">Existe uma aposta idêntica em seu carrinho. Deseja prosseguir com a inclusão?</string>
 
     <string name="MA016">Um número não pode ser marcado como obrigatório e proibido.</string>
     <string name="MA019">Aposta favorita excluída com sucesso!</string>
@@ -1613,6 +1613,7 @@
     <string name="texto_header_detalhe_combo">Com esse pacote você garante apostas para todas as modalidades, incluindo teimosinhas para a semana inteira. Já pensou?</string>
     <string name="texto_ver_ou_nao_numeros_escolhidos_detalhe_combo">Os números dos jogos dos combos são escolhidos aleatoriamente pelo sistema. Mas antes de efetuar o pagamento é possível visualizar os números selecionados.</string>
     <string name="quantidade_de_apostas">Quantidade de Apostas</string>
+    <string name="excluir_quantidade">Excluir Quantidade</string>
     <string name="ver_numeros_escolhidos_antes_de_pagar">Quero ver os números escolhidos antes de pagar.</string>
     <string name="adicionar_apostas">Adicionar apostas</string>
     <string name="remover_apostas">Remover apostas</string>
@@ -1721,6 +1722,8 @@
 
     <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
     <string name="txt_como_jogar">Como jogar</string>
+    <string name="txt_apostas_identicas">Existem apostas idênticas em seu carrinho, por favor verifique.</string>
+
     <string name="txt_buscar_exemplo">Insira o nome da lotérica ou o código somente com os números do segundo campo, com 6 dígitos, Exemplo: E.Lotérico 10.000004-01, digite 000004.</string>
     <string name="txt_name_code">Nome ou código</string>
     <string name="txt_lotericas">Lotéricas</string>
@@ -1735,4 +1738,6 @@
     <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Aguarde e tente novamente mais tarde.</string>
     <string name="text_descartar">Ao voltar para a página inicial, sua aposta em edição será descartada. Deseja continuar?</string>
     <string name="xx">XX</string>
+    <string name="tokenactivity">TokenActivity</string>
+    <string name="biometrialogin">BiometriaLogin</string>
 </resources>

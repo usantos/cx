@@ -5,5 +5,5 @@ public final class ResultadoNavegacaoAposta {
     private ResultadoNavegacaoAposta() {
     }
 
-    public static final int RESULT_RESETAR_SIMULA = 2;
+    public static final int RESULT_RESET = 2;
 }
