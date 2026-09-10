@@ -1692,4 +1692,9 @@
     <string name="valores_isencao_ir">Valores acima da isenção do IR</string>
     <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Aguarde e tente novamente mais tarde.</string>
 
+    <string name="pedido_desculpas">Pedimos desculpas pelo transtorno.\nTente novamente em breve</string>
+    <string name="app_indisponivel">O aplicativo está\ntemporariamente indisponível</string>
+    <string name="internet_instavel">Parece que sua internet\nestá com alguma instabilidade</string>
+    <string name="verifique_conexao">Verifique sua conexão\ne tente novamente</string>
+
 </resources>
