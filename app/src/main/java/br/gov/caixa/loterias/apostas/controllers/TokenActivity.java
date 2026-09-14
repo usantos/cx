@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationResponse;
@@ -38,10 +39,12 @@ import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
@@ -87,11 +90,19 @@ public class TokenActivity extends LoteriasBaseAppActivity {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    boolean usuarioBloqueado = RedirectNetwork.trataBloqueioTotal(error, TokenActivity.this);
-                                    if (!usuarioBloqueado) {
-                                        Log.d("TokenActivity", "Falha na resposta do serviço");
-                                        verificaCadastro();
-                                    }
+                                    FirebaseCrashlytics crash = FirebaseCrashlytics.getInstance();
+                                    crash.setCustomKey(getString(R.string.tokenactivity), "Erro na chamada de verificação de usuário bloqueado");
+                                    crash.recordException(error);
+
+                                    Log.e(getString(R.string.tokenactivity), "Erro! TokenActivity: Erro na chamada de verificação de usuário bloqueado " + error);
+                                    DialogUtils.dialogEntendiListener(
+                                            TokenActivity.this,
+                                            getResources().getString(R.string.nao_concluiu_operacao_nova), (dialog, which) -> {
+                                                new LoginSSOModel(TokenActivity.this).sair(LoginActivity.class, () -> {});
+                                                DadosUsuarioBO.updateUsuarioLogado(TokenActivity.this, false);
+                                                finish();
+                                            });
+
                                 }
                             });
                         }

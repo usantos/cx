@@ -16,7 +16,10 @@ public enum ConfiguracoesEnum {
     URL_BASE_APOSTADOR("urlBaseApostador"),
     GRUPO_CPFS_APOSTADOR("grupoDeCpfsApostador"),
     URL_BASE_BFF("urlBaseBff"),
-    GRUPO_CPFS_BFF("GrupoCpfBff");
+    GRUPO_CPFS_BFF("GrupoCpfBff"),
+    OUTUBRO_ROSA("outubroRosa"),
+    OUTUBRO_ROSA_MEGA_SENA("outubroRosaMegaSena"),
+    LAUNCHER_ICON("LAUNCHER_ICON");
     //URL_BASE_BFF_PILOTO("urlBaseBffPiloto");
     //GRUPO_CPFS_BFF_PILOTO("GrupoCpfBffPiloto");
 

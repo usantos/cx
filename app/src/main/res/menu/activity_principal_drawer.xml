@@ -6,12 +6,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_minhaarea"
-            android:icon="@drawable/menu1_area"
+            android:icon="@drawable/ic_menu_minha_area"
             android:title="@string/title_minhaArea">
         </item>
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/menu3_resultados"
+            android:icon="@drawable/ic_menu_resultados"
             android:title="@string/label_resultado" />
         <item
             android:id="@+id/nav_rapidao"
@@ -20,17 +20,17 @@
 
         <item
             android:id="@+id/nav_bilhetes"
-            android:icon="@drawable/menu5_bilhetes"
+            android:icon="@drawable/ic_menu_conferir_bilhete"
             android:title="@string/title_lerBilhete" />
 
         <item
             android:id="@+id/nav_jogo_responsavel"
-            android:icon="@drawable/menu6_jogo_responsavel"
+            android:icon="@drawable/ic_menu_jogo_responsavel"
             android:title="@string/jr_titulo" />
 
         <item
             android:id="@+id/nav_sociais"
-            android:icon="@drawable/menu7_repasses"
+            android:icon="@drawable/ic_menu_repasses_socieais"
             android:title="@string/title_repassesSociais" />
         <item
             android:id="@+id/nav_notificacoes"
