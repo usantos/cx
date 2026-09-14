@@ -1,6 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/carrinhoScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,15 +26,32 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="24dp"
+                />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="24dp"
+                />
 
             <TextView
+                app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+                android:layout_width="0dp"
                 android:id="@+id/tv_confirm_aposta"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="start"
-                android:paddingLeft="20dp"
                 android:text="@string/confirmarApostas"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorAccent"
@@ -44,131 +60,30 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+                android:layout_width="0dp"
                 android:id="@+id/tv_info_valor_minimo"
                 style="@style/editTextCaixaRegularTheme"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:gravity="start"
-                android:paddingLeft="20dp"
                 android:text="@string/label_lembrar_valor_minimo"
                 android:textColor="@color/black"
                 android:textAlignment="textStart"
                 android:textSize="14.2sp"
                 app:layout_constraintTop_toBottomOf="@id/tv_confirm_aposta" />
 
-            <TextView
-                android:id="@+id/tv_cotas_bolao"
-                android:layout_width="match_parent"
+            <androidx.recyclerview.widget.RecyclerView
+                app:layout_constraintStart_toStartOf="@id/guidelineStart"
+                app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+                android:layout_width="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_info_valor_minimo"
+                android:id="@+id/listaCarrinho"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="start"
-                android:paddingLeft="20dp"
-                android:text="@string/cotas_bolao"
-                android:textColor="@color/bolao_azul_subtitulo"
-                android:textAlignment="textStart"
-                android:textSize="14.2sp"
-                android:fontFamily="@font/caixa_std_bold"
-                android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/tv_info_valor_minimo" />
-
-            <View
-                android:id="@+id/v_div_bottom_cotas"
-                android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_height="1dp"
-                android:background="@color/cinzaclaro"
-                android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@+id/tv_cotas_bolao" />
-
-            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
-                android:id="@+id/erv_boloes_listas"
-                style="@style/editTextCaixaRegularTheme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="40dp"
                 android:nestedScrollingEnabled="false"
-                android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/v_div_bottom_cotas" />
-
-
-            <TextView
-                android:id="@+id/tv_apostas_individuais"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="start"
-                android:paddingLeft="20dp"
-                android:text="@string/apostas_individuais"
-                android:textColor="@color/bolao_azul_subtitulo"
-                android:textAlignment="textStart"
-                android:textSize="14.2sp"
-                android:fontFamily="@font/caixa_std_bold"
-                app:layout_constraintTop_toBottomOf="@id/erv_boloes_listas" />
-
-            <View
-                android:id="@+id/v_div_bottom"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/cinzaclaro"
-                app:layout_constraintTop_toBottomOf="@+id/tv_apostas_individuais" />
-
-            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
-                android:id="@+id/erv_apostas_listas"
-                style="@style/editTextCaixaRegularTheme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/v_div_bottom"
-                tools:layout_editor_absoluteX="0dp" />
-
-            <TextView
-                android:id="@+id/tv_combo_apostas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="start"
-                android:paddingLeft="20dp"
-                android:text="@string/combo_apostas"
-                android:textColor="@color/bolao_azul_subtitulo"
-                android:textAlignment="textStart"
-                android:textSize="14.2sp"
-                android:fontFamily="@font/caixa_std_bold"
-                android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/erv_apostas_listas" />
-
-            <View
-                android:id="@+id/v_div_bottom_combos"
-                android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_height="1dp"
-                android:background="@color/cinzaclaro"
-                android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@+id/tv_combo_apostas" />
-
-            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
-                android:id="@+id/erv_combos_listas"
-                style="@style/editTextCaixaRegularTheme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:nestedScrollingEnabled="false"
-                android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/v_div_bottom_combos" />
-
-            <ProgressBar
-                android:id="@+id/pb_loading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/erv_combos_listas"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="270dp"
-                app:layout_constraintTop_toBottomOf="@id/pb_loading"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
