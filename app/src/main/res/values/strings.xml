@@ -1743,4 +1743,6 @@
     <string name="central_notificacoes">Central de notificações</string>
     <string name="marcar_todas_como_lidas">Marcar todas como lidas</string>
     <string name="excluir_todas_notificacoes">Excluir todas as notificações</string>
+    <string name="tab_todas">Todas</string>
+    <string name="tab_nao_lidas">Não lidas (0)</string>
 </resources>
