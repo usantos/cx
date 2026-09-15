@@ -165,6 +165,7 @@ class ServerMethods {
 
      //DADOS CORPORATIVOS
      static final String MODALIDADES_PATH = "/modalidades";
+     static final String HISTORICO_NOTIFICACAO = "/historico-notificacoes";
      static final String LER_NOTIFICACAO = "historico-notificacoes/{idNotificacao}/visualiza";
      static final String APP_VERSAO_ATUALIZACAO_PATH = "/app/valida-versao/{versao-app}";
      static final String UFS_PATH = "/ufs";

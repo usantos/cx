@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PushRegistrarDispositivoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PushRegistrarDispositivoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
@@ -268,6 +269,20 @@ public class DadosUsuarioBO extends SilceBO {
 
         final GsonRequest request = getServiceConnection().buildPutRequest(ServerMethods.USUARIOS_PATH, new LinkedHashMap<>(),
                 apostadorAlteracaoDTO, CadastrarApostadorDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void getHistoricoNotificacao(final RequestListener<NotificacaoResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
+
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.HISTORICO_NOTIFICACAO, queryParams, NotificacaoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
