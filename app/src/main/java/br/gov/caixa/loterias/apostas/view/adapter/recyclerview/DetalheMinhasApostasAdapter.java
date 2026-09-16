@@ -497,20 +497,22 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         }
     }
 
+    //Aqui adiciona colunas
     private void setupLotteryGrid(RecyclerView recyclerView, int columns, List<String> mNumbers, List<String> mSortedNumbers, LotteryGridStyleConfig config) {
         setupRecyclerview(recyclerView);
 
-        List<RowItem> rowItems = buildUiModels(columns, mNumbers, config.getShape() != Shape.TREVO ? mSortedNumbers : null, config.isAnnounceColumns(), RewardMatchMode.ANY_POSITION);
+        List<RowItem> rowItems = buildUiModels(columns, mNumbers, mSortedNumbers, config.isAnnounceColumns(), RewardMatchMode.ANY_POSITION);
         NumerosGridAdapterBackup adapter = new NumerosGridAdapterBackup(config);
 
         adapter.submitList(rowItems);
         recyclerView.setAdapter(adapter);
     }
 
+    //Somente chamado na supersete, onde há uma diferença no comportamento
     private void setupLotteryGrid(RecyclerView recyclerView, List<String> mNumbers, List<String> mSortedNumbers, LotteryGridStyleConfig config) {
         setupRecyclerview(recyclerView);
 
-        List<RowItem> rowItems = buildUiModels(7, mNumbers, config.getShape() != Shape.TREVO ? mSortedNumbers : null, config.isAnnounceColumns(), mSortedNumbers!=null?RewardMatchMode.SAME_POSITION : RewardMatchMode.ANY_POSITION);
+        List<RowItem> rowItems = buildUiModels(7, mNumbers, mSortedNumbers, config.isAnnounceColumns(), mSortedNumbers!=null?RewardMatchMode.SAME_POSITION : RewardMatchMode.ANY_POSITION);
         NumerosGridAdapterBackup adapter = new NumerosGridAdapterBackup(config);
 
         adapter.submitList(rowItems);
