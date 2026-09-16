@@ -91,7 +91,7 @@ class CarrinhoActivity : LoteriasBaseAppActivity() {
     private lateinit var model: CarrinhoModel
 
     //fragments
-    private lateinit var somadorCarrinhoFragment: SomadorCarrinhoFragment? = null
+    private var somadorCarrinhoFragment: SomadorCarrinhoFragment? = null
     private lateinit var titleToolbar: TextView
     private lateinit var customButton: ImageButton
 
@@ -173,10 +173,11 @@ class CarrinhoActivity : LoteriasBaseAppActivity() {
     }
 
     private fun podeHabilitarFavoritar(): Boolean {
-        val carrinho = carrinho
+        val carrinho = carrinho ?: return false
 
-        return !carrinho.getApostas().isNullOrEmpty() && carrinho.getBoloes()
-            .isNullOrEmpty() && carrinho.getCombos().isNullOrEmpty()
+        return !carrinho.getApostas().isNullOrEmpty() &&
+                carrinho.getBoloes().isNullOrEmpty() &&
+                carrinho.getCombos().isNullOrEmpty()
     }
 
     private fun setaDialogFavoritar() {
@@ -251,7 +252,7 @@ class CarrinhoActivity : LoteriasBaseAppActivity() {
     }
 
     private fun configurarBack() {
-        onBackPressedDispatcher().addCallback(
+        onBackPressedDispatcher.addCallback(
             this, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     setResult(ResultadoNavegacaoAposta.RESULT_RESET)
@@ -393,11 +394,14 @@ class CarrinhoActivity : LoteriasBaseAppActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String?>?, grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String?>,
+        grantResults: IntArray,
+        deviceId: Int
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions?, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults, deviceId)
         if (requestCode == LocalizacaoUtils.PERMISSAO_LOCALIZACAO_COD) {
-            if (grantResults.size > 0 && grantResults[0] >= 0) {
+            if (grantResults.isNotEmpty() && grantResults[0] >= 0) {
                 trataPermissao()
             } else {
                 if (LocalizacaoUtils.checaNegadaDefinitivamente(this@CarrinhoActivity)) {
@@ -935,7 +939,7 @@ class CarrinhoActivity : LoteriasBaseAppActivity() {
     }
 
     private fun temCotasExpiradas(): Boolean {
-        val carrinhoDTO = CarrinhoSingleton.getInstance().getCarrinho()
+        val carrinhoDTO = CarrinhoSingleton.getInstance().carrinho
         if (carrinhoDTO == null || carrinhoDTO.getBoloes() == null || carrinhoDTO.getBoloes()
                 .isEmpty()
         ) {
@@ -946,7 +950,7 @@ class CarrinhoActivity : LoteriasBaseAppActivity() {
 
         for (bolao in listBolao) {
             val dataHoraExpiracao = bolao.reservaCotaBolao.dataHoraExpiracaoReserva
-            if (dataHoraExpiracao != null || isNotEmpty()) {
+            if (!dataHoraExpiracao.isNullOrEmpty()) {
                 val tempo_restante_milesec = DateUtils.diffMillisSecondsTimerZone(dataHoraExpiracao)
                 if (tempo_restante_milesec <= 0) {
                     return true

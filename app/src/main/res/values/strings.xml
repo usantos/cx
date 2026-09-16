@@ -1736,4 +1736,6 @@
     <string name="xx">XX</string>
     <string name="tokenactivity">TokenActivity</string>
     <string name="biometrialogin">BiometriaLogin</string>
+    <string name="adicionarNovaAposta">Adicionar nova aposta</string>
+    <string name="irParaPagamento">Ir para pagamento</string>
 </resources>

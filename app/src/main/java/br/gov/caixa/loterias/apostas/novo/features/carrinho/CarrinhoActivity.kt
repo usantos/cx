@@ -1,0 +1,847 @@
+package br.gov.caixa.loterias.apostas.novo.features.carrinho
+
+import CarrinhoAdapter
+import android.app.Dialog
+import android.content.DialogInterface
+import android.content.Intent
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity
+import br.gov.caixa.loterias.apostas.R
+import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity
+import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity
+import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO
+import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton
+import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel
+import br.gov.caixa.loterias.apostas.model.sp.LoginSP
+import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils
+import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager
+import br.gov.caixa.loterias.apostas.utils.DateUtils
+import br.gov.caixa.loterias.apostas.utils.DialogUtils
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils
+import br.gov.caixa.loterias.apostas.utils.IntentUtil
+import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils
+import br.gov.caixa.loterias.apostas.utils.MessagingUtils
+import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum
+import br.gov.caixa.loterias.apostas.utils.PermissaoUtil
+import br.gov.caixa.loterias.apostas.utils.RedirectUtils
+import br.gov.caixa.loterias.apostas.utils.ResultadoNavegacaoAposta
+import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil
+import br.gov.caixa.loterias.apostas.utils.ViewUtils
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper
+import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity
+import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity
+import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener
+import com.android.volley.VolleyError
+import com.google.gson.Gson
+import java.math.BigDecimal
+import java.util.Timer
+import java.util.TimerTask
+
+class CarrinhoActivity : LoteriasBaseAppActivity() {
+    private lateinit var carrinhoAdapter: CarrinhoAdapter
+    private lateinit var toolbar: Toolbar
+    private lateinit var dialogFavoritar: Dialog
+    private lateinit var rvListaCarrinho: RecyclerView
+    private lateinit var infoValorMinimo: TextView
+    protected lateinit var vLoading: View
+    private lateinit var etCarrinho: EditText
+    private lateinit var btnAvancaPagamento: Button
+    private lateinit var btnNovaAposta: Button
+    private lateinit var btnLimpar: ImageButton
+    private lateinit var btnFavoritar: ImageButton
+    private var carrinho: CarrinhoDTO? = null
+    private var lerCarrinhoLocal = false
+    private var ocorrendoValidacao = false
+    private var onResume = false
+
+    private lateinit var timer: Timer
+    private val handler = Handler(Looper.getMainLooper())
+
+    private lateinit var origem: String
+
+    private lateinit var model: CarrinhoModel
+
+    //fragments
+    private var somadorCarrinhoFragment: SomadorCarrinhoFragment? = null
+    private lateinit var titleToolbar: TextView
+    private lateinit var customButton: ImageButton
+
+    protected override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_carrinho)
+        model = CarrinhoModel(this@CarrinhoActivity)
+        carrinho = CarrinhoSingleton.getInstance().carrinho
+        pegaExtras()
+        timerExcluiCotasExpiradas()
+        setaViews()
+        setupRecyclerView()
+        setupListeners()
+    }
+
+    protected override fun onResume() {
+        super.onResume()
+        limparCarrinhoInicial()
+        atualizaParametros()
+    }
+
+    private fun limparCarrinhoInicial() {
+        carrinhoAdapter.submitList(emptyList())
+    }
+
+    private fun postResume() {
+        if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+            lerCarrinhoLocal = false
+        }
+        if (ocorrendoValidacao && !onResume) {
+            onResume = true
+            DialogUtils.dialogEntendi(
+                this@CarrinhoActivity,
+                this@CarrinhoActivity.getResources()
+                    .getString(R.string.label_verificar_valor_carrinho)
+            )
+        }
+        lerCarrinho()
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebservice()
+        }
+    }
+
+    private fun lerCarrinho() {
+        if (lerCarrinhoLocal) {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_carrinho_offline))
+            lerCarrinhoLocal()
+        } else {
+            atualizaLayout()
+        }
+        handleBtnFavoritar()
+    }
+
+    fun lerCarrinhoLocal() {
+        carrinho = model.lerCarrinhoLocal()
+        atualizaLayout()
+    }
+
+    private fun handleBtnFavoritar() {
+        btnFavoritar.visibility =
+            if (DadosUsuarioBO.checarUsuarioLogado(this) && podeHabilitarFavoritar()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+    }
+
+    private fun podeHabilitarFavoritar(): Boolean {
+        val carrinho = carrinho ?: return false
+
+        return !carrinho.apostas.isNullOrEmpty() &&
+                carrinho.boloes.isNullOrEmpty() &&
+                carrinho.combos.isNullOrEmpty()
+    }
+
+    private fun setaDialogFavoritar() {
+        dialogFavoritar = Dialog(this)
+        dialogFavoritar.setContentView(R.layout.custom_dialog_edit_text)
+
+        val tituloDialog = dialogFavoritar.findViewById<TextView>(R.id.tv_titulo)
+        tituloDialog.text = "Carrinho Favorito"
+
+        etCarrinho = dialogFavoritar.findViewById<EditText>(R.id.et_carrinho)
+
+        val btnOk = dialogFavoritar.findViewById<Button>(R.id.btn_ok)
+        val btnCancelar = dialogFavoritar.findViewById<Button>(R.id.btn_cancelar)
+
+        btnOk.setOnClickListener { v: View? ->
+            val text = etCarrinho.text.toString()
+            if (!text.isEmpty()) {
+                validarCarrinhoFavorito(text)
+            }
+        }
+        dialogFavoritar.setOnDismissListener { dialogInterface: DialogInterface? ->
+            etCarrinho.setText("")
+        }
+        btnCancelar.setOnClickListener { v: View? -> dialogFavoritar.dismiss() }
+
+        dialogFavoritar.window?.let {
+            val screenWidth = getResources().displayMetrics.widthPixels
+            val dialogWidth =
+                (screenWidth * 0.85).toInt() // Define a largura da dialog como 85% da largura da tela
+
+            it.setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+            it.setBackgroundDrawableResource(R.drawable.rounded_dialog_background)
+        }
+    }
+
+    private fun pegaExtras() {
+        val bundle = intent.extras ?: return
+        lerCarrinhoLocal = bundle.getBoolean(LER_CARRINHO_LOCAL)
+        origem = requireNotNull(bundle.getString(ORIGEM)) {
+            "Extra ORIGEM não informada"
+        }
+    }
+
+    private fun setaViews() {
+        rvListaCarrinho = findViewById(R.id.listaCarrinho)
+
+        infoValorMinimo = findViewById(R.id.tv_info_valor_minimo)
+        btnAvancaPagamento = findViewById(R.id.btn_avancar_pagamento)
+        btnNovaAposta = findViewById(R.id.btn_nova_aposta)
+        toolbar = findViewById(R.id.toolbar)
+        btnLimpar = findViewById(R.id.ib_excluir)
+        btnFavoritar = findViewById(R.id.ib_favoritar)
+        configurarToolbar()
+        setaDialogFavoritar()
+    }
+
+    private fun configurarToolbar() {
+        titleToolbar = findViewById(R.id.textCustom)
+        titleToolbar.setText(R.string.carrinho_nde_apostas)
+        ViewCompat.setAccessibilityHeading(titleToolbar, true)
+        customButton = findViewById(R.id.customButton)
+        customButton.contentDescription = getString(R.string.voltar)
+        customButton.setFocusable(true)
+        customButton.isFocusableInTouchMode = true
+        customButton.requestFocus()
+        btnLimpar.contentDescription = getString(R.string.excluir)
+        btnFavoritar.contentDescription = getString(R.string.favoritar_carrinho)
+        configurarBack()
+    }
+
+    private fun voltar() {
+        setResult(ResultadoNavegacaoAposta.RESULT_RESET)
+        finish()
+    }
+
+    private fun configurarBack() {
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    voltar()
+                }
+            }
+        )
+        customButton.setOnClickListener {
+            voltar()
+        }
+    }
+
+    private fun setupListeners() {
+        btnAvancaPagamento.setOnClickListener { v: View? -> onClickAvancaPagamento() }
+        btnNovaAposta.setOnClickListener { v: View? -> clickBotaoFazerNovaAposta() }
+        btnLimpar.setOnClickListener { v: View? -> clickLimparCarrinhoLinearLayout() }
+        btnFavoritar.setOnClickListener { v: View? -> onClickFavoritar() }
+    }
+
+    private fun setupRecyclerView() {
+        carrinhoAdapter = CarrinhoAdapter(
+            onExcluir = { aposta ->
+                excluirAposta(aposta)
+            },
+            onMaisDetalhes = { aposta ->
+                abrirDetalhesBolao(aposta)
+            }
+        )
+        rvListaCarrinho.apply {
+            layoutManager = LinearLayoutManager(this@CarrinhoActivity)
+            adapter = carrinhoAdapter
+            setHasFixedSize(false)
+            itemAnimator = DefaultItemAnimator()
+        }
+    }
+
+    private fun atualizarCarrinho() {
+        limparCarrinhoInicial()
+        atualizaParametros()
+    }
+
+    private fun detalheCotaBolao(aposta: IdentificaoDeUmaApostaDas8Modalidades<*>) {
+        val reserva = aposta.reservaCotaBolao ?: return
+
+        val bundle = Bundle().apply {
+            putString(
+                DetalhesBolaoActivity.ARG_CODIGO_BOLAO,
+                reserva.codigoBolaoReserva
+            )
+            putString(
+                DetalhesBolaoActivity.ARG_MODALIDADE,
+                Gson().toJson(aposta.modalidade)
+            )
+            putString(
+                DetalhesBolaoActivity.ARG_MODO_VISUALIZACAO,
+                Gson().toJson(ModoVisualizacaoBolaoEnum.LEITURA)
+            )
+            putString(
+                DetalhesBolaoActivity.ARG_NUMERO_COTA,
+                "${reserva.numeroCotaReservada}/${reserva.qtdCotaTotalBolao}"
+            )
+        }
+
+        val intent = IntentUtil.getIntentOrigemDestino(
+            this,
+            DetalhesBolaoActivity::class.java,
+            bundle
+        )
+
+        startActivity(intent)
+    }
+
+    private fun abrirDetalhesBolao(aposta: IdentificaoDeUmaApostaDas8Modalidades<*>) {
+        detalheCotaBolao(aposta)
+    }
+
+    private fun excluirAposta(aposta: IdentificaoDeUmaApostaDas8Modalidades<*>) {
+        TODO("Not yet implemented")
+    }
+
+    private fun onClickFavoritar() {
+        DialogUtils.dialogEntendiListener(
+            this@CarrinhoActivity, getString(R.string.loteca_nao_favorita)
+        ) { dialog, which -> dialogFavoritar.show() }
+    }
+
+    private fun onClickAvancaPagamento() {
+        logCart()
+        if (LoginSP.isLoginRealizado() && RedirectUtils.temRedirectCadastrarApostador()) {
+            startActivity(
+                IntentUtil.getIntentOrigemDestino(
+                    this@CarrinhoActivity, CadastrarActivity::class.java
+                )
+            )
+            finish()
+        } else if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this, 2)) {
+            if (temCotasExpiradas()) {
+                AlertDialogUtils.show(this@CarrinhoActivity)
+                model.buscaCarrinhoSilce(object : OnSilceListener<CarrinhoDTO?> {
+                    override fun success(payload: CarrinhoDTO?) {
+                        setCarrinho(payload)
+                        payload?.let {
+                            carrinhoAdapter.submitList(
+                                CarrinhoMapper.map(it)
+                            )
+                        }
+                        if (payload?.getMsgCotaExcluida() != null && payload.getMsgCotaExcluida()) {
+                            notificationCotasExcluidas()
+                        }
+                        trataPermissao()
+                        AlertDialogUtils.dismiss()
+                    }
+
+                    override fun error(error: VolleyError?) {
+                        AlertDialogUtils.dismiss()
+                        trataPermissao()
+                    }
+                })
+            } else {
+                trataPermissao()
+            }
+        }
+    }
+
+    private fun logCart() {
+        val total = ViewUtils.getMoedaFormat(carrinho?.getValorTotal())
+        val apostas = carrinho?.apostas?.size ?: 0
+        val apostasIndividuais = carrinho?.apostasIndividuais?.size ?: 0
+        val boloes = carrinho?.boloes?.size ?: 0
+        AnalyticsHelper.getInstance().logInteraction(
+            AnalyticsHelper.EventCategoryParams.CTA,
+            AnalyticsHelper.EventActionParams.CLICK,
+            AnalyticsHelper.EventLabelParams.PAYMENT,
+            AnalyticsHelper.JourneyParams.APOSTAR,
+            AnalyticsHelper.SubJourneyParams.CARRINHO,
+            AnalyticsHelper.Tela.BETS_CART,
+            total,
+            apostas.toString(),
+            apostasIndividuais.toString(),
+            boloes.toString()
+        )
+    }
+
+    private fun trataPermissao() {
+        LocalizacaoUtils.checaStatusPermissaoAsync(this) { result: Int ->
+            if (result == LocalizacaoUtils.LOC_NAO_PERMITIDA || result == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE || result == LocalizacaoUtils.LOC_DESATIVADA) {
+                DialogUtils.dialogSimNao(
+                    this@CarrinhoActivity,
+                    getString(R.string.posso_consultar_sua_localizacao),
+                    object : OnDialogDoisBotoesListener {
+                        override fun PositiveButton(dialog: DialogInterface?, which: Int) {
+                            if (result == LocalizacaoUtils.LOC_NAO_PERMITIDA) {
+                                PermissaoUtil.checkList(
+                                    this@CarrinhoActivity,
+                                    PermissaoUtil.getListaLocalizacaoPermissoes(),
+                                    123
+                                )
+                                LocalizacaoUtils.incrementContLocation()
+                            } else if (result == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE) {
+                                LocalizacaoUtils.intentConfigPermissao(this@CarrinhoActivity)
+                            } else if (result == LocalizacaoUtils.LOC_DESATIVADA) {
+                                LocalizacaoUtils.intentConfigGps(this@CarrinhoActivity)
+                            }
+                        }
+
+                        override fun NegativeButton(dialog: DialogInterface?, which: Int) {
+                            showAlertLocalizacao()
+                        }
+                    })
+            } else {
+                if (result == LocalizacaoUtils.LOC_NO_BRASIL) {
+                    onFluxoLocalizacaoNoBrasil()
+                } else {
+                    showAlertLocalizacao()
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String?>,
+        grantResults: IntArray,
+        deviceId: Int
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults, deviceId)
+        if (requestCode == LocalizacaoUtils.PERMISSAO_LOCALIZACAO_COD) {
+            if (grantResults.isNotEmpty() && grantResults[0] >= 0) {
+                trataPermissao()
+            } else {
+                if (LocalizacaoUtils.checaNegadaDefinitivamente(this@CarrinhoActivity)) {
+                    LocalizacaoUtils.intentConfigPermissao(this@CarrinhoActivity)
+                } else {
+                    showAlertLocalizacao()
+                }
+            }
+        }
+    }
+
+    private fun showAlertLocalizacao() {
+        DialogUtils.dialogEntendiListener(
+            this@CarrinhoActivity, getString(R.string.alerta_precisa_estar_no_brasil)
+        ) { dialog, which -> //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+            val intent = IntentUtil.getIntentOrigemDestino(
+                this@CarrinhoActivity, PrincipalActivity::class.java
+            )
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        }
+    }
+
+    private fun onFluxoLocalizacaoNoBrasil() {
+        if (model.existeCompraMesmoValorEm24horas(carrinho?.getValorTotal())) {
+            //modal
+            DialogUtils.dialogSimNao(
+                this@CarrinhoActivity,
+                getString(R.string.compra_existente_24_horas),
+                object : OnDialogDoisBotoesListener {
+                    override fun PositiveButton(dialog: DialogInterface?, which: Int) {
+                        // sem ação, apenas fecha o dialog
+                    }
+
+                    override fun NegativeButton(dialog: DialogInterface?, which: Int) {
+                        if (DadosUsuarioBO.checarUsuarioLogado(this@CarrinhoActivity)) {
+                            validarCarrinho()
+                        } else {
+                            AlertDialogExperimenteLogarSingleton.show(
+                                this@CarrinhoActivity, true, null
+                            )
+                        }
+                    }
+                })
+        } else {
+            if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+                validarCarrinho()
+            } else {
+                AlertDialogExperimenteLogarSingleton.show(this, true, null)
+            }
+        }
+    }
+
+    fun atualizaLayout() {
+        try {
+            if (temBolaoCarrinho()) {
+                fragmentSomadorCarrinho()
+            }
+            if (temApostasIndividuaisCarrinho()) {
+                fragmentSomadorCarrinho()
+            }
+            if (temCombosCarrinho()) {
+                fragmentSomadorCarrinho()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        montarLayout()
+    }
+
+    private fun callWebservice() {
+        AlertDialogUtils.show(this@CarrinhoActivity)
+        vLoading.visibility = View.VISIBLE
+        model.buscaCarrinhoSilce(onCarrinhoListener())
+    }
+
+    private fun onCarrinhoListener(): OnSilceListener<CarrinhoDTO?> {
+        return object : OnSilceListener<CarrinhoDTO?> {
+            override fun success(payload: CarrinhoDTO?) {
+                vLoading.visibility = View.GONE
+                AlertDialogUtils.dismiss()
+
+                setCarrinho(payload)
+                payload?.let {
+                    carrinhoAdapter.submitList(
+                        CarrinhoMapper.map(it)
+                    )
+                }
+                atualizaLayout()
+
+                if (payload != null) {
+                    AnalyticsHelper.getInstance().logViewCartScreen(
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.CARRINHO,
+                        AnalyticsHelper.Tela.BETS_CART,
+                        payload
+                    )
+                }
+
+                if (payload?.getMsgCotaExcluida() != null && payload.getMsgCotaExcluida()) {
+                    notificationCotasExcluidas()
+                }
+            }
+
+            override fun error(error: VolleyError?) {
+                vLoading.visibility = View.GONE
+                AlertDialogUtils.dismiss()
+            }
+        }
+    }
+
+    private fun fragmentSomadorCarrinho() {
+        if (somadorCarrinhoFragment == null) {
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(
+                supportFragmentManager,
+                somadorCarrinhoFragment,
+                R.id.id_fg_somador_carrinho,
+                "TELA CARRINHO"
+            )
+        } else {
+            setValorTotalCarrinho()
+        }
+    }
+
+    fun setCarrinho(carrinho: CarrinhoDTO?) {
+        this.carrinho = carrinho
+        CarrinhoSingleton.getInstance().setCarrinho(this.carrinho)
+    }
+
+    private fun validarCarrinho() {
+        ocorrendoValidacao = true
+        AlertDialogUtils.show(this@CarrinhoActivity)
+        model.validarCarrinho(onValidarCarrinhoListener())
+    }
+
+    private fun onValidarCarrinhoListener(): OnSilceListener<*> {
+        return object : OnSilceListener<Any?> {
+            override fun success(payload: Any?) {
+                ocorrendoValidacao = false
+                AlertDialogUtils.dismiss()
+                CarrinhoSingleton.getInstance().setCarrinho(carrinho)
+                if (carrinho != null) {
+                    AnalyticsHelper.getInstance().logFlowEnd(
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.JourneyParams.APOSTAR,
+                        AnalyticsHelper.SubJourneyParams.CARRINHO,
+                        AnalyticsHelper.Tela.BETS_CART,
+                        carrinho
+                    )
+                }
+                startActivity(Intent(this@CarrinhoActivity, FormaPagamentoActivity::class.java))
+            }
+
+            override fun error(error: VolleyError?) {
+                AlertDialogUtils.dismiss()
+                if (error != null && error.networkResponse != null && error.networkResponse.statusCode != 401) {
+                    ocorrendoValidacao = false
+                }
+            }
+        }
+    }
+
+    private fun validarCarrinhoFavorito(nome: String?) {
+        AlertDialogUtils.show(this@CarrinhoActivity)
+        model.validarCarrinhoFavorito(nome, onValidarCarrinhoFavorito(nome))
+    }
+
+    private fun onValidarCarrinhoFavorito(nome: String?): OnSilceListener<*> {
+        return object : OnSilceListener<Any?> {
+            override fun success(payload: Any?) {
+                AlertDialogUtils.dismiss()
+                favoritarCarrinho(nome)
+            }
+
+            override fun error(error: VolleyError?) {
+                AlertDialogUtils.dismiss()
+
+                DialogUtils.dialogSim(
+                    this@CarrinhoActivity,
+                    MensagensNetwork.getErrorMessage(error),
+                    object : OnDialogBotaoListener {
+                        override fun onButtonClick(dialog: DialogInterface?, which: Int) {
+                            favoritarCarrinho(nome)
+                        }
+                    })
+            }
+        }
+    }
+
+    private fun favoritarCarrinho(nome: String?) {
+        AlertDialogUtils.show(this@CarrinhoActivity)
+        model.favoritarCarrinho(nome, onFavoritarCarrinhoListener())
+    }
+
+    private fun onFavoritarCarrinhoListener(): OnSilceListener<*> {
+        return object : OnSilceListener<Any?> {
+            override fun success(payload: Any?) {
+                AlertDialogUtils.dismiss()
+
+                DialogUtils.dialogEntendiListener(
+                    this@CarrinhoActivity, getString(R.string.carrinho_fav_lbl_msg),
+
+                    object : OnDialogBotaoListener {
+                        override fun onButtonClick(dialog: DialogInterface?, which: Int) {
+                            dialogFavoritar.dismiss()
+                        }
+                    })
+            }
+
+            override fun error(error: VolleyError?) {
+                AlertDialogUtils.dismiss()
+            }
+        }
+    }
+
+    protected fun clickBotaoFazerNovaAposta() {
+        if (origem.equals(
+                DetalhesComprasActivity.DETALHES_COMPRA_ACTIVITY, ignoreCase = true
+            )
+        ) {
+            //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+            val intent = IntentUtil.getIntentOrigemDestino(
+                this@CarrinhoActivity, PrincipalActivity::class.java
+            )
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        } else {
+            setResult(ResultadoNavegacaoAposta.RESULT_RESET)
+            finish()
+        }
+    }
+
+    private fun clickLimparCarrinhoLinearLayout() {
+        DialogUtils.dialogSim(
+            this@CarrinhoActivity, getString(R.string.MA011),
+
+            OnDialogBotaoListener { dialog: DialogInterface?, which: Int ->
+                AlertDialogUtils.show(this@CarrinhoActivity)
+                model.limparCarrinho(onLimparCarrinhoListener())
+            })
+    }
+
+    private fun onLimparCarrinhoListener(): OnSilceListener<*> {
+        return object : OnSilceListener<Any?> {
+            override fun success(payload: Any?) {
+                AlertDialogUtils.dismiss()
+                limparCarrinhoAtualizarTela()
+                limparCarrinhosFavoritos()
+                setValorTotalCarrinho()
+            }
+
+            override fun error(error: VolleyError?) {
+                AlertDialogUtils.dismiss()
+                deleteCarrinhoLocal()
+            }
+        }
+    }
+
+    private fun limparCarrinhosFavoritos() {
+        model.limparCarrinhosFavoritosLocal()
+    }
+
+    private fun deleteCarrinhoLocal() {
+        model.deletaCarrinhoLocal()
+        limparCarrinhoAtualizarTela()
+        setValorTotalCarrinho()
+    }
+
+    private fun limparCarrinhoAtualizarTela() {
+        carrinho?.let {
+            it.apostas?.clear()
+            it.apostasIndividuais.removeAll(it.apostasIndividuais)
+            if (temBolaoCarrinho()) {
+                it.boloes.clear()
+            }
+            if (temCombosCarrinho()) {
+                it.combos.clear()
+            }
+            it.valorTotal = BigDecimal.ZERO
+            CarrinhoSingleton.getInstance().setCarrinho(carrinho)
+        }
+
+        atualizaLayout()
+    }
+
+    private fun temBolaoCarrinho() =
+        !carrinho?.boloes.isNullOrEmpty()
+
+    private fun temApostasIndividuaisCarrinho() = !carrinho?.apostasIndividuais.isNullOrEmpty()
+
+    private fun temCombosCarrinho() = !carrinho?.combos.isNullOrEmpty()
+
+    private fun montarLayout() {
+        val sessaoUsuario = SessaoUsuario.getInstance()
+        val valorCarrinho = sessaoUsuario.valorMinimimoAposta ?: BigDecimal.ZERO
+        if (valorCarrinho > BigDecimal.ZERO) {
+            ViewUtils.setMoedaFormatHtml(
+                valorCarrinho,
+                infoValorMinimo,
+                getResources().getString(R.string.label_lembrar_valor_minimo).replace(
+                    getResources().getString(R.string.underline),
+                    getResources().getString(R.string.quebra_html)
+                ) + getResources().getString(R.string.espaco_em_branco)
+            )
+            infoValorMinimo.visibility = View.VISIBLE
+        } else {
+            infoValorMinimo.visibility = View.GONE
+        }
+        btnAvancaPagamento.text = ViewUtils.textCaixaSTDBold(
+            this, getString(R.string.avancarFormaPagamento)
+        )
+    }
+
+    private fun setValorTotalCarrinho() {
+        if (somadorCarrinhoFragment == null) {
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(
+                supportFragmentManager,
+                somadorCarrinhoFragment,
+                R.id.id_fg_somador_carrinho,
+                "TELA CARRINHO"
+            )
+        }
+        somadorCarrinhoFragment?.atualizaValorTotal(carrinho)
+    }
+
+    private fun atualizaParametros() {
+        AlertDialogUtils.show(this)
+        if (SessaoUsuarioUtil.precisaAtualizar()) {
+            model.buscaParametroSiumulacao(onParametroSimulacaoListener())
+        } else {
+            postResume()
+            AlertDialogUtils.dismiss()
+        }
+    }
+
+    private fun onParametroSimulacaoListener(): OnSilceListener<ParametrosSimulacao> {
+        return object : OnSilceListener<ParametrosSimulacao> {
+            override fun success(payload: ParametrosSimulacao) {
+                AlertDialogUtils.dismiss()
+
+                val parametros = payload.parametros
+                if (parametros == null || parametros.isEmpty()) {
+                    val appIndis =
+                        Intent(this@CarrinhoActivity, AppIndisponivelActivity::class.java)
+                    appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true)
+
+                    startActivityForResult(appIndis, 1)
+                }
+
+                SessaoUsuarioUtil.atualizaParametrosSingleton(payload)
+                postResume()
+            }
+
+            override fun error(error: VolleyError?) {
+                AlertDialogUtils.dismiss()
+                postResume()
+            }
+        }
+    }
+
+    fun timerExcluiCotasExpiradas() {
+        timer = Timer()
+        val task: TimerTask = object : TimerTask() {
+            override fun run() {
+                handler.post(Runnable {
+                    //Tarefa
+                    if (temCotasExpiradas()) {
+                        atualizarCarrinho()
+                    }
+                })
+            }
+        }
+        timer.schedule(task, 0, 60000)
+        //1 minuto
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
+    }
+
+    private fun temCotasExpiradas(): Boolean {
+        val boloes = CarrinhoSingleton.getInstance()
+            .carrinho
+            ?.boloes
+            .orEmpty()
+
+        return boloes.any { bolao ->
+            bolao.reservaCotaBolao
+                ?.dataHoraExpiracaoReserva
+                ?.let(DateUtils::diffMillisSecondsTimerZone)
+                ?.let { it <= 0 }
+                ?: false
+        }
+    }
+
+    private fun notificationCotasExcluidas() {
+        MessagingUtils.criaNotificacaoNova(
+            this, "", this.getString(R.string.cotas_expiradas_excluidas_carrinho)
+        )
+    }
+
+    companion object {
+        const val ORIGEM: String = "ORIGEM"
+
+        @JvmField
+        var CARRINHO: String = "CARRINHO"
+
+        @JvmField
+        var LER_CARRINHO_LOCAL: String = "LER_CARRINHO_LOCAL"
+        var FIM_SCROLL: Int = 0
+        var PAGE_SIZE: Int = 10
+    }
+}

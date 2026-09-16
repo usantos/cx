@@ -1,0 +1,17 @@
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
+
+sealed interface CarrinhoItem {
+
+    data class Header(
+        val titulo: String
+    ) : CarrinhoItem
+
+    data class Bolao(
+        val aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) : CarrinhoItem
+
+    data class Aposta(
+        val aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) : CarrinhoItem
+
+}
