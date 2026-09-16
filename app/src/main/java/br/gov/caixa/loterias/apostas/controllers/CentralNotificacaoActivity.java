@@ -20,9 +20,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoCentralDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoDTO2To;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NotificacaoAdapter;
@@ -37,7 +35,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
     private TextView textVazioTitulo;
     private NotificacaoAdapter notificacaoAdapter;
     private String abaSelerionada = ABA_TODAS;
-    private List<NotificacaoDTO> listNotificacaoTodas, listNotificacaoNaoLidas;
+    private List<NotificacaoCentralDTO> listNotificacaoTodas, listNotificacaoNaoLidas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +59,12 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
 //        }
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
     private void setTitle() {
         TextView textTitulo = findViewById(R.id.textCustom);
         textTitulo.setText(getString(R.string.central_notificacoes));
@@ -81,16 +85,9 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         btnAbaTodas.setOnClickListener(v -> selecionaAba(ABA_TODAS));
         btnAbaNaoLidas.setOnClickListener(v -> selecionaAba(ABA_NAO_LIDAS));
 
-//        Data dataHoje = new Data();
-//        dataHoje.setCalendar(new Date());
-//        List<NotificacaoDTO> listNotificacaoDTO = new ArrayList<>();
-//        listNotificacaoDTO.add(new NotificacaoDTO(1L,"Titulo 01", "Conteudo 01", dataHoje));
-//        listNotificacaoDTO.add(new NotificacaoDTO(2L,"Titulo 02", "Conteudo 02", dataHoje));
-//        listNotificacaoDTO.add(new NotificacaoDTO(3L,"Titulo 03", "Conteudo 03", dataHoje));
-
-        notificacaoAdapter = new NotificacaoAdapter(this, new ArrayList<NotificacaoDTO>(), new NotificacaoAdapter.OnExcluirClickListener() {
+        notificacaoAdapter = new NotificacaoAdapter(this, new ArrayList<NotificacaoCentralDTO>(), new NotificacaoAdapter.OnExcluirClickListener() {
             @Override
-            public void onExcluir(NotificacaoDTO notificacaoDTO) {
+            public void onExcluir(NotificacaoCentralDTO NotificacaoCentralDTO) {
             }
         });
         rvNotificacoes.setLayoutManager(new LinearLayoutManager(this));
@@ -106,13 +103,13 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         btnAbaNaoLidas.setBackground(getDrawable(todasSelecionada ? R.drawable.tab_nao_selecionada : R.drawable.tab_selecionada));
         btnAbaNaoLidas.setTextColor(getColor(todasSelecionada ? R.color.cinza70 : R.color.branco));
 
-        List<NotificacaoDTO> listNotificacaoSelecionada = todasSelecionada ? listNotificacaoTodas : listNotificacaoNaoLidas;
+        List<NotificacaoCentralDTO> listNotificacaoSelecionada = todasSelecionada ? listNotificacaoTodas : listNotificacaoNaoLidas;
         if (listNotificacaoSelecionada != null) {
             exibirNotificacoes(aba, listNotificacaoSelecionada);
         }
     }
 
-    private void exibirNotificacoes(String aba, List<NotificacaoDTO> listNotificacao) {
+    private void exibirNotificacoes(String aba, List<NotificacaoCentralDTO> listNotificacao) {
         if (listNotificacao == null || listNotificacao.isEmpty()) {
             boolean todas = ABA_TODAS.equals(aba);
             textVazioTitulo.setText(todas ? R.string.sem_notificacao : R.string.sem_notificacao_nao_lida);
@@ -126,12 +123,6 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         notificacaoAdapter.atualizar(listNotificacao);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
-    }
-
     private void carregarDados() {
         AlertDialogUtils.show(this);
         DadosUsuarioBO.getInstance().getHistoricoNotificacao(new RequestListener<NotificacaoResponse>() {
@@ -139,27 +130,44 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
             public void onResponse(NotificacaoResponse response) {
                 AlertDialogUtils.dismiss();
                 if (response != null && response.getPayload() != null) {
-                    //listNotificacaoTodas = response.getPayload();
-                    listNotificacaoTodas = new ArrayList<NotificacaoDTO>();
-                    List<NotificacaoCentralDTO> listNotificacaoDTO2 = response.getPayload();
-                    for (NotificacaoCentralDTO dto2 : listNotificacaoDTO2 )  {
-                        listNotificacaoTodas.add(NotificacaoDTO2To.toNotificacaoDTO(dto2));
-                    }
-
+                    listNotificacaoTodas = response.getPayload();
                     if(abaSelerionada.equals(ABA_TODAS)) {
                         exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
                     }
                 }
             }
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
+                listNotificacaoTodas = new ArrayList<>();
+                if(abaSelerionada.equals(ABA_TODAS)) {
+                    exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
+                }
                 RedirectNetwork.checkRedirect(error, CentralNotificacaoActivity.this);
             }
         });
 
-
+        DadosUsuarioBO.getInstance().getHistoricoNotificacaoNaoLidas(new RequestListener<NotificacaoResponse>() {
+            @Override
+            public void onResponse(NotificacaoResponse response) {
+                AlertDialogUtils.dismiss();
+                if (response != null && response.getPayload() != null) {
+                    listNotificacaoNaoLidas = response.getPayload();
+                    if(abaSelerionada.equals(ABA_NAO_LIDAS)) {
+                        exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
+                    }
+                }
+            }
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                listNotificacaoNaoLidas = new ArrayList<>();
+                if(abaSelerionada.equals(ABA_NAO_LIDAS)) {
+                    exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
+                }
+                RedirectNetwork.checkRedirect(error, CentralNotificacaoActivity.this);
+            }
+        });
     }
 
     private void habilitaBtn(Button btn) {

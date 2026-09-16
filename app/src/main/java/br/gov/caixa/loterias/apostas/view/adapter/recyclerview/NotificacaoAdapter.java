@@ -13,26 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoCentralDTO;
 
 public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.NotificacaoViewHolder> {
 
     public interface OnExcluirClickListener {
-        void onExcluir(NotificacaoDTO notificacaoDTO);
+        void onExcluir(NotificacaoCentralDTO NotificacaoCentralDTO);
     }
 
     private final Context context;
     private final OnExcluirClickListener listener;
-    private List<NotificacaoDTO> notificacoes = new ArrayList<>();
+    private List<NotificacaoCentralDTO> notificacoes = new ArrayList<>();
 
-    public NotificacaoAdapter(Context context, List<NotificacaoDTO> listNotificacaoDTO, OnExcluirClickListener listener) {
+    public NotificacaoAdapter(Context context, List<NotificacaoCentralDTO> listNotificacaoCentralDTO, OnExcluirClickListener listener) {
         this.context = context;
         this.listener = listener;
-        atualizar(listNotificacaoDTO);
+        atualizar(listNotificacaoCentralDTO);
     }
 
-    public void atualizar(List<NotificacaoDTO> listNotificacaoDTO) {
-        notificacoes = new ArrayList<>(listNotificacaoDTO);
+    public void atualizar(List<NotificacaoCentralDTO> listNotificacaoCentralDTO) {
+        notificacoes = new ArrayList<>(listNotificacaoCentralDTO);
         notifyDataSetChanged();
     }
 
@@ -67,15 +67,15 @@ public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.
             btnExcluirNotificacao = itemView.findViewById(R.id.btnExcluirNotificacao);
         }
 
-        void bind(final NotificacaoDTO notificacaoDTO, final OnExcluirClickListener listener) {
-            textTituloNotificacao.setText(notificacaoDTO.getTitulo());
-            textMensagemNotificacao.setText(notificacaoDTO.getConteudo());
-            badgeNaoLida.setVisibility(notificacaoDTO.isLida() ? View.INVISIBLE : View.VISIBLE);
+        void bind(final NotificacaoCentralDTO NotificacaoCentralDTO, final OnExcluirClickListener listener) {
+            textTituloNotificacao.setText(NotificacaoCentralDTO.getTitulo());
+            textMensagemNotificacao.setText(NotificacaoCentralDTO.getConteudo());
+            badgeNaoLida.setVisibility(NotificacaoCentralDTO.isLida() ? View.INVISIBLE : View.VISIBLE);
             btnExcluirNotificacao.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
-                        listener.onExcluir(notificacaoDTO);
+                        listener.onExcluir(NotificacaoCentralDTO);
                     }
                 }
             });
