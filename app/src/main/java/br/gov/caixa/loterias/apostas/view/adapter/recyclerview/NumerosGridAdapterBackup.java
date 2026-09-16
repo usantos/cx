@@ -34,7 +34,7 @@ public class NumerosGridAdapterBackup extends ListAdapter<RowItem, NumerosGridAd
 
                 @Override
                 public boolean areContentsTheSame(@NonNull RowItem oldItem, @NonNull RowItem newItem) {
-                    return oldItem.getItems().equals(newItem.getItems());
+                    return oldItem.items().equals(newItem.items());
                 }
             };
 
@@ -76,16 +76,16 @@ public class NumerosGridAdapterBackup extends ListAdapter<RowItem, NumerosGridAd
 
             StringBuilder contentDescription = new StringBuilder();
 
-            for (LotteryNumberUiModel model : rowItem.getItems()) {
+            for (LotteryNumberUiModel model : rowItem.items()) {
                 View cellView = LayoutInflater.from(context)
                         .inflate(layoutId, rowContainer, false);
 
                 TextView cellText = cellView.findViewById(R.id.tv_number);
-                cellText.setText(model.getNumber());
 
-                if (model.getNumber().isEmpty()) {
+                if (model.getNumber() == null) {
                     cellView.setVisibility(View.INVISIBLE);
                 } else {
+                    cellText.setText(model.getNumber());
                     applyTextColor(cellText, model, styleConfig);
                     applyBackground(cellText, model, styleConfig);
                 }

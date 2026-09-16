@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.utils.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.model.enums.RewardMatchMode;
 import br.gov.caixa.loterias.apostas.model.ui.LotteryNumberUiModel;
@@ -14,14 +15,24 @@ public class LotteryMapper {
 
         List<LotteryNumberUiModel> result = new ArrayList<>();
 
-        for (int i = 0; i< numbers.size(); i++) {
+        for (int i = 0; i < numbers.size(); i++) {
             String number = numbers.get(i);
             boolean isRewarded;
 
-            if (matchMode == RewardMatchMode.SAME_POSITION) {
-                isRewarded = rewarded != null && rewarded.size() > i && number != null && number.equals(rewarded.get(i));
-            } else {
-                isRewarded = rewarded != null && number != null && rewarded.contains(number);
+            switch (matchMode) {
+                case ANY_POSITION ->
+                        isRewarded = rewarded != null && number != null && rewarded.contains(number);
+                case SAME_POSITION ->
+                        isRewarded = rewarded != null && rewarded.size() > i && number != null && number.equals(rewarded.get(i));
+                case SAME_COLUMN_REPEATING -> {
+                    isRewarded = rewarded != null
+                            && !rewarded.isEmpty()
+                            && Objects.equals(
+                            number,
+                            rewarded.get(i % rewarded.size())
+                    );
+                }
+                default -> isRewarded = false;
             }
 
             String accessibility = isRewarded ? number + ", premiado" : number;
