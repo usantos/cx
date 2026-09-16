@@ -20,11 +20,11 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoCentralDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoDTO2To;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NotificacaoAdapter;
 
 public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
@@ -139,7 +139,16 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
             public void onResponse(NotificacaoResponse response) {
                 AlertDialogUtils.dismiss();
                 if (response != null && response.getPayload() != null) {
-                    listNotificacaoTodas = response.getPayload();
+                    //listNotificacaoTodas = response.getPayload();
+                    listNotificacaoTodas = new ArrayList<NotificacaoDTO>();
+                    List<NotificacaoCentralDTO> listNotificacaoDTO2 = response.getPayload();
+                    for (NotificacaoCentralDTO dto2 : listNotificacaoDTO2 )  {
+                        listNotificacaoTodas.add(NotificacaoDTO2To.toNotificacaoDTO(dto2));
+                    }
+
+                    if(abaSelerionada.equals(ABA_TODAS)) {
+                        exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
+                    }
                 }
             }
 

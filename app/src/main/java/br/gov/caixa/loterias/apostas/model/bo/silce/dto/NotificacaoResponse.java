@@ -9,6 +9,6 @@ import io.swagger.annotations.ApiModel;
  */
 
 @ApiModel(description = "")
-public class NotificacaoResponse extends SilceResponse<List<NotificacaoDTO>> {
+public class NotificacaoResponse extends SilceResponse<List<NotificacaoCentralDTO>> {
 }
 

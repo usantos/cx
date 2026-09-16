@@ -43,6 +43,9 @@ public class NotificacaoDTO {
   @SerializedName("id")
   private Long id = null;
 
+  public NotificacaoDTO() {
+  }
+
   public NotificacaoDTO titulo(String titulo) {
     this.titulo = titulo;
     return this;
