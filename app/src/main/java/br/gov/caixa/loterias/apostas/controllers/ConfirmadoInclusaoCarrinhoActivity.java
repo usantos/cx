@@ -1,7 +1,8 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+
+import static br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity.CARRINHO;
+import static br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
@@ -21,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.utils.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -55,7 +57,6 @@ import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
 public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity implements OnClickListener {
     public ParametroJogoDTO parametroSimulacao;
@@ -291,16 +292,16 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         switch (view.getId()) {
             case R.id.confirmarInclusaoApostaLayoutCarrinhoApostas: {
                 AlertDialogUtils.show(this);
-                ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+                ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<>() {
                     @Override
                     public void onResponse(CarrinhoDTOResponse response) {
                         AlertDialogUtils.dismiss();
                         Bundle args = new Bundle();
-                        args.putSerializable(CARRINHO, (Serializable) response.getPayload());
+                        args.putSerializable(CARRINHO, response.getPayload());
                         Intent intent = new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtras(args);
                         carrinhoLauncher.launch(intent);
-                        if (response.getRedirect() != null){
-                            RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ConfirmadoInclusaoCarrinhoActivity.this);
+                        if (response.getRedirect() != null) {
+                            RedirectNetwork.checkRedirectSucesso(response.getRedirect(), ConfirmadoInclusaoCarrinhoActivity.this);
                         }
                     }
 
@@ -311,7 +312,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                             Intent intent = new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true);
                             carrinhoLauncher.launch(intent);
                         } else {
-                            RedirectNetwork.checkRedirect( error, ConfirmadoInclusaoCarrinhoActivity.this );
+                            RedirectNetwork.checkRedirect(error, ConfirmadoInclusaoCarrinhoActivity.this);
                         }
                     }
                 });

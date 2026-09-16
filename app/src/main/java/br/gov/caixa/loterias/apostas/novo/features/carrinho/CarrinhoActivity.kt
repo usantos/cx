@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton
@@ -485,18 +486,14 @@ class CarrinhoActivity : LoteriasBaseAppActivity() {
     }
 
     fun atualizaLayout() {
-        try {
-            if (temBolaoCarrinho()) {
-                fragmentSomadorCarrinho()
-            }
-            if (temApostasIndividuaisCarrinho()) {
-                fragmentSomadorCarrinho()
-            }
-            if (temCombosCarrinho()) {
-                fragmentSomadorCarrinho()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if (temBolaoCarrinho()) {
+            fragmentSomadorCarrinho()
+        }
+        if (temApostasIndividuaisCarrinho()) {
+            fragmentSomadorCarrinho()
+        }
+        if (temCombosCarrinho()) {
+            fragmentSomadorCarrinho()
         }
         montarLayout()
     }
@@ -833,6 +830,10 @@ class CarrinhoActivity : LoteriasBaseAppActivity() {
         )
     }
 
+    fun deletaCombo(positionCombo: Int, comboApostaDTO: ComboApostaDTO) {
+        TODO("Not yet implemented")
+    }
+
     companion object {
         const val ORIGEM: String = "ORIGEM"
 
@@ -841,7 +842,5 @@ class CarrinhoActivity : LoteriasBaseAppActivity() {
 
         @JvmField
         var LER_CARRINHO_LOCAL: String = "LER_CARRINHO_LOCAL"
-        var FIM_SCROLL: Int = 0
-        var PAGE_SIZE: Int = 10
     }
 }

@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+
+import static br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import com.google.gson.Gson;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;

@@ -51,6 +51,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisD
 import br.gov.caixa.loterias.apostas.model.enums.TipoConsultaFiltroApostasEnum;
 import br.gov.caixa.loterias.apostas.model.model.ApostaConfirmadaModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
+import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.BoundariesInterface;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;

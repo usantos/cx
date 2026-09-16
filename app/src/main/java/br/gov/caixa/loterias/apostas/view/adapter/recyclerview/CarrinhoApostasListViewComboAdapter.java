@@ -16,12 +16,12 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -102,22 +102,22 @@ public class CarrinhoApostasListViewComboAdapter extends RecyclerView.Adapter<Ap
 	}
 
 	private OnSilceListener<CarrinhoDTO> onDeletaComboCarrinho(ComboApostaDTO comboApostaDTO, int positionCombo) {
-		return new OnSilceListener<CarrinhoDTO>() {
-			@Override
-			public void success(CarrinhoDTO payload) {
-				parentActivity.setCarrinho(payload);
-				//deletarApostaBaseLocal(aposta, Boolean.FALSE);
-				parentActivity.deletaCombo(positionCombo, comboApostaDTO);
-				//deletaCarrinhoFavorito();
-			}
+		return new OnSilceListener<>() {
+            @Override
+            public void success(CarrinhoDTO payload) {
+                parentActivity.setCarrinho(payload);
+                //deletarApostaBaseLocal(aposta, Boolean.FALSE);
+                parentActivity.deletaCombo(positionCombo, comboApostaDTO);
+                //deletaCarrinhoFavorito();
+            }
 
-			@Override
-			public void error(VolleyError error) {
-				AlertDialogUtils.dismiss();
-				//deletarApostaBaseLocal(aposta, Boolean.TRUE);
-				parentActivity.deletaCombo(positionCombo, comboApostaDTO);
-			}
-		};
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                //deletarApostaBaseLocal(aposta, Boolean.TRUE);
+                parentActivity.deletaCombo(positionCombo, comboApostaDTO);
+            }
+        };
 	}
 
 	private int getPositionCombo(ComboApostaDTO aposta) {
