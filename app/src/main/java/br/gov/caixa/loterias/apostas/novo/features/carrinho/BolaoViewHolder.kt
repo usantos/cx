@@ -14,7 +14,7 @@ class BolaoViewHolder(
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val tvNome =
-        itemView.findViewById<TextView>(R.id.tvNome)
+        itemView.findViewById<TextView>(R.id.tvTitulo)
 
     private val tvDescricao =
         itemView.findViewById<TextView>(R.id.tvDescricao)

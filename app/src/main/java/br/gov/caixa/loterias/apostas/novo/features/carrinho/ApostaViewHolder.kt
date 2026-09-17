@@ -13,16 +13,23 @@ class ApostaViewHolder(
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val tvNome =
-        itemView.findViewById<TextView>(R.id.tvNome)
+        itemView.findViewById<TextView>(R.id.tvTitulo)
 
-    private val tvNumeros =
-        itemView.findViewById<TextView>(R.id.tvNumeros)
+    private val tvDescricao =
+        itemView.findViewById<TextView>(R.id.tvDescricao)
 
     private val tvValor =
         itemView.findViewById<TextView>(R.id.tvValor)
 
+    private val tvTempo =
+        itemView.findViewById<TextView>(R.id.tvTempo)
+
+    private val tvConcurso =
+        itemView.findViewById<TextView>(R.id.tvConcurso)
+
     private val btnExcluir =
         itemView.findViewById<ImageView>(R.id.btnExcluir)
+
 
     fun bind(item: CarrinhoItem.Aposta) {
 
