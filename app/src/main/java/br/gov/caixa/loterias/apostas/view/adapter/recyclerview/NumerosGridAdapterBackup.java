@@ -26,7 +26,7 @@ public class NumerosGridAdapterBackup extends ListAdapter<RowItem, NumerosGridAd
 
 
     private static final DiffUtil.ItemCallback<RowItem> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<RowItem>() {
+            new DiffUtil.ItemCallback<>() {
                 @Override
                 public boolean areItemsTheSame(@NonNull RowItem oldItem, @NonNull RowItem newItem) {
                     return oldItem == newItem;
@@ -34,7 +34,7 @@ public class NumerosGridAdapterBackup extends ListAdapter<RowItem, NumerosGridAd
 
                 @Override
                 public boolean areContentsTheSame(@NonNull RowItem oldItem, @NonNull RowItem newItem) {
-                    return oldItem.items().equals(newItem.items());
+                    return oldItem.getItems().equals(newItem.getItems());
                 }
             };
 
@@ -76,7 +76,7 @@ public class NumerosGridAdapterBackup extends ListAdapter<RowItem, NumerosGridAd
 
             StringBuilder contentDescription = new StringBuilder();
 
-            for (LotteryNumberUiModel model : rowItem.items()) {
+            for (LotteryNumberUiModel model : rowItem.getItems()) {
                 View cellView = LayoutInflater.from(context)
                         .inflate(layoutId, rowContainer, false);
 

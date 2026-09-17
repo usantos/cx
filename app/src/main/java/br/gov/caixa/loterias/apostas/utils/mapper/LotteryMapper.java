@@ -20,17 +20,22 @@ public class LotteryMapper {
             boolean isRewarded;
 
             switch (matchMode) {
-                case ANY_POSITION ->
+                case ANY_POSITION:
                         isRewarded = rewarded != null && number != null && rewarded.contains(number);
-                case SAME_POSITION ->
+                        break;
+                case SAME_POSITION:
                         isRewarded = rewarded != null && rewarded.size() > i && number != null && number.equals(rewarded.get(i));
-                case SAME_COLUMN_REPEATING -> isRewarded = rewarded != null
+                        break;
+                case SAME_COLUMN_REPEATING: isRewarded = rewarded != null
                         && !rewarded.isEmpty()
                         && Objects.equals(
                         number,
                         rewarded.get(i % rewarded.size())
                 );
-                default -> isRewarded = false;
+                    break;
+                default:
+                    isRewarded = false;
+                    break;
             }
 
             String accessibility = isRewarded ? number + ", premiado" : number;
