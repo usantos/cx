@@ -309,6 +309,8 @@
     <string name="label_adicionar">Adicionar</string>
     <string name="label_adicionar_carrinho_apostas">ao carrinho de apostas</string>
     <string name="label_editar_aposta">Editar\naposta</string>
+    <string name="editar_aposta">Editar aposta</string>
+    <string name="total_do_carrinho">Total do carrinho</string>
     <string name="label_carrinho_apostas">Carrinho\nde apostas</string>
     <string name="label_carrinho_apostas_limpo">Carrinho de apostas</string>
     <string name="label_salve_aposta">Salve esta aposta :)</string>
@@ -686,6 +688,7 @@
     <string name="numeros_proibidos">Números proibidos</string>
     <string name="apostas_favoritas">Apostas favoritas</string>
     <string name="aposta_favorita">Aposta Favorita</string>
+    <string name="aposta_favorita_label">Aposta favorita</string>
     <string name="aposta_favoritada">Aposta Favoritada</string>
     <string name="resgatar">Resgatar</string>
     <string name="resgatar_premio_mp">Resgatar prêmio</string>
