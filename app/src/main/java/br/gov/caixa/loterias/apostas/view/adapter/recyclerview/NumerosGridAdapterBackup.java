@@ -96,10 +96,12 @@ public class NumerosGridAdapterBackup extends ListAdapter<RowItem, NumerosGridAd
 
                 rowContainer.addView(cellView);
 
-                if (!TextUtils.isEmpty(model.getAccessibility())) {
-                    contentDescription.append(", ");
+                if (model.getNumber() != null && !TextUtils.isEmpty(model.getAccessibility())) {
+                    if (contentDescription.length() > 0) {
+                        contentDescription.append(", ");
+                    }
+                    contentDescription.append(model.getAccessibility());
                 }
-                contentDescription.append(model.getAccessibility());
             }
 
             itemView.setContentDescription(contentDescription.toString());
