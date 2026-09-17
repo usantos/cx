@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoCentralDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NotificacaoAdapter;
 
 public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
@@ -47,16 +48,14 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         selecionaAba(ABA_TODAS);
         carregarDados();
 
-        desabilitaBtn(btnMarcarTodas);
-        desabilitaBtn(btnExcluirTodas);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        if(AlertDialogUtils.isShow()){
-//            AlertDialogUtils.dismiss();
-//        }
+        if(AlertDialogUtils.isShow()){
+            AlertDialogUtils.dismiss();
+        }
     }
 
     @Override
@@ -85,9 +84,13 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         btnAbaTodas.setOnClickListener(v -> selecionaAba(ABA_TODAS));
         btnAbaNaoLidas.setOnClickListener(v -> selecionaAba(ABA_NAO_LIDAS));
 
+        btnMarcarTodas.setOnClickListener(v -> marcarTodas());
+        btnExcluirTodas.setOnClickListener(v -> excluirTodas());
+
         notificacaoAdapter = new NotificacaoAdapter(this, new ArrayList<NotificacaoCentralDTO>(), new NotificacaoAdapter.OnExcluirClickListener() {
             @Override
-            public void onExcluir(NotificacaoCentralDTO NotificacaoCentralDTO) {
+            public void onExcluir(NotificacaoCentralDTO notificacaoCentralDTO) {
+                excluirNoticacao(notificacaoCentralDTO);
             }
         });
         rvNotificacoes.setLayoutManager(new LinearLayoutManager(this));
@@ -102,6 +105,8 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         btnAbaTodas.setTextColor(getColor(todasSelecionada ? R.color.branco : R.color.cinza70));
         btnAbaNaoLidas.setBackground(getDrawable(todasSelecionada ? R.drawable.tab_nao_selecionada : R.drawable.tab_selecionada));
         btnAbaNaoLidas.setTextColor(getColor(todasSelecionada ? R.color.cinza70 : R.color.branco));
+
+        atualizarBotoesRodape();
 
         List<NotificacaoCentralDTO> listNotificacaoSelecionada = todasSelecionada ? listNotificacaoTodas : listNotificacaoNaoLidas;
         if (listNotificacaoSelecionada != null) {
@@ -131,6 +136,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
                 AlertDialogUtils.dismiss();
                 if (response != null && response.getPayload() != null) {
                     listNotificacaoTodas = response.getPayload();
+                    atualizarBotoesRodape();
                     if(abaSelerionada.equals(ABA_TODAS)) {
                         exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
                     }
@@ -140,6 +146,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
                 listNotificacaoTodas = new ArrayList<>();
+                atualizarBotoesRodape();
                 if(abaSelerionada.equals(ABA_TODAS)) {
                     exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
                 }
@@ -153,6 +160,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
                 AlertDialogUtils.dismiss();
                 if (response != null && response.getPayload() != null) {
                     listNotificacaoNaoLidas = response.getPayload();
+                    atualizarBotoesRodape();
                     if(abaSelerionada.equals(ABA_NAO_LIDAS)) {
                         exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
                     }
@@ -162,6 +170,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
                 listNotificacaoNaoLidas = new ArrayList<>();
+                atualizarBotoesRodape();
                 if(abaSelerionada.equals(ABA_NAO_LIDAS)) {
                     exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
                 }
@@ -170,9 +179,64 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         });
     }
 
-    private void habilitaBtn(Button btn) {
+
+    private void marcarTodas() {
+        DialogUtils.dialogTituloSim(this,
+                getString(R.string.marcar_todas_como_lidas),
+                getString(R.string.deseja_marcar_todas_como_lidas),
+                (dialog, which) -> {
+                    //presenter.marcarTodasNotificacoes();
+                });
+    }
+
+    private void excluirTodas() {
+        DialogUtils.dialogTituloSim(this,
+                getString(R.string.excluir_notificacoes),
+                getString(R.string.deseja_excluir_todas),
+                (dialog, which) -> {
+                    //presenter.marcarTodasNotificacoes();
+                });
+    }
+
+    private void excluirNoticacao(NotificacaoCentralDTO notificacaoCentralDTO) {
+        DialogUtils.dialogTituloSim(this,
+                getString(R.string.excluir_notificacao),
+                getString(R.string.deseja_excluir_notificacao) +" \""+ notificacaoCentralDTO.getTitulo() +"\"?",
+                (dialog, which) -> {
+                    //presenter.marcarTodasNotificacoes();
+                });
+    }
+
+
+    private void atualizarBotoesRodape() {
+        if(abaSelerionada.equals(ABA_TODAS)) {
+            if(listNotificacaoTodas == null || listNotificacaoTodas.isEmpty()) {
+                desabilitaBtn(btnMarcarTodas);
+                btnExcluirTodas.setVisibility(View.VISIBLE);
+                desabilitaBtn(btnExcluirTodas);
+            } else {
+                habilitaBtnAzul(btnMarcarTodas);
+                btnExcluirTodas.setVisibility(View.VISIBLE);
+                habilitaBtnBordaAzul(btnExcluirTodas);
+            }
+        } else {
+            if(listNotificacaoNaoLidas == null || listNotificacaoNaoLidas.isEmpty()) {
+                desabilitaBtn(btnMarcarTodas);
+                btnExcluirTodas.setVisibility(View.GONE);
+            } else {
+                habilitaBtnAzul(btnMarcarTodas);
+                btnExcluirTodas.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void habilitaBtnAzul(Button btn) {
         btn.setBackground(getDrawable(R.drawable.btn_rounded_azul));
         btn.setTextColor(getColor(R.color.branco));
+    }
+    private void habilitaBtnBordaAzul(Button btn) {
+        btn.setBackground(getDrawable(R.drawable.btn_rounded_azul_borda));
+        btn.setTextColor(getColor(R.color.bolao_azul_filtro));
     }
     private void desabilitaBtn(Button btn) {
         btn.setBackground(getDrawable(R.drawable.btn_rounded_disable));

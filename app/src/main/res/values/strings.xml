@@ -1742,10 +1742,16 @@
 
     <string name="central_notificacoes">Central de notificações</string>
     <string name="marcar_todas_como_lidas">Marcar todas como lidas</string>
+    <string name="deseja_marcar_todas_como_lidas">Deseja marcar todas as notificações como lidas?</string>
+    <string name="deseja_excluir_notificacao">Deseja excluir a notificacão</string>
     <string name="excluir_todas_notificacoes">Excluir todas as notificações</string>
+    <string name="excluir_notificacoes">Excluir notificação</string>
+    <string name="excluir_notificacao">Excluir notificações</string>
     <string name="tab_todas">Todas</string>
     <string name="tab_nao_lidas">Não lidas (0)</string>
     <string name="sem_notificacao">Ainda não há notificações.</string>
     <string name="sem_notificacao_nao_lida">Não há notificações não lidas.</string>
     <string name="fique_atento">Fique de olho nas novidades e atualizações.</string>
+    <string name="deseja_excluir_todas">Deseja excluir todas as notificações?</string>
+
 </resources>
