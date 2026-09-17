@@ -4,4 +4,15 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.ui.LotteryNumberUiModel;
 
-public record RowItem(List<LotteryNumberUiModel> items) {}
+public class RowItem {
+    private final List<LotteryNumberUiModel> items;
+
+    public List<LotteryNumberUiModel> getItems() {
+        return items;
+    }
+
+    public RowItem(List<LotteryNumberUiModel> items) {
+        this.items = items;
+    }
+
+}
