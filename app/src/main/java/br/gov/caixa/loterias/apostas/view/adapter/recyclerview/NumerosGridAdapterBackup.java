@@ -26,7 +26,7 @@ public class NumerosGridAdapterBackup extends ListAdapter<RowItem, NumerosGridAd
 
 
     private static final DiffUtil.ItemCallback<RowItem> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<>() {
+            new DiffUtil.ItemCallback<RowItem>() {
                 @Override
                 public boolean areItemsTheSame(@NonNull RowItem oldItem, @NonNull RowItem newItem) {
                     return oldItem == newItem;
