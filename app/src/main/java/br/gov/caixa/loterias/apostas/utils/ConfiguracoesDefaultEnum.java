@@ -18,7 +18,7 @@ public enum ConfiguracoesDefaultEnum {
     URL_BASE_APOSTADOR(""),
     GRUPO_CPFS_APOSTADOR(""),
     URL_BASE_BFF(""),
-    GRUPO_CPFS_BFF("");
+    GRUPO_CPFS_BFF("0;");
 
     private final Boolean boolValue;
     private final Integer intValue;

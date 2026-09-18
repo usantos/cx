@@ -3,17 +3,14 @@ package br.gov.caixa.loterias.apostas.model.bo;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnCertificadoListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.BffSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoBffSingleton;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoNuvemSingleton;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.NuvemSingleton;
 import br.gov.caixa.loterias.apostas.utils.ServicoBffUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public abstract class BffBO extends BaseBO {
     protected static final String PUBLICO = "/publico";
     protected static final String LOGADO = "/logado";
 
     public BffBO() {
-        super(NuvemSingleton.getInstance().getRequestQueue(),
+        super(BffSingleton.getInstance().getRequestQueue(),
                 ServicoBffUtil.getBaseUrlBff(),
                 true,
                 onCertificadoListener());
