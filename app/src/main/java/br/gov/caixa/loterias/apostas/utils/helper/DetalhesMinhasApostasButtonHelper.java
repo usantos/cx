@@ -8,8 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -32,7 +33,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.view.activity.ResultadoApostaConfirmadaActivity;
-import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -77,6 +77,8 @@ public class DetalhesMinhasApostasButtonHelper {
     private Uri fileApostaUri, filePremioUri;
 
     private RelativeLayout favoritadoLayout, favoriteBtn, layoutTextoSalveAposta;
+    private  LinearLayout llAdicFav;
+    private ConstraintLayout vBottom;
     private ApostaFavoritaDTO apostaFavoritaDTO;
     private ApostaFavoritaModel model;
     public DetalhesMinhasApostasButtonHelper(AppCompatActivity activity) {
@@ -99,12 +101,21 @@ public class DetalhesMinhasApostasButtonHelper {
         favoriteBtn = activity.findViewById(R.id.favoriteBtn);
         layoutTextoSalveAposta  = activity.findViewById(R.id.layoutTextoSalveAposta);
 
+        llAdicFav  = activity.findViewById(R.id.ll_adic_fav);
+        vBottom  = activity.findViewById(R.id.v_bottom);
+
         if (isBolao) {
-            adicionarCarrinhoBtn.setVisibility(View.GONE);
-            layoutAcoesAposta.setVisibility(View.GONE);
+            llAdicFav.setVisibility(View.GONE);
+            int height = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    70,
+                    activity.getResources().getDisplayMetrics()
+            );
+
+            ViewGroup.LayoutParams params = vBottom.getLayoutParams();
+            params.height = height;
+            vBottom.setLayoutParams(params);
             favoriteBtn.setVisibility(View.GONE);
-            favoritadoLayout.setVisibility(View.GONE);
-            editarApostaBtn.setVisibility(View.GONE);
         }
 
         clResgatePremio.setOnClickListener(v-> startResgateActivity());
