@@ -37,18 +37,18 @@ object CarrinhoMapper {
                 }
             }
 
-//            if (!carrinho.getCombos().isNullOrEmpty()) {
-//
-//                add(
-//                    CarrinhoItem.Header(
-//                        "Combos"
-//                    )
-//                )
-//
-//                carrinho.getCombos().forEach {
-//                    add(CarrinhoItem.Combo(it))
-//                }
-//            }
+            if (!carrinho.combos.isNullOrEmpty()) {
+
+                add(
+                    CarrinhoItem.Header(
+                        "Combos"
+                    )
+                )
+
+                carrinho.getCombos().forEach {
+                    add(CarrinhoItem.Combo(it))
+                }
+            }
         }
     }
 }

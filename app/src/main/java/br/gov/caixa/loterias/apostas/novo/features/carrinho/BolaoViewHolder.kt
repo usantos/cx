@@ -9,7 +9,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 
 class BolaoViewHolder(
     itemView: View,
-    private val onExcluir: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit,
+    private val onExcluir: (IdentificaoDeUmaApostaDas8Modalidades<*>, isBolao: Boolean) -> Unit,
     private val onMaisDetalhes: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
 
@@ -38,7 +38,7 @@ class BolaoViewHolder(
         tvNome.text = aposta.getModalidade()?.name
 
         btnExcluir.setOnClickListener {
-            onExcluir(aposta)
+            onExcluir(aposta, true)
         }
 
         btnMaisDetalhes.setOnClickListener {

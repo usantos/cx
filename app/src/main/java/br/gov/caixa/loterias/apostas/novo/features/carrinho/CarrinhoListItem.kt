@@ -1,3 +1,4 @@
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
 
 sealed interface CarrinhoItem {
@@ -14,4 +15,7 @@ sealed interface CarrinhoItem {
         val aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
     ) : CarrinhoItem
 
+    data class Combo(
+        val combo: ComboApostaDTO
+    ) : CarrinhoItem
 }

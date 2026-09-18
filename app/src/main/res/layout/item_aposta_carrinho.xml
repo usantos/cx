@@ -1,6 +1,313 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    >
+
+    <!-- Modalidade -->
+
+    <!-- Excluir aposta -->
+    <TextView
+        android:id="@+id/tvModalidade"
+        android:fontFamily="@font/caixa_std_bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="mega-sena"
+        android:textColor="#009B55"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btnExcluir"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnExcluir"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/excluir"
+        android:padding="9dp"
+        android:src="@drawable/trash"
+        app:layout_constraintBottom_toBottomOf="@+id/tvModalidade"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvModalidade"
+        app:tint="@color/azul_caixa" />
+
+    <!-- Limite entre o conteúdo da esquerda e o conteúdo da direita -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineInformacoes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.70" />
+
+    <!-- Números da aposta -->
+    <LinearLayout
+        android:id="@+id/containerNumeros"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/guidelineInformacoes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvModalidade">
+
+        <!-- Apenas para preview -->
+        <TextView
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#46515A"
+            android:textSize="16sp"
+            tools:text="01 - 02 - 03 - 04 - 05 - 06" />
+
+        <!-- Apenas para preview -->
+        <TextView
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#46515A"
+            android:textSize="16sp"
+            tools:text="08 - 09 - 10 - 11 - 12 - 13" />
+
+    </LinearLayout>
+
+    <!-- Concurso -->
+    <TextView
+        android:id="@+id/tvConcurso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/caixa_std_regular"
+        android:gravity="end"
+        android:textColor="#46515A"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/containerNumeros"
+        tools:text="Conc.3005" />
+
+    <!-- Valor -->
+    <TextView
+        android:fontFamily="@font/caixa_std_regular"
+        android:id="@+id/tvValor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="end"
+        android:textColor="#46515A"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvConcurso"
+        tools:text="R$ 6,00" />
+
+    <!--
+        Define o final da região de números/valor.
+        Se os números tiverem várias linhas, a Barrier acompanha.
+    -->
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierAposta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="containerNumeros,tvValor" />
+
+    <!-- Time do coração -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerTimeCoracao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrierAposta"
+        tools:visibility="visible">
+
+        <TextView
+            android:fontFamily="@font/caixa_std_regular"
+            android:id="@+id/tvLabelTimeCoracao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="time do coração"
+            android:textColor="#697981"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:fontFamily="@font/caixa_std_regular"
+            android:id="@+id/tvTimeCoracao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:gravity="end"
+            android:textColor="#697981"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvLabelTimeCoracao"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="AMERICA/RN" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Espelho -->
+    <LinearLayout
+        android:id="@+id/containerEspelho"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/ivEspelho"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_espelho_linha"
+            app:tint="#718189" />
+
+        <TextView
+            android:id="@+id/tvEspelho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Espelho"
+            android:textColor="#718189"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Surpresinha -->
+    <LinearLayout
+        android:id="@+id/containerSurpresinha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/ivSurpresinha"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_surpresinha"
+            app:tint="#718189" />
+
+        <TextView
+            android:id="@+id/tvSurpresinha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Surpresinha"
+            android:textColor="#718189"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Teimosinha -->
+    <LinearLayout
+        android:id="@+id/containerTeimosinha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/ivTeimosinha"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_teimosinha"
+            app:tint="#718189" />
+
+        <TextView
+            android:id="@+id/tvTeimosinha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Teimosinha"
+            android:textColor="#718189"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!--
+        Flow responsável por organizar os indicadores.
+
+        Enquanto houver espaço:
+        Espelho | Surpresinha | Teimosinha
+
+        Quando faltar espaço:
+        Espelho | Surpresinha
+        Teimosinha
+    -->
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flowIndicadores"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:visibility="gone"
+        app:constraint_referenced_ids="containerEspelho,containerSurpresinha,containerTeimosinha"
+        app:flow_firstHorizontalBias="0"
+        app:flow_firstHorizontalStyle="packed"
+        app:flow_horizontalBias="0"
+        app:flow_horizontalGap="12dp"
+        app:flow_horizontalStyle="packed"
+        app:flow_lastHorizontalBias="0"
+        app:flow_lastHorizontalStyle="packed"
+        app:flow_verticalGap="8dp"
+        app:flow_wrapMode="chain"
+        app:layout_constraintEnd_toStartOf="@id/guidelineInformacoes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/containerTimeCoracao"
+
+        tools:visibility="visible" />
+
+    <!--
+        Determina o ponto final do conteúdo.
+        Se o Flow quebrar para duas linhas, essa Barrier acompanha.
+    -->
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierConteudo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierAllowsGoneWidgets="false"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="barrierAposta,containerTimeCoracao,flowIndicadores" />
+
+    <!-- Divisor -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="14dp"
+        android:background="#DCE8EC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrierConteudo" />
+
+    <!-- Espaçamento inferior -->
+    <Space
+        android:id="@+id/spaceBottom"
+        android:layout_width="1dp"
+        android:layout_height="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
