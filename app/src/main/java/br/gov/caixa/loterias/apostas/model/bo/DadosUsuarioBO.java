@@ -319,6 +319,51 @@ public class DadosUsuarioBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    public void putLerIdNotificacao(Long id, final RequestListener<RetornoPadraoResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
+
+        final GsonRequest request = getServiceConnection().buildPutRequest(
+                ServerMethods.LER_NOTIFICACAO.replace("{idNotificacao}", id.toString()),
+                new LinkedHashMap<>(),
+                null, RetornoPadraoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void putRemoveNotificacao(Long id, final RequestListener<RetornoPadraoResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
+
+        final GsonRequest request = getServiceConnection().buildPutRequest(
+                ServerMethods.REMOVE_NOTIFICACAO.replace("{idNotificacao}", id.toString()),
+                new LinkedHashMap<>(),
+                null, RetornoPadraoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void putLimpaNotificacoes(final RequestListener<RetornoPadraoResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
+
+        final GsonRequest request = getServiceConnection().buildPutRequest(
+                ServerMethods.LIMPA_NOTIFICACOES,
+                new LinkedHashMap<>(),
+                null, RetornoPadraoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        getServiceConnection().request(request, listener);
+    }
+
     public void deleteCartao(String idCartao, String meioPagamento, RequestListener<ListCartaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("meioPagamento", meioPagamento);
