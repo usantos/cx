@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.view.activity;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +31,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -1030,7 +1028,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
     private void fragmentSomadorCarrinho() {
         if (somadorCarrinhoFragment == null) {
-            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, true);
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho, true);
         } else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }

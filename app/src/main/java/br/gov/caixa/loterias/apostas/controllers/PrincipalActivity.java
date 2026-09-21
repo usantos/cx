@@ -271,7 +271,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         this.atalhoRapidoLoterias = findViewById(R.id.atalhoRapidoLoterias);
         this.sideMenuExpandableListView = findViewById(R.id.sideMenuExpandableListView);
         this.viewSair = findViewById(R.id.viewSair);
-        View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
+        View view_id_fg_somador_carrinho = findViewById(R.id.id_somador_carrinho);
         TextView texto = recolherMenu.findViewById(R.id.nav_user_text);
         ImageView arrow = recolherMenu.findViewById(R.id.imagemMaisOpcoes);
         TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
@@ -409,7 +409,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private void fragmentSomadorCarrinho() {
         if(somadorCarrinhoFragment == null){
-            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA PRINCIPAL" );
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho,"TELA PRINCIPAL" );
         }else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }

@@ -55,7 +55,7 @@ public class CombosActivity extends SettingToolbarActivity implements onComboCli
 
     private void setViews() {
         listaCombosRcv = findViewById(R.id.rcv_lista_combos);
-        View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
+        View view_id_fg_somador_carrinho = findViewById(R.id.id_somador_carrinho);
         view_id_fg_somador_carrinho.setOnClickListener(view -> vaiProCarrinho());
 
         toolbar = findViewById(R.id.toolbar);
@@ -101,7 +101,7 @@ public class CombosActivity extends SettingToolbarActivity implements onComboCli
 
     private void fragmentSomadorCarrinho() {
         if (somadorCarrinhoFragment == null) {
-            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA LISTA COMBOS");
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho, "TELA LISTA COMBOS");
         } else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }

@@ -4,7 +4,6 @@ import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezena
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpites;
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -242,7 +241,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		btnAumenta = findViewById(R.id.aumenta_cota);
 		listaJogos = findViewById(R.id.id_lista_jogos);
 		layoutQtdCotas = findViewById(R.id.id_layout_qtd_cotas);
-		frameSomador = findViewById(R.id.id_fg_somador_carrinho);
+		frameSomador = findViewById(R.id.id_somador_carrinho);
 		frameRodape = findViewById(R.id.id_fg_rodape);
 		botaoFavoritar = findViewById(R.id.btn_favoritar_detalhes);
 		tvFavoritar = findViewById(R.id.txt_favoritar_loterica);
@@ -467,7 +466,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 
 	private void fragmentSomadorCarrinho() {
 		if(somadorCarrinhoFragment == null){
-			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, false);
+			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho, false);
 		}else {
 			somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
 		}

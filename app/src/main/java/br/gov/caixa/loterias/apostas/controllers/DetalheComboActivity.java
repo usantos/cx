@@ -115,7 +115,7 @@ public class DetalheComboActivity extends SettingToolbarActivity {
         btnIncrementarAposta = findViewById(R.id.btnIncrementarApostas);
         btnDecrementarAposta = findViewById(R.id.btnDecrementarApostas);
 
-        View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
+        View view_id_fg_somador_carrinho = findViewById(R.id.id_somador_carrinho);
         view_id_fg_somador_carrinho.setOnClickListener(view -> vaiProCarrinho());
 
         toolbar = findViewById(R.id.toolbar);
@@ -239,7 +239,7 @@ public class DetalheComboActivity extends SettingToolbarActivity {
 
     private void fragmentSomadorCarrinho() {
         if (somadorCarrinhoFragment == null) {
-            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA DETALHE COMBOS");
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho, "TELA DETALHE COMBOS");
         } else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }

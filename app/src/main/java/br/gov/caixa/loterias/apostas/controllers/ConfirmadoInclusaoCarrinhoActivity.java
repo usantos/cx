@@ -21,13 +21,11 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.utils.*;
+
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -232,7 +230,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
 
     private void fragmentSomadorCarrinho() {
         if(somadorCarrinhoFragment == null){
-            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment,R.id.id_fg_somador_carrinho,"TELA CONFIRMACAO INCLUSAO");
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment,R.id.id_somador_carrinho,"TELA CONFIRMACAO INCLUSAO");
         }
     }
 

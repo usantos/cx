@@ -110,7 +110,7 @@ public class MinhasApostasActivity extends AppCompatActivity implements Boundari
 	}
 
 	private void setViews() {
-		this.somadorCarrinhoView = findViewById(R.id.id_fg_somador_carrinho);
+		this.somadorCarrinhoView = findViewById(R.id.id_somador_carrinho);
 		somadorCarrinhoView.setOnClickListener(view -> vaiProCarrinho());
 		this.toolbar = findViewById(R.id.toolbar);
 		this.btnDuvidas = findViewById(R.id.ib_duvidas);
@@ -128,7 +128,7 @@ public class MinhasApostasActivity extends AppCompatActivity implements Boundari
 
 	private void fragmentSomadorCarrinho() {
 		if(somadorCarrinhoFragment == null){
-			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment,R.id.id_fg_somador_carrinho,"TELA CONFIRMACAO INCLUSAO");
+			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment,R.id.id_somador_carrinho,"TELA CONFIRMACAO INCLUSAO");
 		}
 	}
 
