@@ -6,7 +6,7 @@
     <item
         android:id="@+id/central_notificacao"
         android:title="@string/title_central_notificacao"
-        android:icon="@drawable/sino"
+        app:actionLayout="@layout/sino_notificacao"
         android:visible="true"
         app:showAsAction="ifRoom"
         />

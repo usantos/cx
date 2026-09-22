@@ -47,8 +47,8 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         setTitle();
         setViews();
         selecionaAba(ABA_TODAS);
-        carregarDadosServico();
-
+        carregarLidasServico();
+        carregarNaoLidasServico();
     }
 
     @Override
@@ -107,6 +107,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         btnAbaNaoLidas.setBackground(getDrawable(todasSelecionada ? R.drawable.tab_nao_selecionada : R.drawable.tab_selecionada));
         btnAbaNaoLidas.setTextColor(getColor(todasSelecionada ? R.color.cinza70 : R.color.branco));
 
+        atualizarContadorNaoLidas();
         atualizarBotoesRodape();
 
         List<NotificacaoCentralDTO> listNotificacaoSelecionada = todasSelecionada ? listNotificacaoTodas : listNotificacaoNaoLidas;
@@ -129,7 +130,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         notificacaoAdapter.atualizar(listNotificacao);
     }
 
-    private void carregarDadosServico() {
+    private void carregarLidasServico() {
         AlertDialogUtils.show(this);
         DadosUsuarioBO.getInstance().getHistoricoNotificacao(new RequestListener<NotificacaoResponse>() {
             @Override
@@ -138,29 +139,34 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
                 if (response != null && response.getPayload() != null) {
                     listNotificacaoTodas = response.getPayload();
                     atualizarBotoesRodape();
-                    if(abaSelerionada.equals(ABA_TODAS)) {
+                    if (abaSelerionada.equals(ABA_TODAS)) {
                         exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
                     }
                 }
             }
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
                 listNotificacaoTodas = new ArrayList<>();
                 atualizarBotoesRodape();
-                if(abaSelerionada.equals(ABA_TODAS)) {
+                if (abaSelerionada.equals(ABA_TODAS)) {
                     exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
                 }
                 RedirectNetwork.checkRedirect(error, CentralNotificacaoActivity.this);
             }
         });
+    }
 
+    private void carregarNaoLidasServico() {
+        AlertDialogUtils.show(this);
         DadosUsuarioBO.getInstance().getHistoricoNotificacaoNaoLidas(new RequestListener<NotificacaoResponse>() {
             @Override
             public void onResponse(NotificacaoResponse response) {
                 AlertDialogUtils.dismiss();
                 if (response != null && response.getPayload() != null) {
                     listNotificacaoNaoLidas = response.getPayload();
+                    atualizarContadorNaoLidas();
                     atualizarBotoesRodape();
                     if(abaSelerionada.equals(ABA_NAO_LIDAS)) {
                         exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
@@ -171,6 +177,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
                 listNotificacaoNaoLidas = new ArrayList<>();
+                atualizarContadorNaoLidas();
                 atualizarBotoesRodape();
                 if(abaSelerionada.equals(ABA_NAO_LIDAS)) {
                     exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
@@ -190,6 +197,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
                 removerNotificacaoPorId(listNotificacaoTodas, notificacaoCentralDTO.getId());
                 removerNotificacaoPorId(listNotificacaoNaoLidas, notificacaoCentralDTO.getId());
 
+                atualizarContadorNaoLidas();
                 atualizarBotoesRodape();
 
                 if (ABA_TODAS.equals(abaSelerionada)) {
@@ -217,6 +225,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
                 listNotificacaoTodas = new ArrayList<>();
                 listNotificacaoNaoLidas = new ArrayList<>();
 
+                atualizarContadorNaoLidas();
                 atualizarBotoesRodape();
 
                 if (ABA_TODAS.equals(abaSelerionada)) {
@@ -235,30 +244,43 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
     }
 
     private void visualizaTodasNotificacoesServico() {
-        //AlertDialogUtils.show(this);
-
+        marcarNaoLidasComoLidas();
     }
 
-//    private void marcarTodasComoLidasLocalmente() {
-//
-//        for (NotificacaoCentralDTO notificacao : listNotificacaoNaoLidas) {
-//            DadosUsuarioBO.getInstance().putLerIdNotificacao(notificacao.getId(), new RequestListener<RetornoPadraoResponse>() {
-//                @Override
-//                public void onResponse(RetornoPadraoResponse response) {
-//                    //AlertDialogUtils.dismiss();
-//                    //
-//                }
-//
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    //AlertDialogUtils.dismiss();
-//                    RedirectNetwork.checkRedirect(error, CentralNotificacaoActivity.this);
-//                }
-//            });
-//        }
-//
-//        listNotificacaoNaoLidas.clear();
-//    }
+    private void marcarNaoLidasComoLidas() {
+
+        final int total = listNotificacaoNaoLidas.size();
+        final int[] concluidas = {0};
+
+        for (NotificacaoCentralDTO notificacao : new ArrayList<>(listNotificacaoNaoLidas)) {
+
+            DadosUsuarioBO.getInstance().putLerIdNotificacao(notificacao.getId(), new RequestListener<RetornoPadraoResponse>() {
+                @Override
+                public void onResponse(RetornoPadraoResponse response) {
+                    removerNotificacaoPorId(listNotificacaoNaoLidas, notificacao.getId());
+                    concluidas[0]++;
+                    if (concluidas[0] == total) {
+                        carregarLidasServico();
+                        atualizarContadorNaoLidas();
+                        atualizarBotoesRodape();
+                        exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //RedirectNetwork.checkRedirect(error, CentralNotificacaoActivity.this);
+                    concluidas[0]++;
+                    if (concluidas[0] == total) {
+                        carregarLidasServico();
+                        atualizarContadorNaoLidas();
+                        atualizarBotoesRodape();
+                        exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
+                    }
+                }
+            });
+        }
+    }
 
     private void marcarTodas() {
         DialogUtils.dialogTituloSim(this,
@@ -300,6 +322,11 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
                 break;
             }
         }
+    }
+
+    private void atualizarContadorNaoLidas() {
+        int quantidade = listNotificacaoNaoLidas != null ? listNotificacaoNaoLidas.size() : 0;
+        btnAbaNaoLidas.setText(getString(R.string.tab_nao_lidas).replace("0", String.valueOf(quantidade)));
     }
 
     private void atualizarBotoesRodape() {
