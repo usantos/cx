@@ -9,11 +9,13 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.novo.features.carrinho.ApostaViewHolder
 import br.gov.caixa.loterias.apostas.novo.features.carrinho.BolaoViewHolder
 import br.gov.caixa.loterias.apostas.novo.features.carrinho.ComboViewHolder
+import br.gov.caixa.loterias.apostas.novo.features.carrinho.HeaderFixoViewHolder
 import br.gov.caixa.loterias.apostas.novo.features.carrinho.HeaderViewHolder
 
 class CarrinhoAdapter(
-    private val onExcluir: (IdentificaoDeUmaApostaDas8Modalidades<*>, isBolao: Boolean) -> Unit,
+    private val onExcluir: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit,
     private val onExcluirCombo: (ComboApostaDTO) -> Unit,
+    private val onCotaExpirada: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit,
     private val onMaisDetalhes: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit
 ) : ListAdapter<CarrinhoItem, RecyclerView.ViewHolder>(
     CarrinhoDiffCallback()
@@ -21,6 +23,7 @@ class CarrinhoAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
+            is CarrinhoItem.HeaderFixo -> TYPE_HEADER_FIXED
             is CarrinhoItem.Header -> TYPE_HEADER
             is CarrinhoItem.Bolao -> TYPE_BOLAO
             is CarrinhoItem.Aposta -> TYPE_APOSTA
@@ -35,6 +38,11 @@ class CarrinhoAdapter(
         val inflater = LayoutInflater.from(parent.context)
 
         return when (viewType) {
+            TYPE_HEADER_FIXED -> HeaderFixoViewHolder(
+                inflater.inflate(
+                    R.layout.item_header_carrinho_fixo, parent, false
+                )
+            )
 
             TYPE_HEADER -> HeaderViewHolder(
                 inflater.inflate(
@@ -45,7 +53,7 @@ class CarrinhoAdapter(
             TYPE_BOLAO -> BolaoViewHolder(
                 inflater.inflate(
                     R.layout.item_bolao_carrinho, parent, false
-                ), onExcluir, onMaisDetalhes
+                ), onExcluir, onCotaExpirada, onMaisDetalhes
             )
 
             TYPE_APOSTA -> ApostaViewHolder(
@@ -64,11 +72,20 @@ class CarrinhoAdapter(
         }
     }
 
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        if (holder is BolaoViewHolder) {
+            holder.cancelarTimer()
+        }
+
+        super.onViewRecycled(holder)
+    }
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder, position: Int
     ) {
         when (val item = getItem(position)) {
+            is CarrinhoItem.HeaderFixo -> (holder as HeaderFixoViewHolder)
+
             is CarrinhoItem.Header -> (holder as HeaderViewHolder).bind(item)
 
             is CarrinhoItem.Bolao -> (holder as BolaoViewHolder).bind(item)
@@ -80,10 +97,11 @@ class CarrinhoAdapter(
     }
 
     private companion object {
-        const val TYPE_HEADER = 0
-        const val TYPE_BOLAO = 1
-        const val TYPE_APOSTA = 2
-        const val TYPE_COMBO = 3
+        const val TYPE_HEADER_FIXED = 0
+        const val TYPE_HEADER = 1
+        const val TYPE_BOLAO = 2
+        const val TYPE_APOSTA = 3
+        const val TYPE_COMBO = 4
     }
 
     class CarrinhoDiffCallback : DiffUtil.ItemCallback<CarrinhoItem>() {

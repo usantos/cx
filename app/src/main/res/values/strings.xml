@@ -1739,4 +1739,5 @@
     <string name="adicionarNovaAposta">Adicionar nova aposta</string>
     <string name="irParaPagamento">Ir para pagamento</string>
     <string name="txt_prefix_conc">Conc. %1$s</string>
+    <string name="txt_carrinho">Carrinho</string>
 </resources>

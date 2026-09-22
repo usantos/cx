@@ -17,7 +17,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils
 
 class ApostaViewHolder(
     itemView: View,
-    private val onExcluir: (IdentificaoDeUmaApostaDas8Modalidades<*>, isBolao: Boolean) -> Unit
+    private val onExcluir: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val tvModalidade =
@@ -62,7 +62,7 @@ class ApostaViewHolder(
         }
 
         btnExcluir.setOnClickListener {
-            onExcluir(aposta, false)
+            onExcluir(aposta)
         }
     }
 

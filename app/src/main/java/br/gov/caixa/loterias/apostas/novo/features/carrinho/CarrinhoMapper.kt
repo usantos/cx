@@ -1,54 +1,41 @@
-package br.gov.caixa.loterias.apostas.novo.features.carrinho
-
-import CarrinhoItem
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO
 
 object CarrinhoMapper {
 
-    fun map(
-        carrinho: CarrinhoDTO
-    ): List<CarrinhoItem> {
+    fun map(carrinho: CarrinhoDTO): List<CarrinhoItem> =
+        buildList {
+            add(CarrinhoItem.HeaderFixo())
+            carrinho.boloes
+                .orEmpty()
+                .takeIf { it.isNotEmpty() }
+                ?.let { boloes ->
+                    add(CarrinhoItem.Header("Cotas Bolão"))
 
-        return buildList {
-
-            if (!carrinho.boloes.isNullOrEmpty()) {
-
-                add(
-                    CarrinhoItem.Header(
-                        "Cotas Bolão"
-                    )
-                )
-
-                carrinho.boloes.forEach {
-                    add(CarrinhoItem.Bolao(it))
+                    boloes.forEach {
+                        add(CarrinhoItem.Bolao(it))
+                    }
                 }
-            }
 
-            if (!carrinho.apostasIndividuais.isNullOrEmpty()) {
+            carrinho.apostasIndividuais
+                .orEmpty()
+                .takeIf { it.isNotEmpty() }
+                ?.let { apostas ->
+                    add(CarrinhoItem.Header("Apostas Individuais"))
 
-                add(
-                    CarrinhoItem.Header(
-                        "Apostas Individuais"
-                    )
-                )
-
-                carrinho.apostasIndividuais.forEach {
-                    add(CarrinhoItem.Aposta(it))
+                    apostas.forEach {
+                        add(CarrinhoItem.Aposta(it))
+                    }
                 }
-            }
 
-            if (!carrinho.combos.isNullOrEmpty()) {
+            carrinho.combos
+                .orEmpty()
+                .takeIf { it.isNotEmpty() }
+                ?.let { combos ->
+                    add(CarrinhoItem.Header("Combos"))
 
-                add(
-                    CarrinhoItem.Header(
-                        "Combos"
-                    )
-                )
-
-                carrinho.getCombos().forEach {
-                    add(CarrinhoItem.Combo(it))
+                    combos.forEach {
+                        add(CarrinhoItem.Combo(it))
+                    }
                 }
-            }
         }
-    }
 }

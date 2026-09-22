@@ -7,34 +7,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/tv_confirm_aposta"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/caixa_std_bold"
-        android:text="@string/confirmarApostas"
-        android:textColor="@color/colorAccent"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_info_valor_minimo"
-        style="@style/editTextCaixaRegularTheme"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:gravity="start"
-        android:text="@string/label_lembrar_valor_minimo"
-        android:textAlignment="textStart"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_confirm_aposta" />
-
-    <TextView
-        android:layout_marginTop="40dp"
         android:id="@+id/tvTitulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,7 +15,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_info_valor_minimo"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Cotas Bolão" />
 
     <View

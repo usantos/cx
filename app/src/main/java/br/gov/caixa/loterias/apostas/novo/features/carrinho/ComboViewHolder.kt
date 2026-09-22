@@ -13,8 +13,8 @@ class ComboViewHolder(
     private val onExcluirCombo: (ComboApostaDTO) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
 
-    private val tvNome =
-        itemView.findViewById<TextView>(R.id.tvTitulo)
+    private val tvNomeCombo =
+        itemView.findViewById<TextView>(R.id.tvNomeCombo)
 
     private val tvDescricao =
         itemView.findViewById<TextView>(R.id.tvDescricao)
@@ -28,17 +28,17 @@ class ComboViewHolder(
     private val tvConcurso =
         itemView.findViewById<TextView>(R.id.tvConcurso)
 
-    private val btnExcluir =
-        itemView.findViewById<ImageView>(R.id.btnExcluir)
+    private val btnExcluirCombo =
+        itemView.findViewById<ImageView>(R.id.btnExcluirCombo)
 
 
     fun bind(item: CarrinhoItem.Combo) {
 
         val combo = item.combo
 
-        tvNome.text = combo.tipoCombo?.nome
+        tvNomeCombo.text = combo.tipoCombo?.nome
 
-        btnExcluir.setOnClickListener {
+        btnExcluirCombo.setOnClickListener {
             onExcluirCombo(combo)
         }
     }

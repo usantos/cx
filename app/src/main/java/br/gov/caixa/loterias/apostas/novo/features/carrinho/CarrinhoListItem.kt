@@ -3,6 +3,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 
 sealed interface CarrinhoItem {
 
+    class HeaderFixo : CarrinhoItem
     data class Header(
         val titulo: String
     ) : CarrinhoItem
