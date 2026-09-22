@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -53,6 +52,39 @@
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/layoutCarrinhoVazio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.55"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/ivCarrinhoVazio"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:contentDescription="@string/carrinho_vazio"
+                android:src="@drawable/ic_cart"
+                app:tint="#EEEEEE" />
+
+            <TextView
+                android:id="@+id/tvCarrinhoVazio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:text="@string/carrinho_vazio"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp" />
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Rodapé elevado -->
@@ -84,12 +116,12 @@
             android:textSize="16sp" />
 
         <Button
-            android:enabled="false"
             android:id="@+id/btn_avancar_pagamento"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/btn_rounded_state_blue"
+            android:enabled="false"
             android:fontFamily="@font/caixa_std_bold"
             android:text="@string/irParaPagamento"
             android:textAllCaps="false"

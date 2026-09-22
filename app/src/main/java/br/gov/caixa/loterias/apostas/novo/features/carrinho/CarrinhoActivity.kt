@@ -54,7 +54,6 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper
 import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity
 import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener
 import com.android.volley.VolleyError
 import com.google.android.material.appbar.AppBarLayout
@@ -86,8 +85,10 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     private lateinit var customButton: ImageButton
     private lateinit var tvValorTotalCarrinho: TextView
     private lateinit var tvQuantidadeCarrinho: TextView
+    private lateinit var layoutCarrinhoVazio: View
+    private lateinit var contentContainer: View
 
-    protected override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_carrinho)
         model = CarrinhoModel(this@CarrinhoActivity)
@@ -128,6 +129,16 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
         if (resultCode == RESULT_OK && requestCode == 1) {
             callWebservice()
         }
+    }
+
+    private fun atualizarEstadoCarrinho() {
+        val possuiItens = carrinho?.possuiItensExibidos() == true
+
+        rvListaCarrinho.visibility = if (possuiItens) View.VISIBLE else View.GONE
+
+        layoutCarrinhoVazio.visibility = if (possuiItens) View.GONE else View.VISIBLE
+
+        btnAvancaPagamento.isEnabled = carrinho?.possuiItensParaPagamento() == true
     }
 
     private fun lerCarrinho() {
@@ -198,6 +209,8 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
 
     private fun setaViews() {
         rvListaCarrinho = findViewById(R.id.listaCarrinho)
+        layoutCarrinhoVazio = findViewById(R.id.layoutCarrinhoVazio)
+        contentContainer = findViewById(R.id.contentContainer)
 
         infoValorMinimo = findViewById(R.id.tv_info_valor_minimo)
         btnAvancaPagamento = findViewById(R.id.btn_avancar_pagamento)
@@ -586,7 +599,6 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
                 DetalhesComprasActivity.DETALHES_COMPRA_ACTIVITY, ignoreCase = true
             )
         ) {
-            //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             val intent = IntentUtil.getIntentOrigemDestino(
                 this@CarrinhoActivity, PrincipalActivity::class.java
             )
@@ -600,12 +612,11 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
 
     private fun clickLimparCarrinhoLinearLayout() {
         DialogUtils.dialogSim(
-            this@CarrinhoActivity, getString(R.string.MA011),
-
-            OnDialogBotaoListener { dialog: DialogInterface?, which: Int ->
-                AlertDialogUtils.show(this@CarrinhoActivity)
-                model.limparCarrinho(onLimparCarrinhoListener())
-            })
+            this@CarrinhoActivity, getString(R.string.MA011)
+        ) { dialog: DialogInterface?, which: Int ->
+            AlertDialogUtils.show(this@CarrinhoActivity)
+            model.limparCarrinho(onLimparCarrinhoListener())
+        }
     }
 
     private fun onLimparCarrinhoListener(): OnSilceListener<*> {
@@ -761,19 +772,17 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
         )
 
         atualizarResumoCarrinho()
-        atualizarEstadoBotaoPagamento()
+        atualizarEstadoCarrinho()
         handleBtnFavoritar()
     }
 
     private fun CarrinhoDTO.quantidadeItensExibidos(): Int =
         boloes.orEmpty().size + apostasIndividuais.orEmpty().size + combos.orEmpty().size
 
-    private fun CarrinhoDTO.possuiItensParaPagamento(): Boolean =
-        quantidadeItensExibidos() > 0 && (valorTotal?.compareTo(BigDecimal.ZERO) ?: 0) > 0
+    private fun CarrinhoDTO.possuiItensExibidos(): Boolean = quantidadeItensExibidos() > 0
 
-    private fun atualizarEstadoBotaoPagamento() {
-        btnAvancaPagamento.isEnabled = carrinho?.possuiItensParaPagamento() == true
-    }
+    private fun CarrinhoDTO.possuiItensParaPagamento(): Boolean =
+        possuiItensExibidos() && (valorTotal ?: BigDecimal.ZERO) > BigDecimal.ZERO
 
     private fun atualizarResumoCarrinho() {
         tvValorTotalCarrinho.text = ViewUtils.getMoedaFormat(
@@ -792,7 +801,7 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
         atualizarCarrinhoNaTela()
 
         SnackbarUtils.showSuccess(
-            anchorView = rvListaCarrinho, message = getString(R.string.aposta_removida_carrinho)
+            anchorView = contentContainer, message = getString(R.string.aposta_removida_carrinho)
         )
     }
 
@@ -816,7 +825,7 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
 
                 override fun success(payload: CarrinhoDTO?) {
                     SnackbarUtils.showSuccess(
-                        anchorView = rvListaCarrinho,
+                        anchorView = contentContainer,
                         message = getString(R.string.aposta_removida_carrinho)
                     )
                     callWebservice()
@@ -826,7 +835,7 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
                     AlertDialogUtils.dismiss()
 
                     SnackbarUtils.showError(
-                        anchorView = rvListaCarrinho,
+                        anchorView = contentContainer,
                         message = getString(R.string.aposta_nao_removida_carrinho)
                     )
                 }

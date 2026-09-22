@@ -1745,4 +1745,5 @@
     <string name="txt_label_conc">Conc. %1$i</string>
     <string name="aposta_removida_carrinho">Aposta removida do carrinho</string>
     <string name="aposta_nao_removida_carrinho">Aposta não foi removida do carrinho.</string>
+    <string name="carrinho_vazio">Seu carrinho está vazio</string>
 </resources>
