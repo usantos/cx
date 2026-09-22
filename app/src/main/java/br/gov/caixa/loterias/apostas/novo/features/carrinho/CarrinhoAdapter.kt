@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostas.novo.features.carrinho.HeaderViewHolder
 
 class CarrinhoAdapter(
     private val onExcluir: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit,
+    private val onExcluirBolao: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit,
     private val onExcluirCombo: (ComboApostaDTO) -> Unit,
     private val onCotaExpirada: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit,
     private val onMaisDetalhes: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit
@@ -53,7 +54,7 @@ class CarrinhoAdapter(
             TYPE_BOLAO -> BolaoViewHolder(
                 inflater.inflate(
                     R.layout.item_bolao_carrinho, parent, false
-                ), onExcluir, onCotaExpirada, onMaisDetalhes
+                ), onExcluirBolao, onCotaExpirada, onMaisDetalhes
             )
 
             TYPE_APOSTA -> ApostaViewHolder(

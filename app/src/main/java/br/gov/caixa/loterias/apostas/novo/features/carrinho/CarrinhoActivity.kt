@@ -163,9 +163,8 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     }
 
     private fun handleBtnLimpar() {
-        btnLimpar.visibility =
-            if (carrinho?.possuiItensExibidos() == true) View.VISIBLE
-            else View.GONE
+        btnLimpar.visibility = if (carrinho?.possuiItensExibidos() == true) View.VISIBLE
+        else View.GONE
     }
 
     private fun atualizarEstadoBotoes() {
@@ -271,11 +270,13 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
 
     private fun setupRecyclerView() {
         carrinhoAdapter = CarrinhoAdapter(
-            onExcluir = ::deletaAposta,
-            onExcluirCombo = ::deletaCombo,
+            onExcluir = ::confirmarExclusaoAposta,
+            onExcluirBolao = ::confirmarExclusaoBolao,
+            onExcluirCombo = ::confirmarExclusaoCombo,
             onMaisDetalhes = ::abrirDetalhesBolao,
             onCotaExpirada = ::onCotaExpirada
         )
+
         rvListaCarrinho.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = carrinhoAdapter
@@ -285,6 +286,7 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     }
 
     private fun onCotaExpirada(aposta: IdentificaoDeUmaApostaDas8Modalidades<*>) {
+        deletaAposta(aposta)
         atualizaParametros()
     }
 
@@ -784,8 +786,7 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     private fun podeFavoritarCarrinho(): Boolean {
         val carrinho = carrinho ?: return false
 
-        return carrinho.possuiItensExibidos() &&
-                carrinho.boloes.isNullOrEmpty()
+        return carrinho.possuiItensExibidos() && carrinho.boloes.isNullOrEmpty()
     }
 
     private fun CarrinhoDTO.quantidadeItensExibidos(): Int =
@@ -804,9 +805,86 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
         tvQuantidadeCarrinho.text = (carrinho?.quantidadeItensExibidos() ?: 0).toString()
     }
 
+    private fun confirmarExclusaoAposta(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        DialogUtils.dialogDoisBotoesPersonalizados(
+            this@CarrinhoActivity,
+            getString(R.string.excluir_aposta_titulo),
+            getString(R.string.excluir_aposta_mensagem),
+            getString(R.string.excluir),
+            getString(R.string.manter_aposta),
+            object : OnDialogDoisBotoesListener {
+
+                override fun PositiveButton(
+                    dialog: DialogInterface?, which: Int
+                ) {
+                    deletaAposta(aposta)
+                }
+
+                override fun NegativeButton(
+                    dialog: DialogInterface?, which: Int
+                ) {
+                    // Apenas fecha a dialog
+                }
+            })
+    }
+
+    private fun confirmarExclusaoBolao(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        DialogUtils.dialogDoisBotoesPersonalizados(
+            this@CarrinhoActivity,
+            getString(R.string.excluir_bolao_titulo),
+            getString(R.string.excluir_bolao_mensagem),
+            getString(R.string.excluir),
+            getString(R.string.manter_bolao),
+            object : OnDialogDoisBotoesListener {
+
+                override fun PositiveButton(
+                    dialog: DialogInterface?, which: Int
+                ) {
+                    deletaAposta(aposta)
+                }
+
+                override fun NegativeButton(
+                    dialog: DialogInterface?, which: Int
+                ) {
+                    // Apenas fecha a dialog
+                }
+            })
+    }
+
+    private fun confirmarExclusaoCombo(
+        combo: ComboApostaDTO
+    ) {
+        DialogUtils.dialogDoisBotoesPersonalizados(
+            this@CarrinhoActivity,
+            getString(R.string.excluir_combo_titulo),
+            getString(R.string.excluir_combo_mensagem),
+            getString(R.string.excluir),
+            getString(R.string.manter_combo),
+            object : OnDialogDoisBotoesListener {
+
+                override fun PositiveButton(
+                    dialog: DialogInterface?, which: Int
+                ) {
+                    deletaCombo(combo)
+                }
+
+                override fun NegativeButton(
+                    dialog: DialogInterface?, which: Int
+                ) {
+                    // Apenas fecha a dialog
+                }
+            })
+    }
+
+
     private fun deletaApostaLocal(
         aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
     ) {
+
         model.deletarApostaLocal(aposta)
 
         setCarrinho(model.lerCarrinhoLocal())

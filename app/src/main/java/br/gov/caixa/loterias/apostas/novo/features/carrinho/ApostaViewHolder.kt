@@ -11,10 +11,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.content.ContextCompat
+import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.RecyclerView
 import br.gov.caixa.loterias.apostas.R
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP
 import br.gov.caixa.loterias.apostas.utils.ViewUtils
 import br.gov.caixa.loterias.apostas.utils.dpToPx
@@ -47,6 +49,7 @@ class ApostaViewHolder(
     private val tvValor = itemView.findViewById<TextView>(R.id.tvValor)
 
     private val tvConcurso = itemView.findViewById<TextView>(R.id.tvConcurso)
+    private val containerExtra = itemView.findViewById<LinearLayout>(R.id.containerExtra)
 
     private val btnExcluir = itemView.findViewById<ImageView>(R.id.btnExcluir)
 
@@ -64,14 +67,10 @@ class ApostaViewHolder(
         val isSuperSete = aposta.modalidade == ModalidadeEnum.SUPER_7
         val isSurpresinha = aposta.surpresinha == true
 
-        tvModalidade.apply {
-            text = ModalidadeEnum.fromString(aposta.modalidade)?.toString()
-            setTextColor(
-                ContextCompat.getColor(
-                    context, estilo.corClara
-                )
-            )
-        }
+        configurarModalidade(
+            aposta = aposta,
+            estilo = estilo
+        )
 
         tvConcurso.text = context.getString(
             R.string.txt_prefix_conc, aposta.concursoAlvo.toString()
@@ -79,7 +78,6 @@ class ApostaViewHolder(
         tvValor.text = ViewUtils.getMoedaFormat(aposta.valor)
 
         containerSuperSete.visibility = if (isSuperSete) View.VISIBLE else View.GONE
-
         containerNumeros.visibility = if (isSuperSete) View.GONE else View.VISIBLE
 
         if (isSuperSete) {
@@ -94,11 +92,160 @@ class ApostaViewHolder(
             )
         }
 
+        configurarExtras(aposta)
         configurarTiposAposta(aposta)
 
         btnExcluir.setOnClickListener {
             onExcluir(aposta)
         }
+    }
+
+    private fun configurarModalidade(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>,
+        estilo: EstiloModalidadeMKP
+    ) {
+        tvModalidade.apply {
+            text = obterNomeModalidade(aposta)
+
+            setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    estilo.corClara
+                )
+            )
+        }
+    }
+
+    private fun obterNomeModalidade(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ): String {
+        val modalidade = aposta.modalidade ?: return ""
+
+        val isEspecial = aposta.tipoConcurso?.valor
+            ?.equals(
+                TipoConcursoEnum.ESPECIAL.valor,
+                ignoreCase = true
+            ) == true
+
+        if (!isEspecial) {
+            return modalidade.toString()
+        }
+
+        return ModalidadeEnum.getDescricaoEspecial(modalidade)
+            ?.takeIf { it.isNotBlank() }
+            ?.lowercase()
+            ?: modalidade.toString()
+    }
+
+    private fun configurarExtras(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        containerExtra.removeAllViews()
+
+        when (aposta.modalidade) {
+            ModalidadeEnum.DIA_DE_SORTE ->
+                adicionarMesDaSorte(aposta)
+
+            ModalidadeEnum.TIMEMANIA ->
+                adicionarTimeDoCoracao(aposta)
+
+            else -> Unit
+        }
+
+        containerExtra.visibleIf(containerExtra.isNotEmpty())
+    }
+
+    private fun adicionarMesDaSorte(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        val mes = aposta.mesDeSorte ?: return
+
+        val descricao = mes.nome
+            ?.takeIf { it.isNotBlank() }
+            ?: mes.abreviacao?.takeIf { it.isNotBlank() }
+            ?: return
+
+        adicionarExtra(
+            label = itemView.context.getString(R.string.carrinho_mes_da_sorte),
+            value = descricao
+        )
+    }
+
+    private fun adicionarTimeDoCoracao(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        val time = aposta.timeDoCoracao ?: return
+
+        val nome = time.descricaoCurta
+            ?.takeIf { it.isNotBlank() }
+            ?: time.nome?.takeIf { it.isNotBlank() }
+            ?: return
+
+        val descricao = time.uf
+            ?.takeIf { it.isNotBlank() }
+            ?.let { uf -> "$nome/$uf" }
+            ?: nome
+
+        adicionarExtra(
+            label = itemView.context.getString(R.string.carrinho_time_do_coracao),
+            value = descricao
+        )
+    }
+
+    private fun adicionarExtra(
+        label: String,
+        value: String
+    ) {
+        val linha = LinearLayout(itemView.context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+
+        val tvLabel = TextView(itemView.context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+
+            text = label
+            textSize = 14f
+
+            setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    R.color.greyText
+                )
+            )
+        }
+
+        val tvValue = TextView(itemView.context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            text = value
+            textSize = 14f
+            gravity = Gravity.END
+
+            setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    R.color.greyText
+                )
+            )
+        }
+
+        linha.addView(tvLabel)
+        linha.addView(tvValue)
+
+        containerExtra.addView(linha)
     }
 
     private fun configurarTiposAposta(
@@ -108,14 +255,9 @@ class ApostaViewHolder(
         val isSurpresinha = aposta.surpresinha == true
         val isTeimosinha = (aposta.quantidadeTeimosinhas ?: 0) > 0
 
-        tvEspelho.visibility =
-            if (isEspelho) View.VISIBLE else View.GONE
-
-        tvSurpresinha.visibility =
-            if (isSurpresinha) View.VISIBLE else View.GONE
-
-        tvTeimosinha.visibility =
-            if (isTeimosinha) View.VISIBLE else View.GONE
+        tvEspelho.visibleIf(isEspelho)
+        tvSurpresinha.visibleIf(isSurpresinha)
+        tvTeimosinha.visibleIf(isTeimosinha)
 
         val indicadores = buildList {
             if (isEspelho) add(R.id.tvEspelho)
@@ -124,9 +266,7 @@ class ApostaViewHolder(
         }
 
         flowIndicadores.referencedIds = indicadores.toIntArray()
-
-        flowIndicadores.visibility =
-            if (indicadores.isNotEmpty()) View.VISIBLE else View.GONE
+        flowIndicadores.visibleIf(indicadores.isNotEmpty())
     }
 
     private fun configurarSuperSete(

@@ -1746,4 +1746,21 @@
     <string name="aposta_removida_carrinho">Aposta removida do carrinho</string>
     <string name="aposta_nao_removida_carrinho">Aposta não foi removida do carrinho.</string>
     <string name="carrinho_vazio">Seu carrinho está vazio</string>
+    <string name="carrinho_mes_da_sorte">Mês da sorte</string>
+    <string name="carrinho_time_do_coracao">Time do coração</string>
+    <string name="confirmar_exclusao_aposta">Deseja excluir esta aposta do carrinho?</string>
+    <string name="confirmar_exclusao_combo">Deseja excluir este combo do carrinho?</string>
+    <string name="confirmar_exclusao_bolao">Deseja excluir esta cota de bolão do carrinho?</string>
+
+    <string name="excluir_bolao_titulo">Deseja excluir o bolão?</string>
+    <string name="excluir_bolao_mensagem">O bolão selecionado será removido do carrinho</string>
+    <string name="manter_bolao">Manter bolão</string>
+
+    <string name="excluir_combo_titulo">Deseja excluir o combo?</string>
+    <string name="excluir_combo_mensagem">O combo selecionado será removido do carrinho</string>
+    <string name="manter_combo">Manter combo</string>
+
+    <string name="excluir_aposta_titulo">Deseja excluir a aposta?</string>
+    <string name="excluir_aposta_mensagem">A aposta selecionada será removida do carrinho</string>
+    <string name="manter_aposta">Manter aposta</string>
 </resources>
