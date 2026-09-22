@@ -128,13 +128,13 @@ class ApostaViewHolder(
             ) == true
 
         if (!isEspecial) {
-            return modalidade.toString()
+            return ModalidadeEnum.fromString(modalidade)
         }
 
         return ModalidadeEnum.getDescricaoEspecial(modalidade)
             ?.takeIf { it.isNotBlank() }
             ?.lowercase()
-            ?: modalidade.toString()
+            ?: ModalidadeEnum.fromString(modalidade)
     }
 
     private fun configurarExtras(
@@ -167,7 +167,7 @@ class ApostaViewHolder(
 
         adicionarExtra(
             label = itemView.context.getString(R.string.carrinho_mes_da_sorte),
-            value = descricao
+            value = descricao.lowercase()
         )
     }
 
@@ -188,7 +188,7 @@ class ApostaViewHolder(
 
         adicionarExtra(
             label = itemView.context.getString(R.string.carrinho_time_do_coracao),
-            value = descricao
+            value = descricao.lowercase()
         )
     }
 

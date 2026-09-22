@@ -812,20 +812,21 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
             this@CarrinhoActivity,
             getString(R.string.excluir_aposta_titulo),
             getString(R.string.excluir_aposta_mensagem),
-            getString(R.string.excluir),
             getString(R.string.manter_aposta),
+            getString(R.string.excluir),
+
             object : OnDialogDoisBotoesListener {
 
                 override fun PositiveButton(
                     dialog: DialogInterface?, which: Int
                 ) {
-                    deletaAposta(aposta)
+
                 }
 
                 override fun NegativeButton(
                     dialog: DialogInterface?, which: Int
                 ) {
-                    // Apenas fecha a dialog
+                    deletaAposta(aposta)
                 }
             })
     }
@@ -837,20 +838,20 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
             this@CarrinhoActivity,
             getString(R.string.excluir_bolao_titulo),
             getString(R.string.excluir_bolao_mensagem),
-            getString(R.string.excluir),
             getString(R.string.manter_bolao),
+            getString(R.string.excluir),
             object : OnDialogDoisBotoesListener {
 
                 override fun PositiveButton(
                     dialog: DialogInterface?, which: Int
                 ) {
-                    deletaAposta(aposta)
+
                 }
 
                 override fun NegativeButton(
                     dialog: DialogInterface?, which: Int
                 ) {
-                    // Apenas fecha a dialog
+                    deletaAposta(aposta)
                 }
             })
     }
@@ -862,24 +863,24 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
             this@CarrinhoActivity,
             getString(R.string.excluir_combo_titulo),
             getString(R.string.excluir_combo_mensagem),
-            getString(R.string.excluir),
             getString(R.string.manter_combo),
+            getString(R.string.excluir),
+
             object : OnDialogDoisBotoesListener {
 
                 override fun PositiveButton(
                     dialog: DialogInterface?, which: Int
                 ) {
-                    deletaCombo(combo)
+
                 }
 
                 override fun NegativeButton(
                     dialog: DialogInterface?, which: Int
                 ) {
-                    // Apenas fecha a dialog
+                    deletaCombo(combo)
                 }
             })
     }
-
 
     private fun deletaApostaLocal(
         aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
