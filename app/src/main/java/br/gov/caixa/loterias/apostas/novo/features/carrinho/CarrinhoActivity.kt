@@ -146,7 +146,7 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_carrinho_offline))
             lerCarrinhoLocal()
         }
-        handleBtnFavoritar()
+        atualizarEstadoBotoes()
     }
 
     private fun lerCarrinhoLocal() {
@@ -160,6 +160,17 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
         } else {
             View.GONE
         }
+    }
+
+    private fun handleBtnLimpar() {
+        btnLimpar.visibility =
+            if (carrinho?.possuiItensExibidos() == true) View.VISIBLE
+            else View.GONE
+    }
+
+    private fun atualizarEstadoBotoes() {
+        handleBtnFavoritar()
+        atualizarEstadoBotoes()
     }
 
     private fun podeHabilitarFavoritar(): Boolean {
