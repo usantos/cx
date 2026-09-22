@@ -260,7 +260,8 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
         carrinhoAdapter = CarrinhoAdapter(
             onExcluir = ::deletaAposta,
             onExcluirCombo = ::deletaCombo,
-            onMaisDetalhes = ::abrirDetalhesBolao
+            onMaisDetalhes = ::abrirDetalhesBolao,
+            onCotaExpirada = ::onCotaExpirada
         )
         rvListaCarrinho.apply {
             layoutManager = LinearLayoutManager(context)
@@ -268,6 +269,10 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
             itemAnimator = DefaultItemAnimator()
             setHasFixedSize(false)
         }
+    }
+
+    private fun onCotaExpirada(aposta: IdentificaoDeUmaApostaDas8Modalidades<*>){
+        atualizaParametros()
     }
 
     private fun atualizarCarrinho() {
