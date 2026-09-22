@@ -49,6 +49,7 @@ import br.gov.caixa.loterias.apostas.utils.PermissaoUtil
 import br.gov.caixa.loterias.apostas.utils.RedirectUtils
 import br.gov.caixa.loterias.apostas.utils.ResultadoNavegacaoAposta
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil
+import br.gov.caixa.loterias.apostas.utils.SnackbarUtils
 import br.gov.caixa.loterias.apostas.utils.ViewUtils
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper
 import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity
@@ -68,8 +69,6 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     private lateinit var dialogFavoritar: Dialog
     private lateinit var rvListaCarrinho: RecyclerView
     private lateinit var infoValorMinimo: TextView
-
-    //    protected lateinit var vLoading: View
     private lateinit var etCarrinho: EditText
     private lateinit var btnAvancaPagamento: Button
     private lateinit var btnNovaAposta: Button
@@ -79,14 +78,10 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     private var lerCarrinhoLocal = false
     private var ocorrendoValidacao = false
     private var onResume = false
-
     private lateinit var timer: Timer
     private val handler = Handler(Looper.getMainLooper())
-
     private var origem: String = ""
-
     private lateinit var model: CarrinhoModel
-
     private lateinit var titleToolbar: TextView
     private lateinit var customButton: ImageButton
     private lateinit var tvValorTotalCarrinho: TextView
@@ -198,7 +193,7 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     private fun pegaExtras() {
         val bundle = intent.extras ?: return
         lerCarrinhoLocal = bundle.getBoolean(LER_CARRINHO_LOCAL)
-        origem = bundle.getString(ORIGEM)?: "Extra ORIGEM não informada"
+        origem = bundle.getString(ORIGEM) ?: "Extra ORIGEM não informada"
     }
 
     private fun setaViews() {
@@ -271,7 +266,7 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
         }
     }
 
-    private fun onCotaExpirada(aposta: IdentificaoDeUmaApostaDas8Modalidades<*>){
+    private fun onCotaExpirada(aposta: IdentificaoDeUmaApostaDas8Modalidades<*>) {
         atualizaParametros()
     }
 
@@ -281,8 +276,8 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
 
     private fun ComboApostaDTO.calcularValorTotal(): BigDecimal =
         apostas.orEmpty().fold(BigDecimal.ZERO) { total, aposta ->
-                total.add(aposta.valor ?: BigDecimal.ZERO)
-            }
+            total.add(aposta.valor ?: BigDecimal.ZERO)
+        }
 
     private fun detalheCotaBolao(aposta: IdentificaoDeUmaApostaDas8Modalidades<*>) {
         val reserva = aposta.reservaCotaBolao ?: return
@@ -473,14 +468,12 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
 
     private fun callWebservice() {
         AlertDialogUtils.show(this@CarrinhoActivity)
-//        vLoading.visibility = View.VISIBLE
         model.buscaCarrinhoSilce(onCarrinhoListener())
     }
 
     private fun onCarrinhoListener(): OnSilceListener<CarrinhoDTO?> {
         return object : OnSilceListener<CarrinhoDTO?> {
             override fun success(payload: CarrinhoDTO?) {
-//                vLoading.visibility = View.GONE
                 AlertDialogUtils.dismiss()
 
                 setCarrinho(payload)
@@ -501,7 +494,6 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
             }
 
             override fun error(error: VolleyError?) {
-//                vLoading.visibility = View.GONE
                 AlertDialogUtils.dismiss()
             }
         }
@@ -691,16 +683,15 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
         timer = Timer()
         val task: TimerTask = object : TimerTask() {
             override fun run() {
-                handler.post(Runnable {
+                handler.post {
                     //Tarefa
                     if (temCotasExpiradas()) {
                         atualizarCarrinho()
                     }
-                })
+                }
             }
         }
         timer.schedule(task, 0, 60000)
-        //1 minuto
     }
 
     override fun onDestroy() {
@@ -799,6 +790,10 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
 
         setCarrinho(model.lerCarrinhoLocal())
         atualizarCarrinhoNaTela()
+
+        SnackbarUtils.showSuccess(
+            anchorView = rvListaCarrinho, message = getString(R.string.aposta_removida_carrinho)
+        )
     }
 
     private fun deletaAposta(
@@ -820,11 +815,20 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
             aposta, object : OnSilceListener<CarrinhoDTO?> {
 
                 override fun success(payload: CarrinhoDTO?) {
+                    SnackbarUtils.showSuccess(
+                        anchorView = rvListaCarrinho,
+                        message = getString(R.string.aposta_removida_carrinho)
+                    )
                     callWebservice()
                 }
 
                 override fun error(error: VolleyError?) {
                     AlertDialogUtils.dismiss()
+
+                    SnackbarUtils.showError(
+                        anchorView = rvListaCarrinho,
+                        message = getString(R.string.aposta_nao_removida_carrinho)
+                    )
                 }
             })
     }
