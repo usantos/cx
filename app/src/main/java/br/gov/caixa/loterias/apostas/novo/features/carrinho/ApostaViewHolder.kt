@@ -36,6 +36,12 @@ class ApostaViewHolder(
 
     private val colunasNumerosSuperSete = mutableListOf<LinearLayout>()
 
+    private val tvEspelho = itemView.findViewById<TextView>(R.id.tvEspelho)
+
+    private val tvSurpresinha = itemView.findViewById<TextView>(R.id.tvSurpresinha)
+
+    private val tvTeimosinha = itemView.findViewById<TextView>(R.id.tvTeimosinha)
+
     private val tvValor = itemView.findViewById<TextView>(R.id.tvValor)
 
     private val tvConcurso = itemView.findViewById<TextView>(R.id.tvConcurso)
@@ -78,12 +84,30 @@ class ApostaViewHolder(
             configurarSuperSete(aposta)
         } else {
             adicionarNumeros(
-                containerNumeros, aposta.listaNumerosSelecionados.orEmpty()
+                container = containerNumeros,
+                numeros = aposta.listaNumerosSelecionados.orEmpty(),
+                isSurpresinha = aposta.surpresinha == true
             )
         }
 
+        configurarTiposAposta(aposta)
+
         btnExcluir.setOnClickListener {
             onExcluir(aposta)
+        }
+    }
+
+    private fun configurarTiposAposta(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        tvEspelho.visibility = if (aposta.espelho == true) View.VISIBLE else View.GONE
+
+        tvSurpresinha.visibility = if (aposta.surpresinha == true) View.VISIBLE else View.GONE
+
+        tvTeimosinha.visibility = if ((aposta.quantidadeTeimosinhas ?: 0) > 0) {
+            View.VISIBLE
+        } else {
+            View.GONE
         }
     }
 
@@ -123,26 +147,38 @@ class ApostaViewHolder(
     }
 
     private fun adicionarNumeros(
-        container: LinearLayout, numeros: List<Int>
+        container: LinearLayout,
+        numeros: List<Int>,
+        isSurpresinha: Boolean
     ) {
         container.removeAllViews()
 
-        numeros.chunked(6).forEach { grupo ->
+        if (isSurpresinha) {
+            container.addView(
+                criarTextView(
+                    context = container.context,
+                    texto = "XX - XX - XX - XX - XX - XX"
+                )
+            )
+            return
+        }
 
+        numeros.chunked(6).forEach { grupo ->
             val texto = grupo.joinToString(" - ") { numero ->
                 numero.toString().padStart(2, '0')
             }
 
             container.addView(
                 criarTextView(
-                    container.context, texto
+                    context = container.context,
+                    texto = texto
                 )
             )
         }
     }
 
     private fun criarLayoutSuperSete() {
-        repeat(7) { index ->
+        repeat(SUPERSETE_HEADER) { index ->
 
             val cabecalho = criarCabecalhoSuperSete(
                 texto = (index + 1).toString()
@@ -155,8 +191,7 @@ class ApostaViewHolder(
                 gravity = Gravity.CENTER_HORIZONTAL
 
                 layoutParams = LinearLayout.LayoutParams(
-                    tamanhoColunaSuperSete,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
+                    tamanhoColunaSuperSete, ViewGroup.LayoutParams.WRAP_CONTENT
                 ).apply {
                     marginStart = margemColunaSuperSete
                 }
@@ -173,8 +208,7 @@ class ApostaViewHolder(
         return TextView(itemView.context).apply {
 
             layoutParams = LinearLayout.LayoutParams(
-                tamanhoColunaSuperSete,
-                tamanhoColunaSuperSete
+                tamanhoColunaSuperSete, tamanhoColunaSuperSete
             ).apply {
                 marginStart = margemColunaSuperSete
             }
@@ -184,15 +218,13 @@ class ApostaViewHolder(
 
             setTextColor(
                 ContextCompat.getColor(
-                    context,
-                    R.color.branco
+                    context, R.color.branco
                 )
             )
 
             setBackgroundColor(
                 ContextCompat.getColor(
-                    context,
-                    R.color.cinza90
+                    context, R.color.cinza90
                 )
             )
 
@@ -204,7 +236,6 @@ class ApostaViewHolder(
         numero: Int
     ): TextView {
         return TextView(itemView.context).apply {
-
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
@@ -220,5 +251,10 @@ class ApostaViewHolder(
 
             textSize = 14f
         }
+    }
+
+    companion object {
+        private const val NUMEROS_POR_LINHA = 6
+        private const val SUPERSETE_HEADER = 7
     }
 }
