@@ -50,6 +50,11 @@ public class NotificacaoCentralDTO {
     this.dataVisualizacao = dataVisualizacao;
   }
 
+  public NotificacaoCentralDTO(Long id, String titulo, String conteudo) {
+    this.id = id;
+    this.titulo = titulo;
+    this.conteudo = conteudo;
+  }
   /**
    * Get titulo
    * @return titulo

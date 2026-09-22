@@ -189,6 +189,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private int ano;
     Boolean expandido = false;
     private static final int REQ_CARRINHO = 1001;
+    private static final int REQ_CENTRAL_NOTIFICACAO = 2001;
     private Integer numeroConcurso = null;
     private ModalidadeEnum tipoModalidade = null;
 
@@ -432,8 +433,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 }
             });
         }
-
-        atualizarBadgeNotificacao();
     }
 
     private boolean possuiApostasDuplicadas(CarrinhoDTO carrinho) {
@@ -747,7 +746,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
                 actionApresentarTrevo = toolbar.findViewById(R.id.action_apresentar_trevo);
                 actionCentralNotificacao = toolbar.findViewById(R.id.central_notificacao);
-                //imgBadgeNaoLida = findViewById(R.id.imgBadgeNaoLida);
 
                 if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
@@ -763,10 +761,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                     });
                 }
                 if (actionCentralNotificacao != null) {
-                    //toolbar.removeOnLayoutChangeListener(this);
                     NotificacoesNaoLidas();
                     actionCentralNotificacao.setOnClickListener(view -> {
-                        startActivity(new Intent(PrincipalActivity.this, CentralNotificacaoActivity.class));
+                        startActivityForResult(new Intent(PrincipalActivity.this, CentralNotificacaoActivity.class), REQ_CENTRAL_NOTIFICACAO);
                     });
                 }
             }
@@ -865,6 +862,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
         if (requestCode == REQ_CARRINHO && resultCode == 2) {
             RateUtils.solicitarReview(this);
+        }
+        if (requestCode == REQ_CENTRAL_NOTIFICACAO && resultCode == RESULT_OK && data != null) {
+            int qtdNaoLidas = data.getIntExtra("QTD_NAO_LIDAS", 0);
+            atualizarBadgeNotificacao(qtdNaoLidas);
         }
     }
 
@@ -1490,20 +1491,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         });
     }
 
-    private void atualizarBadgeNotificacao() {
+    private void atualizarBadgeNotificacao(int qtdNaoLidas) {
         imgBadgeNaoLida = findViewById(R.id.imgBadgeNaoLida);
-
         if (imgBadgeNaoLida == null) {
             return;
         }
-
-        int qtdNaoLidas = SharedPreferencesUtils.getValorInt("NOTIFICACOES_NAO_LIDAS", 0);
-
-        if (qtdNaoLidas > 0) {
-            imgBadgeNaoLida.setVisibility(View.VISIBLE);
-        } else {
-            imgBadgeNaoLida.setVisibility(View.GONE);
-        }
+        imgBadgeNaoLida.setVisibility(qtdNaoLidas > 0 ? View.VISIBLE : View.GONE);
     }
 
     private void NotificacoesNaoLidas() {
@@ -1511,12 +1504,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             @Override
             public void onResponse(NotificacaoResponse response) {
                 if (response != null && response.getPayload() != null) {
-                    SharedPreferencesUtils.setValor("NOTIFICACOES_NAO_LIDAS", response.getPayload().size());
-                    atualizarBadgeNotificacao();
+                    atualizarBadgeNotificacao(response.getPayload().size());
+                } else {
+                    atualizarBadgeNotificacao(0);
                 }
             }
             @Override
             public void onErrorResponse(VolleyError error) {
+                atualizarBadgeNotificacao(0);
             }
         });
 

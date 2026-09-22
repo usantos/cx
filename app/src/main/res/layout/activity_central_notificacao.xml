@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient_verde"
     tools:context="br.gov.caixa.loterias.apostas.controllers.TermosAceiteActivity"
     android:fitsSystemWindows="true"
     >
 
     <include layout="@layout/app_bar_custom"/>
-    <include layout="@layout/content_central_notificacao" />
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+    layout="@layout/content_central_notificacao" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

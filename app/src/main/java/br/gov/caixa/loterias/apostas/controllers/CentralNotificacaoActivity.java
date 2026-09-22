@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,11 +21,14 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DataNotificacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoCentralDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NotificacaoAdapter;
 
 public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
@@ -60,15 +64,20 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
+    public void finish() {
+        Intent intent = new Intent();
+        intent.putExtra("QTD_NAO_LIDAS", listNotificacaoNaoLidas != null ? listNotificacaoNaoLidas.size(): 0);
+        setResult(RESULT_OK, intent);
+        super.finish();
     }
 
     private void setTitle() {
         TextView textTitulo = findViewById(R.id.textCustom);
         textTitulo.setText(getString(R.string.central_notificacoes));
         textTitulo.setHint(getString(R.string.titulo));
+        ImageView btnBack = findViewById(R.id.customButton);
+        //btnBack.setOnClickListener(v -> fecharTela());
+        btnBack.setOnClickListener(v -> finish());
         ImageView imageTrevo = findViewById(R.id.icon_loterias);
         imageTrevo.setVisibility(View.VISIBLE);
     }
