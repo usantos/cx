@@ -1741,8 +1741,8 @@
     <string name="txt_prefix_conc">Conc. %1$s</string>
     <string name="txt_carrinho">Carrinho</string>
     <string name="countdown_timer_zero">00:00</string>
-    <string name="txt_cota">cota reservada nº %1$i + de %2$i}</string>
-    <string name="txt_label_conc">Conc. %1$i</string>
+    <string name="txt_cota">cota reservada nº %1$d de %2$d</string>
+    <string name="txt_label_conc">Conc. %1$d</string>
     <string name="aposta_removida_carrinho">Aposta removida do carrinho</string>
     <string name="aposta_nao_removida_carrinho">Aposta não foi removida do carrinho.</string>
     <string name="carrinho_vazio">Seu carrinho está vazio</string>

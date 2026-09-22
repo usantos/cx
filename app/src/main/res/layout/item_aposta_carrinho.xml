@@ -38,16 +38,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.70" />
+        app:layout_constraintGuide_percent="0.75" />
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/containerNumeros"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="8dp"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@id/guidelineInformacoes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvModalidade">
@@ -104,7 +104,7 @@
         android:fontFamily="@font/caixa_std_regular"
         android:gravity="end"
         android:textColor="#46515A"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/containerNumeros"
         tools:text="Conc.3005" />
@@ -117,7 +117,7 @@
         android:fontFamily="@font/caixa_std_regular"
         android:gravity="end"
         android:textColor="#46515A"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvConcurso"
         tools:text="R$ 6,00" />
@@ -126,8 +126,9 @@
         android:id="@+id/barrierAposta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:barrierAllowsGoneWidgets="false"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="containerNumeros,tvValor" />
+        app:constraint_referenced_ids="containerNumeros,containerSuperSete,tvValor" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/containerExtra"
@@ -147,7 +148,7 @@
             android:fontFamily="@font/caixa_std_regular"
             android:text="time do coração"
             android:textColor="#697981"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -160,7 +161,7 @@
             android:fontFamily="@font/caixa_std_regular"
             android:gravity="end"
             android:textColor="#697981"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvLabelExtra"
@@ -168,6 +169,14 @@
             tools:text="AMERICA/RN" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierAntesIndicadores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierAllowsGoneWidgets="false"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="barrierAposta,containerExtra" />
 
     <TextView
         android:id="@+id/tvEspelho"
@@ -216,8 +225,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:visibility="visible"
-        app:constraint_referenced_ids="tvEspelho,tvSurpresinha,tvTeimosinha"
+        android:visibility="gone"
         app:flow_firstHorizontalBias="0"
         app:flow_firstHorizontalStyle="packed"
         app:flow_horizontalBias="0"
@@ -229,7 +237,7 @@
         app:flow_wrapMode="chain"
         app:layout_constraintEnd_toStartOf="@id/guidelineInformacoes"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/containerExtra" />
+        app:layout_constraintTop_toBottomOf="@id/barrierAntesIndicadores" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrierConteudo"
@@ -237,7 +245,7 @@
         android:layout_height="wrap_content"
         app:barrierAllowsGoneWidgets="false"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="barrierAposta,containerExtra,flowIndicadores" />
+        app:constraint_referenced_ids="barrierAntesIndicadores,flowIndicadores" />
 
     <View
         android:id="@+id/divider"

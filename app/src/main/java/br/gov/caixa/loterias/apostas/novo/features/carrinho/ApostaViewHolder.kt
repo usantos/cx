@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import br.gov.caixa.loterias.apostas.R
@@ -22,6 +23,7 @@ class ApostaViewHolder(
     itemView: View, private val onExcluir: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
 
+    private val flowIndicadores = itemView.findViewById<Flow>(R.id.flowIndicadores)
     private val tvModalidade = itemView.findViewById<TextView>(R.id.tvModalidade)
 
     private val containerSuperSete = itemView.findViewById<LinearLayout>(R.id.containerSuperSete)
@@ -48,8 +50,8 @@ class ApostaViewHolder(
 
     private val btnExcluir = itemView.findViewById<ImageView>(R.id.btnExcluir)
 
-    private val tamanhoColunaSuperSete = itemView.dpToPx(25)
-    private val margemColunaSuperSete = itemView.dpToPx(8)
+    private val tamanhoColunaSuperSete = itemView.dpToPx(22)
+    private val margemColunaSuperSete = itemView.dpToPx(6)
 
     init {
         criarLayoutSuperSete()
@@ -59,6 +61,8 @@ class ApostaViewHolder(
         val context = itemView.context
         val aposta = item.aposta
         val estilo = EstiloModalidadeMKP(aposta.modalidade)
+        val isSuperSete = aposta.modalidade == ModalidadeEnum.SUPER_7
+        val isSurpresinha = aposta.surpresinha == true
 
         tvModalidade.apply {
             text = ModalidadeEnum.fromString(aposta.modalidade)?.toString()
@@ -72,21 +76,21 @@ class ApostaViewHolder(
         tvConcurso.text = context.getString(
             R.string.txt_prefix_conc, aposta.concursoAlvo.toString()
         )
-
         tvValor.text = ViewUtils.getMoedaFormat(aposta.valor)
 
-        val isSuperSete = aposta.modalidade == ModalidadeEnum.SUPER_7
-
         containerSuperSete.visibility = if (isSuperSete) View.VISIBLE else View.GONE
+
         containerNumeros.visibility = if (isSuperSete) View.GONE else View.VISIBLE
 
         if (isSuperSete) {
-            configurarSuperSete(aposta)
+            configurarSuperSete(
+                aposta = aposta, isSurpresinha = isSurpresinha
+            )
         } else {
             adicionarNumeros(
                 container = containerNumeros,
                 numeros = aposta.listaNumerosSelecionados.orEmpty(),
-                isSurpresinha = aposta.surpresinha == true
+                isSurpresinha = isSurpresinha
             )
         }
 
@@ -100,28 +104,51 @@ class ApostaViewHolder(
     private fun configurarTiposAposta(
         aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
     ) {
-        tvEspelho.visibility = if (aposta.espelho == true) View.VISIBLE else View.GONE
+        val isEspelho = aposta.espelho == true
+        val isSurpresinha = aposta.surpresinha == true
+        val isTeimosinha = (aposta.quantidadeTeimosinhas ?: 0) > 0
 
-        tvSurpresinha.visibility = if (aposta.surpresinha == true) View.VISIBLE else View.GONE
+        tvEspelho.visibility =
+            if (isEspelho) View.VISIBLE else View.GONE
 
-        tvTeimosinha.visibility = if ((aposta.quantidadeTeimosinhas ?: 0) > 0) {
-            View.VISIBLE
-        } else {
-            View.GONE
+        tvSurpresinha.visibility =
+            if (isSurpresinha) View.VISIBLE else View.GONE
+
+        tvTeimosinha.visibility =
+            if (isTeimosinha) View.VISIBLE else View.GONE
+
+        val indicadores = buildList {
+            if (isEspelho) add(R.id.tvEspelho)
+            if (isSurpresinha) add(R.id.tvSurpresinha)
+            if (isTeimosinha) add(R.id.tvTeimosinha)
         }
+
+        flowIndicadores.referencedIds = indicadores.toIntArray()
+
+        flowIndicadores.visibility =
+            if (indicadores.isNotEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun configurarSuperSete(
-        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>, isSurpresinha: Boolean
     ) {
         val matriz = aposta.matrizNumerosSelecionados.orEmpty()
 
         colunasNumerosSuperSete.forEachIndexed { index, containerColuna ->
             containerColuna.removeAllViews()
 
+            if (isSurpresinha) {
+                containerColuna.addView(
+                    criarNumeroSuperSete(TEXTO_NUMERO_SURPRESINHA)
+                )
+                return@forEachIndexed
+            }
+
             matriz.getOrNull(index).orEmpty().forEach { numero ->
                 containerColuna.addView(
-                    criarNumeroSuperSete(numero)
+                    criarNumeroSuperSete(
+                        numero.toString()
+                    )
                 )
             }
         }
@@ -142,22 +169,19 @@ class ApostaViewHolder(
                     context, R.color.greyText
                 )
             )
-            textSize = 14f
+            textSize = 12f
         }
     }
 
     private fun adicionarNumeros(
-        container: LinearLayout,
-        numeros: List<Int>,
-        isSurpresinha: Boolean
+        container: LinearLayout, numeros: List<Int>, isSurpresinha: Boolean
     ) {
         container.removeAllViews()
 
         if (isSurpresinha) {
             container.addView(
                 criarTextView(
-                    context = container.context,
-                    texto = "XX - XX - XX - XX - XX - XX"
+                    context = container.context, texto = criarNumerosSurpresinha()
                 )
             )
             return
@@ -170,8 +194,7 @@ class ApostaViewHolder(
 
             container.addView(
                 criarTextView(
-                    context = container.context,
-                    texto = texto
+                    context = container.context, texto = texto
                 )
             )
         }
@@ -233,7 +256,7 @@ class ApostaViewHolder(
     }
 
     private fun criarNumeroSuperSete(
-        numero: Int
+        textoNumero: String
     ): TextView {
         return TextView(itemView.context).apply {
             layoutParams = LinearLayout.LayoutParams(
@@ -241,7 +264,7 @@ class ApostaViewHolder(
             )
 
             gravity = Gravity.CENTER
-            text = numero.toString()
+            text = textoNumero
 
             setTextColor(
                 ContextCompat.getColor(
@@ -249,12 +272,20 @@ class ApostaViewHolder(
                 )
             )
 
-            textSize = 14f
+            textSize = 12f
         }
     }
 
+    private fun criarNumerosSurpresinha(): String =
+        List(NUMEROS_SURPRESINHA) { "XX" }.joinToString(" - ")
+
+    private fun View.visibleIf(condition: Boolean) {
+        visibility = if (condition) View.VISIBLE else View.GONE
+    }
+
     companion object {
-        private const val NUMEROS_POR_LINHA = 6
         private const val SUPERSETE_HEADER = 7
+        private const val NUMEROS_SURPRESINHA = 6
+        private const val TEXTO_NUMERO_SURPRESINHA = "XX"
     }
 }

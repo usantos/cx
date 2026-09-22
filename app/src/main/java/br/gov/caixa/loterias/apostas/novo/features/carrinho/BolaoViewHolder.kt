@@ -5,10 +5,13 @@ import android.os.CountDownTimer
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import br.gov.caixa.loterias.apostas.R
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum
 import br.gov.caixa.loterias.apostas.utils.DateUtils
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -46,8 +49,16 @@ class BolaoViewHolder(
 
         cancelarTimer()
         val aposta = item.aposta
+        val estilo = EstiloModalidadeMKP(aposta.modalidade)
 
-        tvNome.text = aposta.getModalidade()?.name
+        tvNome.apply {
+            text = ModalidadeEnum.fromString(aposta.modalidade)?.toString()
+            setTextColor(
+                ContextCompat.getColor(
+                    context, estilo.corClara
+                )
+            )
+        }
         tvDescricao.text =
             tvDescricao.context.getString(
                 R.string.txt_cota,

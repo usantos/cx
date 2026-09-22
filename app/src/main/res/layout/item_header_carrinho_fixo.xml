@@ -18,7 +18,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_marginBottom="16dp"
         android:id="@+id/tv_info_valor_minimo"
         style="@style/editTextCaixaRegularTheme"
         android:layout_width="0dp"
