@@ -1740,4 +1740,7 @@
     <string name="irParaPagamento">Ir para pagamento</string>
     <string name="txt_prefix_conc">Conc. %1$s</string>
     <string name="txt_carrinho">Carrinho</string>
+    <string name="countdown_timer_zero">00:00</string>
+    <string name="txt_cota">cota reservada nº %1$i + de %2$i}</string>
+    <string name="txt_label_conc">Conc. %1$i</string>
 </resources>

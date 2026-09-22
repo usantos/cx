@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.novo.features.carrinho
 
 import CarrinhoItem
-import android.annotation.SuppressLint
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.ImageView
@@ -43,7 +42,6 @@ class BolaoViewHolder(
 
     private var countDownTimer: CountDownTimer? = null
 
-    @SuppressLint("SetTextI18n")
     fun bind(item: CarrinhoItem.Bolao) {
 
         cancelarTimer()
@@ -51,8 +49,12 @@ class BolaoViewHolder(
 
         tvNome.text = aposta.getModalidade()?.name
         tvDescricao.text =
-            "cota reservada nº ${aposta.reservaCotaBolao.numeroCotaReservada} + de ${aposta.reservaCotaBolao.qtdCotaTotalBolao}}"
-        tvConcurso.text = "Conc. ${aposta.concursoAlvo}"
+            tvDescricao.context.getString(
+                R.string.txt_cota,
+                aposta.reservaCotaBolao.numeroCotaReservada,
+                aposta.reservaCotaBolao.qtdCotaTotalBolao
+            )
+        tvConcurso.text = tvConcurso.context.getString(R.string.txt_label_conc, aposta.concursoAlvo)
 
         tvValor.text = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
             .format(aposta.reservaCotaBolao.vrCotaReservada)
@@ -73,10 +75,13 @@ class BolaoViewHolder(
         }
     }
 
-    private fun iniciarTimerCota(timeMillis: Long, aposta: IdentificaoDeUmaApostaDas8Modalidades<*>) {
+    private fun iniciarTimerCota(
+        timeMillis: Long,
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
         countDownTimer?.cancel()
         if (timeMillis <= 0L) {
-            tvTempo.text = "00:00"
+            tvTempo.text = tvTempo.context.getString(R.string.countdown_timer_zero)
             onCotaExpirada(aposta)
             return
         }
@@ -86,7 +91,7 @@ class BolaoViewHolder(
             }
 
             override fun onFinish() {
-                tvTempo.text = "00:00"
+                tvTempo.text = tvTempo.context.getString(R.string.countdown_timer_zero)
                 onCotaExpirada(aposta)
             }
         }.start()
