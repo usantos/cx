@@ -155,7 +155,7 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     }
 
     private fun handleBtnFavoritar() {
-        btnFavoritar.visibility = if (deveSincronizarComBackend() && carrinho?.possuiItensExibidos() == true) {
+        btnFavoritar.visibility = if (deveSincronizarComBackend() && podeFavoritarCarrinho()) {
             View.VISIBLE
         } else {
             View.GONE
@@ -779,6 +779,13 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
         atualizarResumoCarrinho()
         atualizarEstadoCarrinho()
         atualizarEstadoBotoes()
+    }
+
+    private fun podeFavoritarCarrinho(): Boolean {
+        val carrinho = carrinho ?: return false
+
+        return carrinho.possuiItensExibidos() &&
+                carrinho.boloes.isNullOrEmpty()
     }
 
     private fun CarrinhoDTO.quantidadeItensExibidos(): Int =
