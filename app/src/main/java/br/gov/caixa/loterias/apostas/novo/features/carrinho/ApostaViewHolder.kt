@@ -53,7 +53,8 @@ class ApostaViewHolder(
     private val tvValor = itemView.findViewById<TextView>(R.id.tvValor)
 
     private val tvConcurso = itemView.findViewById<TextView>(R.id.tvConcurso)
-    private val containerExtra = itemView.findViewById<LinearLayout>(R.id.containerExtra)
+    private val tvExtra =
+        itemView.findViewById<TextView>(R.id.tvExtra)
 
     private val btnExcluir = itemView.findViewById<ImageView>(R.id.btnExcluir)
 
@@ -96,10 +97,36 @@ class ApostaViewHolder(
         }
 
         configurarExtras(aposta)
+        configurarPosicaoValor()
         configurarIndicadores(aposta)
 
         btnExcluir.setOnClickListener {
             onExcluir(aposta)
+        }
+    }
+
+    private fun configurarPosicaoValor() {
+        tvValor.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            if (tvExtra.isVisible) {
+                topToTop = ConstraintLayout.LayoutParams.UNSET
+                topToBottom = ConstraintLayout.LayoutParams.UNSET
+                bottomToTop = ConstraintLayout.LayoutParams.UNSET
+                bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+
+                baselineToBaseline = R.id.tvExtra
+
+                topMargin = 0
+                bottomMargin = 0
+            } else {
+                baselineToBaseline = ConstraintLayout.LayoutParams.UNSET
+                topToTop = ConstraintLayout.LayoutParams.UNSET
+                bottomToTop = ConstraintLayout.LayoutParams.UNSET
+                bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+
+                topToBottom = R.id.tvConcurso
+                topMargin = itemView.dpToPx(12)
+                bottomMargin = 0
+            }
         }
     }
 
@@ -136,7 +163,7 @@ class ApostaViewHolder(
         aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
     ) {
         when {
-            containerExtra.isVisible -> {
+            tvExtra.isVisible -> {
                 posicionarIndicadoresAbaixoDosExtras()
             }
 
@@ -154,28 +181,13 @@ class ApostaViewHolder(
         aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
     ): Boolean {
         if (aposta.modalidade == ModalidadeEnum.SUPER_7) {
-            if (aposta.surpresinha == true) {
-                return false
-            }
+            return true
+        }
 
-            val maiorQuantidadeNaColuna =
-                aposta.matrizNumerosSelecionados
+        return aposta.surpresinha == true ||
+                aposta.listaNumerosSelecionados
                     .orEmpty()
-                    .maxOfOrNull { coluna ->
-                        coluna.orEmpty().size
-                    }
-                    ?: 0
-
-            return maiorQuantidadeNaColuna > 1
-        }
-
-        if (aposta.surpresinha == true) {
-            return false
-        }
-
-        return aposta.listaNumerosSelecionados
-            .orEmpty()
-            .size > NUMEROS_POR_LINHA
+                    .size > NUMEROS_POR_LINHA
     }
 
     private fun posicionarIndicadoresAbaixoDoConteudoNumerico(
@@ -223,7 +235,7 @@ class ApostaViewHolder(
             topToTop = ConstraintLayout.LayoutParams.UNSET
             bottomToTop = ConstraintLayout.LayoutParams.UNSET
             bottomToBottom = ConstraintLayout.LayoutParams.UNSET
-            topToBottom = R.id.containerExtra
+            topToBottom = R.id.tvExtra
             topMargin = 0
             bottomMargin = 0
         }
@@ -262,19 +274,15 @@ class ApostaViewHolder(
     private fun configurarExtras(
         aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
     ) {
-        containerExtra.removeAllViews()
+        tvExtra.visibility = View.GONE
+        tvExtra.text = ""
 
         when (aposta.modalidade) {
             ModalidadeEnum.DIA_DE_SORTE -> adicionarMesDaSorte(aposta)
-
             ModalidadeEnum.TIMEMANIA -> adicionarTimeDoCoracao(aposta)
-
             ModalidadeEnum.MAIS_MILIONARIA -> adicionarTrevo(aposta)
-
             else -> Unit
         }
-
-        containerExtra.visibleIf(containerExtra.isNotEmpty())
     }
 
     private fun adicionarTrevo(
@@ -317,10 +325,14 @@ class ApostaViewHolder(
         val time = aposta.timeDoCoracao ?: return
 
         val nome =
-            time.descricaoCurta?.takeIf { it.isNotBlank() } ?: time.nome?.takeIf { it.isNotBlank() }
-            ?: return
+            time.nome?.takeIf { it.isNotBlank() }
+                ?: time.descricaoCurta?.takeIf { it.isNotBlank() }
+                ?: return
 
-        val descricao = time.uf?.takeIf { it.isNotBlank() }?.let { uf -> "$nome/$uf" } ?: nome
+        val descricao = time.uf
+            ?.takeIf { it.isNotBlank() }
+            ?.let { uf -> "$nome/$uf" }
+            ?: nome
 
         adicionarExtra(
             label = itemView.context.getString(R.string.carrinho_time_do_coracao),
@@ -329,29 +341,11 @@ class ApostaViewHolder(
     }
 
     private fun adicionarExtra(
-        label: String, value: String
+        label: String,
+        value: String
     ) {
-        val textoExtra = TextView(itemView.context).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-
-            text = "$label: $value"
-            textSize = 12f
-            gravity = Gravity.START
-
-            typeface = ResourcesCompat.getFont(
-                context, R.font.caixa_std_regular
-            )
-
-            setTextColor(
-                ContextCompat.getColor(
-                    context, R.color.greyText
-                )
-            )
-        }
-
-        containerExtra.addView(textoExtra)
+        tvExtra.text = "$label: $value"
+        tvExtra.visibility = View.VISIBLE
     }
 
     private fun configurarSuperSete(

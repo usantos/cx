@@ -117,9 +117,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/caixa_std_regular"
+        android:textSize="14sp"
+        android:includeFontPadding="false"
         android:gravity="end"
         android:textColor="#46515A"
-        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvConcurso"
         tools:text="R$ 6,00" />
@@ -132,17 +133,20 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="containerNumeros,containerSuperSete,tvValor" />
 
-    <LinearLayout
-        android:id="@+id/containerExtra"
+    <TextView
+        android:id="@+id/tvExtra"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textSize="14sp"
+        android:includeFontPadding="false"
         android:gravity="start"
-        android:orientation="vertical"
+        android:textColor="@color/greyText"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guidelineInformacoes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrierAposta"
+        tools:text="time do coração: america/mg"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Barrier
@@ -151,7 +155,8 @@
         android:layout_height="wrap_content"
         app:barrierAllowsGoneWidgets="false"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="barrierAposta,containerExtra" />
+        app:constraint_referenced_ids="barrierAposta,tvExtra"
+        />
 
     <TextView
         android:id="@+id/tvEspelho"
