@@ -10,9 +10,12 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Flow
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isNotEmpty
+import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import br.gov.caixa.loterias.apostas.R
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
@@ -69,8 +72,7 @@ class ApostaViewHolder(
         val isSurpresinha = aposta.surpresinha == true
 
         configurarModalidade(
-            aposta = aposta,
-            estilo = estilo
+            aposta = aposta, estilo = estilo
         )
 
         tvConcurso.text = context.getString(
@@ -94,162 +96,14 @@ class ApostaViewHolder(
         }
 
         configurarExtras(aposta)
-        configurarTiposAposta(aposta)
+        configurarIndicadores(aposta)
 
         btnExcluir.setOnClickListener {
             onExcluir(aposta)
         }
     }
 
-    private fun configurarModalidade(
-        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>,
-        estilo: EstiloModalidadeMKP
-    ) {
-        tvModalidade.apply {
-            text = obterNomeModalidade(aposta)
-
-            setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    estilo.corClara
-                )
-            )
-        }
-    }
-
-    private fun obterNomeModalidade(
-        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
-    ): String {
-        val modalidade = aposta.modalidade ?: return ""
-
-        val isEspecial = aposta.tipoConcurso?.valor
-            ?.equals(
-                TipoConcursoEnum.ESPECIAL.valor,
-                ignoreCase = true
-            ) == true
-
-        if (!isEspecial) {
-            return ModalidadeEnum.fromString(modalidade)
-        }
-
-        return ModalidadeEnum.getDescricaoEspecial(modalidade)
-            ?.takeIf { it.isNotBlank() }
-            ?.lowercase()
-            ?: ModalidadeEnum.fromString(modalidade)
-    }
-
-    private fun configurarExtras(
-        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
-    ) {
-        containerExtra.removeAllViews()
-
-        when (aposta.modalidade) {
-            ModalidadeEnum.DIA_DE_SORTE ->
-                adicionarMesDaSorte(aposta)
-
-            ModalidadeEnum.TIMEMANIA ->
-                adicionarTimeDoCoracao(aposta)
-
-            ModalidadeEnum.MAIS_MILIONARIA ->
-                adicionarTrevo(aposta)
-
-            else -> Unit
-        }
-
-        containerExtra.visibleIf(containerExtra.isNotEmpty())
-    }
-
-    private fun adicionarTrevo(
-        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
-    ) {
-        val descricao = if (aposta.surpresinha == true) {
-            List(TREVOS_SURPRESINHA) {
-                TEXTO_NUMERO_SURPRESINHA
-            }.joinToString(" - ")
-        } else {
-            aposta.trevosSelecionados
-                .orEmpty()
-                .takeIf { it.isNotEmpty() }
-                ?.joinToString(" - ") { trevo ->
-                    trevo.toString().padStart(2, '0')
-                }
-                ?: return
-        }
-
-        adicionarExtra(
-            label = itemView.context.getString(R.string.carrinho_trevos),
-            value = descricao
-        )
-    }
-
-    private fun adicionarMesDaSorte(
-        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
-    ) {
-        val mes = aposta.mesDeSorte ?: return
-
-        val descricao = mes.nome
-            ?.takeIf { it.isNotBlank() }
-            ?: mes.abreviacao?.takeIf { it.isNotBlank() }
-            ?: return
-
-        adicionarExtra(
-            label = itemView.context.getString(R.string.carrinho_mes_da_sorte),
-            value = descricao.lowercase()
-        )
-    }
-
-    private fun adicionarTimeDoCoracao(
-        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
-    ) {
-        val time = aposta.timeDoCoracao ?: return
-
-        val nome = time.descricaoCurta
-            ?.takeIf { it.isNotBlank() }
-            ?: time.nome?.takeIf { it.isNotBlank() }
-            ?: return
-
-        val descricao = time.uf
-            ?.takeIf { it.isNotBlank() }
-            ?.let { uf -> "$nome/$uf" }
-            ?: nome
-
-        adicionarExtra(
-            label = itemView.context.getString(R.string.carrinho_time_do_coracao),
-            value = descricao.lowercase()
-        )
-    }
-
-    private fun adicionarExtra(
-        label: String,
-        value: String
-    ) {
-        val textoExtra = TextView(itemView.context).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-
-            text = "$label: $value"
-            textSize = 12f
-            gravity = Gravity.START
-
-            typeface = ResourcesCompat.getFont(
-                context,
-                R.font.caixa_std_regular
-            )
-
-            setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    R.color.greyText
-                )
-            )
-        }
-
-        containerExtra.addView(textoExtra)
-    }
-
-    private fun configurarTiposAposta(
+    private fun configurarIndicadores(
         aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
     ) {
         val isEspelho = aposta.espelho == true
@@ -267,7 +121,169 @@ class ApostaViewHolder(
         }
 
         flowIndicadores.referencedIds = indicadores.toIntArray()
-        flowIndicadores.visibleIf(indicadores.isNotEmpty())
+
+        if (indicadores.isEmpty()) {
+            flowIndicadores.visibility = View.GONE
+            return
+        }
+
+        flowIndicadores.visibility = View.VISIBLE
+
+        configurarPosicaoIndicadores()
+    }
+
+    private fun configurarPosicaoIndicadores() {
+        if (containerExtra.isVisible) {
+            posicionarIndicadoresAbaixoDosExtras()
+        } else {
+            posicionarIndicadoresNaLinhaDoValor()
+        }
+    }
+
+    private fun posicionarIndicadoresNaLinhaDoValor() =
+        flowIndicadores.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            topToTop = ConstraintLayout.LayoutParams.UNSET
+            topToBottom = ConstraintLayout.LayoutParams.UNSET
+            bottomToTop = ConstraintLayout.LayoutParams.UNSET
+            bottomToBottom = R.id.tvValor
+            topMargin = 0
+            bottomMargin = 0
+        }
+
+    private fun posicionarIndicadoresAbaixoDosExtras() =
+        flowIndicadores.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            topToTop = ConstraintLayout.LayoutParams.UNSET
+            bottomToTop = ConstraintLayout.LayoutParams.UNSET
+            bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+            topToBottom = R.id.containerExtra
+            topMargin = itemView.dpToPx(14)
+            bottomMargin = 0
+        }
+
+    private fun configurarModalidade(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>, estilo: EstiloModalidadeMKP
+    ) {
+        tvModalidade.apply {
+            text = obterNomeModalidade(aposta)
+
+            setTextColor(
+                ContextCompat.getColor(
+                    context, estilo.corClara
+                )
+            )
+        }
+    }
+
+    private fun obterNomeModalidade(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ): String {
+        val modalidade = aposta.modalidade ?: return ""
+
+        val isEspecial = aposta.tipoConcurso?.valor?.equals(
+            TipoConcursoEnum.ESPECIAL.valor, ignoreCase = true
+        ) == true
+
+        if (!isEspecial) {
+            return ModalidadeEnum.fromString(modalidade)
+        }
+
+        return ModalidadeEnum.getDescricaoEspecial(modalidade)?.takeIf { it.isNotBlank() }
+            ?.lowercase() ?: ModalidadeEnum.fromString(modalidade)
+    }
+
+    private fun configurarExtras(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        containerExtra.removeAllViews()
+
+        when (aposta.modalidade) {
+            ModalidadeEnum.DIA_DE_SORTE -> adicionarMesDaSorte(aposta)
+
+            ModalidadeEnum.TIMEMANIA -> adicionarTimeDoCoracao(aposta)
+
+            ModalidadeEnum.MAIS_MILIONARIA -> adicionarTrevo(aposta)
+
+            else -> Unit
+        }
+
+        containerExtra.visibleIf(containerExtra.isNotEmpty())
+    }
+
+    private fun adicionarTrevo(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        val descricao = if (aposta.surpresinha == true) {
+            List(TREVOS_SURPRESINHA) {
+                TEXTO_NUMERO_SURPRESINHA
+            }.joinToString(" - ")
+        } else {
+            aposta.trevosSelecionados.orEmpty().takeIf { it.isNotEmpty() }
+                ?.joinToString(" - ") { trevo ->
+                    trevo.toString().padStart(2, '0')
+                } ?: return
+        }
+
+        adicionarExtra(
+            label = itemView.context.getString(R.string.carrinho_trevos), value = descricao
+        )
+    }
+
+    private fun adicionarMesDaSorte(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        val mes = aposta.mesDeSorte ?: return
+
+        val descricao =
+            mes.nome?.takeIf { it.isNotBlank() } ?: mes.abreviacao?.takeIf { it.isNotBlank() }
+            ?: return
+
+        adicionarExtra(
+            label = itemView.context.getString(R.string.carrinho_mes_da_sorte),
+            value = descricao.lowercase()
+        )
+    }
+
+    private fun adicionarTimeDoCoracao(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        val time = aposta.timeDoCoracao ?: return
+
+        val nome =
+            time.descricaoCurta?.takeIf { it.isNotBlank() } ?: time.nome?.takeIf { it.isNotBlank() }
+            ?: return
+
+        val descricao = time.uf?.takeIf { it.isNotBlank() }?.let { uf -> "$nome/$uf" } ?: nome
+
+        adicionarExtra(
+            label = itemView.context.getString(R.string.carrinho_time_do_coracao),
+            value = descricao.lowercase()
+        )
+    }
+
+    private fun adicionarExtra(
+        label: String, value: String
+    ) {
+        val textoExtra = TextView(itemView.context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            text = "$label: $value"
+            textSize = 12f
+            gravity = Gravity.START
+
+            typeface = ResourcesCompat.getFont(
+                context, R.font.caixa_std_regular
+            )
+
+            setTextColor(
+                ContextCompat.getColor(
+                    context, R.color.greyText
+                )
+            )
+        }
+
+        containerExtra.addView(textoExtra)
     }
 
     private fun configurarSuperSete(
@@ -296,33 +312,45 @@ class ApostaViewHolder(
     }
 
     private fun criarTextView(
-        context: Context, texto: String
+        context: Context,
+        texto: String
     ): TextView {
         return TextView(context).apply {
-
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
             )
 
             text = texto
+            textSize = 14f
+            letterSpacing = 0.1f
+
+            typeface = ResourcesCompat.getFont(
+                context,
+                R.font.caixa_std_regular
+            )
+
             setTextColor(
                 ContextCompat.getColor(
-                    context, R.color.greyText
+                    context,
+                    R.color.greyText
                 )
             )
-            textSize = 12f
         }
     }
 
     private fun adicionarNumeros(
-        container: LinearLayout, numeros: List<Int>, isSurpresinha: Boolean
+        container: LinearLayout,
+        numeros: List<Int>,
+        isSurpresinha: Boolean
     ) {
         container.removeAllViews()
 
         if (isSurpresinha) {
             container.addView(
                 criarTextView(
-                    context = container.context, texto = criarNumerosSurpresinha()
+                    context = container.context,
+                    texto = criarNumerosSurpresinha()
                 )
             )
             return
@@ -335,7 +363,8 @@ class ApostaViewHolder(
 
             container.addView(
                 criarTextView(
-                    context = container.context, texto = texto
+                    context = container.context,
+                    texto = texto
                 )
             )
         }

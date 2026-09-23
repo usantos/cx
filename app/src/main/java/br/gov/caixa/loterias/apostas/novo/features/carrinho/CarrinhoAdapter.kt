@@ -8,7 +8,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
 import br.gov.caixa.loterias.apostas.novo.features.carrinho.ApostaViewHolder
 import br.gov.caixa.loterias.apostas.novo.features.carrinho.BolaoViewHolder
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.ComboViewHolder
 import br.gov.caixa.loterias.apostas.novo.features.carrinho.HeaderFixoViewHolder
 import br.gov.caixa.loterias.apostas.novo.features.carrinho.HeaderViewHolder
 
@@ -17,7 +16,8 @@ class CarrinhoAdapter(
     private val onExcluirBolao: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit,
     private val onExcluirCombo: (ComboApostaDTO) -> Unit,
     private val onCotaExpirada: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit,
-    private val onMaisDetalhes: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit
+    private val onMaisDetalhes: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit,
+    private val onMaisDetalhesCombo: (ComboApostaDTO) -> Unit
 ) : ListAdapter<CarrinhoItem, RecyclerView.ViewHolder>(
     CarrinhoDiffCallback()
 ) {
@@ -66,7 +66,7 @@ class CarrinhoAdapter(
             TYPE_COMBO -> ComboViewHolder(
                 inflater.inflate(
                     R.layout.item_combo_carrinho, parent, false
-                ), onExcluirCombo
+                ), onExcluirCombo, onMaisDetalhesCombo
             )
 
             else -> error("Tipo inválido")

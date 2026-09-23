@@ -53,6 +53,7 @@ import br.gov.caixa.loterias.apostas.utils.SnackbarUtils
 import br.gov.caixa.loterias.apostas.utils.ViewUtils
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper
 import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity
+import br.gov.caixa.loterias.apostas.view.activity.DetalhesComboActivity
 import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener
 import com.android.volley.VolleyError
@@ -274,7 +275,8 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
             onExcluirBolao = ::confirmarExclusaoBolao,
             onExcluirCombo = ::confirmarExclusaoCombo,
             onMaisDetalhes = ::abrirDetalhesBolao,
-            onCotaExpirada = ::onCotaExpirada
+            onCotaExpirada = ::onCotaExpirada,
+            onMaisDetalhesCombo = ::abrirDetalhesCombo
         )
 
         rvListaCarrinho.apply {
@@ -283,6 +285,23 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
             itemAnimator = DefaultItemAnimator()
             setHasFixedSize(false)
         }
+    }
+
+    private fun abrirDetalhesCombo(combo: ComboApostaDTO) {
+        val bundle = Bundle().apply {
+            putString(
+                DetalhesComboActivity.ARG_COMBO_APOSTA_DTO,
+                Gson().toJson(combo)
+            )
+        }
+
+        val intent = IntentUtil.getIntentOrigemDestino(
+            this@CarrinhoActivity,
+            DetalhesComboActivity::class.java,
+            bundle
+        )
+
+        startActivity(intent)
     }
 
     private fun onCotaExpirada(aposta: IdentificaoDeUmaApostaDas8Modalidades<*>) {
