@@ -4,7 +4,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,74 +22,105 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.widget.TextViewCompat;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.effect.DadosPessoaisEffect;
+import br.gov.caixa.loterias.apostas.event.DadosPessoaisEvent;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorAlteracaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioIdDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
+import br.gov.caixa.loterias.apostas.state.DadosPessoaisState;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.viewModel.DadosPessoaisViewModel;
 
+/**
+ * View da tela de dados pessoais.
+
+ * Os listeners apenas lancam eventos pelo lambda onEvent. A tela observa
+ * um unico LiveData (uiState) e, ao consumir um comando, devolve o evento
+ * ...Consumido para a ViewModel limpar o slot.
+ */
 public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
-    private TextInputLayout editTextLimiteLayout, editTextCEPLayout;
-    private EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent, editTextLimiteContent;
-    private MaterialTextView limiteTitulo, txtValidaCep, validaLimiteMinContent, validaLimiteMaxContent, labelCep;
+
+    private static final Locale LOCALE_BR = new Locale("pt", "BR");
+
+    private TextInputLayout editTextLimiteLayout;
+    private TextInputLayout editTextCEPLayout;
+    private EditText editTextNomeContent;
+    private EditText editTextUFContent;
+    private EditText editTextMunicipioContent;
+    private EditText editTextEmailContent;
+    private EditText editTextLimiteContent;
+    private MaterialTextView limiteTitulo;
+    private MaterialTextView txtValidaCep;
+    private MaterialTextView validaLimiteMinContent;
+    private MaterialTextView validaLimiteMaxContent;
+    private MaterialTextView labelCep;
     private MaskedEditText editTextCpfContent;
     private br.gov.caixa.loterias.apostas.view.components.MaskedEditText editTextCepContent;
     private SegmentedButtonGroup segmentedButtonSexo;
-    private Button updateDadosPessoaisButton, naoSeiCepButton, updateDadosPessoaisLimiteButton;
-
-    private List<String> listUFString, listMunicipios, listBairros;
-    private List<MunicipioDTO> municipioDTOList;
-    protected List<UnidadeFederacaoDTO> listUf;
-    protected String ufSelect;
-    protected MunicipioIdDTO municipioIdDTOSelect;
-    private ApostadorDTO apostadorDTO;
+    private Button updateDadosPessoaisButton;
+    private Button naoSeiCepButton;
+    private Button updateDadosPessoaisLimiteButton;
     private CheckBox notificacaoSwitch;
     private LinearLayout containerNotificacoes;
-    private Boolean telaRenderizada = false;
-    private ImageButton customButton;
+
+    private DadosPessoaisViewModel viewModel;
+
+    /** Lambda unico de saida da View para a ViewModel. */
+    private DadosPessoaisEvent.Dispatcher onEvent;
+
+    private boolean bloqueiaListeners;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_dados_pessoais );
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dados_pessoais);
+
+        viewModel = new ViewModelProvider(this).get(DadosPessoaisViewModel.class);
+        onEvent = event -> viewModel.onEvent(event);
+
         setaViews();
+        configurarInsets();
+        setaMetodos();
+        observarViewModel();
+
+        onEvent.dispatch(new DadosPessoaisEvent.TelaIniciada());
+    }
+
+    @Override
+    protected boolean baseConsumeInsets() {
+        return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onEvent.dispatch(new DadosPessoaisEvent.TelaRetomada());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onEvent.dispatch(new DadosPessoaisEvent.VoltarClicado());
+        return true;
+    }
+
+    private void configurarInsets() {
         View footer = findViewById(R.id.footerDadosPessoais);
         View scroll = findViewById(R.id.scrollViewDadosPessoais);
         ViewCompat.setOnApplyWindowInsetsListener(scroll, (v, insets) -> {
@@ -101,493 +131,411 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
             v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), needed);
             return WindowInsetsCompat.CONSUMED;
         });
-        setaMetodos();
     }
 
-    @Override
-    protected boolean baseConsumeInsets() {
-        return false;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 1) {
-            callWebservice();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        callWebservice();
-    }
-
-    private void setaViews(){
-        editTextCpfContent = findViewById( R.id.editTextCpfContent );
-        editTextNomeContent = findViewById( R.id.editTextNomeContent );
-        editTextCepContent = findViewById( R.id.editTextCepContent );
-        editTextCEPLayout = findViewById( R.id.editTextCEP );
-        editTextUFContent = findViewById( R.id.editTextUFContent );
-        editTextMunicipioContent = findViewById( R.id.editTextMunicipioContent );
-        editTextEmailContent = findViewById( R.id.editTextEmailContent );
-        editTextLimiteContent = findViewById( R.id.editTextLimiteContent );
-        editTextLimiteLayout = findViewById( R.id.editTextLimite );
-        limiteTitulo = findViewById( R.id.limite_titulo );
-        labelCep = findViewById( R.id.labelCep );
-        txtValidaCep = findViewById( R.id.txt_valida_cep );
-        validaLimiteMinContent = findViewById( R.id.txt_valida_limite_min );
-        validaLimiteMaxContent = findViewById( R.id.txt_valida_limite_max );
-        segmentedButtonSexo = findViewById( R.id.segmentedButtonSexo );
-        updateDadosPessoaisButton = findViewById( R.id.updateDadosPesoaisButton );
+    private void setaViews() {
+        editTextCpfContent = findViewById(R.id.editTextCpfContent);
+        editTextNomeContent = findViewById(R.id.editTextNomeContent);
+        editTextCepContent = findViewById(R.id.editTextCepContent);
+        editTextCEPLayout = findViewById(R.id.editTextCEP);
+        editTextUFContent = findViewById(R.id.editTextUFContent);
+        editTextMunicipioContent = findViewById(R.id.editTextMunicipioContent);
+        editTextEmailContent = findViewById(R.id.editTextEmailContent);
+        editTextLimiteContent = findViewById(R.id.editTextLimiteContent);
+        editTextLimiteLayout = findViewById(R.id.editTextLimite);
+        limiteTitulo = findViewById(R.id.limite_titulo);
+        labelCep = findViewById(R.id.labelCep);
+        txtValidaCep = findViewById(R.id.txt_valida_cep);
+        validaLimiteMinContent = findViewById(R.id.txt_valida_limite_min);
+        validaLimiteMaxContent = findViewById(R.id.txt_valida_limite_max);
+        segmentedButtonSexo = findViewById(R.id.segmentedButtonSexo);
+        updateDadosPessoaisButton = findViewById(R.id.updateDadosPesoaisButton);
         naoSeiCepButton = findViewById(R.id.naoSeiCep);
-        updateDadosPessoaisLimiteButton = findViewById( R.id.updateDadosPessoaisLimiteButton );
+        updateDadosPessoaisLimiteButton = findViewById(R.id.updateDadosPessoaisLimiteButton);
         notificacaoSwitch = findViewById(R.id.notificacao_switch);
         containerNotificacoes = findViewById(R.id.containerNotificacoes);
 
         configurarToolbar();
-
-        atualizarDescricaoNotificacoes(containerNotificacoes, notificacaoSwitch.isChecked());
+        atualizarDescricaoNotificacoes(notificacaoSwitch.isChecked());
     }
 
-    private void configurarToolbar(){
+    private void configurarToolbar() {
         TextView textTitulo = findViewById(R.id.textCustom);
         textTitulo.setHint(getString(R.string.titulo));
         textTitulo.setText(getString(R.string.title_dados_pessoais));
-        customButton = findViewById(R.id.customButton);
+
+        ImageButton customButton = findViewById(R.id.customButton);
         customButton.setContentDescription(getString(R.string.voltar));
-        customButton.setOnClickListener(v -> onBackPressed());
+        customButton.setOnClickListener(v ->
+                onEvent.dispatch(new DadosPessoaisEvent.VoltarClicado())
+        );
         customButton.setFocusable(true);
         customButton.setFocusableInTouchMode(true);
         customButton.requestFocus();
     }
 
+    // ------------------------------------------------------------------
+    // Listeners: apenas lancam eventos
+    // ------------------------------------------------------------------
+
     private void setaMetodos() {
         editTextMunicipioContent.setClickable(false);
         editTextUFContent.setClickable(false);
-        updateDadosPessoaisButton.setOnClickListener(view -> {
-            if (validarCamposObrigatorios()){
-                ApostadorAlteracaoDTO apostadorAlteracaoDTO = new ApostadorAlteracaoDTO();
-                apostadorAlteracaoDTO.setCep( editTextCepContent.getRawText() );
-                ApostadorAlteracaoDTO.SexoEnum sexoEnum;
-                if (segmentedButtonSexo.getPosition() == 0){
-                    sexoEnum = ApostadorAlteracaoDTO.SexoEnum.M;
-                }else {
-                    sexoEnum = ApostadorAlteracaoDTO.SexoEnum.F;
-                }
-                apostadorAlteracaoDTO.setSexo(sexoEnum);
-                apostadorAlteracaoDTO.setAlterandoLoterica(false);
-                apostadorAlteracaoDTO.setMunicipioId( municipioIdDTOSelect );
-                apostadorAlteracaoDTO.setAceitaReceberNoticias(notificacaoSwitch.isChecked());
 
-                apostadorAlteracaoDTO.setLimiteDiario(getLimiteDefinido());
-                updateDadosCadastrais( apostadorAlteracaoDTO );
-                SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-            }
-        }
+        updateDadosPessoaisButton.setOnClickListener(view ->
+                onEvent.dispatch(new DadosPessoaisEvent.AtualizarClicado())
+        );
+
+        updateDadosPessoaisLimiteButton.setOnClickListener(view ->
+                onEvent.dispatch(new DadosPessoaisEvent.RecalcularLimiteClicado())
+        );
+
+        naoSeiCepButton.setOnClickListener(view ->
+                onEvent.dispatch(new DadosPessoaisEvent.NaoSeiCepClicado())
         );
 
         segmentedButtonSexo.setOnPositionChangedListener(position -> {
-
-            SegmentedButton masculino = findViewById(R.id.btMasculino);
-            SegmentedButton feminino = findViewById(R.id.btFeminino);
-
-            ApostadorAlteracaoDTO apostadorAlteracaoDTO = new ApostadorAlteracaoDTO();
-            ApostadorAlteracaoDTO.SexoEnum sexoEnum;
-
-            if (position == 0) {
-                sexoEnum = ApostadorAlteracaoDTO.SexoEnum.M;
-                masculino.setDrawable(R.drawable.ic_check_circle);
-                feminino.setDrawable(R.drawable.ic_circle_outline);
-            } else {
-                sexoEnum = ApostadorAlteracaoDTO.SexoEnum.F;
-                masculino.setDrawable(R.drawable.ic_circle_outline);
-                feminino.setDrawable(R.drawable.ic_check_circle);
+            atualizarIconesSexo(position);
+            if (!bloqueiaListeners) {
+                onEvent.dispatch(new DadosPessoaisEvent.SexoSelecionado(position));
             }
-            apostadorAlteracaoDTO.setSexo(sexoEnum);
-
         });
 
         notificacaoSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (!telaRenderizada) return;
-            atualizarDescricaoNotificacoes(containerNotificacoes,isChecked);
-            if (isChecked) {
-                DialogUtils.dialogEntendi(
-                        DadosPessoaisActivity.this,
-                        "Ao ativar esta opção, você receberá notificações importantes de loterias se estiverem habilitadas no seu aparelho. A funcionalidade pode ser ativada ou desativada a qualquer momento. Para salvar, clique em atualizar."
-                );
-            } else {
-                DialogUtils.dialogEntendi(
-                        DadosPessoaisActivity.this,
-                        "Ao desativar esta opção, você não receberá mais notificações de loterias. Para salvar, clique em atualizar."
-                );
+            atualizarDescricaoNotificacoes(isChecked);
+            if (!bloqueiaListeners) {
+                onEvent.dispatch(new DadosPessoaisEvent.NotificacaoAlterada(isChecked));
             }
         });
 
-        containerNotificacoes.setOnClickListener(view -> {notificacaoSwitch.toggle();});
+        containerNotificacoes.setOnClickListener(view -> notificacaoSwitch.toggle());
 
-        naoSeiCepButton.setOnClickListener(view ->{
-            DialogUtils.dialogTituloConfirmar(DadosPessoaisActivity.this,
-                    getString(R.string.nao_sei_cep),
-                    getString(R.string.voce_sera_redirecionado_para_o_site_dos_correios),
-
-                    new OnDialogBotaoListener() {
-                        @Override
-                        public void onButtonClick(DialogInterface dialog, int which) {
-                            Utils.abreUrl(DadosPessoaisActivity.this, R.string.Url_Correios);
-                        }
-                    }
-            );
-        });
-
-        updateDadosPessoaisLimiteButton.setOnClickListener(view -> {
-            AlertDialogUtils.show(DadosPessoaisActivity.this);
-            DadosUsuarioBO.getInstance().recalcularLimite( new RequestListener<ApostadorDTOResponse>() {
-                @Override
-                public void onResponse(ApostadorDTOResponse response) {
-                    apostadorDTO = response.getPayload();
-
-                    String valor = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado());
-                    updateDadosPessoaisLimiteButton.setText(getString(R.string.dados_limite_compra, valor));
-
-                    AppCenterManager.registraEvento("ENTROU_RECALCULAR_LIMITE_AUTORIZADO");
-                    AlertDialogUtils.dismiss();
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    AlertDialogUtils.dismiss();
-                    RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
-                }
-            });
-        });
+        editTextCepContent.addTextChangedListener(criarTextWatcherCep());
+        editTextLimiteContent.addTextChangedListener(criarTextWatcherLimite());
     }
 
-
-    private void atualizarDescricaoNotificacoes(View rowNotificacoes, boolean isChecked) {
-        String descricao = isChecked ? "Ativado: Interruptor" : "Desativado: Interruptor";
-        String textoFinal = getString(R.string.label_notificacoes) + ": " + descricao;
-
-        rowNotificacoes.setContentDescription(textoFinal);
-
-        rowNotificacoes.post(() -> {
-            AccessibilityManager accessibilityManager =
-                    (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
-
-            if (accessibilityManager != null && accessibilityManager.isEnabled()) {
-                rowNotificacoes.announceForAccessibility(textoFinal);
-            }
-        });
-    }
-
-    private void atualizaLayout() {
-        editTextCpfContent.setMaskedText( apostadorDTO.getCpf() );
-        editTextNomeContent.setText( apostadorDTO.getNome() );
-        editTextCepContent.setText( apostadorDTO.getCep() );
-        editTextEmailContent.setText( apostadorDTO.getEmail() );
-        editTextLimiteContent.setText( NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiario()) );
-        notificacaoSwitch.setChecked(apostadorDTO.getAceitaReceberNoticias());
-        String valorLimiteMin = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteMinimoDiario());
-        String valorLimiteMax = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado());
-        editTextLimiteLayout.setHelperText(valorLimiteMin + " até " + valorLimiteMax);
-        validaLimiteMinContent.setText(getString(R.string.restringe_limite_ao_minimo, valorLimiteMin));
-        validaLimiteMaxContent.setText(getString(R.string.restringe_limite_ao_maximo, valorLimiteMax));
-
-        updateDadosPessoaisLimiteButton.setText(getString(R.string.dados_limite_compra, valorLimiteMax));
-
-        if (apostadorDTO.getSexo().equals( ApostadorDTO.SexoEnum.F )){
-            segmentedButtonSexo.setPosition( 1 );
-        }else{
-            segmentedButtonSexo.setPosition( 0 );
-        }
-        editTextCepContent.addTextChangedListener(getTextWatcher(editTextCepContent));
-        editTextLimiteContent.addTextChangedListener(getTextWatcher(editTextLimiteContent));
-
-        telaRenderizada = true;
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
-    }
-
-    private void callWebservice() {
-        AlertDialogUtils.show(DadosPessoaisActivity.this);
-        DadosUsuarioBO.getInstance().getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
-            @Override
-            public void onResponse(ApostadorDTOResponse response) {
-                if(response != null){
-                    apostadorDTO = response.getPayload();
-                    municipioIdDTOSelect = apostadorDTO.getMunicipioId();
-                    getUfeMunicipio();
-
-                    if (response.getRedirect() != null){
-                        RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
-                    }
-                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_editar_cadastro));
-                    AlertDialogUtils.dismiss();
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
-            }
-        } );
-    }
-
-    private BigDecimal getLimiteDefinido() {
-        String clean = editTextLimiteContent.getText().toString().replaceAll("[\\sR$,.]", "");
-        return new BigDecimal(clean).movePointLeft(2);
-    }
-
-    private TextWatcher getTextWatcher(final EditText editText) {
-        return new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            private String current = "";
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (editText == editTextLimiteContent && !charSequence.toString().equals(current)) {
-                    editText.removeTextChangedListener(this);
-                    String formatted = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format((getLimiteDefinido()));
-                    current = formatted;
-                    editText.setText(formatted);
-                    editText.setSelection(formatted.length());
-                    editText.addTextChangedListener(this);
-                }
-            }
+    private TextWatcher criarTextWatcherCep() {
+        return new SimpleTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editText == editTextCepContent){
-                    String cep = editable.toString().replace( getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia) ).trim();
-                    if (cep.length() == 8) {
-                        buscarBairroPorCep( cep );
-                    }
+                if (bloqueiaListeners) {
+                    return;
                 }
-                else if(editText == editTextLimiteContent){
-                    BigDecimal limite = getLimiteDefinido();
-                    boolean menorQueMin = limite.compareTo(apostadorDTO.getLimiteMinimoDiario()) < 0;
-                    boolean maiorQueMax = limite.compareTo(apostadorDTO.getLimiteDiarioAutorizado()) > 0;
-                    validaLimiteMinContent.setVisibility(menorQueMin ? VISIBLE : GONE);
-                    validaLimiteMaxContent.setVisibility(maiorQueMax ? VISIBLE : GONE);
-                    limiteTitulo.setTextColor(getColor(R.color.vermelho_erro));
-                    editTextLimiteLayout.setBoxStrokeColor(getColor(R.color.vermelho_erro));
-                    editTextLimiteLayout.setHelperTextEnabled(false);
-                    boolean valido = !menorQueMin && !maiorQueMax;
-
-                    if(valido){
-                        editTextLimiteLayout.setBoxStrokeColor(getColor(R.color.cinza_item_desabilitado));
-                        limiteTitulo.setTextColor(getColor(R.color.cinza));
-                        editTextLimiteLayout.setHelperTextEnabled(true);
-                        String valorLimiteMin = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteMinimoDiario());
-                        String valorLimiteMax = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado());
-                        editTextLimiteLayout.setHelperText(valorLimiteMin + " até " + valorLimiteMax);
-                    }
-                    //editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, valido ? R.drawable.icon_input_ok : 0, 0);
-                    /*View target = maiorQueMax ? validaLimiteMaxContent : (menorQueMin ? validaLimiteMinContent : null);
-                    if (target != null) {
-                        target.post(() -> {
-                            Rect r = new Rect(0, 0, target.getWidth(), target.getHeight());
-                            target.requestRectangleOnScreen(r, true);
-                        });
-                    }*/
-                }
+                onEvent.dispatch(new DadosPessoaisEvent.CepAlterado(editable.toString()));
             }
         };
     }
 
-    private void buscarBairroPorCep(String cep) {
-        AlertDialogUtils.show(DadosPessoaisActivity.this);
-        DadosCorporativosSilceBO.getInstance().bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
+    private TextWatcher criarTextWatcherLimite() {
+        return new SimpleTextWatcher() {
             @Override
-            public void onResponse(BairroDTOResponse response) {
-                AlertDialogUtils.dismiss();
-                if (response.getPayload() != null && !response.getPayload().isEmpty()) {
-                    BairroDTO bairroDTO = response.getPayload().get(0);
-                    editTextUFContent.setText(bairroDTO.getMunicipio().getUf().getSigla());
-                    ufSelect = bairroDTO.getMunicipio().getUf().getSigla();
-                    editTextMunicipioContent.setText(bairroDTO.getMunicipio().getNome());
-                    municipioIdDTOSelect = bairroDTO.getMunicipio().getId();
-                    editTextCEPLayout.setBoxStrokeColor(getColor(R.color.cinza_item_desabilitado));
-                    editTextCEPLayout.setHelperTextEnabled(false);
-                    labelCep.setTextColor(getColor(R.color.cinza));
-                    txtValidaCep.setVisibility(GONE);
-                    addLeftImg(findViewById(R.id.editTextUFContent));
-                    addLeftImg(findViewById(R.id.editTextMunicipioContent));
-                } else {
-                    cepInvalido(getString(R.string.cep_invalido));
+            public void afterTextChanged(Editable editable) {
+                if (bloqueiaListeners) {
+                    return;
                 }
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
-                }
+                onEvent.dispatch(new DadosPessoaisEvent.LimiteAlterado(editable.toString()));
             }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if(MensagensNetwork.getError(error) != null && !Objects.requireNonNull(MensagensNetwork.getError(error)).getCodigo().isEmpty()){
-                    String code = Objects.requireNonNull(MensagensNetwork.getError(error)).getCodigo();
-                    if(Objects.equals(code, "002021")){
-                        cepInvalido(getString(R.string.cep_invalido));
-                    }else{
-                        cepInvalido(Objects.requireNonNull(MensagensNetwork.getError(error)).getMensagem());
-                    }
-                }
-            }
-        });
+        };
     }
 
-    private void cepInvalido(String msg) {
-        AlertDialogUtils.dismiss();
-        labelCep.setTextColor(getColor(R.color.vermelho_erro));
-        editTextCEPLayout.setBoxStrokeColor(getColor(R.color.vermelho_erro));
-        txtValidaCep.setVisibility(VISIBLE);
-        txtValidaCep.setText(msg);
-        editTextUFContent.setText("");
-        editTextMunicipioContent.setText("");
-        editTextUFContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        editTextMunicipioContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+    // ------------------------------------------------------------------
+    // Observer unico
+    // ------------------------------------------------------------------
+
+    private void observarViewModel() {
+        viewModel.getUiState().observe(this, this::renderizar);
     }
 
-    private void habilitaBotao(boolean isHabilita){
-        if(isHabilita){
-            updateDadosPessoaisButton.setEnabled(true);
-            updateDadosPessoaisButton.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+    private void renderizar(DadosPessoaisState state) {
+        if (state == null) {
+            return;
+        }
+        exibirCarregamento(state.isCarregando());
 
-        }else{
-            updateDadosPessoaisButton.setEnabled(false);
-            updateDadosPessoaisButton.setBackgroundColor(getResources().getColor(R.color.cinza_desativado));
+        if (state.getApostador() != null) {
+            renderizarApostador(state);
+        }
+        renderizarLocalizacao(state);
+        renderizarLimite(state);
+
+        tratarComandoRede(state.getComandoRede());
+        tratarComandoDialog(state.getComandoDialog());
+        tratarComandoAnalytics(state.getComandoAnalytics());
+        tratarComandoNavegacao(state.getComandoNavegacao());
+    }
+
+    private void renderizarApostador(DadosPessoaisState state) {
+        ApostadorDTO apostador = state.getApostador();
+        bloqueiaListeners = true;
+        try {
+            editTextCpfContent.setMaskedText(apostador.getCpf());
+            editTextNomeContent.setText(apostador.getNome());
+            editTextEmailContent.setText(apostador.getEmail());
+            setTextSeDiferente(editTextCepContent, apostador.getCep());
+            notificacaoSwitch.setChecked(state.isAceitaNoticias());
+            segmentedButtonSexo.setPosition(state.getPosicaoSexo());
+            atualizarIconesSexo(state.getPosicaoSexo());
+        } finally {
+            bloqueiaListeners = false;
         }
     }
 
-    private void updateDadosCadastrais(ApostadorAlteracaoDTO apostadorAlteracaoDTO){
-        AlertDialogUtils.show(DadosPessoaisActivity.this);
-        DadosUsuarioBO.getInstance().putDadosUsuario(apostadorAlteracaoDTO, new RequestListener<CadastrarApostadorDTOResponse>() {
-            @Override
-            public void onResponse(CadastrarApostadorDTOResponse response) {
-                AppCenterManager.registraEvento(getResources().getString(R.string.evento_edicao_cadastro_sucesso));
+    private void renderizarLocalizacao(DadosPessoaisState state) {
+        editTextUFContent.setText(state.getUf() == null ? "" : state.getUf());
+        editTextMunicipioContent.setText(state.getMunicipio() == null ? "" : state.getMunicipio());
 
-                AlertDialogUtils.dismiss();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
-                }else {
-                    SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(getLimiteDefinido());
-                    startActivity(new Intent(DadosPessoaisActivity.this, DadosPessoaisConfirmacaoActivity.class));
-                    finish();
-                }
-            }
+        if (state.getErroCep() != null) {
+            labelCep.setTextColor(getColor(R.color.vermelho_erro));
+            editTextCEPLayout.setBoxStrokeColor(getColor(R.color.vermelho_erro));
+            txtValidaCep.setVisibility(VISIBLE);
+            txtValidaCep.setText(getString(R.string.cep_invalido));
+            editTextUFContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            editTextMunicipioContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            return;
+        }
+        labelCep.setTextColor(getColor(R.color.cinza));
+        editTextCEPLayout.setBoxStrokeColor(getColor(R.color.cinza_item_desabilitado));
+        editTextCEPLayout.setHelperTextEnabled(false);
+        txtValidaCep.setVisibility(GONE);
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
-            }
-        });
+        if (state.isCepValido()) {
+            addLeftImg(editTextUFContent);
+            addLeftImg(editTextMunicipioContent);
+        }
     }
 
-    private boolean validarCamposObrigatorios() {
-        String campos = "";
+    private void renderizarLimite(DadosPessoaisState state) {
+        ApostadorDTO apostador = state.getApostador();
+        if (apostador == null) {
+            return;
+        }
+        String valorLimiteMin = formatarMoeda(apostador.getLimiteMinimoDiario());
+        String valorLimiteMax = formatarMoeda(apostador.getLimiteDiarioAutorizado());
 
-        if (editTextCepContent.getText().toString().replace("-", "").trim().length() < 8) {
-            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.CEP);
+        validaLimiteMinContent.setText(getString(R.string.restringe_limite_ao_minimo, valorLimiteMin));
+        validaLimiteMaxContent.setText(getString(R.string.restringe_limite_ao_maximo, valorLimiteMax));
+        updateDadosPessoaisLimiteButton.setText(getString(R.string.dados_limite_compra, valorLimiteMax));
+
+        validaLimiteMinContent.setVisibility(state.isLimiteMenorQueMinimo() ? VISIBLE : GONE);
+        validaLimiteMaxContent.setVisibility(state.isLimiteMaiorQueMaximo() ? VISIBLE : GONE);
+
+        bloqueiaListeners = true;
+        try {
+            setTextSeDiferente(editTextLimiteContent, formatarMoeda(state.getLimiteDigitado()));
+        } finally {
+            bloqueiaListeners = false;
         }
-        if (StringUtils.isEmpty(editTextUFContent.getText().toString())) {
-            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.uf);
-        }
-        if (StringUtils.isEmpty(editTextMunicipioContent.getText().toString())) {
-            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.municipio);
-        }
-        if (StringUtils.isEmpty(campos)) {
-            return true;
+
+        if (state.isLimiteValido()) {
+            limiteTitulo.setTextColor(getColor(R.color.cinza));
+            editTextLimiteLayout.setBoxStrokeColor(getColor(R.color.cinza_item_desabilitado));
+            editTextLimiteLayout.setHelperTextEnabled(true);
+            editTextLimiteLayout.setHelperText(valorLimiteMin + " até " + valorLimiteMax);
         } else {
-            DialogUtils.dialogEntendi(DadosPessoaisActivity.this,
-                    this.getResources().getString( R.string.MA002 ) + getResources().getString(R.string.espaco_em_branco) + campos
-                    );
-            return false;
+            limiteTitulo.setTextColor(getColor(R.color.vermelho_erro));
+            editTextLimiteLayout.setBoxStrokeColor(getColor(R.color.vermelho_erro));
+            editTextLimiteLayout.setHelperTextEnabled(false);
         }
+    }
+
+    // ------------------------------------------------------------------
+    // Consumo dos comandos
+    // ------------------------------------------------------------------
+
+    private void tratarComandoRede(DadosPessoaisEffect comando) {
+        if (comando == null) {
+            return;
+        }
+        if (comando instanceof DadosPessoaisEffect.ErroDeRede erroDeRede) {
+            AlertDialogUtils.dismiss();
+            RedirectNetwork.checkRedirect(erroDeRede.getError(), this);
+        } else if (comando instanceof DadosPessoaisEffect.Redirecionar redirecionar) {
+            RedirectNetwork.checkRedirectSucesso(redirecionar.getRedirect(), this);
+        }
+        onEvent.dispatch(new DadosPessoaisEvent.ComandoRedeConsumido());
+    }
+
+    private void tratarComandoDialog(DadosPessoaisEffect comando) {
+        if (comando == null) {
+            return;
+        }
+        if (comando instanceof DadosPessoaisEffect.CamposObrigatoriosPendentes camposPendentes) {
+            mostrarCamposPendentes(camposPendentes);
+        } else if (comando instanceof DadosPessoaisEffect.MostrarAvisoNotificacao avisoNotificacao) {
+            mostrarAvisoNotificacao(avisoNotificacao.isAtivado());
+        } else if (comando instanceof DadosPessoaisEffect.ConfirmarSaidaParaCorreios) {
+            confirmarSaidaParaCorreios();
+        }
+        onEvent.dispatch(new DadosPessoaisEvent.ComandoDialogConsumido());
+    }
+
+    private void tratarComandoAnalytics(DadosPessoaisEffect comando) {
+        if (!(comando instanceof DadosPessoaisEffect.RegistrarEvento registrarEvento)) {
+            return;
+        }
+        registrarEvento(registrarEvento);
+        onEvent.dispatch(new DadosPessoaisEvent.ComandoAnalyticsConsumido());
+    }
+
+    private void tratarComandoNavegacao(DadosPessoaisEffect comando) {
+        if (comando == null) {
+            return;
+        }
+        onEvent.dispatch(new DadosPessoaisEvent.ComandoNavegacaoConsumido());
+
+        if (comando instanceof DadosPessoaisEffect.CadastroAtualizado) {
+            abrirConfirmacao();
+        } else if (comando instanceof DadosPessoaisEffect.AbrirSiteCorreios) {
+            Utils.abreUrl(this, R.string.Url_Correios);
+        } else if (comando instanceof DadosPessoaisEffect.FecharTela) {
+            finish();
+        }
+    }
+
+    private void abrirConfirmacao() {
+        DadosPessoaisState state = viewModel.getUiState().getValue();
+        if (state != null && state.getLimiteDigitado() != null) {
+            SessaoUsuario.getInstance()
+                    .getParametrosSimulacao()
+                    .setValorLimiteDiario(state.getLimiteDigitado());
+        }
+        startActivity(new Intent(this, DadosPessoaisConfirmacaoActivity.class));
+        finish();
+    }
+
+    private void mostrarCamposPendentes(DadosPessoaisEffect.CamposObrigatoriosPendentes comando) {
+        StringBuilder campos = new StringBuilder();
+        for (DadosPessoaisEffect.CampoObrigatorio campo : comando.getCampos()) {
+            campos.append(getString(R.string.barra_n)).append(nomeDoCampo(campo));
+        }
+        DialogUtils.dialogEntendi(
+                this,
+                getString(R.string.MA002) + getString(R.string.espaco_em_branco) + campos
+        );
+    }
+
+    private String nomeDoCampo(DadosPessoaisEffect.CampoObrigatorio campo) {
+        return switch (campo) {
+            case UF -> getString(R.string.uf);
+            case MUNICIPIO -> getString(R.string.municipio);
+            default -> getString(R.string.CEP);
+        };
+    }
+
+    private void mostrarAvisoNotificacao(boolean ativado) {
+        String mensagem = ativado
+                ? "Ao ativar esta opção, você receberá notificações importantes de loterias se"
+                + " estiverem habilitadas no seu aparelho. A funcionalidade pode ser ativada ou"
+                + " desativada a qualquer momento. Para salvar, clique em atualizar."
+                : "Ao desativar esta opção, você não receberá mais notificações de loterias."
+                + " Para salvar, clique em atualizar.";
+        DialogUtils.dialogEntendi(this, mensagem);
+    }
+
+    private void confirmarSaidaParaCorreios() {
+        DialogUtils.dialogTituloConfirmar(
+                this,
+                getString(R.string.nao_sei_cep),
+                getString(R.string.voce_sera_redirecionado_para_o_site_dos_correios),
+                (dialog, which) -> onEvent.dispatch(
+                        new DadosPessoaisEvent.RedirecionamentoCorreiosConfirmado()
+                )
+        );
+    }
+
+    private void registrarEvento(DadosPessoaisEffect.RegistrarEvento comando) {
+        switch (comando.getTipo()) {
+            case ENTROU_EDITAR_CADASTRO:
+                AppCenterManager.registraEvento(getString(R.string.evento_entrou_editar_cadastro));
+                break;
+            case EDICAO_CADASTRO_SUCESSO:
+                AppCenterManager.registraEvento(getString(R.string.evento_edicao_cadastro_sucesso));
+                break;
+            case ENTROU_RECALCULAR_LIMITE:
+            default:
+                AppCenterManager.registraEvento("ENTROU_RECALCULAR_LIMITE_AUTORIZADO");
+                break;
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Helpers de View
+    // ------------------------------------------------------------------
+
+    private void exibirCarregamento(boolean carregando) {
+        if (carregando) {
+            AlertDialogUtils.show(this);
+        } else {
+            AlertDialogUtils.dismiss();
+        }
+    }
+
+    private void atualizarIconesSexo(int position) {
+        SegmentedButton masculino = findViewById(R.id.btMasculino);
+        SegmentedButton feminino = findViewById(R.id.btFeminino);
+        boolean isMasculino = position == 0;
+        masculino.setDrawable(isMasculino ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
+        feminino.setDrawable(isMasculino ? R.drawable.ic_circle_outline : R.drawable.ic_check_circle);
+    }
+
+    private void atualizarDescricaoNotificacoes(boolean isChecked) {
+        String descricao = isChecked ? "Ativado: Interruptor" : "Desativado: Interruptor";
+        String textoFinal = getString(R.string.label_notificacoes) + ": " + descricao;
+        containerNotificacoes.setContentDescription(textoFinal);
+        containerNotificacoes.post(() -> {
+            AccessibilityManager accessibilityManager =
+                    (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
+            if (accessibilityManager != null && accessibilityManager.isEnabled()) {
+                containerNotificacoes.announceForAccessibility(textoFinal);
+            }
+        });
+    }
+
+    private void setTextSeDiferente(EditText editText, String texto) {
+        String valorAtual = editText.getText() == null ? "" : editText.getText().toString();
+        String novoValor = texto == null ? "" : texto;
+        if (valorAtual.equals(novoValor)) {
+            return;
+        }
+        editText.setText(novoValor);
+        if (editText.hasFocus()) {
+            editText.setSelection(novoValor.length());
+        }
+    }
+
+    private String formatarMoeda(BigDecimal valor) {
+        BigDecimal seguro = valor == null ? BigDecimal.ZERO : valor;
+        return NumberFormat.getCurrencyInstance(LOCALE_BR).format(seguro);
     }
 
     protected void addLeftImg(EditText textField) {
         if (!textField.getText().toString().trim().isEmpty()) {
-
-            textField.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_check, 0, 0, 0);
-
+            textField.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check, 0, 0, 0);
             TextViewCompat.setCompoundDrawableTintList(
                     textField,
                     ContextCompat.getColorStateList(
-                            textField.getContext(),
-                            R.color.cinza_item_desabilitado
+                            textField.getContext(), R.color.cinza_item_desabilitado
                     )
             );
-
             textField.setHintTextColor(
-                    ContextCompat.getColor(
-                            textField.getContext(),
-                            R.color.cinza_item_desabilitado
-                    )
+                    ContextCompat.getColor(textField.getContext(), R.color.cinza_item_desabilitado)
             );
-
         } else {
             textField.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-
-            TextViewCompat.setCompoundDrawableTintList(
-                    textField,
-                    null
-            );
+            TextViewCompat.setCompoundDrawableTintList(textField, null);
         }
     }
 
-    private void getUfeMunicipio(){
-        DadosCorporativosSilceBO.getInstance().ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
-            @Override
-            public void onResponse(UnidadeFederacaoDTOResponse response) {
-                listUf = response.getPayload();
-                listUFString = new ArrayList<>();
-                for (UnidadeFederacaoDTO item : listUf){
-                    if (item.getId().equals(apostadorDTO.getMunicipioId().getIdUF())){
-                        editTextUFContent.setText( item.getSigla() );
-                    }
-                    listUFString.add(item.getSigla());
-                }
-                DadosCorporativosSilceBO.getInstance().municipios(apostadorDTO.getMunicipioId().getIdUF().toString(), new RequestListener<MunicipioDTOResponse>() {
-                    @Override
-                    public void onResponse(MunicipioDTOResponse response) {
-                        AlertDialogUtils.dismiss();
-                        municipioDTOList = response.getPayload();
+    /** TextWatcher enxuto para evitar boilerplate nos campos. */
+    private abstract static class SimpleTextWatcher implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            // sem uso
+        }
 
-                        listMunicipios = new ArrayList<>();
-                        for (MunicipioDTO item : municipioDTOList){
-                            if (item.getId().getNumero().equals(apostadorDTO.getMunicipioId().getNumero())){
-                                editTextMunicipioContent.setText( item.getNome() );
-                            }
-                            listMunicipios.add(item.getNome());
-                        }
-                        atualizaLayout();
-
-                        if (response.getRedirect() != null){
-                            RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
-                        }
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        AlertDialogUtils.dismiss();
-                        RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
-                    }
-                });
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
-            }
-        });
-
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            // sem uso
+        }
     }
-
 }
