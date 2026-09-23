@@ -31,7 +31,7 @@ object CarrinhoMapper {
                 .orEmpty()
                 .takeIf { it.isNotEmpty() }
                 ?.let { combos ->
-                    add(CarrinhoItem.Header("Combos"))
+                    add(CarrinhoItem.Header("Combo de Apostas"))
 
                     combos.forEach {
                         add(CarrinhoItem.Combo(it))
