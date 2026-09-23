@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.gov.caixa.loterias.apostas.R
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum
 import br.gov.caixa.loterias.apostas.utils.DateUtils
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP
 import java.text.NumberFormat
@@ -46,32 +47,39 @@ class BolaoViewHolder(
     private var countDownTimer: CountDownTimer? = null
 
     fun bind(item: CarrinhoItem.Bolao) {
-
         cancelarTimer()
+
         val aposta = item.aposta
+        val reserva = aposta.reservaCotaBolao ?: return
         val estilo = EstiloModalidadeMKP(aposta.modalidade)
 
         tvNome.apply {
-            text = ModalidadeEnum.fromString(aposta.modalidade)?.toString()
+            text = obterNomeModalidade(aposta)
+
             setTextColor(
                 ContextCompat.getColor(
-                    context, estilo.corClara
+                    context,
+                    estilo.corClara
                 )
             )
         }
-        tvDescricao.text =
-            tvDescricao.context.getString(
-                R.string.txt_cota,
-                aposta.reservaCotaBolao.numeroCotaReservada,
-                aposta.reservaCotaBolao.qtdCotaTotalBolao
-            )
-        tvConcurso.text = tvConcurso.context.getString(R.string.txt_label_conc, aposta.concursoAlvo)
 
-        tvValor.text = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
-            .format(aposta.reservaCotaBolao.vrCotaReservada)
+        tvDescricao.text = tvDescricao.context.getString(
+            R.string.txt_cota,
+            reserva.numeroCotaReservada,
+            reserva.qtdCotaTotalBolao
+        )
 
-        val timeMillis = aposta.reservaCotaBolao
-            ?.dataHoraExpiracaoReserva
+        tvConcurso.text = tvConcurso.context.getString(
+            R.string.txt_label_conc,
+            aposta.concursoAlvo
+        )
+
+        tvValor.text = NumberFormat
+            .getCurrencyInstance(Locale("pt", "BR"))
+            .format(reserva.vrCotaReservada)
+
+        val timeMillis = reserva.dataHoraExpiracaoReserva
             ?.let(DateUtils::diffMillisSecondsTimerZone)
             ?: 0L
 
@@ -84,6 +92,23 @@ class BolaoViewHolder(
         btnMaisDetalhes.setOnClickListener {
             onMaisDetalhes(aposta)
         }
+    }
+
+    private fun obterNomeModalidade(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ): String {
+        val modalidade = aposta.modalidade ?: return ""
+
+        val isEspecial = aposta.tipoConcurso?.valor?.equals(
+            TipoConcursoEnum.ESPECIAL.valor, ignoreCase = true
+        ) == true
+
+        if (!isEspecial) {
+            return ModalidadeEnum.fromString(modalidade)
+        }
+
+        return ModalidadeEnum.getDescricaoEspecial(modalidade)?.takeIf { it.isNotBlank() }
+            ?.lowercase() ?: ModalidadeEnum.fromString(modalidade)
     }
 
     private fun iniciarTimerCota(
