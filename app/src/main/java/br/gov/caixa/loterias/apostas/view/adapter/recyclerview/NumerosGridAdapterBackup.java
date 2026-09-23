@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-import java.util.StringJoiner;
-
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.CellItem;
 import br.gov.caixa.loterias.apostas.model.bean.RowItem;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Shape;
 import br.gov.caixa.loterias.apostas.model.config.LotteryGridStyleConfig;
@@ -49,7 +46,7 @@ public class NumerosGridAdapterBackup extends ListAdapter<RowItem, NumerosGridAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row, parent, false);
         return new ViewHolder(view);
     }
 
@@ -73,30 +70,45 @@ public class NumerosGridAdapterBackup extends ListAdapter<RowItem, NumerosGridAd
 
         public void bind(RowItem rowItem, LotteryGridStyleConfig styleConfig) {
             rowContainer.removeAllViews();
+
             Context context = itemView.getContext();
             int layoutId = resolveLayout(styleConfig.getShape());
-            for (LotteryNumberUiModel model: rowItem.getItems()) {
+
+            StringBuilder contentDescription = new StringBuilder();
+
+            for (LotteryNumberUiModel model : rowItem.getItems()) {
                 View cellView = LayoutInflater.from(context)
                         .inflate(layoutId, rowContainer, false);
 
                 TextView cellText = cellView.findViewById(R.id.tv_number);
-                cellText.setText(model.getNumber());
 
-                applyTextColor(cellText, model, styleConfig);
-                applyBackground(cellText, model, styleConfig);
+                if (model.getNumber() == null) {
+                    cellView.setVisibility(View.INVISIBLE);
+                } else {
+                    cellText.setText(model.getNumber());
+                    applyTextColor(cellText, model, styleConfig);
+                    applyBackground(cellText, model, styleConfig);
+                }
 
-                cellView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+                cellView.setImportantForAccessibility(
+                        View.IMPORTANT_FOR_ACCESSIBILITY_NO
+                );
+
                 rowContainer.addView(cellView);
+
+                if (model.getNumber() != null && !TextUtils.isEmpty(model.getAccessibility())) {
+                    if (contentDescription.length() > 0) {
+                        contentDescription.append(", ");
+                    }
+                    contentDescription.append(model.getAccessibility());
+                }
             }
 
-            StringJoiner joiner = new StringJoiner(", ");
-            for (LotteryNumberUiModel cell: rowItem.getItems()) {
-                joiner.add(cell.getAccessibility());
-            }
-
-            itemView.setContentDescription(joiner.toString());
+            itemView.setContentDescription(contentDescription.toString());
             itemView.setFocusable(true);
-            itemView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+            itemView.setImportantForAccessibility(
+                    View.IMPORTANT_FOR_ACCESSIBILITY_YES
+            );
         }
 
         private void applyBackground(TextView cellText, LotteryNumberUiModel model, LotteryGridStyleConfig styleConfig) {

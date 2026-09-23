@@ -55,19 +55,19 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaRepository {
         getServiceConnection().request(request, listener);
     }
 
-    @Override
-    public void gerarCodigoPix(MeioPagamentoPix meioPagamento, final RequestListener<GerarPixResponse> listener) {
-        final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.GERAR_CODIGO_PIX,
-                new LinkedHashMap<>(),
-                meioPagamento,
-                GerarPixResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                getHeaderToken());
-
-        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
-        getServiceConnection().request(request, listener);
-    }
+//    @Override
+//    public void gerarCodigoPix(MeioPagamentoPix meioPagamento, final RequestListener<GerarPixResponse> listener) {
+//        final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.GERAR_CODIGO_PIX,
+//                new LinkedHashMap<>(),
+//                meioPagamento,
+//                GerarPixResponse.class,
+//                listener.getSilceListener(),
+//                listener.getErrorListener(),
+//                getHeaderToken());
+//
+//        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+//        getServiceConnection().request(request, listener);
+//    }
 
     @Override
     public void getModalidades(final RequestListener<ModalidadeDTOResponse> listener) {
@@ -316,18 +316,18 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaRepository {
         }
     }
 
-    @Override
-    public void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<CompraAsyncResponse> listener) {
-        final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_ASYNC_PATH,
-                new LinkedHashMap<>(),
-                meioPagamento, CompraAsyncResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                getHeaderToken());
-
-        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
-        getServiceConnection().request(request, listener);
-    }
+//    @Override
+//    public void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<CompraAsyncResponse> listener) {
+//        final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_ASYNC_PATH,
+//                new LinkedHashMap<>(),
+//                meioPagamento, CompraAsyncResponse.class,
+//                listener.getSilceListener(),
+//                listener.getErrorListener(),
+//                getHeaderToken());
+//
+//        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+//        getServiceConnection().request(request, listener);
+//    }
 
     @Override
     public void validarCarrinho(final RequestListener<ResourceResponse> listener) {
@@ -342,21 +342,21 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaRepository {
         getServiceConnection().request(request, listener);
     }
 
-    @Override
-    public void verificaCompraProcessamento(final Long idCompraCarrinho, final RequestListener<CompraAsyncResponse> listener) {
-        Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("idCompraCarrinho", String.valueOf(idCompraCarrinho));
-        final GsonRequest request = getServiceConnection().buildGetRequest(
-                LOGADO + ServerMethods.CARRINHO_VERIFICA_COMPRA_PROCESSAMENTO,
-                queryParams,
-                CompraAsyncResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                getHeaderToken());
-
-        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
-        getServiceConnection().request(request, listener);
-    }
+//    @Override
+//    public void verificaCompraProcessamento(final Long idCompraCarrinho, final RequestListener<CompraAsyncResponse> listener) {
+//        Map<String, String> queryParams = new HashMap<>();
+//        queryParams.put("idCompraCarrinho", String.valueOf(idCompraCarrinho));
+//        final GsonRequest request = getServiceConnection().buildGetRequest(
+//                LOGADO + ServerMethods.CARRINHO_VERIFICA_COMPRA_PROCESSAMENTO,
+//                queryParams,
+//                CompraAsyncResponse.class,
+//                listener.getSilceListener(),
+//                listener.getErrorListener(),
+//                getHeaderToken());
+//
+//        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+//        getServiceConnection().request(request, listener);
+//    }
 
     @Override
     public void  deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {

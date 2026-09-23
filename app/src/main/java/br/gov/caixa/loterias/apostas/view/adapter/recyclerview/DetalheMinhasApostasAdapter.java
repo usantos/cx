@@ -28,7 +28,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.RowItem;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ItemMinhasApostasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Shape;
 import br.gov.caixa.loterias.apostas.model.config.LotteryGridStyleConfig;
 import br.gov.caixa.loterias.apostas.model.enums.RewardMatchMode;
 import br.gov.caixa.loterias.apostas.model.ui.LotteryNumberUiModel;
@@ -63,7 +62,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_minhas_apostas_accordion, parent,false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_minhas_apostas_accordion, parent, false);
         return new ViewHolder(view);
     }
 
@@ -91,41 +90,41 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
 
         //if (!item.isApurado()) {
-            //holder.headerlayout.setVisibility(View.GONE);
-            //holder.contentlayout.setVisibility(View.VISIBLE);
-            desabilitaTodos(holder);
+        //holder.headerlayout.setVisibility(View.GONE);
+        //holder.contentlayout.setVisibility(View.VISIBLE);
+        desabilitaTodos(holder);
 
-            isExpanded = item.isExpanded();
+        isExpanded = item.isExpanded();
 
-            //if(!item.isApurado()) {
-            if (!item.isTemAcordeon()) {
-                if (item.getNumerosSorteados() == null) {
-                    montaAcordeonCorpoSemResultado(holder, item);
-                } else {
-                    montaAcordeonCorpo(holder, item);
-                }
-                return;
-            }
-
-            if (item.isBolao()) {
-                montaAcordeonCabecaBolao(holder, position, item);
+        //if(!item.isApurado()) {
+        if (!item.isTemAcordeon()) {
+            if (item.getNumerosSorteados() == null) {
+                montaAcordeonCorpoSemResultado(holder, item);
             } else {
-                montaAcordeonCabeca(holder, position, item);
+                montaAcordeonCorpo(holder, item);
             }
+            return;
+        }
 
-            if (isExpanded) {
-                if (item.getNumerosSorteados() == null) {
-                    montaAcordeonCorpoSemResultado(holder, item);
-                } else {
-                    montaAcordeonCorpo(holder, item);
-                }
+        if (item.isBolao()) {
+            montaAcordeonCabecaBolao(holder, position, item);
+        } else {
+            montaAcordeonCabeca(holder, position, item);
+        }
+
+        if (isExpanded) {
+            if (item.getNumerosSorteados() == null) {
+                montaAcordeonCorpoSemResultado(holder, item);
+            } else {
+                montaAcordeonCorpo(holder, item);
             }
+        }
 //        }
     }
 
     private static void delayedAnnounce(View v, ItemMinhasApostasDTO item) {
         v.postDelayed(() -> {
-            v.announceForAccessibility(item.isExpanded() ? "Expandido":"Recolhido");
+            v.announceForAccessibility(item.isExpanded() ? "Expandido" : "Recolhido");
         }, 100);
     }
 
@@ -199,7 +198,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.tvSituacao.setVisibility(View.INVISIBLE);
         holder.tvApostaNumeroBolao.setVisibility(View.VISIBLE);
         holder.tvApostaNumeroBolao.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
-        holder.tvApostaNumeroBolao.setText(context.getString(R.string.label_aposta_maiuscula) + " " + (position +1));
+        holder.tvApostaNumeroBolao.setText(context.getString(R.string.label_aposta_maiuscula) + " " + (position + 1));
 
         if (item.isSurpresinha()) {
             holder.tvApresentaSurpresinha.setVisibility(View.VISIBLE);
@@ -247,7 +246,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.tvAcertos.setText(montaDescricaoAcertos(item)[0]);
 
         //Accessibility
-        holder.llAcertos.setContentDescription(holder.tvLabelAcertos.getText()+ " " + holder.tvAcertos.getText());
+        holder.llAcertos.setContentDescription(holder.tvLabelAcertos.getText() + " " + holder.tvAcertos.getText());
 
         if (item.getValorPremio() != null) {
             holder.llPremio.setVisibility(View.VISIBLE);
@@ -287,7 +286,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 holder.tvLabelTimeMesSorteado.setText(R.string.label_mes_sorteado_);
                 holder.tvLabelTimeMesSorteado.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
-                holder.llMesSorte.setContentDescription(holder.tvLabelTimeMesSorteado.getText()+ " " + item.getTimeMesSorteado());
+                holder.llMesSorte.setContentDescription(holder.tvLabelTimeMesSorteado.getText() + " " + item.getTimeMesSorteado());
                 holder.tvTimeMesSorteado.setText(item.getTimeMesSorteado());
                 holder.tvTimeMesSorteado.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
@@ -299,7 +298,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 setupLotteryGrid(holder.rvNumberSortedos, 6, item.getNumerosSorteados(),
                         null, LotteryGridStyleConfig.noShape(context, estilo));
-                setupLotteryGrid(holder.rvMeusNumeros,6, item.getSeusNumeros(),
+                setupLotteryGrid(holder.rvMeusNumeros, 6, item.getSeusNumeros(),
                         item.getNumerosSorteados(), LotteryGridStyleConfig.circular(context, estilo));
                 break;
             case DUPLA_SENA:
@@ -327,7 +326,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                 setupLotteryGrid(holder.rvNumberSortedos, 6, item.getNumerosSorteados(), null, LotteryGridStyleConfig.noShape(context, estilo));
                 setupLotteryGrid(holder.rvNumberSortedos2, 6, item.getNumerosSorteados2(), null, LotteryGridStyleConfig.noShape(context, estilo));
                 setupLotteryGrid(holder.rvMeusNumeros, 6, item.getSeusNumeros(), item.getNumerosSorteados(), LotteryGridStyleConfig.circular(context, estilo));
-                setupLotteryGrid(holder.rvMeusNumeros2,  6, item.getSeusNumeros2(), item.getNumerosSorteados2(), LotteryGridStyleConfig.circular(context, estilo));
+                setupLotteryGrid(holder.rvMeusNumeros2, 6, item.getSeusNumeros2(), item.getNumerosSorteados2(), LotteryGridStyleConfig.circular(context, estilo));
                 break;
             case SUPER_7:
                 holder.rvSuper7Sorteados.setVisibility(View.VISIBLE);
@@ -356,7 +355,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                 holder.tvLabelMeusNumerosSegundoSorteio.setContentDescription("Trevos");
                 ViewCompat.setAccessibilityHeading(holder.tvLabelMeusNumerosSegundoSorteio, true);
 
-                setupLotteryGrid(holder.rvNumberSortedos,6, item.getNumerosSorteados(),
+                setupLotteryGrid(holder.rvNumberSortedos, 6, item.getNumerosSorteados(),
                         null, LotteryGridStyleConfig.noShape(context, estilo));
 
                 setupLotteryGrid(holder.rvMeusNumeros, 6, item.getSeusNumeros(),
@@ -364,7 +363,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 setupLotteryGrid(holder.rvNumberSortedos2, 2, item.getTrevosSorteados(),
                         item.getTrevosSorteados(), LotteryGridStyleConfig.trevo(context, estilo));
-                setupLotteryGrid(holder.rvMeusNumeros2,2, item.getSeusTrevos(),
+                setupLotteryGrid(holder.rvMeusNumeros2, 2, item.getSeusTrevos(),
                         item.getTrevosSorteados(), LotteryGridStyleConfig.trevo(context, estilo));
                 break;
             case LOTOFACIL:
@@ -372,7 +371,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             case LOTOMANIA:
             case MEGA_SENA:
             default:
-                setupLotteryGrid(holder.rvNumberSortedos,6, item.getNumerosSorteados(), null, LotteryGridStyleConfig.noShape(context, estilo));
+                setupLotteryGrid(holder.rvNumberSortedos, 6, item.getNumerosSorteados(), null, LotteryGridStyleConfig.noShape(context, estilo));
                 setupLotteryGrid(holder.rvMeusNumeros, 6, item.getSeusNumeros(), item.getNumerosSorteados(), LotteryGridStyleConfig.circular(context, estilo));
                 break;
         }
@@ -451,9 +450,9 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                 holder.tvLabelMeusNumerosSegundoSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
                 holder.tvLabelMeusNumerosSegundoSorteio.setText(R.string.label_trevos);
 
-                setupLotteryGrid(holder.rvMeusNumeros,6, item.getSeusNumeros(),
+                setupLotteryGrid(holder.rvMeusNumeros, 6, item.getSeusNumeros(),
                         null, LotteryGridStyleConfig.circular(context, estilo));
-                setupLotteryGrid(holder.rvMeusNumeros2,2, item.getSeusTrevos(),
+                setupLotteryGrid(holder.rvMeusNumeros2, 2, item.getSeusTrevos(),
                         null, LotteryGridStyleConfig.trevo(context, estilo));
                 break;
 
@@ -462,7 +461,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             case LOTOMANIA:
             case MEGA_SENA:
             default:
-                setupLotteryGrid(holder.rvMeusNumeros,6, item.getSeusNumeros(), null, LotteryGridStyleConfig.circular(context, estilo));
+                setupLotteryGrid(holder.rvMeusNumeros, 6, item.getSeusNumeros(), null, LotteryGridStyleConfig.circular(context, estilo));
                 break;
         }
     }
@@ -470,7 +469,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     private void handleAccessibility(int size, ItemMinhasApostasDTO dto, View itemView, int position) {
         //Aciona acessibilidade como expandable somente se houver mais de um item no adapter
         if (size > ADAPTER_SIZE) {
-            ViewCompat.setAccessibilityDelegate(itemView, new AccessibilityDelegateCompat(){
+            ViewCompat.setAccessibilityDelegate(itemView, new AccessibilityDelegateCompat() {
                 @Override
                 public void onInitializeAccessibilityNodeInfo(@NotNull View host, @NonNull AccessibilityNodeInfoCompat info) {
                     super.onInitializeAccessibilityNodeInfo(host, info);
@@ -482,9 +481,9 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                         shouldAdd = "Surpresinha";
                     }
 
-                    String prefixo = "Aposta: " + Integer.valueOf(position+1).toString() + " de " + getItemCount() + " " + shouldAdd;
+                    String prefixo = "Aposta: " + Integer.valueOf(position + 1).toString() + " de " + getItemCount() + " " + shouldAdd;
                     if (!dto.isBolao()) {
-                        prefixo = "Resultado do concurso: " + dto.getConcurso() + " situação " + dto.getSituacao() + " " + Integer.valueOf(position+1).toString() + " de " + getItemCount();
+                        prefixo = "Resultado do concurso: " + dto.getConcurso() + " situação " + dto.getSituacao() + " " + Integer.valueOf(position + 1).toString() + " de " + getItemCount();
                     }
 
                     if (dto.isExpanded()) {
@@ -497,20 +496,22 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         }
     }
 
+    //Aqui adiciona colunas
     private void setupLotteryGrid(RecyclerView recyclerView, int columns, List<String> mNumbers, List<String> mSortedNumbers, LotteryGridStyleConfig config) {
         setupRecyclerview(recyclerView);
 
-        List<RowItem> rowItems = buildUiModels(columns, mNumbers, config.getShape() != Shape.TREVO ? mSortedNumbers : null, config.isAnnounceColumns(), RewardMatchMode.ANY_POSITION);
+        List<RowItem> rowItems = buildUiModels(columns, mNumbers, mSortedNumbers, config.isAnnounceColumns(), RewardMatchMode.ANY_POSITION);
         NumerosGridAdapterBackup adapter = new NumerosGridAdapterBackup(config);
 
         adapter.submitList(rowItems);
         recyclerView.setAdapter(adapter);
     }
 
+    //Somente chamado na supersete, onde há uma diferença no comportamento
     private void setupLotteryGrid(RecyclerView recyclerView, List<String> mNumbers, List<String> mSortedNumbers, LotteryGridStyleConfig config) {
         setupRecyclerview(recyclerView);
 
-        List<RowItem> rowItems = buildUiModels(7, mNumbers, config.getShape() != Shape.TREVO ? mSortedNumbers : null, config.isAnnounceColumns(), mSortedNumbers!=null?RewardMatchMode.SAME_POSITION : RewardMatchMode.ANY_POSITION);
+        List<RowItem> rowItems = buildUiModels(7, mNumbers, mSortedNumbers, config.isAnnounceColumns(), RewardMatchMode.SAME_COLUMN_REPEATING);
         NumerosGridAdapterBackup adapter = new NumerosGridAdapterBackup(config);
 
         adapter.submitList(rowItems);
@@ -528,8 +529,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         List<LotteryNumberUiModel> normalized = Collections.emptyList();
         List<RowItem> rowItems = new ArrayList<>();
 
-        for (List<LotteryNumberUiModel> row: rows) {
-            if(shouldAddColumn) {
+        for (List<LotteryNumberUiModel> row : rows) {
+            if (shouldAddColumn) {
                 normalized = addColumnToAccessibility(row);
             }
 
@@ -547,7 +548,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             list.add(new LotteryNumberUiModel(
                     item.getNumber(),
                     item.isRewarded(),
-                    "Coluna " + (i+1) + ", " + item.getAccessibility()
+                    "Coluna " + (i + 1) + ", " + item.getAccessibility()
             ));
         }
         return list;
@@ -578,7 +579,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         }
 
         if (numerosAcertados > 0) {
-            acertos = numerosAcertados + " número" + (numerosAcertados>1 ? "s" : "");
+            acertos = numerosAcertados + " número" + (numerosAcertados > 1 ? "s" : "");
         }
 
         switch (item.getModalidade()) {
@@ -596,21 +597,21 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                 int trevosAcertados = 0;
                 List<String> trevosSorteados = item.getTrevosSorteados();
                 List<String> seusTrevos = item.getSeusTrevos();
-                for (int i=0; i<seusTrevos.size(); i++) {
+                for (int i = 0; i < seusTrevos.size(); i++) {
                     String numero = seusTrevos.get(i);
                     if (numero != null && trevosSorteados.contains(numero)) {
                         trevosAcertados++;
                     }
                 }
                 if (trevosAcertados > 0) {
-                    acertos += " + " + trevosAcertados + " trevo" + (trevosAcertados>1 ? "s" : "");
+                    acertos += " + " + trevosAcertados + " trevo" + (trevosAcertados > 1 ? "s" : "");
                 }
                 break;
             case DUPLA_SENA:
                 int duplaAcertados = 0;
                 List<String> numerosSorteados2 = item.getNumerosSorteados2();
                 List<String> seusNumeros2 = item.getSeusNumeros2();
-                for (int i=0; i<seusNumeros2.size(); i++) {
+                for (int i = 0; i < seusNumeros2.size(); i++) {
                     String numero = seusNumeros2.get(i);
                     if (numero != null && numerosSorteados2.contains(numero)) {
                         duplaAcertados++;
@@ -618,14 +619,14 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                 }
                 acertosDuplaSena = acertos;
                 if (duplaAcertados > 0) {
-                    acertos = duplaAcertados + " número" + (duplaAcertados>1 ? "s" : "");
+                    acertos = duplaAcertados + " número" + (duplaAcertados > 1 ? "s" : "");
                 }
                 break;
             default:
                 break;
         }
 
-        return new String[] {acertos, acertosDuplaSena};
+        return new String[]{acertos, acertosDuplaSena};
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -698,7 +699,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             this.isExpanded = isExpanded;
         }
 
-        public boolean isExpanded(){
+        public boolean isExpanded() {
             return isExpanded;
         }
     }

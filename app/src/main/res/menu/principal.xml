@@ -11,6 +11,12 @@
         app:showAsAction="ifRoom"
         />
     <item
+        android:id="@+id/action_outubro_rosa"
+        android:icon="@drawable/ic_outubro_rosa"
+        android:title="@string/ic_outubro_rosa"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/action_apresentar_trevo"
         android:icon="@drawable/icon_trevo_toolbar"
         android:title="@string/apresentar_trevo"

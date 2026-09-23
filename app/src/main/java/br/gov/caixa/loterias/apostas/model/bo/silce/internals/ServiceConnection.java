@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
+import br.gov.caixa.loterias.apostas.utils.ServicoBffUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class ServiceConnection {
@@ -491,6 +492,10 @@ public class ServiceConnection {
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
         if (ServicoNuvemUtil.isEndpointNuvem(path)) {
+            if (ServicoNuvemUtil.isAmbienteTQS() && baseUrl != null && ServicoBffUtil.getBaseUrlBff() != null &&
+                    ServicoBffUtil.getBaseUrlBff().equalsIgnoreCase(baseUrl)) {
+                ServicoNuvemUtil.apresentaCaminhoTQS(baseUrl + path);
+            }
             return fillUrlWithQueryParamsNuvem(path, queryParams);
         } else {
             return fillUrl(path) + fillParamStr(queryParams);

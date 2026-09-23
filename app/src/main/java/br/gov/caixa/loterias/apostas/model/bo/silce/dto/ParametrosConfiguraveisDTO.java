@@ -26,7 +26,14 @@ public class ParametrosConfiguraveisDTO {
     private String urlBaseCarrinhoPiloto;
     @SerializedName("hostMicroServicoCarrinhoProducao")
     private String urlBaseCarrinhoProducao;
-
+    @SerializedName("hostMicroServicoBff")
+    private String urlBaseBff;
+    //@SerializedName("hostMicroServicoBffPiloto")
+    //private String urlBaseBffPiloto;
+        @SerializedName("grupoDeCpfsQueAcessamOBffMobile")
+    private String grupoDeCpfsQueAcessamOBff;
+    //@SerializedName("grupoDeCpfsQueAcessamOBffPiloto")
+    //private String grupoDeCpfsQueAcessamOBffPiloto;
     @SerializedName("hostNovoMicroServicoConferenciaApostaProducao")
     private String urlBaseNovaApiPRD;
     @SerializedName("hostNovoMicroServicoConferenciaApostaPiloto")
@@ -51,6 +58,10 @@ public class ParametrosConfiguraveisDTO {
     private Integer concursoMega30Anos;
     @SerializedName("concursoLotecaPais")
     private Integer concursoLotecaPais;
+    @SerializedName("vigenciaMesOutubroRosa")
+    private Boolean vigenciaMesOutubroRosa;
+    @SerializedName("vigenciaOutubroRosaMegaSena")
+    private Boolean vigenciaOutubroRosaMegaSena;
 
     public String getUrlBaseApostadorPiloto() {
         return urlBaseApostadorPiloto;
@@ -215,4 +226,44 @@ public class ParametrosConfiguraveisDTO {
     public void setConcursoLotecaPais(Integer concursoLotecaPais) {
         this.concursoLotecaPais = concursoLotecaPais;
     }
+
+    public Boolean getVigenciaMesOutubroRosa() {
+        return vigenciaMesOutubroRosa;
+    }
+
+    public Boolean getVigenciaOutubroRosaMegaSena() {
+        return vigenciaOutubroRosaMegaSena;
+    }
+
+    public String getUrlBaseBff() {
+        return urlBaseBff;
+    }
+
+    public void setUrlBaseBff(String urlBaseBff) {
+        this.urlBaseBff = urlBaseBff;
+    }
+
+    public String getGrupoDeCpfsQueAcessamOBff() {
+        return grupoDeCpfsQueAcessamOBff;
+    }
+
+    public void setGrupoDeCpfsQueAcessamOBff(String grupoDeCpfsQueAcessamOBff) {
+        this.grupoDeCpfsQueAcessamOBff = grupoDeCpfsQueAcessamOBff;
+    }
+
+//    public String getUrlBaseBffPiloto() {
+//        return urlBaseBffPiloto;
+//    }
+//
+//    public void setUrlBaseBffPiloto(String urlBaseBffPiloto) {
+//        this.urlBaseBffPiloto = urlBaseBffPiloto;
+//    }
+//
+//    public String getGrupoDeCpfsQueAcessamOBffPiloto() {
+//        return grupoDeCpfsQueAcessamOBffPiloto;
+//    }
+//
+//    public void setGrupoDeCpfsQueAcessamOBffPiloto(String grupoDeCpfsQueAcessamOBffPiloto) {
+//        this.grupoDeCpfsQueAcessamOBffPiloto = grupoDeCpfsQueAcessamOBffPiloto;
+//    }
 }
