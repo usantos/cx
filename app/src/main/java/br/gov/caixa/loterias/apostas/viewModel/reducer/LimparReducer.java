@@ -194,7 +194,6 @@ public class LimparReducer {
                 .setDezenasSelecionadas(new ArrayList<Integer>())
                 .setLimparNumerosCartela(true)
                 .setMostrarBotaoLimparAposta(false)
-                .setLimparLoteca(true)
                 .setMostrarSalvarAposta(false);
     }
 
