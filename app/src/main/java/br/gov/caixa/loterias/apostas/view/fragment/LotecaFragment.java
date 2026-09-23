@@ -482,7 +482,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 getDezenasSelecionadasState(),
                 valorAtual,
                 getStateAtual().getQtdConcursoSelecionado(),
-                partidasSelecionadas
+                new HashSet<>(partidasSelecionadas)
         );
     }
     private BigDecimal obterValorApostaParaCarrinho() {
