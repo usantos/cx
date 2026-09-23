@@ -111,8 +111,8 @@ class CarrinhoAdapter(
             oldItem: CarrinhoItem, newItem: CarrinhoItem
         ): Boolean {
             return when {
+                oldItem is CarrinhoItem.HeaderFixo && newItem is CarrinhoItem.HeaderFixo -> oldItem == newItem
                 oldItem is CarrinhoItem.Header && newItem is CarrinhoItem.Header -> oldItem.titulo == newItem.titulo
-
                 oldItem is CarrinhoItem.Bolao && newItem is CarrinhoItem.Bolao -> mesmaAposta(
                     oldItem.aposta, newItem.aposta
                 )
@@ -140,9 +140,7 @@ class CarrinhoAdapter(
             newItem: IdentificaoDeUmaApostaDas8Modalidades<*>
         ): Boolean = when {
             oldItem.idDB != null && newItem.idDB != null -> oldItem.idDB == newItem.idDB
-
             oldItem.id != null && newItem.id != null -> oldItem.id == newItem.id
-
             else -> oldItem === newItem
         }
 

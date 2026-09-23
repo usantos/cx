@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.RecyclerView
 import br.gov.caixa.loterias.apostas.R
@@ -149,10 +150,36 @@ class ApostaViewHolder(
             ModalidadeEnum.TIMEMANIA ->
                 adicionarTimeDoCoracao(aposta)
 
+            ModalidadeEnum.MAIS_MILIONARIA ->
+                adicionarTrevo(aposta)
+
             else -> Unit
         }
 
         containerExtra.visibleIf(containerExtra.isNotEmpty())
+    }
+
+    private fun adicionarTrevo(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        val descricao = if (aposta.surpresinha == true) {
+            List(TREVOS_SURPRESINHA) {
+                TEXTO_NUMERO_SURPRESINHA
+            }.joinToString(" - ")
+        } else {
+            aposta.trevosSelecionados
+                .orEmpty()
+                .takeIf { it.isNotEmpty() }
+                ?.joinToString(" - ") { trevo ->
+                    trevo.toString().padStart(2, '0')
+                }
+                ?: return
+        }
+
+        adicionarExtra(
+            label = itemView.context.getString(R.string.carrinho_trevos),
+            value = descricao
+        )
     }
 
     private fun adicionarMesDaSorte(
@@ -196,25 +223,20 @@ class ApostaViewHolder(
         label: String,
         value: String
     ) {
-        val linha = LinearLayout(itemView.context).apply {
+        val textoExtra = TextView(itemView.context).apply {
             layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
 
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-        }
+            text = "$label: $value"
+            textSize = 12f
+            gravity = Gravity.START
 
-        val tvLabel = TextView(itemView.context).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                1f
+            typeface = ResourcesCompat.getFont(
+                context,
+                R.font.caixa_std_regular
             )
-
-            text = label
-            textSize = 14f
 
             setTextColor(
                 ContextCompat.getColor(
@@ -224,28 +246,7 @@ class ApostaViewHolder(
             )
         }
 
-        val tvValue = TextView(itemView.context).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-
-            text = value
-            textSize = 14f
-            gravity = Gravity.END
-
-            setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    R.color.greyText
-                )
-            )
-        }
-
-        linha.addView(tvLabel)
-        linha.addView(tvValue)
-
-        containerExtra.addView(linha)
+        containerExtra.addView(textoExtra)
     }
 
     private fun configurarTiposAposta(
@@ -424,6 +425,7 @@ class ApostaViewHolder(
     }
 
     companion object {
+        private const val TREVOS_SURPRESINHA = 2
         private const val SUPERSETE_HEADER = 7
         private const val NUMEROS_SURPRESINHA = 6
         private const val TEXTO_NUMERO_SURPRESINHA = "XX"

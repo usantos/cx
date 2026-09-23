@@ -618,12 +618,27 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     }
 
     private fun clickLimparCarrinhoLinearLayout() {
-        DialogUtils.dialogSim(
-            this@CarrinhoActivity, getString(R.string.MA011)
-        ) { dialog: DialogInterface?, which: Int ->
-            AlertDialogUtils.show(this@CarrinhoActivity)
-            model.limparCarrinho(onLimparCarrinhoListener())
-        }
+        DialogUtils.dialogDoisBotoesPersonalizados(
+            this@CarrinhoActivity,
+            getString(R.string.excluir_todas_apostas_titulo),
+            getString(R.string.todas_as_apostas),
+            getString(R.string.manter_aposta),
+            getString(R.string.excluir),
+            object : OnDialogDoisBotoesListener {
+
+                override fun PositiveButton(
+                    dialog: DialogInterface?, which: Int
+                ) {
+
+                }
+
+                override fun NegativeButton(
+                    dialog: DialogInterface?, which: Int
+                ) {
+                    AlertDialogUtils.show(this@CarrinhoActivity)
+                    model.limparCarrinho(onLimparCarrinhoListener())
+                }
+            })
     }
 
     private fun onLimparCarrinhoListener(): OnSilceListener<*> {
