@@ -299,6 +299,7 @@ public class ValorApostaReducer {
                 .setDuplasLoteca(event.getDuplas())
                 .setTriplasLoteca(event.getTriplas())
                 .setValorAposta(valor)
+                .setValorGrande(isValorGrande(valor))
                 .build();
     }
 }
