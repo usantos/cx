@@ -136,7 +136,7 @@
         android:id="@+id/containerExtra"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="0dp"
         android:gravity="start"
         android:orientation="vertical"
         android:visibility="gone"

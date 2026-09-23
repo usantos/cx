@@ -129,16 +129,84 @@ class ApostaViewHolder(
 
         flowIndicadores.visibility = View.VISIBLE
 
-        configurarPosicaoIndicadores()
+        configurarPosicaoIndicadores(aposta)
     }
 
-    private fun configurarPosicaoIndicadores() {
-        if (containerExtra.isVisible) {
-            posicionarIndicadoresAbaixoDosExtras()
-        } else {
-            posicionarIndicadoresNaLinhaDoValor()
+    private fun configurarPosicaoIndicadores(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        when {
+            containerExtra.isVisible -> {
+                posicionarIndicadoresAbaixoDosExtras()
+            }
+
+            devePosicionarIndicadoresAbaixoDoConteudo(aposta) -> {
+                posicionarIndicadoresAbaixoDoConteudoNumerico(aposta)
+            }
+
+            else -> {
+                posicionarIndicadoresNaLinhaDoValor()
+            }
         }
     }
+
+    private fun devePosicionarIndicadoresAbaixoDoConteudo(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ): Boolean {
+        if (aposta.modalidade == ModalidadeEnum.SUPER_7) {
+            if (aposta.surpresinha == true) {
+                return false
+            }
+
+            val maiorQuantidadeNaColuna =
+                aposta.matrizNumerosSelecionados
+                    .orEmpty()
+                    .maxOfOrNull { coluna ->
+                        coluna.orEmpty().size
+                    }
+                    ?: 0
+
+            return maiorQuantidadeNaColuna > 1
+        }
+
+        if (aposta.surpresinha == true) {
+            return false
+        }
+
+        return aposta.listaNumerosSelecionados
+            .orEmpty()
+            .size > NUMEROS_POR_LINHA
+    }
+
+    private fun posicionarIndicadoresAbaixoDoConteudoNumerico(
+        aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
+    ) {
+        if (aposta.modalidade == ModalidadeEnum.SUPER_7) {
+            posicionarIndicadoresAbaixoDoSuperSete()
+        } else {
+            posicionarIndicadoresAbaixoDosNumeros()
+        }
+    }
+
+    private fun posicionarIndicadoresAbaixoDosNumeros() =
+        flowIndicadores.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            topToTop = ConstraintLayout.LayoutParams.UNSET
+            bottomToTop = ConstraintLayout.LayoutParams.UNSET
+            bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+            topToBottom = R.id.containerNumeros
+            topMargin = 0
+            bottomMargin = 0
+        }
+
+    private fun posicionarIndicadoresAbaixoDoSuperSete() =
+        flowIndicadores.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            topToTop = ConstraintLayout.LayoutParams.UNSET
+            bottomToTop = ConstraintLayout.LayoutParams.UNSET
+            bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+            topToBottom = R.id.containerSuperSete
+            topMargin = 0
+            bottomMargin = 0
+        }
 
     private fun posicionarIndicadoresNaLinhaDoValor() =
         flowIndicadores.updateLayoutParams<ConstraintLayout.LayoutParams> {
@@ -156,7 +224,7 @@ class ApostaViewHolder(
             bottomToTop = ConstraintLayout.LayoutParams.UNSET
             bottomToBottom = ConstraintLayout.LayoutParams.UNSET
             topToBottom = R.id.containerExtra
-            topMargin = itemView.dpToPx(14)
+            topMargin = 0
             bottomMargin = 0
         }
 
@@ -312,13 +380,11 @@ class ApostaViewHolder(
     }
 
     private fun criarTextView(
-        context: Context,
-        texto: String
+        context: Context, texto: String
     ): TextView {
         return TextView(context).apply {
             layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
 
             text = texto
@@ -326,45 +392,39 @@ class ApostaViewHolder(
             letterSpacing = 0.1f
 
             typeface = ResourcesCompat.getFont(
-                context,
-                R.font.caixa_std_regular
+                context, R.font.caixa_std_regular
             )
 
             setTextColor(
                 ContextCompat.getColor(
-                    context,
-                    R.color.greyText
+                    context, R.color.greyText
                 )
             )
         }
     }
 
     private fun adicionarNumeros(
-        container: LinearLayout,
-        numeros: List<Int>,
-        isSurpresinha: Boolean
+        container: LinearLayout, numeros: List<Int>, isSurpresinha: Boolean
     ) {
         container.removeAllViews()
 
         if (isSurpresinha) {
             container.addView(
                 criarTextView(
-                    context = container.context,
-                    texto = criarNumerosSurpresinha()
+                    context = container.context, texto = criarNumerosSurpresinha()
                 )
             )
             return
         }
 
-        numeros.chunked(6).forEach { grupo ->
+        numeros.chunked(NUMEROS_POR_LINHA).forEach { grupo ->
             val texto = grupo.joinToString(" - ") { numero ->
                 numero.toString().padStart(2, '0')
             }
 
             container.addView(
                 criarTextView(
-                    context = container.context,
-                    texto = texto
+                    context = container.context, texto = texto
                 )
             )
         }
@@ -458,5 +518,6 @@ class ApostaViewHolder(
         private const val SUPERSETE_HEADER = 7
         private const val NUMEROS_SURPRESINHA = 6
         private const val TEXTO_NUMERO_SURPRESINHA = "XX"
+        private const val NUMEROS_POR_LINHA = 6
     }
 }
