@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.viewModel;
 
+import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -28,10 +30,12 @@ import br.gov.caixa.loterias.apostas.state.DadosPessoaisState;
 
 /**
  * ViewModel da tela de dados pessoais.
-
+ *
  * Ponto de entrada unico: onEvent(DadosPessoaisEvent).
  * Sem SingleLiveEvent: os efeitos viajam em slots de comando dentro do
  * DadosPessoaisState e sao limpos pelos eventos ...Consumido.
+ *
+ * O CEP chega da View ja completo e apenas com digitos.
  */
 public class DadosPessoaisViewModel extends ViewModel {
 
@@ -290,27 +294,22 @@ public class DadosPessoaisViewModel extends ViewModel {
     // CEP
     // ------------------------------------------------------------------
 
+    /**
+     * A View so envia CEP completo e apenas com digitos. O erro anterior e
+     * limpo imediatamente, antes da consulta, para que o vermelho saia da
+     * tela assim que o usuario informa um novo CEP.
+     */
     private void handleCepAlterado(DadosPessoaisEvent.CepAlterado event) {
-        if (event.getCep() == null) {
+        String cep = event.getCep();
+        if (cep == null || cep.length() != TAMANHO_CEP) {
             return;
         }
-        String cepLimpo = event.getCep().replaceAll(APENAS_NUMEROS, "");
         DadosPessoaisState state = getCurrentState();
-        state.setCep(cepLimpo);
-
-        if (cepLimpo.length() == TAMANHO_CEP) {
-            buscarCep(cepLimpo);
-            return;
-        }
-        limparErroCepParcial(state);
-    }
-
-    private void limparErroCepParcial(DadosPessoaisState state) {
-        if (state.getErroCep() == null) {
-            return;
-        }
+        state.setCep(cep);
         state.setErroCep(null);
         updateState(state);
+
+        buscarCep(cep);
     }
 
     private void buscarCep(String cep) {
@@ -345,7 +344,14 @@ public class DadosPessoaisViewModel extends ViewModel {
 
             @Override
             public void onError(VolleyError error) {
-                finalizarCarregamentoComErro(error);
+                DadosPessoaisState state = getCurrentState();
+                if (isErroNegocial(error)) {
+                    definirCepInvalido(state);
+                    return;
+                }
+                state.setCarregando(false);
+                state.setComandoRede(new DadosPessoaisEffect.ErroDeRede(error));
+                updateState(state);
             }
         });
     }

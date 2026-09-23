@@ -50,14 +50,20 @@ import br.gov.caixa.loterias.apostas.viewModel.DadosPessoaisViewModel;
 
 /**
  * View da tela de dados pessoais.
-
+ *
  * Os listeners apenas lancam eventos pelo lambda onEvent. A tela observa
  * um unico LiveData (uiState) e, ao consumir um comando, devolve o evento
  * ...Consumido para a ViewModel limpar o slot.
+ *
+ * O campo de CEP e de propriedade da View: ele e preenchido uma unica vez
+ * na carga inicial e, a partir dai, so o usuario escreve nele. A View conta
+ * os digitos e so dispara CepAlterado quando houver 8 digitos numericos.
  */
 public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
 
     private static final Locale LOCALE_BR = new Locale("pt", "BR");
+    private static final int TAMANHO_CEP = 8;
+    private static final String APENAS_NUMEROS = "\\D";
 
     private TextInputLayout editTextLimiteLayout;
     private TextInputLayout editTextCEPLayout;
@@ -86,6 +92,10 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     private DadosPessoaisEvent.Dispatcher onEvent;
 
     private boolean bloqueiaListeners;
+
+    /** Controle local do campo de CEP. */
+    private String ultimoCepEnviado = "";
+    private boolean cepPreenchido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,6 +224,10 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         editTextLimiteContent.addTextChangedListener(criarTextWatcherLimite());
     }
 
+    /**
+     * A contagem de digitos e a filtragem sao feitas aqui. A ViewModel so
+     * recebe o evento quando o CEP esta completo e apenas com numeros.
+     */
     private TextWatcher criarTextWatcherCep() {
         return new SimpleTextWatcher() {
             @Override
@@ -221,9 +235,28 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
                 if (bloqueiaListeners) {
                     return;
                 }
-                onEvent.dispatch(new DadosPessoaisEvent.CepAlterado(editable.toString()));
+                String digitos = editable.toString().replaceAll(APENAS_NUMEROS, "");
+
+                if (digitos.length() < TAMANHO_CEP) {
+                    ultimoCepEnviado = "";
+                    return;
+                }
+                if (digitos.equals(ultimoCepEnviado) && !telaEmErroDeCep()) {
+                    return;
+                }
+                ultimoCepEnviado = digitos;
+                onEvent.dispatch(new DadosPessoaisEvent.CepAlterado(digitos));
             }
         };
+    }
+
+    /**
+     * Quando a tela esta marcada com CEP invalido, o guard de duplicidade
+     * e ignorado: o usuario pode reenviar o mesmo CEP para tentar de novo.
+     */
+    private boolean telaEmErroDeCep() {
+        DadosPessoaisState state = viewModel.getUiState().getValue();
+        return state != null && state.getErroCep() != null;
     }
 
     private TextWatcher criarTextWatcherLimite() {
@@ -271,13 +304,27 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
             editTextCpfContent.setMaskedText(apostador.getCpf());
             editTextNomeContent.setText(apostador.getNome());
             editTextEmailContent.setText(apostador.getEmail());
-            setTextSeDiferente(editTextCepContent, apostador.getCep());
+            preencherCepInicial(apostador);
             notificacaoSwitch.setChecked(state.isAceitaNoticias());
             segmentedButtonSexo.setPosition(state.getPosicaoSexo());
             atualizarIconesSexo(state.getPosicaoSexo());
         } finally {
             bloqueiaListeners = false;
         }
+    }
+
+    /**
+     * Preenche o CEP apenas na primeira renderizacao. Depois disso o campo
+     * pertence ao usuario e a View nunca mais escreve nele, evitando que o
+     * valor antigo volte quando o CEP digitado for invalido.
+     */
+    private void preencherCepInicial(ApostadorDTO apostador) {
+        if (cepPreenchido || apostador.getCep() == null) {
+            return;
+        }
+        editTextCepContent.setText(apostador.getCep());
+        ultimoCepEnviado = apostador.getCep().replaceAll(APENAS_NUMEROS, "");
+        cepPreenchido = true;
     }
 
     private void renderizarLocalizacao(DadosPessoaisState state) {
