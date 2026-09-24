@@ -641,10 +641,15 @@ public class FluxoApostaReducer {
                 event.getQtdPartidasSelecionadas()
                         == event.getQtdPartidasTotal();
 
+        boolean possuiDuploOuTriploLoteca =
+                event.getDuplosLoteca() > 0
+                        || event.getTriplosLoteca() > 0;
+
         boolean apostaCompleta =
                 todasPartidasPreenchidas
                         && totalPalpitesSelecionados
-                        == atual.getPalpitesLoteca();
+                        == atual.getPalpitesLoteca()
+                        && possuiDuploOuTriploLoteca;
 
         return new ResultadoFluxoAposta(
                 EtapaAposta.NUMEROS,

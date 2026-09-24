@@ -1167,7 +1167,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void configuraActivity() {
-        configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.loteca_claro_mkp, R.color.loteca_escuro_mkp, View.GONE, View.VISIBLE);
+        configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.loteca_claro_mkp, R.color.loteca_escuro_mkp, View.GONE, View.GONE);
 
         String dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
 

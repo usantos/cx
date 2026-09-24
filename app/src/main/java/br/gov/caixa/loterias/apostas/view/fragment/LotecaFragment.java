@@ -45,6 +45,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
@@ -2038,11 +2039,83 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
         }
 
+        if (CollectionUtils.isNotEmpty(aposta.getPartidasLoteca())) {
+            restaurarPartidasLoteca(aposta.getPartidasLoteca());
+        }
+
         publicarValorAposta(
                 aposta.getValor()
         );
 
         notificarEstadoCartelaAlterado();
+    }
+
+    private void restaurarPartidasLoteca(
+            List<PartidaLotecaDTO> partidasSalvas
+    ) {
+        if (parametroJogo == null
+                || parametroJogo.getPartidas() == null
+                || CollectionUtils.isEmpty(partidasSalvas)) {
+            return;
+        }
+
+        for (PartidaLotecaDTO partidaSalva : partidasSalvas) {
+
+            if (partidaSalva == null || partidaSalva.getNumero() == null) {
+                continue;
+            }
+
+            ParametroPartida partidaAtual =
+                    encontrarPartidaPorNumero(partidaSalva.getNumero());
+
+            if (partidaAtual == null
+                    || partidaAtual.getEquipe1() == null
+                    || partidaAtual.getEquipe2() == null) {
+                continue;
+            }
+
+            boolean equipe1Selecionada =
+                    partidaSalva.getEquipe1() != null
+                            && Boolean.TRUE.equals(partidaSalva.getEquipe1().getVitoria());
+
+            boolean equipe2Selecionada =
+                    partidaSalva.getEquipe2() != null
+                            && Boolean.TRUE.equals(partidaSalva.getEquipe2().getVitoria());
+
+            boolean empateSelecionado =
+                    Boolean.TRUE.equals(partidaSalva.getEmpate());
+
+            partidaAtual.getEquipe1().setSelecionado(equipe1Selecionada);
+            partidaAtual.getEquipe2().setSelecionado(equipe2Selecionada);
+            partidaAtual.setEmpate(empateSelecionado);
+        }
+
+        reconstruirEstadoLoteca();
+
+        if (recyclerViewPartida != null
+                && recyclerViewPartida.getAdapter() != null) {
+
+            recyclerViewPartida.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    private ParametroPartida encontrarPartidaPorNumero(
+            Integer numero
+    ) {
+        if (numero == null
+                || parametroJogo == null
+                || parametroJogo.getPartidas() == null) {
+            return null;
+        }
+
+        for (ParametroPartida partida : parametroJogo.getPartidas()) {
+            if (partida != null
+                    && numero.equals(partida.getNumero())) {
+                return partida;
+            }
+        }
+
+        return null;
     }
 
     private void atualizarQtdConcurso(
