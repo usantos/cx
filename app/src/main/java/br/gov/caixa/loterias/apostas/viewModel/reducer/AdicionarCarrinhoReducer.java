@@ -127,10 +127,15 @@ public class AdicionarCarrinhoReducer {
                 atual.getJogosLoteca()
                         == event.getQtdPartidasTotal();
 
+        boolean possuiDuploOuTriploLoteca =
+                atual.getDuplasLoteca() > 0
+                        || atual.getTriplasLoteca() > 0;
+
         boolean apostaCompleta =
                 todasPartidasPreenchidas
                         && totalPalpitesSelecionados
-                        == atual.getPalpitesLoteca();
+                        == atual.getPalpitesLoteca()
+                        && possuiDuploOuTriploLoteca;
 
         if (!apostaCompleta) {
             return atual;
