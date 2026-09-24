@@ -41,6 +41,12 @@ public class AdicionarCarrinhoReducer {
                     event
             );
         }
+        if (tipoJogo == ModalidadeEnum.LOTECA){
+            return adicionarLoteca(
+                    atual,
+                    event
+            );
+        }
 
         if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
             return adicionarMaisMilionaria(
@@ -108,6 +114,31 @@ public class AdicionarCarrinhoReducer {
                 atual
         );
     }
+    private SimulaUiState adicionarLoteca(
+            SimulaUiState atual,
+            SimulaUiEvent.AdicionarCarrinhoClicado event
+    ) {
+        int totalPalpitesSelecionados =
+                atual.getSimplesLoteca()
+                        + (atual.getDuplasLoteca() * 2)
+                        + (atual.getTriplasLoteca() * 3);
+
+        boolean todasPartidasPreenchidas =
+                atual.getJogosLoteca()
+                        == event.getQtdPartidasTotal();
+
+        boolean apostaCompleta =
+                todasPartidasPreenchidas
+                        && totalPalpitesSelecionados
+                        == atual.getPalpitesLoteca();
+
+        if (!apostaCompleta) {
+            return atual;
+        }
+
+        return finalizarFluxoAdicionar(atual);
+    }
+
 
     private SimulaUiState adicionarMaisMilionaria(
             SimulaUiState atual,
@@ -203,19 +234,6 @@ public class AdicionarCarrinhoReducer {
         if (tipoJogo == ModalidadeEnum.SUPER_7) {
             return event.getQtdTotalSelecionadosSuperSete()
                     == event.getQtdDezenasPossiveisSelecionado();
-        }
-
-        if (tipoJogo == ModalidadeEnum.LOTECA) {
-            boolean partidasCompletas =
-                    event.getQtdPartidasSelecionadas()
-                            == event.getQtdPartidasTotal();
-
-            boolean possuiDuploOuTriplo =
-                    event.getDuplosLoteca() > 0
-                            || event.getTriplosLoteca() > 0;
-
-            return partidasCompletas
-                    && possuiDuploOuTriplo;
         }
 
         if (tipoJogo == ModalidadeEnum.LOTOGOL) {
