@@ -180,14 +180,13 @@ class ApostaViewHolder(
     private fun devePosicionarIndicadoresAbaixoDoConteudo(
         aposta: IdentificaoDeUmaApostaDas8Modalidades<*>
     ): Boolean {
-        if (aposta.modalidade == ModalidadeEnum.SUPER_7) {
-            return true
+        return when {
+            aposta.modalidade == ModalidadeEnum.SUPER_7 -> true
+            aposta.surpresinha == true -> false
+            else -> aposta.listaNumerosSelecionados
+                .orEmpty()
+                .size > NUMEROS_POR_LINHA
         }
-
-        return aposta.surpresinha == true ||
-                aposta.listaNumerosSelecionados
-                    .orEmpty()
-                    .size > NUMEROS_POR_LINHA
     }
 
     private fun posicionarIndicadoresAbaixoDoConteudoNumerico(
@@ -222,7 +221,7 @@ class ApostaViewHolder(
 
     private fun posicionarIndicadoresNaLinhaDoValor() =
         flowIndicadores.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            topToTop = ConstraintLayout.LayoutParams.UNSET
+            topToTop = R.id.tvValor
             topToBottom = ConstraintLayout.LayoutParams.UNSET
             bottomToTop = ConstraintLayout.LayoutParams.UNSET
             bottomToBottom = R.id.tvValor
