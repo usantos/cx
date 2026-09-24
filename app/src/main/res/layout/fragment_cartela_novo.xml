@@ -293,61 +293,21 @@
                 <LinearLayout
                     android:id="@+id/layoutRecyclerViewPartida"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:id="@+id/layoutTitleLoteca"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:focusableInTouchMode="true"
-                            android:orientation="horizontal"
-                            android:paddingTop="20dp"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-
-                            <TextView
-                                android:id="@+id/titleInformeBold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/label_informe"
-                                android:textColor="@color/verdeazul"
-                                android:textSize="14sp"
-                                android:fontFamily="@font/caixa_std_bold"/>
-
-                            <TextView
-                                android:id="@+id/titleContinue"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
-                                android:layout_marginBottom="20dp"
-                                android:text="@string/label_resultado_das_partidas"
-                                android:textColor="@color/verdeazul"
-                                android:textSize="14sp"
-                                android:fontFamily="@font/caixa_std_regular"/>
-
-                        </LinearLayout>
 
                         <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
                             android:id="@+id/recyclerViewPartida"
-                            android:layout_width="wrap_content"
-                            android:layout_height="200dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:clickable="false"
                             android:nestedScrollingEnabled="false"
                             android:orientation="vertical"
                             android:paddingBottom="119dp" />
 
-                    </LinearLayout>
 
                 </LinearLayout>
 

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lotecaToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cinza_corner"
+    android:paddingHorizontal="16dp">
+
+    <!-- Header com título e "Como jogar" -->
+    <TextView
+        android:id="@+id/txtSuasApostas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:fontFamily="@font/caixa_std_semi_bold"
+        android:text="@string/label_suas_apostas"
+        android:textColor="@color/cinza110"
+        android:textSize="16sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/containerComoJogarLoteca"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/containerComoJogarLoteca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@+id/txtSuasApostas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtComoJogar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Como jogar"
+            android:textColor="@color/cinza110"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/imgInfo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_info"
+            app:tint="@color/cinza110" />
+    </LinearLayout>
+
+    <!--
+        Flow: organiza os 4 grupos em uma única linha quando couber
+        e quebra automaticamente para a linha de baixo quando não couber.
+        Os grupos abaixo são filhos diretos do ConstraintLayout - suas
+        posições são controladas exclusivamente pelo Flow.
+    -->
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/containerQuantidades"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:constraint_referenced_ids="grupoPartidas,grupoSimples,grupoDuplas,grupoTriplas"
+        app:flow_wrapMode="chain"
+        app:flow_horizontalStyle="packed"
+        app:flow_horizontalBias="0"
+        app:flow_horizontalGap="8dp"
+        app:flow_verticalGap="8dp"
+        app:flow_verticalAlign="center"
+        app:layout_constraintStart_toStartOf="@+id/txtSuasApostas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSuasApostas"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- Partidas -->
+    <LinearLayout
+        android:id="@+id/grupoPartidas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Partidas: "
+            android:textColor="@color/cinza110"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtPartidas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/loteca_escuro_mkp"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:text="0"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Simples (separador embutido para nunca quebrar sozinho) -->
+    <LinearLayout
+        android:id="@+id/grupoSimples"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <View
+            android:id="@+id/sepSimples"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/cinza110"
+            android:alpha="0.3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Simples: "
+            android:textColor="@color/cinza110"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtSimples"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/loteca_escuro_mkp"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:text="0"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Duplas -->
+    <LinearLayout
+        android:id="@+id/grupoDuplas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <View
+            android:id="@+id/sepDuplas"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/cinza110"
+            android:alpha="0.3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Duplas: "
+            android:textColor="@color/cinza110"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtDuplas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/loteca_escuro_mkp"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:text="0"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Triplas -->
+    <LinearLayout
+        android:id="@+id/grupoTriplas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <View
+            android:id="@+id/sepTriplas"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/cinza110"
+            android:alpha="0.3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Triplas: "
+            android:textColor="@color/cinza110"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtTriplas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/loteca_escuro_mkp"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:text="0"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

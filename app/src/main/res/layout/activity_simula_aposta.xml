@@ -283,15 +283,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/opcaoOutrosNumerosLayout">
 
-        <include
-            android:id="@+id/simulaToolbar"
-            layout="@layout/simula_toolbar"
+        <FrameLayout
+            android:id="@+id/frameToolbar"
             android:layout_width="0dp"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
+            <include
+                android:id="@+id/simulaToolbar"
+                layout="@layout/simula_toolbar"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:id="@+id/lotecaToolbar"
+                layout="@layout/loteca_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </FrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutFiltros"
@@ -299,7 +313,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/simulaToolbar">
+            app:layout_constraintTop_toBottomOf="@id/frameToolbar">
 
         <FrameLayout
                 android:id="@+id/containerQuantidade"
@@ -325,6 +339,24 @@
                     app:icon="@drawable/ic_arrow_down"
                     app:iconGravity="textEnd"
                     app:iconTint="@color/cinza110" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnQuantidadePalpites"
+                android:layout_width="wrap_content"
+                android:elevation="0dp"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:minWidth="112dp"
+                android:padding="4dp"
+                android:text="15 palpites"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                android:textColor="@color/branco"
+                app:backgroundTint="@color/loteca_claro_mkp"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_arrow_down"
+                app:iconGravity="textEnd"
+                app:iconTint="@color/branco" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnQuantidadeTrevos"
