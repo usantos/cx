@@ -1745,8 +1745,8 @@
     <string name="deseja_marcar_todas_como_lidas">Deseja marcar todas as notificações como lidas?</string>
     <string name="deseja_excluir_notificacao">Deseja excluir a notificacão</string>
     <string name="excluir_todas_notificacoes">Excluir todas as notificações</string>
-    <string name="excluir_notificacoes">Excluir notificação</string>
-    <string name="excluir_notificacao">Excluir notificações</string>
+    <string name="excluir_notificacoes">Excluir notificações</string>
+    <string name="excluir_notificacao">Excluir notificação</string>
     <string name="tab_todas">Todas</string>
     <string name="tab_nao_lidas">Não lidas (0)</string>
     <string name="sem_notificacao">Ainda não há notificações.</string>
