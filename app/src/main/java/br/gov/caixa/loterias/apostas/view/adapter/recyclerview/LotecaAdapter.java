@@ -94,14 +94,21 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
 
             alternarSelecao(item, tipoSelecao);
             holder.bindEstadoVisual(context, item);
-            notificarClique(item);
+
+            boolean combinacaoAceita = notificarClique(item);
+
+            if (!combinacaoAceita) {
+                // A combinacao resultante nao e valida para a modalidade;
+                // desfaz a mesma alternancia aplicada acima (o toggle e
+                // simetrico) e restaura o visual ao estado anterior.
+                alternarSelecao(item, tipoSelecao);
+                holder.bindEstadoVisual(context, item);
+            }
         });
     }
 
-    private void notificarClique(ParametroPartida item) {
-        if (listener != null) {
-            listener.clickEquipeLoteca(item);
-        }
+    private boolean notificarClique(ParametroPartida item) {
+        return listener == null || listener.clickEquipeLoteca(item);
     }
 
     private boolean verificaAberto(Context context) {

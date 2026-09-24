@@ -1115,15 +1115,21 @@ public class LotecaViewModel extends SimulaViewModel {
             return;
         }
 
-        // Detectar se houve aumento de palpites
+        // Detectar se houve aumento de palpites e se o aviso ainda nao foi
+        // exibido nesta sessao de tela (evita popup repetido a cada clique).
         SimulaUiState estadoAnterior = getCurrentState();
+        boolean jaExibiuNestaSessao = estadoAnterior != null
+                && estadoAnterior.isAvisoAumentoPalpitesLotecaJaExibido();
         boolean aumentouPalpites = estadoAnterior != null
                 && quantidade > estadoAnterior.getPalpitesLoteca()
-                && !estadoAnterior.isAvisouAumentoPalpitesLoteca();
+                && !jaExibiuNestaSessao;
 
         updateState(state -> state.toBuilder()
                 .setPalpitesLoteca(quantidade)
                 .setAvisouAumentoPalpitesLoteca(aumentouPalpites)
+                .setAvisoAumentoPalpitesLotecaJaExibido(
+                        jaExibiuNestaSessao || aumentouPalpites
+                )
                 .build()
         );
 

@@ -385,4 +385,53 @@ public class ParametroJogoDTO implements Serializable {
         }
         return valores;
     }
+
+    /**
+     * Busca a configuração de valor da Loteca correspondente a uma quantidade
+     * exata de palpites duplos e triplos. Usada tanto para calcular o valor
+     * da aposta quanto para validar se uma combinação (seja gerada
+     * aleatoriamente ou montada manualmente via clique) é uma combinação
+     * oficialmente aceita pela modalidade.
+     */
+    public ParametroValorApostaDTO getValorApostaLotecaBy(int duplas, int triplas) {
+        if (valoresAposta == null) {
+            return null;
+        }
+
+        for (ParametroValorApostaDTO valorAposta : valoresAposta) {
+            if (valorAposta == null) {
+                continue;
+            }
+
+            int duplasAposta = valorAposta.getQuantidadeDuplos() != null
+                    ? valorAposta.getQuantidadeDuplos()
+                    : 0;
+
+            int triplasAposta = valorAposta.getQuantidadeTriplos() != null
+                    ? valorAposta.getQuantidadeTriplos()
+                    : 0;
+
+            if (duplasAposta == duplas && triplasAposta == triplas) {
+                return valorAposta;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Indica se a combinação de duplas/triplas é válida para a Loteca.
+     * Sem duplas e sem triplas (aposta só com simples) é sempre válida,
+     * pois usa o valor mínimo da aposta. Qualquer outra combinação só é
+     * válida se existir uma configuração de valor correspondente.
+     */
+    public boolean isCombinacaoValidaLoteca(int duplas, int triplas) {
+        if (duplas <= 0 && triplas <= 0) {
+            return true;
+        }
+
+        return getValorApostaLotecaBy(duplas, triplas) != null;
+    }
 }
+
+

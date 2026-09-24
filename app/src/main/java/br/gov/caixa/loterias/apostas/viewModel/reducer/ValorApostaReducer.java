@@ -252,33 +252,18 @@ public class ValorApostaReducer {
             return BigDecimal.ZERO;
         }
 
-        BigDecimal valorCalculado = BigDecimal.ZERO;
-
         if (duplos > 0 || triplos > 0) {
-            if (parametroJogo.getValoresAposta() != null) {
-                for (ParametroValorApostaDTO valorAposta
-                        : parametroJogo.getValoresAposta()) {
 
-                    if (valorAposta == null) {
-                        continue;
-                    }
+            ParametroValorApostaDTO valorAposta =
+                    parametroJogo.getValorApostaLotecaBy(duplos, triplos);
 
-                    if (valorAposta.getQuantidadeDuplos() != null
-                            && valorAposta.getQuantidadeTriplos() != null
-                            && valorAposta.getQuantidadeDuplos().equals(duplos)
-                            && valorAposta.getQuantidadeTriplos().equals(triplos)) {
-
-                        valorCalculado = valorAposta.getValor();
-                        break;
-                    }
-                }
-            }
-        } else if (parametroJogo.getValorApostaMinima() != null) {
-            valorCalculado = parametroJogo.getValorApostaMinima();
+            return valorAposta != null && valorAposta.getValor() != null
+                    ? valorAposta.getValor()
+                    : BigDecimal.ZERO;
         }
 
-        return valorCalculado != null
-                ? valorCalculado
+        return parametroJogo.getValorApostaMinima() != null
+                ? parametroJogo.getValorApostaMinima()
                 : BigDecimal.ZERO;
     }
 

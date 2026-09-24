@@ -1208,42 +1208,70 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
     }
 
     @Override
-    public void clickEquipeLoteca(ParametroPartida parametroPartida) {
-        int jogos = getStateAtual().getJogosLoteca();
-        int simples = getStateAtual().getSimplesLoteca();
-        int duplas = getStateAtual().getDuplasLoteca();
-        int triplas = getStateAtual().getTriplasLoteca();
+    public boolean clickEquipeLoteca(ParametroPartida parametroPartida) {
 
-        if (parametroPartida.isSelecionado()) {
-            if (parametroPartida.getQtdItensSelecionados() == 1) {
-                simples = simples + 1;
-                if (parametroPartida.getQtdItensSelecionadosAnterior() == 2) {
-                    duplas = duplas - 1;
-                }
-            } else if (parametroPartida.getQtdItensSelecionados() == 2) {
-                duplas = duplas + 1;
-                if (parametroPartida.getQtdItensSelecionadosAnterior() == 3) {
-                    triplas = triplas - 1;
-                } else {
-                    simples = simples - 1;
-                }
-            } else if (parametroPartida.getQtdItensSelecionados() == 3) {
-                duplas = duplas - 1;
-                triplas = triplas + 1;
-               }
-            partidasSelecionadas.add(parametroPartida);
-        } else {
-            simples = simples - 1;
-            partidasSelecionadas.remove(parametroPartida);
+        // Recalcula simples/duplas/triplas do zero, a partir de todas as
+        // partidas, sem aplicar nenhum efeito colateral. Isso garante que a
+        // validacao abaixo reflita fielmente a combinacao tentativa criada
+        // pelo clique (o adapter ja alterou o modelo antes de chamar este
+        // metodo).
+        int[] contadores = calcularContadoresLotecaSemEfeito();
+        int simples = contadores[0];
+        int duplas = contadores[1];
+        int triplas = contadores[2];
+
+        boolean combinacaoValida =
+                parametroJogo == null
+                        || parametroJogo.isCombinacaoValidaLoteca(duplas, triplas);
+
+        if (!combinacaoValida) {
+            // Combinacao nao esta na lista de configuracoes de valor da
+            // modalidade (mesma regra aplicada no "Completar aleatoriamente").
+            // Nao publicamos nenhum estado novo; o adapter e responsavel por
+            // desfazer visualmente o clique que originou essa combinacao.
+            exibirAvisoCombinacaoInvalidaLoteca();
+            return false;
         }
-        jogos = simples + duplas + triplas;
 
-        // Mantem o mesmo contrato de eventos usado no preenchimento aleatorio.
-        publicarEstadoLoteca(
-                jogos,
-                simples,
-                duplas,
-                triplas
+        reconstruirEstadoLoteca();
+
+        return true;
+    }
+
+    private int[] calcularContadoresLotecaSemEfeito() {
+        int simples = 0;
+        int duplas = 0;
+        int triplas = 0;
+
+        if (parametroJogo != null && parametroJogo.getPartidas() != null) {
+            for (ParametroPartida partida : parametroJogo.getPartidas()) {
+
+                int quantidadeSelecionada =
+                        calcularQuantidadeSelecionada(partida);
+
+                switch (quantidadeSelecionada) {
+                    case 1:
+                        simples++;
+                        break;
+                    case 2:
+                        duplas++;
+                        break;
+                    case 3:
+                        triplas++;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        return new int[]{simples, duplas, triplas};
+    }
+
+    private void exibirAvisoCombinacaoInvalidaLoteca() {
+        DialogUtils.dialogEntendi(
+                getActivity(),
+                getString(R.string.label_combinacao_invalida_loteca)
         );
     }
 
