@@ -166,25 +166,25 @@
         android:drawablePadding="6dp"
         android:gravity="center_vertical"
         android:text="Espelho"
-        android:textColor="#718189"
+        android:textColor="@color/cinza90"
         android:textSize="14sp"
         android:textStyle="bold"
         android:visibility="gone"
-        app:drawableTint="#718189" />
+        app:drawableTint="@color/cinza90" />
 
     <TextView
         android:id="@+id/tvSurpresinha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_surpresinha"
+        android:drawableStart="@drawable/ic_surpresinha_linha_white"
         android:drawablePadding="6dp"
         android:gravity="center_vertical"
         android:text="Surpresinha"
-        android:textColor="#718189"
+        android:textColor="@color/cinza90"
         android:textSize="14sp"
         android:textStyle="bold"
         android:visibility="gone"
-        app:drawableTint="#718189" />
+        app:drawableTint="@color/cinza90" />
 
     <TextView
         android:id="@+id/tvTeimosinha"
@@ -194,11 +194,11 @@
         android:drawablePadding="6dp"
         android:gravity="center_vertical"
         android:text="Teimosinha"
-        android:textColor="#718189"
+        android:textColor="@color/cinza90"
         android:textSize="14sp"
         android:textStyle="bold"
         android:visibility="gone"
-        app:drawableTint="#718189" />
+        app:drawableTint="@color/cinza90" />
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flowIndicadores"
