@@ -80,6 +80,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
     private List<Dezena> dezenas = new ArrayList<>();
     private List<List<Integer>> matrizSelecionada;
     private HashSet<ParametroPartida> partidasSelecionadas;
+    private Integer palpitesLotecaPendente;
 
     private CartelaFragmentListener CartelaFragmentListener;
 
@@ -810,6 +811,8 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
     private void renderLimparLoteca() {
 
+        palpitesLotecaPendente = null;
+
         if (parametroJogo != null && parametroJogo.getPartidas() != null) {
             for (ParametroPartida partida : parametroJogo.getPartidas()) {
                 partida.setEmpate(false);
@@ -1209,12 +1212,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
     @Override
     public boolean clickEquipeLoteca(ParametroPartida parametroPartida) {
-
-        // Recalcula simples/duplas/triplas do zero, a partir de todas as
-        // partidas, sem aplicar nenhum efeito colateral. Isso garante que a
-        // validacao abaixo reflita fielmente a combinacao tentativa criada
-        // pelo clique (o adapter ja alterou o modelo antes de chamar este
-        // metodo).
         int[] contadores = calcularContadoresLotecaSemEfeito();
         int simples = contadores[0];
         int duplas = contadores[1];
@@ -1225,17 +1222,29 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         || parametroJogo.isCombinacaoValidaLoteca(duplas, triplas);
 
         if (!combinacaoValida) {
-            // Combinacao nao esta na lista de configuracoes de valor da
-            // modalidade (mesma regra aplicada no "Completar aleatoriamente").
-            // Nao publicamos nenhum estado novo; o adapter e responsavel por
-            // desfazer visualmente o clique que originou essa combinacao.
+            palpitesLotecaPendente = null;
             exibirAvisoCombinacaoInvalidaLoteca();
             return false;
         }
 
+        confirmarAumentoPendentePalpitesLoteca();
         reconstruirEstadoLoteca();
 
         return true;
+    }
+
+    private void confirmarAumentoPendentePalpitesLoteca() {
+        if (palpitesLotecaPendente == null) {
+            return;
+        }
+
+        dispatch(
+                new SimulaUiEvent.PalpitesLotecaAtualizado(
+                        palpitesLotecaPendente
+                )
+        );
+
+        palpitesLotecaPendente = null;
     }
 
     private int[] calcularContadoresLotecaSemEfeito() {
@@ -1293,18 +1302,16 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         int limiteAtual = state.getPalpitesLoteca();
 
         if (totalPalpitesSelecionados < limiteAtual) {
+            palpitesLotecaPendente = null;
             return true;
         }
 
         if (limiteAtual >= MAXIMO_PALPITES_LOTECA) {
+            palpitesLotecaPendente = null;
             return false;
         }
 
-        dispatch(
-                new SimulaUiEvent.PalpitesLotecaAtualizado(
-                        limiteAtual + 1
-                )
-        );
+        palpitesLotecaPendente = limiteAtual + 1;
 
         return true;
     }
@@ -1333,6 +1340,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
     }
 
     private void limparPartidadasSelecionasLoteca() {
+        palpitesLotecaPendente = null;
         for (ParametroPartida partida : parametroJogo.getPartidas()) {
             partida.setEmpate(Boolean.FALSE);
             partida.getEquipe1().setSelecionado(Boolean.FALSE);
