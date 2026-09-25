@@ -41,17 +41,6 @@ import java.util.Locale
 import com.github.pinball83.maskededittext.MaskedEditText as MaskedEditTextLib
 import br.gov.caixa.loterias.apostas.view.components.MaskedEditText as MaskedEditTextApp
 
-/**
- * View da tela de dados pessoais.
- *
- * Os listeners apenas lancam eventos pelo lambda onEvent. A tela observa
- * um unico LiveData (uiState) e, ao consumir um comando, devolve o evento
- * ...Consumido para a ViewModel limpar o slot.
- *
- * O campo de CEP e de propriedade da View: ele e preenchido uma unica vez
- * na carga inicial e, a partir dai, so o usuario escreve nele. A View conta
- * os digitos e so dispara CepAlterado quando houver 8 digitos numericos.
- */
 class DadosPessoaisActivity : LoteriasBaseAppActivity() {
 
     private companion object {
@@ -83,12 +72,10 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
 
     private lateinit var viewModel: DadosPessoaisViewModel
 
-    /** Lambda unico de saida da View para a ViewModel. */
     private lateinit var onEvent: DadosPessoaisEvent.Dispatcher
 
     private var bloqueiaListeners = false
 
-    /** Controle local do campo de CEP. */
     private var ultimoCepEnviado = ""
     private var cepPreenchido = false
 
@@ -173,10 +160,6 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
         customButton.requestFocus()
     }
 
-    // ------------------------------------------------------------------
-    // Listeners: apenas lancam eventos
-    // ------------------------------------------------------------------
-
     private fun setaMetodos() {
         editTextMunicipioContent.isClickable = false
         editTextUFContent.isClickable = false
@@ -213,10 +196,6 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
         editTextLimiteContent.addTextChangedListener(criarTextWatcherLimite())
     }
 
-    /**
-     * A contagem de digitos e a filtragem sao feitas aqui. A ViewModel so
-     * recebe o evento quando o CEP esta completo e apenas com numeros.
-     */
     private fun criarTextWatcherCep(): TextWatcher {
         return object : SimpleTextWatcher() {
             override fun afterTextChanged(editable: Editable?) {
@@ -238,10 +217,6 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
         }
     }
 
-    /**
-     * Quando a tela esta marcada com CEP invalido, o guard de duplicidade
-     * e ignorado: o usuario pode reenviar o mesmo CEP para tentar de novo.
-     */
     private fun telaEmErroDeCep(): Boolean {
         return viewModel.uiState.value?.erroCep != null
     }
@@ -258,10 +233,6 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
             }
         }
     }
-
-    // ------------------------------------------------------------------
-    // Observer unico
-    // ------------------------------------------------------------------
 
     private fun observarViewModel() {
         viewModel.uiState.observe(this) { state -> renderizar(state) }
@@ -298,11 +269,6 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
         }
     }
 
-    /**
-     * Preenche o CEP apenas na primeira renderizacao. Depois disso o campo
-     * pertence ao usuario e a View nunca mais escreve nele, evitando que o
-     * valor antigo volte quando o CEP digitado for invalido.
-     */
     private fun preencherCepInicial(apostador: ApostadorDTO) {
         val cep = apostador.cep
         if (cepPreenchido || cep == null) {
@@ -370,10 +336,6 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
             editTextLimiteLayout.isHelperTextEnabled = false
         }
     }
-
-    // ------------------------------------------------------------------
-    // Consumo dos comandos
-    // ------------------------------------------------------------------
 
     private fun tratarComandoRede(comando: DadosPessoaisEffect?) {
         if (comando == null) {
@@ -495,10 +457,6 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
         }
     }
 
-    // ------------------------------------------------------------------
-    // Helpers de View
-    // ------------------------------------------------------------------
-
     private fun exibirCarregamento(carregando: Boolean) {
         if (carregando) {
             AlertDialogUtils.show(this)
@@ -566,14 +524,11 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
         }
     }
 
-    /** TextWatcher enxuto para evitar boilerplate nos campos. */
     private abstract class SimpleTextWatcher : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            // sem uso
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            // sem uso
         }
     }
 }

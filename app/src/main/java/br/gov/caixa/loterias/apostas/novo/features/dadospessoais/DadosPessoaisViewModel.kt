@@ -19,15 +19,6 @@ import br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial
 import com.android.volley.VolleyError
 import java.math.BigDecimal
 
-/**
- * ViewModel da tela de dados pessoais.
- *
- * Ponto de entrada unico: onEvent(DadosPessoaisEvent).
- * Sem SingleLiveEvent: os efeitos viajam em slots de comando dentro do
- * DadosPessoaisState e sao limpos pelos eventos ...Consumido.
- *
- * O CEP chega da View ja completo e apenas com digitos.
- */
 class DadosPessoaisViewModel(
     private val model: DadosPessoaisModel = DadosPessoaisModel()
 ) : ViewModel() {
@@ -43,10 +34,6 @@ class DadosPessoaisViewModel(
     val uiState: LiveData<DadosPessoaisState> = _uiState
 
     private var carregamentoIniciado = false
-
-    // ------------------------------------------------------------------
-    // Ponto de entrada unico
-    // ------------------------------------------------------------------
 
     fun onEvent(event: DadosPessoaisEvent) {
         when (event) {
@@ -83,10 +70,6 @@ class DadosPessoaisViewModel(
                 updateState { if (it.comandoAnalytics == null) it else it.copy(comandoAnalytics = null) }
         }
     }
-
-    // ------------------------------------------------------------------
-    // Carregamento inicial
-    // ------------------------------------------------------------------
 
     private fun carregarDados(forcarCarregamento: Boolean) {
         if (carregamentoIniciado && !forcarCarregamento) {
@@ -212,15 +195,6 @@ class DadosPessoaisViewModel(
         updateState { it.copy(carregando = false, dadosCarregados = true) }
     }
 
-    // ------------------------------------------------------------------
-    // CEP
-    // ------------------------------------------------------------------
-
-    /**
-     * A View so envia CEP completo e apenas com digitos. O erro anterior e
-     * limpo imediatamente, antes da consulta, para que o vermelho saia da
-     * tela assim que o usuario informa um novo CEP.
-     */
     private fun handleCepAlterado(event: DadosPessoaisEvent.CepAlterado) {
         val cep = event.cep
         if (cep == null || cep.length != TAMANHO_CEP) {
@@ -279,10 +253,6 @@ class DadosPessoaisViewModel(
             )
         }
     }
-
-    // ------------------------------------------------------------------
-    // Limite
-    // ------------------------------------------------------------------
 
     private fun handleLimiteAlterado(event: DadosPessoaisEvent.LimiteAlterado) {
         val limite = converterLimite(event.limiteFormatado) ?: return
@@ -347,10 +317,6 @@ class DadosPessoaisViewModel(
         })
     }
 
-    // ------------------------------------------------------------------
-    // Sexo e notificacao
-    // ------------------------------------------------------------------
-
     private fun handleSexoSelecionado(event: DadosPessoaisEvent.SexoSelecionado) {
         updateState { state ->
             if (state.posicaoSexo == event.posicao) state
@@ -373,10 +339,6 @@ class DadosPessoaisViewModel(
             )
         }
     }
-
-    // ------------------------------------------------------------------
-    // Salvar
-    // ------------------------------------------------------------------
 
     private fun salvar() {
         val state = currentState()
@@ -454,9 +416,6 @@ class DadosPessoaisViewModel(
         }
     }
 
-    // ------------------------------------------------------------------
-    // Helpers de estado
-    // ------------------------------------------------------------------
 
     private fun criarComandoRedirect(redirect: RedirectEnum?): DadosPessoaisEffect? {
         return redirect?.let { DadosPessoaisEffect.Redirecionar(it) }

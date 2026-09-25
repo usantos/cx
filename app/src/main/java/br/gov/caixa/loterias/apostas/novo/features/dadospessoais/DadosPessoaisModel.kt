@@ -11,11 +11,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTOResponse
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse
 import com.android.volley.VolleyError
 
-/**
- * Camada de acesso a dados da tela de dados pessoais.
- * Encapsula DadosUsuarioBO e DadosCorporativosSilceBO para que
- * o ViewModel nao dependa diretamente dos BOs nem de Volley.
- */
 open class DadosPessoaisModel {
 
     interface Callback<T> {
