@@ -50,6 +50,7 @@ public class SimulaUiState {
     private final boolean limparOpcaoOutrosNumeros;
 
     private final int qtdTotalSelecionadosSuperSete;
+    private final int palpitesLoteca;
 
     private final int jogosLoteca;
     private final int simplesLoteca;
@@ -116,6 +117,8 @@ public class SimulaUiState {
     private final ParametroValorApostaDTO valorTrevosSelecionado;
     private final boolean exibirAvisoTrevosMaximo;
     private final boolean avisouTrevosMaximo;
+    private final boolean avisouAumentoPalpitesLoteca;
+    private final boolean avisoAumentoPalpitesLotecaJaExibido;
     private final int quantidadeSurpresinhas;
     private final int quantidadeNumerosSurpresinha;
     private final int quantidadeTrevosSurpresinha;
@@ -146,6 +149,8 @@ public class SimulaUiState {
 
         this.exibirAvisoTrevosMaximo = builder.exibirAvisoTrevosMaximo;
         this.avisouTrevosMaximo = builder.avisouTrevosMaximo;
+        this.avisouAumentoPalpitesLoteca = builder.avisouAumentoPalpitesLoteca;
+        this.avisoAumentoPalpitesLotecaJaExibido = builder.avisoAumentoPalpitesLotecaJaExibido;
 
 
         this.carrinhoEffect = builder.carrinhoEffect;
@@ -182,6 +187,7 @@ public class SimulaUiState {
 
         this.qtdTotalSelecionadosSuperSete = builder.qtdTotalSelecionadosSuperSete;
 
+        this.palpitesLoteca = builder.palpitesLoteca;
         this.jogosLoteca = builder.jogosLoteca;
         this.simplesLoteca = builder.simplesLoteca;
         this.duplasLoteca = builder.duplasLoteca;
@@ -364,6 +370,7 @@ public class SimulaUiState {
                 .setLimparLotogol(false)
                 .setLimparOpcaoOutrosNumeros(false)
                 .setQtdTotalSelecionadosSuperSete(0)
+                .setPalpitesLoteca(15)
                 .setJogosLoteca(0)
                 .setSimplesLoteca(0)
                 .setDuplasLoteca(0)
@@ -413,6 +420,8 @@ public class SimulaUiState {
                 .setExibirInfoEtapa(false)
                 .setTextoInfoEtapa("")
                 .setQuantidadeNumerosSurpresinha(0)
+                .setAvisouAumentoPalpitesLoteca(false)
+                .setAvisoAumentoPalpitesLotecaJaExibido(false)
                 .build();
     }
     public List<Integer> getTrevosSelecionados(){return trevosSelecionados;}
@@ -614,6 +623,7 @@ public class SimulaUiState {
     public int getJogosLoteca() {
         return jogosLoteca;
     }
+    public int getPalpitesLoteca(){return palpitesLoteca;}
 
     public int getSimplesLoteca() {
         return simplesLoteca;
@@ -704,6 +714,12 @@ public class SimulaUiState {
     public boolean isAvisouTrevosMaximo(){
         return avisouTrevosMaximo;
     }
+    public boolean isAvisouAumentoPalpitesLoteca(){
+        return avisouAumentoPalpitesLoteca;
+    }
+    public boolean isAvisoAumentoPalpitesLotecaJaExibido(){
+        return avisoAumentoPalpitesLotecaJaExibido;
+    }
     public AnimacaoEffect getComandoAnimacao(){
         return animacaoEffect;
     }
@@ -745,6 +761,7 @@ public class SimulaUiState {
         private boolean limparOpcaoOutrosNumeros;
 
         private int qtdTotalSelecionadosSuperSete;
+        private int palpitesLoteca;
 
         private int jogosLoteca;
         private int simplesLoteca;
@@ -812,6 +829,8 @@ public class SimulaUiState {
         private ParametroValorApostaDTO valorTrevosSelecionado;
         private boolean exibirAvisoTrevosMaximo;
         private boolean avisouTrevosMaximo;
+        private boolean avisouAumentoPalpitesLoteca;
+        private boolean avisoAumentoPalpitesLotecaJaExibido;
         private List<Integer> trevosSelecionados;
         private int quantidadeTrevosSelecionada;
         private int quantidadeSurpresinhas;
@@ -871,6 +890,8 @@ public class SimulaUiState {
             this.valorTrevosSelecionado = null;
             this.exibirAvisoTrevosMaximo = false;
             this.avisouTrevosMaximo = false;
+            this.avisouAumentoPalpitesLoteca = false;
+            this.avisoAumentoPalpitesLotecaJaExibido = false;
             this.trevosSelecionados = new ArrayList<>();
             this.quantidadeTrevosSelecionada = 0;
             this.quantidadeSurpresinhas = 0;
@@ -932,6 +953,7 @@ public class SimulaUiState {
 
             this.qtdTotalSelecionadosSuperSete = state.qtdTotalSelecionadosSuperSete;
 
+            this.palpitesLoteca = state.palpitesLoteca;
             this.jogosLoteca = state.jogosLoteca;
             this.simplesLoteca = state.simplesLoteca;
             this.duplasLoteca = state.duplasLoteca;
@@ -1023,6 +1045,8 @@ public class SimulaUiState {
                     state.valorTrevosSelecionado;
             this.exibirAvisoTrevosMaximo = state.exibirAvisoTrevosMaximo;
             this.avisouTrevosMaximo = state.avisouTrevosMaximo;
+            this.avisouAumentoPalpitesLoteca = state.avisouAumentoPalpitesLoteca;
+            this.avisoAumentoPalpitesLotecaJaExibido = state.avisoAumentoPalpitesLotecaJaExibido;
             this.quantidadeTrevosSelecionada = state.quantidadeTrevosSelecionada;
             this.quantidadeSurpresinhas = state.quantidadeSurpresinhas;
             this.quantidadeNumerosSurpresinha = state.quantidadeNumerosSurpresinha;
@@ -1078,6 +1102,22 @@ public class SimulaUiState {
         ) {
             this.avisouTrevosMaximo =
                     avisouTrevosMaximo;
+            return this;
+        }
+
+        public Builder setAvisouAumentoPalpitesLoteca(
+                boolean avisouAumentoPalpitesLoteca
+        ) {
+            this.avisouAumentoPalpitesLoteca =
+                    avisouAumentoPalpitesLoteca;
+            return this;
+        }
+
+        public Builder setAvisoAumentoPalpitesLotecaJaExibido(
+                boolean avisoAumentoPalpitesLotecaJaExibido
+        ) {
+            this.avisoAumentoPalpitesLotecaJaExibido =
+                    avisoAumentoPalpitesLotecaJaExibido;
             return this;
         }
 
@@ -1536,6 +1576,12 @@ public class SimulaUiState {
                 int qtdTotalSelecionadosSuperSete
         ) {
             this.qtdTotalSelecionadosSuperSete = qtdTotalSelecionadosSuperSete;
+            return this;
+        }
+        public Builder setPalpitesLoteca(
+                int palpitesLoteca
+        ) {
+            this.palpitesLoteca = palpitesLoteca;
             return this;
         }
 

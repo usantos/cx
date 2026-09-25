@@ -27,6 +27,7 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
     private final List<ParametroPartida> listaPartidas;
     private final ParametroJogoDTO parametroJogo;
     private final LocateAdapterListener listener;
+    private RecyclerView recyclerView;
 
     public LotecaAdapter(ParametroJogoDTO parametroJogo, LocateAdapterListener listener) {
         this.parametroJogo = parametroJogo;
@@ -74,16 +75,40 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
                 return;
             }
 
+            boolean resultadoJaSelecionado =
+                    isResultadoSelecionado(item, tipoSelecao);
+
+            if (!resultadoJaSelecionado
+                    && listener != null
+                    && !listener.simulaVerificaPodeAdicionar(item)) {
+                listener.onLimitePalpitesLotecaAtingido();
+                return;
+            }
+
+            if (!resultadoJaSelecionado
+                    && listener != null
+                    && !listener.podeAdicionarResultadoLoteca()) {
+                listener.onLimitePalpitesLotecaAtingido();
+                return;
+            }
+
             alternarSelecao(item, tipoSelecao);
             holder.bindEstadoVisual(context, item);
-            notificarClique(item);
+
+            boolean combinacaoAceita = notificarClique(item);
+
+            if (!combinacaoAceita) {
+                // A combinacao resultante nao e valida para a modalidade;
+                // desfaz a mesma alternancia aplicada acima (o toggle e
+                // simetrico) e restaura o visual ao estado anterior.
+                alternarSelecao(item, tipoSelecao);
+                holder.bindEstadoVisual(context, item);
+            }
         });
     }
 
-    private void notificarClique(ParametroPartida item) {
-        if (listener != null) {
-            listener.clickEquipeLoteca(item);
-        }
+    private boolean notificarClique(ParametroPartida item) {
+        return listener == null || listener.clickEquipeLoteca(item);
     }
 
     private boolean verificaAberto(Context context) {
@@ -164,6 +189,61 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
             item.setSelecionado(true);
             item.setQtdItensSelecionados(item.getQtdItensSelecionados() + 1);
         }
+    }
+
+    private boolean isResultadoSelecionado(
+            ParametroPartida item,
+            TipoSelecao tipoSelecao
+    ) {
+        if (item == null) {
+            return false;
+        }
+
+        switch (tipoSelecao) {
+            case TIME_UM:
+                return item.getEquipe1() != null
+                        && item.getEquipe1().isSelecionado();
+            case TIME_DOIS:
+                return item.getEquipe2() != null
+                        && item.getEquipe2().isSelecionado();
+            case EMPATE:
+                return item.isEmpate();
+            default:
+                return false;
+        }
+    }
+
+    public void atualizarEstadoVisual(int position) {
+        if (position < 0 || position >= listaPartidas.size()) {
+            return;
+        }
+        RecyclerView recyclerView = getRecyclerView();
+        if (recyclerView == null) {
+            return;
+        }
+
+        RecyclerView.ViewHolder viewHolder =
+                recyclerView.findViewHolderForAdapterPosition(position);
+        if (!(viewHolder instanceof LotecaHolder)) {
+            return;
+        }
+        LotecaHolder holder = (LotecaHolder) viewHolder;
+        ParametroPartida item = listaPartidas.get(position);
+        Context context = holder.itemView.getContext();
+        holder.bindEstadoVisual(context, item);
+    }
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
+    }
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        this.recyclerView = null;
+        super.onDetachedFromRecyclerView(recyclerView);
+    }
+    private RecyclerView getRecyclerView() {
+        return recyclerView;
     }
 
     private enum TipoSelecao {

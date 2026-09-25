@@ -44,7 +44,7 @@ public class TelaInicializadaReducer {
                         ? textoBotaoQuantidadeNumeros
                         : "";
 
-        return SimulaUiState.initial()
+        SimulaUiState.Builder builder = SimulaUiState.initial()
                 .toBuilder()
                 .setBarraTituloDTO(
                         barraTituloDTO
@@ -171,10 +171,23 @@ public class TelaInicializadaReducer {
                 )
                 .setExibirDialogQuantidadeTrevos(false)
                 .setExibirAvisoTrevosMaximo(false)
-                .setSubtituloTrevos("")
+                .setSubtituloTrevos("");
+
+        if(tipoJogo == ModalidadeEnum.LOTECA){
+            return criarInicialLoteca(builder);
+        }
+        else {
+            return builder.build();
+        }
+    }
+    private SimulaUiState criarInicialLoteca(SimulaUiState.Builder builder){
+        return builder.
+                setMostrarSalvarAposta(false)
+                .setMostrarBotaoLimparAposta(false)
+                .setBotaoCompletarVisivel(false)
+                .setBotaoNextStepHabilitado(false)
                 .build();
     }
-
     private boolean possuiEtapaComplementar(
             ModalidadeEnum tipoJogo
     ) {
