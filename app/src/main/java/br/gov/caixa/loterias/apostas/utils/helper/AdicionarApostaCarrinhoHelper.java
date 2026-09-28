@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.utils.helper;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+
+import static br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
@@ -57,6 +58,7 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.LotecaActivity;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
@@ -300,7 +302,10 @@ public class AdicionarApostaCarrinhoHelper {
         if (AdicionarApostaCarrinhoHelper.activity instanceof SimulaActivity) {
             ((SimulaActivity) AdicionarApostaCarrinhoHelper.activity)
                     .mostrarPopupApostaAdicionada();
-        } else {
+        }else if(AdicionarApostaCarrinhoHelper.activity instanceof LotecaActivity){
+            ((LotecaActivity) AdicionarApostaCarrinhoHelper.activity)
+                    .mostrarPopupApostaAdicionada();
+        }else {
             if (AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
                 goToCarrinho();
             } else if(AdicionarApostaCarrinhoHelper.activity instanceof SimularApostaActivity) {

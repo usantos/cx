@@ -1523,7 +1523,7 @@ private void zeraLoteca(){
 	}
 
 	@Override
-	public void clickEquipeLoteca(ParametroPartida parametroPartida) {
+	public boolean clickEquipeLoteca(ParametroPartida parametroPartida) {
 		BigDecimal ultimoValor = valorEmReais;
 
 		if (parametroPartida.isSelecionado()) {
@@ -1587,6 +1587,7 @@ private void zeraLoteca(){
 		Boolean mostraBotao = atualizaValorApostaLoteca();
 		atualizaStatusBotaoFinalizarLoteca(mostraBotao);
 		verificaSeMostraBotaoLimparAposta();
+		return true;
 	}
 
 	private void limparPartidadasSelecionasLoteca(boolean desativado) {

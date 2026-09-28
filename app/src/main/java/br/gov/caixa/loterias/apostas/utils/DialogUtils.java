@@ -27,8 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -124,12 +122,11 @@ public class DialogUtils {
 
         dialog.setOnShowListener(d -> {
             if (tvTitulo.getVisibility() == View.VISIBLE){
-                tvTitulo.post(() -> {
-                    tvTitulo.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
-                    );
-                });
+                tvTitulo.post(() ->
+                    tvTitulo.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
+                    )
+                );
             }
         });
 
@@ -213,12 +210,10 @@ public class DialogUtils {
 
         dialog.setOnShowListener(d -> {
             if (tvTitulo.getVisibility() == View.VISIBLE) {
-                tvTitulo.post(() -> {
-                    tvTitulo.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
-                    );
-                });
+                tvTitulo.post(() ->
+                    tvTitulo.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
+                    ));
             }
         });
 
@@ -295,12 +290,11 @@ public class DialogUtils {
 
         dialog.setOnShowListener(dialogInterface -> {
             if (tituloDialog.getVisibility() == View.VISIBLE){
-                tituloDialog.post(() -> {
-                    tituloDialog.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
-                    );
-                });
+                tituloDialog.post(() ->
+                    tituloDialog.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
+                    )
+                );
             }
         });
 
@@ -401,12 +395,11 @@ public class DialogUtils {
 
         dialog.setOnShowListener(dialogInterface -> {
             if (tituloDialog.getVisibility() == View.VISIBLE){
-                tituloDialog.post(() -> {
-                    tituloDialog.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
-                    );
-                });
+                tituloDialog.post(() ->
+                    tituloDialog.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
+                    )
+                );
             }
 
         });
@@ -873,12 +866,11 @@ public class DialogUtils {
 
         dialog.setOnShowListener(dialogInterface -> {
             if (tituloDialog.getVisibility() == View.VISIBLE){
-                tituloDialog.post(() -> {
-                    tituloDialog.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
-                    );
-                });
+                tituloDialog.post(() ->
+                    tituloDialog.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
+                    )
+                );
             }
         });
 
@@ -910,7 +902,7 @@ public class DialogUtils {
         View dialogView = inflater.inflate(R.layout.layout_dialog_padrao, null);
 
         //Inicializa o Builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogUtilsTheme);
         builder.setView(dialogView);
         builder.setCancelable(false); // Impede que a dialog seja fechada ao clicar fora dela
 
@@ -966,12 +958,11 @@ public class DialogUtils {
 
         dialog.setOnShowListener(d -> {
             if (tvTitulo.getVisibility() == View.VISIBLE){
-                tvTitulo.post(() -> {
-                    tvTitulo.performAccessibilityAction(
-                            android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                            null
-                    );
-                });
+                tvTitulo.post(() ->
+                    tvTitulo.sendAccessibilityEvent(
+                            AccessibilityEvent.TYPE_VIEW_FOCUSED
+                    )
+                );
             }
 
         });
@@ -984,13 +975,5 @@ public class DialogUtils {
             return;
         }
 
-        if(dialog.getWindow() != null){
-            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
-            int dialogWidth = (int) (screenWidth * LARGURA_DIALOG_PADRAO);
-
-            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
-
-        }
     }
 }

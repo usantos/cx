@@ -50,14 +50,14 @@ public class FiltroMarketplaceModel extends AppModel{
 	}
 
 	public FiltroAplicadoMarketplace getFiltroAplicado(LotericaDTO selectLotericaDTO, String valorMin, String valorMax,
-													   Integer qtdMin, Integer qtdMax, Integer qtdDezenas, String numerosQuero,
+												   Integer qtdMin, Integer qtdMax, Integer qtdApostas, Integer qtdDezenas, String numerosQuero,
 													   String numerosNaoQuero, ModalidadeEnum selectModalidade,
 													   TipoConcursoEnum selectTipoConcurso, boolean todasModalidadesAtiva) {
 		FiltroAplicadoMarketplace filtro = new FiltroAplicadoMarketplace(
 				selectLotericaDTO,
 				valorMin.replace(".","").replace(",","."),
 				valorMax.replace(".","").replace(",","."),
-				qtdMin, qtdMax, qtdDezenas, numerosQuero, numerosNaoQuero, selectModalidade, selectTipoConcurso);
+				qtdMin, qtdMax, qtdApostas, qtdDezenas, numerosQuero, numerosNaoQuero, selectModalidade, selectTipoConcurso);
 		filtro.setTodasModalidades(todasModalidadesAtiva);
 		return filtro;
 	}
@@ -121,6 +121,11 @@ public class FiltroMarketplaceModel extends AppModel{
 
 	public List<Integer> getListaTodasModalidades(){
 		return geraIntervalo(5, 26);
+	}
+
+	public List<Integer> getIntervalo(int inicio, int fim) {
+		if (inicio <= 0 || fim < inicio) return new ArrayList<>();
+		return geraIntervalo(inicio, fim);
 	}
 
 	private List<Integer> geraIntervalo(int start, int end) {

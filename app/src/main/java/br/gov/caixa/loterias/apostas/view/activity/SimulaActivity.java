@@ -43,7 +43,7 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
 import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
 import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
@@ -71,7 +71,6 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
-import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -951,7 +950,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
 
         Drawable current =
-                ((StateListDrawable) drawable).getCurrent();
+                drawable.getCurrent();
 
         if (current instanceof GradientDrawable) {
             int corTrack = getCorClaraVolante(tipoJogo);
@@ -1369,15 +1368,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         configuraParametrosJogo();
         configuraFragments();
         configuraActivity();
-        zerarApostasLoteca();
-    }
-
-    public void zerarApostasLoteca() {
-        this.setLabelValueJogosLoteca(Constantes.ZERO_STRING);
-        this.setLabelValueSimplesLoteca(Constantes.ZERO_STRING);
-        this.setLabelValueDuplasLoteca(Constantes.ZERO_STRING);
-        this.setLabelValueTriplasLoteca(Constantes.ZERO_STRING);
-        setColorValuesLoteca();
     }
 
     private void executarFavoritarRodape() {
@@ -1484,37 +1474,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         );
     }
 
-    public void setColorValuesLoteca() {
-        this.labelValueJogosLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-        this.labelValueSimplesLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-        this.labelValueDuplasLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-        this.labelValueTriplasLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-    }
-
-    public void setLabelValueJogosLoteca(String labelValueJogosLoteca) {
-        this.labelValueJogosLoteca.setText(labelValueJogosLoteca);
-    }
-
-    public void setLabelValueSimplesLoteca(String labelValueSimplesLoteca) {
-        this.labelValueSimplesLoteca.setText(labelValueSimplesLoteca);
-    }
-
-    public void setLabelValueDuplasLoteca(String labelValueDuplasLoteca) {
-        this.labelValueDuplasLoteca.setText(labelValueDuplasLoteca);
-    }
-
-    public void setLabelValueTriplasLoteca(String labelValueTriplasLoteca) {
-        this.labelValueTriplasLoteca.setText(labelValueTriplasLoteca);
-    }
-
-    public TextView getLabelValueSimplesLoteca() {
-        return labelValueSimplesLoteca;
-    }
-
-    public TextView getLabelValueJogosLoteca() {
-        return labelValueJogosLoteca;
-    }
-
     public TextView getLabelValueDuplasLoteca() {
         return labelValueDuplasLoteca;
     }
@@ -1527,9 +1486,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         return botaoLimparAposta;
     }
 
-    public Button getBotaoCompletar() {
-        return botaoCompletar;
-    }
 
     public TextView getValorApostaCartela() {
         return tvValorAposta;

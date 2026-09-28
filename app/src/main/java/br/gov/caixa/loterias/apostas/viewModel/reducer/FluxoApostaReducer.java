@@ -162,27 +162,46 @@ public class FluxoApostaReducer {
                         qtdDezenasPossiveis
                 );
 
-        boolean exibirInfoEtapa =
-                possuiEtapaComplementar(tipoJogo)
-                        && !atual.isEscolhaTimeCoracaoSurpresinha();
+        boolean exibirInfoEtapa;
+        String textoInfoEtapa;
 
-        String textoInfoEtapa =
-                atual.isEscolhaTimeCoracaoSurpresinha()
-                        ? ""
-                        : obterTextoInfoEtapa(
-                        tipoJogo,
-                        etapa
-                );
+        if (tipoJogo == ModalidadeEnum.LOTECA) {
+            int totalPalpitesSelecionados =
+                    calcularTotalPalpitesSelecionadosLoteca(event);
+
+            exibirInfoEtapa = true;
+            textoInfoEtapa = montarTextoInfoEtapaLoteca(
+                    totalPalpitesSelecionados,
+                    atual.getPalpitesLoteca()
+            );
+        } else {
+            exibirInfoEtapa =
+                    possuiEtapaComplementar(tipoJogo)
+                            && !atual.isEscolhaTimeCoracaoSurpresinha();
+
+            textoInfoEtapa =
+                    atual.isEscolhaTimeCoracaoSurpresinha()
+                            ? ""
+                            : obterTextoInfoEtapa(
+                            tipoJogo,
+                            etapa
+                    );
+        }
 
         boolean possuiAlteracoesPendentes;
 
         if (tipoJogo == ModalidadeEnum.SUPER_7) {
             possuiAlteracoesPendentes =
                     event.getQtdTotalSelecionadosSuperSete() > 0;
-        } else {
+        } else if(tipoJogo == ModalidadeEnum.LOTECA){
+            possuiAlteracoesPendentes = event.getQtdPartidasSelecionadas() > 0;
+        }else {
             possuiAlteracoesPendentes =
                     event.getQtdDezenasSelecionadas() > 0;
         }
+
+        int simplesLoteca =
+                calcularSimplesSelecionadosLoteca(event);
 
         return atual.toBuilder()
                 .setEtapaAposta(etapa)
@@ -246,6 +265,10 @@ public class FluxoApostaReducer {
                 .setDezenasSelecionadas(
                         event.getDezenasSelecionadas()
                 )
+                .setJogosLoteca(event.getQtdPartidasSelecionadas())
+                .setDuplasLoteca(event.getDuplosLoteca())
+                .setTriplasLoteca(event.getTriplosLoteca())
+                .setSimplesLoteca(simplesLoteca)
                 .build();
     }
 
@@ -513,6 +536,13 @@ public class FluxoApostaReducer {
             );
         }
 
+        if (tipoJogo == ModalidadeEnum.LOTECA){
+            return resolverFluxoLoteca(
+                    atual,
+                    event
+            );
+        }
+
 
         if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE) {
 
@@ -600,6 +630,33 @@ public class FluxoApostaReducer {
         );
     }
 
+    private ResultadoFluxoAposta resolverFluxoLoteca(
+            SimulaUiState atual,
+            SimulaUiEvent.CartelaAlterada event
+    ) {
+        int totalPalpitesSelecionados =
+                calcularTotalPalpitesSelecionadosLoteca(event);
+
+        boolean todasPartidasPreenchidas =
+                event.getQtdPartidasSelecionadas()
+                        == event.getQtdPartidasTotal();
+
+        boolean possuiDuploOuTriploLoteca =
+                event.getDuplosLoteca() > 0
+                        || event.getTriplosLoteca() > 0;
+
+        boolean apostaCompleta =
+                todasPartidasPreenchidas
+                        && totalPalpitesSelecionados
+                        == atual.getPalpitesLoteca()
+                        && possuiDuploOuTriploLoteca;
+
+        return new ResultadoFluxoAposta(
+                EtapaAposta.NUMEROS,
+                apostaCompleta,
+                apostaCompleta
+        );
+    }
     private boolean isSelecaoPrincipalCompleta(
             SimulaUiEvent.CartelaAlterada event
     ) {
@@ -610,20 +667,6 @@ public class FluxoApostaReducer {
         if (tipoJogo == ModalidadeEnum.SUPER_7) {
             return event.getQtdTotalSelecionadosSuperSete()
                     == event.getQtdDezenasPossiveisSelecionado();
-        }
-
-        if (tipoJogo == ModalidadeEnum.LOTECA) {
-
-            boolean partidasCompletas =
-                    event.getQtdPartidasSelecionadas()
-                            == event.getQtdPartidasTotal();
-
-            boolean possuiDuploOuTriplo =
-                    event.getDuplosLoteca() > 0
-                            || event.getTriplosLoteca() > 0;
-
-            return partidasCompletas
-                    && possuiDuploOuTriplo;
         }
 
         if (tipoJogo == ModalidadeEnum.LOTOGOL) {
@@ -714,6 +757,49 @@ public class FluxoApostaReducer {
         }
 
         return event.getQtdDezenasSelecionadas() > 0;
+    }
+
+    private int calcularTotalPalpitesSelecionadosLoteca(
+            SimulaUiEvent.CartelaAlterada event
+    ) {
+        if (event == null) {
+            return 0;
+        }
+
+        int simples = calcularSimplesSelecionadosLoteca(event);
+        int duplas = event.getDuplosLoteca();
+        int triplas = event.getTriplosLoteca();
+
+        return simples
+                + (duplas * 2)
+                + (triplas * 3);
+    }
+
+    private int calcularSimplesSelecionadosLoteca(
+            SimulaUiEvent.CartelaAlterada event
+    ) {
+        if (event == null) {
+            return 0;
+        }
+
+        int jogosSelecionados = event.getQtdPartidasSelecionadas();
+        int duplas = Math.max(event.getDuplosLoteca(), 0);
+        int triplas = Math.max(event.getTriplosLoteca(), 0);
+
+        return Math.max(
+                jogosSelecionados - duplas - triplas,
+                0
+        );
+    }
+
+    private String montarTextoInfoEtapaLoteca(
+            int palpitesSelecionados,
+            int palpitesMaximos
+    ) {
+        return "Selecionados: "
+                + Math.max(palpitesSelecionados, 0)
+                + "/"
+                + Math.max(palpitesMaximos, 0);
     }
 
     private boolean podeMostrarSalvarAposta(
