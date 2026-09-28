@@ -67,7 +67,7 @@ public class AlertDialogExperimenteLogarSingleton {
     }
 
     public static void showSessaoExpirada(Activity activity, Runnable onEntendi) {
-        if (activity.isFinishing() || activity.isDestroyed()) {
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
             return;
         }
         dismissDialog();
