@@ -133,6 +133,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         aplicaCores();
         setupToolbar();
         desativaComponentes();
+        exibeAlertaTeimosinhaOriginalAposResgate();
 
         if (isConcursoNaoApurado(aposta)) {
             populaTela();
@@ -141,6 +142,11 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         }
     }
 
+    private void exibeAlertaTeimosinhaOriginalAposResgate(){
+        if (ApostaUtils.isTeimosinhaOriginalComPremioResgatado(aposta)){
+            DialogUtils.dialogEntendi(this, getString(R.string.alerta_teimosinha_original_apos_resgate));
+        }
+    }
 
     @Override
     protected void onDestroy() {

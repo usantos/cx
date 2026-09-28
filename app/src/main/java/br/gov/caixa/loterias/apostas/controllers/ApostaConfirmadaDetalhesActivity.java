@@ -724,7 +724,10 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
 
     private void inibirTeim() {
         if(!apresentouTeimosinha){
-            if (aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
+            if(ApostaUtils.isTeimosinhaOriginalComPremioResgatado(aposta)){
+                DialogUtils.dialogEntendi(ApostaConfirmadaDetalhesActivity.this, getString(R.string.alerta_teimosinha_original_apos_resgate));
+                apresentouTeimosinha = true;
+            } else if(aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")){
                 DialogUtils.dialogEntendi(ApostaConfirmadaDetalhesActivity.this, getResources().getString(R.string.inibir_teimosinha_V2));
                 apresentouTeimosinha = true;
             }

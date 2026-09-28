@@ -155,6 +155,7 @@
     <string name="numeros_sorteados">Números sorteados</string>
     <string name="inibir_teimosinha">Para Teimosinhas são exibidos os números apostados e os números sorteados apenas do primeiro concurso apostado. A conferência das apostas, no entanto, é realizada para todos os concursos. Em breve a funcionalidade será aprimorada para exibir os números apostados e os números sorteados de todos os concursos da Teimosinha.</string>
     <string name="inibir_teimosinha_V2">A conferência dos jogos da Teimosinha é realizada para todos os concursos apostados, no entanto, é exibida apenas a do primeiro concurso.</string>
+    <string name="alerta_teimosinha_original_apos_resgate">Esta aposta com Teimosinha não é mais válida para acompanhamento. Utilize a aposta de troca gerada após o resgate do prêmio, para acompanhar os próximos sorteios.</string>
 
     <!-- email-->
     <string name="email_padrao">CEDESBR456@caixa.gov.br</string>
