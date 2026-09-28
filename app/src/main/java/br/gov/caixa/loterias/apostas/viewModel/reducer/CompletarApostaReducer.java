@@ -97,11 +97,6 @@ public class CompletarApostaReducer {
                     .PreencherSuperSete();
         }
 
-        if (tipoJogo == ModalidadeEnum.LOTECA) {
-            return new CompletarApostaEffect
-                    .ZerarLoteca();
-        }
-
         return new CompletarApostaEffect
                 .PreencherNumerosAleatorios();
     }

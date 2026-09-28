@@ -406,7 +406,8 @@
         android:background="@color/branco"
         android:visibility="visible" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
+        android:theme="@style/Theme.MaterialComponents.Light.Bridge"
         android:id="@+id/buttonHomeBet"
         android:layout_width="match_parent"
         android:layout_height="84dp"
@@ -415,27 +416,31 @@
         android:layout_marginStart="88dp"
         android:layout_marginEnd="88dp"
         android:layout_marginBottom="68dp"
-        android:background="@color/mega_verde_claro_mkp"
         android:textAllCaps="false"
         android:textColor="@color/branco"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textSize="16sp"
+        app:cornerRadius="4dp"
         android:fontFamily="@font/caixa_std_regular"
         tools:text="Aposta\npor R$ 2,00" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
+        android:backgroundTint="@color/mega_verde_claro_mkp"
+        android:theme="@style/Theme.MaterialComponents.Light.Bridge"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:id="@+id/buttonHomeBolao"
         android:layout_width="match_parent"
         android:layout_height="84dp"
+        app:cornerRadius="4dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="88dp"
         android:layout_marginEnd="88dp"
         android:layout_marginBottom="168dp"
-        android:background="@drawable/btn_rounded_orange_outlined"
         android:textAllCaps="false"
-        android:textColor="@color/laranjacaixa"
+        android:textColor="@color/branco"
         android:textSize="16sp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:text=""
         android:fontFamily="@font/caixa_std_regular" />
 

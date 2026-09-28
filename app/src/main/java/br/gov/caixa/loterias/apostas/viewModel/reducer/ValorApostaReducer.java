@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.viewModel.reducer;
 import java.math.BigDecimal;
+
+import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
@@ -240,5 +242,48 @@ public class ValorApostaReducer {
     ) {
         return valor != null
                 && valor.doubleValue() > 999.99;
+    }
+    private BigDecimal calcularValorLoteca(
+            ParametroJogoDTO parametroJogo,
+            int duplos,
+            int triplos
+    ) {
+        if (parametroJogo == null) {
+            return BigDecimal.ZERO;
+        }
+
+        if (duplos > 0 || triplos > 0) {
+
+            ParametroValorApostaDTO valorAposta =
+                    parametroJogo.getValorApostaLotecaBy(duplos, triplos);
+
+            return valorAposta != null && valorAposta.getValor() != null
+                    ? valorAposta.getValor()
+                    : BigDecimal.ZERO;
+        }
+
+        return parametroJogo.getValorApostaMinima() != null
+                ? parametroJogo.getValorApostaMinima()
+                : BigDecimal.ZERO;
+    }
+
+    public SimulaUiState atualizarLoteca(
+            SimulaUiState state,
+            SimulaUiEvent.LotecaAtualizada event,
+            ParametroJogoDTO parametro
+    ){
+        BigDecimal valor = calcularValorLoteca(
+                parametro,
+                event.getDuplas(),
+                event.getTriplas()
+        );
+
+        return state.toBuilder()
+                .setJogosLoteca(event.getJogos())
+                .setSimplesLoteca(event.getSimples())
+                .setDuplasLoteca(event.getDuplas())
+                .setTriplasLoteca(event.getTriplas())
+                .setValorAposta(valor)
+                .build();
     }
 }
