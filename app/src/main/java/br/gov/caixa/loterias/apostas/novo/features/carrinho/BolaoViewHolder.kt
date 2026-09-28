@@ -74,9 +74,9 @@ class BolaoViewHolder(
             aposta.concursoAlvo
         )
 
-        tvValor.text = NumberFormat
+tvValor.text = NumberFormat
             .getCurrencyInstance(Locale("pt", "BR"))
-            .format(reserva.vrCotaReservada)
+            .format(reserva.vrTotalCota)
 
         val timeMillis = reserva.dataHoraExpiracaoReserva
             ?.let(DateUtils::diffMillisSecondsTimerZone)
