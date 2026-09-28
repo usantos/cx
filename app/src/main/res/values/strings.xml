@@ -1745,6 +1745,7 @@
     <string name="xx">XX</string>
     <string name="tokenactivity">TokenActivity</string>
     <string name="biometrialogin">BiometriaLogin</string>
+    <string name="sessao_expirada">Sua sessão expirou. É necessário realizar o login novamente para continuar utilizando o aplicativo Loterias CAIXA.</string>
     <string name="adicionarNovaAposta">Adicionar nova aposta</string>
     <string name="irParaPagamento">Ir para pagamento</string>
     <string name="txt_prefix_conc">Conc. %1$s</string>
