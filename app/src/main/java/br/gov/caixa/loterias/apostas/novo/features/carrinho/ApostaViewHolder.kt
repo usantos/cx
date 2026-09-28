@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.novo.features.carrinho
 
-import CarrinhoItem
 import android.content.Context
 import android.graphics.Typeface
 import android.view.Gravity
@@ -13,7 +12,6 @@ import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
@@ -53,8 +51,7 @@ class ApostaViewHolder(
     private val tvValor = itemView.findViewById<TextView>(R.id.tvValor)
 
     private val tvConcurso = itemView.findViewById<TextView>(R.id.tvConcurso)
-    private val tvExtra =
-        itemView.findViewById<TextView>(R.id.tvExtra)
+    private val tvExtra = itemView.findViewById<TextView>(R.id.tvExtra)
 
     private val btnExcluir = itemView.findViewById<ImageView>(R.id.btnExcluir)
 
@@ -183,9 +180,7 @@ class ApostaViewHolder(
         return when {
             aposta.modalidade == ModalidadeEnum.SUPER_7 -> true
             aposta.surpresinha == true -> false
-            else -> aposta.listaNumerosSelecionados
-                .orEmpty()
-                .size > NUMEROS_POR_LINHA
+            else -> aposta.listaNumerosSelecionados.orEmpty().size > NUMEROS_POR_LINHA
         }
     }
 
@@ -324,14 +319,10 @@ class ApostaViewHolder(
         val time = aposta.timeDoCoracao ?: return
 
         val nome =
-            time.nome?.takeIf { it.isNotBlank() }
-                ?: time.descricaoCurta?.takeIf { it.isNotBlank() }
-                ?: return
+            time.nome?.takeIf { it.isNotBlank() } ?: time.descricaoCurta?.takeIf { it.isNotBlank() }
+            ?: return
 
-        val descricao = time.uf
-            ?.takeIf { it.isNotBlank() }
-            ?.let { uf -> "$nome/$uf" }
-            ?: nome
+        val descricao = time.uf?.takeIf { it.isNotBlank() }?.let { uf -> "$nome/$uf" } ?: nome
 
         adicionarExtra(
             label = itemView.context.getString(R.string.carrinho_time_do_coracao),
@@ -340,8 +331,7 @@ class ApostaViewHolder(
     }
 
     private fun adicionarExtra(
-        label: String,
-        value: String
+        label: String, value: String
     ) {
         tvExtra.text = "$label: $value"
         tvExtra.visibility = View.VISIBLE
@@ -504,6 +494,12 @@ class ApostaViewHolder(
 
     private fun View.visibleIf(condition: Boolean) {
         visibility = if (condition) View.VISIBLE else View.GONE
+    }
+
+    private fun obterNumerosSurpresinha(quantidadeNumeros: Int): String {
+        return List(quantidadeNumeros) {
+            TEXTO_NUMERO_SURPRESINHA
+        }.joinToString(" - ")
     }
 
     companion object {

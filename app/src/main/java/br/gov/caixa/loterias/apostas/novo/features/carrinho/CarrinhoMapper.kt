@@ -1,3 +1,5 @@
+package br.gov.caixa.loterias.apostas.novo.features.carrinho
+
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO
 
 object CarrinhoMapper {

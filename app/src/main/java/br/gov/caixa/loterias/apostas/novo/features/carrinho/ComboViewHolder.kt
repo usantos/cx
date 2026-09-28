@@ -1,3 +1,5 @@
+package br.gov.caixa.loterias.apostas.novo.features.carrinho
+
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

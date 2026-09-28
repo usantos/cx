@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.novo.features.carrinho
 
-import CarrinhoItem
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.ImageView

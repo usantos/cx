@@ -1,3 +1,5 @@
+package br.gov.caixa.loterias.apostas.novo.features.carrinho
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -6,10 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import br.gov.caixa.loterias.apostas.R
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.ApostaViewHolder
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.BolaoViewHolder
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.HeaderFixoViewHolder
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.HeaderViewHolder
 
 class CarrinhoAdapter(
     private val onExcluir: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit,

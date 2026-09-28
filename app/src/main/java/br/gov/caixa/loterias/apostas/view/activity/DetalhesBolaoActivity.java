@@ -456,7 +456,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 
 	private void fragmentSomadorCarrinho() {
 		if(somadorCarrinhoFragment == null){
-			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho, false);
+			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, false);
 		}else {
 			somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
 		}

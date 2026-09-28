@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostas.novo.features.carrinho
 
-import CarrinhoAdapter
-import CarrinhoMapper
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -288,15 +286,12 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     private fun abrirDetalhesCombo(combo: ComboApostaDTO) {
         val bundle = Bundle().apply {
             putString(
-                DetalhesComboActivity.ARG_COMBO_APOSTA_DTO,
-                Gson().toJson(combo)
+                DetalhesComboActivity.ARG_COMBO_APOSTA_DTO, Gson().toJson(combo)
             )
         }
 
         val intent = IntentUtil.getIntentOrigemDestino(
-            this@CarrinhoActivity,
-            DetalhesComboActivity::class.java,
-            bundle
+            this@CarrinhoActivity, DetalhesComboActivity::class.java, bundle
         )
 
         startActivity(intent)
