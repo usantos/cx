@@ -5,6 +5,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.gov.caixa.loterias.apostas.R
 
+import CarrinhoItem
+
 class HeaderViewHolder(
     itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
