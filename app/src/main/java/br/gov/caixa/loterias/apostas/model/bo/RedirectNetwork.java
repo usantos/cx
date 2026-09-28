@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
@@ -60,9 +61,9 @@ public class  RedirectNetwork {
                     new OnDialogBotaoListener() {
                         @Override
                         public void onButtonClick(DialogInterface dialog, int which) {
-                              activity.startActivityForResult(
-                              new Intent(activity, TermosUsoActivity.class),
-                              1);
+                            activity.startActivityForResult(
+                                    new Intent(activity, TermosUsoActivity.class),
+                                    1);
                         }
                     }
             );
@@ -129,8 +130,7 @@ public class  RedirectNetwork {
                 }
                 switch (response.statusCode){
                     case 401:
-                        AlertDialogExperimenteLogarSingleton.showSessaoExpirada(activity,
-                                () -> connectKeycloak(activity, null));
+                        handleUnauthorized(activity);
                         return;
                     case 400:
                         treatNegotialErros(errorResponse, error, activity);
@@ -148,7 +148,20 @@ public class  RedirectNetwork {
                 }
             }
         }else {
-            AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
+            if (response.statusCode == 401){
+                handleUnauthorized(activity);
+            } else {
+                AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
+            }
+        }
+    }
+
+    private static void handleUnauthorized(Activity activity) {
+        if (KeycloakBO.getInstance().getAccessToken() == null) {
+            AlertDialogExperimenteLogarSingleton.show(activity, true, null);
+        } else {
+            AlertDialogExperimenteLogarSingleton.showSessaoExpirada(activity,
+                    () -> connectKeycloak(activity, null));
         }
     }
 
@@ -223,7 +236,7 @@ public class  RedirectNetwork {
                 }
                 switch (response.statusCode){
                     case 401:
-                        connectKeycloak(activity, null);
+                        handleUnauthorized(activity);
                         return;
                     case 404:
                     case 400:
@@ -242,8 +255,12 @@ public class  RedirectNetwork {
                 }
             }
         }else {
-            AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
-            showAlertToRedirectMinhasCompras(activity);
+            if (response.statusCode == 401){
+                handleUnauthorized(activity);
+            } else {
+                AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
+                showAlertToRedirectMinhasCompras(activity);
+            }
         }
     }
 
@@ -350,8 +367,8 @@ public class  RedirectNetwork {
 
     public static void trataBloqueioParcial(final Activity activity) {
         if (SessaoUsuario.getInstance().getSituacaoApostador() != null &&
-            SessaoUsuario.getInstance().getSituacaoApostador().getEnum() != null && //Servico Nuvem (Erro)
-            SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
+                SessaoUsuario.getInstance().getSituacaoApostador().getEnum() != null && //Servico Nuvem (Erro)
+                SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
             DialogUtils.dialogEntendiListener(
                     activity,
                     activity.getString(R.string.usuario_bloqueio_parcial),
@@ -392,7 +409,7 @@ public class  RedirectNetwork {
 
                                 @Override
                                 public void NegativeButton(DialogInterface dialog, int which) {
-                                        //Sem ação, dialog.dismiss() já é chamado automaticamente após clicar no botão
+                                    //Sem ação, dialog.dismiss() já é chamado automaticamente após clicar no botão
                                 }
                             }
                     );
