@@ -241,7 +241,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		btnAumenta = findViewById(R.id.aumenta_cota);
 		listaJogos = findViewById(R.id.id_lista_jogos);
 		layoutQtdCotas = findViewById(R.id.id_layout_qtd_cotas);
-		frameSomador = findViewById(R.id.id_somador_carrinho);
+		frameSomador = findViewById(R.id.id_fg_somador_carrinho);
 		frameRodape = findViewById(R.id.id_fg_rodape);
 		botaoFavoritar = findViewById(R.id.btn_favoritar_detalhes);
 		tvFavoritar = findViewById(R.id.txt_favoritar_loterica);

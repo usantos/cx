@@ -388,7 +388,7 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <FrameLayout
-            android:id="@+id/id_somador_carrinho"
+            android:id="@+id/id_fg_somador_carrinho"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
