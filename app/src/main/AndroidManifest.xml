@@ -52,17 +52,23 @@
         android:usesCleartextTraffic="false"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".TestActivity"
+            android:exported="false"
+            android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".BuscarLotericasActivity"
+            android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustPan" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/trevo" />
         <meta-data
             android:name="google_analytics_automatic_screen_reporting_enabled"
-            android:value="false"/>
+            android:value="false" />
+
         <activity
             android:name=".controllers.QueroNaoQueroActivity"
             android:exported="false"
@@ -80,12 +86,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.CombosActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.DetalheComboActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.FiltraMarketplaceActivity"
             android:exported="false"
@@ -206,16 +212,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.VIEW" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW" /> -->
 
-            <!--                <category android:name="android.intent.category.DEFAULT" />-->
-            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-            <!--                <data-->
-            <!--                    android:host="loteriasonline.caixa.gov.br"-->
-            <!--                    android:scheme="https" />-->
-            <!--            </intent-filter>-->
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+
+
+            <!-- <data -->
+            <!-- android:host="loteriasonline.caixa.gov.br" -->
+            <!-- android:scheme="https" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".controllers.IntroducaoActivity"
@@ -246,8 +254,8 @@
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/Theme.SimulaMaterial"/>
+            android:theme="@style/Theme.SimulaMaterial"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.activity.LotecaActivity"
             android:configChanges="orientation"
@@ -420,8 +428,8 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.DetalheDuvidaActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.MinhasApostasActivity"
             android:exported="true"
@@ -533,7 +541,7 @@
         <activity
             android:name="com.filabra.adapter.android.FilaBRAActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

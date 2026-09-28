@@ -17,6 +17,9 @@ buildscript {
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
         classpath "com.github.triplet.gradle:play-publisher:3.8.6"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        classpath "org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:$kotlin_version"
+        classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.0.21'
     }
 }
 
