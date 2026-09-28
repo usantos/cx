@@ -68,7 +68,6 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
     private lateinit var toolbar: AppBarLayout
     private lateinit var dialogFavoritar: Dialog
     private lateinit var rvListaCarrinho: RecyclerView
-    private lateinit var infoValorMinimo: TextView
     private lateinit var etCarrinho: EditText
     private lateinit var btnAvancaPagamento: Button
     private lateinit var btnNovaAposta: Button
@@ -217,7 +216,6 @@ open class CarrinhoActivity : LoteriasBaseAppActivity() {
         layoutCarrinhoVazio = findViewById(R.id.layoutCarrinhoVazio)
         contentContainer = findViewById(R.id.contentContainer)
 
-        infoValorMinimo = findViewById(R.id.tv_info_valor_minimo)
         btnAvancaPagamento = findViewById(R.id.btn_avancar_pagamento)
         btnNovaAposta = findViewById(R.id.btn_nova_aposta)
         toolbar = findViewById(R.id.toolbar)
