@@ -4,7 +4,6 @@ import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezena
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpites;
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
