@@ -24,9 +24,11 @@ object CarrinhoMapper {
                 ?.let { apostas ->
                     add(CarrinhoItem.Header("Apostas Individuais"))
 
-                    apostas.forEach {
-                        add(CarrinhoItem.Aposta(it))
-                    }
+                    apostas
+                        .filter { it.modalidade != null }
+                        .forEach {
+                            add(CarrinhoItem.Aposta(it))
+                        }
                 }
 
             carrinho.combos
