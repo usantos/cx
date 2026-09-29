@@ -258,6 +258,10 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
 
     private void marcarNaoLidasComoLidas() {
 
+        if (listNotificacaoNaoLidas == null || listNotificacaoNaoLidas.size() == 0) {
+            return;
+        }
+
         final int total = listNotificacaoNaoLidas.size();
         final int[] concluidas = {0};
 
@@ -272,7 +276,11 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
                         carregarLidasServico();
                         atualizarContadorNaoLidas();
                         atualizarBotoesRodape();
-                        exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
+                        if (ABA_TODAS.equals(abaSelerionada)) {
+                            exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
+                        } else {
+                            exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
+                        }
                     }
                 }
 
@@ -284,7 +292,11 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
                         carregarLidasServico();
                         atualizarContadorNaoLidas();
                         atualizarBotoesRodape();
-                        exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
+                        if (ABA_TODAS.equals(abaSelerionada)) {
+                            exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
+                        } else {
+                            exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
+                        }
                     }
                 }
             });
