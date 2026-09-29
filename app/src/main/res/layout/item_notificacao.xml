@@ -51,7 +51,7 @@
             android:layout_gravity="top"
             android:layout_marginStart="8dp"
             android:background="@android:color/transparent"
-            android:contentDescription="Excluir notificação"
+            android:contentDescription="@string/excluir_notificacao"
             android:src="@drawable/lixeira_notificacao"/>
 
     </LinearLayout>
