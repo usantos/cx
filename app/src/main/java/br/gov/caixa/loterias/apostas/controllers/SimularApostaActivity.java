@@ -736,7 +736,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     }
 
     private void configuraActivity() {
-        configuraTipoApostaTela(estilo.getCorClara(),estilo.getCorEscura(), View.VISIBLE, View.GONE);
+        boolean isLoteca = tipoJogo  == ModalidadeEnum.LOTECA;
+        configuraTipoApostaTela(
+                estilo.getCorClara(),
+                estilo.getCorEscura(),
+                isLoteca? View.GONE : View.VISIBLE,
+                isLoteca ? View.VISIBLE : View.GONE);
         qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;
         qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas() != null ? parametroSimulacao.getTeimosinhas().get(0) == 0 ? 0 : parametroSimulacao.getTeimosinhas().get(0) : 0;
         String dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
