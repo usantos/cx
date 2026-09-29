@@ -35,13 +35,17 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
 
     private static final String ABA_TODAS = "TODAS";
     private static final String ABA_NAO_LIDAS = "NAO_LIDAS";
-    private Button btnAbaTodas, btnAbaNaoLidas, btnMarcarTodas, btnExcluirTodas;
+    private Button btnAbaTodas;
+    private Button btnAbaNaoLidas;
+    private Button btnMarcarTodas;
+    private Button btnExcluirTodas;
     private RecyclerView rvNotificacoes;
     private LinearLayout llEstadoVazio;
     private TextView textVazioTitulo;
     private NotificacaoAdapter notificacaoAdapter;
     private String abaSelerionada = ABA_TODAS;
-    private List<NotificacaoCentralDTO> listNotificacaoTodas, listNotificacaoNaoLidas;
+    private List<NotificacaoCentralDTO> listNotificacaoTodas;
+    private List<NotificacaoCentralDTO> listNotificacaoNaoLidas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +80,6 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         textTitulo.setText(getString(R.string.central_notificacoes));
         textTitulo.setHint(getString(R.string.titulo));
         ImageView btnBack = findViewById(R.id.customButton);
-        //btnBack.setOnClickListener(v -> fecharTela());
         btnBack.setOnClickListener(v -> finish());
         ImageView imageTrevo = findViewById(R.id.icon_loterias);
         imageTrevo.setVisibility(View.VISIBLE);
@@ -97,12 +100,8 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
         btnMarcarTodas.setOnClickListener(v -> marcarTodas());
         btnExcluirTodas.setOnClickListener(v -> excluirTodas());
 
-        notificacaoAdapter = new NotificacaoAdapter(this, new ArrayList<NotificacaoCentralDTO>(), new NotificacaoAdapter.OnExcluirClickListener() {
-            @Override
-            public void onExcluir(NotificacaoCentralDTO notificacaoCentralDTO) {
-                excluirNoticacao(notificacaoCentralDTO);
-            }
-        });
+        notificacaoAdapter = new NotificacaoAdapter(this, new ArrayList<NotificacaoCentralDTO>(),
+                this::excluirNoticacao);
         rvNotificacoes.setLayoutManager(new LinearLayoutManager(this));
         rvNotificacoes.setAdapter(notificacaoAdapter);
     }
@@ -258,7 +257,7 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
 
     private void marcarNaoLidasComoLidas() {
 
-        if (listNotificacaoNaoLidas == null || listNotificacaoNaoLidas.size() == 0) {
+        if (listNotificacaoNaoLidas == null || listNotificacaoNaoLidas.isEmpty()) {
             return;
         }
 
@@ -267,67 +266,64 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
 
         for (NotificacaoCentralDTO notificacao : new ArrayList<>(listNotificacaoNaoLidas)) {
 
-            DadosUsuarioBO.getInstance().putLerIdNotificacao(notificacao.getId(), new RequestListener<RetornoPadraoResponse>() {
-                @Override
-                public void onResponse(RetornoPadraoResponse response) {
-                    removerNotificacaoPorId(listNotificacaoNaoLidas, notificacao.getId());
-                    concluidas[0]++;
-                    if (concluidas[0] == total) {
-                        carregarLidasServico();
-                        atualizarContadorNaoLidas();
-                        atualizarBotoesRodape();
-                        if (ABA_TODAS.equals(abaSelerionada)) {
-                            exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
-                        } else {
-                            exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
-                        }
-                    }
-                }
+            DadosUsuarioBO.getInstance().putLerIdNotificacao(
+                    notificacao.getId(),
+                    new RequestListener<RetornoPadraoResponse>() {
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //RedirectNetwork.checkRedirect(error, CentralNotificacaoActivity.this);
-                    concluidas[0]++;
-                    if (concluidas[0] == total) {
-                        carregarLidasServico();
-                        atualizarContadorNaoLidas();
-                        atualizarBotoesRodape();
-                        if (ABA_TODAS.equals(abaSelerionada)) {
-                            exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
-                        } else {
-                            exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
+                        @Override
+                        public void onResponse(RetornoPadraoResponse response) {
+                            removerNotificacaoPorId(listNotificacaoNaoLidas, notificacao.getId());
+                            finalizarProcessamento(concluidas, total);
                         }
-                    }
-                }
-            });
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            finalizarProcessamento(concluidas, total);
+                        }
+                    });
         }
+    }
+
+    private void finalizarProcessamento(int[] concluidas, int total) {
+        concluidas[0]++;
+
+        if (concluidas[0] == total) {
+            atualizarTelaAposMarcarComoLida();
+        }
+    }
+
+    private void atualizarTelaAposMarcarComoLida() {
+        carregarLidasServico();
+        atualizarContadorNaoLidas();
+        atualizarBotoesRodape();
+
+        if (ABA_TODAS.equals(abaSelerionada)) {
+            exibirNotificacoes(ABA_TODAS, listNotificacaoTodas);
+            return;
+        }
+
+        exibirNotificacoes(ABA_NAO_LIDAS, listNotificacaoNaoLidas);
     }
 
     private void marcarTodas() {
         DialogUtils.dialogTituloSim(this,
                 getString(R.string.marcar_todas_como_lidas),
                 getString(R.string.deseja_marcar_todas_como_lidas),
-                (dialog, which) -> {
-                    visualizaTodasNotificacoesServico();
-        });
+                (dialog, which) -> visualizaTodasNotificacoesServico());
     }
 
     private void excluirTodas() {
         DialogUtils.dialogTituloSim(this,
                 getString(R.string.excluir_notificacoes),
                 getString(R.string.deseja_excluir_todas),
-                (dialog, which) -> {
-                    limpaNotificacoesServico();
-        });
+                (dialog, which) -> limpaNotificacoesServico());
     }
 
     private void excluirNoticacao(NotificacaoCentralDTO notificacaoCentralDTO) {
         DialogUtils.dialogTituloSim(this,
                 getString(R.string.excluir_notificacao),
                 getString(R.string.deseja_excluir_notificacao) +" \""+ notificacaoCentralDTO.getTitulo() +"\"?",
-                (dialog, which) -> {
-                    excluirNotificacaoServico(notificacaoCentralDTO);
-                });
+                (dialog, which) -> excluirNotificacaoServico(notificacaoCentralDTO));
     }
 
     private void removerNotificacaoPorId(List<NotificacaoCentralDTO> lista, Long id) {

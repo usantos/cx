@@ -18,7 +18,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoCentralDTO;
 public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.NotificacaoViewHolder> {
 
     public interface OnExcluirClickListener {
-        void onExcluir(NotificacaoCentralDTO NotificacaoCentralDTO);
+        void onExcluir(NotificacaoCentralDTO notificacaoCentralDTO);
     }
 
     private final Context context;
@@ -67,16 +67,13 @@ public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.
             btnExcluirNotificacao = itemView.findViewById(R.id.btnExcluirNotificacao);
         }
 
-        void bind(final NotificacaoCentralDTO NotificacaoCentralDTO, final OnExcluirClickListener listener) {
-            textTituloNotificacao.setText(NotificacaoCentralDTO.getTitulo());
-            textMensagemNotificacao.setText(NotificacaoCentralDTO.getConteudo());
-            badgeNaoLida.setVisibility(NotificacaoCentralDTO.isLida() ? View.INVISIBLE : View.VISIBLE);
-            btnExcluirNotificacao.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onExcluir(NotificacaoCentralDTO);
-                    }
+        void bind(final NotificacaoCentralDTO notificacaoCentralDTO, final OnExcluirClickListener listener) {
+            textTituloNotificacao.setText(notificacaoCentralDTO.getTitulo());
+            textMensagemNotificacao.setText(notificacaoCentralDTO.getConteudo());
+            badgeNaoLida.setVisibility(notificacaoCentralDTO.isLida() ? View.INVISIBLE : View.VISIBLE);
+            btnExcluirNotificacao.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onExcluir(notificacaoCentralDTO);
                 }
             });
         }
