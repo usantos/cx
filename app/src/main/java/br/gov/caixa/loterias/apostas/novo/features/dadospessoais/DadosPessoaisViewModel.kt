@@ -424,7 +424,13 @@ class DadosPessoaisViewModel(
 
     private fun finalizarCarregamentoComFalhaInterna() {
         carregamentoIniciado = false
-        updateState { it.copy(carregando = false, dadosCarregados = false) }
+        updateState {
+            it.copy(
+                carregando = false,
+                dadosCarregados = false,
+                )
+        }
+        updateComandos { it.copy(dialog = DadosPessoaisEffect.FalhaAoCarregarDados) }
     }
 
     private fun updateState(reducer: (DadosPessoaisState) -> DadosPessoaisState) {

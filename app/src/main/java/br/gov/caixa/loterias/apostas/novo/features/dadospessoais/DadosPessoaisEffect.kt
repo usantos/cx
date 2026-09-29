@@ -29,6 +29,8 @@ sealed class DadosPessoaisEffect {
 
     data object FecharTela : DadosPessoaisEffect()
 
+    data object FalhaAoCarregarDados: DadosPessoaisEffect()
+
     data class RegistrarEvento(val tipo: Tipo) : DadosPessoaisEffect() {
         enum class Tipo {
             ENTROU_EDITAR_CADASTRO,

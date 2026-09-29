@@ -64,21 +64,19 @@ class DadosPessoaisViewModelTest {
         sexo: ApostadorDTO.SexoEnum = ApostadorDTO.SexoEnum.M,
         aceitaNoticias: Boolean = false
     ): ApostadorDTO = ApostadorDTO().apply {
-        setCpf("12345678900")
-        setNome("Nome Teste")
-        setEmail("teste@teste.com")
+        cpf = "12345678900"
+        nome = "Nome Teste"
+        email = "teste@teste.com"
         setCep(cep)
-        setMunicipioId(
-            MunicipioIdDTO().apply {
-                setIdUF(idUf)
-                setNumero(numeroMunicipio)
-            }
-        )
-        setLimiteMinimoDiario(limiteMinimo)
+        municipioId = MunicipioIdDTO().apply {
+            setIdUF(idUf)
+            setNumero(numeroMunicipio)
+        }
+        limiteMinimoDiario = limiteMinimo
         setLimiteDiario(limiteDiario)
-        setLimiteDiarioAutorizado(limiteMaximo)
+        limiteDiarioAutorizado = limiteMaximo
         setSexo(sexo)
-        setAceitaReceberNoticias(aceitaNoticias)
+        aceitaReceberNoticias = aceitaNoticias
     }
 
     private fun carregarApostadorSemLocalizacao(
@@ -155,6 +153,26 @@ class DadosPessoaisViewModelTest {
         assertFalse(state.carregando)
         assertTrue(state.dadosCarregados)
         assertFalse(fakeModel.ufsChamado)
+    }
+    @Test
+    fun telaIniciada_semApostador_deveEmitirComandoFalhaAoCarregarDados() {
+        fakeModel.dadosUsuarioResposta = ApostadorDTOResponse()
+
+        viewModel.onEvent(DadosPessoaisEvent.TelaIniciada)
+
+        assertTrue(comandos().dialog is DadosPessoaisEffect.FalhaAoCarregarDados)
+        assertFalse(estado().carregando)
+        assertFalse(estado().dadosCarregados)
+    }
+
+    @Test
+    fun falhaAoCarregarDados_consumido_naoDeveReemitirComando() {
+        fakeModel.dadosUsuarioResposta = ApostadorDTOResponse()
+        viewModel.onEvent(DadosPessoaisEvent.TelaIniciada)
+
+        viewModel.onEvent(DadosPessoaisEvent.ComandoDialogConsumido)
+
+        assertNull(comandos().dialog)
     }
 
     @Test

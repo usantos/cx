@@ -175,6 +175,7 @@
     <string name="MA016">Um número não pode ser marcado como obrigatório e proibido.</string>
     <string name="MA019">Aposta favorita excluída com sucesso!</string>
     <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>
+    <string name="erro_carregar_dados">Erro ao carregar os dados</string>
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>
     <string name="label_excluir_aposta">Excluir aposta favorita</string>
@@ -418,9 +419,6 @@
 
     <!--Mock-->
     <string name="title_activity_restrito_dezoito_anos">RestritoDezoitoAnosActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- DIA SORTE -->
     <string name="dia_sorte_escolha_dia">Escolha os _n\u00fameros_</string>

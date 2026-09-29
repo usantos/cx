@@ -371,6 +371,11 @@ open class DadosPessoaisActivity : LoteriasBaseAppActivity() {
             is DadosPessoaisEffect.ConfirmarSaidaParaCorreios ->
                 confirmarSaidaParaCorreios()
 
+            is DadosPessoaisEffect.FalhaAoCarregarDados ->
+                DialogUtils.dialogEntendi(
+                    this,
+                    getString(R.string.erro_carregar_dados)
+                )
             else -> Unit
         }
         onEvent.dispatch(DadosPessoaisEvent.ComandoDialogConsumido)
