@@ -361,14 +361,17 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
     }
 
     private void habilitaBtnAzul(Button btn) {
+        btn.setEnabled(true);
         btn.setBackground(getDrawable(R.drawable.btn_rounded_azul));
         btn.setTextColor(getColor(R.color.branco));
     }
     private void habilitaBtnBordaAzul(Button btn) {
+        btn.setEnabled(true);
         btn.setBackground(getDrawable(R.drawable.btn_rounded_azul_borda));
         btn.setTextColor(getColor(R.color.bolao_azul_filtro));
     }
     private void desabilitaBtn(Button btn) {
+        btn.setEnabled(false);
         btn.setBackground(getDrawable(R.drawable.btn_rounded_disable));
         btn.setTextColor(getColor(R.color.cinza70));
     }
