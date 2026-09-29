@@ -233,7 +233,7 @@ public class QuantidadeNumerosReducer {
                 }
             }
 
-            builder.copy()
+            builder
                     .setExibirDialogQuantidadeNumeros(false)
                     .setQuantidadeNumerosSurpresinha(
                             qtdPrognosticos
@@ -261,7 +261,7 @@ public class QuantidadeNumerosReducer {
             }
         }
 
-        return builder.copy();
+        return builder;
     }
     private int obterQuantidadeSelecionadaAtual(
             SimulaUiState atual,

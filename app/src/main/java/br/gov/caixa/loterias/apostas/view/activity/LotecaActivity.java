@@ -991,46 +991,20 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         this.labelValueTriplasLoteca.setText(labelValueTriplasLoteca);
     }
 
-    public TextView getLabelValueSimplesLoteca() {
-        return labelValueSimplesLoteca;
-    }
-
-    public TextView getLabelValueJogosLoteca() {
-        return labelValueJogosLoteca;
-    }
-
-    public TextView getLabelValueDuplasLoteca() {
-        return labelValueDuplasLoteca;
-    }
-
-    public TextView getLabelValueTriplasLoteca() {
-        return labelValueTriplasLoteca;
-    }
-
-    public Button getBotaoLimparAposta() {
-        return botaoLimparAposta;
-    }
-
-    public Button getBotaoCompletar() {
-        return botaoCompletar;
-    }
-
-    public TextView getValorApostaCartela() {
-        return tvValorAposta;
-    }
 
     public IdentificaoDeUmaApostaDas8Modalidades getAposta() {
         return aposta;
     }
 
     public BigDecimal getValorTotalApostaAtual() {
-
-        if (viewModel == null || viewModel.getUiState() == null || viewModel.getUiState().getValue() == null || viewModel.getUiState().getValue().getValorAposta() == null) {
-
+        if (viewModel == null) {
             return BigDecimal.ZERO;
         }
-
-        return viewModel.getUiState().getValue().getValorAposta();
+        SimulaUiState state = viewModel.getUiState().getValue();
+        if (state == null || state.getValorAposta() == null) {
+            return BigDecimal.ZERO;
+        }
+        return state.getValorAposta();
     }
 
     public void mesDeSorteFragment(List<Integer> dezenasSelecionadas) {
@@ -1120,7 +1094,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void configuraActivity() {
-        configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.loteca_claro_mkp, R.color.loteca_escuro_mkp, View.GONE, View.GONE);
+        configuraTipoApostaTela(R.color.loteca_claro_mkp, R.color.loteca_escuro_mkp, View.GONE);
 
         String dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
 
@@ -1290,7 +1264,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
     }
 
-    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
+    private void configuraTipoApostaTela(int lightColor, int darkColor, int visibilityToolBarLoteca) {
         getWindow().setStatusBarColor(ContextCompat.getColor(this, lightColor));
 
         toolBarLoteca.setVisibility(visibilityToolBarLoteca);

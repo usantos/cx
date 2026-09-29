@@ -46,7 +46,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
-import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
@@ -91,13 +90,15 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
     private boolean isAvisou = false;
     public BigDecimal valorTotalAposta;
-    public int typeGameColorLight, typeGameColorDark;
-    public int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
-    public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
+    public int typeGameColorLight;
+    public int typeGameColorDark;
+    public int corFonteFundoBranco;
+    public int corFonteFundoClaro;
+    public int corFonteFundoEscuro;
+    public TextView valorAposta;
     public ListaDezenaRecyclerView simularDezenasAdapter;
     public String dataSorteioAtual;
 
-    private SimularApostaModel model;
 
     private Context context;
 
@@ -260,11 +261,10 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             }
         }
 
-        if (parametroJogo != null && dezenas.isEmpty() && parametroJogo.getPrognosticoMaximo() != null && !(tipoJogo == ModalidadeEnum.SUPER_7)) {
+        if (parametroJogo != null && dezenas.isEmpty() && parametroJogo.getPrognosticoMaximo() != null && tipoJogo != ModalidadeEnum.SUPER_7) {
             dezenas = VolanteUtils.getDezenas(tipoJogo, parametroJogo.getPrognosticoMaximo());
         }
 
-        model = new SimularApostaModel(getActivity());
         partidasSelecionadas = new HashSet<>();
 
     }
@@ -620,8 +620,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         boolean outrosNumerosSelecionado =
                false;
 
-        boolean etapaComplementarCompleta =
-                calcularEtapaComplementarCompleta();
+        boolean etapaComplementarCompleta = false;
 
         dispatch(
                 new SimulaUiEvent.CartelaAlterada(
@@ -644,11 +643,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         getDezenasSelecionadasState()
                 )
         );
-    }
-
-    private boolean calcularEtapaComplementarCompleta() {
-
-        return false;
     }
 
     private boolean possuiPlacarLotogol() {
@@ -712,12 +706,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         }
 
 
-        if (state.getComandoCompletarAposta()
-                instanceof CompletarApostaEffect.ApostaEffectProntaParaAdicionar) {
-
-            CompletarApostaEffect.ApostaEffectProntaParaAdicionar comando =
-                    (CompletarApostaEffect.ApostaEffectProntaParaAdicionar)
-                            state.getComandoCompletarAposta();
+        if (state.getComandoCompletarAposta() instanceof CompletarApostaEffect.ApostaEffectProntaParaAdicionar comando) {
 
             consumirComandoCompletarAposta();
 
@@ -1021,7 +1010,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                         == qtdDezenasPossiveis;
 
         boolean etapaComplementarCompleta =
-                calcularEtapaComplementarCompleta();
+                false;
 
         dispatch(
                 new SimulaUiEvent.CartelaAlterada(
@@ -1329,13 +1318,11 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                 || parametroJogo.getPartidas() == null
                 || parametroJogo.getPartidas().isEmpty()
                 || recyclerViewPartida == null
-                || !(recyclerViewPartida.getAdapter()
-                instanceof LotecaAdapter)) {
+                || !(recyclerViewPartida.getAdapter() instanceof LotecaAdapter adapter)) {
             return;
         }
 
         List<ParametroPartida> partidas = parametroJogo.getPartidas();
-        LotecaAdapter adapter = (LotecaAdapter) recyclerViewPartida.getAdapter();
 
         int tamanho = partidas.size();
         int[] qtdInicialPorPartida = new int[tamanho];
@@ -1371,7 +1358,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                                 random
                         );
 
-                if (resultado == null || !resultado.isSucesso()) {
+                if (resultado == null || !resultado.sucesso()) {
                     continue;
                 }
 
@@ -1385,7 +1372,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
                 reconstruirEstadoLoteca();
 
-                for (Integer position : resultado.getPosicoesAlteradas()) {
+                for (Integer position : resultado.posicoesAlteradas()) {
                     adapter.atualizarEstadoVisual(position);
                 }
 
@@ -1514,16 +1501,12 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             int quantidadeInicial,
             int estrategia
     ) {
-        switch (estrategia) {
-            case 0:
-                return quantidadeInicial > 0;
-            case 1:
-                return quantidadeInicial >= 2;
-            case 2:
-                return quantidadeInicial >= 3;
-            default:
-                return false;
-        }
+        return switch (estrategia) {
+            case 0 -> quantidadeInicial > 0;
+            case 1 -> quantidadeInicial >= 2;
+            case 2 -> quantidadeInicial >= 3;
+            default -> false;
+        };
     }
 
     private ParametroValorApostaDTO encontrarConfiguracaoValida(
@@ -1729,29 +1712,18 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         partida.setQtdItensSelecionadosAnterior(quantidadeSelecionada);
     }
 
-    private static final class ResultadoPreenchimentoLoteca {
-        private final boolean sucesso;
-        private final List<Integer> posicoesAlteradas;
-
-        private ResultadoPreenchimentoLoteca(
-                boolean sucesso,
-                List<Integer> posicoesAlteradas
-        ) {
-            this.sucesso = sucesso;
-            this.posicoesAlteradas =
-                    posicoesAlteradas != null
-                            ? posicoesAlteradas
-                            : new ArrayList<>();
+    private record ResultadoPreenchimentoLoteca(boolean sucesso, List<Integer> posicoesAlteradas) {
+            private ResultadoPreenchimentoLoteca(
+                    boolean sucesso,
+                    List<Integer> posicoesAlteradas
+            ) {
+                this.sucesso = sucesso;
+                this.posicoesAlteradas =
+                        posicoesAlteradas != null
+                                ? posicoesAlteradas
+                                : new ArrayList<>();
+            }
         }
-
-        private boolean isSucesso() {
-            return sucesso;
-        }
-
-        private List<Integer> getPosicoesAlteradas() {
-            return posicoesAlteradas;
-        }
-    }
 
     private void limparSelecoesDaPartida(
             ParametroPartida partida

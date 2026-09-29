@@ -63,27 +63,27 @@ import br.gov.caixa.loterias.apostas.viewModel.reducer.ValorApostaReducer;
 
 public class SimulaViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<SimulaUiState> uiState = new MutableLiveData<>(SimulaUiState.initial());
-    private final TeimosinhaReducer teimosinhaReducer = new TeimosinhaReducer();
-    private final FluxoApostaReducer fluxoApostaReducer = new FluxoApostaReducer();
-    private final QuantidadeNumerosReducer quantidadeNumerosReducer = new QuantidadeNumerosReducer(fluxoApostaReducer);
-    private final TrevosReducer trevosReducer = new TrevosReducer();
-    private final CarrinhoReducer carrinhoReducer = new CarrinhoReducer();
-    private final SurpresinhaReducer surpresinhaReducer = new SurpresinhaReducer();
-    private final SurpresinhaCarrinhoReducer surpresinhaCarrinhoReducer = new SurpresinhaCarrinhoReducer();
-    private final MesDaSorteReducer mesDaSorteReducer = new MesDaSorteReducer();
-    private final FavoritarApostaReducer favoritarApostaReducer = new FavoritarApostaReducer();
-    private final LimparReducer limparReducer = new LimparReducer();
-    private final TelaInicializadaReducer telaInicializadaReducer = new TelaInicializadaReducer(fluxoApostaReducer);
-    private final CompletarApostaReducer completarApostaReducer = new CompletarApostaReducer();
-    private final AdicionarCarrinhoReducer adicionarCarrinhoReducer = new AdicionarCarrinhoReducer();
-    private final ValorApostaReducer valorApostaReducer = new ValorApostaReducer();
-    private IdentificaoDeUmaApostaDas8Modalidades apostaPendente;
-    private BarraTituloDTO barraTituloPendente;
+    protected final MutableLiveData<SimulaUiState> uiState = new MutableLiveData<>(SimulaUiState.initial());
+    protected final TeimosinhaReducer teimosinhaReducer = new TeimosinhaReducer();
+    protected final FluxoApostaReducer fluxoApostaReducer = new FluxoApostaReducer();
+    protected final QuantidadeNumerosReducer quantidadeNumerosReducer = new QuantidadeNumerosReducer(fluxoApostaReducer);
+    protected final TrevosReducer trevosReducer = new TrevosReducer();
+    protected final CarrinhoReducer carrinhoReducer = new CarrinhoReducer();
+    protected final SurpresinhaReducer surpresinhaReducer = new SurpresinhaReducer();
+    protected final SurpresinhaCarrinhoReducer surpresinhaCarrinhoReducer = new SurpresinhaCarrinhoReducer();
+    protected final MesDaSorteReducer mesDaSorteReducer = new MesDaSorteReducer();
+    protected final FavoritarApostaReducer favoritarApostaReducer = new FavoritarApostaReducer();
+    protected final LimparReducer limparReducer = new LimparReducer();
+    protected final TelaInicializadaReducer telaInicializadaReducer = new TelaInicializadaReducer(fluxoApostaReducer);
+    protected final CompletarApostaReducer completarApostaReducer = new CompletarApostaReducer();
+    protected final AdicionarCarrinhoReducer adicionarCarrinhoReducer = new AdicionarCarrinhoReducer();
+    protected final ValorApostaReducer valorApostaReducer = new ValorApostaReducer();
+    protected IdentificaoDeUmaApostaDas8Modalidades apostaPendente;
+    protected BarraTituloDTO barraTituloPendente;
 
-    private ModalidadeEnum tipoJogoAtual;
-    private ParametroJogoDTO parametroJogoAtual;
-    private boolean isEspecialAtual;
+    protected ModalidadeEnum tipoJogoAtual;
+    protected ParametroJogoDTO parametroJogoAtual;
+    protected boolean isEspecialAtual;
 
     public SimulaViewModel(@NonNull Application application) {
         super(application);
@@ -126,7 +126,7 @@ public class SimulaViewModel extends AndroidViewModel {
         }
     }
 
-    private boolean handleCarrinhoEvents(
+    protected boolean handleCarrinhoEvents(
             SimulaUiEvent event
     ) {
 
@@ -192,7 +192,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         return false;
     }
-    private boolean handleLimparEvents(
+    protected boolean handleLimparEvents(
             SimulaUiEvent event
     ) {
         if (event instanceof SimulaUiEvent.LimparApostaSolicitado) {
@@ -238,7 +238,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         return false;
     }
-    private boolean handleCartelaEvents(
+    protected boolean handleCartelaEvents(
             SimulaUiEvent event
     ) {
         if (event instanceof SimulaUiEvent.ToggleOutrosNumeros) {
@@ -291,7 +291,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         return false;
     }
-    private boolean handleTeimosinhaEvents(
+    protected boolean handleTeimosinhaEvents(
             SimulaUiEvent event
     ) {
         if (event instanceof SimulaUiEvent.InicializarTeimosinhas) {
@@ -332,7 +332,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         return false;
     }
-    private boolean handleNumerosEvents(
+    protected boolean handleNumerosEvents(
             SimulaUiEvent event
     ) {
         if (event instanceof SimulaUiEvent.InicializarQuantidadeNumeros) {
@@ -382,7 +382,7 @@ public class SimulaViewModel extends AndroidViewModel {
         return false;
     }
 
-    private boolean handleCompletarEvents(
+    protected boolean handleCompletarEvents(
             SimulaUiEvent event
     ) {
         if (event instanceof SimulaUiEvent.CompletarApostaClicado) {
@@ -400,7 +400,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         return false;
     }
-    private boolean handleNextStepEvents(
+    protected boolean handleNextStepEvents(
             SimulaUiEvent event
     ) {
 
@@ -448,7 +448,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         return false;
     }
-    private boolean handleFavoritarEvents(
+    protected boolean handleFavoritarEvents(
             SimulaUiEvent event
     ) {
         if (event instanceof SimulaUiEvent.FavoritarApostaClicado) {
@@ -472,7 +472,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         return false;
     }
-    private boolean handleTrevosEvents(
+    protected boolean handleTrevosEvents(
             SimulaUiEvent event
     ) {
 
@@ -527,7 +527,7 @@ public class SimulaViewModel extends AndroidViewModel {
     }
 
 
-    private boolean handleSurpresinhaEvents(
+    protected boolean handleSurpresinhaEvents(
             SimulaUiEvent event
     ) {
         if (event instanceof SimulaUiEvent.AlterarSurpresinha) {
@@ -585,7 +585,7 @@ public class SimulaViewModel extends AndroidViewModel {
         return false;
     }
 
-    private void handleSelecionarTimeCoracao(
+    protected void handleSelecionarTimeCoracao(
             SimulaUiEvent.SelecionarTimeCoracao event
     ){
        updateState(state ->
@@ -596,7 +596,7 @@ public class SimulaViewModel extends AndroidViewModel {
                         )
         );
     }
-    private void inicializarParametrosAposta(
+    protected void inicializarParametrosAposta(
             SimulaUiEvent.InicializarParametrosAposta event
     ) {
         updateState( state ->
@@ -610,7 +610,7 @@ public class SimulaViewModel extends AndroidViewModel {
                         )
         );
     }
-    private void handleQtdConcursoAtualizadaInternamente(
+    protected void handleQtdConcursoAtualizadaInternamente(
             SimulaUiEvent.QtdConcursoAtualizadaInternamente event
     ) {
         updateState( state ->
@@ -620,7 +620,7 @@ public class SimulaViewModel extends AndroidViewModel {
                         )
         );
     }
-    private void atualizarQuantidadeInterna(
+    protected void atualizarQuantidadeInterna(
             SimulaUiEvent
                     .QuantidadeNumerosAtualizadaInternamente event
     ) {
@@ -749,7 +749,7 @@ public class SimulaViewModel extends AndroidViewModel {
         updateState(trevosReducer::consumirDialogQuantidadeTrevos);
     }
 
-    private void limparComandoAnimacao() {
+    protected void limparComandoAnimacao() {
         updateState(state ->
                 state.copy()
                         .setComandoAnimacao(null)
@@ -962,22 +962,22 @@ public class SimulaViewModel extends AndroidViewModel {
         );
     }
 
-    private void limparComandoTelaSimula() {
+    protected void limparComandoTelaSimula() {
         updateState(state -> state.copy().setComandoTelaSimula(null));
     }
 
-    private void abrirCarrinho() {
+    protected void abrirCarrinho() {
 
         updateState(carrinhoReducer::abrirCarrinho);
     }
 
-    private void consumirAbrirCarrinho() {
+    protected void consumirAbrirCarrinho() {
 
        updateState(carrinhoReducer::consumirAbrirCarrinho
         );
     }
 
-    private void inicializarQuantidadeNumeros(
+    protected void inicializarQuantidadeNumeros(
             SimulaUiEvent.InicializarQuantidadeNumeros event
     ) {
 
@@ -989,12 +989,12 @@ public class SimulaViewModel extends AndroidViewModel {
         );
     }
 
-    private void clicarQuantidadeNumeros() {
+    protected void clicarQuantidadeNumeros() {
 
         updateState(quantidadeNumerosReducer::clicar);
     }
 
-    private void selecionarQuantidadeNumeros(
+    protected void selecionarQuantidadeNumeros(
             SimulaUiEvent.SelecionarQuantidadeNumeros event
     ) {
 
@@ -1007,7 +1007,7 @@ public class SimulaViewModel extends AndroidViewModel {
         );
     }
 
-    private void confirmarQuantidadeNumeros(
+    protected void confirmarQuantidadeNumeros(
             SimulaUiEvent.ConfirmarQuantidadeNumeros event
     ) {
         SimulaUiState novoEstado =
@@ -1030,7 +1030,7 @@ public class SimulaViewModel extends AndroidViewModel {
         recalcularValorApostaAtual();
     }
 
-    private String montarTextoQuantidadeNumeros(
+    protected String montarTextoQuantidadeNumeros(
             int qtdPrognosticos
     ) {
 
@@ -1040,22 +1040,22 @@ public class SimulaViewModel extends AndroidViewModel {
                 );
     }
 
-    private void consumirDialogQuantidadeNumeros() {
+    protected void consumirDialogQuantidadeNumeros() {
 
         updateState(quantidadeNumerosReducer::consumirDialog);
     }
 
-    private void consumirAvisoQuantidadeNumeros() {
+    protected void consumirAvisoQuantidadeNumeros() {
 
         updateState(quantidadeNumerosReducer::consumirAviso);
     }
 
-    private void valorApostaQuantidadeNumerosAtualizado() {
+    protected void valorApostaQuantidadeNumerosAtualizado() {
 
         updateState(quantidadeNumerosReducer::valorApostaAtualizado);
     }
 
-    private void inicializarTeimosinhas(SimulaUiEvent.InicializarTeimosinhas event) {
+    protected void inicializarTeimosinhas(SimulaUiEvent.InicializarTeimosinhas event) {
         updateState(state ->
                 teimosinhaReducer.inicializar(
                         state,
@@ -1068,11 +1068,11 @@ public class SimulaViewModel extends AndroidViewModel {
         );
     }
 
-    private void clicarTeimosinhas() {
+    protected void clicarTeimosinhas() {
         updateState(teimosinhaReducer::clicar);
     }
 
-    private void confirmarTeimosinha(SimulaUiEvent.ConfirmarTeimosinha event) {
+    protected void confirmarTeimosinha(SimulaUiEvent.ConfirmarTeimosinha event) {
         updateState(state ->
                 teimosinhaReducer.confirmar(
                         state,
@@ -1084,17 +1084,23 @@ public class SimulaViewModel extends AndroidViewModel {
         recalcularValorApostaAtual();
     }
 
-    private void consumirEventoUnico() {
+    protected void consumirEventoUnico() {
 
        updateState(teimosinhaReducer::consumirEvento);
     }
 
-    private void valorApostaAtualizado() {
+    protected void valorApostaAtualizado() {
 
         updateState(teimosinhaReducer::valorAtualizado);
     }
-    private void handleComoJogar() {
-        updateState(state -> state.copy().setMensagemComoJogar(obterTextoComoJogar(tipoJogoAtual, isEspecialAtual)).setTitleComoJogar(obterTitleComoJogar(tipoJogoAtual, isEspecialAtual)).setExibirDialogComoJogar(true));
+    protected void handleComoJogar() {
+        updateState(
+                state ->
+                        state.copy().
+                                setMensagemComoJogar(obterTextoComoJogar(tipoJogoAtual, isEspecialAtual)).
+                                setTitleComoJogar(obterTitleComoJogar(tipoJogoAtual, isEspecialAtual)).
+                                setExibirDialogComoJogar(true)
+        );
     }
 
     public static String obterTextoComoJogar(ModalidadeEnum modalidade, boolean especial) {
@@ -1105,11 +1111,11 @@ public class SimulaViewModel extends AndroidViewModel {
         return new AccordionModel(modalidade, especial).getTituloComoJogar(modalidade);
     }
 
-    private void consumirDialogComoJogar() {
+    protected void consumirDialogComoJogar() {
         updateState(state -> state.copy().setExibirDialogComoJogar(false));
     }
 
-    private void carregarCarrinho() {
+    protected void carregarCarrinho() {
 
         publicarEstadoCarrinho(CarrinhoSingleton.getInstance().getCarrinho(), true);
 
@@ -1121,7 +1127,7 @@ public class SimulaViewModel extends AndroidViewModel {
         carregarCarrinhoLocal();
     }
 
-    private void carregarCarrinhoOnline() {
+    protected void carregarCarrinhoOnline() {
 
         ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 
@@ -1149,7 +1155,7 @@ public class SimulaViewModel extends AndroidViewModel {
         });
     }
 
-    private void carregarCarrinhoLocal() {
+    protected void carregarCarrinhoLocal() {
 
         CarrinhoDTO carrinho = new CarrinhoDTO();
 
@@ -1160,7 +1166,7 @@ public class SimulaViewModel extends AndroidViewModel {
         publicarEstadoCarrinho(carrinho, false);
     }
 
-    private void adicionarApostasLocaisNoCarrinho(CarrinhoDTO carrinho) {
+    protected void adicionarApostasLocaisNoCarrinho(CarrinhoDTO carrinho) {
 
         List<IdentificaoDeUmaApostaDas8Modalidades> apostasLocais = getApostasLocais();
 
@@ -1175,7 +1181,7 @@ public class SimulaViewModel extends AndroidViewModel {
         carrinho.getApostas().addAll(apostasLocais);
     }
 
-    private List<IdentificaoDeUmaApostaDas8Modalidades> getApostasLocais() {
+    protected List<IdentificaoDeUmaApostaDas8Modalidades> getApostasLocais() {
 
         DBLoteriasCrud crud = new DBLoteriasCrud(getApplication());
 
@@ -1185,7 +1191,7 @@ public class SimulaViewModel extends AndroidViewModel {
         updateState(surpresinhaReducer::abrirSelecaoTimeCoracaoSurpresinha
         );
     }
-    private void publicarEstadoCarrinho(
+    protected void publicarEstadoCarrinho(
             CarrinhoDTO carrinho,
             boolean carregando
     ) {
@@ -1199,7 +1205,7 @@ public class SimulaViewModel extends AndroidViewModel {
         );
     }
 
-    private void handleCartelaAlterada(
+    protected void handleCartelaAlterada(
             SimulaUiEvent.CartelaAlterada event
     ) {
 
@@ -1212,14 +1218,14 @@ public class SimulaViewModel extends AndroidViewModel {
     }
 
 
-    private void handleValorApostaAlterado(SimulaUiEvent.ValorApostaAlterado event) {
+    protected void handleValorApostaAlterado(SimulaUiEvent.ValorApostaAlterado event) {
 
         BigDecimal valor = event.getValor();
 
         updateState(state -> state.copy().setValorAposta(valor).setValorGrande(valor != null && valor.doubleValue() > 999.99));
     }
 
-    private void handleCompletarApostaClicado(
+    protected void handleCompletarApostaClicado(
             SimulaUiEvent.CompletarApostaClicado event
     ) {
 
@@ -1231,7 +1237,7 @@ public class SimulaViewModel extends AndroidViewModel {
         );
     }
 
-    private void handleAdicionarCarrinhoClicado(
+    protected void handleAdicionarCarrinhoClicado(
             SimulaUiEvent.AdicionarCarrinhoClicado event
     ) {
 
@@ -1244,11 +1250,11 @@ public class SimulaViewModel extends AndroidViewModel {
         );
     }
 
-    private void limparComandoCompletarAposta() {
+    protected void limparComandoCompletarAposta() {
 
         updateState(completarApostaReducer::limparComando);
     }
-    private void handleTelaInicializada(
+    protected void handleTelaInicializada(
             SimulaUiEvent.TelaInicializada event
     ) {
 
@@ -1276,9 +1282,7 @@ public class SimulaViewModel extends AndroidViewModel {
         float velocidadeAnimacao =
                 1f;
 
-        if (event.isEspecial()) {
-
-            if (tipoJogoAtual == ModalidadeEnum.LOTOFACIL) {
+        if (event.isEspecial() && tipoJogoAtual == ModalidadeEnum.LOTOFACIL) {
 
                 exibirAnimacao =
                         true;
@@ -1290,7 +1294,7 @@ public class SimulaViewModel extends AndroidViewModel {
                         0.60f;
 
             }
-        }
+
 
         int qtdMinima =
                 getQuantidadeMinimaSafe();
@@ -1475,7 +1479,7 @@ public class SimulaViewModel extends AndroidViewModel {
         });
     }
 
-    private void executarAdicionarCarrinhoPendente() {
+    protected void executarAdicionarCarrinhoPendente() {
 
         if (apostaPendente == null) {
             return;
@@ -1510,7 +1514,7 @@ public class SimulaViewModel extends AndroidViewModel {
         updateState(state -> state.copy().setComandoCarrinho(null));
     }
 
-    private void limparAposta() {
+    protected void limparAposta() {
 
         SimulaUiState state =
                 uiState.getValue();
@@ -1548,7 +1552,7 @@ public class SimulaViewModel extends AndroidViewModel {
         );
     }
 
-    private BigDecimal obterValorApostaPorParametros(int qtdPrognosticos, int qtdConcursos) {
+    protected BigDecimal obterValorApostaPorParametros(int qtdPrognosticos, int qtdConcursos) {
 
         if (parametroJogoAtual == null) {
             return BigDecimal.ZERO;
@@ -1600,12 +1604,12 @@ public class SimulaViewModel extends AndroidViewModel {
         return valorBase;
     }
 
-    private void limparFlagsDeRenderizacao() {
+    protected void limparFlagsDeRenderizacao() {
 
         updateState(limparReducer::limparFlagsDeRenderizacao);
     }
 
-    private BarraTituloDTO criarBarraTitulo(ParametroJogoDTO parametro, boolean especial) {
+    protected BarraTituloDTO criarBarraTitulo(ParametroJogoDTO parametro, boolean especial) {
 
         BarraTituloDTO dto = new BarraTituloDTO();
 
@@ -1621,7 +1625,7 @@ public class SimulaViewModel extends AndroidViewModel {
         return dto;
     }
 
-    private String formatarDataSorteio(ParametroJogoDTO parametro) {
+    protected String formatarDataSorteio(ParametroJogoDTO parametro) {
 
         try {
 
@@ -1647,7 +1651,7 @@ public class SimulaViewModel extends AndroidViewModel {
         }
     }
 
-    private SimulaUiState getCurrentState() {
+    protected SimulaUiState getCurrentState() {
 
         SimulaUiState atual = uiState.getValue();
 
@@ -1658,7 +1662,7 @@ public class SimulaViewModel extends AndroidViewModel {
         return atual;
     }
 
-    private void limparComandoAnalytics() {
+    protected void limparComandoAnalytics() {
        updateState(state ->
                 state.copy()
                         .setComandoAnalytics(null)
@@ -1691,7 +1695,7 @@ public class SimulaViewModel extends AndroidViewModel {
         return parametroJogoAtual.getQuantidadeMinima();
     }
 
-    private void recalcularValorApostaAtual() {
+    protected void recalcularValorApostaAtual() {
         updateState(state ->
                 valorApostaReducer.recalcular(
                         state,
@@ -1705,7 +1709,7 @@ public class SimulaViewModel extends AndroidViewModel {
                 surpresinhaReducer::voltarParaSurpresinha
         );
     }
-    private String obterTextoCompletar(
+    protected String obterTextoCompletar(
             SimulaUiState state
     ) {
         if (state == null) {
@@ -1749,7 +1753,7 @@ public class SimulaViewModel extends AndroidViewModel {
                 : "Aposta aleatória";
     }
 
-    private void updateState(
+    protected void updateState(
             SimulaUiState novoEstado
     ) {
         if (novoEstado == null) {
@@ -1757,7 +1761,7 @@ public class SimulaViewModel extends AndroidViewModel {
         }
 
         SimulaUiState estadoFinal =
-                novoEstado.copy()
+                novoEstado
                         .setTextoCompletar(
                                 obterTextoCompletar(
                                         novoEstado
@@ -1769,7 +1773,7 @@ public class SimulaViewModel extends AndroidViewModel {
         );
     }
 
-    private void updateState(
+    protected void updateState(
             StateReducer reducer
     ) {
         if (reducer == null) {

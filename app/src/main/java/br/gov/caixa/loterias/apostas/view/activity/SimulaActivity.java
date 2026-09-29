@@ -100,7 +100,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     public final static String APOSTA_EXTRA = "aposta";
     private int valNumeroConcurso;
-    private ConstraintLayout toolBarLoteca;
+
     private Button botaoLimparAposta;
     private Button botaoCompletar;
     private Button botaoAdicionar;
@@ -126,8 +126,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private ParametroJogoDTO parametroSimulacao;
     private ParametroMesDeSorte mesDeSorteCartela;
     private Boolean isEspecial = false;
-
-    //TODO: MEGA 30 ANOS//
     private boolean isMega30;
     public EstiloModalidadeMKP estilo;
     private SimulaViewModel viewModel;
@@ -272,7 +270,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void setViews() {
-        this.toolBarLoteca = findViewById(R.id.toolBarLoteca);
         this.botaoLimparAposta = findViewById(R.id.btnLimpar);
         this.botaoCompletar = findViewById(R.id.btnCompletar);
         this.botaoAdicionar = findViewById(R.id.btnAdicionarCarrinho);
@@ -1455,13 +1452,14 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     public BigDecimal getValorTotalApostaAtual() {
-
-        if (viewModel == null || viewModel.getUiState() == null || viewModel.getUiState().getValue() == null || viewModel.getUiState().getValue().getValorAposta() == null) {
-
+        if (viewModel == null) {
             return BigDecimal.ZERO;
         }
-
-        return viewModel.getUiState().getValue().getValorAposta();
+        SimulaUiState state = viewModel.getUiState().getValue();
+        if (state == null || state.getValorAposta() == null) {
+            return BigDecimal.ZERO;
+        }
+        return state.getValorAposta();
     }
 
     public void mesDeSorteFragment(List<Integer> dezenasSelecionadas) {
@@ -1552,37 +1550,37 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         switch (tipoJogo) {
             case MEGA_SENA:
                 if (isMega30) {
-                    configuraTipoApostaTela(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, ""), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp, View.VISIBLE, View.GONE);
+                    configuraTipoApostaTela(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, ""), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp);
                 } else {
-                    configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_mega_virada_underline) : getResources().getString(R.string.unterline_mega_sena_underline), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp, View.VISIBLE, View.GONE);
+                    configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_mega_virada_underline) : getResources().getString(R.string.unterline_mega_sena_underline), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp);
                 }
                 break;
             case QUINA:
-                configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_quina_sao_joao_underline) : getResources().getString(R.string.underline_quina_underline), R.color.quina_claro_mkp, R.color.quina_escuro_mkp, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_quina_sao_joao_underline) : getResources().getString(R.string.underline_quina_underline), R.color.quina_claro_mkp, R.color.quina_escuro_mkp);
                 break;
             case LOTOFACIL:
-                configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_lotofacil_independencia_underline) : getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacil_claro_mkp, R.color.lotofacil_escuro_mkp, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_lotofacil_independencia_underline) : getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacil_claro_mkp, R.color.lotofacil_escuro_mkp);
                 break;
             case DUPLA_SENA:
-                configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_dupla_pascoa_underline) : getResources().getString(R.string.underline_dupla_sena_underline), R.color.dupla_sena_claro_mkp, R.color.dupla_sena_escuro_mkp, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_dupla_pascoa_underline) : getResources().getString(R.string.underline_dupla_sena_underline), R.color.dupla_sena_claro_mkp, R.color.dupla_sena_escuro_mkp);
                 break;
             case TIMEMANIA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_timemania_underline), R.color.timemania_claro_mkp, R.color.timemania_escuro_mkp, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_timemania_underline), R.color.timemania_claro_mkp, R.color.timemania_escuro_mkp);
                 break;
             case LOTOMANIA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_lotomania_underline), R.color.lotomania_claro_mkp, R.color.lotomania_escuro_mkp, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_lotomania_underline), R.color.lotomania_claro_mkp, R.color.lotomania_escuro_mkp);
                 break;
             case LOTECA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.loteca_claro_mkp, R.color.loteca_escuro_mkp, View.GONE, View.VISIBLE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.loteca_claro_mkp, R.color.loteca_escuro_mkp);
                 break;
             case DIA_DE_SORTE:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), R.color.dia_sorte_claro_mkp, R.color.dia_sorte_escuro_mkp, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), R.color.dia_sorte_claro_mkp, R.color.dia_sorte_escuro_mkp);
                 break;
             case SUPER_7:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.super_sete_claro_mkp, R.color.super_sete_escuro_mkp, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.super_sete_claro_mkp, R.color.super_sete_escuro_mkp);
                 break;
             case MAIS_MILIONARIA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline).toLowerCase(), R.color.milionaria_claro_mkp, R.color.milionaria_escuro_mkp, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline).toLowerCase(), R.color.milionaria_claro_mkp, R.color.milionaria_escuro_mkp);
                 break;
             default:
                 break;
@@ -1848,10 +1846,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
     }
 
-    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
+    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor) {
         getWindow().setStatusBarColor(ContextCompat.getColor(this, lightColor));
-
-        toolBarLoteca.setVisibility(visibilityToolBarLoteca);
 
         typeGameColorLight = lightColor;
         typeGameColorDark = darkColor;

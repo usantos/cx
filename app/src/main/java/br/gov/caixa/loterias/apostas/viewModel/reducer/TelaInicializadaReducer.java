@@ -45,7 +45,6 @@ public class TelaInicializadaReducer {
                         : "";
 
         SimulaUiState builder = SimulaUiState.initial()
-                .copy()
                 .setBarraTituloDTO(
                         barraTituloDTO
                 )
@@ -177,11 +176,11 @@ public class TelaInicializadaReducer {
             return criarInicialLoteca(builder);
         }
         else {
-            return builder.copy();
+            return builder;
         }
     }
     private SimulaUiState criarInicialLoteca(SimulaUiState builder){
-        return builder.copy()
+        return builder
                 .setMostrarSalvarAposta(false)
                 .setMostrarBotaoLimparAposta(false)
                 .setBotaoCompletarVisivel(false)

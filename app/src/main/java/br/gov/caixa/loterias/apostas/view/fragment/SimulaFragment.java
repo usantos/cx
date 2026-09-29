@@ -266,7 +266,7 @@ public class SimulaFragment extends BaseEtapaFragment {
             }
         }
 
-        if (parametroJogo != null && dezenas.isEmpty() && parametroJogo.getPrognosticoMaximo() != null && !(tipoJogo == ModalidadeEnum.SUPER_7)) {
+        if (parametroJogo != null && dezenas.isEmpty() && parametroJogo.getPrognosticoMaximo() != null && tipoJogo != ModalidadeEnum.SUPER_7) {
             dezenas = VolanteUtils.getDezenas(tipoJogo, parametroJogo.getPrognosticoMaximo());
         }
 
@@ -855,10 +855,6 @@ public class SimulaFragment extends BaseEtapaFragment {
 
         if (state.getComandoCompletarAposta()
                 instanceof CompletarApostaEffect.ApostaEffectProntaParaAdicionar) {
-
-            CompletarApostaEffect.ApostaEffectProntaParaAdicionar comando =
-                    (CompletarApostaEffect.ApostaEffectProntaParaAdicionar)
-                            state.getComandoCompletarAposta();
 
             consumirComandoCompletarAposta();
 

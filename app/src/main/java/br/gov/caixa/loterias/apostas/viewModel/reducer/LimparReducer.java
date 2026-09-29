@@ -106,7 +106,7 @@ public class LimparReducer {
             int palpitesMaximos
     ) {
 
-        builder.copy()
+        builder
                 .setLimparLoteca(true)
                 .setJogosLoteca(0)
                 .setSimplesLoteca(0)
@@ -125,7 +125,7 @@ public class LimparReducer {
             SimulaUiState builder
     ) {
 
-        builder.copy()
+        builder
                 .setLimparLotogol(true)
                 .setBotaoCompletarVisivel(false);
     }
@@ -134,7 +134,7 @@ public class LimparReducer {
             SimulaUiState builder
     ) {
 
-        builder.copy()
+        builder
                 .setEquipeSelecionada(null)
                 .setLimparTimeCoracao(true)
                 .setBotaoAdicionarHabilitado(false)
@@ -148,7 +148,7 @@ public class LimparReducer {
             SimulaUiState builder
     ) {
 
-        builder.copy()
+        builder
                 .setLimparOpcaoOutrosNumeros(true)
                 .setBotaoAdicionarHabilitado(false)
                 .setBotaoCompletarHabilitado(true)
@@ -161,7 +161,7 @@ public class LimparReducer {
             SimulaUiState builder
     ) {
 
-        builder.copy()
+        builder
                 .setLimparOpcaoOutrosNumeros(true)
                 .setTrevosSelecionados(new ArrayList<>())
                 .setQuantidadeTrevosSelecionada(0)
@@ -177,7 +177,7 @@ public class LimparReducer {
             int qtdNumerosAtual
     ) {
 
-        builder.copy()
+        builder
                 .setLimparSuperSete(true)
                 .setQtdTotalSelecionadosSuperSete(0)
                 .setQtdDezenasPossiveisSelecionado(qtdNumerosAtual)
@@ -189,7 +189,7 @@ public class LimparReducer {
             SimulaUiState builder
     ) {
 
-        builder.copy()
+        builder
                 .setDezenasSelecionadas(new ArrayList<>())
                 .setLimparNumerosCartela(true)
                 .setMostrarBotaoLimparAposta(false)

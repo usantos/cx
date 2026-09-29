@@ -65,7 +65,7 @@ public class MesDaSorteReducer {
             boolean mesSelecionado
     ) {
 
-        return atual.copy()
+        return atual
                 .setEtapaAposta(
                         EtapaAposta.MES_SORTE
                 )
