@@ -1458,7 +1458,7 @@
     <string name="default_notification_channel_descricao">Canal Loterias</string>
     <string name="icone_notificacoes">Notificações</string>
     <string name="contador_notificacoes">0</string>
-    <string name="title_activity_mensagem_push">Mensagens</string>
+    <string name="title_central_notificacao">Central notificação</string>
     <string name="pagamento_nao_identificado_dentro_do_prazo">Não recebemos seu Pix dentro do prazo.\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma aposta e gerar novo código para pagamento.</string>
     <string name="pix_cancelado_descricao">Não recebemos seu Pix dentro do prazo previsto para efetuar sua aposta e você não está concorrendo. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. Deseja salvar esta compra como carrinho favorito?</string>
     <string name="pagamento_pix_nao_identificado">Não identificamos o seu pagamento dentro do prazo previsto para efetuar sua aposta e você não está concorrendo. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. E não se preocupe! Caso o pagamento seja identificado, será estornado para a conta pagadora. Deseja salvar esta compra como carrinho favorito?</string>
@@ -1745,6 +1745,21 @@
     <string name="xx">XX</string>
     <string name="tokenactivity">TokenActivity</string>
     <string name="biometrialogin">BiometriaLogin</string>
+
+    <string name="central_notificacoes">Central de notificações</string>
+    <string name="marcar_todas_como_lidas">Marcar todas como lidas</string>
+    <string name="deseja_marcar_todas_como_lidas">Deseja marcar todas as notificações como lidas?</string>
+    <string name="deseja_excluir_notificacao">Deseja excluir a notificação</string>
+    <string name="excluir_todas_notificacoes">Excluir todas as notificações</string>
+    <string name="excluir_notificacoes">Excluir notificações</string>
+    <string name="excluir_notificacao">Excluir notificação</string>
+    <string name="tab_todas">Todas</string>
+    <string name="tab_nao_lidas">Não lidas (0)</string>
+    <string name="sem_notificacao">Ainda não há notificações.</string>
+    <string name="sem_notificacao_nao_lida">Não há notificações não lidas.</string>
+    <string name="fique_atento">Fique de olho nas novidades e atualizações.</string>
+    <string name="deseja_excluir_todas">Deseja excluir todas as notificações?</string>
+
     <string name="sessao_expirada">Sua sessão expirou. É necessário realizar o login novamente para continuar utilizando o aplicativo Loterias CAIXA.</string>
     <string name="adicionarNovaAposta">Adicionar nova aposta</string>
     <string name="irParaPagamento">Ir para pagamento</string>
