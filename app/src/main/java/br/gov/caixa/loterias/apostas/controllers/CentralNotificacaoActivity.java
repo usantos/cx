@@ -345,7 +345,11 @@ public class CentralNotificacaoActivity extends LoteriasBaseAppActivity {
                 btnExcluirTodas.setVisibility(View.VISIBLE);
                 desabilitaBtn(btnExcluirTodas);
             } else {
-                habilitaBtnAzul(btnMarcarTodas);
+                if (listNotificacaoNaoLidas == null || listNotificacaoNaoLidas.isEmpty()) {
+                    desabilitaBtn(btnMarcarTodas);
+                } else {
+                    habilitaBtnAzul(btnMarcarTodas);
+                }
                 btnExcluirTodas.setVisibility(View.VISIBLE);
                 habilitaBtnBordaAzul(btnExcluirTodas);
             }
