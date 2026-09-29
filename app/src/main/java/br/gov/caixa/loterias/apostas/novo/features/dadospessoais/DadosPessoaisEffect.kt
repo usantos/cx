@@ -1,4 +1,4 @@
-package br.gov.caixa.loterias.apostas.effect
+package br.gov.caixa.loterias.apostas.novo.features.dadospessoais
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum
 import com.android.volley.VolleyError

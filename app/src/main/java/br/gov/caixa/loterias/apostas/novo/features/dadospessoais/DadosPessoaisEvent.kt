@@ -1,4 +1,4 @@
-package br.gov.caixa.loterias.apostas.event
+package br.gov.caixa.loterias.apostas.novo.features.dadospessoais
 
 sealed class DadosPessoaisEvent {
 

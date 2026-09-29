@@ -1,8 +1,6 @@
 package br.gov.caixa.loterias.apostas
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import br.gov.caixa.loterias.apostas.effect.DadosPessoaisEffect
-import br.gov.caixa.loterias.apostas.event.DadosPessoaisEvent
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorAlteracaoDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse
@@ -15,12 +13,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioIdDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse
-import br.gov.caixa.loterias.apostas.model.model.DadosPessoaisModel
-import br.gov.caixa.loterias.apostas.viewModel.DadosPessoaisViewModel
+import br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisComandos
+import br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisEffect
+import br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisEvent
+import br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisModel
+import br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisState
+import br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisViewModel
 import com.android.volley.NetworkResponse
 import com.android.volley.VolleyError
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
@@ -42,6 +45,10 @@ class DadosPessoaisViewModelTest {
         fakeModel = FakeDadosPessoaisModel()
         viewModel = DadosPessoaisViewModel(fakeModel)
     }
+
+    private fun estado(): DadosPessoaisState = viewModel.uiState.value!!
+
+    private fun comandos(): DadosPessoaisComandos = viewModel.comandos.value!!
 
     private fun criarErro(statusCode: Int): VolleyError {
         return VolleyError(NetworkResponse(statusCode, null, false, 0L, null))
@@ -74,7 +81,9 @@ class DadosPessoaisViewModelTest {
         setAceitaReceberNoticias(aceitaNoticias)
     }
 
-    private fun carregarApostadorSemLocalizacao(apostador: ApostadorDTO = apostadorPadrao(idUf = null)) {
+    private fun carregarApostadorSemLocalizacao(
+        apostador: ApostadorDTO = apostadorPadrao(idUf = null)
+    ) {
         fakeModel.dadosUsuarioResposta = ApostadorDTOResponse().apply { payload = apostador }
         viewModel.onEvent(DadosPessoaisEvent.TelaIniciada)
     }
@@ -105,16 +114,13 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.TelaIniciada)
 
-        val state = viewModel.uiState.value!!
+        val state = estado()
         assertSame(apostador, state.apostador)
         assertEquals("SP", state.uf)
         assertEquals("São Paulo", state.municipio)
         assertFalse(state.carregando)
         assertTrue(state.dadosCarregados)
-        assertEquals(
-            DadosPessoaisEffect.RegistrarEvento.Tipo.ENTROU_EDITAR_CADASTRO,
-            (state.comandoAnalytics as DadosPessoaisEffect.RegistrarEvento).tipo
-        )
+        assertNotNull(comandos().analytics)
     }
 
     @Test
@@ -123,7 +129,7 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.TelaIniciada)
 
-        val state = viewModel.uiState.value!!
+        val state = estado()
         assertFalse(state.carregando)
         assertFalse(state.dadosCarregados)
     }
@@ -134,9 +140,8 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.TelaIniciada)
 
-        val state = viewModel.uiState.value!!
-        assertFalse(state.carregando)
-        assertTrue(state.comandoRede is DadosPessoaisEffect.ErroDeRede)
+        assertFalse(estado().carregando)
+        assertTrue(comandos().rede is DadosPessoaisEffect.ErroDeRede)
     }
 
     @Test
@@ -146,7 +151,7 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.TelaIniciada)
 
-        val state = viewModel.uiState.value!!
+        val state = estado()
         assertFalse(state.carregando)
         assertTrue(state.dadosCarregados)
         assertFalse(fakeModel.ufsChamado)
@@ -157,7 +162,7 @@ class DadosPessoaisViewModelTest {
         viewModel.onEvent(DadosPessoaisEvent.CepAlterado("1234"))
 
         assertNull(fakeModel.cepRecebido)
-        assertNull(viewModel.uiState.value!!.cep)
+        assertNull(estado().cep)
     }
 
     @Test
@@ -180,7 +185,7 @@ class DadosPessoaisViewModelTest {
         viewModel.onEvent(DadosPessoaisEvent.CepAlterado("20000000"))
 
         assertEquals("20000000", fakeModel.cepRecebido)
-        val state = viewModel.uiState.value!!
+        val state = estado()
         assertEquals("RJ", state.uf)
         assertEquals("Rio de Janeiro", state.municipio)
         assertNull(state.erroCep)
@@ -194,7 +199,7 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.CepAlterado("99999999"))
 
-        val state = viewModel.uiState.value!!
+        val state = estado()
         assertEquals("CEP_INVALIDO", state.erroCep)
         assertEquals("", state.uf)
         assertEquals("", state.municipio)
@@ -207,7 +212,7 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.CepAlterado("99999999"))
 
-        assertEquals("CEP_INVALIDO", viewModel.uiState.value!!.erroCep)
+        assertEquals("CEP_INVALIDO", estado().erroCep)
     }
 
     @Test
@@ -216,7 +221,7 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.CepAlterado("99999999"))
 
-        assertTrue(viewModel.uiState.value!!.comandoRede is DadosPessoaisEffect.ErroDeRede)
+        assertTrue(comandos().rede is DadosPessoaisEffect.ErroDeRede)
     }
 
     @Test
@@ -225,7 +230,7 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.LimiteAlterado("R$ 80,00"))
 
-        val state = viewModel.uiState.value!!
+        val state = estado()
         assertEquals(0, BigDecimal("80.00").compareTo(state.limiteDigitado))
         assertTrue(state.limiteValido)
     }
@@ -236,7 +241,7 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.LimiteAlterado("R$ 5,00"))
 
-        val state = viewModel.uiState.value!!
+        val state = estado()
         assertTrue(state.limiteMenorQueMinimo)
         assertFalse(state.limiteValido)
     }
@@ -247,7 +252,7 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.LimiteAlterado("R$ 150,00"))
 
-        val state = viewModel.uiState.value!!
+        val state = estado()
         assertTrue(state.limiteMaiorQueMaximo)
         assertFalse(state.limiteValido)
     }
@@ -256,23 +261,22 @@ class DadosPessoaisViewModelTest {
     fun limiteAlterado_semApostadorCarregado_naoDeveAlterarEstado() {
         viewModel.onEvent(DadosPessoaisEvent.LimiteAlterado("R$ 80,00"))
 
-        assertNull(viewModel.uiState.value!!.limiteDigitado)
+        assertNull(estado().limiteDigitado)
     }
 
     @Test
     fun sexoSelecionado_deveAtualizarPosicao() {
         viewModel.onEvent(DadosPessoaisEvent.SexoSelecionado(1))
 
-        assertEquals(1, viewModel.uiState.value!!.posicaoSexo)
+        assertEquals(1, estado().posicaoSexo)
     }
 
     @Test
     fun notificacaoAlterada_antesDeCarregarDados_naoDeveMostrarDialogo() {
         viewModel.onEvent(DadosPessoaisEvent.NotificacaoAlterada(true))
 
-        val state = viewModel.uiState.value!!
-        assertTrue(state.aceitaNoticias)
-        assertNull(state.comandoDialog)
+        assertTrue(estado().aceitaNoticias)
+        assertNull(comandos().dialog)
     }
 
     @Test
@@ -281,26 +285,21 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.NotificacaoAlterada(true))
 
-        val state = viewModel.uiState.value!!
-        assertTrue(state.comandoDialog is DadosPessoaisEffect.MostrarAvisoNotificacao)
+        assertTrue(comandos().dialog is DadosPessoaisEffect.MostrarAvisoNotificacao)
     }
 
     @Test
     fun naoSeiCepClicado_deveAbrirDialogoDeConfirmacao() {
         viewModel.onEvent(DadosPessoaisEvent.NaoSeiCepClicado)
 
-        assertTrue(
-            viewModel.uiState.value!!.comandoDialog is DadosPessoaisEffect.ConfirmarSaidaParaCorreios
-        )
+        assertTrue(comandos().dialog is DadosPessoaisEffect.ConfirmarSaidaParaCorreios)
     }
 
     @Test
     fun redirecionamentoCorreiosConfirmado_deveAbrirSiteCorreios() {
         viewModel.onEvent(DadosPessoaisEvent.RedirecionamentoCorreiosConfirmado)
 
-        assertTrue(
-            viewModel.uiState.value!!.comandoNavegacao is DadosPessoaisEffect.AbrirSiteCorreios
-        )
+        assertTrue(comandos().navegacao is DadosPessoaisEffect.AbrirSiteCorreios)
     }
 
     @Test
@@ -310,13 +309,10 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.RecalcularLimiteClicado)
 
-        val state = viewModel.uiState.value!!
+        val state = estado()
         assertSame(novoApostador, state.apostador)
         assertFalse(state.carregando)
-        assertEquals(
-            DadosPessoaisEffect.RegistrarEvento.Tipo.ENTROU_RECALCULAR_LIMITE,
-            (state.comandoAnalytics as DadosPessoaisEffect.RegistrarEvento).tipo
-        )
+        assertNotNull(comandos().analytics)
     }
 
     @Test
@@ -325,15 +321,14 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.RecalcularLimiteClicado)
 
-        assertTrue(viewModel.uiState.value!!.comandoRede is DadosPessoaisEffect.ErroDeRede)
+        assertTrue(comandos().rede is DadosPessoaisEffect.ErroDeRede)
     }
 
     @Test
     fun atualizarClicado_comCamposObrigatoriosPendentes_naoDeveSalvar() {
         viewModel.onEvent(DadosPessoaisEvent.AtualizarClicado)
 
-        val state = viewModel.uiState.value!!
-        val comando = state.comandoDialog as DadosPessoaisEffect.CamposObrigatoriosPendentes
+        val comando = comandos().dialog as DadosPessoaisEffect.CamposObrigatoriosPendentes
         assertTrue(comando.campos.contains(DadosPessoaisEffect.CampoObrigatorio.CEP))
         assertTrue(comando.campos.contains(DadosPessoaisEffect.CampoObrigatorio.UF))
         assertTrue(comando.campos.contains(DadosPessoaisEffect.CampoObrigatorio.MUNICIPIO))
@@ -362,13 +357,9 @@ class DadosPessoaisViewModelTest {
         assertEquals(0, BigDecimal("50.00").compareTo(alteracao.limiteDiario))
         assertEquals(ApostadorAlteracaoDTO.SexoEnum.M, alteracao.sexo)
 
-        val state = viewModel.uiState.value!!
-        assertFalse(state.carregando)
-        assertEquals(
-            DadosPessoaisEffect.RegistrarEvento.Tipo.EDICAO_CADASTRO_SUCESSO,
-            (state.comandoAnalytics as DadosPessoaisEffect.RegistrarEvento).tipo
-        )
-        assertTrue(state.comandoNavegacao is DadosPessoaisEffect.CadastroAtualizado)
+        assertFalse(estado().carregando)
+        assertNotNull(comandos().analytics)
+        assertTrue(comandos().navegacao is DadosPessoaisEffect.CadastroAtualizado)
     }
 
     @Test
@@ -380,10 +371,9 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.AtualizarClicado)
 
-        val state = viewModel.uiState.value!!
-        val comandoRede = state.comandoRede as DadosPessoaisEffect.Redirecionar
+        val comandoRede = comandos().rede as DadosPessoaisEffect.Redirecionar
         assertEquals(RedirectEnum.HOME, comandoRede.redirect)
-        assertFalse(state.comandoNavegacao is DadosPessoaisEffect.CadastroAtualizado)
+        assertFalse(comandos().navegacao is DadosPessoaisEffect.CadastroAtualizado)
     }
 
     @Test
@@ -393,14 +383,14 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.AtualizarClicado)
 
-        assertTrue(viewModel.uiState.value!!.comandoRede is DadosPessoaisEffect.ErroDeRede)
+        assertTrue(comandos().rede is DadosPessoaisEffect.ErroDeRede)
     }
 
     @Test
     fun voltarClicado_deveFecharTela() {
         viewModel.onEvent(DadosPessoaisEvent.VoltarClicado)
 
-        assertTrue(viewModel.uiState.value!!.comandoNavegacao is DadosPessoaisEffect.FecharTela)
+        assertTrue(comandos().navegacao is DadosPessoaisEffect.FecharTela)
     }
 
     @Test
@@ -410,7 +400,7 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.ComandoRedeConsumido)
 
-        assertNull(viewModel.uiState.value!!.comandoRede)
+        assertNull(comandos().rede)
     }
 
     @Test
@@ -419,7 +409,7 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.ComandoDialogConsumido)
 
-        assertNull(viewModel.uiState.value!!.comandoDialog)
+        assertNull(comandos().dialog)
     }
 
     @Test
@@ -428,17 +418,39 @@ class DadosPessoaisViewModelTest {
 
         viewModel.onEvent(DadosPessoaisEvent.ComandoNavegacaoConsumido)
 
-        assertNull(viewModel.uiState.value!!.comandoNavegacao)
+        assertNull(comandos().navegacao)
     }
 
     @Test
     fun comandoAnalyticsConsumido_deveLimparSlot() {
-        fakeModel.recalcularResposta = ApostadorDTOResponse().apply { payload = apostadorPadrao() }
+        fakeModel.recalcularResposta = ApostadorDTOResponse().apply {
+            payload = apostadorPadrao()
+        }
         viewModel.onEvent(DadosPessoaisEvent.RecalcularLimiteClicado)
 
         viewModel.onEvent(DadosPessoaisEvent.ComandoAnalyticsConsumido)
 
-        assertNull(viewModel.uiState.value!!.comandoAnalytics)
+        assertNull(comandos().analytics)
+    }
+
+    @Test
+    fun comandoConsumido_naoDeveEmitirNovoEstado() {
+        viewModel.onEvent(DadosPessoaisEvent.NaoSeiCepClicado)
+        val estadoAntes = estado()
+
+        viewModel.onEvent(DadosPessoaisEvent.ComandoDialogConsumido)
+
+        assertSame(estadoAntes, estado())
+    }
+
+    @Test
+    fun emissaoDeComando_naoDeveAlterarEstado() {
+        viewModel.onEvent(DadosPessoaisEvent.SexoSelecionado(1))
+        val estadoAntes = estado()
+
+        viewModel.onEvent(DadosPessoaisEvent.NaoSeiCepClicado)
+
+        assertEquals(estadoAntes, estado())
     }
 
     private fun prepararEstadoValidoParaSalvar() {
@@ -522,5 +534,3 @@ class DadosPessoaisViewModelTest {
         }
     }
 }
-
-

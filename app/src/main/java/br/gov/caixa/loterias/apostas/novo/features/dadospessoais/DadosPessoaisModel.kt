@@ -1,4 +1,4 @@
-package br.gov.caixa.loterias.apostas.model.model
+package br.gov.caixa.loterias.apostas.novo.features.dadospessoais
 
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO

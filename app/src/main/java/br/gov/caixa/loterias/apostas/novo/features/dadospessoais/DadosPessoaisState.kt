@@ -1,6 +1,5 @@
-package br.gov.caixa.loterias.apostas.state
+package br.gov.caixa.loterias.apostas.novo.features.dadospessoais
 
-import br.gov.caixa.loterias.apostas.effect.DadosPessoaisEffect
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioIdDTO
 import java.math.BigDecimal
@@ -18,11 +17,7 @@ data class DadosPessoaisState(
     val carregando: Boolean = false,
     val dadosCarregados: Boolean = false,
     val limiteMenorQueMinimo: Boolean = false,
-    val limiteMaiorQueMaximo: Boolean = false,
-    val comandoRede: DadosPessoaisEffect? = null,
-    val comandoDialog: DadosPessoaisEffect? = null,
-    val comandoNavegacao: DadosPessoaisEffect? = null,
-    val comandoAnalytics: DadosPessoaisEffect? = null
+    val limiteMaiorQueMaximo: Boolean = false
 ) {
 
     val cepValido: Boolean

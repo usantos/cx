@@ -12,7 +12,7 @@
     android:orientation="vertical"
     android:background="@drawable/bg_dados_pessoais"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostas.controllers.DadosPessoaisActivity"
+    tools:context="br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisActivity"
     tools:showIn="@layout/activity_dados_pessoais">
 
     <androidx.core.widget.NestedScrollView

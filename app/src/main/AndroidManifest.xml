@@ -463,7 +463,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity" />
         <activity
-            android:name=".controllers.DadosPessoaisActivity"
+            android:name=".novo.features.dadospessoais.DadosPessoaisActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />

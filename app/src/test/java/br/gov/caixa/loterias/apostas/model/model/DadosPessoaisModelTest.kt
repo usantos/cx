@@ -9,6 +9,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTOResponse
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTOResponse
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTOResponse
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse
+import br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisModel
 import com.android.volley.NetworkResponse
 import com.android.volley.VolleyError
 import org.junit.Assert.assertEquals
@@ -57,6 +58,12 @@ class DadosPessoaisModelTest {
         return VolleyError(NetworkResponse(statusCode, null, false, 0L, null))
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> captorDeListener(): ArgumentCaptor<RequestListener<T>> {
+        return ArgumentCaptor.forClass(RequestListener::class.java)
+            as ArgumentCaptor<RequestListener<T>>
+    }
+
     @Test
     fun carregarDadosUsuario_devePropagarSucessoDoBO() {
         val bo = mock(DadosUsuarioBO::class.java)
@@ -66,9 +73,7 @@ class DadosPessoaisModelTest {
             val callback = CallbackCapturado<ApostadorDTOResponse>()
             model.carregarDadosUsuario(callback)
 
-            @Suppress("UNCHECKED_CAST")
-            val captor = ArgumentCaptor.forClass(RequestListener::class.java)
-                as ArgumentCaptor<RequestListener<ApostadorDTOResponse>>
+            val captor = captorDeListener<ApostadorDTOResponse>()
             verify(bo).getDadosUsuario(captor.capture())
 
             val resposta = ApostadorDTOResponse()
@@ -89,9 +94,7 @@ class DadosPessoaisModelTest {
             val callback = CallbackCapturado<ApostadorDTOResponse>()
             model.carregarDadosUsuario(callback)
 
-            @Suppress("UNCHECKED_CAST")
-            val captor = ArgumentCaptor.forClass(RequestListener::class.java)
-                as ArgumentCaptor<RequestListener<ApostadorDTOResponse>>
+            val captor = captorDeListener<ApostadorDTOResponse>()
             verify(bo).getDadosUsuario(captor.capture())
 
             val erro = criarErro(500)
@@ -113,9 +116,7 @@ class DadosPessoaisModelTest {
             val callback = CallbackCapturado<UnidadeFederacaoDTOResponse>()
             model.carregarUfs(callback)
 
-            @Suppress("UNCHECKED_CAST")
-            val captor = ArgumentCaptor.forClass(RequestListener::class.java)
-                as ArgumentCaptor<RequestListener<UnidadeFederacaoDTOResponse>>
+            val captor = captorDeListener<UnidadeFederacaoDTOResponse>()
             verify(bo).ufs(captor.capture())
 
             val resposta = UnidadeFederacaoDTOResponse()
@@ -135,11 +136,8 @@ class DadosPessoaisModelTest {
             val callback = CallbackCapturado<MunicipioDTOResponse>()
             model.carregarMunicipios("35", callback)
 
-            @Suppress("UNCHECKED_CAST")
             val idUfCaptor = ArgumentCaptor.forClass(String::class.java)
-            @Suppress("UNCHECKED_CAST")
-            val listenerCaptor = ArgumentCaptor.forClass(RequestListener::class.java)
-                as ArgumentCaptor<RequestListener<MunicipioDTOResponse>>
+            val listenerCaptor = captorDeListener<MunicipioDTOResponse>()
             verify(bo).municipios(idUfCaptor.capture(), listenerCaptor.capture())
 
             assertEquals("35", idUfCaptor.value)
@@ -160,9 +158,7 @@ class DadosPessoaisModelTest {
             val callback = CallbackCapturado<BairroDTOResponse>()
             model.buscarBairroPorCep("01001000", callback)
 
-            @Suppress("UNCHECKED_CAST")
-            val listenerCaptor = ArgumentCaptor.forClass(RequestListener::class.java)
-                as ArgumentCaptor<RequestListener<BairroDTOResponse>>
+            val listenerCaptor = captorDeListener<BairroDTOResponse>()
             verify(bo).bairros(
                 isNull(),
                 isNull(),
@@ -186,9 +182,7 @@ class DadosPessoaisModelTest {
             val callback = CallbackCapturado<ApostadorDTOResponse>()
             model.recalcularLimite(callback)
 
-            @Suppress("UNCHECKED_CAST")
-            val captor = ArgumentCaptor.forClass(RequestListener::class.java)
-                as ArgumentCaptor<RequestListener<ApostadorDTOResponse>>
+            val captor = captorDeListener<ApostadorDTOResponse>()
             verify(bo).recalcularLimite(captor.capture())
 
             val erro = criarErro(400)
@@ -208,9 +202,7 @@ class DadosPessoaisModelTest {
             model.atualizarDadosUsuario(alteracao, callback)
 
             val dtoCaptor = ArgumentCaptor.forClass(ApostadorAlteracaoDTO::class.java)
-            @Suppress("UNCHECKED_CAST")
-            val listenerCaptor = ArgumentCaptor.forClass(RequestListener::class.java)
-                as ArgumentCaptor<RequestListener<CadastrarApostadorDTOResponse>>
+            val listenerCaptor = captorDeListener<CadastrarApostadorDTOResponse>()
             verify(bo).putDadosUsuario(dtoCaptor.capture(), listenerCaptor.capture())
 
             assertSame(alteracao, dtoCaptor.value)
@@ -222,6 +214,3 @@ class DadosPessoaisModelTest {
         }
     }
 }
-
-
-

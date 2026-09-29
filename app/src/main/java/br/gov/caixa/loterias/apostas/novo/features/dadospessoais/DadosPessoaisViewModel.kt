@@ -1,10 +1,8 @@
-package br.gov.caixa.loterias.apostas.viewModel
+package br.gov.caixa.loterias.apostas.novo.features.dadospessoais
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import br.gov.caixa.loterias.apostas.effect.DadosPessoaisEffect
-import br.gov.caixa.loterias.apostas.event.DadosPessoaisEvent
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorAlteracaoDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse
@@ -13,8 +11,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTORes
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTOResponse
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse
-import br.gov.caixa.loterias.apostas.model.model.DadosPessoaisModel
-import br.gov.caixa.loterias.apostas.state.DadosPessoaisState
 import br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial
 import com.android.volley.VolleyError
 import java.math.BigDecimal
@@ -27,11 +23,16 @@ class DadosPessoaisViewModel(
         const val ERRO_CEP_INVALIDO = "CEP_INVALIDO"
         const val TAMANHO_CEP = 8
         const val POSICAO_MASCULINO = 0
+        const val POSICAO_FEMININO = 1
+        const val CASAS_DECIMAIS_MOEDA = 2
         val APENAS_NUMEROS = Regex("\\D")
     }
 
     private val _uiState = MutableLiveData(DadosPessoaisState())
     val uiState: LiveData<DadosPessoaisState> = _uiState
+
+    private val _comandos = MutableLiveData(DadosPessoaisComandos())
+    val comandos: LiveData<DadosPessoaisComandos> = _comandos
 
     private var carregamentoIniciado = false
 
@@ -46,28 +47,28 @@ class DadosPessoaisViewModel(
             is DadosPessoaisEvent.NotificacaoAlterada -> handleNotificacaoAlterada(event)
 
             is DadosPessoaisEvent.NaoSeiCepClicado ->
-                updateState { it.copy(comandoDialog = DadosPessoaisEffect.ConfirmarSaidaParaCorreios) }
+                updateComandos { it.copy(dialog = DadosPessoaisEffect.ConfirmarSaidaParaCorreios) }
 
             is DadosPessoaisEvent.RedirecionamentoCorreiosConfirmado ->
-                updateState { it.copy(comandoNavegacao = DadosPessoaisEffect.AbrirSiteCorreios) }
+                updateComandos { it.copy(navegacao = DadosPessoaisEffect.AbrirSiteCorreios) }
 
             is DadosPessoaisEvent.RecalcularLimiteClicado -> recalcularLimite()
             is DadosPessoaisEvent.AtualizarClicado -> salvar()
 
             is DadosPessoaisEvent.VoltarClicado ->
-                updateState { it.copy(comandoNavegacao = DadosPessoaisEffect.FecharTela) }
+                updateComandos { it.copy(navegacao = DadosPessoaisEffect.FecharTela) }
 
             is DadosPessoaisEvent.ComandoRedeConsumido ->
-                updateState { if (it.comandoRede == null) it else it.copy(comandoRede = null) }
+                updateComandos { if (it.rede == null) it else it.copy(rede = null) }
 
             is DadosPessoaisEvent.ComandoDialogConsumido ->
-                updateState { if (it.comandoDialog == null) it else it.copy(comandoDialog = null) }
+                updateComandos { if (it.dialog == null) it else it.copy(dialog = null) }
 
             is DadosPessoaisEvent.ComandoNavegacaoConsumido ->
-                updateState { if (it.comandoNavegacao == null) it else it.copy(comandoNavegacao = null) }
+                updateComandos { if (it.navegacao == null) it else it.copy(navegacao = null) }
 
             is DadosPessoaisEvent.ComandoAnalyticsConsumido ->
-                updateState { if (it.comandoAnalytics == null) it else it.copy(comandoAnalytics = null) }
+                updateComandos { if (it.analytics == null) it else it.copy(analytics = null) }
         }
     }
 
@@ -94,15 +95,13 @@ class DadosPessoaisViewModel(
                             cep = apostador.cep,
                             aceitaNoticias = apostador.aceitaReceberNoticias == true,
                             posicaoSexo = resolverPosicaoSexo(apostador),
-                            erroCep = null,
-                            comandoRede = criarComandoRedirect(response.redirect),
-                            comandoAnalytics = DadosPessoaisEffect.RegistrarEvento(
-                                DadosPessoaisEffect.RegistrarEvento.Tipo.ENTROU_EDITAR_CADASTRO
-                            )
+                            erroCep = null
                         ),
                         apostador
                     )
                 }
+                emitirRedirect(response.redirect)
+                emitirAnalytics(DadosPessoaisEffect.RegistrarEvento.Tipo.ENTROU_EDITAR_CADASTRO)
                 carregarLocalizacao(apostador)
             }
 
@@ -113,7 +112,7 @@ class DadosPessoaisViewModel(
     }
 
     private fun resolverPosicaoSexo(apostador: ApostadorDTO): Int {
-        return if (ApostadorDTO.SexoEnum.F == apostador.sexo) 1 else POSICAO_MASCULINO
+        return if (ApostadorDTO.SexoEnum.F == apostador.sexo) POSICAO_FEMININO else POSICAO_MASCULINO
     }
 
     private fun carregarLocalizacao(apostador: ApostadorDTO) {
@@ -165,12 +164,11 @@ class DadosPessoaisViewModel(
                     updateState { state ->
                         state.copy(
                             municipio = nome ?: state.municipio,
-                            comandoRede = criarComandoRedirect(response?.redirect)
-                                ?: state.comandoRede,
                             carregando = false,
                             dadosCarregados = true
                         )
                     }
+                    emitirRedirect(response?.redirect)
                 }
 
                 override fun onError(error: VolleyError?) {
@@ -221,10 +219,10 @@ class DadosPessoaisViewModel(
                         municipio = municipio.nome,
                         municipioSelecionado = municipio.id,
                         erroCep = null,
-                        carregando = false,
-                        comandoRede = criarComandoRedirect(response.redirect)
+                        carregando = false
                     )
                 }
+                emitirRedirect(response.redirect)
             }
 
             override fun onError(error: VolleyError?) {
@@ -232,12 +230,8 @@ class DadosPessoaisViewModel(
                     definirCepInvalido()
                     return
                 }
-                updateState {
-                    it.copy(
-                        carregando = false,
-                        comandoRede = DadosPessoaisEffect.ErroDeRede(error)
-                    )
-                }
+                updateState { it.copy(carregando = false) }
+                updateComandos { it.copy(rede = DadosPessoaisEffect.ErroDeRede(error)) }
             }
         })
     }
@@ -270,7 +264,7 @@ class DadosPessoaisViewModel(
         if (apenasDigitos.isEmpty()) {
             return BigDecimal.ZERO
         }
-        return BigDecimal(apenasDigitos).movePointLeft(2)
+        return BigDecimal(apenasDigitos).movePointLeft(CASAS_DECIMAIS_MOEDA)
     }
 
     private fun validarLimite(
@@ -301,14 +295,10 @@ class DadosPessoaisViewModel(
                     } else {
                         validarLimite(state.copy(apostador = apostador), apostador)
                     }
-                    base.copy(
-                        carregando = false,
-                        comandoAnalytics = DadosPessoaisEffect.RegistrarEvento(
-                            DadosPessoaisEffect.RegistrarEvento.Tipo.ENTROU_RECALCULAR_LIMITE
-                        ),
-                        comandoRede = criarComandoRedirect(response?.redirect) ?: base.comandoRede
-                    )
+                    base.copy(carregando = false)
                 }
+                emitirAnalytics(DadosPessoaisEffect.RegistrarEvento.Tipo.ENTROU_RECALCULAR_LIMITE)
+                emitirRedirect(response?.redirect)
             }
 
             override fun onError(error: VolleyError?) {
@@ -325,18 +315,15 @@ class DadosPessoaisViewModel(
     }
 
     private fun handleNotificacaoAlterada(event: DadosPessoaisEvent.NotificacaoAlterada) {
-        updateState { state ->
-            if (state.aceitaNoticias == event.aceitaNoticias) {
-                return@updateState state
+        val state = currentState()
+        if (state.aceitaNoticias == event.aceitaNoticias) {
+            return
+        }
+        updateState { it.copy(aceitaNoticias = event.aceitaNoticias) }
+        if (state.dadosCarregados) {
+            updateComandos {
+                it.copy(dialog = DadosPessoaisEffect.MostrarAvisoNotificacao(event.aceitaNoticias))
             }
-            state.copy(
-                aceitaNoticias = event.aceitaNoticias,
-                comandoDialog = if (state.dadosCarregados) {
-                    DadosPessoaisEffect.MostrarAvisoNotificacao(event.aceitaNoticias)
-                } else {
-                    state.comandoDialog
-                }
-            )
         }
     }
 
@@ -345,8 +332,8 @@ class DadosPessoaisViewModel(
 
         val pendentes = validarCamposObrigatorios(state)
         if (pendentes.isNotEmpty()) {
-            updateState {
-                it.copy(comandoDialog = DadosPessoaisEffect.CamposObrigatoriosPendentes(pendentes))
+            updateComandos {
+                it.copy(dialog = DadosPessoaisEffect.CamposObrigatoriosPendentes(pendentes))
             }
             return
         }
@@ -359,20 +346,16 @@ class DadosPessoaisViewModel(
             montarApostadorAlteracao(state),
             object : DadosPessoaisModel.Callback<CadastrarApostadorDTOResponse> {
                 override fun onSuccess(response: CadastrarApostadorDTOResponse?) {
+                    updateState { it.copy(carregando = false) }
+                    emitirAnalytics(DadosPessoaisEffect.RegistrarEvento.Tipo.EDICAO_CADASTRO_SUCESSO)
+
                     val redirect = criarComandoRedirect(response?.redirect)
-                    updateState { atual ->
-                        atual.copy(
-                            carregando = false,
-                            comandoAnalytics = DadosPessoaisEffect.RegistrarEvento(
-                                DadosPessoaisEffect.RegistrarEvento.Tipo.EDICAO_CADASTRO_SUCESSO
-                            ),
-                            comandoRede = redirect ?: atual.comandoRede,
-                            comandoNavegacao = if (redirect == null) {
-                                DadosPessoaisEffect.CadastroAtualizado
-                            } else {
-                                atual.comandoNavegacao
-                            }
-                        )
+                    if (redirect == null) {
+                        updateComandos {
+                            it.copy(navegacao = DadosPessoaisEffect.CadastroAtualizado)
+                        }
+                    } else {
+                        updateComandos { it.copy(rede = redirect) }
                     }
                 }
 
@@ -408,17 +391,25 @@ class DadosPessoaisViewModel(
             setAceitaReceberNoticias(state.aceitaNoticias)
             limiteDiario = state.limiteDigitado
             alterandoLoterica = false
-            sexo = if (state.posicaoSexo == POSICAO_MASCULINO) {
-                ApostadorAlteracaoDTO.SexoEnum.M
-            } else {
+            sexo = if (state.posicaoSexo == POSICAO_FEMININO) {
                 ApostadorAlteracaoDTO.SexoEnum.F
+            } else {
+                ApostadorAlteracaoDTO.SexoEnum.M
             }
         }
     }
 
-
     private fun criarComandoRedirect(redirect: RedirectEnum?): DadosPessoaisEffect? {
         return redirect?.let { DadosPessoaisEffect.Redirecionar(it) }
+    }
+
+    private fun emitirRedirect(redirect: RedirectEnum?) {
+        val comando = criarComandoRedirect(redirect) ?: return
+        updateComandos { it.copy(rede = comando) }
+    }
+
+    private fun emitirAnalytics(tipo: DadosPessoaisEffect.RegistrarEvento.Tipo) {
+        updateComandos { it.copy(analytics = DadosPessoaisEffect.RegistrarEvento(tipo)) }
     }
 
     private fun atualizarCarregamento() {
@@ -427,12 +418,8 @@ class DadosPessoaisViewModel(
 
     private fun finalizarCarregamentoComErro(error: VolleyError?) {
         carregamentoIniciado = false
-        updateState {
-            it.copy(
-                carregando = false,
-                comandoRede = DadosPessoaisEffect.ErroDeRede(error)
-            )
-        }
+        updateState { it.copy(carregando = false) }
+        updateComandos { it.copy(rede = DadosPessoaisEffect.ErroDeRede(error)) }
     }
 
     private fun finalizarCarregamentoComFalhaInterna() {
@@ -444,7 +431,15 @@ class DadosPessoaisViewModel(
         _uiState.value = reducer(currentState())
     }
 
+    private fun updateComandos(reducer: (DadosPessoaisComandos) -> DadosPessoaisComandos) {
+        _comandos.value = reducer(currentComandos())
+    }
+
     private fun currentState(): DadosPessoaisState {
         return _uiState.value ?: DadosPessoaisState()
+    }
+
+    private fun currentComandos(): DadosPessoaisComandos {
+        return _comandos.value ?: DadosPessoaisComandos()
     }
 }

@@ -1,6 +1,5 @@
-package br.gov.caixa.loterias.apostas.controllers
+package br.gov.caixa.loterias.apostas.novo.features.dadospessoais
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -20,19 +19,16 @@ import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.ViewModelProvider
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity
 import br.gov.caixa.loterias.apostas.R
-import br.gov.caixa.loterias.apostas.effect.DadosPessoaisEffect
-import br.gov.caixa.loterias.apostas.event.DadosPessoaisEvent
+import br.gov.caixa.loterias.apostas.controllers.DadosPessoaisConfirmacaoActivity
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO
-import br.gov.caixa.loterias.apostas.state.DadosPessoaisState
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager
 import br.gov.caixa.loterias.apostas.utils.DialogUtils
 import br.gov.caixa.loterias.apostas.utils.Utils
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup
-import br.gov.caixa.loterias.apostas.viewModel.DadosPessoaisViewModel
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import java.math.BigDecimal
@@ -41,7 +37,7 @@ import java.util.Locale
 import com.github.pinball83.maskededittext.MaskedEditText as MaskedEditTextLib
 import br.gov.caixa.loterias.apostas.view.components.MaskedEditText as MaskedEditTextApp
 
-class DadosPessoaisActivity : LoteriasBaseAppActivity() {
+open class DadosPessoaisActivity : LoteriasBaseAppActivity() {
 
     private companion object {
         val LOCALE_BR: Locale = Locale("pt", "BR")
@@ -236,6 +232,7 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
 
     private fun observarViewModel() {
         viewModel.uiState.observe(this) { state -> renderizar(state) }
+        viewModel.comandos.observe(this) { comandos -> tratarComandos(comandos) }
     }
 
     private fun renderizar(state: DadosPessoaisState?) {
@@ -248,10 +245,6 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
         renderizarLocalizacao(state)
         renderizarLimite(state)
 
-        tratarComandoRede(state.comandoRede)
-        tratarComandoDialog(state.comandoDialog)
-        tratarComandoAnalytics(state.comandoAnalytics)
-        tratarComandoNavegacao(state.comandoNavegacao)
     }
 
     private fun renderizarApostador(state: DadosPessoaisState, apostador: ApostadorDTO) {
@@ -335,6 +328,15 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
             editTextLimiteLayout.boxStrokeColor = getColor(R.color.vermelho_erro)
             editTextLimiteLayout.isHelperTextEnabled = false
         }
+    }
+    private fun tratarComandos(comandos: DadosPessoaisComandos?) {
+        if (comandos == null) {
+            return
+        }
+        tratarComandoRede(comandos.rede)
+        tratarComandoDialog(comandos.dialog)
+        tratarComandoAnalytics(comandos.analytics)
+        tratarComandoNavegacao(comandos.navegacao)
     }
 
     private fun tratarComandoRede(comando: DadosPessoaisEffect?) {
@@ -483,7 +485,7 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
         containerNotificacoes.contentDescription = textoFinal
         containerNotificacoes.post {
             val accessibilityManager =
-                getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager
+                getSystemService(ACCESSIBILITY_SERVICE) as? AccessibilityManager
             if (accessibilityManager?.isEnabled == true) {
                 containerNotificacoes.announceForAccessibility(textoFinal)
             }
@@ -526,9 +528,11 @@ class DadosPessoaisActivity : LoteriasBaseAppActivity() {
 
     private abstract class SimpleTextWatcher : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            // Intencionalmente vazio
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            // Intencionalmente vazio
         }
     }
 }
