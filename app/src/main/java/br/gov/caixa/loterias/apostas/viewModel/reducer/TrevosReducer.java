@@ -30,10 +30,6 @@ public class TrevosReducer {
         Integer numero =
                 event.getNumeroTrevo();
 
-        if (numero == null) {
-            return atual;
-        }
-
         boolean jaSelecionado =
                 trevos.contains(numero);
 
@@ -71,7 +67,7 @@ public class TrevosReducer {
 
         if (valorAtualizado == null
                 || valorAtualizado.getNumeroTrevos() == null) {
-            return atual.toBuilder()
+            return atual.copy()
                     .setTrevosSelecionados(trevos)
                     .setQuantidadeTrevosSelecionada(quantidadeNecessaria)
                     .setBotaoAdicionarHabilitado(false)
@@ -85,8 +81,7 @@ public class TrevosReducer {
                                     quantidadeSelecionada,
                                     quantidadeNecessaria
                             )
-                    )
-                    .build();
+                    );
         }
 
         BigDecimal valorAposta =
@@ -106,7 +101,7 @@ public class TrevosReducer {
                         && quantidadeNecessaria
                         > atual.getValorTrevosSelecionado().getNumeroTrevos();
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setEtapaAposta(EtapaAposta.TREVOS)
                 .setValoresTrevos(valores)
                 .setTrevosSelecionados(trevos)
@@ -144,8 +139,7 @@ public class TrevosReducer {
                 .setAvisouTrevosMaximo(
                         atual.isAvisouTrevosMaximo()
                                 || aumentouQuantidadeTrevos
-                )
-                .build();
+                );
     }
 
     public SimulaUiState trevosAlterados(
@@ -182,7 +176,7 @@ public class TrevosReducer {
                         event.getTrevosSelecionados()
                 );
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setEtapaAposta(EtapaAposta.TREVOS)
                 .setBotaoAdicionarHabilitado(apostaCompleta)
                 .setBotaoCompletarHabilitado(!apostaCompleta)
@@ -198,8 +192,7 @@ public class TrevosReducer {
                                 quantidadeSelecionada,
                                 quantidadeNecessaria
                         )
-                )
-                .build();
+                );
     }
 
     public SimulaUiState quantidadeTrevosAlterada(
@@ -227,7 +220,7 @@ public class TrevosReducer {
                         valorSelecionado
                 );
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setEtapaAposta(EtapaAposta.TREVOS)
                 .setValorAposta(valorAposta)
                 .setValorGrande(isValorGrande(valorAposta))
@@ -238,14 +231,13 @@ public class TrevosReducer {
                         )
                 )
                 .setQuantidadeTrevosSelecionada(quantidadeTrevos)
-                .setTrevosSelecionados(new ArrayList<Integer>())
+                .setTrevosSelecionados(new ArrayList<>())
                 .setValorTrevosSelecionado(valorSelecionado)
                 .setTextoBotaoQuantidadeTrevos(
                         montarTextoBotaoTrevos(
                                 quantidadeTrevos
                         )
-                )
-                .build();
+                );
     }
 
     public SimulaUiState clicarQuantidadeTrevos(
@@ -277,12 +269,11 @@ public class TrevosReducer {
                         + event.getQuantidadeNumeros()
                         + " numeros";
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setValoresTrevos(valores)
                 .setLabelsQuantidadeTrevos(labels)
                 .setSubtituloTrevos(subtitulo)
-                .setExibirDialogQuantidadeTrevos(true)
-                .build();
+                .setExibirDialogQuantidadeTrevos(true);
     }
 
     public SimulaUiState selecionarQuantidadeTrevos(
@@ -310,14 +301,13 @@ public class TrevosReducer {
                 position > 0
                         && !atual.isAvisouTrevosMaximo();
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setPosicaoTrevosSelecionada(position)
                 .setExibirAvisoTrevosMaximo(deveAvisar)
                 .setAvisouTrevosMaximo(
                         atual.isAvisouTrevosMaximo()
                                 || deveAvisar
-                )
-                .build();
+                );
     }
 
     public SimulaUiState confirmarQuantidadeTrevos(
@@ -366,14 +356,14 @@ public class TrevosReducer {
                         selecionado
                 );
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setPosicaoTrevosSelecionada(position)
                 .setValorTrevosSelecionado(selecionado)
                 .setExibirDialogQuantidadeTrevos(false)
                 .setEtapaAposta(EtapaAposta.TREVOS)
                 .setValorAposta(valorAposta)
                 .setValorGrande(isValorGrande(valorAposta))
-                .setTrevosSelecionados(new ArrayList<Integer>())
+                .setTrevosSelecionados(new ArrayList<>())
                 .setQuantidadeTrevosSelecionada(quantidadeTrevos)
                 .setTextoSelecionados(
                         montarTextoTrevosSelecionados(
@@ -390,8 +380,7 @@ public class TrevosReducer {
                         new ScreenSimulaEffect.AtualizarQuantidadeTrevos(
                                 selecionado
                         )
-                )
-                .build();
+                );
     }
 
     public SimulaUiState consumirDialogQuantidadeTrevos(
@@ -402,9 +391,8 @@ public class TrevosReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setExibirDialogQuantidadeTrevos(false)
-                .build();
+        return atual.copy()
+                .setExibirDialogQuantidadeTrevos(false);
     }
 
     public SimulaUiState consumirAvisoTrevosMaximo(
@@ -415,9 +403,8 @@ public class TrevosReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setExibirAvisoTrevosMaximo(false)
-                .build();
+        return atual.copy()
+                .setExibirAvisoTrevosMaximo(false);
     }
 
     public ParametroValorApostaDTO obterValorTrevosAtual(
@@ -456,7 +443,7 @@ public class TrevosReducer {
     ) {
 
         List<String> labels =
-                new ArrayList<String>();
+                new ArrayList<>();
 
         if (valores == null) {
             return labels;
@@ -559,10 +546,10 @@ public class TrevosReducer {
     ) {
 
         if (origem == null) {
-            return new ArrayList<Integer>();
+            return new ArrayList<>();
         }
 
-        return new ArrayList<Integer>(origem);
+        return new ArrayList<>(origem);
     }
     private List<ParametroValorApostaDTO> resolverValoresTrevosDisponiveis(
             SimulaUiState atual,

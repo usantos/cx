@@ -17,9 +17,8 @@ public class FavoritarApostaReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setExibirDialogFavoritarAposta(true)
-                .build();
+        return atual.copy()
+                .setExibirDialogFavoritarAposta(true);
     }
 
     public SimulaUiState consumirDialog(
@@ -30,9 +29,8 @@ public class FavoritarApostaReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setExibirDialogFavoritarAposta(false)
-                .build();
+        return atual.copy()
+                .setExibirDialogFavoritarAposta(false);
     }
 
     public SimulaUiState publicarComando(
@@ -44,9 +42,8 @@ public class FavoritarApostaReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setComandoFavoritarAposta(comando)
-                .build();
+        return atual.copy()
+                .setComandoFavoritarAposta(comando);
     }
 
     public SimulaUiState limparComando(
@@ -57,9 +54,8 @@ public class FavoritarApostaReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setComandoFavoritarAposta(null)
-                .build();
+        return atual.copy()
+                .setComandoFavoritarAposta(null);
     }
 
     public SimulaUiState sucessoFavoritar(
@@ -70,11 +66,10 @@ public class FavoritarApostaReducer {
             return null;
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setApostaFavoritada(true)
                 .setMostrarSalvarAposta(true)
-                .setPossuiAlteracoesPendentes(true)
-                .build();
+                .setPossuiAlteracoesPendentes(true);
     }
 
     public ApostaFavoritaDTO prepararApostaFavorita(

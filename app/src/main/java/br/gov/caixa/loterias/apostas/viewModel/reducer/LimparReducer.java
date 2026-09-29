@@ -25,8 +25,8 @@ public class LimparReducer {
                         ? valorApostaAtual
                         : BigDecimal.ZERO;
 
-        SimulaUiState.Builder builder =
-                state.toBuilder()
+        SimulaUiState builder =
+                state.copy()
                         .setMostrarSalvarAposta(false)
                         .setMostrarBotaoLimparAposta(false)
                         .setTextoSelecionados("Selecione os números:")
@@ -81,7 +81,7 @@ public class LimparReducer {
             limparNumerosCartela(builder);
         }
 
-        return builder.build();
+        return builder;
     }
     public SimulaUiState limparFlagsDeRenderizacao(
             SimulaUiState state
@@ -91,23 +91,22 @@ public class LimparReducer {
             return null;
         }
 
-        return state.toBuilder()
+        return state.copy()
                 .setLimparNumerosCartela(false)
                 .setLimparTimeCoracao(false)
                 .setLimparSuperSete(false)
                 .setLimparLoteca(false)
                 .setLimparLotogol(false)
                 .setPossuiAlteracoesPendentes(false)
-                .setLimparOpcaoOutrosNumeros(false)
-                .build();
+                .setLimparOpcaoOutrosNumeros(false);
     }
 
     private void limparLoteca(
-            SimulaUiState.Builder builder,
+            SimulaUiState builder,
             int palpitesMaximos
     ) {
 
-        builder
+        builder.copy()
                 .setLimparLoteca(true)
                 .setJogosLoteca(0)
                 .setSimplesLoteca(0)
@@ -123,19 +122,19 @@ public class LimparReducer {
     }
 
     private void limparLotogol(
-            SimulaUiState.Builder builder
+            SimulaUiState builder
     ) {
 
-        builder
+        builder.copy()
                 .setLimparLotogol(true)
                 .setBotaoCompletarVisivel(false);
     }
 
     private void limparTimeCoracao(
-            SimulaUiState.Builder builder
+            SimulaUiState builder
     ) {
 
-        builder
+        builder.copy()
                 .setEquipeSelecionada(null)
                 .setLimparTimeCoracao(true)
                 .setBotaoAdicionarHabilitado(false)
@@ -146,10 +145,10 @@ public class LimparReducer {
     }
 
     private void limparMesDaSorte(
-            SimulaUiState.Builder builder
+            SimulaUiState builder
     ) {
 
-        builder
+        builder.copy()
                 .setLimparOpcaoOutrosNumeros(true)
                 .setBotaoAdicionarHabilitado(false)
                 .setBotaoCompletarHabilitado(true)
@@ -159,12 +158,12 @@ public class LimparReducer {
     }
 
     private void limparTrevos(
-            SimulaUiState.Builder builder
+            SimulaUiState builder
     ) {
 
-        builder
+        builder.copy()
                 .setLimparOpcaoOutrosNumeros(true)
-                .setTrevosSelecionados(new ArrayList<Integer>())
+                .setTrevosSelecionados(new ArrayList<>())
                 .setQuantidadeTrevosSelecionada(0)
                 .setBotaoAdicionarHabilitado(false)
                 .setBotaoCompletarHabilitado(true)
@@ -174,11 +173,11 @@ public class LimparReducer {
     }
 
     private void limparSuperSete(
-            SimulaUiState.Builder builder,
+            SimulaUiState builder,
             int qtdNumerosAtual
     ) {
 
-        builder
+        builder.copy()
                 .setLimparSuperSete(true)
                 .setQtdTotalSelecionadosSuperSete(0)
                 .setQtdDezenasPossiveisSelecionado(qtdNumerosAtual)
@@ -187,11 +186,11 @@ public class LimparReducer {
     }
 
     private void limparNumerosCartela(
-            SimulaUiState.Builder builder
+            SimulaUiState builder
     ) {
 
-        builder
-                .setDezenasSelecionadas(new ArrayList<Integer>())
+        builder.copy()
+                .setDezenasSelecionadas(new ArrayList<>())
                 .setLimparNumerosCartela(true)
                 .setMostrarBotaoLimparAposta(false)
                 .setMostrarSalvarAposta(false);

@@ -17,9 +17,8 @@ public class CarrinhoReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setAbrirCarrinho(true)
-                .build();
+        return atual.copy()
+                .setAbrirCarrinho(true);
     }
 
     public SimulaUiState consumirAbrirCarrinho(
@@ -30,9 +29,8 @@ public class CarrinhoReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setAbrirCarrinho(false)
-                .build();
+        return atual.copy()
+                .setAbrirCarrinho(false);
     }
 
     public SimulaUiState publicarEstadoCarrinho(
@@ -60,15 +58,14 @@ public class CarrinhoReducer {
                         BigDecimal.ZERO
                 ) > 0;
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setCarrinho(carrinho)
                 .setValorCarrinho(valorCarrinho)
                 .setQuantidadeApostasCarrinho(
                         quantidadeApostas
                 )
                 .setExibirCarrinho(exibirCarrinho)
-                .setCarregandoCarrinho(carregando)
-                .build();
+                .setCarregandoCarrinho(carregando);
     }
 
     public BigDecimal obterValorCarrinho(

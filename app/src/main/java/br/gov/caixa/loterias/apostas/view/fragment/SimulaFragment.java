@@ -95,8 +95,11 @@ public class SimulaFragment extends BaseEtapaFragment {
 
     private boolean isAvisou = false;
     public BigDecimal valorTotalAposta;
-    public int typeGameColorLight, typeGameColorDark;
-    public int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
+    public int typeGameColorLight;
+    public int typeGameColorDark;
+    public int corFonteFundoBranco;
+    public int corFonteFundoClaro;
+    public int corFonteFundoEscuro;
     public TextView valorAposta;
     public ListaDezenaRecyclerView simularDezenasAdapter;
     public String dataSorteioAtual;
@@ -184,16 +187,14 @@ public class SimulaFragment extends BaseEtapaFragment {
             }
         }
 
-        if (valorCalculado == null
-                || BigDecimal.ZERO.compareTo(valorCalculado) == 0) {
-
-            if (!parametroJogo.getValoresAposta().isEmpty()
+        if ((valorCalculado == null
+                || BigDecimal.ZERO.compareTo(valorCalculado) == 0) && !parametroJogo.getValoresAposta().isEmpty()
                     && parametroJogo.getValoresAposta().get(0).getValor() != null) {
 
                 valorCalculado =
                         parametroJogo.getValoresAposta().get(0).getValor();
             }
-        }
+
 
         if (valorCalculado == null) {
             valorCalculado = BigDecimal.ZERO;
@@ -309,14 +310,13 @@ public class SimulaFragment extends BaseEtapaFragment {
 
             onClickOutrosNumerosLayout();
         }
-        if(parametroJogo != null) {
-            if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
+        if(parametroJogo != null && parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
                 RelativeLayout rlColunasSuperSete = view.findViewById(R.id.rl_colunas_super_7);
                 ScrollView svSuperSete = view.findViewById(R.id.sv_super_sete);
                 rlColunasSuperSete.setVisibility(View.VISIBLE);
                 svSuperSete.setVisibility(View.VISIBLE);
             }
-        }
+
 
         notificarEstadoCartelaAlterado();
 
@@ -602,19 +602,6 @@ public class SimulaFragment extends BaseEtapaFragment {
             return;
         }
 
-        int qtdPartidasSelecionadas =
-                partidasSelecionadas != null
-                        ? partidasSelecionadas.size()
-                        : 0;
-
-        int qtdPartidasTotal =
-                parametroJogo.getPartidas() != null
-                        ? parametroJogo.getPartidas().size()
-                        : 0;
-
-        boolean equipeSelecionadaValida =
-                getStateAtual().getEquipeSelecionada() != null
-                        && getStateAtual().getEquipeSelecionada().isSelecionado();
 
         dispatch(
                 new SimulaUiEvent.CompletarApostaClicado(
@@ -922,7 +909,6 @@ public class SimulaFragment extends BaseEtapaFragment {
             );
 
             consumirComandoCompletarAposta();
-            return;
         }
 
     }
@@ -1505,10 +1491,7 @@ public class SimulaFragment extends BaseEtapaFragment {
                 valorSelecionado
         );
         atualizarDezenasSelecionadas(dezenasSelecionadas);
-
         dezena.setSelected(true);
-
-        //            voltaSalvarApostaParaLayoutInicial();
     }
 
     private void atualizarQtdSuperSeteState() {

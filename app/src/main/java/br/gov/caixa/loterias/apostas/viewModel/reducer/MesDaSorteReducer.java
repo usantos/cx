@@ -31,11 +31,10 @@ public class MesDaSorteReducer {
         }
 
         SimulaUiState novoEstado =
-                atual.toBuilder()
+                atual.copy()
                         .setMesSelecionado(
                                 event.getMes()
-                        )
-                        .build();
+                        );
 
         return aplicarEstadoMesSorte(
                 novoEstado,
@@ -52,9 +51,8 @@ public class MesDaSorteReducer {
         }
 
         SimulaUiState novoEstado =
-                atual.toBuilder()
-                        .setMesSelecionado(null)
-                        .build();
+                atual.copy()
+                        .setMesSelecionado(null);
 
         return aplicarEstadoMesSorte(
                 novoEstado,
@@ -67,7 +65,7 @@ public class MesDaSorteReducer {
             boolean mesSelecionado
     ) {
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setEtapaAposta(
                         EtapaAposta.MES_SORTE
                 )
@@ -93,7 +91,6 @@ public class MesDaSorteReducer {
                 .setApostaFavoritada(
                         mesSelecionado
                                 && atual.isApostaFavoritada()
-                )
-                .build();
+                );
     }
 }

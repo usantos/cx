@@ -46,7 +46,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
-import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
@@ -79,7 +78,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             SensorManager.GRAVITY_EARTH).getSensor();
 
     private List<Dezena> dezenas = new ArrayList<>();
-    private List<List<Integer>> matrizSelecionada;
     private HashSet<ParametroPartida> partidasSelecionadas;
     private Integer palpitesLotecaPendente;
 
@@ -100,7 +98,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
     public String dataSorteioAtual;
 
     private SimularApostaModel model;
-    private CartelaModel cartelaModel;
 
     private Context context;
 
@@ -182,16 +179,14 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             }
         }
 
-        if (valorCalculado == null
-                || BigDecimal.ZERO.compareTo(valorCalculado) == 0) {
-
-            if (!parametroJogo.getValoresAposta().isEmpty()
+        if ((valorCalculado == null
+                || BigDecimal.ZERO.compareTo(valorCalculado) == 0) && !parametroJogo.getValoresAposta().isEmpty()
                     && parametroJogo.getValoresAposta().get(0).getValor() != null) {
 
                 valorCalculado =
                         parametroJogo.getValoresAposta().get(0).getValor();
             }
-        }
+
 
         if (valorCalculado == null) {
             valorCalculado = BigDecimal.ZERO;
@@ -270,7 +265,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         }
 
         model = new SimularApostaModel(getActivity());
-        cartelaModel = new CartelaModel();
         partidasSelecionadas = new HashSet<>();
 
     }
@@ -280,12 +274,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         super.onStart();
 
         loadParametroJogo();
-
-        if (parentActivity != null && parametroJogo != null) {
-            if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
-//                configuraBotoesLotecaOuLotogol();
-            }
-        }
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
             RelativeLayout rlColunasSuperSete = view.findViewById(R.id.rl_colunas_super_7);
@@ -532,19 +520,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             return;
         }
 
-        int qtdPartidasSelecionadas =
-                partidasSelecionadas != null
-                        ? partidasSelecionadas.size()
-                        : 0;
-
-        int qtdPartidasTotal =
-                parametroJogo.getPartidas() != null
-                        ? parametroJogo.getPartidas().size()
-                        : 0;
-
-        boolean equipeSelecionadaValida =
-                getStateAtual().getEquipeSelecionada() != null
-                        && getStateAtual().getEquipeSelecionada().isSelecionado();
 
         dispatch(
                 new SimulaUiEvent.CompletarApostaClicado(
@@ -672,28 +647,8 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
     }
 
     private boolean calcularEtapaComplementarCompleta() {
-        if (parametroJogo == null) {
-            return false;
-        }
 
         return false;
-    }
-
-    private int getIntTextSafe(
-            TextView textView
-    ) {
-
-        if (textView == null || textView.getText() == null) {
-            return 0;
-        }
-
-        try {
-            return Integer.parseInt(
-                    textView.getText().toString()
-            );
-        } catch (Exception e) {
-            return 0;
-        }
     }
 
     private boolean possuiPlacarLotogol() {
@@ -946,8 +901,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         } else {
             if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
                 EscudoBO.getInstance().carregaEscudos(context, this::configurarTimesLoteca);
-                //configurarTimesLoteca();
-
             }
         }
     }
@@ -1201,7 +1154,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
         dezena.setSelected(true);
 
-        //            voltaSalvarApostaParaLayoutInicial();
     }
 
     private void configurarTimesLoteca() {
@@ -1358,6 +1310,7 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
 
     @Override
     public void partidaSelecionada() {
+        // Empty implementation, can be used for future logic if needed
     }
 
     @Override

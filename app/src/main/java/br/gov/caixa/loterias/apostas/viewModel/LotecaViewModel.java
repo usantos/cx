@@ -393,25 +393,23 @@ public class LotecaViewModel extends SimulaViewModel {
     ) {
         updateState( state ->
                 state
-                        .toBuilder()
+                        .copy()
                         .setQtdDezenasPossiveisSelecionado(
                                 event.getQtdDezenas()
                         )
                         .setQtdConcursoSelecionado(
                                 event.getQtdConcurso()
                         )
-                        .build()
         );
     }
     private void handleQtdConcursoAtualizadaInternamente(
             SimulaUiEvent.QtdConcursoAtualizadaInternamente event
     ) {
         updateState( state ->
-                state.toBuilder()
+                state.copy()
                         .setQtdConcursoSelecionado(
                                 event.getQuantidade()
                         )
-                        .build()
         );
     }
     private void atualizarQuantidadeInterna(
@@ -420,11 +418,10 @@ public class LotecaViewModel extends SimulaViewModel {
     ) {
         updateState( state ->
                 state
-                        .toBuilder()
+                        .copy()
                         .setQtdDezenasPossiveisSelecionado(
                                 event.getQuantidade()
                         )
-                        .build()
         );
     }
     private void handleLimparMesDaSorte() {
@@ -546,14 +543,13 @@ public class LotecaViewModel extends SimulaViewModel {
 
     private void limparComandoAnimacao() {
         updateState(state ->
-                state.toBuilder()
+                state.copy()
                         .setComandoAnimacao(null)
-                        .build()
         );
     }
 
     private void limparComandoTelaSimula() {
-        updateState(state -> state.toBuilder().setComandoTelaSimula(null).build());
+        updateState(state -> state.copy().setComandoTelaSimula(null));
     }
 
     private void abrirCarrinho() {
@@ -684,7 +680,7 @@ public class LotecaViewModel extends SimulaViewModel {
         updateState(teimosinhaReducer::valorAtualizado);
     }
     private void handleComoJogar() {
-        updateState(state -> state.toBuilder().setMensagemComoJogar(obterTextoComoJogar(tipoJogoAtual, isEspecialAtual)).setTitleComoJogar(obterTitleComoJogar(tipoJogoAtual, isEspecialAtual)).setExibirDialogComoJogar(true).build());
+        updateState(state -> state.copy().setMensagemComoJogar(obterTextoComoJogar(tipoJogoAtual, isEspecialAtual)).setTitleComoJogar(obterTitleComoJogar(tipoJogoAtual, isEspecialAtual)).setExibirDialogComoJogar(true));
     }
 
     public static String obterTextoComoJogar(ModalidadeEnum modalidade, boolean especial) {
@@ -696,7 +692,7 @@ public class LotecaViewModel extends SimulaViewModel {
     }
 
     private void consumirDialogComoJogar() {
-        updateState(state -> state.toBuilder().setExibirDialogComoJogar(false).build());
+        updateState(state -> state.copy().setExibirDialogComoJogar(false));
     }
 
     private void carregarCarrinho() {
@@ -806,7 +802,7 @@ public class LotecaViewModel extends SimulaViewModel {
 
         BigDecimal valor = event.getValor();
 
-        updateState(state -> state.toBuilder().setValorAposta(valor).setValorGrande(valor != null && valor.doubleValue() > 999.99).build());
+        updateState(state -> state.copy().setValorAposta(valor).setValorGrande(valor != null && valor.doubleValue() > 999.99));
     }
 
     private void handleCompletarApostaClicado(
@@ -973,11 +969,11 @@ public class LotecaViewModel extends SimulaViewModel {
     }
 
     private void publicarComando(CarrinhoEffect carrinhoEffect) {
-        updateState(state -> state.toBuilder().setComandoCarrinho(carrinhoEffect).build());
+        updateState(state -> state.copy().setComandoCarrinho(carrinhoEffect));
     }
 
     private void limparComandoCarrinho() {
-        updateState(state -> state.toBuilder().setComandoCarrinho(null).build());
+        updateState(state -> state.copy().setComandoCarrinho(null));
     }
 
     private void limparAposta() {
@@ -1124,13 +1120,12 @@ public class LotecaViewModel extends SimulaViewModel {
                 && quantidade > estadoAnterior.getPalpitesLoteca()
                 && !jaExibiuNestaSessao;
 
-        updateState(state -> state.toBuilder()
+        updateState(state -> state.copy()
                 .setPalpitesLoteca(quantidade)
                 .setAvisouAumentoPalpitesLoteca(aumentouPalpites)
                 .setAvisoAumentoPalpitesLotecaJaExibido(
                         jaExibiuNestaSessao || aumentouPalpites
                 )
-                .build()
         );
 
         recalcularFluxoLotecaComEstadoAtual();
@@ -1174,9 +1169,8 @@ public class LotecaViewModel extends SimulaViewModel {
     }
 
     private void handleResetarAvisoPalpitesLoteca() {
-        updateState(state -> state.toBuilder()
+        updateState(state -> state.copy()
                 .setAvisouAumentoPalpitesLoteca(false)
-                .build()
         );
     }
 
@@ -1219,9 +1213,8 @@ public class LotecaViewModel extends SimulaViewModel {
 
     private void limparComandoAnalytics() {
        updateState(state ->
-                state.toBuilder()
+                state.copy()
                         .setComandoAnalytics(null)
-                        .build()
         );
     }
 
@@ -1289,13 +1282,12 @@ public class LotecaViewModel extends SimulaViewModel {
         }
 
         SimulaUiState estadoFinal =
-                novoEstado.toBuilder()
+                novoEstado.copy()
                         .setTextoCompletar(
                                 obterTextoCompletar(
                                         novoEstado
                                 )
-                        )
-                        .build();
+                        );
 
         uiState.setValue(
                 estadoFinal

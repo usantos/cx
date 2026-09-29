@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostas.viewModel.reducer;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.effect.CompletarApostaEffect;
@@ -203,7 +201,7 @@ public class FluxoApostaReducer {
         int simplesLoteca =
                 calcularSimplesSelecionadosLoteca(event);
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setEtapaAposta(etapa)
                 .setQtdDezenasPossiveisSelecionado(
                         qtdDezenasPossiveis
@@ -268,8 +266,7 @@ public class FluxoApostaReducer {
                 .setJogosLoteca(event.getQtdPartidasSelecionadas())
                 .setDuplasLoteca(event.getDuplosLoteca())
                 .setTriplasLoteca(event.getTriplosLoteca())
-                .setSimplesLoteca(simplesLoteca)
-                .build();
+                .setSimplesLoteca(simplesLoteca);
     }
 
     public SimulaUiState nextStepClicado(
@@ -282,35 +279,27 @@ public class FluxoApostaReducer {
             return atual;
         }
 
-        switch (event.getTipoJogo()) {
-
-            case MAIS_MILIONARIA:
-                return abrirEtapaComplementar(
-                        atual,
-                        tipoJogoAtual,
-                        EtapaAposta.TREVOS,
-                        new CompletarApostaEffect.AbrirTrevos()
-                );
-
-            case DIA_DE_SORTE:
-                return abrirEtapaComplementar(
-                        atual,
-                        tipoJogoAtual,
-                        EtapaAposta.MES_SORTE,
-                        new CompletarApostaEffect.AbrirMesDeSorte()
-                );
-
-            case TIMEMANIA:
-                return abrirEtapaComplementar(
-                        atual,
-                        tipoJogoAtual,
-                        EtapaAposta.TIME_CORACAO,
-                        null
-                );
-
-            default:
-                return atual;
-        }
+        return switch (event.getTipoJogo()) {
+            case MAIS_MILIONARIA -> abrirEtapaComplementar(
+                    atual,
+                    tipoJogoAtual,
+                    EtapaAposta.TREVOS,
+                    new CompletarApostaEffect.AbrirTrevos()
+            );
+            case DIA_DE_SORTE -> abrirEtapaComplementar(
+                    atual,
+                    tipoJogoAtual,
+                    EtapaAposta.MES_SORTE,
+                    new CompletarApostaEffect.AbrirMesDeSorte()
+            );
+            case TIMEMANIA -> abrirEtapaComplementar(
+                    atual,
+                    tipoJogoAtual,
+                    EtapaAposta.TIME_CORACAO,
+                    null
+            );
+            default -> atual;
+        };
     }
 
     public SimulaUiState abrirEtapaComplementar(
@@ -335,7 +324,7 @@ public class FluxoApostaReducer {
             textoSelecionados = "Escolha o time do coracao:";
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setEtapaAposta(etapa)
                 .setBotaoNextStepHabilitado(false)
                 .setBotaoAdicionarHabilitado(false)
@@ -354,12 +343,11 @@ public class FluxoApostaReducer {
                                 tipoJogoAtual,
                                 etapa
                         )
-                )
-                .build();
+                );
     }
 
-    public SimulaUiState.Builder resetarEtapaComplementarSeNecessario(
-            SimulaUiState.Builder builder,
+    public SimulaUiState resetarEtapaComplementarSeNecessario(
+            SimulaUiState builder,
             SimulaUiState atual,
             ModalidadeEnum tipoJogoAtual,
             int novaQuantidade
@@ -382,11 +370,11 @@ public class FluxoApostaReducer {
             case MAIS_MILIONARIA:
                 if (atual.getEtapaAposta() == EtapaAposta.TREVOS) {
                     resetarParaEtapaNumeros(builder)
-                            .setTrevosSelecionados(new ArrayList<Integer>())
+                            .setTrevosSelecionados(new ArrayList<>())
                             .setQuantidadeTrevosSelecionada(0)
                             .setValorTrevosSelecionado(null)
                             .setValoresTrevos(new ArrayList<>())
-                            .setLabelsQuantidadeTrevos(new ArrayList<String>())
+                            .setLabelsQuantidadeTrevos(new ArrayList<>())
                             .setPosicaoTrevosSelecionada(0)
                             .setTextoBotaoQuantidadeTrevos("2 trevos")
                             .setComandoTelaSimula(
@@ -430,8 +418,8 @@ public class FluxoApostaReducer {
         return builder;
     }
 
-    private SimulaUiState.Builder resetarParaEtapaNumeros(
-            SimulaUiState.Builder builder
+    private SimulaUiState resetarParaEtapaNumeros(
+            SimulaUiState builder
     ) {
 
         return builder
@@ -470,19 +458,11 @@ public class FluxoApostaReducer {
             return "";
         }
 
-        switch (etapa) {
-
-            case NUMEROS:
-                return "1/2";
-
-            case TREVOS:
-            case MES_SORTE:
-            case TIME_CORACAO:
-                return "2/2";
-
-            default:
-                return "";
-        }
+        return switch (etapa) {
+            case NUMEROS -> "1/2";
+            case TREVOS, MES_SORTE, TIME_CORACAO -> "2/2";
+            default -> "";
+        };
     }
 
     public String montarTextoSelecionados(
@@ -684,42 +664,34 @@ public class FluxoApostaReducer {
             return null;
         }
 
-        switch (atual.getEtapaAposta()) {
-
-            case TREVOS:
-            case MES_SORTE:
-            case TIME_CORACAO:
-
-                return atual.toBuilder()
-                        .setEtapaAposta(
-                                EtapaAposta.NUMEROS
-                        )
-                        .setTextoSelecionados(
-                                montarTextoSelecionados(
-                                        atual.getDezenasSelecionadas().size(),
-                                        atual.getQtdDezenasPossiveisSelecionado()
-                                )
-                        )
-                        .setTextoInfoEtapa("1/2")
-                        .setBotaoNextStepHabilitado(
-                                atual.getDezenasSelecionadas().size()
-                                        == atual.getQtdDezenasPossiveisSelecionado()
-                        )
-                        .setBotaoAdicionarHabilitado(false)
-                        .setBotaoCompletarHabilitado(true)
-                        .setBotaoCompletarVisivel(true)
-                        .setMostrarSalvarAposta(false)
-                        .setApostaFavoritada(false)
-                        .setComandoTelaSimula(
-                                new ScreenSimulaEffect.VoltarEtapa(
-                                        EtapaAposta.NUMEROS
-                                )
-                        )
-                        .build();
-
-            default:
-                return atual;
-        }
+        return switch (atual.getEtapaAposta()) {
+            case TREVOS, MES_SORTE, TIME_CORACAO -> atual.copy()
+                    .setEtapaAposta(
+                            EtapaAposta.NUMEROS
+                    )
+                    .setTextoSelecionados(
+                            montarTextoSelecionados(
+                                    atual.getDezenasSelecionadas().size(),
+                                    atual.getQtdDezenasPossiveisSelecionado()
+                            )
+                    )
+                    .setTextoInfoEtapa("1/2")
+                    .setBotaoNextStepHabilitado(
+                            atual.getDezenasSelecionadas().size()
+                                    == atual.getQtdDezenasPossiveisSelecionado()
+                    )
+                    .setBotaoAdicionarHabilitado(false)
+                    .setBotaoCompletarHabilitado(true)
+                    .setBotaoCompletarVisivel(true)
+                    .setMostrarSalvarAposta(false)
+                    .setApostaFavoritada(false)
+                    .setComandoTelaSimula(
+                            new ScreenSimulaEffect.VoltarEtapa(
+                                    EtapaAposta.NUMEROS
+                            )
+                    );
+            default -> atual;
+        };
     }
     private boolean calcularBotaoLimparHabilitadoPorFluxo(
             SimulaUiEvent.CartelaAlterada event,
@@ -809,21 +781,10 @@ public class FluxoApostaReducer {
         return tipoJogo != ModalidadeEnum.LOTECA
                 && tipoJogo != ModalidadeEnum.LOTOGOL;
     }
-    private static class ResultadoFluxoAposta {
 
-        private final EtapaAposta etapa;
-        private final boolean numerosCompletos;
-        private final boolean apostaPronta;
+    private record ResultadoFluxoAposta(EtapaAposta etapa, boolean numerosCompletos,
+                                        boolean apostaPronta) {
 
-        ResultadoFluxoAposta(
-                EtapaAposta etapa,
-                boolean numerosCompletos,
-                boolean apostaPronta
-        ) {
-            this.etapa = etapa;
-            this.numerosCompletos = numerosCompletos;
-            this.apostaPronta = apostaPronta;
-        }
     }
     public SimulaUiState recalcularEstadoCartela(
             SimulaUiState state,

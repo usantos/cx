@@ -35,7 +35,7 @@ public class QuantidadeNumerosReducer {
                         qtdSelecionada
                 );
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setLabelsQuantidadeNumeros(
                         event.getLabelsQuantidadeNumeros()
                 )
@@ -52,8 +52,7 @@ public class QuantidadeNumerosReducer {
                 .setExibirDialogQuantidadeNumeros(false)
                 .setExibirAvisoQuantidadeNumerosMaxima(false)
                 .setAtualizarValorApostaPorQuantidadeNumeros(false)
-                .setResetarTrevosPorQuantidadeNumeros(false)
-                .build();
+                .setResetarTrevosPorQuantidadeNumeros(false);
     }
 
     public SimulaUiState clicar(
@@ -64,12 +63,11 @@ public class QuantidadeNumerosReducer {
             return null;
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setExibirDialogQuantidadeNumeros(true)
                 .setExibirAvisoQuantidadeNumerosMaxima(false)
                 .setAtualizarValorApostaPorQuantidadeNumeros(false)
-                .setResetarTrevosPorQuantidadeNumeros(false)
-                .build();
+                .setResetarTrevosPorQuantidadeNumeros(false);
     }
 
     public SimulaUiState selecionar(
@@ -166,8 +164,8 @@ public class QuantidadeNumerosReducer {
                 posicaoValida >= 1
                         && !atual.isAvisouQuantidadeNumerosMaxima();
 
-        SimulaUiState.Builder builder =
-                atual.toBuilder()
+        SimulaUiState builder =
+                atual.copy()
                         .setPosicaoQuantidadeNumerosSelecionada(
                                 posicaoValida
                         )
@@ -194,7 +192,7 @@ public class QuantidadeNumerosReducer {
             if (deveLimparSelecao) {
                 builder
                         .setDezenasSelecionadas(
-                                new ArrayList<Integer>()
+                                new ArrayList<>()
                         )
                         .setLimparNumerosCartela(true)
                         .setTextoSelecionados(
@@ -217,7 +215,7 @@ public class QuantidadeNumerosReducer {
                 if (tipoJogoAtual == ModalidadeEnum.MAIS_MILIONARIA) {
                     builder
                             .setTrevosSelecionados(
-                                    new ArrayList<Integer>()
+                                    new ArrayList<>()
                             )
                             .setQuantidadeTrevosSelecionada(0)
                             .setValorTrevosSelecionado(null)
@@ -225,7 +223,7 @@ public class QuantidadeNumerosReducer {
                                     new ArrayList<>()
                             )
                             .setLabelsQuantidadeTrevos(
-                                    new ArrayList<String>()
+                                    new ArrayList<>()
                             )
                             .setPosicaoTrevosSelecionada(0)
                             .setTextoBotaoQuantidadeTrevos(
@@ -235,7 +233,7 @@ public class QuantidadeNumerosReducer {
                 }
             }
 
-            builder
+            builder.copy()
                     .setExibirDialogQuantidadeNumeros(false)
                     .setQuantidadeNumerosSurpresinha(
                             qtdPrognosticos
@@ -263,7 +261,7 @@ public class QuantidadeNumerosReducer {
             }
         }
 
-        return builder.build();
+        return builder.copy();
     }
     private int obterQuantidadeSelecionadaAtual(
             SimulaUiState atual,
@@ -291,9 +289,8 @@ public class QuantidadeNumerosReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setExibirDialogQuantidadeNumeros(false)
-                .build();
+        return atual.copy()
+                .setExibirDialogQuantidadeNumeros(false);
     }
 
     public SimulaUiState consumirAviso(
@@ -304,9 +301,8 @@ public class QuantidadeNumerosReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setExibirAvisoQuantidadeNumerosMaxima(false)
-                .build();
+        return atual.copy()
+                .setExibirAvisoQuantidadeNumerosMaxima(false);
     }
 
     public SimulaUiState valorApostaAtualizado(
@@ -317,10 +313,9 @@ public class QuantidadeNumerosReducer {
             return null;
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setAtualizarValorApostaPorQuantidadeNumeros(false)
-                .setResetarTrevosPorQuantidadeNumeros(false)
-                .build();
+                .setResetarTrevosPorQuantidadeNumeros(false);
     }
 
     public String montarTextoQuantidadeNumeros(

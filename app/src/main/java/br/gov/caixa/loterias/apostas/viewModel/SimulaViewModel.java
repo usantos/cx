@@ -590,11 +590,10 @@ public class SimulaViewModel extends AndroidViewModel {
     ){
        updateState(state ->
                 state
-                        .toBuilder()
+                        .copy()
                         .setEquipeSelecionada(
                                 event.getEquipe()
                         )
-                        .build()
         );
     }
     private void inicializarParametrosAposta(
@@ -602,25 +601,23 @@ public class SimulaViewModel extends AndroidViewModel {
     ) {
         updateState( state ->
                 state
-                        .toBuilder()
+                        .copy()
                         .setQtdDezenasPossiveisSelecionado(
                                 event.getQtdDezenas()
                         )
                         .setQtdConcursoSelecionado(
                                 event.getQtdConcurso()
                         )
-                        .build()
         );
     }
     private void handleQtdConcursoAtualizadaInternamente(
             SimulaUiEvent.QtdConcursoAtualizadaInternamente event
     ) {
         updateState( state ->
-                state.toBuilder()
+                state.copy()
                         .setQtdConcursoSelecionado(
                                 event.getQuantidade()
                         )
-                        .build()
         );
     }
     private void atualizarQuantidadeInterna(
@@ -629,11 +626,10 @@ public class SimulaViewModel extends AndroidViewModel {
     ) {
         updateState( state ->
                 state
-                        .toBuilder()
+                        .copy()
                         .setQtdDezenasPossiveisSelecionado(
                                 event.getQuantidade()
                         )
-                        .build()
         );
     }
     private void handleLimparMesDaSorte() {
@@ -755,9 +751,8 @@ public class SimulaViewModel extends AndroidViewModel {
 
     private void limparComandoAnimacao() {
         updateState(state ->
-                state.toBuilder()
+                state.copy()
                         .setComandoAnimacao(null)
-                        .build()
         );
     }
 
@@ -863,7 +858,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         boolean novoValor = !atual.isOpcaoOutrosNumerosSelecionada();
 
-        updateState(atual.toBuilder().setOpcaoOutrosNumerosSelecionada(novoValor).build());
+        updateState(atual.copy().setOpcaoOutrosNumerosSelecionada(novoValor));
     }
 
     private void prepararApostaFavorita(
@@ -968,7 +963,7 @@ public class SimulaViewModel extends AndroidViewModel {
     }
 
     private void limparComandoTelaSimula() {
-        updateState(state -> state.toBuilder().setComandoTelaSimula(null).build());
+        updateState(state -> state.copy().setComandoTelaSimula(null));
     }
 
     private void abrirCarrinho() {
@@ -1099,7 +1094,7 @@ public class SimulaViewModel extends AndroidViewModel {
         updateState(teimosinhaReducer::valorAtualizado);
     }
     private void handleComoJogar() {
-        updateState(state -> state.toBuilder().setMensagemComoJogar(obterTextoComoJogar(tipoJogoAtual, isEspecialAtual)).setTitleComoJogar(obterTitleComoJogar(tipoJogoAtual, isEspecialAtual)).setExibirDialogComoJogar(true).build());
+        updateState(state -> state.copy().setMensagemComoJogar(obterTextoComoJogar(tipoJogoAtual, isEspecialAtual)).setTitleComoJogar(obterTitleComoJogar(tipoJogoAtual, isEspecialAtual)).setExibirDialogComoJogar(true));
     }
 
     public static String obterTextoComoJogar(ModalidadeEnum modalidade, boolean especial) {
@@ -1111,7 +1106,7 @@ public class SimulaViewModel extends AndroidViewModel {
     }
 
     private void consumirDialogComoJogar() {
-        updateState(state -> state.toBuilder().setExibirDialogComoJogar(false).build());
+        updateState(state -> state.copy().setExibirDialogComoJogar(false));
     }
 
     private void carregarCarrinho() {
@@ -1221,7 +1216,7 @@ public class SimulaViewModel extends AndroidViewModel {
 
         BigDecimal valor = event.getValor();
 
-        updateState(state -> state.toBuilder().setValorAposta(valor).setValorGrande(valor != null && valor.doubleValue() > 999.99).build());
+        updateState(state -> state.copy().setValorAposta(valor).setValorGrande(valor != null && valor.doubleValue() > 999.99));
     }
 
     private void handleCompletarApostaClicado(
@@ -1401,7 +1396,7 @@ public class SimulaViewModel extends AndroidViewModel {
                         : state.getTipoJogo();
 
         updateState(
-                atual -> atual.toBuilder()
+                atual -> atual.copy()
                         .setComandoCarrinho(
                                 new CarrinhoEffect
                                         .AdicionarSurpresinha(dto)
@@ -1409,7 +1404,6 @@ public class SimulaViewModel extends AndroidViewModel {
                         .setComandoAnalytics(
                                 new AnalyticsEffect.AdicionarCarrinho(tipoJogoAnalytics)
                         )
-                        .build()
         );
     }
 
@@ -1436,7 +1430,7 @@ public class SimulaViewModel extends AndroidViewModel {
     ) {
         updateState(state -> {
             SimulaUiState stateComTime =
-                    state.toBuilder()
+                    state.copy()
                             .setEquipeSelecionada(event.getEquipeSelecionada())
 
                             // sai do modo "escolha de time vindo da surpresinha"
@@ -1459,8 +1453,7 @@ public class SimulaViewModel extends AndroidViewModel {
                             .setBotaoLimparHabilitado(false)
                             .setMostrarBotaoLimparAposta(false)
                             .setMostrarSalvarAposta(false)
-                            .setApostaFavoritada(false)
-                            .build();
+                            .setApostaFavoritada(false);
 
             IncluirSurpresinhaDTO dto =
                     surpresinhaCarrinhoReducer.criar(
@@ -1475,11 +1468,10 @@ public class SimulaViewModel extends AndroidViewModel {
             }
 
             return stateComTime
-                    .toBuilder()
+                    .copy()
                     .setComandoCarrinho(
                             new CarrinhoEffect.AdicionarSurpresinha(dto)
-                    )
-                    .build();
+                    );
         });
     }
 
@@ -1511,11 +1503,11 @@ public class SimulaViewModel extends AndroidViewModel {
     }
 
     private void publicarComando(CarrinhoEffect carrinhoEffect) {
-        updateState(state -> state.toBuilder().setComandoCarrinho(carrinhoEffect).build());
+        updateState(state -> state.copy().setComandoCarrinho(carrinhoEffect));
     }
 
     private void limparComandoCarrinho() {
-        updateState(state -> state.toBuilder().setComandoCarrinho(null).build());
+        updateState(state -> state.copy().setComandoCarrinho(null));
     }
 
     private void limparAposta() {
@@ -1668,9 +1660,8 @@ public class SimulaViewModel extends AndroidViewModel {
 
     private void limparComandoAnalytics() {
        updateState(state ->
-                state.toBuilder()
+                state.copy()
                         .setComandoAnalytics(null)
-                        .build()
         );
     }
 
@@ -1766,13 +1757,12 @@ public class SimulaViewModel extends AndroidViewModel {
         }
 
         SimulaUiState estadoFinal =
-                novoEstado.toBuilder()
+                novoEstado.copy()
                         .setTextoCompletar(
                                 obterTextoCompletar(
                                         novoEstado
                                 )
-                        )
-                        .build();
+                        );
 
         uiState.setValue(
                 estadoFinal

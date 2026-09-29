@@ -44,8 +44,8 @@ public class TelaInicializadaReducer {
                         ? textoBotaoQuantidadeNumeros
                         : "";
 
-        SimulaUiState.Builder builder = SimulaUiState.initial()
-                .toBuilder()
+        SimulaUiState builder = SimulaUiState.initial()
+                .copy()
                 .setBarraTituloDTO(
                         barraTituloDTO
                 )
@@ -83,17 +83,17 @@ public class TelaInicializadaReducer {
                 .setTelaSelecaoTimeAtivado(false)
                 .setEscolhaTimeCoracaoSurpresinha(false)
                 .setDezenasSelecionadas(
-                        new ArrayList<Integer>()
+                        new ArrayList<>()
                 )
                 .setTrevosSelecionados(
-                        new ArrayList<Integer>()
+                        new ArrayList<>()
                 )
                 .setValorTrevosSelecionado(null)
                 .setValoresTrevos(
                         new ArrayList<>()
                 )
                 .setLabelsQuantidadeTrevos(
-                        new ArrayList<String>()
+                        new ArrayList<>()
                 )
                 .setPosicaoTrevosSelecionada(0)
                 .setTextoBotaoQuantidadeTrevos(
@@ -177,16 +177,15 @@ public class TelaInicializadaReducer {
             return criarInicialLoteca(builder);
         }
         else {
-            return builder.build();
+            return builder.copy();
         }
     }
-    private SimulaUiState criarInicialLoteca(SimulaUiState.Builder builder){
-        return builder.
-                setMostrarSalvarAposta(false)
+    private SimulaUiState criarInicialLoteca(SimulaUiState builder){
+        return builder.copy()
+                .setMostrarSalvarAposta(false)
                 .setMostrarBotaoLimparAposta(false)
                 .setBotaoCompletarVisivel(false)
-                .setBotaoNextStepHabilitado(false)
-                .build();
+                .setBotaoNextStepHabilitado(false);
     }
     private boolean possuiEtapaComplementar(
             ModalidadeEnum tipoJogo

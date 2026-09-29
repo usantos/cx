@@ -50,7 +50,6 @@ import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
 import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
 import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -100,10 +99,14 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     public static String COR_FONTE_FUNDO_ESCURO = "COR_FONTE_FUNDO_ESCURO";
 
     public final static String APOSTA_EXTRA = "aposta";
-    private int numero_concurso;
+    private int valNumeroConcurso;
     private ConstraintLayout toolBarLoteca;
-    private Button botaoLimparAposta, botaoCompletar, botaoAdicionar, botaoNextStep;
-    private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca;
+    private Button botaoLimparAposta;
+    private Button botaoCompletar;
+    private Button botaoAdicionar;
+    private Button botaoNextStep;
+    private TextView labelValueDuplasLoteca;
+    private TextView labelValueTriplasLoteca;
 
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
@@ -133,7 +136,10 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private TextView tvValorAposta;
     private TextView tvValorCarrinho;
     private LinearLayout containerComoJogar;
-    private MaterialButton btnTeimosinha, btnQuantidadeNumeros, btnQuantidadeTrevos, botaoFavoritar;
+    private MaterialButton btnTeimosinha;
+    private MaterialButton btnQuantidadeNumeros;
+    private MaterialButton btnQuantidadeTrevos;
+    private MaterialButton botaoFavoritar;
     private List<Integer> qtdPrognosticosQuantidadeNumerosList;
     private TextView textSelecionados;
     private FrameLayout frameCarrinho;
@@ -161,6 +167,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     }
             );
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simula_aposta);
@@ -207,11 +214,10 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     protected void init() {
         model = new SimularApostaModel(this);
-        DadosCorporativosSilceBO dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
         numeroConcurso = parametroSimulacao.getConcurso().getNumero().toString();
 
-        isMega30 = EspecialUtils.isMega30(numero_concurso, isEspecial);
+        isMega30 = EspecialUtils.isMega30(valNumeroConcurso, isEspecial);
         estilo = new EstiloModalidadeMKP(tipoJogo, isMega30);
 
         setViews();
@@ -270,8 +276,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         this.botaoLimparAposta = findViewById(R.id.btnLimpar);
         this.botaoCompletar = findViewById(R.id.btnCompletar);
         this.botaoAdicionar = findViewById(R.id.btnAdicionarCarrinho);
-        this.labelValueJogosLoteca = findViewById(R.id.labelValueJogosLoteca);
-        this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
         this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
         this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
         this.tvValorAposta = findViewById(R.id.tvValorAposta);
@@ -355,12 +359,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        if (comando instanceof
-                AnimacaoEffect.Exibir) {
-
-            AnimacaoEffect.Exibir exibir =
-                    (AnimacaoEffect.Exibir)
-                            comando;
+        if (comando instanceof AnimacaoEffect.Exibir exibir) {
 
             if (lottieManager != null) {
                 lottieManager.destroy();
@@ -471,8 +470,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 getString(R.string.quant_de_trevos),
                 state.getSubtituloTrevos(),
                 state.getLabelsQuantidadeTrevos(),
-                "Confirmar",
-                "Cancelar",
+                getString(R.string.confirmar),
+                getString(R.string.cancelar),
                 onQuantidadeTrevosDialogListener()
         );
 
@@ -490,23 +489,15 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 state.isSurpresinhaHabilitada();
 
         textInfoEtapa.setVisibility(
-                !ocultarInfo && state.getExibirInfoEtapa()
+                !ocultarInfo && Boolean.TRUE.equals(state.getExibirInfoEtapa())
                         ? View.VISIBLE
                         : View.GONE
         );
 
-        String texto;
-        switch (state.getEtapaAposta()) {
-            case TREVOS:
-            case MES_SORTE:
-            case TIME_CORACAO:
-                texto = "2/2";
-                break;
-            case NUMEROS:
-            default:
-                texto = "1/2";
-                break;
-        }
+        String texto = switch (state.getEtapaAposta()) {
+            case TREVOS, MES_SORTE, TIME_CORACAO -> "2/2";
+            default -> "1/2";
+        };
 
         textInfoEtapa.setText(texto);
     }
@@ -522,13 +513,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        if (comando
-                instanceof AnalyticsEffect
-                .QuantidadeNumerosConfirmada) {
-
-            AnalyticsEffect.QuantidadeNumerosConfirmada c =
-                    (AnalyticsEffect.QuantidadeNumerosConfirmada)
-                            comando;
+        if (comando instanceof AnalyticsEffect
+                .QuantidadeNumerosConfirmada c) {
 
             AnalyticsHelper.getInstance().logSelectContent(
                     AnalyticsHelper.Tela.MONTAR_APOSTA,
@@ -538,13 +524,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     c.getModalidade(),
                     c.getValorSelecionado()
             );
-        } else if (comando
-                instanceof AnalyticsEffect
-                .TeimosinhaConfirmada) {
-
-            AnalyticsEffect.TeimosinhaConfirmada c =
-                    (AnalyticsEffect.TeimosinhaConfirmada)
-                            comando;
+        } else if (comando instanceof AnalyticsEffect
+                .TeimosinhaConfirmada c) {
 
             AnalyticsHelper.getInstance().logSelectContent(
                     AnalyticsHelper.Tela.MONTAR_APOSTA,
@@ -561,10 +542,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             logAdicionarAoCarrinho();
         }
-        else if(comando instanceof  AnalyticsEffect.QtdSurpresinhas){
-            AnalyticsEffect.QtdSurpresinhas c =
-                    (AnalyticsEffect.QtdSurpresinhas)
-                            comando;
+        else if(comando instanceof AnalyticsEffect.QtdSurpresinhas c){
 
             AnalyticsHelper.getInstance().logSelectContent(
                     AnalyticsHelper.Tela.MONTAR_APOSTA,
@@ -594,8 +572,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        if (comando instanceof FavoritarApostaEffect.ConfirmarValidacaoNegocial) {
-            FavoritarApostaEffect.ConfirmarValidacaoNegocial confirmar = (FavoritarApostaEffect.ConfirmarValidacaoNegocial) comando;
+        if (comando instanceof FavoritarApostaEffect.ConfirmarValidacaoNegocial confirmar) {
 
             DialogUtils.dialogSim(this, confirmar.getMensagem(), (dialog, which) -> viewModel.onEvent(new SimulaUiEvent.ConfirmarSalvarApostaFavorita(confirmar.getApostaFavorita())));
 
@@ -603,8 +580,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        if (comando instanceof FavoritarApostaEffect.RedirecionarErro) {
-            FavoritarApostaEffect.RedirecionarErro erro = (FavoritarApostaEffect.RedirecionarErro) comando;
+        if (comando instanceof FavoritarApostaEffect.RedirecionarErro erro) {
 
             RedirectNetwork.checkRedirect(erro.getError(), this);
 
@@ -640,6 +616,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             @Override
             public void Cancelar() {
+                // Empty implementation, no action needed on cancel
             }
         }, false);
 
@@ -682,26 +659,12 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        String texto;
-
-        switch (state.getEtapaAposta()) {
-
-            case MES_SORTE:
-                texto = "Escolha o mês de sorte:";
-                break;
-
-            case TREVOS:
-                texto = "";
-                break;
-
-            case TIME_CORACAO:
-                texto = "Escolha o time do coração:";
-                break;
-
-            default:
-                texto = state.getTextoSelecionados();
-                break;
-        }
+        String texto = switch (state.getEtapaAposta()) {
+            case MES_SORTE -> "Escolha o mês de sorte:";
+            case TREVOS -> "";
+            case TIME_CORACAO -> "Escolha o time do coração:";
+            default -> state.getTextoSelecionados();
+        };
 
         textSelecionados.setText(texto);
     }
@@ -1059,9 +1022,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             return;
         }
-        if (effect instanceof ScreenSimulaEffect.AtualizarQuantidadeTrevos) {
-
-            ScreenSimulaEffect.AtualizarQuantidadeTrevos comando = (ScreenSimulaEffect.AtualizarQuantidadeTrevos) effect;
+        if (effect instanceof ScreenSimulaEffect.AtualizarQuantidadeTrevos comando) {
 
             EtapaFragment etapa =
                     getEtapaAtual();
@@ -1095,7 +1056,6 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     new SimulaUiEvent.ComandoTelaSimulaConsumido()
             );
 
-            return;
         }
     }
 
@@ -1320,10 +1280,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             //TODO: MEGA 30 ANOS//
             if (extras.containsKey(APOSTA_EXTRA)) {
                 this.aposta = ((IdentificaoDeUmaApostaDas8Modalidades) extras.getSerializable(APOSTA_EXTRA));
-                System.out.println("teste aposta " + aposta);
             }
             if (extras.containsKey("NUMERO_CONCURSO")) {
-                this.numero_concurso = extras.getInt("NUMERO_CONCURSO");
+                this.valNumeroConcurso = extras.getInt("NUMERO_CONCURSO");
             }
             isEspecial = extras.getBoolean(getResources().getString(R.string.extra_especial), false);
             tipoJogo = (ModalidadeEnum) extras.getSerializable(getResources().getString(R.string.tipoAposta));
@@ -1395,7 +1354,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         AlertDialogUtils.show(this);
 
-        ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<>() {
 
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
@@ -1625,6 +1584,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             case MAIS_MILIONARIA:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline).toLowerCase(), R.color.milionaria_claro_mkp, R.color.milionaria_escuro_mkp, View.VISIBLE, View.GONE);
                 break;
+            default:
+                break;
         }
 
         String dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
@@ -1765,8 +1726,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                 getResources().getString(R.string.quant_de_numeros),
                 subtitulo,
                 state.getLabelsQuantidadeNumeros(),
-                "Confirmar",
-                "Cancelar",
+                getString(R.string.confirmar),
+                getString(R.string.cancelar),
                 onQuantidadeNumerosDialogListener()
         );
     }
@@ -1802,7 +1763,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             @Override
             public void cancelar() {
-
+                //Empty implementation, no action needed on cancel
             }
         };
     }
@@ -1820,6 +1781,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             @Override
             public void cancelar() {
+                // Empty implementation, no action needed on cancel
             }
         };
     }
@@ -1845,13 +1807,23 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private void abrirDialogTeimosinhas(SimulaUiState state) {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
 
-        DialogUtils.showDialogListItensNovo(SimulaActivity.this, getResources().getString(R.string.teimosinhas_maiusculo), null, getString(R.string.teimosinhas_descricao), state.getLabelsTeimosinhas(), "Confirmar", "Cancelar", onTeimosinhaDialogListener());
+        DialogUtils.showDialogListItensNovo(
+                SimulaActivity.this,
+                getResources().getString(R.string.teimosinhas_maiusculo),
+                null,
+                getString(R.string.teimosinhas_descricao),
+                state.getLabelsTeimosinhas(),
+                getString(R.string.confirmar),
+                getString(R.string.cancelar),
+                onTeimosinhaDialogListener()
+        );
     }
 
     private OnDialogListener onTeimosinhaDialogListener() {
         return new OnDialogListener() {
             @Override
             public void itemSelecionado(int position) {
+                // Empty implementation, no action needed on item selection
             }
 
             @Override
@@ -1861,6 +1833,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             @Override
             public void cancelar() {
+                //Empty implementation, no action needed on cancel
             }
         };
     }
@@ -1945,21 +1918,17 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return false;
         }
 
-        switch (state.getEtapaAposta()) {
-
-            case TREVOS:
-            case MES_SORTE:
-            case TIME_CORACAO:
+        return switch (state.getEtapaAposta()) {
+            case TREVOS, MES_SORTE, TIME_CORACAO -> {
 
                 viewModel.onEvent(
                         new SimulaUiEvent.VoltarEtapa()
                 );
 
-                return true;
-
-            default:
-                return false;
-        }
+                yield true;
+            }
+            default -> false;
+        };
     }
     private void exibirDialogConfirmacaoSaida() {
 

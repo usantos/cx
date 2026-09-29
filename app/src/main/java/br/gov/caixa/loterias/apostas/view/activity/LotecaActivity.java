@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -25,7 +23,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
@@ -39,11 +36,8 @@ import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.effect.AnalyticsEffect;
 import br.gov.caixa.loterias.apostas.effect.AnimacaoEffect;
 import br.gov.caixa.loterias.apostas.effect.CarrinhoEffect;
-import br.gov.caixa.loterias.apostas.effect.FavoritarApostaEffect;
 import br.gov.caixa.loterias.apostas.effect.ScreenSimulaEffect;
 import br.gov.caixa.loterias.apostas.event.SimulaUiEvent;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -57,10 +51,8 @@ import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
 import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 import br.gov.caixa.loterias.apostas.utils.AccessibilityUtils;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -79,7 +71,6 @@ import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.TimesFragment;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.viewModel.LotecaViewModel;
 
@@ -90,7 +81,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
     public static String COR_FONTE_FUNDO_ESCURO = "COR_FONTE_FUNDO_ESCURO";
 
     public final static String APOSTA_EXTRA = "aposta";
-    private int numero_concurso;
+    private int valNumeroConcurso;
     private ConstraintLayout toolBarLoteca;
     private Button botaoLimparAposta, botaoCompletar, botaoAdicionar, botaoNextStep;
     private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca;
@@ -148,6 +139,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     }
             );
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simula_aposta);
@@ -190,7 +182,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     protected void init() {
         model = new SimularApostaModel(this);
-        DadosCorporativosSilceBO dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
+
         getExtras();
         numeroConcurso = parametroSimulacao.getConcurso().getNumero().toString();
 
@@ -250,17 +242,10 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         this.botaoLimparAposta = findViewById(R.id.btnLimpar);
         this.botaoCompletar = findViewById(R.id.btnCompletar);
         this.botaoAdicionar = findViewById(R.id.btnAdicionarCarrinho);
-
-//        this.labelValueJogosLoteca = findViewById(R.id.labelValueJogosLoteca);
-//        this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
-//        this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
-//        this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
-
         this.labelValueJogosLoteca = findViewById(R.id.txtPartidas);
         this.labelValueSimplesLoteca = findViewById(R.id.txtSimples);
         this.labelValueDuplasLoteca = findViewById(R.id.txtDuplas);
         this.labelValueTriplasLoteca = findViewById(R.id.txtTriplas);
-
         this.tvValorAposta = findViewById(R.id.tvValorAposta);
         this.tvValorCarrinho = findViewById(R.id.tvTotalCarrinho);
         this.containerComoJogar = findViewById(R.id.containerComoJogarLoteca);
@@ -401,9 +386,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         String texto;
         switch (state.getEtapaAposta()) {
-            case TREVOS:
-            case MES_SORTE:
-            case TIME_CORACAO:
+            case TREVOS,MES_SORTE,TIME_CORACAO:
                 texto = "2/2";
                 break;
             case NUMEROS:
@@ -535,7 +518,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     private void renderEstadoBotoes(SimulaUiState state) {
         boolean isLoteca = state.getTipoJogo() == ModalidadeEnum.LOTECA;
-        EtapaAposta etapaAtual = state.getEtapaAposta() != null ? state.getEtapaAposta() : EtapaAposta.NUMEROS;
+
 
         boolean mostrarLimpar =
                 true;
@@ -701,7 +684,6 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
                     new SimulaUiEvent.ComandoTelaSimulaConsumido()
             );
 
-            return;
         }
     }
 
@@ -859,10 +841,9 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
             //TODO: MEGA 30 ANOS//
             if (extras.containsKey(APOSTA_EXTRA)) {
                 this.aposta = ((IdentificaoDeUmaApostaDas8Modalidades) extras.getSerializable(APOSTA_EXTRA));
-                System.out.println("teste aposta " + aposta);
             }
             if (extras.containsKey("NUMERO_CONCURSO")) {
-                this.numero_concurso = extras.getInt("NUMERO_CONCURSO");
+                this.valNumeroConcurso = extras.getInt("NUMERO_CONCURSO");
             }
             isEspecial = extras.getBoolean(getResources().getString(R.string.extra_especial), false);
             tipoJogo = (ModalidadeEnum) extras.getSerializable(getResources().getString(R.string.tipoAposta));
@@ -904,20 +885,10 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         this.setLabelValueSimplesLoteca(Constantes.ZERO_STRING);
         this.setLabelValueDuplasLoteca(Constantes.ZERO_STRING);
         this.setLabelValueTriplasLoteca(Constantes.ZERO_STRING);
-        //setColorValuesLoteca();
         EtapaFragment etapa = getEtapaAtual();
         if(etapa != null){
             etapa.onLimparRodapeClicado();
         }
-    }
-
-    private void executarFavoritarRodape() {
-        if (!DadosUsuarioBO.checarUsuarioLogado(this)) {
-            AlertDialogExperimenteLogarSingleton.show(this, false, null);
-            return;
-        }
-
-        viewModel.onEvent(new SimulaUiEvent.FavoritarApostaClicado());
     }
 
 
@@ -1001,26 +972,8 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
     @Override
     public void escolherOutroTimeSurpresinha() {
-        timesFragment =
-                TimesFragment.newInstance(
-                        parametroSimulacao,
-                        new ArrayList<>(),
-                        true
-                );
-
-        FragmentUtils.startFragmentAllowingStateLoss(
-                fragmentManager,
-                R.id.fragmentSimularApostas,
-                timesFragment
-        );
+        // Esse método é chamado quando o usuário escolhe outro time na tela de surpresinha. Ele apenas abre a tela de surpresinha novamente.
     }
-
-//    public void setColorValuesLoteca() {
-//        this.labelValueJogosLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-//        this.labelValueSimplesLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-//        this.labelValueDuplasLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-//        this.labelValueTriplasLoteca.setTextColor(ContextCompat.getColor(this,estilo.getCorClara()));
-//    }
 
     public void setLabelValueJogosLoteca(String labelValueJogosLoteca) {
         this.labelValueJogosLoteca.setText(labelValueJogosLoteca);
@@ -1280,6 +1233,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         return new OnDialogListener() {
             @Override
             public void itemSelecionado(int position) {
+                // Empty implementation, as the selection is handled in the 'ok' method.
             }
 
             @Override

@@ -39,7 +39,7 @@ public class SurpresinhaReducer {
                             true
                     );
 
-            SimulaUiState state =  atual.toBuilder()
+            SimulaUiState state =  atual.copy()
                     .setSurpresinhaHabilitada(true)
                     .setComandoTelaSimula(comando)
                     // Ao ligar surpresinha, nao pode manter estado manual
@@ -64,7 +64,7 @@ public class SurpresinhaReducer {
                     .setQuantidadeTrevosSelecionada(0)
                     .setValorTrevosSelecionado(null)
                     .setValoresTrevos(new ArrayList<>())
-                    .setLabelsQuantidadeTrevos(new ArrayList<String>())
+                    .setLabelsQuantidadeTrevos(new ArrayList<>())
                     .setPosicaoTrevosSelecionada(0)
                     .setTextoBotaoQuantidadeTrevos("2 trevos")
                     .setEquipeSelecionada(null)
@@ -77,8 +77,7 @@ public class SurpresinhaReducer {
                     .setBotaoNextStepHabilitado(false)
                     .setBotaoAdicionarHabilitado(true)
                     .setApostaFavoritada(false)
-                    .setPossuiAlteracoesPendentes(false)
-                    .build();
+                    .setPossuiAlteracoesPendentes(false);
             return recalcularValorSurpresinha(
                     state,
                     parametroJogoAtual,
@@ -87,7 +86,7 @@ public class SurpresinhaReducer {
         }
 
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setSurpresinhaHabilitada(false)
                 .setBotaoCompletarVisivel(true)
                 .setBotaoCompletarHabilitado(true)
@@ -113,8 +112,7 @@ public class SurpresinhaReducer {
                         new ScreenSimulaEffect.VoltarEtapa(
                                 EtapaAposta.NUMEROS
                         )
-                )
-                .build();
+                );
     }
     public SimulaUiState voltarParaSurpresinha(
             SimulaUiState atual
@@ -123,7 +121,7 @@ public class SurpresinhaReducer {
             return null;
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setTelaSelecaoTimeAtivado(false)
                 .setEscolhaTimeCoracaoSurpresinha(false)
                 .setEtapaAposta(EtapaAposta.NUMEROS)
@@ -134,8 +132,7 @@ public class SurpresinhaReducer {
                                 false,
                                 true
                         )
-                )
-                .build();
+                );
     }
 
     public SimulaUiState atualizarQuantidadeSurpresinhas(
@@ -150,7 +147,7 @@ public class SurpresinhaReducer {
         }
 
         SimulaUiState novoEstado =
-                atual.toBuilder()
+                atual.copy()
                         .setQuantidadeSurpresinhas(
                                 quantidade
                         )
@@ -160,8 +157,7 @@ public class SurpresinhaReducer {
                                         quantidade
                                 )
                         )
-                        .setPossuiAlteracoesPendentes(true)
-                        .build();
+                        .setPossuiAlteracoesPendentes(true);
 
         return recalcularValorSurpresinha(
                 novoEstado,
@@ -182,7 +178,7 @@ public class SurpresinhaReducer {
         }
 
         SimulaUiState novoEstado =
-                atual.toBuilder()
+                atual.copy()
                         .setQuantidadeNumerosSurpresinha(
                                 quantidade
                         )
@@ -192,8 +188,7 @@ public class SurpresinhaReducer {
                         .setTextoBotaoPrognosticosSelecionado(
                                 quantidade + " números"
                         )
-                        .setPossuiAlteracoesPendentes(true)
-                        .build();
+                        .setPossuiAlteracoesPendentes(true);
 
         return recalcularValorSurpresinha(
                 novoEstado,
@@ -214,12 +209,11 @@ public class SurpresinhaReducer {
         }
 
         SimulaUiState novoEstado =
-                atual.toBuilder()
+                atual.copy()
                         .setQuantidadeTrevosSurpresinha(
                                 quantidade
                         )
-                        .setPossuiAlteracoesPendentes(true)
-                        .build();
+                        .setPossuiAlteracoesPendentes(true);
 
         return recalcularValorSurpresinha(
                 novoEstado,
@@ -303,7 +297,7 @@ public class SurpresinhaReducer {
                     );
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setValorAposta(
                         valorBase
                 )
@@ -311,8 +305,7 @@ public class SurpresinhaReducer {
                         isValorGrande(
                                 valorBase
                         )
-                )
-                .build();
+                );
     }
 
     private BigDecimal obterValorBasePorQuantidadeNumeros(
@@ -356,7 +349,7 @@ public class SurpresinhaReducer {
             return null;
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setSurpresinhaHabilitada(true)
                 .setEtapaAposta(EtapaAposta.TIME_CORACAO)
 
@@ -383,9 +376,7 @@ public class SurpresinhaReducer {
                 .setApostaFavoritada(false)
 
                 // adicionar aparece, mas o render pode habilitar só com time
-                .setBotaoAdicionarHabilitado(false)
-
-                .build();
+                .setBotaoAdicionarHabilitado(false);
     }
 
     private int obterQuantidadeTrevosInicial(

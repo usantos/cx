@@ -44,14 +44,13 @@ public class CompletarApostaReducer {
             return atual;
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setComandoCompletarAposta(
                         comando
                 )
                 .setMostrarBotaoLimparAposta(
                         true
-                )
-                .build();
+                );
     }
 
     public SimulaUiState limparComando(
@@ -62,9 +61,8 @@ public class CompletarApostaReducer {
             return null;
         }
 
-        return atual.toBuilder()
-                .setComandoCompletarAposta(null)
-                .build();
+        return atual.copy()
+                .setComandoCompletarAposta(null);
     }
 
     private CompletarApostaEffect obterComandoCompletar(

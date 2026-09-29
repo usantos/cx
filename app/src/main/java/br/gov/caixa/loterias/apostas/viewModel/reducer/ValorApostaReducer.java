@@ -35,12 +35,11 @@ public class ValorApostaReducer {
             );
         }
 
-        return state.toBuilder()
+        return state.copy()
                 .setValorAposta(valor)
                 .setValorGrande(isValorGrande(valor))
                 .setAtualizarValorApostaPorQuantidadeNumeros(false)
-                .setAtualizarValorApostaPorTeimosinha(false)
-                .build();
+                .setAtualizarValorApostaPorTeimosinha(false);
     }
 
     private BigDecimal calcularValorApostaManual(
@@ -278,12 +277,11 @@ public class ValorApostaReducer {
                 event.getTriplas()
         );
 
-        return state.toBuilder()
+        return state.copy()
                 .setJogosLoteca(event.getJogos())
                 .setSimplesLoteca(event.getSimples())
                 .setDuplasLoteca(event.getDuplas())
                 .setTriplasLoteca(event.getTriplas())
-                .setValorAposta(valor)
-                .build();
+                .setValorAposta(valor);
     }
 }

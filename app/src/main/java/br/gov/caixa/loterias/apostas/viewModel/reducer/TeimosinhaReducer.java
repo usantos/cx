@@ -35,7 +35,7 @@ public class TeimosinhaReducer {
             }
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setLabelsTeimosinhas(labels)
                 .setConcursosTeimosinhas(concursos)
                 .setQtdConcursoSelecionado(
@@ -47,8 +47,7 @@ public class TeimosinhaReducer {
                 )
                 .setExibirDialogTeimosinha(false)
                 .setExibirDialogSemTeimosinha(false)
-                .setAtualizarValorApostaPorTeimosinha(false)
-                .build();
+                .setAtualizarValorApostaPorTeimosinha(false);
     }
 
     public SimulaUiState clicar(
@@ -57,18 +56,16 @@ public class TeimosinhaReducer {
 
         if (atual.isEspecial()) {
 
-            return atual.toBuilder()
+            return atual.copy()
                     .setExibirDialogTeimosinha(false)
                     .setExibirDialogSemTeimosinha(true)
-                    .setAtualizarValorApostaPorTeimosinha(false)
-                    .build();
+                    .setAtualizarValorApostaPorTeimosinha(false);
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setExibirDialogTeimosinha(true)
                 .setExibirDialogSemTeimosinha(false)
-                .setAtualizarValorApostaPorTeimosinha(false)
-                .build();
+                .setAtualizarValorApostaPorTeimosinha(false);
     }
 
     public SimulaUiState confirmar(
@@ -103,7 +100,7 @@ public class TeimosinhaReducer {
                             .get(position);
         }
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setQtdConcursoSelecionado(
                         qtdConcursoSelecionado
                 )
@@ -123,28 +120,25 @@ public class TeimosinhaReducer {
                 )
                 .setAtualizarValorApostaPorTeimosinha(
                         true
-                )
-                .build();
+                );
     }
 
     public SimulaUiState consumirEvento(
             SimulaUiState atual
     ) {
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setExibirDialogTeimosinha(false)
-                .setExibirDialogSemTeimosinha(false)
-                .build();
+                .setExibirDialogSemTeimosinha(false);
     }
 
     public SimulaUiState valorAtualizado(
             SimulaUiState atual
     ) {
 
-        return atual.toBuilder()
+        return atual.copy()
                 .setAtualizarValorApostaPorTeimosinha(
                         false
-                )
-                .build();
+                );
     }
 }

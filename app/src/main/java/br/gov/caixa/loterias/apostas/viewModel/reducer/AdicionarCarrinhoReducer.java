@@ -171,7 +171,7 @@ public class AdicionarCarrinhoReducer {
     private SimulaUiState finalizarFluxoAdicionar(
             SimulaUiState atual
     ) {
-        return atual.toBuilder()
+        return atual.copy()
                 .setEtapaAposta(
                         EtapaAposta.PRONTA
                 )
@@ -190,20 +190,18 @@ public class AdicionarCarrinhoReducer {
                                 .ApostaEffectProntaParaAdicionar(
                                 false
                         )
-                )
-                .build();
+                );
     }
 
     private SimulaUiState publicarComando(
             SimulaUiState atual,
             CompletarApostaEffect comando
     ) {
-        return atual.toBuilder()
+        return atual.copy()
                 .setComandoCompletarAposta(
                         comando
                 )
-                .setMostrarBotaoLimparAposta(true)
-                .build();
+                .setMostrarBotaoLimparAposta(true);
     }
 
     public boolean isApostaPronta(
