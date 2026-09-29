@@ -85,7 +85,7 @@
     <string name="tituloComboFeito">Combo inserido no \ncarrinho com sucesso.</string>
     <string name="tituloBolaoFeito">Bolão inserido no \ncarrinho com sucesso.</string>
     <string name="novaAposta">Fazer nova aposta</string>
-    <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
+    <string name="confirmarApostas">Confira suas apostas e siga para o pagamento</string>
     <string name="confirmacao">Confirmação</string>
     <string name="label_acompanhe_suas_compras">_Ir para_\ncompras</string>
     <string name="label_acompanhe_suas_compras_pix">_Acompanhe_\nsuas compras</string>
@@ -151,10 +151,11 @@
     <string name="codigo_loterica">Código Lotérica</string>
     <string name="cod_loterica">Cod. Lotérica: </string>
     <string name="enviando_email">Enviar e-mail usando:"</string>
-    <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo é </string>
+    <string name="label_lembrar_valor_minimo">O valor mínimo do carrinho é R$2,50</string>
     <string name="numeros_sorteados">Números sorteados</string>
     <string name="inibir_teimosinha">Para Teimosinhas são exibidos os números apostados e os números sorteados apenas do primeiro concurso apostado. A conferência das apostas, no entanto, é realizada para todos os concursos. Em breve a funcionalidade será aprimorada para exibir os números apostados e os números sorteados de todos os concursos da Teimosinha.</string>
     <string name="inibir_teimosinha_V2">A conferência dos jogos da Teimosinha é realizada para todos os concursos apostados, no entanto, é exibida apenas a do primeiro concurso.</string>
+    <string name="alerta_teimosinha_original_apos_resgate">Esta aposta com Teimosinha não é mais válida para acompanhamento. Utilize a aposta de troca gerada após o resgate do prêmio, para acompanhar os próximos sorteios.</string>
 
     <!-- email-->
     <string name="email_padrao">CEDESBR456@caixa.gov.br</string>
@@ -255,6 +256,8 @@
     <string name="title_activity_lista_compras">Minhas Compras</string>
 
     <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
+    <string name="msg_qtd_max_loteca">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
+    <string name="label_combinacao_invalida_loteca">Essa combinação de simples, duplos e triplos não é permitida para a Loteca. Tente outra combinação.</string>
     <string name="btn_entendi">entendi</string>
     <string name="button_entendi">Entendi</string>
     <string name="msg_qtd_max_ultrapassada_milionaria">Você aumentou a quantidade de trevos, o valor será alterado. Fique atento ao valor final da sua aposta."</string>
@@ -309,6 +312,8 @@
     <string name="label_adicionar">Adicionar</string>
     <string name="label_adicionar_carrinho_apostas">ao carrinho de apostas</string>
     <string name="label_editar_aposta">Editar\naposta</string>
+    <string name="editar_aposta">Editar aposta</string>
+    <string name="total_do_carrinho">Total do carrinho</string>
     <string name="label_carrinho_apostas">Carrinho\nde apostas</string>
     <string name="label_carrinho_apostas_limpo">Carrinho de apostas</string>
     <string name="label_salve_aposta">Salve esta aposta :)</string>
@@ -686,6 +691,7 @@
     <string name="numeros_proibidos">Números proibidos</string>
     <string name="apostas_favoritas">Apostas favoritas</string>
     <string name="aposta_favorita">Aposta Favorita</string>
+    <string name="aposta_favorita_label">Aposta favorita</string>
     <string name="aposta_favoritada">Aposta Favoritada</string>
     <string name="resgatar">Resgatar</string>
     <string name="resgatar_premio_mp">Resgatar prêmio</string>
@@ -1754,4 +1760,38 @@
     <string name="fique_atento">Fique de olho nas novidades e atualizações.</string>
     <string name="deseja_excluir_todas">Deseja excluir todas as notificações?</string>
 
+    <string name="sessao_expirada">Sua sessão expirou. É necessário realizar o login novamente para continuar utilizando o aplicativo Loterias CAIXA.</string>
+    <string name="adicionarNovaAposta">Adicionar nova aposta</string>
+    <string name="irParaPagamento">Ir para pagamento</string>
+    <string name="txt_prefix_conc">Conc. %1$s</string>
+    <string name="txt_carrinho">Carrinho</string>
+    <string name="countdown_timer_zero">00:00</string>
+    <string name="txt_cota">cota reservada nº %1$d de %2$d</string>
+    <string name="txt_label_conc">Conc. %1$d</string>
+    <string name="aposta_removida_carrinho">Aposta removida do carrinho</string>
+    <string name="aposta_nao_removida_carrinho">Aposta não foi removida do carrinho.</string>
+    <string name="carrinho_vazio">Seu carrinho está vazio</string>
+
+    <string name="confirmar_exclusao_aposta">Deseja excluir esta aposta do carrinho?</string>
+    <string name="confirmar_exclusao_combo">Deseja excluir este combo do carrinho?</string>
+    <string name="confirmar_exclusao_bolao">Deseja excluir esta cota de bolão do carrinho?</string>
+
+    <string name="excluir_bolao_titulo">Deseja excluir o bolão?</string>
+    <string name="excluir_bolao_mensagem">O bolão selecionado será removido do carrinho</string>
+    <string name="manter_bolao">Manter bolão</string>
+
+    <string name="excluir_combo_titulo">Deseja excluir o combo?</string>
+    <string name="excluir_combo_mensagem">O combo selecionado será removido do carrinho</string>
+    <string name="manter_combo">Manter combo</string>
+
+    <string name="excluir_aposta_titulo">Deseja excluir a aposta?</string>
+    <string name="excluir_aposta_mensagem">A aposta selecionada será removida do carrinho</string>
+    <string name="manter_aposta">Manter aposta</string>
+
+    <string name="excluir_todas_apostas_titulo">Deseja excluir todas as apostas?</string>
+    <string name="todas_as_apostas">Todas as apostas selecionadas serão removidas do carrinho</string>
+
+    <string name="carrinho_trevos">trevos</string>
+    <string name="carrinho_mes_da_sorte">mês da sorte</string>
+    <string name="carrinho_time_do_coracao">time do coração</string>
 </resources>

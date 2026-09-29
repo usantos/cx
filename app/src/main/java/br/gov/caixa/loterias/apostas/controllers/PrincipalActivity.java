@@ -98,6 +98,7 @@ import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
+import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
@@ -126,6 +127,7 @@ import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
+import br.gov.caixa.loterias.apostas.view.activity.LotecaActivity;
 import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
@@ -287,7 +289,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         this.atalhoRapidoLoterias = findViewById(R.id.atalhoRapidoLoterias);
         this.sideMenuExpandableListView = findViewById(R.id.sideMenuExpandableListView);
         this.viewSair = findViewById(R.id.viewSair);
-        View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
+        View view_id_fg_somador_carrinho = findViewById(R.id.id_somador_carrinho);
         TextView texto = recolherMenu.findViewById(R.id.nav_user_text);
         ImageView arrow = recolherMenu.findViewById(R.id.imagemMaisOpcoes);
         TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
@@ -463,7 +465,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private void fragmentSomadorCarrinho() {
         if(somadorCarrinhoFragment == null){
-            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA PRINCIPAL" );
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho,"TELA PRINCIPAL" );
         }else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }
@@ -1135,12 +1137,23 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 //            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
 //            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
 //            startActivity(activity);}
-        else if (modalidade == ModalidadeEnum.LOTECA) {
-            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
+//        else if (modalidade == ModalidadeEnum.LOTECA) {
+//            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
+//            activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
+//            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+//            //TODO: MEGA 30 ANOS//
+//            //TODO: LOTECA PAIS//
+//            activity.putExtra(getString(R.string.numero_concurso), numeroConcurso);
+//            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
+//            startActivity(activity);
+//        }
+        else if(modalidade == ModalidadeEnum.LOTECA) {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
+
+            Intent activity = new Intent(PrincipalActivity.this, LotecaActivity.class);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
             //TODO: MEGA 30 ANOS//
-            //TODO: LOTECA PAIS//
             activity.putExtra(getString(R.string.numero_concurso), numeroConcurso);
             activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
             startActivity(activity);
