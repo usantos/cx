@@ -50,6 +50,12 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        String ic = SharedPreferencesUtils.getValorString(ConfiguracoesEnum.LAUNCHER_ICON.get(), "");
+        if (IconeAppEnum.DEFAULT.get().equalsIgnoreCase(ic) || ic.isEmpty()) {
+            IconAliasManager.applyIcon(this, IconeAppEnum.DEFAULT_DISABLED);
+            SharedPreferencesUtils.setValor(ConfiguracoesEnum.LAUNCHER_ICON.get(), IconeAppEnum.DEFAULT_DISABLED.get());
+        }
+
         if (BuildVersionUtil.isPRD()) {
             RootBeer rootBeer = new RootBeer(this);
             if (rootBeer.isRooted() || isRootAvailable()) {
