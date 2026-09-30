@@ -194,7 +194,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
     private void atualizaIconeApp() {
         IconeAppEnum icone;
-        if (EspecialUtils.isOutubroRosa() && !isIconeAPP(IconeAppEnum.OUTUBRO_ROSA)) {
+        if (EspecialUtils.isOutubroRosa()) {
             icone = IconeAppEnum.OUTUBRO_ROSA;
         } else {
             icone = IconeAppEnum.DEFAULT_DISABLED;
