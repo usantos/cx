@@ -90,7 +90,6 @@ public class EncerramentoUtil {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return null;
@@ -119,7 +118,6 @@ public class EncerramentoUtil {
                     continue;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 continue;
             }
 

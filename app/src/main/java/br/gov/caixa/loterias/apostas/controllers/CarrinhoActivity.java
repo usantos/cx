@@ -579,7 +579,6 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                 callWebservice();
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         montarLayout();
     }

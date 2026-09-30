@@ -541,7 +541,6 @@ public class HtmlUtils {
 
             return buf.toString();
         } catch (Exception e) {
-            e.printStackTrace();
             return "";
         }
     }
@@ -558,7 +557,6 @@ public class HtmlUtils {
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(bitMatrix);
         } catch (WriterException e) {
-            e.printStackTrace();
         }
 
         if (bitmap != null) {

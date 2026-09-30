@@ -147,7 +147,6 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
                     }
                 });
             }catch (Exception e){
-                e.printStackTrace();
                 Log.d("ResgatePremioLotAgenAct", "Não foi possível acessar serviço para baixar comprovante de aposta");
             }
 

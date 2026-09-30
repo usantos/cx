@@ -251,7 +251,6 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                 dataSorteio = formatterDateFinal.format(dataFormatada);
             }
         } catch (ParseException e) {
-            e.printStackTrace();
         }
         return dataSorteio;
     }

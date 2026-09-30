@@ -114,9 +114,7 @@ public class CompraUtil {
             compraAsyncResponse = gsonResponse.fromJson(body, CompraAsyncResponse.class);
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         } catch (Exception e){
-            e.printStackTrace();
         }
         return compraAsyncResponse;
     }

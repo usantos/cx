@@ -210,7 +210,6 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
                     sessaoUser.setNome(dadosUsuarioToken.getName());
                     sessaoUser.setDataUltimaRequisicao(new Date());
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
                 sessaoUser.setValorMinimimoAposta(payload.getValorMinimoCarrinho());
                 sessaoUser.setValorMaximoAposta(payload.getValorLimiteDiario());
