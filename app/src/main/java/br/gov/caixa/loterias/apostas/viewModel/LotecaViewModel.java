@@ -19,15 +19,15 @@ public class LotecaViewModel extends SimulaViewModel {
             SimulaUiEvent event
     ) {
 
-        if (event instanceof SimulaUiEvent.CartelaAlterada) {
+        if (event instanceof SimulaUiEvent.CartelaAlterada cartelaAlterada) {
 
-            handleCartelaAlterada((SimulaUiEvent.CartelaAlterada) event);
+            handleCartelaAlterada(cartelaAlterada);
 
             return true;
         }
-        if (event instanceof SimulaUiEvent.ValorApostaAlterado) {
+        if (event instanceof SimulaUiEvent.ValorApostaAlterado valorApostaAlterado) {
 
-            handleValorApostaAlterado((SimulaUiEvent.ValorApostaAlterado) event);
+            handleValorApostaAlterado(valorApostaAlterado);
 
             return true;
         }
@@ -49,18 +49,16 @@ public class LotecaViewModel extends SimulaViewModel {
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.InicializarParametrosAposta) {
+        if (event instanceof SimulaUiEvent.InicializarParametrosAposta inicializarParametrosAposta) {
             inicializarParametrosAposta(
-                    (SimulaUiEvent
-                            .InicializarParametrosAposta)
-                            event
+                    inicializarParametrosAposta
             );
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.TelaInicializada) {
+        if (event instanceof SimulaUiEvent.TelaInicializada telaInicializada) {
 
-            handleTelaInicializada((SimulaUiEvent.TelaInicializada) event);
+            handleTelaInicializada(telaInicializada);
 
             return true;
         }

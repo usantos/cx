@@ -20,6 +20,11 @@ import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 
 public class SimulaUiState {
 
+    private static final String TEXTO_PADRAO_QUANTIDADE_TREVOS = "2 trevos";
+    private static final String TEXTO_PADRAO_SELECIONADOS = "Selecione os números:";
+    private static final String TEXTO_PADRAO_COMPLETAR = "Aposta aleatória";
+    private static final String TEXTO_PADRAO_ESCOLHA = "Escolha";
+
     private BarraTituloDTO barraTituloDTO;
 
     private FavoritarApostaEffect favoritarApostaEffect;
@@ -93,10 +98,9 @@ public class SimulaUiState {
 
     private boolean atualizarValorApostaPorQuantidadeNumeros;
     private boolean resetarTrevosPorQuantidadeNumeros;
-    private String textoSelecionados = "Selecione os números:";
-    private String textoCompletar = "Aposta aleatória";
-
-    private String textoEscolha = "Escolha";
+    private String textoSelecionados;
+    private String textoCompletar;
+    private String textoEscolha;
     private boolean abrirCarrinho;
     private ScreenSimulaEffect screenSimulaEffect;
     private boolean surpresinhaHabilitada;
@@ -163,7 +167,7 @@ public class SimulaUiState {
         this.possuiAlteracoesPendentes = false;
         this.posicaoQuantidadeNumerosSelecionada = 0;
         this.textoBotaoPrognosticosSelecionado = "";
-        this.textoBotaoQuantidadeTrevos = "2 trevos";
+        this.textoBotaoQuantidadeTrevos = TEXTO_PADRAO_QUANTIDADE_TREVOS;
         this.screenSimulaEffect = null;
         this.surpresinhaHabilitada = false;
         this.exibirDialogFavoritarAposta = false;
@@ -380,9 +384,9 @@ public class SimulaUiState {
                 .setEscolhaTimeCoracaoSurpresinha(false)
                 .setQtdDezenasPossiveisSelecionado(0)
                 .setQtdConcursoSelecionado(0)
-                .setTextoSelecionados("Selecione os números:")
-                .setTextoCompletar("Aposta aleatória")
-                .setTextoEscolha("Escolha")
+                .setTextoSelecionados(TEXTO_PADRAO_SELECIONADOS)
+                .setTextoCompletar(TEXTO_PADRAO_COMPLETAR)
+                .setTextoEscolha(TEXTO_PADRAO_ESCOLHA)
                 .setMostrarBotaoLimparAposta(false)
                 .setMostrarSalvarAposta(false)
                 .setLimparNumerosCartela(false)
@@ -427,7 +431,7 @@ public class SimulaUiState {
                 .setAvisouQuantidadeNumerosMaxima(false)
                 .setPosicaoQuantidadeNumerosSelecionada(0)
                 .setTextoBotaoPrognosticosSelecionado("")
-                .setTextoBotaoQuantidadeTrevos("2 trevos")
+                .setTextoBotaoQuantidadeTrevos(TEXTO_PADRAO_QUANTIDADE_TREVOS)
                 .setAtualizarValorApostaPorQuantidadeNumeros(false)
                 .setResetarTrevosPorQuantidadeNumeros(false)
                 .setExibirDialogQuantidadeTrevos(false)
@@ -935,7 +939,7 @@ public class SimulaUiState {
         this.textoEscolha =
                 textoEscolha != null
                         ? textoEscolha
-                        : "Escolha";
+                        : TEXTO_PADRAO_ESCOLHA;
         return this;
     }
     public SimulaUiState setTextoSelecionados(
@@ -944,7 +948,7 @@ public class SimulaUiState {
         this.textoSelecionados =
                 textoSelecionados != null
                         ? textoSelecionados
-                        : "Selecione os números:";
+                        : TEXTO_PADRAO_SELECIONADOS;
         return this;
     }
     public SimulaUiState setTextoCompletar(
@@ -953,7 +957,7 @@ public class SimulaUiState {
         this.textoCompletar =
                 textoCompletar != null
                         ? textoCompletar
-                        : "Aposta aleatória";
+                        : TEXTO_PADRAO_COMPLETAR;
         return this;
     }
     public SimulaUiState setApostaFavoritada(boolean apostaFavoritada) {
@@ -999,7 +1003,7 @@ public class SimulaUiState {
         this.textoBotaoQuantidadeTrevos =
                 textoBotaoQuantidadeTrevos != null
                         ? textoBotaoQuantidadeTrevos
-                        : "2 trevos";
+                        : TEXTO_PADRAO_QUANTIDADE_TREVOS;
         return this;
     }
     public SimulaUiState setAtualizarValorApostaPorQuantidadeNumeros(

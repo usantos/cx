@@ -10,6 +10,8 @@ import br.gov.caixa.loterias.apostas.state.SimulaUiState;
 
 public class QuantidadeNumerosReducer {
 
+    private static final String TEXTO_PADRAO_QUANTIDADE_TREVOS = "2 trevos";
+
     private final FluxoApostaReducer fluxoApostaReducer;
 
     public QuantidadeNumerosReducer(
@@ -227,7 +229,7 @@ public class QuantidadeNumerosReducer {
                             )
                             .setPosicaoTrevosSelecionada(0)
                             .setTextoBotaoQuantidadeTrevos(
-                                    "2 trevos"
+                                    TEXTO_PADRAO_QUANTIDADE_TREVOS
                             )
                             .setResetarTrevosPorQuantidadeNumeros(true);
                 }

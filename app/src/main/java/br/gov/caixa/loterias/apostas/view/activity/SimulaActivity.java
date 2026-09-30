@@ -764,9 +764,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             botaoNextStep.setEnabled(state.isBotaoNextStepHabilitado());
             botaoNextStep.setText(state.getTextoEscolha());
 
-            if (botaoNextStep instanceof MaterialButton) {
-                visualModalidadeBotao(state.isBotaoNextStepHabilitado(), (MaterialButton) botaoNextStep);
-                fonteBotaoBold(state.isBotaoNextStepHabilitado(), (MaterialButton) botaoNextStep);
+            if (botaoNextStep instanceof MaterialButton botaoNext) {
+                visualModalidadeBotao(state.isBotaoNextStepHabilitado(), botaoNext);
+                fonteBotaoBold(state.isBotaoNextStepHabilitado(), botaoNext);
             }
         }
 
@@ -775,9 +775,9 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             botaoAdicionar.setEnabled(state.isBotaoAdicionarHabilitado());
 
-            if (botaoAdicionar instanceof MaterialButton) {
-                visualModalidadeBotao(state.isBotaoAdicionarHabilitado(), (MaterialButton) botaoAdicionar);
-                fonteBotaoBold(state.isBotaoAdicionarHabilitado(), (MaterialButton) botaoAdicionar);
+            if (botaoAdicionar instanceof MaterialButton botaoAdd) {
+                visualModalidadeBotao(state.isBotaoAdicionarHabilitado(), botaoAdd);
+                fonteBotaoBold(state.isBotaoAdicionarHabilitado(), botaoAdd);
             }
         }
 
@@ -955,14 +955,14 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         int corThumb = getCorClaraVolante(tipoJogo);
 
 
-        if (background instanceof GradientDrawable) {
-            ((GradientDrawable) background).setColor(
+        if (background instanceof GradientDrawable backgroundDrawable) {
+            backgroundDrawable.setColor(
                     ContextCompat.getColor(
                             this,
                             R.color.branco
                     )
             );
-            ((GradientDrawable) background).setStroke(
+            backgroundDrawable.setStroke(
                     (int) TypedValue.applyDimension(
                             TypedValue.COMPLEX_UNIT_DIP,
                             2,
@@ -1019,7 +1019,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             return;
         }
-        if (effect instanceof ScreenSimulaEffect.AtualizarQuantidadeTrevos comando) {
+        if (effect instanceof ScreenSimulaEffect.AtualizarQuantidadeTrevos atualizarTrevos) {
 
             EtapaFragment etapa =
                     getEtapaAtual();
@@ -1027,7 +1027,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             if (etapa != null) {
 
                 etapa.atualizarQuantidadeTrevos(
-                        comando.getValorSelecionado()
+                        atualizarTrevos.getValorSelecionado()
                 );
 
             }
@@ -1039,12 +1039,12 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        if (effect instanceof ScreenSimulaEffect.VoltarEtapa) {
+        if (effect instanceof ScreenSimulaEffect.VoltarEtapa voltarEtapa) {
 
             etapaRenderizada = null;
 
             renderEtapaAtual(
-                    ((ScreenSimulaEffect.VoltarEtapa) effect)
+                    voltarEtapa
                             .getEtapa(),
                     state
             );
@@ -1221,9 +1221,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        if (comando instanceof CarrinhoEffect.ExecutarAdicionarCarrinhoEffect) {
+        if (comando instanceof CarrinhoEffect.ExecutarAdicionarCarrinhoEffect add) {
 
-            CarrinhoEffect.ExecutarAdicionarCarrinhoEffect add = (CarrinhoEffect.ExecutarAdicionarCarrinhoEffect) comando;
             model.adicionaApostaNoCarrinho(this, add.getAposta(), add.getBarraTituloDTO());
 
             viewModel.onEvent(new SimulaUiEvent.ComandoCarrinhoConsumido());
@@ -1231,7 +1230,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
         if (comando instanceof
-                CarrinhoEffect.AdicionarSurpresinha) {
+                CarrinhoEffect.AdicionarSurpresinha adicionarSurpresinha) {
 
             if (surpresinhaModel == null) {
                 surpresinhaModel =
@@ -1239,8 +1238,7 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
             }
 
             surpresinhaModel.addSurpresinhaCarrinho(
-                    ((CarrinhoEffect.AdicionarSurpresinha)
-                            comando)
+                    adicionarSurpresinha
                             .getDto()
             );
 
@@ -1252,9 +1250,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
 
 
-        if (comando instanceof CarrinhoEffect.AdicionarTimeSurpresa) {
+        if (comando instanceof CarrinhoEffect.AdicionarTimeSurpresa timeSurpresa) {
 
-            CarrinhoEffect.AdicionarTimeSurpresa timeSurpresa = (CarrinhoEffect.AdicionarTimeSurpresa) comando;
 
             adicionarTimeSurpresa(timeSurpresa.getEquipeSelecionada());
 
@@ -1327,7 +1324,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void executarFavoritarRodape() {
-        if (!DadosUsuarioBO.checarUsuarioLogado(this)) {
+        boolean usuarioLogado = DadosUsuarioBO.checarUsuarioLogado(this);
+        if (!usuarioLogado) {
             AlertDialogExperimenteLogarSingleton.show(this, false, null);
             return;
         }
@@ -1547,22 +1545,23 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
     }
 
     private void configuraActivity() {
+        boolean especial = isEspecial;
         switch (tipoJogo) {
             case MEGA_SENA:
                 if (isMega30) {
                     configuraTipoApostaTela(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, ""), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp);
                 } else {
-                    configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_mega_virada_underline) : getResources().getString(R.string.unterline_mega_sena_underline), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp);
+                    configuraTipoApostaTela(especial ? getResources().getString(R.string.underline_mega_virada_underline) : getResources().getString(R.string.unterline_mega_sena_underline), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp);
                 }
                 break;
             case QUINA:
-                configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_quina_sao_joao_underline) : getResources().getString(R.string.underline_quina_underline), R.color.quina_claro_mkp, R.color.quina_escuro_mkp);
+                configuraTipoApostaTela(especial ? getResources().getString(R.string.underline_quina_sao_joao_underline) : getResources().getString(R.string.underline_quina_underline), R.color.quina_claro_mkp, R.color.quina_escuro_mkp);
                 break;
             case LOTOFACIL:
-                configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_lotofacil_independencia_underline) : getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacil_claro_mkp, R.color.lotofacil_escuro_mkp);
+                configuraTipoApostaTela(especial ? getResources().getString(R.string.underline_lotofacil_independencia_underline) : getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacil_claro_mkp, R.color.lotofacil_escuro_mkp);
                 break;
             case DUPLA_SENA:
-                configuraTipoApostaTela(isEspecial ? getResources().getString(R.string.underline_dupla_pascoa_underline) : getResources().getString(R.string.underline_dupla_sena_underline), R.color.dupla_sena_claro_mkp, R.color.dupla_sena_escuro_mkp);
+                configuraTipoApostaTela(especial ? getResources().getString(R.string.underline_dupla_pascoa_underline) : getResources().getString(R.string.underline_dupla_sena_underline), R.color.dupla_sena_claro_mkp, R.color.dupla_sena_escuro_mkp);
                 break;
             case TIMEMANIA:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_timemania_underline), R.color.timemania_claro_mkp, R.color.timemania_escuro_mkp);
@@ -1900,8 +1899,8 @@ public class SimulaActivity extends LoteriasBaseAppActivity implements CartelaFr
                                 R.id.fragmentSimularApostas
                         );
 
-        if (fragment instanceof EtapaFragment) {
-            return (EtapaFragment) fragment;
+        if (fragment instanceof EtapaFragment fragmento) {
+            return fragmento;
         }
 
         return null;

@@ -12,6 +12,9 @@ import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
 
 public class FluxoApostaReducer {
 
+    private static final String TEXTO_PADRAO_QUANTIDADE_TREVOS = "2 trevos";
+
+
     public SimulaUiState cartelaAlterada(
             SimulaUiState atual,
             SimulaUiEvent.CartelaAlterada event
@@ -376,7 +379,7 @@ public class FluxoApostaReducer {
                             .setValoresTrevos(new ArrayList<>())
                             .setLabelsQuantidadeTrevos(new ArrayList<>())
                             .setPosicaoTrevosSelecionada(0)
-                            .setTextoBotaoQuantidadeTrevos("2 trevos")
+                            .setTextoBotaoQuantidadeTrevos(TEXTO_PADRAO_QUANTIDADE_TREVOS)
                             .setComandoTelaSimula(
                                     new ScreenSimulaEffect.VoltarEtapa(
                                             EtapaAposta.NUMEROS

@@ -83,10 +83,16 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
     public final static String APOSTA_EXTRA = "aposta";
     private int valNumeroConcurso;
     private ConstraintLayout toolBarLoteca;
-    private Button botaoLimparAposta, botaoCompletar, botaoAdicionar, botaoNextStep;
-    private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca;
+    private Button botaoLimparAposta;
+    private Button botaoCompletar;
+    private Button botaoAdicionar;
+    private Button botaoNextStep;
+    private TextView labelValueJogosLoteca;
+    private TextView labelValueSimplesLoteca;
+    private TextView labelValueDuplasLoteca;
+    private TextView labelValueTriplasLoteca;
 
-    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
+    protected IdentificaoDeUmaApostaDas8Modalidades<?> aposta;
 
     // Fragments
     private FragmentManager fragmentManager;
@@ -125,7 +131,8 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
     private TextView textInfoEtapa;
     private EtapaAposta etapaRenderizada;
     private boolean renderizacaoSurpresinhaTime;
-    private ConstraintLayout simulaToolbar,lotecaToolbar;
+    private ConstraintLayout simulaToolbar;
+    private ConstraintLayout lotecaToolbar;
     private SurpresinhaApostaModel surpresinhaModel = new SurpresinhaApostaModel(this);
     private final ActivityResultLauncher<Intent> fluxoApostaLauncher =
             registerForActivityResult(
@@ -284,11 +291,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
 
         if (comando instanceof
-                AnimacaoEffect.Exibir) {
-
-            AnimacaoEffect.Exibir exibir =
-                    (AnimacaoEffect.Exibir)
-                            comando;
+                AnimacaoEffect.Exibir exibir) {
 
             if (lottieManager != null) {
                 lottieManager.destroy();
@@ -373,8 +376,10 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         boolean ocultarInfo =
                 state.isSurpresinhaHabilitada();
 
+        boolean exibirInfoEtapa = state.getExibirInfoEtapa();
+
         textInfoEtapa.setVisibility(
-                !ocultarInfo && state.getExibirInfoEtapa()
+                !ocultarInfo && exibirInfoEtapa
                         ? View.VISIBLE
                         : View.GONE
         );
@@ -411,11 +416,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
         if (comando
                 instanceof AnalyticsEffect
-                .QuantidadeNumerosConfirmada) {
-
-            AnalyticsEffect.QuantidadeNumerosConfirmada c =
-                    (AnalyticsEffect.QuantidadeNumerosConfirmada)
-                            comando;
+                .QuantidadeNumerosConfirmada c) {
 
             AnalyticsHelper.getInstance().logSelectContent(
                     AnalyticsHelper.Tela.MONTAR_APOSTA,
@@ -427,11 +428,8 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
             );
         } else if (comando
                 instanceof AnalyticsEffect
-                .TeimosinhaConfirmada) {
+                .TeimosinhaConfirmada c) {
 
-            AnalyticsEffect.TeimosinhaConfirmada c =
-                    (AnalyticsEffect.TeimosinhaConfirmada)
-                            comando;
 
             AnalyticsHelper.getInstance().logSelectContent(
                     AnalyticsHelper.Tela.MONTAR_APOSTA,
@@ -448,10 +446,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             logAdicionarAoCarrinho();
         }
-        else if(comando instanceof  AnalyticsEffect.QtdSurpresinhas){
-            AnalyticsEffect.QtdSurpresinhas c =
-                    (AnalyticsEffect.QtdSurpresinhas)
-                            comando;
+        else if(comando instanceof  AnalyticsEffect.QtdSurpresinhas c){
 
             AnalyticsHelper.getInstance().logSelectContent(
                     AnalyticsHelper.Tela.MONTAR_APOSTA,
@@ -566,9 +561,9 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             botaoAdicionar.setEnabled(state.isBotaoAdicionarHabilitado());
 
-            if (botaoAdicionar instanceof MaterialButton) {
-                visualModalidadeBotao(state.isBotaoAdicionarHabilitado(), (MaterialButton) botaoAdicionar);
-                fonteBotaoBold(state.isBotaoAdicionarHabilitado(), (MaterialButton) botaoAdicionar);
+            if (botaoAdicionar instanceof MaterialButton botaoAdd) {
+                visualModalidadeBotao(state.isBotaoAdicionarHabilitado(), botaoAdd);
+                fonteBotaoBold(state.isBotaoAdicionarHabilitado(), botaoAdd);
             }
         }
 
@@ -648,9 +643,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
 
             return;
         }
-        if (effect instanceof ScreenSimulaEffect.AtualizarQuantidadeTrevos) {
-
-            ScreenSimulaEffect.AtualizarQuantidadeTrevos comando = (ScreenSimulaEffect.AtualizarQuantidadeTrevos) effect;
+        if (effect instanceof ScreenSimulaEffect.AtualizarQuantidadeTrevos atualizarTrevos) {
 
             EtapaFragment etapa =
                     getEtapaAtual();
@@ -658,7 +651,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
             if (etapa != null) {
 
                 etapa.atualizarQuantidadeTrevos(
-                        comando.getValorSelecionado()
+                        atualizarTrevos.getValorSelecionado()
                 );
 
             }
@@ -670,12 +663,12 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        if (effect instanceof ScreenSimulaEffect.VoltarEtapa) {
+        if (effect instanceof ScreenSimulaEffect.VoltarEtapa voltarEtapa) {
 
             etapaRenderizada = null;
 
             renderEtapaAtual(
-                    ((ScreenSimulaEffect.VoltarEtapa) effect)
+                    voltarEtapa
                             .getEtapa(),
                     state
             );
@@ -785,17 +778,16 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
             return;
         }
 
-        if (comando instanceof CarrinhoEffect.ExecutarAdicionarCarrinhoEffect) {
+        if (comando instanceof CarrinhoEffect.ExecutarAdicionarCarrinhoEffect executarAdd) {
 
-            CarrinhoEffect.ExecutarAdicionarCarrinhoEffect add = (CarrinhoEffect.ExecutarAdicionarCarrinhoEffect) comando;
-            model.adicionaApostaNoCarrinho(this, add.getAposta(), add.getBarraTituloDTO());
+            model.adicionaApostaNoCarrinho(this, executarAdd.getAposta(), executarAdd.getBarraTituloDTO());
 
             viewModel.onEvent(new SimulaUiEvent.ComandoCarrinhoConsumido());
 
             return;
         }
         if (comando instanceof
-                CarrinhoEffect.AdicionarSurpresinha) {
+                CarrinhoEffect.AdicionarSurpresinha adicionarSurpresinha) {
 
             if (surpresinhaModel == null) {
                 surpresinhaModel =
@@ -803,8 +795,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
             }
 
             surpresinhaModel.addSurpresinhaCarrinho(
-                    ((CarrinhoEffect.AdicionarSurpresinha)
-                            comando)
+                    adicionarSurpresinha
                             .getDto()
             );
 
@@ -816,9 +807,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         }
 
 
-        if (comando instanceof CarrinhoEffect.AdicionarTimeSurpresa) {
-
-            CarrinhoEffect.AdicionarTimeSurpresa timeSurpresa = (CarrinhoEffect.AdicionarTimeSurpresa) comando;
+        if (comando instanceof CarrinhoEffect.AdicionarTimeSurpresa timeSurpresa) {
 
             adicionarTimeSurpresa(timeSurpresa.getEquipeSelecionada());
 
@@ -1320,8 +1309,8 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
                                 R.id.fragmentSimularApostas
                         );
 
-        if (fragment instanceof EtapaFragment) {
-            return (EtapaFragment) fragment;
+        if (fragment instanceof EtapaFragment fragmento) {
+            return fragmento;
         }
 
         return null;

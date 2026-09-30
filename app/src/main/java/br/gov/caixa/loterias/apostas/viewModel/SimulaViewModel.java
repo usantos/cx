@@ -131,24 +131,20 @@ public class SimulaViewModel extends AndroidViewModel {
     ) {
 
         if (event instanceof
-                SimulaUiEvent.AdicionarCarrinhoSolicitado) {
+                SimulaUiEvent.AdicionarCarrinhoSolicitado adicionarCarrinhoSolicitado) {
 
             handleAdicionarCarrinhoSolicitado(
-                    (SimulaUiEvent
-                            .AdicionarCarrinhoSolicitado)
-                            event
+                    adicionarCarrinhoSolicitado
             );
 
             return true;
         }
 
         if (event instanceof
-                SimulaUiEvent.AdicionarCarrinhoClicado) {
+                SimulaUiEvent.AdicionarCarrinhoClicado adicionarCarrinhoClicado) {
 
             handleAdicionarCarrinhoClicado(
-                    (SimulaUiEvent
-                            .AdicionarCarrinhoClicado)
-                            event
+                    adicionarCarrinhoClicado
             );
 
             return true;
@@ -246,30 +242,28 @@ public class SimulaViewModel extends AndroidViewModel {
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.CartelaAlterada) {
+        if (event instanceof SimulaUiEvent.CartelaAlterada cartelaAlterada) {
 
-            handleCartelaAlterada((SimulaUiEvent.CartelaAlterada) event);
-
-            return true;
-        }
-        if (event instanceof SimulaUiEvent.ValorApostaAlterado) {
-
-            handleValorApostaAlterado((SimulaUiEvent.ValorApostaAlterado) event);
+            handleCartelaAlterada(cartelaAlterada);
 
             return true;
         }
-        if (event instanceof SimulaUiEvent.InicializarParametrosAposta) {
+        if (event instanceof SimulaUiEvent.ValorApostaAlterado valorApostaAlterado) {
+
+            handleValorApostaAlterado(valorApostaAlterado);
+
+            return true;
+        }
+        if (event instanceof SimulaUiEvent.InicializarParametrosAposta eventoParametrosAposta) {
             inicializarParametrosAposta(
-                    (SimulaUiEvent
-                            .InicializarParametrosAposta)
-                            event
+                    eventoParametrosAposta
             );
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.TelaInicializada) {
+        if (event instanceof SimulaUiEvent.TelaInicializada telaInicializada) {
 
-            handleTelaInicializada((SimulaUiEvent.TelaInicializada) event);
+            handleTelaInicializada(telaInicializada);
 
             return true;
         }
@@ -294,8 +288,8 @@ public class SimulaViewModel extends AndroidViewModel {
     protected boolean handleTeimosinhaEvents(
             SimulaUiEvent event
     ) {
-        if (event instanceof SimulaUiEvent.InicializarTeimosinhas) {
-            inicializarTeimosinhas((SimulaUiEvent.InicializarTeimosinhas) event);
+        if (event instanceof SimulaUiEvent.InicializarTeimosinhas eventoTeimosinhas) {
+            inicializarTeimosinhas(eventoTeimosinhas);
             return true;
         }
 
@@ -310,18 +304,16 @@ public class SimulaViewModel extends AndroidViewModel {
         }
 
         if (event instanceof
-                SimulaUiEvent.QtdConcursoAtualizadaInternamente) {
+                SimulaUiEvent.QtdConcursoAtualizadaInternamente qtdConcursoAtualizadaInternamente) {
 
             handleQtdConcursoAtualizadaInternamente(
-                    (SimulaUiEvent
-                            .QtdConcursoAtualizadaInternamente)
-                            event
+                    qtdConcursoAtualizadaInternamente
             );
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.ConfirmarTeimosinha) {
-            confirmarTeimosinha((SimulaUiEvent.ConfirmarTeimosinha) event);
+        if (event instanceof SimulaUiEvent.ConfirmarTeimosinha confirmarTeimosinha) {
+            confirmarTeimosinha(confirmarTeimosinha);
             return true;
         }
 
@@ -335,16 +327,15 @@ public class SimulaViewModel extends AndroidViewModel {
     protected boolean handleNumerosEvents(
             SimulaUiEvent event
     ) {
-        if (event instanceof SimulaUiEvent.InicializarQuantidadeNumeros) {
-            inicializarQuantidadeNumeros((SimulaUiEvent.InicializarQuantidadeNumeros) event);
+        if (event instanceof SimulaUiEvent.InicializarQuantidadeNumeros eventoQuantidadeNumeros) {
+            inicializarQuantidadeNumeros(eventoQuantidadeNumeros);
             return true;
         }
         if (event instanceof
-                SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente) {
+                SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente quantidadeNumerosAtualizadaInternamente) {
 
             atualizarQuantidadeInterna(
-                    (SimulaUiEvent.QuantidadeNumerosAtualizadaInternamente)
-                            event
+                    quantidadeNumerosAtualizadaInternamente
             );
             return true;
         }
@@ -354,13 +345,13 @@ public class SimulaViewModel extends AndroidViewModel {
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.SelecionarQuantidadeNumeros) {
-            selecionarQuantidadeNumeros((SimulaUiEvent.SelecionarQuantidadeNumeros) event);
+        if (event instanceof SimulaUiEvent.SelecionarQuantidadeNumeros selecionarQuantidadeNumeros) {
+            selecionarQuantidadeNumeros(selecionarQuantidadeNumeros);
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.ConfirmarQuantidadeNumeros) {
-            confirmarQuantidadeNumeros((SimulaUiEvent.ConfirmarQuantidadeNumeros) event);
+        if (event instanceof SimulaUiEvent.ConfirmarQuantidadeNumeros confirmarQuantidadeNumeros) {
+            confirmarQuantidadeNumeros(confirmarQuantidadeNumeros);
             return true;
         }
 
@@ -385,9 +376,9 @@ public class SimulaViewModel extends AndroidViewModel {
     protected boolean handleCompletarEvents(
             SimulaUiEvent event
     ) {
-        if (event instanceof SimulaUiEvent.CompletarApostaClicado) {
+        if (event instanceof SimulaUiEvent.CompletarApostaClicado completarApostaClicado) {
 
-            handleCompletarApostaClicado((SimulaUiEvent.CompletarApostaClicado) event);
+            handleCompletarApostaClicado(completarApostaClicado);
 
             return true;
         }
@@ -404,27 +395,25 @@ public class SimulaViewModel extends AndroidViewModel {
             SimulaUiEvent event
     ) {
 
-        if (event instanceof SimulaUiEvent.NextStepClicado) {
+        if (event instanceof SimulaUiEvent.NextStepClicado nextStepClicado) {
 
-            handleNextStepClicado((SimulaUiEvent.NextStepClicado) event);
+            handleNextStepClicado(nextStepClicado);
 
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.MesSorteAlterado) {
-            handleMesSorteAlterado((SimulaUiEvent.MesSorteAlterado) event);
+        if (event instanceof SimulaUiEvent.MesSorteAlterado mesSorteAlterado) {
+            handleMesSorteAlterado(mesSorteAlterado);
             return true;
         }
 
 
 
         if (event instanceof
-                SimulaUiEvent.SelecionarMesDaSorte) {
+                SimulaUiEvent.SelecionarMesDaSorte selecionarMesDaSorte) {
 
             handleSelecionarMesDaSorte(
-                    (SimulaUiEvent
-                            .SelecionarMesDaSorte)
-                            event
+                    selecionarMesDaSorte
             );
 
             return true;
@@ -437,11 +426,10 @@ public class SimulaViewModel extends AndroidViewModel {
         }
 
         if (event instanceof
-                SimulaUiEvent.SelecionarTimeCoracao) {
+                SimulaUiEvent.SelecionarTimeCoracao selecionarTimeCoracao) {
 
             handleSelecionarTimeCoracao(
-                    (SimulaUiEvent.SelecionarTimeCoracao)
-                            event
+                    selecionarTimeCoracao
             );
             return true;
         }
@@ -460,13 +448,13 @@ public class SimulaViewModel extends AndroidViewModel {
             consumirDialogFavoritarAposta();
             return true;
         }
-        if (event instanceof SimulaUiEvent.SalvarApostaFavoritaSolicitado) {
-            handleSalvarApostaFavoritaSolicitado((SimulaUiEvent.SalvarApostaFavoritaSolicitado) event);
+        if (event instanceof SimulaUiEvent.SalvarApostaFavoritaSolicitado salvarApostaFavoritaSolicitado) {
+            handleSalvarApostaFavoritaSolicitado(salvarApostaFavoritaSolicitado);
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.ConfirmarSalvarApostaFavorita) {
-            salvarApostaFavorita(((SimulaUiEvent.ConfirmarSalvarApostaFavorita) event).getApostaFavorita());
+        if (event instanceof SimulaUiEvent.ConfirmarSalvarApostaFavorita confirmarSalvarApostaFavorita) {
+            salvarApostaFavorita(confirmarSalvarApostaFavorita.getApostaFavorita());
             return true;
         }
 
@@ -476,31 +464,31 @@ public class SimulaViewModel extends AndroidViewModel {
             SimulaUiEvent event
     ) {
 
-        if (event instanceof SimulaUiEvent.QuantidadeTrevosAlterada) {
-            handleQuantidadeTrevosAlterada((SimulaUiEvent.QuantidadeTrevosAlterada) event);
+        if (event instanceof SimulaUiEvent.QuantidadeTrevosAlterada quantidadeTrevosAlterada) {
+            handleQuantidadeTrevosAlterada(quantidadeTrevosAlterada);
             return true;
         }
-        if (event instanceof SimulaUiEvent.TrevosAlterados) {
-            handleTrevosAlterados((SimulaUiEvent.TrevosAlterados) event);
+        if (event instanceof SimulaUiEvent.TrevosAlterados trevosAlterados) {
+            handleTrevosAlterados(trevosAlterados);
             return true;
         }
-        if (event instanceof SimulaUiEvent.ClicarQuantidadeTrevos) {
+        if (event instanceof SimulaUiEvent.ClicarQuantidadeTrevos clicarQuantidadeTrevos) {
             clicarQuantidadeTrevos(
-                    (SimulaUiEvent.ClicarQuantidadeTrevos) event
+                    clicarQuantidadeTrevos
             );
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.SelecionarQuantidadeTrevos) {
+        if (event instanceof SimulaUiEvent.SelecionarQuantidadeTrevos selecionarQuantidadeTrevos) {
             selecionarQuantidadeTrevos(
-                    (SimulaUiEvent.SelecionarQuantidadeTrevos) event
+                    selecionarQuantidadeTrevos
             );
             return true;
         }
 
-        if (event instanceof SimulaUiEvent.ConfirmarQuantidadeTrevos) {
+        if (event instanceof SimulaUiEvent.ConfirmarQuantidadeTrevos confirmarQuantidadeTrevos) {
             confirmarQuantidadeTrevos(
-                    (SimulaUiEvent.ConfirmarQuantidadeTrevos) event
+                    confirmarQuantidadeTrevos
             );
             return true;
         }
@@ -516,9 +504,9 @@ public class SimulaViewModel extends AndroidViewModel {
             consumirAvisoTrevosMaximo();
             return true;
         }
-        if (event instanceof SimulaUiEvent.ToggleTrevo) {
+        if (event instanceof SimulaUiEvent.ToggleTrevo toggleTrevo) {
             handleToggleTrevo(
-                    (SimulaUiEvent.ToggleTrevo) event
+                    toggleTrevo
             );
             return true;
         }
@@ -530,36 +518,32 @@ public class SimulaViewModel extends AndroidViewModel {
     protected boolean handleSurpresinhaEvents(
             SimulaUiEvent event
     ) {
-        if (event instanceof SimulaUiEvent.AlterarSurpresinha) {
+        if (event instanceof SimulaUiEvent.AlterarSurpresinha alterarSurpresinha) {
 
-            handleAlterarSurpresinha(((SimulaUiEvent.AlterarSurpresinha) event).isHabilitada());
+            handleAlterarSurpresinha(alterarSurpresinha.isHabilitada());
 
             return true;
         }
 
         if (event instanceof
-                SimulaUiEvent.AtualizarQuantidadeSurpresinhas) {
+                SimulaUiEvent.AtualizarQuantidadeSurpresinhas atualizarQuantidadeSurpresinhas) {
 
             handleQuantidadeSurpresinhas(
-                    (SimulaUiEvent
-                            .AtualizarQuantidadeSurpresinhas)
-                            event
+                    atualizarQuantidadeSurpresinhas
             );
             return true;
         }
         if (event instanceof
-                SimulaUiEvent.AtualizarQuantidadeNumerosSurpresinha) {
+                SimulaUiEvent.AtualizarQuantidadeNumerosSurpresinha atualizarQuantidadeNumerosSurpresinha) {
 
             handleQuantidadeNumerosSurpresinha(
-                    (SimulaUiEvent
-                            .AtualizarQuantidadeNumerosSurpresinha)
-                            event
+                    atualizarQuantidadeNumerosSurpresinha
             );
             return true;
         }
-        if (event instanceof SimulaUiEvent.AdicionarSurpresinhaCarrinho) {
+        if (event instanceof SimulaUiEvent.AdicionarSurpresinhaCarrinho adicionarSurpresinhaCarrinho) {
             handleAdicionarSurpresinhaCarrinho(
-                    (SimulaUiEvent.AdicionarSurpresinhaCarrinho) event
+                    adicionarSurpresinhaCarrinho
             );
             return true;
         }
@@ -572,12 +556,10 @@ public class SimulaViewModel extends AndroidViewModel {
             return true;
         }
         if (event instanceof
-                SimulaUiEvent.AtualizarQuantidadeTrevosSurpresinha) {
+                SimulaUiEvent.AtualizarQuantidadeTrevosSurpresinha atualizarQuantidadeTrevosSurpresinha) {
 
             handleQuantidadeTrevosSurpresinha(
-                    (SimulaUiEvent
-                            .AtualizarQuantidadeTrevosSurpresinha)
-                            event
+                    atualizarQuantidadeTrevosSurpresinha
             );
             return true;
         }

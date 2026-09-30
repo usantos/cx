@@ -71,6 +71,7 @@ import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventLis
 
 public class SimulaFragment extends BaseEtapaFragment {
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
+    private static final String QUANTIDADE_COLUNAS = "{qtdColunas}";
     private SensorManager mSensorManager;
 
     private final SensorEventListener mSensorListener = new LoteriasSensorEventListener(0.00f,
@@ -969,8 +970,8 @@ public class SimulaFragment extends BaseEtapaFragment {
     ) {
         if (listaGridsSuperSete != null) {
             for (ExpandableHeightGridView grid : listaGridsSuperSete) {
-                if (grid.getAdapter() instanceof SuperSeteAdapter) {
-                    ((SuperSeteAdapter) grid.getAdapter()).limpaNumeros();
+                if (grid.getAdapter() instanceof SuperSeteAdapter superSeteAdapter) {
+                    superSeteAdapter.limpaNumeros();
                 }
             }
         }
@@ -1552,7 +1553,7 @@ public class SimulaFragment extends BaseEtapaFragment {
                     } else {
                         DialogUtils.dialogEntendi(getActivity(),
                                 getString(R.string.msg_bloqueio_coluna_super_sete_desmarcar).replace(
-                                        "{qtdColunas}",
+                                        QUANTIDADE_COLUNAS,
                                         String.valueOf(listaSelecionados.size())));
                     }
                 } else {
@@ -1584,7 +1585,7 @@ public class SimulaFragment extends BaseEtapaFragment {
                                     }
                                 } else {
                                     DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
-                                            "{qtdColunas}",
+                                            QUANTIDADE_COLUNAS,
                                             String.valueOf(adapter.getQtdColunasMaximas(getStateAtual().getQtdDezenasPossiveisSelecionado()))));
                                 }
                             } else {
@@ -1600,7 +1601,7 @@ public class SimulaFragment extends BaseEtapaFragment {
                                 atualizarQtdSuperSeteState();
                             } else {
                                 DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
-                                        "{qtdColunas}",
+                                        QUANTIDADE_COLUNAS,
                                         String.valueOf(adapter.getQtdColunasMaximas(getStateAtual().getQtdDezenasPossiveisSelecionado()))));
                             }
                         } else {
