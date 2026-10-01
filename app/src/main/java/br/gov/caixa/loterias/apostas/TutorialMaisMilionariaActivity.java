@@ -12,7 +12,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.TutorialNovaModalidadeFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TutorialPassoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnTutorialListener;
