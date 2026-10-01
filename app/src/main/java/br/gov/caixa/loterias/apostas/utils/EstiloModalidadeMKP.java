@@ -393,6 +393,7 @@ public class EstiloModalidadeMKP {
         imagemEspecialQuadrada = R.drawable.mega_virada_quadrado;
         imagemEspecialDetalhes = R.drawable.cabecalho_mega_da_virada_detalhe_aposta;
         corLetraLista = R.color.outubro_rosa_secundario;
+        corItemDezena = R.color.outubro_rosa_secundario;
         corFonteFundoClaro = R.color.outubro_rosa_texto;
         corFonteFundoEscuro = R.color.branco;
         trevoFundoClaro = R.drawable.trevo_megasena_outubro_rosa_fundo_branco;
