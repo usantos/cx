@@ -204,8 +204,15 @@ class DadosPessoaisViewModel(
 
     private fun buscarCep(cep: String) {
         atualizarCarregamento()
+        // Capture current state CEP to validate response hasn't been superseded by a newer request
+        val cepAtual = currentState().cep
         model.buscarBairroPorCep(cep, object : DadosPessoaisModel.Callback<BairroDTOResponse> {
             override fun onSuccess(response: BairroDTOResponse?) {
+                // Verify this response is still for the current CEP (not stale)
+                if (cepAtual != currentState().cep) {
+                    return
+                }
+                
                 val bairro = response?.payload?.firstOrNull()
                 val municipio = bairro?.municipio
 
@@ -226,6 +233,11 @@ class DadosPessoaisViewModel(
             }
 
             override fun onError(error: VolleyError?) {
+                // Verify this error response is still for the current CEP (not stale)
+                if (cepAtual != currentState().cep) {
+                    return
+                }
+                
                 if (isErroNegocial(error)) {
                     definirCepInvalido()
                     return

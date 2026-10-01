@@ -24,5 +24,9 @@ data class DadosPessoaisState(
         get() = erroCep == null && municipioSelecionado != null
 
     val limiteValido: Boolean
-        get() = !limiteMenorQueMinimo && !limiteMaiorQueMaximo
+        get() = limiteDigitado != null &&
+            apostador?.limiteMinimoDiario != null &&
+            apostador.limiteDiarioAutorizado != null &&
+            !limiteMenorQueMinimo &&
+            !limiteMaiorQueMaximo
 }

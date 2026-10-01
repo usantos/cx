@@ -86,8 +86,6 @@ open class DadosPessoaisActivity : LoteriasBaseAppActivity() {
         configurarInsets()
         setaMetodos()
         observarViewModel()
-
-        onEvent.dispatch(DadosPessoaisEvent.TelaIniciada)
     }
 
     override fun baseConsumeInsets(): Boolean = false
@@ -405,7 +403,9 @@ open class DadosPessoaisActivity : LoteriasBaseAppActivity() {
 
     private fun abrirConfirmacao() {
         viewModel.uiState.value?.limiteDigitado?.let { limite ->
-            SessaoUsuario.getInstance().getParametrosSimulacao().valorLimiteDiario = limite
+            SessaoUsuario.getInstance().getParametrosSimulacao()?.let { parametros ->
+                parametros.valorLimiteDiario = limite
+            }
         }
         startActivity(Intent(this, DadosPessoaisConfirmacaoActivity::class.java))
         finish()
