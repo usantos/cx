@@ -90,19 +90,11 @@ public class TokenActivity extends LoteriasBaseAppActivity {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    FirebaseCrashlytics crash = FirebaseCrashlytics.getInstance();
-                                    crash.setCustomKey(getString(R.string.tokenactivity), "Erro na chamada de verificação de usuário bloqueado");
-                                    crash.recordException(error);
+                                    if (AlertDialogUtils.isShow()){
+                                        AlertDialogUtils.dismiss();
+                                    }
 
-                                    Log.e(getString(R.string.tokenactivity), "Erro! TokenActivity: Erro na chamada de verificação de usuário bloqueado " + error);
-                                    DialogUtils.dialogEntendiListener(
-                                            TokenActivity.this,
-                                            getResources().getString(R.string.nao_concluiu_operacao_nova), (dialog, which) -> {
-                                                new LoginSSOModel(TokenActivity.this).sair(LoginActivity.class, () -> {});
-                                                DadosUsuarioBO.updateUsuarioLogado(TokenActivity.this, false);
-                                                finish();
-                                            });
-
+                                    RedirectNetwork.trataFalhaVerificacaoBloqueio(error, TokenActivity.this, "TokenActivity");
                                 }
                             });
                         }
