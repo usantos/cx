@@ -90,6 +90,7 @@ import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.ResultadoApostaConfirmadaActivity;
+import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
@@ -420,9 +421,9 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
 
     private void goToEditarAposta(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
-            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
-            intent.putExtra(SimularApostaActivity.APOSTA_EXTRA, ((Serializable) aposta));
-            intent.putExtra("tipoAposta", ((Serializable) aposta.getModalidade()));
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimulaActivity.class);
+            intent.putExtra(SimulaActivity.APOSTA_EXTRA, aposta);
+            intent.putExtra("tipoAposta", aposta.getModalidade());
             intent.putExtra("modalidade", ((Serializable) (new Gson()).toJson(parametroSimulacaoTrocado.getParametroJogo())));
             intent.putExtra("especial", isEspecial(aposta.getTipoConcurso().getValor()));
             startActivity(intent);
@@ -430,9 +431,9 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     }
 
     private void adicionarCarrinhoBtn() {
-        //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(ApostaConfirmadaDetalhesActivity.this, 1)) {
+        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(ApostaConfirmadaDetalhesActivity.this, 1)) {
             AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false, "Adicionar ao\n carrinho"));
-        //}
+        }
     }
 
     private OnModalidadesAbertasListener onChegagemModalidadesListener(boolean isEditing, String btnText){

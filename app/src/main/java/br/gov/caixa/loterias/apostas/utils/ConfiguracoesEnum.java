@@ -15,6 +15,8 @@ public enum ConfiguracoesEnum {
     URL_BASE_CARRINHO_PRODUCAO("urlBaseCarrinhoProducao"),
     URL_BASE_APOSTADOR("urlBaseApostador"),
     GRUPO_CPFS_APOSTADOR("grupoDeCpfsApostador"),
+    QTDE_MINIMA_APOSTA_BOLAO_FILTRO("qtdeMinimaApostaBolaoFiltro"),
+    QTDE_MAXIMA_APOSTA_BOLAO_FILTRO("qtdeMaximaApostaBolaoFiltro"),
     URL_BASE_BFF("urlBaseBff"),
     GRUPO_CPFS_BFF("GrupoCpfBff"),
     OUTUBRO_ROSA("outubroRosa"),

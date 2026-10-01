@@ -4,13 +4,8 @@ import android.app.Activity;
 import android.net.Uri;
 import android.util.Base64;
 
-import android.util.Log;
-
-import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
@@ -29,18 +24,17 @@ import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
-import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class BiometriaLogin {

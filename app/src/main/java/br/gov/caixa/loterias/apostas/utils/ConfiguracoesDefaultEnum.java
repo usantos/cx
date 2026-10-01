@@ -11,6 +11,8 @@ public enum ConfiguracoesDefaultEnum {
     IS_RAPIDAO(false),
 
     GRUPO_CPF_NOVA_API(0),
+    QTDE_MINIMA_APOSTA_BOLAO_FILTRO(0),
+    QTDE_MAXIMA_APOSTA_BOLAO_FILTRO(0),
 
     URL_BASE_BUSCA_APOSTAS(""),
     URL_BASE_CARRINHO_PILOTO(""),

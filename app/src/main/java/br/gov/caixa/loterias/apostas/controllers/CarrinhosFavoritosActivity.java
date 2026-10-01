@@ -31,6 +31,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhosFavoritosAdapter;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 import br.gov.caixa.loterias.apostas.view.listener.OnCarrinhosFavoritosClickListener;
@@ -136,9 +137,9 @@ public class CarrinhosFavoritosActivity extends LoteriasBaseAppActivity {
 
 			@Override
 			public void onTransformaCarrinho(int position) {
-				//if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(CarrinhosFavoritosActivity.this)) {
+				if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(CarrinhosFavoritosActivity.this)) {
 					transformaCarrinho(position);
-				//}
+				}
 			}
 
 			@Override

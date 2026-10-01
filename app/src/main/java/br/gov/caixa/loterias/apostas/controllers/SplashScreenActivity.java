@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
@@ -44,6 +45,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
     private VersionResponse responseVersao;
 
     private FilaBRAManager filaBRAManager;
+    private ApostasIdenticasSingleton apostasIdenticasSingleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,9 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                 return;
             }
         }
+
+        apostasIdenticasSingleton = ApostasIdenticasSingleton.getInstance();
+        apostasIdenticasSingleton.setValidacaoInicialPendente(true);
 
         AppCenter.start(getApplication(), BuildConfigManager.getVariavel("APP_CENTER_KEY"), Analytics.class, Crashes.class);
 
@@ -160,6 +165,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.IS_RAPIDAO.get(), result.getPayload().getMapa().isRapidaoHabilitado());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), result.getPayload().getMapa().getUrlBaseApostador());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), result.getPayload().getMapa().getGrupoDeCpfsApostador());
+                        salvaParametrosFiltroBolao(result.getPayload().getMapa());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.OUTUBRO_ROSA.get(), result.getPayload().getMapa().getVigenciaMesOutubroRosa());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.OUTUBRO_ROSA_MEGA_SENA.get(), result.getPayload().getMapa().getVigenciaOutubroRosaMegaSena());
 
@@ -220,6 +226,15 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         return temDadosPayloadMapa(result) && result.getPayload().getMapa().getBolaoHabilitado() != null;
     }
 
+    private void salvaParametrosFiltroBolao(ParametrosConfiguraveisDTO parametros) {
+        if (parametros.getQtdeMinimaApostaBolaoFiltro() != null) {
+            SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.get(), parametros.getQtdeMinimaApostaBolaoFiltro());
+        }
+        if (parametros.getQtdeMaximaApostaBolaoFiltro() != null) {
+            SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.get(), parametros.getQtdeMaximaApostaBolaoFiltro());
+        }
+    }
+
     private boolean precisaAtualizarPublicKey(ParametrosConfiguraveisDTOResponse result) {
         return temDadosPayloadMapa(result) && result.getPayload().getMapa().isAtualizaPublicKey() != null;
     }
@@ -242,6 +257,8 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_CARRINHO_PRODUCAO.get(), ConfiguracoesDefaultEnum.URL_BASE_CARRINHO_PRODUCAO.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), ConfiguracoesDefaultEnum.URL_BASE_APOSTADOR.asString());
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), ConfiguracoesDefaultEnum.GRUPO_CPFS_APOSTADOR.asString());
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.get(), ConfiguracoesDefaultEnum.QTDE_MINIMA_APOSTA_BOLAO_FILTRO.asInt());
+        SharedPreferencesUtils.setValor(ConfiguracoesEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.get(), ConfiguracoesDefaultEnum.QTDE_MAXIMA_APOSTA_BOLAO_FILTRO.asInt());
     }
     private void setMostraMenuApostas(Boolean habilitaMenuApostas) {
         SharedPreferencesUtils.setValor(ConfiguracoesEnum.MOSTRA_MENU_APOSTA.get(), habilitaMenuApostas);

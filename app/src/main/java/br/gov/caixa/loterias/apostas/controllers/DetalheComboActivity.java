@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -10,21 +11,25 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ResultadoNavegacaoAposta;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.viewModel.DetalheComboViewModel;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -34,7 +39,6 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheComboAdapt
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class DetalheComboActivity extends SettingToolbarActivity  {
@@ -54,6 +58,19 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
     private DetalheComboViewModel viewModel;
 
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
+    private final ActivityResultLauncher<Intent> carrinhoLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == ResultadoNavegacaoAposta.RESULT_RESET) {
+
+                            setResult(
+                                    ResultadoNavegacaoAposta.RESULT_RESET
+                            );
+                            finish();
+                        }
+                    }
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,19 +213,19 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
         incluirComboDTO.setIsSurpresinha(isSurpresinha);
         incluirComboDTO.setLimparCarrinho(false);
 
-        new ComboModel(this).adicionaComboCarrinho(incluirComboDTO, new OnSilceListener() {
+        new ComboModel(this).adicionaComboCarrinho(incluirComboDTO, new RequestListener<CarrinhoDTOResponse>() {
             @Override
-            public void success(Object payload) {
-                Intent activity = new Intent(DetalheComboActivity.this, ConfirmadoInclusaoCarrinhoActivity.class);
-                activity.putExtra(ARG_TIPOAPOSTA, ModalidadeEnum.COMBO);
-                activity.putExtra(ARG_VALORAPOSTA, viewModel.getValorComboLiveData().getValue());
-                int qtdParametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().size()-1;
-                activity.putExtra(ARG_MODALIDADE, (new Gson()).toJson(SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().get(qtdParametros).getParametroJogo()));
-                startActivity(activity);
+            public void onResponse(CarrinhoDTOResponse response) {
+                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+                Intent intent = new Intent(
+                        DetalheComboActivity.this,
+                        CarrinhoActivity.class
+                );
+                carrinhoLauncher.launch(intent);
             }
 
             @Override
-            public void error(VolleyError error) {
+            public void onErrorResponse(VolleyError error) {
                 RedirectNetwork.checkRedirect(error,DetalheComboActivity.this);
             }
         });

@@ -47,6 +47,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
+import br.gov.caixa.loterias.apostas.utils.ResultadoNavegacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -329,7 +330,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 									@Override
 									public void onButtonClick(DialogInterface dialog, int which) {
 										dialog.dismiss();
-										setResult(Activity.RESULT_OK);
+										setResult(RESULT_OK);
 										finish();
 									}
 								}
@@ -490,8 +491,11 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 
 	private OnActivityForResult onAtualizaLista() {
 		return result -> {
-			if (result.getResultCode() == Activity.RESULT_OK) {
+			if (result.getResultCode() == RESULT_OK || result.getResultCode() == ResultadoNavegacaoAposta.RESULT_RESET) {
 				precisaAtualizarLista = true;
+
+				setResult(RESULT_OK);
+				finish();
 			}
 		};
 	}

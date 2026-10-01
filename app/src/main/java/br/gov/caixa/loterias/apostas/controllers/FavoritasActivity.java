@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -328,9 +327,9 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
             @Override
             public void onAdd(int position) {
-                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
-                model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
-                //}
+                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
+                    model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
+                }
             }
 
         };
@@ -578,7 +577,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
         if (parametroJogo != null) {
             boolean isEspecial = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL;
-            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimulaActivity.class);
             intent.putExtra("tipoAposta", modalidadeEnum);
             intent.putExtra("modalidade", (new Gson()).toJson(parametroJogo));
             intent.putExtra("especial", isEspecial);
