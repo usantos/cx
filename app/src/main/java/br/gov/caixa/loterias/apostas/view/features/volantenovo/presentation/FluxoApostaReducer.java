@@ -98,7 +98,8 @@ public class FluxoApostaReducer {
 
         } else if (deveMostrarFluxoNextStep) {
 
-            botaoAdicionarHabilitado = false;
+            // Se surpresinha está ativa, o botão adicionar deve estar sempre habilitado
+            botaoAdicionarHabilitado = atual.isSurpresinhaHabilitada() ? true : false;
 
             botaoCompletarHabilitado =
                     !numerosCompletos;
@@ -114,8 +115,8 @@ public class FluxoApostaReducer {
 
         } else {
 
-            botaoAdicionarHabilitado =
-                    fluxo.apostaPronta;
+            // Se surpresinha está ativa, o botão adicionar deve estar sempre habilitado
+            botaoAdicionarHabilitado = atual.isSurpresinhaHabilitada() ? true : fluxo.apostaPronta;
 
             botaoCompletarHabilitado =
                     !fluxo.apostaPronta;

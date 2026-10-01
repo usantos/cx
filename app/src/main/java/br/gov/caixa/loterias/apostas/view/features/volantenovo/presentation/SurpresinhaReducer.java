@@ -304,7 +304,8 @@ public class SurpresinhaReducer {
                         isValorGrande(
                                 valorBase
                         )
-                );
+                )
+                .setBotaoAdicionarHabilitado(true);
     }
 
     private BigDecimal obterValorBasePorQuantidadeNumeros(
