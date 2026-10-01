@@ -293,5 +293,11 @@
     <color name="cinza90">#64747A</color>
     <color name="cinza70">#9EB2B8</color>
     <color name="cinza30">#EBF1F2</color>
+
     <color name="cinza_corner">#F0F2F2</color>
+
+    <!-- Outubro Rosa   -->
+    <color name="outubro_rosa_primario">#F4ADBC</color>
+    <color name="outubro_rosa_secundario">#EE3E7F</color>
+    <color name="outubro_rosa_texto">#9C005C</color>
 </resources>

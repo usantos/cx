@@ -1,8 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
-import static android.provider.Settings.System.getString;
-import static br.gov.caixa.loterias.apostas.utils.ViewUtils.textCaixaSTDBold;
-
 import android.animation.Animator;
 import android.content.Context;
 import android.text.method.LinkMovementMethod;
@@ -202,7 +199,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
         if (modalidade.getTipoModalidade() != ModalidadeEnum.DUPLA_SENA) {
             TextView title1 = new TextView(getContext());
-            title1.setText(textCaixaSTDBold(getContext(), getResources().getString(R.string.label_premiacao_bold)));
+            title1.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_premiacao_bold)));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -217,7 +214,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             }
 
             TextView titleGanhadores = new TextView(getContext());
-            titleGanhadores.setText(textCaixaSTDBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_bold)));
+            titleGanhadores.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_bold)));
             LinearLayout.LayoutParams layoutParamsGanhadores = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -241,7 +238,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
             TextView title4 = new TextView(getContext());
-            title4.setText(textCaixaSTDBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_segundo_sorteio_bold)));
+            title4.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_segundo_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams4 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -267,7 +264,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             adicionarPremiados(premiadosPrimeiro, modalidade);
 
             TextView title2 = new TextView(getContext());
-            title2.setText(textCaixaSTDBold(getContext(), getResources().getString(R.string.label_premiacao_segundo_sorteio_bold)));
+            title2.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_premiacao_segundo_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -282,7 +279,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             }
 
             TextView title3 = new TextView(getContext());
-            title3.setText(textCaixaSTDBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_primeiro_sorteio_bold)));
+            title3.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_primeiro_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -418,7 +415,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
                 String faixa = "_"+obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao())+"_";
 
-                title1.setText(textCaixaSTDBold(getContext(),faixa));
+                title1.setText(ViewUtils.textCaixaSTDBold(getContext(),faixa));
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -430,11 +427,11 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
 
                 if (premiacaoConcurso.getQuantidadeGanhadores() > 1) {
-                    title2.setText(textCaixaSTDBold(getContext(), getResources().getString(R.string.label_apostas_ganhadoras, premiacaoConcurso.getQuantidadeGanhadores())));
+                    title2.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_apostas_ganhadoras, premiacaoConcurso.getQuantidadeGanhadores())));
                 } else if (premiacaoConcurso.getQuantidadeGanhadores() == 1) {
-                    title2.setText(textCaixaSTDBold(getContext(), getResources().getString(R.string.label_aposta_ganhadora, premiacaoConcurso.getQuantidadeGanhadores())));
+                    title2.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_aposta_ganhadora, premiacaoConcurso.getQuantidadeGanhadores())));
                 } else {
-                    title2.setText(textCaixaSTDBold(getContext(), getContext().getString(R.string.label_nao_houve_acertador)));
+                    title2.setText(ViewUtils.textCaixaSTDBold(getContext(), getContext().getString(R.string.label_nao_houve_acertador)));
                     title3.setVisibility(View.GONE);
                 }
 
@@ -450,7 +447,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
 
 
-                title3.setText(textCaixaSTDBold(getContext(), "Prêmio: " + ViewUtils.getMoedaFormat(premiacaoConcurso.getValor())));
+                title3.setText(ViewUtils.textCaixaSTDBold(getContext(), "Prêmio: " + ViewUtils.getMoedaFormat(premiacaoConcurso.getValor())));
                 LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -472,7 +469,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO : listaGanhadores) {
                 count += 1;
                 TextView title1 = new TextView(getContext());
-                title1.setText(textCaixaSTDBold(getContext(), "_"+getResources().getString(R.string.label_texto_barra_texto,
+                title1.setText(ViewUtils.textCaixaSTDBold(getContext(), "_"+getResources().getString(R.string.label_texto_barra_texto,
                         ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(),
                         ganhadoresPorRegiaoDTO.getUfSorteio().getSigla())+"_"));
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -529,7 +526,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
     private void adicionarArrecadacaoTotal(BigDecimal valor) {
         TextView title = new TextView(getContext());
-        title.setText(textCaixaSTDBold(getContext(), getResources().getString(R.string.label_arrecadacao_total_bold)));
+        title.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_arrecadacao_total_bold)));
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -540,7 +537,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title);
 
         TextView text = new TextView(getContext());
-        text.setText(textCaixaSTDBold(getContext(), "_"+ViewUtils.getMoedaFormat(valor)+"_"));
+        text.setText(ViewUtils.textCaixaSTDBold(getContext(), "_"+ViewUtils.getMoedaFormat(valor)+"_"));
 
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);

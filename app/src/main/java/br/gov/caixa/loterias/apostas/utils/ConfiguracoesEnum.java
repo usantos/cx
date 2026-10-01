@@ -16,7 +16,14 @@ public enum ConfiguracoesEnum {
     URL_BASE_APOSTADOR("urlBaseApostador"),
     GRUPO_CPFS_APOSTADOR("grupoDeCpfsApostador"),
     QTDE_MINIMA_APOSTA_BOLAO_FILTRO("qtdeMinimaApostaBolaoFiltro"),
-    QTDE_MAXIMA_APOSTA_BOLAO_FILTRO("qtdeMaximaApostaBolaoFiltro");
+    QTDE_MAXIMA_APOSTA_BOLAO_FILTRO("qtdeMaximaApostaBolaoFiltro"),
+    URL_BASE_BFF("urlBaseBff"),
+    GRUPO_CPFS_BFF("GrupoCpfBff"),
+    OUTUBRO_ROSA("outubroRosa"),
+    OUTUBRO_ROSA_MEGA_SENA("outubroRosaMegaSena"),
+    LAUNCHER_ICON("LAUNCHER_ICON");
+    //URL_BASE_BFF_PILOTO("urlBaseBffPiloto");
+    //GRUPO_CPFS_BFF_PILOTO("GrupoCpfBffPiloto");
 
     private final String key;
 

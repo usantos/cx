@@ -26,7 +26,14 @@ public class ParametrosConfiguraveisDTO {
     private String urlBaseCarrinhoPiloto;
     @SerializedName("hostMicroServicoCarrinhoProducao")
     private String urlBaseCarrinhoProducao;
-
+    @SerializedName("hostMicroServicoBff")
+    private String urlBaseBff;
+    //@SerializedName("hostMicroServicoBffPiloto")
+    //private String urlBaseBffPiloto;
+        @SerializedName("grupoDeCpfsQueAcessamOBffMobile")
+    private String grupoDeCpfsQueAcessamOBff;
+    //@SerializedName("grupoDeCpfsQueAcessamOBffPiloto")
+    //private String grupoDeCpfsQueAcessamOBffPiloto;
     @SerializedName("hostNovoMicroServicoConferenciaApostaProducao")
     private String urlBaseNovaApiPRD;
     @SerializedName("hostNovoMicroServicoConferenciaApostaPiloto")
@@ -51,6 +58,10 @@ public class ParametrosConfiguraveisDTO {
     private Integer concursoMega30Anos;
     @SerializedName("concursoLotecaPais")
     private Integer concursoLotecaPais;
+    @SerializedName("vigenciaMesOutubroRosa")
+    private Boolean vigenciaMesOutubroRosa;
+    @SerializedName("vigenciaOutubroRosaMegaSena")
+    private Boolean vigenciaOutubroRosaMegaSena;
     @SerializedName("qtdeMinimaApostaBolaoFiltro")
     private Integer qtdeMinimaApostaBolaoFiltro;
     @SerializedName("qtdeMaximaApostaBolaoFiltro")
@@ -220,8 +231,48 @@ public class ParametrosConfiguraveisDTO {
         this.concursoLotecaPais = concursoLotecaPais;
     }
 
+    public Boolean getVigenciaMesOutubroRosa() {
+        return vigenciaMesOutubroRosa;
+    }
+
+    public Boolean getVigenciaOutubroRosaMegaSena() {
+        return vigenciaOutubroRosaMegaSena;
+    }
+
+    public String getUrlBaseBff() {
+        return urlBaseBff;
+    }
+
+    public void setUrlBaseBff(String urlBaseBff) {
+        this.urlBaseBff = urlBaseBff;
+    }
+
+    public String getGrupoDeCpfsQueAcessamOBff() {
+        return grupoDeCpfsQueAcessamOBff;
+    }
+
+    public void setGrupoDeCpfsQueAcessamOBff(String grupoDeCpfsQueAcessamOBff) {
+        this.grupoDeCpfsQueAcessamOBff = grupoDeCpfsQueAcessamOBff;
+    }
     public Integer getQtdeMinimaApostaBolaoFiltro() { return qtdeMinimaApostaBolaoFiltro; }
     public void setQtdeMinimaApostaBolaoFiltro(Integer valor) { this.qtdeMinimaApostaBolaoFiltro = valor; }
     public Integer getQtdeMaximaApostaBolaoFiltro() { return qtdeMaximaApostaBolaoFiltro; }
     public void setQtdeMaximaApostaBolaoFiltro(Integer valor) { this.qtdeMaximaApostaBolaoFiltro = valor; }
+
+
+//    public String getUrlBaseBffPiloto() {
+//        return urlBaseBffPiloto;
+//    }
+//
+//    public void setUrlBaseBffPiloto(String urlBaseBffPiloto) {
+//        this.urlBaseBffPiloto = urlBaseBffPiloto;
+//    }
+//
+//    public String getGrupoDeCpfsQueAcessamOBffPiloto() {
+//        return grupoDeCpfsQueAcessamOBffPiloto;
+//    }
+//
+//    public void setGrupoDeCpfsQueAcessamOBffPiloto(String grupoDeCpfsQueAcessamOBffPiloto) {
+//        this.grupoDeCpfsQueAcessamOBffPiloto = grupoDeCpfsQueAcessamOBffPiloto;
+//    }
 }

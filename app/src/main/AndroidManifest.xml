@@ -403,8 +403,8 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.LerBilhetesActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|screenLayout"
             android:theme="@style/AppFullScreenTheme" />
         <activity
             android:name=".controllers.LerBilhetesEscolhaJogoActivity"
@@ -461,8 +461,8 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".controllers.RestritoDezoitoAnosActivity"
-            android:label=""
             android:screenOrientation="portrait"
+            android:label=""
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.ApostaConfirmadaDetalhesActivity"
@@ -559,6 +559,47 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <!-- [END firebase_service] -->
+
+        <activity-alias
+            android:name=".alias.LauncherDefault"
+            android:enabled="true"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:targetActivity=".controllers.SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.LauncherDefaultDisabled"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:targetActivity=".controllers.SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.LauncherOutubroRosa"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_rosa"
+            android:roundIcon="@mipmap/ic_launcher_rosa_round"
+            android:targetActivity=".controllers.SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
     </application>
 
 </manifest>

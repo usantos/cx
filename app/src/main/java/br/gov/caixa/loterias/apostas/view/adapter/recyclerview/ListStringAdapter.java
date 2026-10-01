@@ -30,19 +30,6 @@ public class ListStringAdapter extends RecyclerView.Adapter<ListStringAdapter.Vi
         setHasStableIds(true);
     }
 
-    /** Garante que sempre retornamos posição válida quando há itens */
-    public int getSafeSelectedPosition() {
-        if (getItemCount() <= 0) return RecyclerView.NO_POSITION;
-        if (selectedPosition == RecyclerView.NO_POSITION) return 0;
-        return Math.min(Math.max(selectedPosition, 0), getItemCount() - 1);
-    }
-
-    public void initSelectionIfNeeded() {
-        if (getItemCount() > 0 && selectedPosition == RecyclerView.NO_POSITION) {
-            selectedPosition = 0;
-            notifyItemChanged(0, PAYLOAD_SELECTION);
-        }
-    }
 
     @Override public long getItemId(int position) {
         // evita crash se algum dia vier posição fora (defensivo)

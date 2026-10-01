@@ -156,14 +156,25 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 			getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
 		}
 
-		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
-		tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
-		layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
-		tvValorCotaBtn.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-		tvLabelQtdCotas.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+		if (EspecialUtils.isParametrosOutubroRosa() && modalidade == ModalidadeEnum.MEGA_SENA){
+			tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+			tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+			layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorEscura()));
+			btnAdd.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorEscura()));
+			btnAdd.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+			tvValorCotaBtn.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+			tvLabelQtdCotas.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+		} else {
+			tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
+			layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
+			btnAdd.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
+			btnAdd.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+			tvValorCotaBtn.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+			tvLabelQtdCotas.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+			tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
+		}
+
 		tvQtdCotas.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-		btnAdd.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
-		btnAdd.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
 		textQtdDezenas.setTextColor(ContextCompat.getColor(this, R.color.cinza90));
 		textQtdCotas.setTextColor(ContextCompat.getColor(this, R.color.cinza90));
 	}

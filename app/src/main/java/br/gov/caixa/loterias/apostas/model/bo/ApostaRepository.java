@@ -41,11 +41,11 @@ public interface ApostaRepository {
 
     void limparCarrinho(RequestListener<CarrinhoDTOResponse> listener);
 
-    void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<CompraAsyncResponse> listener);
+    //void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<CompraAsyncResponse> listener);
 
     void validarCarrinho(final RequestListener<ResourceResponse> listener);
 
-    void verificaCompraProcessamento(final Long idCompraCarrinho, final RequestListener<CompraAsyncResponse> listener);
+    //void verificaCompraProcessamento(final Long idCompraCarrinho, final RequestListener<CompraAsyncResponse> listener);
 
     void deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener);
 
@@ -58,7 +58,7 @@ public interface ApostaRepository {
 
     void buscaCarrinho(final RequestListener<CarrinhoDTOResponse> listener);
 
-    void gerarCodigoPix(MeioPagamentoPix meioPagamento, final RequestListener<GerarPixResponse> listener);
+    //void gerarCodigoPix(MeioPagamentoPix meioPagamento, final RequestListener<GerarPixResponse> listener);
 
     //void buscaCombo(final RequestListener<CombosDTOResponse> listener);
 
