@@ -449,7 +449,7 @@ public class SimulaUiState {
                 .setAvisouAumentoPalpitesLoteca(false)
                 .setAvisoAumentoPalpitesLotecaJaExibido(false);
     }
-    public List<Integer> getTrevosSelecionados(){return trevosSelecionados;}
+    public List<Integer> getTrevosSelecionados(){return new ArrayList<>(trevosSelecionados);}
 
     public String getTextoSelecionados() {
         return textoSelecionados;
