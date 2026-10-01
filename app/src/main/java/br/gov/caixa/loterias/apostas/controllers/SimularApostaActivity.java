@@ -72,7 +72,6 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.AccordionView;
 import br.gov.caixa.loterias.apostas.view.custom.LottieManager;

@@ -113,6 +113,7 @@ import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -332,7 +333,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 }
         );
 
-        );
 
         buttonHomeBolao.setOnClickListener(view ->
                 {
@@ -1045,10 +1045,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                     temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
                 if (EspecialUtils.isParametrosOutubroRosa() && data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA){
                     buttonHomeBolao.setBackground(AppCompatResources.getDrawable(PrincipalActivity.this, R.drawable.btn_rounded_outubro_rosa_outlined));
-                    buttonHomeBolao.setTextColor(ContextCompat.getColor(PrincipalActivity.this, R.color.outubro_rosa_secundario));
+                    buttonHomeBolao.setTextColor(ContextCompat.getColor(PrincipalActivity.this, R.color.branco));
                 } else {
-                    buttonHomeBolao.setBackground(AppCompatResources.getDrawable(PrincipalActivity.this, R.drawable.btn_rounded_orange_outlined));
-                    buttonHomeBolao.setTextColor(ContextCompat.getColor(PrincipalActivity.this, R.color.laranjacaixa));
+                    buttonHomeBolao.setTextColor(corText);
                 }
                 buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
                         .getString(R.string.apostas_boloes)));
