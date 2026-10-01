@@ -12,13 +12,12 @@ import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
-import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.activity.SimulaActivity;
 
 public class IntroducaoTutorialActivity extends LoteriasBaseAppActivity implements View.OnClickListener {
 

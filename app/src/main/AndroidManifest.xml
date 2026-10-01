@@ -250,14 +250,14 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".view.activity.SimulaActivity"
+            android:name=".view.features.volantenovo.activity.SimulaActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SimulaMaterial"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".view.activity.LotecaActivity"
+            android:name=".view.features.volantenovo.activity.LotecaActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"

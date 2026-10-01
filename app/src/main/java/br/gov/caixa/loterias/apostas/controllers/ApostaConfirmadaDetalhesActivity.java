@@ -90,7 +90,7 @@ import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.ResultadoApostaConfirmadaActivity;
-import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;

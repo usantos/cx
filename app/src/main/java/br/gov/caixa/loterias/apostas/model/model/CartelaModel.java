@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
-import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
