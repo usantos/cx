@@ -405,7 +405,7 @@ open class DadosPessoaisActivity : LoteriasBaseAppActivity() {
 
     private fun abrirConfirmacao() {
         viewModel.uiState.value?.limiteDigitado?.let { limite ->
-            SessaoUsuario.getInstance().parametrosSimulacao.valorLimiteDiario = limite
+            SessaoUsuario.getInstance().getParametrosSimulacao().valorLimiteDiario = limite
         }
         startActivity(Intent(this, DadosPessoaisConfirmacaoActivity::class.java))
         finish()
