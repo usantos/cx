@@ -62,6 +62,10 @@ public class ParametrosConfiguraveisDTO {
     private Boolean vigenciaMesOutubroRosa;
     @SerializedName("vigenciaOutubroRosaMegaSena")
     private Boolean vigenciaOutubroRosaMegaSena;
+    @SerializedName("qtdeMinimaApostaBolaoFiltro")
+    private Integer qtdeMinimaApostaBolaoFiltro;
+    @SerializedName("qtdeMaximaApostaBolaoFiltro")
+    private Integer qtdeMaximaApostaBolaoFiltro;
 
     public String getUrlBaseApostadorPiloto() {
         return urlBaseApostadorPiloto;
@@ -250,6 +254,11 @@ public class ParametrosConfiguraveisDTO {
     public void setGrupoDeCpfsQueAcessamOBff(String grupoDeCpfsQueAcessamOBff) {
         this.grupoDeCpfsQueAcessamOBff = grupoDeCpfsQueAcessamOBff;
     }
+    public Integer getQtdeMinimaApostaBolaoFiltro() { return qtdeMinimaApostaBolaoFiltro; }
+    public void setQtdeMinimaApostaBolaoFiltro(Integer valor) { this.qtdeMinimaApostaBolaoFiltro = valor; }
+    public Integer getQtdeMaximaApostaBolaoFiltro() { return qtdeMaximaApostaBolaoFiltro; }
+    public void setQtdeMaximaApostaBolaoFiltro(Integer valor) { this.qtdeMaximaApostaBolaoFiltro = valor; }
+
 
 //    public String getUrlBaseBffPiloto() {
 //        return urlBaseBffPiloto;

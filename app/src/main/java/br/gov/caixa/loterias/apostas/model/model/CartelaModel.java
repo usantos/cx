@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
@@ -27,6 +28,20 @@ public class CartelaModel {
 
 	public ArrayList<SuperSeteAdapter> getListAdaptersSuperSete(int typeGameColorDark,
 																SimularApostaActivity parentActivity){
+		ArrayList<SuperSeteAdapter> listaAdaptersSuperSete = new ArrayList<>();
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+
+		return listaAdaptersSuperSete;
+	}
+
+	public ArrayList<SuperSeteAdapter> getListAdaptersSuperSete(int typeGameColorDark,
+																SimulaActivity parentActivity){
 		ArrayList<SuperSeteAdapter> listaAdaptersSuperSete = new ArrayList<>();
 		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
 		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));

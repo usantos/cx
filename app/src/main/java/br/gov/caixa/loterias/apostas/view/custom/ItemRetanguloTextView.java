@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 
@@ -52,6 +54,14 @@ public class ItemRetanguloTextView extends RelativeLayout {
         mesDeSorte = mes;
         descricaoText.setText(mes.getNome());
         descricaoText.setActivated(mes.isSelecionado());
+        descricaoText.setTypeface(
+                ResourcesCompat.getFont(
+                        getContext(),
+                        mes.isSelecionado()
+                                ? R.font.caixa_std_semi_bold
+                                : R.font.caixa_std_regular
+                )
+        );
         if(mes.isSelecionado()){
             animateView();
         }

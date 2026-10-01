@@ -25,8 +25,8 @@ public class TrevoModel {
 	}
 
 	public void adidionaApostaNoCarrinho(IdentificaoDeUmaApostaDas8Modalidades aposta){
-		//if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(activity)) {
+		if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(activity)) {
 			AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(activity, aposta);
-		//}
+		}
 	}
 }

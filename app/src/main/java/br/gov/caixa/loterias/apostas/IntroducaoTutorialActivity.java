@@ -12,12 +12,12 @@ import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
-import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.activity.SimulaActivity;
 
 public class IntroducaoTutorialActivity extends LoteriasBaseAppActivity implements View.OnClickListener {
 
@@ -83,7 +83,7 @@ public class IntroducaoTutorialActivity extends LoteriasBaseAppActivity implemen
 	private void pularTurotial() {
 		AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
 
-		startActivity(getIntentNewActivity(SimularApostaActivity.class));
+		startActivity(getIntentNewActivity(SimulaActivity.class));
 		finish();
 	}
 

@@ -42,6 +42,9 @@ public class DezenaConfig {
 	public int getColor() {
 		return color;
 	}
+	public int getColorDefault(){
+		return R.color.cinza110;
+	}
 
 	public void setColor(int color) {
 		this.color = color;

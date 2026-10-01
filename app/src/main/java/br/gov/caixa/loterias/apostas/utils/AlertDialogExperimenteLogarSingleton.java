@@ -9,7 +9,7 @@ import br.gov.caixa.loterias.apostas.controllers.AutoSuspensaoActivity;
 import br.gov.caixa.loterias.apostas.controllers.AutoavaliacaoFormActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfiguracaoRapidaoActivity;
-import br.gov.caixa.loterias.apostas.controllers.DadosPessoaisActivity;
+import br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisActivity;
 import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.controllers.ListaRapidaoActivity;

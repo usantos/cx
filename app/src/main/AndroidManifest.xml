@@ -51,17 +51,29 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false"
         tools:replace="android:allowBackup">
+        <activity
+            android:name=".TestActivity"
+            android:exported="false"
+            android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".BuscarLotericasActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/trevo" />
         <meta-data
             android:name="google_analytics_automatic_screen_reporting_enabled"
-            android:value="false"/>
+            android:value="false" />
+
         <activity
             android:name=".controllers.QueroNaoQueroActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.activity.BolaoActivity"
             android:exported="false"
@@ -73,13 +85,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".controllers.CombosActivity"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:exported="false" />
+            android:name=".controllers.CombosActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".controllers.DetalheComboActivity"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:exported="false" />
+            android:name=".controllers.DetalheComboActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.FiltraMarketplaceActivity"
             android:exported="false"
@@ -91,8 +103,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.activity.DetalhesComboActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PreferenciasNotificacoesActivity"
             android:exported="true"
@@ -195,16 +207,23 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.VIEW" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW" /> -->
 
-<!--                <data-->
-<!--                    android:host="loteriasonline.caixa.gov.br"-->
-<!--                    android:scheme="https" />-->
-<!--            </intent-filter>-->
+
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+
+
+            <!-- <data -->
+            <!-- android:host="loteriasonline.caixa.gov.br" -->
+            <!-- android:scheme="https" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".controllers.IntroducaoActivity"
@@ -228,13 +247,27 @@
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".view.features.volantenovo.activity.SimulaActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SimulaMaterial"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".view.features.volantenovo.activity.LotecaActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/Theme.SimulaMaterial"/>
         <activity
             android:name=".controllers.ConfirmadoInclusaoCarrinhoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.ConfirmadoInclusaoBolaoCarrinhoActivity"
             android:exported="false"
@@ -270,7 +303,7 @@
             android:configChanges="orientation"
             android:label="@string/title_activity_confirmacao_pagamento"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar"  />
+            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.AdicionaCartaoActivity"
             android:configChanges="orientation"
@@ -395,8 +428,8 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.DetalheDuvidaActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.MinhasApostasActivity"
             android:exported="true"
@@ -445,14 +478,12 @@
             android:screenOrientation="portrait" />
         <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity" />
         <activity
-            android:name=".controllers.DadosPessoaisActivity"
-            android:label="@string/title_activity_dados_pessoais"
+            android:name=".novo.features.dadospessoais.DadosPessoaisActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".controllers.DadosPessoaisConfirmacaoActivity"
-            android:label="@string/title_activity_dados_pessoais"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
@@ -497,24 +528,20 @@
         -->
         <activity
             android:name=".debug.activity.NetworkInspectorDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
-
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".debug.activity.PayloadViewerActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
-
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".debug.activity.NetworkInspectorActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
-
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.filabra.adapter.android.FilaBRAActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:exported="true">
-        </activity>
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -524,9 +551,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/images_path" />
-        </provider>
-
-        <!-- [START firebase_service] -->
+        </provider> <!-- [START firebase_service] -->
         <service
             android:name=".utils.MessagingService"
             android:exported="false">

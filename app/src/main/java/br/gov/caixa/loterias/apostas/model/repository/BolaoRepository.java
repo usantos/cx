@@ -45,6 +45,10 @@ public class BolaoRepository extends AppRepository {
                 filtro.setQtdDezenas(filtroAplicado.getQtdDezenas());
             }
 
+            if(filtroAplicado.getQtdApostas() != null && filtroAplicado.getQtdApostas() > 0){
+                filtro.setQtdApostas(filtroAplicado.getQtdApostas());
+            }
+
             if(filtroAplicado.getNumerosQuero() !=null && !filtroAplicado.getNumerosQuero().isEmpty()){
                 filtro.setNumerosQuero(filtroAplicado.getNumerosQuero());
             }

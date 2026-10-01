@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,14 +27,39 @@ public class DetalheApostaLotecaAdapter extends RecyclerView.Adapter<DetalheApos
     @Override
     public ApostaLotecaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        ApostaPartidaLotecaView view = ApostaPartidaLotecaView.build(parent.getContext());
+        ApostaPartidaLotecaView view =
+                ApostaPartidaLotecaView.build(parent.getContext());
+
+        RecyclerView.LayoutParams params =
+                new RecyclerView.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        view.setLayoutParams(params);
+
+        int paddingStart = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                16,
+                parent.getResources().getDisplayMetrics());
+
+        int paddingEnd = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                32,
+                parent.getResources().getDisplayMetrics());
+
+        view.setPaddingRelative(
+                paddingStart,
+                0,
+                paddingEnd,
+                0
+        );
 
         return new ApostaLotecaHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ApostaLotecaHolder holder, int position) {
-        holder.apostaPartidaLotecaView.setLayout(listaPartidas.get(position));
+        holder.apostaPartidaLotecaView.setLayout(listaPartidas.get(position), position);
     }
 
     @Override

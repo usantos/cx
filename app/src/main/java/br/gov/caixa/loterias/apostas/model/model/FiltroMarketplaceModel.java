@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 
 public class FiltroMarketplaceModel extends AppModel{
 	public FiltroMarketplaceModel(Activity activity) {
@@ -49,14 +50,16 @@ public class FiltroMarketplaceModel extends AppModel{
 	}
 
 	public FiltroAplicadoMarketplace getFiltroAplicado(LotericaDTO selectLotericaDTO, String valorMin, String valorMax,
-													   Integer qtdMin, Integer qtdMax, Integer qtdDezenas, String numerosQuero,
+												   Integer qtdMin, Integer qtdMax, Integer qtdApostas, Integer qtdDezenas, String numerosQuero,
 													   String numerosNaoQuero, ModalidadeEnum selectModalidade,
-													   TipoConcursoEnum selectTipoConcurso) {
-		return new FiltroAplicadoMarketplace(
+													   TipoConcursoEnum selectTipoConcurso, boolean todasModalidadesAtiva) {
+		FiltroAplicadoMarketplace filtro = new FiltroAplicadoMarketplace(
 				selectLotericaDTO,
 				valorMin.replace(".","").replace(",","."),
 				valorMax.replace(".","").replace(",","."),
-				qtdMin, qtdMax, qtdDezenas, numerosQuero, numerosNaoQuero, selectModalidade, selectTipoConcurso);
+				qtdMin, qtdMax, qtdApostas, qtdDezenas, numerosQuero, numerosNaoQuero, selectModalidade, selectTipoConcurso);
+		filtro.setTodasModalidades(todasModalidadesAtiva);
+		return filtro;
 	}
 
 	public enum PrognosticosMaximosQueroNaoQuero{
@@ -118,6 +121,11 @@ public class FiltroMarketplaceModel extends AppModel{
 
 	public List<Integer> getListaTodasModalidades(){
 		return geraIntervalo(5, 26);
+	}
+
+	public List<Integer> getIntervalo(int inicio, int fim) {
+		if (inicio <= 0 || fim < inicio) return new ArrayList<>();
+		return geraIntervalo(inicio, fim);
 	}
 
 	private List<Integer> geraIntervalo(int start, int end) {

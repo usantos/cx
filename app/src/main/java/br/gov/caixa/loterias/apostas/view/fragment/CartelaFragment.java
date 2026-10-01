@@ -82,6 +82,7 @@ import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
@@ -431,6 +432,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void adicionarApostaNoCarrinho() {
+		if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity(), 2)) return;
 		if(LoginSP.isLoginRealizado() && checaLimiteDiario()){
 			DialogUtils.dialogSim(getContext(),
 					getString(R.string.MA014),
@@ -1400,7 +1402,7 @@ private void zeraLoteca(){
 	private void configuraSuperSete(View viewLayout) {
 		listaGridsSuperSete = cartelaModel.getListGridSuperSete(viewLayout);
 
-		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorLight, parentActivity);
+		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorDark, parentActivity);
 
 		cartelaModel.preencheGridComListaSuperSete(listaGridsSuperSete, listaAdaptersSuperSete);
 
@@ -1521,7 +1523,7 @@ private void zeraLoteca(){
 	}
 
 	@Override
-	public void clickEquipeLoteca(ParametroPartida parametroPartida) {
+	public boolean clickEquipeLoteca(ParametroPartida parametroPartida) {
 		BigDecimal ultimoValor = valorEmReais;
 
 		if (parametroPartida.isSelecionado()) {
@@ -1585,6 +1587,7 @@ private void zeraLoteca(){
 		Boolean mostraBotao = atualizaValorApostaLoteca();
 		atualizaStatusBotaoFinalizarLoteca(mostraBotao);
 		verificaSeMostraBotaoLimparAposta();
+		return true;
 	}
 
 	private void limparPartidadasSelecionasLoteca(boolean desativado) {
