@@ -113,3 +113,32 @@
 -keep class **.BuildConfig {
     <fields>;
 }
+
+# Contratos de servico: Gson usa reflexao e parte dos campos nao tem @SerializedName.
+# Preserva classes, nomes, campos e construtores; nao estende o bypass aos BOs,
+# DAOs, repositories, ViewModels, Activities ou a todo o pacote model.
+-keep class br.gov.caixa.loterias.apostas.model.bean.** { *; }
+-keep class br.gov.caixa.loterias.apostas.model.bo.silce.dto.** { *; }
+-keep class br.gov.caixa.loterias.apostas.model.bo.silce.data.** { *; }
+-keep class br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.** { *; }
+
+# Resposta Mercado Pago localizada fora dos pacotes de DTOs.
+-keep class br.gov.caixa.loterias.apostas.model.bo.CardTokenResponse { *; }
+
+# Enums sao usados em JSON, inclusive por Enum.name()/valueOf e @JsonAdapter.
+-keep enum br.gov.caixa.loterias.apostas.** { *; }
+
+# Preserva tipos genericos (List<DTO>, respostas e TypeToken) e anotacoes Gson.
+-keepattributes Signature,InnerClasses,EnclosingMethod,*Annotation*
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken { *; }
+
+# Campos explicitamente mapeados fora dos pacotes de contrato tambem sao reflexivos.
+-keepclassmembers class br.gov.caixa.loterias.apostas.** {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# Adaptadores instanciados por @JsonAdapter conservam seus construtores e metodos.
+# Seus nomes podem mudar: R8 atualiza as referencias nas anotacoes.
+-keep,allowobfuscation class br.gov.caixa.loterias.apostas.** extends com.google.gson.TypeAdapter { *; }
+-keep,allowobfuscation class br.gov.caixa.loterias.apostas.** implements com.google.gson.TypeAdapterFactory { *; }

@@ -22,7 +22,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 36
 
-        //                   23                 1.23.7 = 01 027               00
+        //                   24                 1.24.0 = 01 024               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
         versionCode = PRD_VERSION_CODE.toInteger()
         versionName = PRD_VERSION_NAME
@@ -53,14 +53,14 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             debuggable = true
             minifyEnabled false
-//            shrinkResources false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
