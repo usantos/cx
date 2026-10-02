@@ -112,7 +112,6 @@ public class LerBilhetesActivity extends LoteriasBaseAppActivity {
                 );
 
             } catch (Exception e) {
-                e.printStackTrace();
             }
         }, ContextCompat.getMainExecutor(this));
     }

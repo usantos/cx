@@ -106,11 +106,9 @@ public class  RedirectNetwork {
                 body = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
                 AppCenterManager.registraEventoErro(AppCenterManager.ERRO_UNSUPPORTED_ENCODING, error, body);
                 lancouEvento = true;
             } catch (Exception e){
-                e.printStackTrace();
                 AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO_SERIALIZACAO, error, body);
                 lancouEvento = true;
             }
@@ -203,11 +201,9 @@ public class  RedirectNetwork {
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
 
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
                 AppCenterManager.registraEventoErro(AppCenterManager.ERRO_UNSUPPORTED_ENCODING, error, body);
                 lancouEvento = true;
             } catch (Exception e){
-                e.printStackTrace();
                 AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO_SERIALIZACAO, error, body);
                 lancouEvento = true;
             }

@@ -384,7 +384,6 @@ public class SegmentedButtonGroup extends LinearLayout {
         try {
             interpolatorSelector = (Interpolator) interpolatorList.get(animateSelector).newInstance();
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

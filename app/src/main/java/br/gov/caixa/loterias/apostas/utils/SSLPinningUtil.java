@@ -45,7 +45,6 @@ public class SSLPinningUtil {
             HttpsURLConnection.setDefaultSSLSocketFactory(context1.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier((arg0, arg1) -> true);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -100,7 +99,6 @@ public class SSLPinningUtil {
             };
             requestQueue = Volley.newRequestQueue(ctx, hurlStack);
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return requestQueue;

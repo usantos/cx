@@ -86,7 +86,6 @@ public class ResgatePremioLotericaActivity extends LoteriasAppActivity {
         try {
             generateQrCode();
         } catch (WriterException e) {
-            e.printStackTrace();
         }
         String textoValido;
         AnimatorSet scaleIn, scaleOut;

@@ -63,7 +63,6 @@ public class ServiceConnection {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
         }
         if (!precisaRefreshToken) {
             addToQueue(req);
@@ -80,7 +79,6 @@ public class ServiceConnection {
                     req.getHeaders().put("Authorization", "Bearer " + keycloakBO.getAccessToken());
                     addDefaultHeaders(req);
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
 
                 addToQueue(req);
@@ -97,7 +95,7 @@ public class ServiceConnection {
     private void addDefaultHeaders(GsonRequest req) throws Exception {
         req.getHeaders().put("cookie", "security=false");
         req.getHeaders().put("Subcanal", "3");
-        req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.apiKeyChave());
+        req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, BuildConfig.APIKEY_CHAVE);
         req.getHeaders().put("content-type", "application/json");
     }
     private void addToQueue(GsonRequest req) {
