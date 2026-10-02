@@ -143,7 +143,6 @@ public class KeycloakBO {
             jsonObject = new JSONObject(tokenCorpo);
             attrBuscado = jsonObject.getString(attr);
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return attrBuscado;
     }

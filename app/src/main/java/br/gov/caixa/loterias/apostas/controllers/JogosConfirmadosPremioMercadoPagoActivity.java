@@ -206,7 +206,6 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends LoteriasBaseAppAc
                     }
                 });
             } catch (Exception e){
-                e.printStackTrace();
                 Log.d("JogosConfPremMerPagAct", "Não foi possível acessar o serviço de baixar o comprovante de prêmio");
             }
         }

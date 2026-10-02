@@ -645,7 +645,6 @@ public class SwipeLayout extends FrameLayout {
         try {
             gravity = (Integer) params.getClass().getField("gravity").get(params);
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         if (gravity > 0) {
@@ -957,7 +956,6 @@ public class SwipeLayout extends FrameLayout {
                 handled = (boolean) m.invoke(view, SwipeLayout.this, p, vId);
 
             } catch (Exception e) {
-                e.printStackTrace();
 
                 if (view.getOnItemLongClickListener() != null) {
                     handled = view.getOnItemLongClickListener().onItemLongClick(view, SwipeLayout.this, p, vId);

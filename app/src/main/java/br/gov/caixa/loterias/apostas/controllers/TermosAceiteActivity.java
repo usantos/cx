@@ -126,7 +126,6 @@ public class TermosAceiteActivity extends LoteriasBaseAppActivity {
                     InputStream is = getAssets().open("fonts/caixa_std_regular.ttf");
                     base64Font = convertToBase64(is);
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
                 termoHtml = "<html>" +
                         "<head>" +
@@ -173,7 +172,6 @@ public class TermosAceiteActivity extends LoteriasBaseAppActivity {
                 outputStream.write(buffer, 0, byteRead);
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return Base64.getEncoder().encodeToString(outputStream.toByteArray());

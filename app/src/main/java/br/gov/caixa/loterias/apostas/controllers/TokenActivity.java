@@ -223,7 +223,6 @@ public class TokenActivity extends LoteriasBaseAppActivity {
             KeycloakBO.getInstance().setRefreshToken(response.refreshToken);
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_login_sucesso));
         } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 

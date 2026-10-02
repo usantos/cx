@@ -1469,7 +1469,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             is_installed = true;
         } catch (PackageManager.NameNotFoundException e) {
             is_installed = false;
-            e.printStackTrace();
         }
         return is_installed;
     }

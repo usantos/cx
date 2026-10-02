@@ -48,7 +48,6 @@ public final class AppCenterManager {
 
             properties = getPropertiesByString("DEVICE", deviceString);
         } catch (JSONException e) {
-            e.printStackTrace();
             properties = getPropetyErroPadrao();
         }
 

@@ -41,10 +41,8 @@ public class Files {
             try (BufferedOutputStream bos = new BufferedOutputStream(fos)) {
                 bos.write(bytes);
             } catch (IOException e) {
-                e.printStackTrace();
             }
         } catch(FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 

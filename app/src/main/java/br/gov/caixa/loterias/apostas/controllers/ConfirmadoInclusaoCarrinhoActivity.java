@@ -215,7 +215,6 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
             Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
             dataSorteio = formatterDateFinal.format(dataFormatada);
         } catch (ParseException e) {
-            e.printStackTrace();
         }
         return dataSorteio;
     }

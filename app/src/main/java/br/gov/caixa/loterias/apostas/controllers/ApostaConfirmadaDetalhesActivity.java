@@ -620,7 +620,6 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                     });
 
                 }catch (Exception e){
-                    e.printStackTrace();
                     Log.d("ApostaConfirmadaDetAct", "Não foi possível acessar o serviço para baixar comprovante de aposta");
                 }
             }
@@ -648,7 +647,6 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                         }
                     });
                 }catch (Exception e){
-                    e.printStackTrace();
                     Log.d("ApostaConfirmadaDetAct", "Não foi possível acessar o serviço para baixar comprovante de prêmio");
                 }
             }

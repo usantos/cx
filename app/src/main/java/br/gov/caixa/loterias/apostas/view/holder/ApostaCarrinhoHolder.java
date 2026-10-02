@@ -410,7 +410,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			numerosAposta.setContentDescription(
 					numeros.isEmpty()
 							? ""
-							: numeros.replace("-", ",").replaceAll("\\s*,\\s*", ", ")
+							: numeros.replace("-", ",")
+							.replace(" ", "")
+							.replace(",",", ")
 			);
 
 		}
