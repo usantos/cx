@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
+import br.gov.caixa.loterias.apostas.utils.ServicoBffUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class ServiceConnection {
@@ -62,7 +63,6 @@ public class ServiceConnection {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
         }
         if (!precisaRefreshToken) {
             addToQueue(req);
@@ -79,7 +79,6 @@ public class ServiceConnection {
                     req.getHeaders().put("Authorization", "Bearer " + keycloakBO.getAccessToken());
                     addDefaultHeaders(req);
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
 
                 addToQueue(req);
@@ -96,7 +95,7 @@ public class ServiceConnection {
     private void addDefaultHeaders(GsonRequest req) throws Exception {
         req.getHeaders().put("cookie", "security=false");
         req.getHeaders().put("Subcanal", "3");
-        req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.apiKeyChave());
+        req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, BuildConfig.APIKEY_CHAVE);
         req.getHeaders().put("content-type", "application/json");
     }
     private void addToQueue(GsonRequest req) {
@@ -491,6 +490,10 @@ public class ServiceConnection {
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
         if (ServicoNuvemUtil.isEndpointNuvem(path)) {
+            if (ServicoNuvemUtil.isAmbienteTQS() && baseUrl != null && ServicoBffUtil.getBaseUrlBff() != null &&
+                    ServicoBffUtil.getBaseUrlBff().equalsIgnoreCase(baseUrl)) {
+                ServicoNuvemUtil.apresentaCaminhoTQS(baseUrl + path);
+            }
             return fillUrlWithQueryParamsNuvem(path, queryParams);
         } else {
             return fillUrl(path) + fillParamStr(queryParams);

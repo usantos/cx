@@ -19,6 +19,7 @@ public class WheelController {
     private final OnDialogListener dialogListener;
 
     private ListStringAdapter adapter;
+    private boolean userScrolling;
 
     public WheelController(@NonNull RecyclerView recyclerView,
                            @NonNull LinearLayoutManager layoutManager,
@@ -32,7 +33,6 @@ public class WheelController {
 
     public void attachAdapter(@NonNull ListStringAdapter adapter) {
         this.adapter = adapter;
-        this.adapter.initSelectionIfNeeded();
     }
 
     public void setupRecyclerForWheel() {
@@ -44,13 +44,14 @@ public class WheelController {
 
         recyclerView.setClipToPadding(false);
 
-        // seleção/scroll inicial antes de calcular padding/snap
+        // O primeiro item é apenas a referência visual e não representa uma seleção.
         recyclerView.post(() -> {
             if (!recyclerView.isAttachedToWindow()) return;
             if (adapter == null || adapter.getItemCount() == 0) return;
 
-            int startPos = adapter.getSafeSelectedPosition();
-            adapter.setSelectedPosition(startPos);
+            int startPos = adapter.getSelectedPosition() == RecyclerView.NO_POSITION
+                    ? 0
+                    : adapter.getSelectedPosition();
 
             // garante que existe child pra medir e snapar
             recyclerView.scrollToPosition(startPos);
@@ -66,7 +67,6 @@ public class WheelController {
                 }
                 if (first == null) {
                     // ainda não tem child -> tenta snapar depois do próximo layout
-                    recyclerView.post(() -> selectSnappedAndNotify(false));
                     return;
                 }
 
@@ -81,14 +81,16 @@ public class WheelController {
                         pad
                 );
 
-                selectSnappedAndNotify(false);
             });
         });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override public void onScrollStateChanged(@NonNull RecyclerView rv, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    userScrolling = true;
+                } else if (newState == RecyclerView.SCROLL_STATE_IDLE && userScrolling) {
                     selectSnappedAndNotify(true);
+                    userScrolling = false;
                 }
             }
         });
@@ -98,12 +100,9 @@ public class WheelController {
         if (adapter == null || adapter.getItemCount() == 0) return;
 
         int pos = Math.min(Math.max(position, 0), adapter.getItemCount() - 1);
+        adapter.setSelectedPosition(pos);
+        dialogListener.itemSelecionado(pos);
         smoothScrollToCenter(pos);
-
-        recyclerView.post(() -> {
-            if (!recyclerView.isAttachedToWindow()) return;
-            selectSnappedAndNotify(true);
-        });
     }
 
     private void smoothScrollToCenter(int position) {
@@ -124,18 +123,11 @@ public class WheelController {
 
         View snap = snapHelper.findSnapView(layoutManager);
         if (snap == null) {
-            // fallback: usa a seleção atual segura
-            int safe = adapter.getSafeSelectedPosition();
-            adapter.setSelectedPosition(safe);
-            if (notifyListener) dialogListener.itemSelecionado(safe);
             return;
         }
 
         int pos = recyclerView.getChildAdapterPosition(snap);
         if (pos == RecyclerView.NO_POSITION) {
-            int safe = adapter.getSafeSelectedPosition();
-            adapter.setSelectedPosition(safe);
-            if (notifyListener) dialogListener.itemSelecionado(safe);
             return;
         }
 
@@ -143,7 +135,7 @@ public class WheelController {
             adapter.setSelectedPosition(pos);
         }
         if (notifyListener) {
-            dialogListener.itemSelecionado(adapter.getSafeSelectedPosition());
+            dialogListener.itemSelecionado(adapter.getSelectedPosition());
         }
     }
 }

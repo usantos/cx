@@ -1,18 +1,14 @@
 package br.gov.caixa.loterias.apostas.view.animation;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import androidx.core.content.ContextCompat;
+import java.util.List;
 
-import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnAnimacaoViewListener;
 import br.gov.caixa.loterias.apostas.utils.AnimacaoUtils;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 
 /**
  * Created by igorvilar on 09/11/17.
@@ -26,46 +22,28 @@ public class AnimacoesAcessoRapido {
 
     private View v;
     private RelativeLayout relativePrincipal;
-    private RelativeLayout relativeLayoutContentRapidao;
-    private RelativeLayout relativeLayoutContentLerBilhetes;
-    private RelativeLayout relativeLayoutJogoResponsavel;
-    private RelativeLayout relativeLayoutContentRepassados;
-    private RelativeLayout relativeLayoutMsgDisque180;
+    private List<View> animationViewList;
     private RelativeLayout relativeBlankView;
-    private LinearLayout linearAtalhoRapidoLoterias;
+    private View containerView;
     private Button buttonHomeBet;
-    private Activity activity;
     private View trevoToolbar;
-    private OnAnimacaoViewListener listener;
-
-    private EstiloModalidadeMKP estilo;
+    private boolean isAberto;
 
     //init
     public AnimacoesAcessoRapido(View v, RelativeLayout relativePrincipal,
-                                 RelativeLayout relativeLayoutContentRapidao,
-                                 RelativeLayout relativeLayoutContentLerBilhetes,
-                                 RelativeLayout rlJogoResponsavel,
-                                 RelativeLayout relativeLayoutContentRepassados,
-                                 RelativeLayout rlMsgDisque180,
+                                 List<View> viewList,
                                  RelativeLayout relativeBlankView,
-                                 LinearLayout linearAtalhoRapidoLoterias,
+                                 View containerView,
                                  Button buttonHomeBet,
-                                 View trevoToolbar,
-                                 Activity activity, EstiloModalidadeMKP estilo, OnAnimacaoViewListener listener) {
+                                 View trevoToolbar) {
         this.v = v;
         this.relativePrincipal = relativePrincipal;
-        this.relativeLayoutContentRapidao = relativeLayoutContentRapidao;
-        this.relativeLayoutContentLerBilhetes = relativeLayoutContentLerBilhetes;
-        this.relativeLayoutJogoResponsavel = rlJogoResponsavel;
-        this.relativeLayoutContentRepassados = relativeLayoutContentRepassados;
-        this.relativeLayoutMsgDisque180 = rlMsgDisque180;
-        this.linearAtalhoRapidoLoterias = linearAtalhoRapidoLoterias;
+        this.animationViewList = viewList;
+        this.containerView = containerView;
         this.relativeBlankView = relativeBlankView;
         this.buttonHomeBet = buttonHomeBet;
         this.trevoToolbar = trevoToolbar;
-        this.activity = activity;
-        this.estilo = estilo;
-        this.listener = listener;
+        this.isAberto = false;
     }
 
     //public
@@ -75,74 +53,8 @@ public class AnimacoesAcessoRapido {
         translatePosicaoConteudoAbaixar(positionBottom);
     }
 
-    public void animacaoSubirContent(){
-        animacaoFadeInMsgDisque180();
-    }
-
-    //privates
-    // Animacoes fade out
-    private void animacaoFadeOutRapidao(){
-        AnimacaoUtils.fadeOut(relativeLayoutContentRapidao, DURACAO_CURTA, () -> {
-            animacaoFadeOutLerBilhetes();
-        });
-    }
-
-    private void animacaoFadeOutLerBilhetes(){
-        AnimacaoUtils.fadeOut(relativeLayoutContentLerBilhetes, DURACAO_CURTA, () -> {
-            animacaoFadeOutJogoResponsavel();
-        });
-    }
-
-    private void animacaoFadeOutJogoResponsavel(){
-        AnimacaoUtils.fadeOut(relativeLayoutJogoResponsavel, DURACAO_CURTA, () -> {
-            animacaoFadeOutRepassados();
-        });
-    }
-
-    private void animacaoFadeOutRepassados(){
-        AnimacaoUtils.fadeOut(relativeLayoutContentRepassados, DURACAO_CURTA, () -> {
-            animacaoFadeOutMsgDisque180();
-        });
-    }
-
-    private void animacaoFadeOutMsgDisque180(){
-        AnimacaoUtils.fadeOut(relativeLayoutMsgDisque180, DURACAO_CURTA, () -> {
-            trevoToolbar.setEnabled(true);
-        });
-    }
-
-    // animacoes fade in
-    private void animacaoFadeInRepassados(){
-        AnimacaoUtils.fadeIn(relativeLayoutContentRepassados, DURACAO_CURTA, () -> {
-            animacaoFadeInJr();
-        });
-    }
-
-    private void animacaoFadeInJr(){
-        AnimacaoUtils.fadeIn(relativeLayoutJogoResponsavel, DURACAO_CURTA, () -> {
-            animacaoFadeInLerBilhetes();
-        });
-    }
-
-    private void animacaoFadeInLerBilhetes(){
-        AnimacaoUtils.fadeIn(relativeLayoutContentLerBilhetes, DURACAO_CURTA, () -> {
-            animacaoFadeInRapidao();
-        });
-    }
-
-    private void animacaoFadeInRapidao(){
-        AnimacaoUtils.fadeIn(relativeLayoutContentRapidao, DURACAO_CURTA, () -> {
-            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(activity.getApplicationContext(), estilo.getCorClara()));
-            buttonHomeBet.setTextColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.branco));
-            buttonHomeBet.setEnabled(true);
-            translatePosicaoConteudoSubir();
-        });
-    }
-    
-    private void animacaoFadeInMsgDisque180(){
-        AnimacaoUtils.fadeIn(relativeLayoutMsgDisque180, DURACAO_CURTA, () -> {
-            animacaoFadeInRepassados();
-        });
+    public void animacaoSubirContent(OnAnimacaoViewListener listener) {
+        nextAnimacaoFadeIn(animationViewList.size() - 1, listener);
     }
 
     //mudar conteudo de posicao
@@ -150,20 +62,43 @@ public class AnimacoesAcessoRapido {
         startAnimator(v,"rotation", v.getRotation() + 360);
         startAnimator(relativeBlankView, "alpha", 0.8f);
 
-        AnimacaoUtils.fadeOut(relativePrincipal, TRANSLATION_X, positionBottom, DURACAO_LONGA, () -> {
-            animacaoFadeOutRapidao();
-        });
+        AnimacaoUtils.fadeOut(relativePrincipal, TRANSLATION_X, positionBottom, DURACAO_LONGA, () -> nextAnimacaoFadeOut(0)); //animacaoFadeOutRapidao());
     }
 
-    private void translatePosicaoConteudoSubir(){
+    private void nextAnimacaoFadeOut(int position) {
+        if (animationViewList != null && !animationViewList.isEmpty()){
+            AnimacaoUtils.fadeOut(animationViewList.get(position), DURACAO_CURTA, () -> {
+                if (position < animationViewList.size() - 1){
+                    nextAnimacaoFadeOut(position + 1);
+                } else {
+                    trevoToolbar.setEnabled(true);
+                }
+            });
+        }
+    }
+
+    private void nextAnimacaoFadeIn(int position, OnAnimacaoViewListener listener) {
+        if (animationViewList != null && !animationViewList.isEmpty()){
+            AnimacaoUtils.fadeIn(animationViewList.get(position),DURACAO_CURTA, () -> {
+                if (position > 0){
+                    nextAnimacaoFadeIn(position - 1, listener);
+                } else {
+                    buttonHomeBet.setEnabled(true);
+                    translatePosicaoConteudoSubir(listener);
+                }
+            });
+        }
+    }
+
+    private void translatePosicaoConteudoSubir(OnAnimacaoViewListener listener){
         startAnimator(v,"rotation", v.getRotation() - 360);
 
         AnimacaoUtils.fadeIn(relativePrincipal, TRANSLATION_X, TRANSLATION_Y, DURACAO_LONGA, () -> {
-//                relativeBlankView.setVisibility(View.GONE);
-
-            linearAtalhoRapidoLoterias.setVisibility(View.GONE);
+            containerView.setVisibility(View.GONE);
             trevoToolbar.setEnabled(true);
-            listener.animacaoFinalizada();            
+            if (listener != null ){
+                listener.animacaoFinalizada();
+            }
         });
 
         startAnimator(relativeBlankView, "alpha", 0.0f);
@@ -173,6 +108,14 @@ public class AnimacoesAcessoRapido {
         ObjectAnimator animator = ObjectAnimator
                 .ofFloat(view, properyBane, ofFloat).setDuration(DURACAO_LONGA);
         animator.start();
+    }
+
+    public void setAberto(boolean isAberto) {
+        this.isAberto = isAberto;
+    }
+
+    public boolean isAberto(){
+        return this.isAberto;
     }
 
 }

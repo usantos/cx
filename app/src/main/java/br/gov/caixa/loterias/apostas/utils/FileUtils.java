@@ -52,10 +52,8 @@ public class FileUtils {
             try (BufferedOutputStream bos = new BufferedOutputStream(fos)) {
                 bos.write(bytes);
             } catch (IOException e) {
-                e.printStackTrace();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -330,7 +328,6 @@ public class FileUtils {
 
             return buf.toString();
         } catch (Exception e) {
-            e.printStackTrace();
             return "";
         }
     }

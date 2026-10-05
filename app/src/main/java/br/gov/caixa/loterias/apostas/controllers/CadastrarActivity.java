@@ -105,7 +105,6 @@ public class CadastrarActivity extends CadastroActivity {
         try {
             atualizaLayout(Utils.decodedToken( acessToken ));
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

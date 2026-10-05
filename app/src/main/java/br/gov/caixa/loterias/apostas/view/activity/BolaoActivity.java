@@ -331,7 +331,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 dataSorteio = formatterDateFinal.format(dataFormatada);
             }
         } catch (ParseException e) {
-            e.printStackTrace();
         }
         return dataSorteio;
     }

@@ -927,6 +927,36 @@ public class ViewUtils {
         }
     }
 
+    public static SpannableStringBuilder textCaixaSTDBold(Context ctx, String texto, int corBold) {
+        try{
+            Typeface fontRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface fontBold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+
+            boolean isBold = false;
+            String[] parts = texto.split("_", -1);
+            for (String part: parts) {
+                int start = spannableStringBuilder.length();
+                spannableStringBuilder.append(part);
+                int end = spannableStringBuilder.length();
+
+                Typeface fontToApply = isBold ? fontBold : fontRegular;
+                spannableStringBuilder.setSpan(new CustomTypefaceSpan("", fontToApply),
+                        start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                if (isBold){
+                    spannableStringBuilder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ctx, corBold)), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+
+
+                isBold = !isBold;
+            }
+            return spannableStringBuilder;
+        }catch (Exception e){
+            return  new SpannableStringBuilder().append(texto);
+        }
+    }
+
     public static SpannableStringBuilder textCaixaSTDSemiBold(Context context, String texto) {
         try{
             Typeface fontRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
@@ -1018,6 +1048,13 @@ public class ViewUtils {
 
     public static SpannableStringBuilder textCaixaSTDBoldTitle(Context context, String texto) {
         SpannableStringBuilder spannableStringBuilder = textCaixaSTDBold(context, texto);
+        spannableStringBuilder.setSpan(new AbsoluteSizeSpan(16, true), 0, texto.replace("_", "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return spannableStringBuilder;
+    }
+
+    public static SpannableStringBuilder textCaixaSTDBoldTitle(Context ctx, String texto, int cor) {
+        SpannableStringBuilder spannableStringBuilder = textCaixaSTDBold(ctx, texto, cor);
         spannableStringBuilder.setSpan(new AbsoluteSizeSpan(16, true), 0, texto.replace("_", "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return spannableStringBuilder;

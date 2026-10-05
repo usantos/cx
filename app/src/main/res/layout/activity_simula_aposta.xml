@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/branco"
-    tools:context=".view.activity.SimulaActivity">
+    tools:context=".view.features.volantenovo.activity.SimulaActivity">
 
     <FrameLayout
         android:id="@+id/id_fg_barra_titulo"

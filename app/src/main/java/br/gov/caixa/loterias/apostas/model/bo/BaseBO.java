@@ -180,9 +180,7 @@ public abstract class BaseBO {
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
 
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
             } catch (Exception e){
-                e.printStackTrace();
             }
         }
         return errorResponse;

@@ -131,7 +131,8 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
         bloquearRequestScroll = false;
         AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
         try{
-            ApostaSilceBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+            //ApostaSilceBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+            ServicoFactoryUtil.getComprasLegadoService().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
                 @Override
                 public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                     AlertDialogUtils.dismiss();
@@ -601,7 +602,8 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
     private void pegaApostasDaCompra() {
 
         AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
-        ApostaSilceBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        //ApostaSilceBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        ServicoFactoryUtil.getComprasLegadoService().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 AlertDialogUtils.dismiss();
@@ -627,7 +629,8 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
         }
         progressLoadingMore.setVisibility(View.VISIBLE);
 
-        ApostaSilceBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE,idMeioPagamento, idSituacao, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        //ApostaSilceBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE,idMeioPagamento, idSituacao, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        ServicoFactoryUtil.getComprasLegadoService().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE,idMeioPagamento, idSituacao, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);

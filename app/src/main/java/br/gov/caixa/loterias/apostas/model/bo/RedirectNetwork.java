@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
@@ -34,6 +35,7 @@ import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
+import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -104,11 +106,9 @@ public class  RedirectNetwork {
                 body = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
                 AppCenterManager.registraEventoErro(AppCenterManager.ERRO_UNSUPPORTED_ENCODING, error, body);
                 lancouEvento = true;
             } catch (Exception e){
-                e.printStackTrace();
                 AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO_SERIALIZACAO, error, body);
                 lancouEvento = true;
             }
@@ -210,11 +210,9 @@ public class  RedirectNetwork {
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
 
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
                 AppCenterManager.registraEventoErro(AppCenterManager.ERRO_UNSUPPORTED_ENCODING, error, body);
                 lancouEvento = true;
             } catch (Exception e){
-                e.printStackTrace();
                 AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO_SERIALIZACAO, error, body);
                 lancouEvento = true;
             }
@@ -315,6 +313,9 @@ public class  RedirectNetwork {
                     return;
                 case VERIFICA_COMPRA_PROCESSAMENTO:
                     return;
+                case HOME:
+                    trataBloqueioTotal(errorResponse, activity);
+                    return;
                 default:
                     break;
             }
@@ -327,48 +328,30 @@ public class  RedirectNetwork {
         }
     }
 
-    public static Boolean trataBloqueioTotal(VolleyError error, final Activity activity) {
-        Gson gsonResponse = new Gson();
-        ErrorResponse errorResponse = new ErrorResponse();
-        String body = null;
-        if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
-            try {
-                body = new String(error.networkResponse.data, "UTF-8");
-                errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
-                if (errorResponse != null) {
-                    if (errorResponse.getRedirect() != null) {
-                        if (errorResponse.getCodigo() != null && errorResponse.getCodigo().equals("002020")) {
-                            DialogUtils.dialogEntendiListener(
-                                    activity,
-                                    errorResponse.getMensagem(),
-                                    new OnDialogBotaoListener() {
-                                        @Override
-                                        public void onButtonClick(DialogInterface dialog, int which) {
-                                            AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_logout_sucesso));
-                                            new LoginSSOModel(activity).sair(LoginActivity.class, () -> {});
-                                            DadosUsuarioBO.updateUsuarioLogado(activity, false);
-                                            activity.finish();
-                                            dialog.dismiss();
-                                            //return;
-                                        }
-                                    }
-                            );
+    public static void trataBloqueioTotal(ErrorResponse error, final Activity activity) {
 
-                            return true;
-                        }
+        if (error != null && error.getCodigo() != null && isBloqueioTotal(error.getCodigo())) {
+            encerrarSessaoLocal(activity);
+
+            String mensagem = error.getMensagem() != null
+                    ? error.getMensagem()
+                    : activity.getString(R.string.nao_concluiu_operacao_nova);
+
+            DialogUtils.dialogEntendiListener(
+                    activity,
+                    mensagem,
+                    (dialog, which) -> {
+                       sairSeguro(activity);
+                       activity.finish();
                     }
-                }
-            } catch (Exception e) {
-            }
+            );
         }
-        //activity.finish();
-        return false;
     }
 
     public static void trataBloqueioParcial(final Activity activity) {
         if (SessaoUsuario.getInstance().getSituacaoApostador() != null &&
-                SessaoUsuario.getInstance().getSituacaoApostador().getEnum() != null && //Servico Nuvem (Erro)
-                SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
+            SessaoUsuario.getInstance().getSituacaoApostador().getEnum() != null && //Servico Nuvem (Erro)
+            SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
             DialogUtils.dialogEntendiListener(
                     activity,
                     activity.getString(R.string.usuario_bloqueio_parcial),
@@ -417,6 +400,10 @@ public class  RedirectNetwork {
                     break;
                 case "018003":
                     enviaRegistrarMp(activity, volleyError);
+                    break;
+                case "002020":
+                case "002022":
+                    trataBloqueioTotal(error, activity);
                     break;
                 default:
                     DialogUtils.dialogEntendi(
@@ -558,5 +545,61 @@ public class  RedirectNetwork {
                 .append("Plataforma: Android<br/>")
                 .append("Código de erro: "+error.getCodigo()+"<br/>")
                 .toString();
+    }
+
+    public static boolean isBloqueioTotal(String codigo){
+        return codigo.equalsIgnoreCase("002020") || codigo.equalsIgnoreCase("002022");
+    }
+
+    public static void encerrarSessaoLocal(Activity activity) {
+        String vazio = "";
+        LoginSP.loginRealizado(false);
+        KeycloakBO.getInstance().setAccessToken(vazio);
+        KeycloakBO.getInstance().setRefreshToken(vazio);
+        DadosUsuarioBO.limparRegistros();
+        DadosBiometriaBO.limparRegistros();
+        DadosUsuarioBO.updateUsuarioLogado(activity, false);
+    }
+    private static void sairSeguro(Activity activity) {
+        try {
+            new LoginSSOModel(activity).sair(LoginActivity.class, () -> { });
+        } catch (Exception e) {
+            AppCenterManager.registraEvento(AppCenterManager.ERRO_GENERICO);
+        }
+    }
+
+    public static void trataFalhaVerificacaoBloqueio(VolleyError error, final Activity activity, String origem) {
+
+        encerrarSessaoLocal(activity);
+
+        ErrorResponse errorResponse = null;
+
+        try{
+            if(error != null && error.networkResponse != null && error.networkResponse.data != null){
+                String body = new String(error.networkResponse.data,"UTF-8");
+                Gson gsonResponse = new Gson();
+                errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
+            }
+        }catch ( Exception ignored){
+            //cai na mensagem genérica
+        }
+
+        if(errorResponse != null && errorResponse.getCodigo() != null && isBloqueioTotal(errorResponse.getCodigo())){
+            trataBloqueioTotal(errorResponse, activity);
+            return;
+        }
+
+        FirebaseCrashlytics crash = FirebaseCrashlytics.getInstance();
+        crash.setCustomKey(origem, "Erro na chamada de verificação de usuário bloqueado");
+
+        DialogUtils.dialogEntendiListener(activity,
+                activity.getString(R.string.nao_concluiu_operacao_nova),
+                (dialog, which) -> {
+                    if(error != null){
+                        crash.recordException(error);
+                    }
+                    sairSeguro(activity);
+                    activity.finish();
+                });
     }
 }

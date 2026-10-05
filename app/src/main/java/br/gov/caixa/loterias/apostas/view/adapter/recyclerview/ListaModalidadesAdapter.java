@@ -132,7 +132,11 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 				holder.imgTrevoMkp.setVisibility(View.VISIBLE);
 				holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
 				holder.textCenterFiltroModalidade.setVisibility(View.GONE);
-				holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(activity, estilo.getTrevoFundoEscuro()));
+				if (EspecialUtils.isParametrosOutubroRosa() && modalidade == ModalidadeEnum.MEGA_SENA){
+					holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.trevo_megasena_outubro_rosa_ativado));
+				} else {
+					holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(activity, estilo.getTrevoFundoEscuro()));
+				}
 				holder.textBottomFiltroModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro()));
 				GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(activity, R.drawable.custom_bottom_rouded);
 				backgroud.setColor(ContextCompat.getColor(activity, estilo.getCorEscura()));

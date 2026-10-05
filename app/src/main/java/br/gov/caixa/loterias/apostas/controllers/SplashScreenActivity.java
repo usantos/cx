@@ -29,12 +29,15 @@ import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.FilaBRAManager;
+import br.gov.caixa.loterias.apostas.utils.IconAliasManager;
+import br.gov.caixa.loterias.apostas.utils.IconeAppEnum;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesDefaultEnum;
 import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.view.listener.FilaBRAListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 
 public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
@@ -50,6 +53,12 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        String ic = SharedPreferencesUtils.getValorString(ConfiguracoesEnum.LAUNCHER_ICON.get(), "");
+        if (IconeAppEnum.DEFAULT.get().equalsIgnoreCase(ic) || ic.isEmpty()) {
+            IconAliasManager.applyIcon(this, IconeAppEnum.DEFAULT_DISABLED);
+            SharedPreferencesUtils.setValor(ConfiguracoesEnum.LAUNCHER_ICON.get(), IconeAppEnum.DEFAULT_DISABLED.get());
+        }
+
         if (BuildVersionUtil.isPRD()) {
             RootBeer rootBeer = new RootBeer(this);
             if (rootBeer.isRooted() || isRootAvailable()) {
@@ -60,8 +69,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                             @Override
                             public void onButtonClick(DialogInterface dialog, int which) {
                                 finish();
-                            }
-                        }
+                            }                        }
                 );
                 return;
             }
@@ -126,7 +134,6 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         else{
             startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
         }
-        //}
         finish();
     }
     private void callConfiguracoesApp() {
@@ -160,6 +167,13 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_APOSTADOR.get(), result.getPayload().getMapa().getUrlBaseApostador());
                         SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_APOSTADOR.get(), result.getPayload().getMapa().getGrupoDeCpfsApostador());
                         salvaParametrosFiltroBolao(result.getPayload().getMapa());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.OUTUBRO_ROSA.get(), result.getPayload().getMapa().getVigenciaMesOutubroRosa());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.OUTUBRO_ROSA_MEGA_SENA.get(), result.getPayload().getMapa().getVigenciaOutubroRosaMegaSena());
+
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_BFF.get(), result.getPayload().getMapa().getUrlBaseBff());
+                        SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_BFF.get(), result.getPayload().getMapa().getGrupoDeCpfsQueAcessamOBff());
+                        //SharedPreferencesUtils.setValor(ConfiguracoesEnum.URL_BASE_BFF_PILOTO.get(), result.getPayload().getMapa().getUrlBaseBffPiloto());
+                        //SharedPreferencesUtils.setValor(ConfiguracoesEnum.GRUPO_CPFS_BFF_PILOTO.get(), result.getPayload().getMapa().getGrupoDeCpfsQueAcessamOBffPiloto());
 
                         if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_VALOR,result.getPayload().getMapa().getConcursoMega30Anos());
@@ -173,6 +187,8 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                             SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_LINHA, getString(R.string.loteca_pais));
                             SharedPreferencesUtils.setValor(EspecialUtils.LOTECA_PAIS_DUAS_LINHAS, getString(R.string.loteca_pais_duas_linhas));
                         }
+
+                        atualizaIconeApp();
                     }
                     redirectApp();
                 }
@@ -187,6 +203,24 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
             setMenuApostasDefault();
             redirectApp();
         }
+    }
+
+    private void atualizaIconeApp() {
+        IconeAppEnum icone;
+        if (EspecialUtils.isOutubroRosa()) {
+            icone = IconeAppEnum.OUTUBRO_ROSA;
+        } else {
+            icone = IconeAppEnum.DEFAULT_DISABLED;
+        }
+
+        if (!icone.get().equalsIgnoreCase(SharedPreferencesUtils.getValorString(ConfiguracoesEnum.LAUNCHER_ICON.get(), ""))){
+            IconAliasManager.applyIcon(this, icone);
+            SharedPreferencesUtils.setValor(ConfiguracoesEnum.LAUNCHER_ICON.get(), icone.get());
+        }
+    }
+
+    private boolean isIconeAPP(IconeAppEnum icone) {
+        return SharedPreferencesUtils.getValorString(ConfiguracoesEnum.LAUNCHER_ICON.get(), "").equalsIgnoreCase(icone.get());
     }
 
     private boolean temInformacaoBolao(ParametrosConfiguraveisDTOResponse result) {

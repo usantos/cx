@@ -94,17 +94,11 @@ public class InsercaoManualCodBarrasActivity extends LoteriasBaseAppActivity {
 
                     //ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
                 } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
                 } catch (InvalidKeySpecException e) {
-                    e.printStackTrace();
                 } catch (NoSuchPaddingException e) {
-                    e.printStackTrace();
                 } catch (BadPaddingException e) {
-                    e.printStackTrace();
                 } catch (IllegalBlockSizeException e) {
-                    e.printStackTrace();
                 } catch (InvalidKeyException e) {
-                    e.printStackTrace();
                 }
              }
         });

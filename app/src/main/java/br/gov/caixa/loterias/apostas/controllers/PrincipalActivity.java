@@ -6,9 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,9 +14,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -29,6 +24,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -37,6 +34,7 @@ import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
@@ -98,7 +96,6 @@ import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
@@ -113,6 +110,7 @@ import br.gov.caixa.loterias.apostas.utils.ConfiguracoesEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -127,8 +125,8 @@ import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
-import br.gov.caixa.loterias.apostas.view.activity.LotecaActivity;
-import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.activity.LotecaActivity;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
@@ -166,7 +164,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             rlMsgDisque180;
     private LinearLayout atalhoRapidoLoterias;
     private ExpandableListView sideMenuExpandableListView;
-    private ConstraintLayout viewSair;
+    private ConstraintLayout viewSair, atalhoOutubroRosa, containerDescricaoOutubroRosa;
     private ConstraintLayout recolherMenu;
 
     //fragments
@@ -177,7 +175,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
-    private View actionApresentarTrevo, actionSettings, actionCentralNotificacao;
+    private View actionApresentarTrevo, actionSettings, actionCentralNotificacao, actionOutubroRosa;
     private InfiniteScrollAdapter infiniteAdapter;
     private HomeAdapter homeAdapter;
     private View viewNotification;
@@ -189,11 +187,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private static int contRegressivo = 1;
     private int anInt;
     private int ano;
-    Boolean expandido = false;
+    private Boolean expandido = false;
     private static final int REQ_CARRINHO = 1001;
     private static final int REQ_CENTRAL_NOTIFICACAO = 2001;
     private Integer numeroConcurso = null;
     private ModalidadeEnum tipoModalidade = null;
+    private TextView textoInformativoCaixa, nomeCaixa;
+    private AppCompatImageView arrow, iconeTrevoDrawer;
+    private AnimacoesAcessoRapido animacoesAcessoRapido, animacoesOutubroRosa;
 
     private CarrinhoModel model;
 
@@ -208,6 +209,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.principal, menu);
+        if (EspecialUtils.isOutubroRosa()){
+            menu.findItem(R.id.action_apresentar_trevo).setIcon(AppCompatResources.getDrawable(this, R.drawable.icon_trevo_outubro_rosa));
+            menu.findItem(R.id.action_outubro_rosa).setVisible(true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -229,6 +234,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        if (EspecialUtils.isOutubroRosa()){
+            toggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
+        }
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toolbarListener();
@@ -246,7 +254,23 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
 
         TimerNotificarCotasExpiradasSingleton.getInstance(this).iniciarVerificacao();
+        aplicaOutubroRosa();
     }
+
+    private void aplicaOutubroRosa() {
+        if (EspecialUtils.isOutubroRosa()){
+            viewSair.setBackgroundColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
+            ImageViewCompat.setImageTintList(arrow, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.outubro_rosa_secundario)));
+            this.nav_user.setTextColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
+            textoInformativoCaixa.setTextColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
+            nomeCaixa.setTextColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
+            iconeTrevoDrawer.setBackground(ContextCompat.getDrawable(this, R.drawable.icon_trevo_rosa));
+            ((TextView) findViewById(R.id.paragrafo_1)).setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.outubro_rosa_paragrafo_1), R.color.outubro_rosa_secundario));
+            ((TextView) findViewById(R.id.paragrafo_2)).setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.outubro_rosa_paragrafo_2), R.color.outubro_rosa_secundario));
+            drawerLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
+        }
+    }
+
     private boolean veioDoCarrinho() {
         String origem = getIntent() != null
                 ? getIntent().getStringExtra("ORIGEM_TELA")
@@ -286,23 +310,28 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         this.relativeLayoutContentFavoritas = findViewById(R.id.relativeLayoutContentFavoritas);
         this.relativeLayoutContentRepassados = findViewById(R.id.relativeLayoutContentRepassados);
         this.rlMsgDisque180 = findViewById(R.id.rlMsgDisque180);
+        this.containerDescricaoOutubroRosa = findViewById(R.id.container_descricao);
+        this.rlMsgDisque180 = findViewById(R.id.rlMsgDisque180);
         this.atalhoRapidoLoterias = findViewById(R.id.atalhoRapidoLoterias);
+        this.atalhoOutubroRosa = findViewById(R.id.atalhoRapidoOutubroRosa);
         this.sideMenuExpandableListView = findViewById(R.id.sideMenuExpandableListView);
         this.viewSair = findViewById(R.id.viewSair);
-        View view_id_fg_somador_carrinho = findViewById(R.id.id_somador_carrinho);
-        TextView texto = recolherMenu.findViewById(R.id.nav_user_text);
-        ImageView arrow = recolherMenu.findViewById(R.id.imagemMaisOpcoes);
-        TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
-        nomeCaixa.setHint("Título, Botão, Recolhido");
-        nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
+        View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
+        this.textoInformativoCaixa = recolherMenu.findViewById(R.id.nav_user_text);
+        this.arrow = recolherMenu.findViewById(R.id.imagemMaisOpcoes);
+        this.iconeTrevoDrawer = findViewById(R.id.iconTrevo);
+        this.nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
+        this.nomeCaixa.setHint("Título, Botão, Recolhido");
+        this.nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
+        arrow.setRotation(expandido ? 0f : 180f);
 
         buttonHomeBet.setOnClickListener(view ->
                 {
                     if(AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(PrincipalActivity.this, 2)) return;
                     clickButtonHomeBet();
                 }
-
         );
+
 
         buttonHomeBolao.setOnClickListener(view ->
                 {
@@ -332,12 +361,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         relativeLayoutContentLerBilhetes.setOnClickListener(view -> clickRelativeLayoutContentLerBilhetes());
 
         recolherMenu.setOnClickListener(v -> {
-            expandido = texto.getVisibility() == View.VISIBLE;
+            expandido = textoInformativoCaixa.getVisibility() == View.VISIBLE;
             String hint = "Título, Botão, " + (expandido ? "Recolhido" : "Expandido");
             nomeCaixa.setHint(hint);
             nomeCaixa.announceForAccessibility(getString(R.string.cef_id_tit) + hint);
-            texto.setVisibility(expandido ? View.GONE : View.VISIBLE);
-            arrow.setRotation(expandido ? 0f : 180f);
+            textoInformativoCaixa.setVisibility(expandido ? View.GONE : View.VISIBLE);
+            arrow.setRotation(expandido ? 180f : 0f);
         });
     }
 
@@ -401,7 +430,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }else {
             nav_user.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.bem_vindo_ao_app)));
         }
-        TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
         nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
         String hint = "Título, Botão, " + (expandido ? "Recolhido" : "Expandido");
         nomeCaixa.setHint(hint);
@@ -670,7 +698,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 repassesSociais = response.getPayload();
                 layoutTrevoAcessoRapido();
                 AlertDialogUtils.dismiss();
-                showMenu();
+                PrincipalActivity.this.animacoesAcessoRapido = createAnimacaoTrevo(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias,getMenuRapidoViewList());
+                fechaAnimacaoSePreciso(animacoesOutubroRosa, onAnimacaoFecharAcessoRapido(animacoesAcessoRapido, atalhoRapidoLoterias));
             }
 
             @Override
@@ -679,16 +708,42 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             }
         });
     }
-    private void showMenu() {
+
+    private OnAnimacaoViewListener onAnimacaoFecharAcessoRapido(AnimacoesAcessoRapido animacoes, View container) {
+        return () -> showMenu(animacoes, container);
+    }
+
+    private void fechaAnimacaoSePreciso(AnimacoesAcessoRapido animacoes, OnAnimacaoViewListener listener){
+        if (animacoes != null && animacoes.isAberto()){
+            animacaoFecharMenuRapido(animacoes, listener);
+        } else {
+            listener.animacaoFinalizada();
+        }
+    }
+    private void showMenu(AnimacoesAcessoRapido animacoes, View containerView) {
         if (relativeContentPrincipal.isEnabled()) {
             if (infiniteAdapter != null){
-                AnimacaoAbrirMenuRapido(actionApresentarTrevo, infiniteAdapter);
+                AnimacaoAbrirMenuRapido(animacoes, containerView);
                 buttonHomeBet.setVisibility(View.GONE);
                 buttonHomeBolao.setVisibility(View.GONE);
             }
         } else {
-            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+            animacaoFecharMenuRapido(animacoes);
         }
+    }
+
+    private void fecharAnimacoesAbertas() {
+        if (animacoesAcessoRapido != null && animacoesAcessoRapido.isAberto()){
+            animacaoFecharMenuRapido(animacoesAcessoRapido);
+        }
+        if (animacoesOutubroRosa != null && animacoesOutubroRosa.isAberto()){
+            animacaoFecharMenuRapido(animacoesOutubroRosa);
+        }
+    }
+
+    private boolean temAnimacoesAbertas(){
+        return (animacoesAcessoRapido != null && animacoesAcessoRapido.isAberto()) ||
+                (animacoesOutubroRosa != null && animacoesOutubroRosa.isAberto());
     }
 
     private List<Modalidade> montaListaModalidades() {
@@ -752,12 +807,13 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
                     actionApresentarTrevo.setOnClickListener(view -> {
+                        PrincipalActivity.this.animacoesAcessoRapido = createAnimacaoTrevo(actionApresentarTrevo, animacoesAcessoRapido, atalhoRapidoLoterias, getMenuRapidoViewList());
                         if (modalidadesParaListar != null && modalidadesParaListar.size() > 0) {
                             if(precisaBuscarRepasses){
                                 precisaBuscarRepasses = false;
                                 callRepassesSociais();
                             }else {
-                                showMenu();
+                                fechaAnimacaoSePreciso(animacoesOutubroRosa, onAnimacaoFecharAcessoRapido(animacoesAcessoRapido, atalhoRapidoLoterias));
                             }
                         }
                     });
@@ -768,44 +824,31 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                         startActivityForResult(new Intent(PrincipalActivity.this, CentralNotificacaoActivity.class), REQ_CENTRAL_NOTIFICACAO);
                     });
                 }
+
+                actionOutubroRosa = toolbar.findViewById(R.id.action_outubro_rosa);
+
+                if (actionOutubroRosa != null) {
+                    toolbar.removeOnLayoutChangeListener(this);
+                    actionOutubroRosa.setOnClickListener(view -> {
+                        PrincipalActivity.this.animacoesOutubroRosa = createAnimacaoTrevo(actionOutubroRosa, animacoesOutubroRosa, atalhoOutubroRosa, getMenuOutubroRosaViewList());
+                        fechaAnimacaoSePreciso(animacoesAcessoRapido, onAnimacaoFecharAcessoRapido(animacoesOutubroRosa, atalhoOutubroRosa));
+                    });
+                }
             }
         });
     }
 
-    private void AnimacaoAbrirMenuRapido(View v, InfiniteScrollAdapter infiniteScrollAdapter) {
-        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_menu_trevo));
-
-        if(infiniteScrollAdapter != null){
+    private void AnimacaoAbrirMenuRapido(AnimacoesAcessoRapido animacoes, View containerView) {
+        if(infiniteAdapter != null){
             relativeContentPrincipal.setEnabled(false);
             actionApresentarTrevo.setEnabled(false);
-            atalhoRapidoLoterias.setVisibility(View.VISIBLE);
-            //TODO: MEGA 30 ANOS//
-            //TODO: LOTECA PAIS//
-            EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(),
-                    data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(),
-                    data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
-            //boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
-            //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
-            AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
-                    v,
-                    relativeContentPrincipal,
-                    relativeLayoutContentRapidao,
-                    relativeLayoutContentLerBilhetes,
-                    rlJogoResponsavel,
-                    relativeLayoutContentRepassados,
-                    rlMsgDisque180,
-                    relativeBlankView,
-                    atalhoRapidoLoterias,
-                    buttonHomeBet,
-                    actionApresentarTrevo,
-                    PrincipalActivity.this,
-                    estilo,
-                    onAnimacaoAcessoRapido());
+            containerView.setVisibility(View.VISIBLE);
             int positionTopRodape = (int) relativeBlankView.getY();
 
             int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
 
-            animacoesAcessoRapido.animacaoDescerContent(positionTopRodape - itemSize);
+            animacoes.animacaoDescerContent(positionTopRodape - itemSize);
+            animacoes.setAberto(true);
         }
     }
 
@@ -819,32 +862,49 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         };
     }
 
-    private void AnimacaoFecharMenuRapido(View v) {
+    private void animacaoFecharMenuRapido(AnimacoesAcessoRapido animacoes) {
         relativeContentPrincipal.setEnabled(true);
         actionApresentarTrevo.setEnabled(false);
-        //TODO: MEGA 30 ANOS//
-        //TODO: LOTECA PAIS//
-        EstiloModalidadeMKP estilo = EstiloModalidadeMKP.createModalidadeConcursoEsp(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(),
-                data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(),
-                data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
-        //boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
-        //EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
-        AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
-                v,
-                relativeContentPrincipal,
-                relativeLayoutContentRapidao,
-                relativeLayoutContentLerBilhetes,
-                rlJogoResponsavel,
-                relativeLayoutContentRepassados,
-                rlMsgDisque180,
-                relativeBlankView,
-                atalhoRapidoLoterias,
-                buttonHomeBet,
-                actionApresentarTrevo,
-                PrincipalActivity.this,
-                estilo,
-                onAnimacaoAcessoRapido());
-        animacoesAcessoRapido.animacaoSubirContent();
+        animacoes.animacaoSubirContent(onAnimacaoAcessoRapido());
+        animacoes.setAberto(false);
+    }
+
+    private void animacaoFecharMenuRapido(AnimacoesAcessoRapido animacoes, OnAnimacaoViewListener listener) {
+        relativeContentPrincipal.setEnabled(true);
+        actionApresentarTrevo.setEnabled(false);
+        animacoes.animacaoSubirContent(listener);
+        animacoes.setAberto(false);
+    }
+
+    @NonNull
+    private AnimacoesAcessoRapido createAnimacaoTrevo(View view, AnimacoesAcessoRapido animacoes, View containerView,List<View> viewList) {
+        if (animacoes == null){
+            return new AnimacoesAcessoRapido(
+                    view,
+                    relativeContentPrincipal,
+                    viewList,
+                    relativeBlankView,
+                    containerView,
+                    buttonHomeBet,
+                    actionApresentarTrevo);
+        }
+        return animacoes;
+    }
+
+    private List<View> getMenuRapidoViewList() {
+        ArrayList<View> list = new ArrayList<>();
+        list.add(relativeLayoutContentLerBilhetes);
+        list.add(rlJogoResponsavel);
+        list.add(relativeLayoutContentRepassados);
+        list.add(rlMsgDisque180);
+        return list;
+    }
+
+    private List<View> getMenuOutubroRosaViewList() {
+        ArrayList<View> list = new ArrayList<>();
+        list.add(containerDescricaoOutubroRosa);
+
+        return list;
     }
 
     @Override
@@ -872,7 +932,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     private void sairLogin() {
-
         DialogUtils.dialogSim(
                 PrincipalActivity.this,
                 getResources().getString(R.string.MA008),
@@ -929,7 +988,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             return;
         }
 
-        if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
+        if (buttonHomeBet != null && !temAnimacoesAbertas()) buttonHomeBet.setVisibility(View.VISIBLE);
 
         //TODO: MEGA 30 ANOS//
         //TODO: LOTECA PAIS//
@@ -990,12 +1049,19 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                         ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
             }
 
-            if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(),ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean()) &&
+            if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(), ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean()) &&
                     temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
-
+                if (EspecialUtils.isParametrosOutubroRosa() && data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA){
+                    buttonHomeBolao.setBackground(AppCompatResources.getDrawable(PrincipalActivity.this, R.drawable.btn_rounded_outubro_rosa_outlined));
+                    buttonHomeBolao.setTextColor(ContextCompat.getColor(PrincipalActivity.this, R.color.branco));
+                } else {
+                    buttonHomeBolao.setTextColor(corText);
+                }
                 buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
                         .getString(R.string.apostas_boloes)));
-                buttonHomeBolao.setVisibility(View.VISIBLE);
+                if (!temAnimacoesAbertas()){
+                    buttonHomeBolao.setVisibility(View.VISIBLE);
+                }
             } else {
                 buttonHomeBolao.setVisibility(View.GONE);
             }
@@ -1172,33 +1238,30 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     protected void clickRelativeLayoutContentRepassados() {
-        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
-        showMenu();
+        fecharAnimacoesAbertas();
         Intent activity = new Intent(PrincipalActivity.this, RepassesSociaisActivity.class);
         startActivity(activity);
     }
 
     protected void clickRelativeLayoutContentRapidao() {
-        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
-        showMenu();
+        fecharAnimacoesAbertas();
         if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
             redirecionaRapidao();
         }
     }
 
     protected void clickrlJogoResponsavel() {
-        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
-        showMenu();
+        fecharAnimacoesAbertas();
         redirecionaJogoResponsavel();
     }
 
     protected void clickrlMsgDisque180() {
-        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
-        showMenu();
+        fecharAnimacoesAbertas();
         redirecionaMsgDisque180();
     }
 
     protected void vaiProCarrinho() {
+        fecharAnimacoesAbertas();
         if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
             startActivityForResult(
                     new Intent(PrincipalActivity.this, CarrinhoActivity.class),
@@ -1208,18 +1271,17 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     protected void clickRelativeLayoutContentFavoritas() {
-        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        fecharAnimacoesAbertas();
         startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
     }
 
     protected void clickRelativeLayoutContentLerBilhetes() {
-        showMenu();
+        fecharAnimacoesAbertas();
         if (ContextCompat.checkSelfPermission(PrincipalActivity.this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(PrincipalActivity.this,
                     new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
         } else {
-            AnimacaoFecharMenuRapido(relativeContentPrincipal);
             startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
         }
     }
@@ -1230,14 +1292,17 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
         switch (item) {
             case MENU_RESULTADOS:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, SelecaoModalidadesResultados.class));
                 break;
             case MENU_RAPIDAO:
+                fecharAnimacoesAbertas();
                 if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
                     redirecionaRapidao();
                 }
                 break;
             case MENU_COFERIR_BILHETE:
+                fecharAnimacoesAbertas();
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
@@ -1246,12 +1311,15 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 }
                 break;
             case MENU_REPASSES_SOCIAIS:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
                 break;
             case MENU_TERMO_USO:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, TermosAceiteActivity.class));
                 break;
             case MENU_DUVIDAS:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
                 break;
             default:
@@ -1269,21 +1337,27 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private void tratarMenuMinhaArea(DrawerEnum item) {
         switch (item) {
             case MENU_DADOS_PESSOAIS:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, DadosPessoaisActivity.class));
                 break;
             case MENU_MINHAS_APOSTAS:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, MinhasApostasActivity.class));
                 break;
             case MENU_COMPRAS:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
                 break;
             case MENU_FAVORITAS:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
                 break;
             case MENU_CARRINHOS_FAVORITOS:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
                 break;
             case MENU_MEUS_CARTOES:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, MeusCartoesActivity.class));
                 break;
             default:
@@ -1294,22 +1368,20 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private void trataMenuJogoResponsavel(DrawerEnum item, int itemPosition) {
         switch (item) {
             case MENU_JOGO_RESPONSAVEL_POLITICA:
+                fecharAnimacoesAbertas();
                 DialogUtils.dialogTituloConfirmar(
                         PrincipalActivity.this,
                         getString(R.string.jogo_responsavel),
                         getString(R.string.voce_sera_redirecionado_para_o_site_jogo_responsavel),
-                        new OnDialogBotaoListener() {
-                            @Override
-                            public void onButtonClick(DialogInterface dialog, int which) {
-                                Utils.abreUrl(PrincipalActivity.this, R.string.url_jogo_responsavel);
-                            }
-                        }
+                        (dialog, which) -> Utils.abreUrl(PrincipalActivity.this, R.string.url_jogo_responsavel)
                 );
                 break;
             case MENU_JOGO_RESPONSAVEL_AVALIACAO:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
                 break;
             case MENU_JOGO_RESPONSAVEL_SUSPENSAO:
+                fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, AutoSuspensaoActivity.class));
                 break;
             default:
@@ -1331,14 +1403,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
         sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> AbrirMenusGroup(expandableListTitle.get(groupPosition)));
-        sideMenuExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                if (expandableListTitle.get(i) == DrawerEnum.MENU_SOBRE_CAIXA) {
+        sideMenuExpandableListView.setOnGroupClickListener((expandableListView, view, i, l) -> {
+            if (expandableListTitle.get(i) == DrawerEnum.MENU_SOBRE_CAIXA) {
 //                    ViewUtils.abrirMenuCaixa(PrincipalActivity.this);
-                }
-                return false;
             }
+            return false;
         });
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
@@ -1354,14 +1423,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private void redirecionaRapidao() {
         if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
-            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+            fecharAnimacoesAbertas();
             if (DadosUsuarioBO.checarTutorialRapidao()) {
                 startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
             } else {
                 startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
             }
         } else {
-            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+            fecharAnimacoesAbertas();
         }
     }
 
@@ -1411,7 +1480,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             is_installed = true;
         } catch (PackageManager.NameNotFoundException e) {
             is_installed = false;
-            e.printStackTrace();
         }
         return is_installed;
     }
@@ -1421,7 +1489,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         switch (requestCode) {
             case ZXING_CAMERA_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    AnimacaoFecharMenuRapido(relativeContentPrincipal);
+                    fecharAnimacoesAbertas();
                     startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
                 } else {
                     Toast.makeText(this, R.string.label_conceda_permissao_camera, Toast.LENGTH_SHORT).show();
