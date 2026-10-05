@@ -984,42 +984,4 @@ public class DialogUtils {
         }
 
     }
-
-    public static void dialogLegendaLoteca(Context context) {
-        if (isContextInvalido(context)) {
-            return;
-        }
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.dialog_legenda_loteca, null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogUtilsTheme);
-        builder.setView(view);
-        builder.setCancelable(false);
-        final AlertDialog dialog = builder.create();
-
-        Button btnFechar = view.findViewById(R.id.btnFechar);
-        btnFechar.setOnClickListener(v -> dialog.dismiss());
-        TextView tvTitulo = view.findViewById(R.id.legenda);
-        ViewCompat.setAccessibilityHeading(tvTitulo, true);
-        tvTitulo.setFocusableInTouchMode(true);
-        tvTitulo.requestFocus();
-
-        dialog.setOnShowListener(d -> {
-            if (tvTitulo.getVisibility() == View.VISIBLE) {
-                tvTitulo.post(() -> tvTitulo.sendAccessibilityEvent(
-                        AccessibilityEvent.TYPE_VIEW_FOCUSED
-                ));
-            }
-
-        });
-
-        try {
-            if (!isContextInvalido(context)) {
-                dialog.show();
-            }
-        } catch (WindowManager.BadTokenException | IllegalStateException e) {
-            return;
-        }
-
-    }
 }
