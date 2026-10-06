@@ -6,7 +6,7 @@
     <ImageView android:id="@+id/shakeMenuIcon" android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_celular"
         android:tint="@color/blue_caixa" android:importantForAccessibility="no" />
     <TextView android:id="@+id/shakeMenuTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp"
-        android:fontFamily="@font/caixa_std_semi_bold" android:text="@string/aposta_shake" android:textColor="@color/cinza110" android:textSize="14sp" />
+        android:fontFamily="@font/caixa_std_semi_bold" android:text="@string/aposta_shake" android:textColor="@color/cinza110" android:textSize="16sp" />
     <ImageView android:id="@+id/shakeMenuInfo" android:layout_width="40dp" android:layout_height="48dp"
         android:src="@drawable/ic_info" android:padding="12dp" android:contentDescription="@string/shake_menu_info"
         android:clickable="true" android:focusable="true" />
