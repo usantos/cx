@@ -68,6 +68,13 @@ public final class ApostaShakeMenuController {
         automatica = automatico;
         View content = LayoutInflater.from(activity).inflate(R.layout.aposta_shake_tooltip, null);
         View pointer = content.findViewById(R.id.shakeTooltipPointer);
+        int accent = androidx.core.content.ContextCompat.getColor(activity,
+                br.gov.caixa.loterias.apostas.utils.EspecialUtils.isOutubroRosa()
+                        ? R.color.outubro_rosa_secundario : R.color.blue_caixa);
+        ((android.widget.ImageView) pointer).setImageTintList(
+                android.content.res.ColorStateList.valueOf(accent));
+        content.findViewById(R.id.shakeTooltipText).setBackgroundTintList(
+                android.content.res.ColorStateList.valueOf(accent));
         View info = anchor.findViewById(R.id.shakeMenuInfo);
         if (info != null) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) pointer.getLayoutParams();

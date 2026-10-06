@@ -10,25 +10,31 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
-/** Remove somente as margens transparentes dos GIFs de volante/menu (412 x 804).
- * A área (53, 119)-(359, 699) contém os pixels visíveis de TODOS os quadros.
- * Glide aplica a transformação a cada quadro; os arquivos originais são preservados.
+/** Uniformiza a área dos GIFs sem distorcer a proporção dos quadros.
+ * Os GIFs de 412 x 804 têm margens extras; os de 300 x 580 já estão ajustados.
  */
 public final class TutorialApostaShakeGifCrop extends BitmapTransformation {
-    private static final String ID = "br.gov.caixa.loterias.apostas.TutorialApostaShakeGifCrop.v1";
+    private static final String ID = "br.gov.caixa.loterias.apostas.TutorialApostaShakeGifCrop.v2";
     @Override protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap source, int outWidth, int outHeight) {
-        int left = Math.round(source.getWidth() * 53f / 412f);
-        int top = Math.round(source.getHeight() * 119f / 804f);
-        int right = Math.round(source.getWidth() * 359f / 412f);
-        int bottom = Math.round(source.getHeight() * 699f / 804f);
+        boolean comMargens = source.getWidth() == 412 && source.getHeight() == 804;
+        int left = comMargens ? 53 : 0;
+        int top = comMargens ? 119 : 0;
+        int right = comMargens ? 359 : source.getWidth();
+        int bottom = comMargens ? 699 : source.getHeight();
         left = Math.min(left, source.getWidth() - 1);
         top = Math.min(top, source.getHeight() - 1);
         right = Math.min(source.getWidth(), Math.max(left + 1, right));
         bottom = Math.min(source.getHeight(), Math.max(top + 1, bottom));
-        Bitmap result = pool.get(right - left, bottom - top, Bitmap.Config.ARGB_8888);
+        Bitmap result = pool.get(306, 580, Bitmap.Config.ARGB_8888);
         result.setHasAlpha(true);
+        result.eraseColor(android.graphics.Color.TRANSPARENT);
+        float scale = Math.min(306f / (right - left), 580f / (bottom - top));
+        int width = Math.round((right - left) * scale);
+        int height = Math.round((bottom - top) * scale);
+        int x = (306 - width) / 2;
+        int y = (580 - height) / 2;
         new Canvas(result).drawBitmap(source, new Rect(left, top, right, bottom),
-                new Rect(0, 0, result.getWidth(), result.getHeight()), new Paint(Paint.FILTER_BITMAP_FLAG));
+                new Rect(x, y, x + width, y + height), new Paint(Paint.FILTER_BITMAP_FLAG));
         return result;
     }
     @Override public boolean equals(Object other) { return other instanceof TutorialApostaShakeGifCrop; }

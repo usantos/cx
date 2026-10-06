@@ -131,6 +131,21 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
             com.google.android.material.switchmaterial.SwitchMaterial shake = convertView.findViewById(R.id.switchApostaShake);
             shake.setOnCheckedChangeListener(null);
             shake.setChecked(ApostaShakePreferences.isAtiva());
+            boolean outubroRosa = EspecialUtils.isOutubroRosa();
+            int accent = ContextCompat.getColor(context, outubroRosa
+                    ? R.color.outubro_rosa_secundario : R.color.blue_caixa);
+            ((TextView) convertView.findViewById(R.id.shakeMenuTitle)).setTextColor(
+                    ContextCompat.getColor(context, outubroRosa ? R.color.outubro_rosa_secundario : R.color.cinza110));
+            ((ImageView) convertView.findViewById(R.id.shakeMenuIcon)).setImageTintList(
+                    android.content.res.ColorStateList.valueOf(accent));
+            ((ImageView) convertView.findViewById(R.id.shakeMenuInfo)).setImageTintList(
+                    android.content.res.ColorStateList.valueOf(accent));
+            shake.setThumbTintList(null);
+            shake.setTrackTintList(null);
+            shake.setThumbDrawable(ContextCompat.getDrawable(context, outubroRosa
+                    ? R.drawable.shake_switch_thumb_rosa : R.drawable.shake_switch_thumb));
+            shake.setTrackDrawable(ContextCompat.getDrawable(context, outubroRosa
+                    ? R.drawable.shake_switch_track_rosa : R.drawable.shake_switch_track));
             final View row = convertView;
             shake.setOnClickListener(v -> {
                 if (shakeController != null) shakeController.alterarAtivacao();

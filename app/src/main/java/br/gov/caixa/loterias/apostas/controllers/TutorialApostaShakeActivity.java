@@ -113,7 +113,8 @@ public class TutorialApostaShakeActivity extends LoteriasBaseAppActivity {
         ImageView image = findViewById(R.id.shakeTutorialImage);
         // Glide anima os quadros e acompanha pausa e destruição da Activity.
         RequestBuilder<GifDrawable> animation = Glide.with(this).asGif().load(GIFS[pagina]);
-        if (pagina == 1 || pagina == 4) animation.transform(new TutorialApostaShakeGifCrop());
+        animation.override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
+                .transform(new TutorialApostaShakeGifCrop());
         animation.into(image);
         image.setContentDescription(getString(DESCRICOES[pagina]));
         findViewById(R.id.shakeTutorialPrevious).setVisibility(pagina == 0 ? View.INVISIBLE : View.VISIBLE);

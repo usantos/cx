@@ -31,7 +31,6 @@ public class ExpandableListDataSideMenu {
 
         expandableListDetail.put(DrawerEnum.MENU_MINHA_AREA, minhaArea);
         expandableListDetail.put(DrawerEnum.MENU_RESULTADOS, new ArrayList<>());
-        expandableListDetail.put(DrawerEnum.MENU_APOSTA_SHAKE, new ArrayList<>());
         if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
             expandableListDetail.put(DrawerEnum.MENU_RAPIDAO, new ArrayList<>());
         }
@@ -41,6 +40,7 @@ public class ExpandableListDataSideMenu {
         expandableListDetail.put(DrawerEnum.MENU_TERMO_USO, new ArrayList<>());
         expandableListDetail.put(DrawerEnum.MENU_DUVIDAS, new ArrayList<>());
         expandableListDetail.put(DrawerEnum.MENU_SOBRE_CAIXA, new ArrayList<>());
+        expandableListDetail.put(DrawerEnum.MENU_APOSTA_SHAKE, new ArrayList<>());
 
         return expandableListDetail;
     }
