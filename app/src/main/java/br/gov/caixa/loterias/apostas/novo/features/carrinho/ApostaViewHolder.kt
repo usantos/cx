@@ -242,7 +242,7 @@ class ApostaViewHolder(
 
             setTextColor(
                 ContextCompat.getColor(
-                    context, estilo.corClara
+                    context, estilo.corLetraLista
                 )
             )
         }
