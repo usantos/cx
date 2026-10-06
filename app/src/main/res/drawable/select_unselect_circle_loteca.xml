@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_opcao_aposta_escolhida" android:state_selected="true" />
+    <item android:drawable="@drawable/ic_opcao_aposta_nao_escolhida" android:state_selected="false" />
+</selector>

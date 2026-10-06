@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dialog_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:textColor="@color/branco"
+        android:paddingLeft="16sp"
+        android:paddingRight="16dp"
+        android:paddingStart="16sp"
+        android:paddingEnd="16sp"
+        android:background="@drawable/background_gradient_verde"
+        android:text="@string/titulo_dialog" />
+    
+    <ListView
+        android:id="@+id/listViewOpcoes"
+        android:layout_width="match_parent"
+        android:layout_height="216dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="26dp"
+        >
+    </ListView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/linhaDivisa" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnCancelarDialog"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:text="@string/cancelar"
+            android:padding="0dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:textStyle="bold"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="16sp"
+            android:textColor="@color/cinza"/>
+
+        <Button
+            android:id="@+id/btnOkDialog"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:textStyle="bold"
+            android:text="@string/ok"
+            android:padding="0dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="16sp"
+            android:textColor="@color/verdeagua"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

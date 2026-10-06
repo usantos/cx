@@ -1,0 +1,579 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/cinzaclaro</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/font_family_futura</item>
+        <item name="buttonStyle">@style/ButtonNotShadow</item>
+        <item name="android:windowBackground">@color/branco</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonStyleLoterias</item>
+        <item name="actionButtonStyle">@style/ActionButtonStyleLoterias</item>
+        <item name="android:homeAsUpIndicator">@drawable/seta_esquerda</item>
+    </style>
+    <style name="DadosPessoaisLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
+        <item name="android:textColor">@color/cinza_texto</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="DadosPessoaisInputLayout"
+        parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxBackgroundColor">@color/branco</item>
+        <item name="boxStrokeColor">@color/cinza_borda</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+
+        <item name="hintEnabled">false</item>
+    </style>
+
+    <style name="Widget.App.SegmentedButton"
+        parent="Widget.Material3.Button.OutlinedButton">
+
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+
+        <item name="strokeColor">@color/cinza_borda</item>
+        <item name="strokeWidth">1dp</item>
+
+        <item name="cornerRadius">28dp</item>
+
+        <item name="backgroundTint">@android:color/white</item>
+
+        <item name="rippleColor">@android:color/transparent</item>
+
+    </style>
+
+    <style name="DadosPessoaisEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:textColor">@color/cinza_texto</item>
+        <item name="android:textColorHint">@color/cinza_hint</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="DadosPessoaisSegmentedButton">
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="pesqpush">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textColor">#4E596B</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="Theme.SimulaMaterial"
+        parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:letterSpacing">0</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:elevation">0dp</item>
+        <item name="colorPrimary">@color/blue_caixa</item>
+        <item name="colorPrimaryVariant">@color/azulclaro</item>
+        <item name="colorSecondary">@color/blue_caixa</item>
+
+    </style>
+
+    <style name="AppTheme.BrancoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/branco</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:colorControlActivated">@color/verdeazul</item>
+        <item name="android:colorControlNormal">@color/cinzaseekbar</item>
+    </style>
+
+    <style name="AppTheme.DegradeActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/verdeagua</item>
+        <item name="colorPrimaryDark">@color/branco</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:colorControlActivated">@color/verdeazul</item>
+        <item name="android:colorControlNormal">@color/cinzaseekbar</item>
+    </style>
+
+    <style name="Theme.Loterias.MaterialBridge"
+        parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+        <item name="colorPrimary">@color/cinzaclaro</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MainWhiteToolbar" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/textColorToolbar</item>
+        <item name="android:background">@color/branco</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.JogoResponsavel" parent="AppTheme.NoActionBar">
+        <item name="colorPrimaryDark">@color/jr_end</item>
+    </style>
+
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_bottom_sheet</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:elevation">0dp</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="SplashTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="AppFullScreenTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="DialogFullScreenTheme" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="ArialMT" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+    </style>
+
+    <style name="CaixaStdRegular" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+    </style>
+
+    <style name="CaixaStdBold" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
+    </style>
+
+    <style name="FuturaStdBold" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/futura_std_bold</item>
+    </style>
+
+    <style name="ExplicativoArialMT" parent="CaixaStdRegular">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextRegisterTheme" parent="CaixaStdRegular">
+        <item name="android:textColor">@color/cinza</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="editTextRegisterThemeCaixa" parent="CaixaStdRegular">
+        <item name="android:textColor">@color/cinza</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="helperTextRegisterThemeCaixa" parent="CaixaStdRegular">
+        <item name="android:textColor">@color/cinza_button</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="editTextArialMTTheme" parent="CaixaStdRegular">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextFuturaBoldTheme" parent="FuturaStdBold">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextCaixaRegularTheme" parent="CaixaStdRegular">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextCaixaBoldTheme" parent="CaixaStdBold">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextCaixaStdTheme" parent="CaixaStdRegular">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="ButtonNotShadow" parent="Base.Widget.AppCompat.Button">
+        <item name="android:outlineProvider">none</item>
+    </style>
+
+    <style name="ButtonNotShadowColored" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:outlineProvider">none</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:background">@color/transparente</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppTheme.Modalidade">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textColorSecondary">@color/branco_transparente</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.Quina">
+        <item name="colorPrimaryDark">@color/quina_escuro_mkp</item>
+        <item name="colorPrimary">@color/quina_claro_mkp</item>
+        <item name="android:windowBackground">@color/quina_escuro_mkp</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.Loteca">
+        <item name="colorPrimaryDark">@color/loteca_escuro_mkp</item>
+        <item name="colorPrimary">@color/loteca_claro_mkp</item>
+        <item name="android:windowBackground">@color/loteca_escuro_mkp</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.MegaSena">
+        <item name="colorPrimaryDark">@color/mega_verde_escuro_mkp</item>
+        <item name="colorPrimary">@color/mega_verde_claro_mkp</item>
+        <item name="android:windowBackground">@color/mega_verde_escuro_mkp</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.DetalheApostaMegaSena">
+        <item name="colorPrimaryDark">@color/mega_verde_escuro_mkp</item>
+        <item name="colorPrimary">@color/mega_verde_claro_mkp</item>
+        <item name="android:windowBackground">@color/mega_verde_escuro_mkp</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.MaisMilionaria">
+        <item name="colorPrimaryDark">@color/milionaria_escuro_mkp</item>
+        <item name="colorPrimary">@color/milionaria_claro_mkp</item>
+        <item name="android:windowBackground">@color/milionaria_escuro_mkp</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.DuplaSena">
+        <item name="colorPrimaryDark">@color/dupla_sena_escuro_mkp</item>
+        <item name="colorPrimary">@color/dupla_sena_claro_mkp</item>
+        <item name="android:windowBackground">@color/dupla_sena_escuro_mkp</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.Lotofacil">
+        <item name="colorPrimaryDark">@color/lotofacil_escuro_mkp</item>
+        <item name="colorPrimary">@color/lotofacil_claro_mkp</item>
+        <item name="android:windowBackground">@color/lotofacil_escuro_mkp</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.Lotomania">
+        <item name="colorPrimaryDark">@color/lotomania_escuro_mkp</item>
+        <item name="colorPrimary">@color/lotofacil_claro_mkp</item>
+        <item name="android:windowBackground">@color/lotomania_escuro_mkp</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.Timemania">
+        <item name="colorPrimaryDark">@color/timemania_escuro_mkp</item>
+        <item name="colorPrimary">@color/timemania_claro_mkp</item>
+        <item name="android:windowBackground">@color/timemania_escuro_mkp</item>
+        <item name="android:textColor">@color/megasenamedio</item>
+        <item name="android:textColorSecondary">@color/megasenamedio_transparente</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.LotoGol">
+        <item name="colorPrimaryDark">@color/lotogolescuro</item>
+        <item name="colorPrimary">@color/lotogolclaro</item>
+        <item name="android:windowBackground">@color/lotogolescuro</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.DiaDeSorte">
+        <item name="colorPrimaryDark">@color/dia_sorte_escuro_mkp</item>
+        <item name="colorPrimary">@color/dia_sorte_claro_mkp</item>
+        <item name="android:windowBackground">@color/dia_sorte_escuro_mkp</item>
+    </style>
+
+    <style name="AppTheme.Modalidade.SuperSete">
+        <item name="colorPrimaryDark">@color/supersetemedio</item>
+        <item name="colorPrimary">@color/super_sete_claro_mkp</item>
+        <item name="android:windowBackground">@color/supersetemedio</item>
+        <item name="android:textColor">@color/super_sete_escuro_mkp</item>
+        <item name="android:textColorSecondary">@color/super_sete_escuro_mkp</item>
+        <item name="android:theme">@style/SuperSeteToolbar</item>
+    </style>
+
+    <style name="TimeManiaToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/megasenamedio</item>
+        <item name="colorControlNormal">@color/megasenamedio</item>
+        <item name="android:textColorSecondary">@color/megasenamedio</item>
+        <item name="actionMenuTextColor">@color/megasenamedio</item>
+    </style>
+
+    <style name="SuperSeteToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/super_sete_escuro_mkp</item>
+        <item name="colorControlNormal">@color/super_sete_escuro_mkp</item>
+        <item name="android:textColorSecondary">@color/super_sete_escuro_mkp</item>
+        <item name="actionMenuTextColor">@color/super_sete_escuro_mkp</item>
+    </style>
+
+    <style name="fontForTitle1Premiados">
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="fontForTitle2Premiados">
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lines">2</item>
+    </style>
+
+    <style name="fontForTitle3Premiados">
+        <item name="android:lines">2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorLink">@color/branco</item>
+        <item name="android:autoLink">web</item>
+        <item name="android:clickable">true</item>
+        <item name="android:linksClickable">true</item>
+        <item name="android:longClickable">true</item>
+    </style>
+
+    <style name="fontForTitleTopoPremiados">
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ActionButtonStyleLoterias" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">50dp</item>
+        <item name="android:maxWidth">50dp</item>
+        <item name="android:width">50dp</item>
+    </style>
+
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/verdeagua</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <!-- Used for the background -->
+        <item name="android:background">@color/branco</item>
+        <item name="android:textColor">@color/verdeagua</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+    </style>
+
+    <style name="MyAlertDialogStyleNew" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/blue_caixa</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">@color/cinza110</item>
+        <!-- Used for the background -->
+        <item name="android:background">@drawable/rounded_dialog_background</item>
+        <item name="android:textColor">@color/blue_caixa</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+    </style>
+
+    <style name="RoundedAlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/azulLabel</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">@color/greyText</item>
+        <!-- Used for the background -->
+        <item name="android:background">@drawable/rounded_dialog_background</item>
+        <item name="android:textColor">@color/azulLabel</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+    </style>
+
+    <style name="DialogUtilsTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/rounded_dialog_background</item>
+        <item name="android:windowMinWidthMajor">85%</item>
+        <item name="android:windowMinWidthMinor">85%</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/verde_card</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/futura_std_bold</item>
+        <item name="colorControlNormal">@color/transparente</item>
+    </style>
+    <style name="AppTheme.PickerCaixa" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/verde_card</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
+        <item name="colorControlNormal">@color/transparente</item>
+    </style>
+
+    <style name="AppTheme.PickerDark">
+        <item name="android:textColorPrimary">@color/cinza_total</item>
+        <item name="android:textColor">@color/cinza_total</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/font_family_futura</item>
+        <item name="colorControlNormal">@color/cinza_total</item>
+    </style>
+
+    <style name="AppTheme.PickerDarkCaixa">
+        <item name="android:textColorPrimary">@color/cinza_total</item>
+        <item name="android:textColor">@color/cinza_total</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+        <item name="colorControlNormal">@color/cinza_total</item>
+    </style>
+
+    <style name="AppTheme.PickerDarkCaixaFiltroCompras">
+        <item name="android:textColorPrimary">@color/cinza_total</item>
+        <item name="android:textColor">@color/cinza_total</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+        <item name="colorControlNormal">@color/cinza_total</item>
+    </style>
+
+    <style name="MyMaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Add attributes here -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
+    </style>
+    <!--To fix rendering in preview -->
+    <style name="AppTextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="SwitchTheme" parent="AppTheme">
+        <item name="colorControlActivated">@color/laranjacaixa</item>
+        <!-- Bloqueado
+        <item name="android:colorForeground">@color/laranja_fundo_switch</item>
+        <item name="thumbTint">@color/laranjacaixa</item>
+        <item name="trackTint">@color/laranja_fundo_switch</item>
+        -->
+    </style>
+
+    <style name="cef_titulo">
+        <item name="android:textSize">
+            15sp
+        </item>
+        <item name="android:textColor">
+            @color/azulTitcaixa
+        </item>
+        <item name="android:textStyle">
+            bold
+        </item>
+    </style>
+
+    <style name="cef_subtitulo">
+        <item name="android:textSize">
+            12sp
+        </item>
+        <item name="android:textColor">
+            @color/cinzaIdcaixa
+        </item>
+
+    </style>
+
+    <style name="CustomTabTexAppearance" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+    <style name="Base.Widget.Design.TabLayout" parent="@android:style/Theme.Holo">
+        <item name="android:actionBarTabTextStyle">@style/My.TabText.Style</item>
+    </style>
+    <style name="My.TabText.Style" parent="@android:style/Widget.Holo.ActionBar.TabText">
+        <item name="textAllCaps">false</item>
+    </style>
+    <style name="MessageTitleStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/cinzaescuro</item>
+    </style>
+
+    <style name="MessageContentStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/cinza_total</item>
+    </style>
+    <style name="MessageDateStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/cinza_total</item>
+    </style>
+    <style name="ButtonPushStyleCategoria1" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria2" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/verde_card</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria3" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/mais_milionaria_media</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria4" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">#D4B44B</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria5" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/vermelho_dialog</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+</resources>

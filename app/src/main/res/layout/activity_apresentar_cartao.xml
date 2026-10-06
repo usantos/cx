@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundoFormaPagamento"
+    tools:context=".view.activity.ConfirmarCartaoActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/app_bar_degrade_pesquisa" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+        <TextView
+            android:id="@+id/textoConfirmarCartao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirmarDados"
+            android:textColor="@color/azul_alterar"
+            android:textSize="12sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gl_toolbar" />
+
+        <TextView
+            android:id="@+id/textoMensagemConfirmar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/confirmarDados"
+            android:textColor="@color/cinzaescuro"
+            android:textSize="13sp"
+            android:fontFamily="@font/font_caixa_std"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textoConfirmarCartao"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"/>
+
+        <FrameLayout
+            android:id="@+id/fragmentConfirmarCartao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textoMensagemConfirmar">
+
+            <include layout="@layout/fragment_cartao_credito"/>
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btnIncluirCodigo"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:background="@drawable/button_rounded_verdeazul"
+            android:text="@string/incluirCodigo"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            android:textColor="@color/branco"
+            android:textSize="17sp"
+            android:fontFamily="@font/caixa_std_bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmarCartao"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

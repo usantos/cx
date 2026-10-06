@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    tools:context="br.gov.caixa.loterias.apostas.view.fragment.ConfiguracaoRapidaoFragment3">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_pm_titulo_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/conf_rapd_valor_max_aposta"
+            android:textColor="@color/verde_card"
+            android:textSize="20sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_pm_desc_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:fontFamily="@font/caixa_std_regular"
+            tools:text="@string/conf_rapd_escolha_max_aposta"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_pm_titulo_max" />
+
+        <LinearLayout
+            android:id="@+id/cl_val_max_btns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pm_desc_max">
+
+            <Button
+                android:id="@+id/btn_vl_max_1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_estilo_valores_rapidao"
+                tools:text="130"
+                android:textColor="@drawable/btn_text_color"
+                android:fontFamily="@font/caixa_std_bold" />
+
+            <Button
+                android:id="@+id/btn_vl_max_2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_estilo_valores_rapidao"
+                tools:text="160"
+                android:textColor="@drawable/btn_text_color"
+                android:fontFamily="@font/caixa_std_bold"/>
+
+            <Button
+                android:id="@+id/btn_vl_max_3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_estilo_valores_rapidao"
+                tools:text="180"
+                android:textColor="@drawable/btn_text_color"
+                android:fontFamily="@font/caixa_std_bold" />
+
+            <Button
+                android:id="@+id/btn_vl_max_4"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_estilo_valores_rapidao"
+                android:text="@string/tres_pontos"
+                android:textColor="@drawable/btn_text_color"
+                android:fontFamily="@font/caixa_std_bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_val_selec_desc_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/valor_selecionado"
+            android:textSize="15sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_val_max_btns" />
+
+        <TextView
+            android:id="@+id/tv_val_selec_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/r_130_00"
+            android:textColor="@color/amareloQueimado"
+            android:textSize="15sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_val_selec_desc_max" />
+
+        <View
+            android:id="@+id/v_div_1"
+            android:layout_width="150dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/cinzaclaro"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_val_selec_max" />
+
+        <TextView
+            android:id="@+id/tv_pm_titulo_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/conf_rapd_valor_min_aposta"
+            android:textColor="@color/verde_card"
+            android:textSize="20sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_div_1" />
+
+        <TextView
+            android:id="@+id/tv_pm_desc_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            tools:text="@string/conf_rapd_escolha_max_aposta"
+            android:textSize="15sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_pm_titulo_min" />
+
+        <LinearLayout
+            android:id="@+id/cl_val_min_btns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pm_desc_min">
+
+            <Button
+                android:id="@+id/btn_vl_min_1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_estilo_valores_rapidao"
+                tools:text="130"
+                android:textColor="@drawable/btn_text_color"
+                android:fontFamily="@font/caixa_std_bold" />
+
+            <Button
+                android:id="@+id/btn_vl_min_2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_estilo_valores_rapidao"
+                tools:text="160"
+                android:textColor="@drawable/btn_text_color"
+                android:fontFamily="@font/caixa_std_bold" />
+
+            <Button
+                android:id="@+id/btn_vl_min_3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_estilo_valores_rapidao"
+                tools:text="180"
+                android:textColor="@drawable/btn_text_color"
+                android:fontFamily="@font/caixa_std_bold" />
+
+            <Button
+                android:id="@+id/btn_vl_min_4"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_estilo_valores_rapidao"
+                android:text="@string/tres_pontos"
+                android:textColor="@drawable/btn_text_color"
+                android:fontFamily="@font/caixa_std_bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_val_selec_desc_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/valor_selecionado"
+            android:textSize="15sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_val_min_btns" />
+
+        <TextView
+            android:id="@+id/tv_val_selec_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/r_130_00"
+            android:textColor="@color/amareloQueimado"
+            android:textSize="15sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_val_selec_desc_min" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/v_div_bottom"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_modalidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/futura_std_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/placeholder_mega_sena" />
+
+        <TextView
+            android:id="@+id/tv_mes_da_sorte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_modalidade"
+            tools:text="@string/placeholder_julho" />
+
+        <TextView
+            android:id="@+id/tv_numeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintEnd_toStartOf="@id/ib_excluir"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_mes_da_sorte"
+            tools:text="@string/placeholder_prognosticos" />
+
+        <RelativeLayout
+            android:id="@+id/trevosRl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_numeros">
+
+            <TextView
+                android:id="@+id/tvTrevos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/trevos_"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_container_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_mes_da_sorte"/>
+
+        <ImageView
+            android:id="@+id/iv_teimosinha"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:background="@color/transparente"
+            android:src="@drawable/ic_teimosinha"
+            android:tint="@color/verde_card"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tv_modalidade"
+            app:layout_constraintStart_toEndOf="@id/tv_modalidade"
+            app:layout_constraintTop_toTopOf="@id/tv_modalidade" />
+
+        <ImageButton
+            android:id="@+id/ib_excluir"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/transparente"
+            android:src="@drawable/ic_icone_lixeira_verde"
+            android:tint="@color/verde_card"
+            app:layout_constraintBottom_toBottomOf="@id/tv_modalidade"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_modalidade" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/v_div_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cinzaclaro"
+        app:layout_constraintTop_toBottomOf="@id/cl_row" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

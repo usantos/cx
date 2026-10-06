@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="mkp_rodape_texto">#3F4B52</color>
+    <color name="mkp_rodape_desativado">#D0E0E5</color>
+    <color name="mkp_rodape_divisor">#B6CAD2</color>
+    <string name="mkp_valor_aposta">Valor dessa aposta</string>
+    <string name="mkp_total_carrinho">Total do carrinho</string>
+    <string name="mkp_diminuir_cotas">Diminuir quantidade de cotas</string>
+    <string name="mkp_aumentar_cotas">Aumentar quantidade de cotas</string>
+    <string name="mkp_carrinho_quantidade">Carrinho de apostas, %1$s itens</string>
+    <string name="mkp_quantidade_cotas">Quantidade de Cotas</string>
+    <string name="mkp_adicionar_carrinho">Adicionar ao carrinho</string>
+</resources>

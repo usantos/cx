@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row_partida_lotogol"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="28dp">
+
+    <br.gov.caixa.loterias.apostas.view.custom.ItemEquipeViewLotogol
+        android:id="@+id/lotogol_time_um"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_toStartOf="@+id/lotogol_versus" />
+
+    <ImageView
+        android:id="@+id/lotogol_versus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/lotogol_time_um"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/time_versus_azul" />
+
+    <br.gov.caixa.loterias.apostas.view.custom.ItemEquipeViewLotogol
+        android:id="@+id/lotogol_time_dois"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/lotogol_time_um"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/lotogol_time_um"
+        android:layout_marginEnd="5dp"
+        android:layout_toEndOf="@+id/lotogol_versus" />
+</RelativeLayout>

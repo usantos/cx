@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="jr_titulo">Jogo responsável</string>
+    <string name="jr_titulo_maiusculo">Jogo responsável</string>
+    <string name="jr_aprender_regras">Para o Jogo continuar divertido é preciso _aprender as regras_.</string>
+    <string name="jr_principios">Princípios do Jogo</string>
+    <string name="jr_conheca">Conheça</string>
+    <string name="jr_o_apostador">O apostador</string>
+    <string name="jr_desc_menu_trevo">Prevenção e tratamento aos danos relacionados com jogos.</string>
+
+    <!-- Conheça -->
+    <string name="jr_conheca_o_jogo">O JOGO RESPONSÁVEL</string>
+    <string name="jr_conheca_acoes">O Jogo Responsável é um conjunto de ações adotado por quem administra loterias e apostas com o objetivo de:</string>
+    <string name="jr_conheca_acao_1">Evitar que menores de 18 anos façam apostas.</string>
+    <string name="jr_conheca_acao_2">Orientar sobre prevenção e tratamento aos danos relacionados com jogos.</string>
+    <string name="jr_conheca_alem_disso">Além disso, o _Jogo Responsável_ pode ser encarado como as práticas de Responsabilidade Social Corporativa, com orientações segmentadas para a indústria de jogos, loterias e apostas.</string>
+    <string name="jr_conheca_label_saiba_mais">Quer obter mais informações ou até mesmo descobrir que tipo de jogador você é?</string>
+    <string name="jr_conheca_btn_saiba_mais">Saiba mais</string>
+    <string name="jr_endereco">http://www.caixa.gov.br/jogo-responsavel/Paginas/default.aspx</string>
+
+    <!-- Princípios -->
+    <string name="jr_principios_tit">PROGRAMA DO JOGO RESPONSÁVEL</string>
+    <string name="jr_principios_cert">A CAIXA possui certificação em _Jogo Responsável_ emitida pela WLA - World Lottery Association (Associação mundial de Loterias), evidenciando seu compromisso com as melhores práticas de governança em Loterias.</string>
+    <string name="jr_principios_niveis">A Certificação do Jogo Responsável emitida pela WLA possui quatro níveis, de acordo com o enquadramento da organização no programa, são elas:</string>
+    <string name="jr_principios_nvl_1">Nível 1</string>
+    <string name="jr_principios_nvl_1_desc">Ser comprometida.</string>
+    <string name="jr_principios_nvl_2">Nível 2</string>
+    <string name="jr_principios_nvl_2_desc">Fazer autoavaliações e análise de lacunas.</string>
+    <string name="jr_principios_nvl_3">Nível 3</string>
+    <string name="jr_principios_nvl_3_desc">Planejar e implementar boas práticas.</string>
+    <string name="jr_principios_nvl_3_caixa">NÍVEL CAIXA</string>
+    <string name="jr_principios_nvl_4">Nível 4</string>
+    <string name="jr_principios_nvl_4_desc">Melhorar continuamente.</string>
+    <string name="jr_principios_10_elemen">OS 10 ELEMENTOS DO JOGO RESPONSÁVEL DA CAIXA</string>
+
+    <!-- O Apostador -->
+    <string name="jr_apostador_caracteristicas">PRINCIPAIS CARACTERÍSTICAS DO JOGADOR RESPONSÁVEL</string>
+    <string name="jr_apostador_1">1.</string>
+    <string name="jr_apostador_2">2.</string>
+    <string name="jr_apostador_3">3.</string>
+    <string name="jr_apostador_4">4.</string>
+    <string name="jr_apostador_5">5.</string>
+    <string name="jr_apostador_6">6.</string>
+    <string name="jr_apostador_7">7.</string>
+    <string name="jr_apostador_8">8.</string>
+    <string name="jr_apostador_carac_1">Tem informações sobre as reais probabilidades de ganhar ou perder;</string>
+    <string name="jr_apostador_carac_2">Desfruta das experiências de apostar em condições de baixo risco;</string>
+    <string name="jr_apostador_carac_3">Aposta para se divertir, não somente para ganhar dinheiro ou afastar problemas;</string>
+    <string name="jr_apostador_carac_4">Não tenta perseguir ou recuperar as perdas;</string>
+    <string name="jr_apostador_carac_5">Não pede dinheiro emprestado para jogar;</string>
+    <string name="jr_apostador_carac_6">Não permite que o jogo afete as suas relações com a família e os amigos;</string>
+    <string name="jr_apostador_carac_7">Seu hábito de apostar é do conhecimento de amigos e parentes;</string>
+    <string name="jr_apostador_carac_8">Não destina tempo e/ou dinheiro que deveria ter destinação diferente das loterias, nunca usando o dinheiro destinado às despesas mensais, renda da casa ou alimentação.</string>
+
+    <!-- Cards Conheca -->
+    <string name="jr_conheca_tit_card_1">Econômico</string>
+    <string name="jr_conheca_desc_card_1">Assegurar o desenvolvimento econômico, fornecendo ao público produtos lotéricos seguros e confiáveis.</string>
+    <string name="jr_conheca_tit_card_2">Social</string>
+    <string name="jr_conheca_desc_card_2">Angariar fundos para as boas causas e contribuir com os programas sociais do Governo Federal. Prevenir o Jogo Patológico e proteger pessoas vulneráveis como os menores de idade.</string>
+    <string name="jr_conheca_tit_card_3">Ambiental</string>
+    <string name="jr_conheca_desc_card_3">Minimizar o impacto ambiental.</string>
+    <!-- Cards Princípios -->
+    <string name="jr_principios_tit_card_1">1. Pesquisa</string>
+    <string name="jr_principios_desc_card_1">Apoiar e divulgar pesquisas relacionadas ao Jogo Responsável sempre em constante atualização.</string>
+    <string name="jr_principios_tit_card_2">2. Empregados</string>
+    <string name="jr_principios_desc_card_2">Capacitar todos os colaboradores seguindo as melhores práticas mundiais.</string>
+    <string name="jr_principios_tit_card_3">3. Revendedores</string>
+    <string name="jr_principios_desc_card_3">Capacitar os revendedores de sua organização de acordo com o Jogo Responsável.</string>
+    <string name="jr_principios_tit_card_4">4. Design</string>
+    <string name="jr_principios_desc_card_4"> Investir em design de jogos voltado exclusivamente para o público adulto.</string>
+    <string name="jr_principios_tit_card_5">5. Jogos Remotos</string>
+    <string name="jr_principios_desc_card_5">Proteger apostadores que usam meios digitais, como tablets, laptops ou smartphones considerando as melhores práticas mundiais.</string>
+    <string name="jr_principios_tit_card_6">6. Comunicação</string>
+    <string name="jr_principios_desc_card_6">Divulgar peças publicitárias, de comunicação ou marketing que falem do jogo consciente.</string>
+    <string name="jr_principios_tit_card_7">7. Educação</string>
+    <string name="jr_principios_desc_card_7">Informar os riscos e danos do vício em jogos.</string>
+    <string name="jr_principios_tit_card_8">8. Orientação</string>
+    <string name="jr_principios_desc_card_8">Oferecer aos jogadores e público, informações sobre tratamentos ao jogo compulsivo.</string>
+    <string name="jr_principios_tit_card_9">9. Identificação</string>
+    <string name="jr_principios_desc_card_9">Identificar grupos de interesses, beneficiados ou não pelo programa de Jogo Responsável para reconhecer a melhor forma de integração desses grupos ao programa.</string>
+    <string name="jr_principios_tit_card_10">10. Avaliação</string>
+    <string name="jr_principios_desc_card_10">Monitorar e avaliar as ações do programa Jogo Responsável de forma contínua considerando indicadores de desempenho.</string>
+
+    <!-- Bottom Sheet Ajuda -->
+    <string name="jr_bs_titulo">ONDE PROCURAR AJUDA?</string>
+    <string name="jr_bs_desc">Se você precisa de orientação de profissionais para auxiliar no tratamento de doenças relacionadas aos jogos, relacionamos abaixo os contatos de algumas entidades que podem prestar informações e atendimento. Não deixe de procurar ajuda!</string>
+    <string name="jr_bs_caixa_titulo"><li>Telefones atuais:</li></string>
+    <string name="jr_bs_caixa_tel">_Alô CAIXA:_</string>
+    <string name="jr_bs_caixa_tel_1"><u>4004 0104</u> - Capitais e Regiões Metropolitanas</string>
+    <string name="jr_bs_caixa_tel_2"><u>0800 104 0104</u> - Demais regiões</string>
+    <string name="jr_bs_op_6">Opção 6 (Loterias)</string>
+    <string name="jr_bs_op_2">Opção 2 (Jogo Responsável)</string>
+    <string name="jr_caps_titulo"><li><b>Centros de Atenção Psicossocial do Ministério da Saúde - CAPS</b></li></string>
+    <string name="jr_caps_url">https://sage.saude.gov.br/paineis/planoCrack/lista_caps.php?output=html&amp;%20-</string>
+    <string name="jr_caps_site"><u>Clique aqui e localize uma unidade mais próxima</u></string>
+    <string name="jr_bs_proamjo"><li>PROAMJO (Programa Ambulatorial do Jogo Patológico do Hospital das Clínicas do Instituto de Psiquiatria do HCFMUSP)</li></string>
+    <string name="jr_bs_proamjo_end">Rua Dr. Ovídio Pires de Campos, 785 - Cerqueira César - São Paulo - SP</string>
+    <string name="jr_bs_proamjo_tels">Telefones: <u>(11) 2661-7805</u> | <u>(11) 2307-78052</u></string>
+    <string name="jr_bs_proamjo_email"><u>proamjo.secretaria@gmail.com</u></string>
+    <string name="jr_bs_avb"><li>Associação Viver Bem</li></string>
+    <string name="jr_bs_avb_end">Rua Artur de Azevedo, 147 - Cerqueira César - São Paulo - SP</string>
+    <string name="jr_bs_avb_tel">Telefone: <u>(11) 2307-7804</u></string>
+    <string name="jr_bs_avb_email"><u>contato@associacaoviverbem.org.br</u></string>
+    <string name="jr_bs_proad"><li><b>PROAD</b> (Programa de Orientação e Atendimento a Dependentes) USP (Universidade Federal de São Paulo)</li></string>
+    <string name="jr_bs_proad_end">Av. Ascendino Reis, 763 - Vila Clementino - São Paulo - SP</string>
+    <string name="jr_bs_proad_tels">Telefones: <u>(11) 5579-1543</u> | <u>(11) 94147-0763</u></string>
+    <string name="jr_bs_proad_email"><u>mpm_fto@uol.com.br</u></string>
+    <string name="jr_bs_scm"><li>Santa Casa de Misericórdia</li></string>
+    <string name="jr_bs_scm_end">Rua Santa Luzia, 206 - Centro - Rio de Janeiro - RJ</string>
+    <string name="jr_bs_scm_tel">Telefones: <u>(21) 2533-0118</u></string>
+    <string name="jr_ja_titulo"><li>Jogadores Anônimos</li></string>
+    <string name="jr_ja_tels">Telefones: <u>(21) 99477-1813</u> | <u>(11)99571-6942</u></string>
+    <string name="jr_ja_site"><u>www.jogadoresanonimos.com.br</u></string>
+    <string name="jr_ja_url">https://www.jogadoresanonimos.com.br</string>
+
+    <!-- Eventos do Firebase-->
+    <string name="evento_jr_aba_1">ENTROU_JR_CONHECA</string>
+    <string name="evento_jr_aba_2">ENTROU_JR_PRINCIPIOS</string>
+    <string name="evento_jr_aba_3">ENTROU_JR_APOSTADOR</string>
+    <string name="evento_jr_saiba_mais">ENTROU_JR_SAIBA_MAIS</string>
+    <string name="evento_jr_duvida">ENTROU_JR_DUVIDA</string>
+
+</resources>

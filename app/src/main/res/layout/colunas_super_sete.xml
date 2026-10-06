@@ -1,0 +1,113 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_super_sete_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/branco"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/toolBar">
+
+    <TextView
+        android:id="@+id/tv_colunas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/super_sete_claro_mkp"
+        android:fontFamily="@font/caixa_std_bold"
+        android:padding="10dp"
+        android:text="@string/colunas"
+        android:textAlignment="center"
+        android:textColor="@color/super_sete_letra_mkp"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_numeros_colunas_super_sete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/branco"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/tv_colunas">
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_text_view_colunas"
+            android:fontFamily="@font/futura_std_bold"
+            android:gravity="center"
+            android:text="@string/_1"
+            android:textColor="@color/branco" />
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_text_view_colunas"
+            android:fontFamily="@font/futura_std_bold"
+            android:gravity="center"
+            android:text="@string/_2"
+            android:textColor="@color/branco" />
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_text_view_colunas"
+            android:fontFamily="@font/futura_std_bold"
+            android:gravity="center"
+            android:text="@string/_3"
+            android:textColor="@color/branco" />
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_text_view_colunas"
+            android:fontFamily="@font/futura_std_bold"
+            android:gravity="center"
+            android:text="@string/_4"
+            android:textColor="@color/branco" />
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_text_view_colunas"
+            android:fontFamily="@font/futura_std_bold"
+            android:gravity="center"
+            android:text="@string/_5"
+            android:textColor="@color/branco" />
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_text_view_colunas"
+            android:fontFamily="@font/futura_std_bold"
+            android:gravity="center"
+            android:text="@string/_6"
+            android:textColor="@color/branco" />
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_text_view_colunas"
+            android:fontFamily="@font/futura_std_bold"
+            android:gravity="center"
+            android:text="@string/_7"
+            android:textColor="@color/branco" />
+        </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

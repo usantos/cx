@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/topoModalidadeResultadoLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/mega_verde_claro_mkp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/fundoBackgroundTrapezeResultadoLinearLayout"
+            android:layout_width="90dp"
+            android:layout_height="56dp">
+
+            <ImageView
+                android:id="@+id/ivTrevoResultado"
+                android:layout_width="22sp"
+                android:layout_height="22dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/trevo" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tituloModalidadeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/futura_std_bold"
+            android:textColor="@color/branco"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imgTagBolao"-->
+<!--            android:layout_width="56dp"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:src="@drawable/ic_tag_bolao_outline"-->
+<!--            android:visibility="gone" />-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/clTopoResultadoPremio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mega_verde_escuro_mkp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvPodeComemorar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/label_pode_comemorar"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"/>
+
+        <TextView
+            android:id="@+id/tvPremioTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:lineSpacingExtra="10dp"
+            android:text="@string/label_voce_foi_premiado"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="20.1sp"
+            android:fontFamily="@font/caixa_std_bold" />
+
+        <TextView
+            android:id="@+id/nsbBilhete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:lineSpacingExtra="10dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="16.1sp"
+            android:fontFamily="@font/caixa_std_bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/premioInfoLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mega_verde_escuro_mkp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/premioGanhoLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/listaFaixaPremiacaoLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/cabecalhoListaFaixaPremiacaoLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="12">
+
+                    <TextView
+                        android:id="@+id/concursoTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.3"
+                        android:text="@string/label_concurso"
+                        android:textColor="@color/branco"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:textSize="@dimen/text_size_header" />
+
+                    <TextView
+                        android:id="@+id/situacaoTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.5"
+                        android:text="@string/situaco"
+                        android:textColor="@color/branco"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:textSize="@dimen/text_size_header" />
+
+                    <TextView
+                        android:id="@+id/faixaPremiacaoTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.4"
+                        android:text="@string/faixa"
+                        android:textColor="@color/branco"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:textSize="@dimen/text_size_header" />
+
+                    <TextView
+                        android:id="@+id/quantidadePremiacaoTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Qtde"
+                        android:textColor="@color/branco"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:textSize="@dimen/text_size_header" />
+
+                    <TextView
+                        android:id="@+id/sorteioTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.8"
+                        android:text="@string/title_sorteio"
+                        android:textColor="@color/branco"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:textSize="@dimen/text_size_header" />
+
+                    <TextView
+                        android:id="@+id/premiacaoTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.5"
+                        android:text="@string/valor"
+                        android:textColor="@color/branco"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:textSize="@dimen/text_size_header" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cabecalhoListaFaixaPremiacaoBolao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="12"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tvFaixaPremiacao"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:text="Faixa de Premiação"
+                        android:textColor="@color/branco"
+                        android:gravity="top|center_horizontal"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:textSize="@dimen/text_size_header" />
+
+                    <TextView
+                        android:id="@+id/tvValorPremioCota"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="Valor do Prêmio\n por cota"
+                        android:textColor="@color/branco"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:textSize="@dimen/text_size_header" />
+
+                    <TextView
+                        android:id="@+id/tvValorPremioLiquido"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="Valor Total Líquido\ndo Prêmio"
+                        android:textColor="@color/branco"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:textSize="@dimen/text_size_header" />
+
+                </LinearLayout>
+
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
+                    android:id="@+id/listaFaixaPremiacaoExpandableHeightRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:clickable="false"
+                    android:nestedScrollingEnabled="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+            android:id="@+id/talvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dadosModalidadeLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/branco"
+        android:orientation="vertical"
+        tools:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clVerDetalheAposta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:background="@drawable/rounded_inline"
+            android:layout_alignStart="@id/quantidadeApostadasTxt"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/ivDetalheAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_lupa_detalhe_aposta"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvDetalheAposta"/>
+
+            <TextView
+                android:id="@+id/tvDetalheAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ver_detalhe_da_aposta"
+                android:textColor="@color/milionaria_escuro_mkp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:layout_marginStart="16sp"
+                app:layout_constraintStart_toEndOf="@+id/ivDetalheAposta"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_concurso_atual"
+                android:textColor="@color/cinza"
+                android:textSize="14.2sp"
+                android:fontFamily="@font/caixa_std_bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="115dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="195dp"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/label_estimativa_de_premio"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/cinza"
+                    android:fontFamily="@font/caixa_std_bold" />
+
+                <TextView
+                    android:id="@+id/valorEstimativaConcursoAtualTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/cinza"
+                    android:fontFamily="@font/caixa_std_regular"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="78dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/label_encerramento_apostas"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/cinza"
+                        android:textSize="14.2sp"
+                        android:fontFamily="@font/caixa_std_bold"/>
+
+                    <TextView
+                        android:id="@+id/proximoSorteioTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textStart"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/cinza"
+                        android:fontFamily="@font/caixa_std_regular"
+                        android:textSize="14.2sp" />
+
+                    <Button
+                        android:id="@+id/botaoAposteAgora"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/button_white_with_border_disabled"
+                        android:backgroundTint="#3A485B"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14.2sp"
+                        android:textAlignment="center"
+                        tools:text="@string/label_aposte_agora"
+                        android:singleLine="true"
+                        android:fontFamily="@font/caixa_std_regular"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/branco"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layoutItemDetalheDuvida"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:clickable="false"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layoutCabecalhoDuvidaDetalhe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textDuvidaDetalhe"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/cinza"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="18dp"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="center_vertical|end">
+
+                <ImageView
+                    android:id="@+id/imageDuvidaDetalhe"
+                    android:layout_width="10dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/open_close_image_shape_23" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutTextDetalhe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="19dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textDetalhe"
+                android:fontFamily="@font/caixa_std_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="18dp"
+                android:textColor="@color/cinza"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

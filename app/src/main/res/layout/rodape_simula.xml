@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/branco"
+    android:orientation="vertical">
+
+    <!-- Linha dos botões -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCompletar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/aposta_aleatoria"
+                android:textAllCaps="false"
+                android:textColor="@color/text_rodape"
+                android:fontFamily="@font/caixa_std_regular"
+                android:backgroundTint="@color/button_rodape"
+                app:strokeColor="@color/text_rodape"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13sp"
+                app:strokeWidth="1dp"
+                app:cornerRadius="4dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/favoritar_aposta"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                app:icon="@drawable/ic_star_simula"
+                app:iconGravity="start"
+                app:iconPadding="2dp"
+                app:iconTint="@null"
+                android:text="Favoritar aposta"
+                android:textAllCaps="false"
+                android:textColor="@color/cinza110"
+                android:fontFamily="@font/caixa_std_regular"
+                android:backgroundTint="@color/branco"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13sp"
+                app:strokeColor="@color/cinza110"
+                app:strokeWidth="1dp"
+                app:cornerRadius="4dp" />
+
+        </FrameLayout>
+
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="1dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLimpar"
+            android:layout_width="130dp"
+            android:layout_height="52dp"
+            android:text="@string/label_limpar"
+            android:textColor="@color/text_rodape"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/button_rodape"
+            app:strokeColor="@color/text_rodape"
+            app:strokeWidth="1dp"
+            app:cornerRadius="4dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="13sp"
+            android:enabled="false"
+            android:fontFamily="@font/caixa_std_regular"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAdicionarCarrinho"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/adicionar_ao_carrinho"
+            android:textColor="@color/text_rodape"
+            android:textAllCaps="false"
+            android:enabled="false"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="13sp"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:backgroundTint="@color/button_rodape"
+            app:strokeColor="@color/text_rodape"
+            app:strokeWidth="1dp"
+            app:cornerRadius="4dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNextStep"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:text="Escolher"
+            android:textColor="@color/text_rodape"
+            android:textAllCaps="false"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:backgroundTint="@color/button_rodape"
+            app:strokeColor="@color/text_rodape"
+            app:strokeWidth="1dp"
+            app:cornerRadius="4dp"/>
+
+    </FrameLayout>
+
+    <!-- Rodapé -->
+
+    <LinearLayout
+        android:id="@+id/layoutRodape"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layoutValorAposta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:focusable="true"
+            android:gravity="center"
+            android:importantForAccessibility="yes"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valor dessa aposta"
+                android:textColor="@color/cinza110"
+                android:importantForAccessibility="no"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/tvValorAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_bold"
+                android:text="R$ 3,00"
+                android:importantForAccessibility="no"
+                android:textColor="@color/cinza110"
+                android:textSize="14sp"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:background="@color/cinza70" />
+
+        <LinearLayout
+            android:id="@+id/layoutValorCarrinho"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:focusable="true"
+            android:importantForAccessibility="yes"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total do carrinho"
+                android:importantForAccessibility="no"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/cinza110"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/tvTotalCarrinho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R$ 0,00"
+                android:importantForAccessibility="no"
+                android:textColor="@color/cinza110"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:background="@color/cinza70" />
+
+        <FrameLayout
+            android:id="@+id/frameCarrinho"
+            android:layout_width="56dp"
+            android:contentDescription="@string/carrinho_apostas"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivCarrinho"
+                android:layout_width="36dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_cart" />
+
+            <View
+                android:id="@+id/circuloQuantidade"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="end|top"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_shape_oval"
+                android:backgroundTint="#FDAB01"
+                />
+
+            <TextView
+                android:id="@+id/tvQuantidadeApostas"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="end|top"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/cinza110"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

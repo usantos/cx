@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay"
+    android:background="@color/colorAccent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="start">
+
+        <!-- PADRÃO: botão voltar -->
+            <ImageButton
+                android:id="@+id/customButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparente"
+                android:src="@drawable/ic_arrow_back"
+                android:layout_marginEnd="16dp"
+                android:contentDescription=""
+                android:focusable="true"
+                android:importantForAccessibility="yes"/>
+
+            <TextView
+                android:id="@+id/textCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/biometria_popup_titulo"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:layout_marginEnd="12dp" />
+
+            <EditText
+                android:id="@+id/et_pesquisar"
+                android:layout_width="250dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/resultados_placeholder_toolbar"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/black"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:focusableInTouchMode="true"
+                android:inputType="number"
+                android:textColorHint="@color/mp_darker_gray"
+                android:textSize="14sp"
+                android:background="@drawable/rounded_edittext"
+                android:visibility="gone"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- EXTRA: dúvidas -->
+            <ImageButton
+                android:id="@+id/ib_duvidas"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:backgroundTint="@color/transparente"
+                android:src="@drawable/icon_duvida2"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"/>
+
+            <!-- EXTRA: lupa -->
+            <ImageButton
+                android:id="@+id/ib_pesquisar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/transparente"
+                android:src="@drawable/ic_lupa"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/ib_excluir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/transparente"
+                android:src="@drawable/trash"
+                android:visibility="gone"
+                app:tint="@color/branco" />
+
+            <!-- EXTRA: favoritar -->
+            <ImageButton
+                android:id="@+id/ib_favoritar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/transparente"
+                android:src="@drawable/ic_estrela_20"
+                android:visibility="gone"
+                app:tint="@color/branco" />
+
+            <!-- EXTRA: filtrar + badge -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp">
+
+                <ImageButton
+                    android:id="@+id/ib_filtrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/transparente"
+                    android:src="@drawable/ic_funil"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_badge"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/btn_circulo_verde_filled"
+                    android:backgroundTint="@color/mp_color_red_error"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:textSize="8sp"
+                    android:textColor="@color/branco"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/ib_filtrar"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- EXTRA: salvar -->
+            <Button
+                android:id="@+id/btn_salvar_rpd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/transparente"
+                android:textColor="@color/branco"
+                android:text="@string/salvar"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"/>
+
+            <!-- EXTRA: pular -->
+            <Button
+                android:id="@+id/btn_pular_s7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/transparente"
+                android:textColor="@color/branco"
+                android:text="@string/pular"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"/>
+
+            <!-- EXTRA: engrenagem -->
+            <ImageButton
+                android:id="@+id/ib_configuracao_rpd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/transparente"
+                android:src="@drawable/ic_engrenagem"
+                android:visibility="gone"
+                app:tint="@color/branco" />
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+</com.google.android.material.appbar.AppBarLayout>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient_cinza"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/app_bar_principal">
+
+    <include layout="@layout/content_principal_menu_rapido"/>
+    <include layout="@layout/content_principal_menu_rapido_outubro_rosa"/>
+
+    <RelativeLayout
+        android:id="@+id/relativeContentPrincipal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.yarolegovich.discretescrollview.DiscreteScrollView
+            android:id="@+id/home_carousel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="116dp"
+            app:dsv_orientation="horizontal" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textViewHomeMinimumPurchaseValue"
+        style="@style/editTextArialMTTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="2dp"
+        android:textColor="@color/azulescuro"
+        android:textSize="10sp"
+        android:fontFamily="@font/caixa_std_regular"
+        tools:text="valor mínimo da compra: R$0,00"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:paddingBottom="44dp"/>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeBlankView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/textViewHomeMinimumPurchaseValue"
+        android:alpha="0.0"
+        android:background="@color/branco"
+        android:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:theme="@style/Theme.MaterialComponents.Light.Bridge"
+        android:id="@+id/buttonHomeBet"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="88dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="68dp"
+        android:textAllCaps="false"
+        android:textColor="@color/branco"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textSize="16sp"
+        app:cornerRadius="4dp"
+        android:fontFamily="@font/caixa_std_regular"
+        tools:text="Aposta\npor R$ 2,00" />
+
+    <com.google.android.material.button.MaterialButton
+        android:backgroundTint="@color/mega_verde_claro_mkp"
+        android:theme="@style/Theme.MaterialComponents.Light.Bridge"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:id="@+id/buttonHomeBolao"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        app:cornerRadius="4dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="88dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="168dp"
+        android:textAllCaps="false"
+        android:textColor="@color/branco"
+        android:textSize="16sp"
+        android:visibility="visible"
+        android:text=""
+        android:fontFamily="@font/caixa_std_regular" />
+
+    <RelativeLayout
+        android:id="@+id/id_somador_carrinho"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

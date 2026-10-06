@@ -1,0 +1,109 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_card_cartao"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:layout_margin="30dp"
+        android:background="@drawable/degrade_cartao"
+        app:layout_constraintDimensionRatio="H,300:165"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_favoritar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ib_favoritar_cartao"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparente"
+                android:scaleType="center"
+                android:src="@drawable/ic_vector_fav_full"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ib_nao_favorito"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparente"
+                android:scaleType="center"
+                android:src="@drawable/ic_vector_fav_full"
+                android:tint="@color/branco"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/tv_numero_cartao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dp"
+            android:textColor="@color/branco"
+            android:textSize="16sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintEnd_toStartOf="@id/iv_bandeira_cartao"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_bandeira_cartao"
+            tools:text="**** **** **** 4395" />
+
+        <TextView
+            android:id="@+id/tv_data_vencimento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/branco"
+            android:textSize="13sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintEnd_toStartOf="@id/iv_bandeira_cartao"
+            app:layout_constraintStart_toStartOf="@+id/tv_numero_cartao"
+            app:layout_constraintTop_toBottomOf="@id/tv_numero_cartao"
+            tools:text="Venc.: 10/2019" />
+
+        <ImageView
+            android:id="@+id/iv_bandeira_cartao"
+            android:layout_width="70dp"
+            android:layout_height="56dp"
+            android:layout_marginRight="17dp"
+            android:layout_marginBottom="17dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:src="@drawable/ic_visa" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_excluir_cartao"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@color/transparente"
+            android:scaleType="center"
+            android:src="@drawable/ic_icone_lixeira"
+            android:tint="@color/branco"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/iv_selecionado"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:translationY="-5dp"
+        android:translationX="-5dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/cl_card_cartao"
+        app:layout_constraintTop_toTopOf="@+id/cl_card_cartao"
+        app:srcCompat="@drawable/ic_check" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

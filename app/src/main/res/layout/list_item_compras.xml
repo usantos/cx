@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <LinearLayout
+        android:id="@+id/topListItemComprasLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mega_verde_claro_mkp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="13dp"
+            android:paddingVertical="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/TipoPremioListaComprasTextView"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/caixa_std_bold"
+                android:textSize="14.2sp"
+                tools:text="Lotofácil da\nIndependencia" />
+
+            <TextView
+                android:id="@+id/seusNumerosItemListaComprasTextView"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textSize="12.1sp"
+                tools:text="Seus números" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:paddingHorizontal="13dp"
+            android:paddingVertical="15dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dataConcursoListaComprasTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:textSize="14.2sp"
+                    tools:text="25/08/2016" />
+
+                <TextView
+                    android:id="@+id/concursoListaComprasTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:textSize="14.2sp"
+                    tools:text="Conc. 2587" />
+
+                <TextView
+                    android:id="@+id/cotaListaComprasTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:textSize="14.2sp"
+                    tools:text="Cota: 01/05"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_teimosinhas"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:textSize="12.2sp"
+                    tools:text="1 Teimosinha" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/itemComprasContentModalideLinearLayout"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:orientation="vertical"/>
+
+        </LinearLayout>
+
+        <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+            android:id="@+id/talvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/bottomListItemComprasLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@color/verdesenatrevo"
+        android:orientation="horizontal"
+        android:paddingHorizontal="13dp"
+        app:layout_constraintTop_toBottomOf="@+id/topListItemComprasLinearLayout">
+
+        <TextView
+            android:id="@+id/statusResultadoApostaListaComprasTextView"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textSize="14.2sp"
+            tools:text="Confirmada" />
+
+        <Button
+            android:id="@+id/VejaOsResultadosListaComprasButton"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="@string/veja_os_resultados"
+            android:textColor="@color/branco"
+            android:textSize="14.2sp"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_tag_bolao"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/ic_tag_bolao_outline"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

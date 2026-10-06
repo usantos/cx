@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row_time_loteca_resultado"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="17dp"
+    android:paddingBottom="20dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/diaSemanaDataPartidaText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <br.gov.caixa.loterias.apostas.view.custom.ItemEquipeViewResultado
+            android:id="@+id/loteca_time_um"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <br.gov.caixa.loterias.apostas.view.custom.ItemEquipeViewResultado
+            android:id="@+id/loteca_empate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+
+        <br.gov.caixa.loterias.apostas.view.custom.ItemEquipeViewResultado
+            android:id="@+id/loteca_time_dois"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/paginaResultadoLotecaText"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:text="@string/_1_de_14"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        android:textSize="14sp" />
+</LinearLayout>

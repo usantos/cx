@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="14dp"
+    android:background="@color/branco">
+
+    <TextView
+        android:id="@+id/titulo_dialog_itens"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        tools:text="Teimosinha"
+        android:textColor="@color/blue_caixa"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_bold"
+        />
+    <View
+        android:id="@+id/divider_dialog_itens"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="17dp"
+        android:background="@color/cinza70"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/subtitulo_dialog_itens"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/valores_para_apostas_com_2_trevos"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textColor="@color/cinza110"
+        android:textSize="14sp"
+        android:visibility="gone"
+       />
+
+    <ListView
+        android:id="@+id/lista_itens_dialog_itens"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/cinzaclaro"
+        android:scrollbars="none"
+        />
+
+    <LinearLayout
+        android:id="@+id/layout_botoes_padrao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="end"
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/button_negativo_itens"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:textAllCaps="false"
+            android:text="Cancelar"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textColor="@color/cinza110"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:ellipsize="end"/>
+
+        <Button
+            android:id="@+id/button_positivo_itens"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:textAllCaps="false"
+            android:text="Confirmar"
+            android:textSize="16sp"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:textColor="@color/blue_caixa"
+            android:ellipsize="end"
+            />
+    </LinearLayout>
+
+</LinearLayout>

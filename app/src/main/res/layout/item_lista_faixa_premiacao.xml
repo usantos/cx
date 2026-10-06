@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:orientation="horizontal"
+    android:id="@+id/conteudoLinha"
+    android:weightSum="12">
+
+    <TextView
+        android:id="@+id/concursoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/label_concurso"
+        android:layout_gravity="center"
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+    <TextView
+        android:id="@+id/situacaoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.5"
+        android:layout_gravity="center"
+        android:text="@string/situaco"
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+    <TextView
+        android:id="@+id/faixaPremiacaoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:layout_gravity="center"
+        android:text="@string/faixa"
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+    <TextView
+        android:id="@+id/quantidadePremiacaoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:layout_gravity="center"
+        android:text="Qtde"
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+    <TextView
+        android:id="@+id/sorteioTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:layout_gravity="center"
+        android:text="@string/title_sorteio"
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+    <TextView
+        android:id="@+id/premiacaoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.5"
+        android:layout_gravity="center"
+        android:text="@string/valor"
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+</LinearLayout>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controllers.QueroNaoQueroActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerQueroNaoQuero"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        android:background="@color/azulFiltro">
+
+        <TextView
+            android:id="@+id/queroNaoQueroTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/numeros_quero"
+            android:textSize="14sp"
+            android:lineHeight="18.9sp"
+            android:textFontWeight="600"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textColor="@color/branco"
+            android:layout_marginLeft="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btnFecharContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_fechar"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/btn_fechar_header"
+                android:layout_marginEnd="7dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/txt_fechar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_fechar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/fechar"
+                android:textColor="@color/branco"
+                android:textSize="14sp"
+                android:lineHeight="18.9sp"
+                android:textFontWeight="600"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_fechar"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvCartelaQueroNaoQuero"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerQueroNaoQuero"
+        app:layout_constraintBottom_toTopOf="@id/botoesContainer"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/botoesContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btnCancelarQueroNaoQuero"
+            android:layout_width="0dp"
+            android:layout_height="31dp"
+            android:background="@drawable/btn_round_outlined"
+            android:text="@string/cancelar"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            android:textColor="@color/blue_caixa"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textSize="12sp"
+            android:lineHeight="16.2sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintBottom_toBottomOf="@+id/botoesContainer"
+            app:layout_constraintEnd_toStartOf="@+id/btnConfirmarQueroNaoQuero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/botoesContainer" />
+        <Button
+            android:id="@+id/btnConfirmarQueroNaoQuero"
+            android:layout_width="0dp"
+            android:layout_height="31dp"
+            android:text="@string/confirmar"
+            android:textColor="@color/branco"
+            android:fontFamily="@font/caixa_std_bold"
+            android:layout_marginEnd="10dp"
+            android:textSize="12sp"
+            android:lineHeight="16.2sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            android:background="@drawable/btn_rounded_blue"
+            app:layout_constraintTop_toTopOf="@+id/botoesContainer"
+            app:layout_constraintStart_toEndOf="@id/btnCancelarQueroNaoQuero"
+            app:layout_constraintBottom_toBottomOf="@+id/botoesContainer"
+            app:layout_constraintEnd_toEndOf="@id/botoesContainer"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

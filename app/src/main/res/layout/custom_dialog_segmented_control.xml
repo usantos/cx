@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_modal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/branco">
+
+    <View
+        android:id="@+id/vw_topo"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/gradiente_titulo_caixa"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="17dp"
+        android:textColor="@color/branco"
+        android:textSize="15.8sp"
+        android:fontFamily="@font/caixa_std_bold"
+        app:layout_constraintBottom_toBottomOf="@+id/vw_topo"
+        app:layout_constraintTop_toTopOf="@+id/vw_topo"
+        tools:text="@string/placeholder_titulo" />
+
+    <TextView
+        android:id="@+id/tv_descricao"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:text="@string/carrinho_fav_segmented_desc"
+        android:textSize="15.8sp"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vw_topo" />
+
+
+    <info.hoang8f.android.segmented.SegmentedGroup
+        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sg_opcoes"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_descricao"
+        segmentedgroup:sc_border_width="2dp"
+        segmentedgroup:sc_corner_radius="5dp"
+        segmentedgroup:sc_tint_color="@color/verde_card">
+
+        <RadioButton
+            android:id="@+id/rb_1"
+            style="@style/RadioButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:lines="2"
+            android:textSize="12dp"
+            android:layout_weight="1"
+            tools:text="@string/placeholder_one"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textColor="@color/branco" />
+
+        <RadioButton
+            android:id="@+id/rb_2"
+            style="@style/RadioButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:lines="2"
+            android:fontFamily="@font/caixa_std_regular"
+            tools:text="@string/placeholder_two" />
+
+        <RadioButton
+            android:id="@+id/rb_3"
+            style="@style/RadioButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:lines="2"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textSize="12dp"
+            android:layout_weight="1"
+            tools:text="@string/placeholder_three" />
+
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_divisao"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/cinza2"
+        app:layout_constraintTop_toBottomOf="@id/sg_opcoes" />
+
+    <Button
+        android:id="@+id/btn_cancelar"
+        android:layout_width="100dp"
+        android:layout_height="55dp"
+        android:background="@color/branco"
+        android:gravity="center"
+        android:text="@string/cancelar"
+        android:textAllCaps="false"
+        android:textColor="@color/cinzaescuro"
+        android:textSize="15.8sp"
+        android:fontFamily="@font/caixa_std_bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_divisao" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:background="@color/branco"
+        android:gravity="center"
+        android:text="@string/carrinho_fav_incluir_carrinho"
+        android:textAllCaps="false"
+        android:textColor="@color/verdeazul"
+        android:textSize="15.8sp"
+        android:fontFamily="@font/caixa_std_bold"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_divisao" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

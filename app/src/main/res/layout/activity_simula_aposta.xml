@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/branco"
+    tools:context=".view.features.volantenovo.activity.SimulaActivity">
+
+    <FrameLayout
+        android:id="@+id/id_fg_barra_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/opcaoOutrosNumerosLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/laranjaLoto"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:layout_marginBottom="1dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_fg_barra_titulo">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/selcioneOutrosNumeros"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/check_box_selected_novo"
+            android:button="@null"
+            android:clickable="false" />
+
+        <TextView
+            android:id="@+id/infoSelecioneOutrosNumeros"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/caixa_std_regular"
+            android:lineSpacingExtra="1dp"
+            android:textColor="#4E4E4E"
+            android:layout_marginBottom="2dp"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_fg_barra_titulo">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolBarLoteca"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/drawer_linha_divisao_bg"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/labelExplicaSuasApostas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="17dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:paddingTop="5dp"
+                android:text="@string/label_suas_apostas_explica"
+                android:textColor="@color/cinza"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/labelTituloLoteca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:paddingTop="8dp"
+                android:text="@string/label_suas_apostas"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/labelExplicaSuasApostas"
+                app:layout_constraintTop_toBottomOf="@id/labelExplicaSuasApostas" />
+
+            <TextView
+                android:id="@+id/labelJogosLoteca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:paddingTop="8dp"
+                android:text="@string/label_jogos"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:paddingLeft="52dp"
+                android:paddingTop="8dp"
+                android:text="@string/label_dois_pontos"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+
+            <TextView
+                android:id="@+id/labelValueJogosLoteca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_bold"
+                android:paddingLeft="65dp"
+                android:paddingTop="6dp"
+                android:text="@string/zero"
+                android:textColor="@color/loteca_claro_mkp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+
+            <TextView
+                android:id="@+id/labelSimplesLoteca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:paddingLeft="95dp"
+                android:paddingTop="8dp"
+                android:text="@string/label_simples"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:paddingLeft="147dp"
+                android:paddingTop="8dp"
+                android:text="@string/label_dois_pontos"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+
+            <TextView
+                android:id="@+id/labelValueSimplesLoteca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_bold"
+                android:paddingLeft="155dp"
+                android:paddingTop="6dp"
+                android:text="@string/zero"
+                android:textColor="@color/loteca_claro_mkp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+
+            <TextView
+                android:id="@+id/labelDuplasLoteca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:paddingLeft="180dp"
+                android:paddingTop="8dp"
+                android:text="@string/label_duplas"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:paddingLeft="227dp"
+                android:paddingTop="8dp"
+                android:text="@string/label_dois_pontos"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+
+            <TextView
+                android:id="@+id/labelValueDuplasLoteca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_bold"
+                android:paddingLeft="232dp"
+                android:paddingTop="6dp"
+                android:text="@string/zero"
+                android:textColor="@color/loteca_claro_mkp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+
+            <TextView
+                android:id="@+id/labelTriplasLoteca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:paddingLeft="260dp"
+                android:paddingTop="8dp"
+                android:text="@string/label_triplas"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:paddingLeft="305dp"
+                android:paddingTop="8dp"
+                android:text="@string/label_dois_pontos"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+
+            <TextView
+                android:id="@+id/labelValueTriplasLoteca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_bold"
+                android:paddingLeft="315dp"
+                android:paddingTop="6dp"
+                android:text="@string/zero"
+                android:textColor="@color/loteca_claro_mkp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerSurpresinha"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/background_surpresinha"
+        android:clipToOutline="true"
+        android:padding="1dp"
+        app:layout_constraintBottom_toTopOf="@id/rodape_simula"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/opcaoOutrosNumerosLayout">
+
+        <FrameLayout
+            android:id="@+id/frameToolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/simulaToolbar"
+                layout="@layout/simula_toolbar"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:id="@+id/lotecaToolbar"
+                layout="@layout/loteca_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutFiltros"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/frameToolbar">
+
+        <FrameLayout
+                android:id="@+id/containerQuantidade"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnQuantidadeNumeros"
+                    android:layout_width="wrap_content"
+                    android:elevation="0dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/caixa_std_semi_bold"
+                    android:minWidth="112dp"
+                    android:padding="4dp"
+                    android:text="6 números"
+                    android:textAllCaps="false"
+                    android:textColor="@color/cinza110"
+                    app:backgroundTint="@color/branco"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_arrow_down"
+                    app:iconGravity="textEnd"
+                    app:iconTint="@color/cinza110" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnQuantidadePalpites"
+                android:layout_width="wrap_content"
+                android:elevation="0dp"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:minWidth="112dp"
+                android:padding="4dp"
+                android:text="15 palpites"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                android:textColor="@color/branco"
+                app:backgroundTint="@color/loteca_claro_mkp"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_arrow_down"
+                app:iconGravity="textEnd"
+                app:iconTint="@color/branco" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnQuantidadeTrevos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:minWidth="100dp"
+                    android:padding="4dp"
+                    android:text="3 trevos"
+                    android:textAllCaps="false"
+                    android:textColor="@color/cinza110"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/branco"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_arrow_down"
+                    app:iconGravity="textEnd"
+                    app:iconTint="@color/cinza110"
+                    app:strokeColor="@color/cinza"
+                    app:strokeWidth="1dp" />
+
+            </FrameLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTeimosinha"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="12dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:minWidth="112dp"
+                android:elevation="0dp"
+                android:padding="4dp"
+                android:text="Teimosinha"
+                android:textAllCaps="false"
+                android:textColor="@color/cinza110"
+                app:backgroundTint="@android:color/white"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_arrow_down"
+                app:iconGravity="textEnd"
+                app:iconTint="@color/cinza110"
+                app:strokeColor="@color/cinza"
+                app:layout_constraintStart_toEndOf="@id/containerQuantidade"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="1dp" />
+
+
+            <TextView
+                android:id="@+id/textInfoEtapa"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center_vertical"
+                android:text="1/2"
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/cinza110"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textSelecionados"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Selecione os números:"
+            android:textColor="@color/cinza110"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutFiltros" />
+
+        <FrameLayout
+            android:id="@+id/fragmentSimularApostas"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textSelecionados" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/rodape_simula"
+        layout="@layout/rodape_simula"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

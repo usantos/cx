@@ -1,0 +1,175 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/background_roudend_vermelho"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/legenda"
+        android:text="Legenda"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textSize="16sp"
+        android:textColor="@android:color/white" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFFFFF"
+        android:layout_marginVertical="10dp"/>
+
+    <!-- Item 1 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:contentDescription="Selecionado"
+            android:background="@drawable/ic_radio_checked"
+            android:backgroundTint="@color/branco" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_roudend_less_branco"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="TIME/UF"
+            android:importantForAccessibility="yes"
+            android:textSize="16sp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textColor="@color/loteca_escuro_mkp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="| Você acertou o palpite"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:paddingStart="6dp"/>
+    </LinearLayout>
+
+    <!-- Item 2 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:contentDescription="Selecionado"
+            android:background="@drawable/ic_radio_checked"
+            android:backgroundTint="@color/branco" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_rouded_border_white"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="TIME/UF"
+            android:textSize="16sp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="| Palpite escolhido e não apurado"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:paddingStart="6dp"/>
+    </LinearLayout>
+
+    <!-- Item 3 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:contentDescription="Selecionado"
+            android:background="@drawable/ic_radio_checked"
+            android:backgroundTint="@color/branco" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="TIME/UF"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="| Palpite escolhido e apurado"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:paddingStart="22dp" />
+    </LinearLayout>
+
+    <!-- Item 4 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:contentDescription="Não Selecionado"
+            android:background="@drawable/ic_radio_unchecked"
+            android:backgroundTint="@color/branco" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="TIME/UF"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="| Palpite não escolhido"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:paddingStart="24dp" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnFechar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/caixa_std_semi_bold"
+        android:text="Fechar"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:background="@android:color/transparent"
+        android:layout_gravity="end"/>
+</LinearLayout>

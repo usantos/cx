@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/subtituloPaginacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/voce_escolheu_x_numeros"
+        android:textColor="@color/milionaria_escuro_mkp"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/numeroPagina"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="1dp"
+        android:text="@string/label_numerico_dois"
+        app:layout_constraintBaseline_toBaselineOf="@id/subtituloPaginacao"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:textColor="@color/milionaria_escuro_mkp"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintTop_toTopOf="@id/subtituloPaginacao"
+        app:layout_constraintEnd_toStartOf="@id/divisorPaginacao"/>
+
+    <TextView
+        android:id="@+id/divisorPaginacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="|"
+        android:textSize="16sp"
+        android:layout_marginEnd="1dp"
+        android:textColor="@color/milionaria_escuro_mkp"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintTop_toTopOf="@id/numeroPagina"
+        app:layout_constraintBottom_toBottomOf="@id/numeroPagina"
+        app:layout_constraintEnd_toStartOf="@id/qtdPagina"
+        />
+
+    <TextView
+        android:id="@+id/qtdPagina"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="24dp"
+        android:text="2"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintBaseline_toBaselineOf="@id/numeroPagina"
+        android:textColor="@color/milionaria_escuro_mkp"
+        app:layout_constraintTop_toTopOf="@id/divisorPaginacao"
+        app:layout_constraintBottom_toBottomOf="@id/divisorPaginacao"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

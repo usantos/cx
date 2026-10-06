@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.RepassesSociaisActivity"
+    tools:showIn="@layout/activity_repasses_sociais">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.64" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="1dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <LinearLayout
+                    android:id="@+id/cardsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/background_gradient_azul">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="yes"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/ttvTituloAno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="40dp"
+                        android:text="@string/em_2017_as_loterias_j_destinaram"
+                        android:importantForAccessibility="no"
+                        android:textAlignment="center"
+                        android:textColor="@color/branco"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/caixa_std_bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="15dp"
+                        android:importantForAccessibility="yes"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textColor="@color/colorLimao"
+                        android:textSize="24sp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:id="@+id/valorRepassesSociais"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="18dp"
+                        android:importantForAccessibility="no"
+                        android:text="@string/para_melhorar_o_pa_s"
+                        android:textAlignment="center"
+                        android:textColor="@color/branco"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:layout_marginBottom="40dp"/>
+
+                </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:importantForAccessibility="yes"
+                            android:focusable="true"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/repassequadro1"
+                                android:backgroundTint="@color/azulLabel"
+                                android:layout_weight="0.5">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_regular"
+                                    android:text="@string/para_cada"
+                                    android:importantForAccessibility="no"
+                                    android:layout_marginTop="18dp"
+                                    android:textAlignment="center"
+                                    android:layout_centerHorizontal="true"
+                                    android:textColor="@color/branco"
+                                    android:id="@+id/textViewRepasseQuadro1"
+                                    android:textSize="16sp"
+                                    />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text="@string/r_1"
+                                    android:importantForAccessibility="no"
+                                    android:layout_marginTop="4dp"
+                                    android:textAlignment="center"
+                                    android:layout_centerHorizontal="true"
+                                    android:textColor="@color/colorLimaoCx"
+                                    android:layout_below="@id/textViewRepasseQuadro1"
+                                    android:id="@+id/textViewRepasseQuadro1val"
+                                    android:textSize="22sp"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/textViewRepasseQuadro1text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_regular"
+                                    android:text="@string/apostados_loterias"
+                                    android:textAlignment="center"
+                                    android:importantForAccessibility="no"
+                                    android:layout_centerHorizontal="true"
+                                    android:paddingHorizontal="16dp"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_below="@id/textViewRepasseQuadro1val"
+                                    android:textColor="@color/branco"
+                                    android:layout_marginBottom="10dp"
+                                    android:textSize="16sp" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/infoRepasses"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:importantForAccessibility="yes"
+                            android:focusable="true"
+                            android:orientation="vertical">
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:importantForAccessibility="no"
+                                android:background="@drawable/repassequadro2"
+                                android:backgroundTint="@color/colorLimaoCx"
+                                >
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text="@string/r_0_48"
+                                    android:importantForAccessibility="no"
+                                    android:layout_marginTop="18dp"
+                                    android:textAlignment="center"
+                                    android:layout_centerHorizontal="true"
+                                    android:textColor="@color/azulLabel"
+                                    android:id="@+id/textViewRepasseQuadro2"
+                                    android:textSize="22sp"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/textViewRepasseQuadro3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_regular"
+                                    android:text="@string/programas_sociais"
+                                    android:textAlignment="center"
+                                    android:importantForAccessibility="no"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:paddingHorizontal="16dp"
+                                    android:layout_below="@id/textViewRepasseQuadro2"
+                                    android:textColor="@color/blackText"
+                                    android:textSize="16sp" />
+
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/textViewInfo"
+                    android:importantForAccessibility="yes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios"
+                    android:textColor="@color/greyText"
+                    android:textSize="18sp"
+                    android:background="@color/bolao_linha"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:padding="16dp"
+                    android:gravity="center"
+                    android:layout_below="@id/cardsContainer"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/branco">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="40dp"
+                        android:src="@drawable/ilustra_repasses" />
+
+                    <View
+                        android:layout_width="230dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/linhaDivisa"></View>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="yes"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/entendaText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="17dp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:text="@string/entenda_como"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/caixa_std_book"
+                        android:importantForAccessibility="no"
+                        android:text="@string/esse_dinheiro_distribu_do"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="120dp"
+                        android:layout_marginTop="23dp"
+                        android:background="@color/cinzaCx"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="76dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:importantForAccessibility="yes"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:importantForAccessibility="yes"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/corEdu"
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewEducacaoValorArrecadado"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_book"
+                                    android:text=""
+                                    android:importantForAccessibility="no"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/greyText"
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewEducacaoUnidadeValor"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:importantForAccessibility="yes"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textViewCulturaValorArrecadado"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text=""
+                                    android:importantForAccessibility="yes"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/corGoiaba"
+                                    android:textSize="20sp" />
+
+                                <TextView
+                                    android:id="@+id/textViewCulturaUnidadeValor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_book"
+                                    android:text=""
+                                    android:importantForAccessibility="no"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/greyText"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="44dp"
+                            android:background="@drawable/icgrouprepasses"
+                            android:backgroundTint="@color/greyText"
+                            android:orientation="horizontal">
+
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textEducacao"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text="@string/educa_o"
+                                    android:importantForAccessibility="no"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/branco"
+                                    android:textSize="14sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/corEdu" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textCultura"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text="@string/cultura"
+                                    android:importantForAccessibility="no"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/branco"
+                                    android:textSize="14sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/corGoiaba" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="120dp"
+                        android:background="@color/cinzaCx"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="76dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:importantForAccessibility="yes"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/corEsp"
+                                    android:importantForAccessibility="yes"
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewEsporteValorArrecadado"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_book"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/greyText"
+                                    android:textSize="12sp"
+                                    android:importantForAccessibility="no"
+                                    android:id="@+id/textViewEsporteUnidadeValor"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:importantForAccessibility="yes"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/corSeg"
+                                    android:importantForAccessibility="yes"
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewSegurancaValorArrecadado"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_book"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/greyText"
+                                    android:importantForAccessibility="no"
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewSegurancaUnidadeValor"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="44dp"
+                            android:background="@drawable/icgrouprepasses"
+                            android:backgroundTint="@color/greyText"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textEsporte"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text="@string/esporte"
+                                    android:importantForAccessibility="no"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/branco"
+                                    android:textSize="14sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/corEsp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textSeguranca"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text="@string/seguran_a"
+                                    android:importantForAccessibility="no"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/branco"
+                                    android:textSize="14sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/corSeg" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="120dp"
+                        android:background="@color/cinzaCx"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="76dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:importantForAccessibility="yes"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textViewSeguridadeValorArrecadado"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:importantForAccessibility="yes"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/corSegu"
+                                    android:textSize="20sp" />
+
+                                <TextView
+                                    android:id="@+id/textViewSeguridadeUnidadeValor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:importantForAccessibility="no"
+                                    android:fontFamily="@font/caixa_std_book"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/greyText"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:importantForAccessibility="yes"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/textViewOutrosValorArrecadado"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:importantForAccessibility="yes"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/corOutros"
+                                    android:textSize="20sp" />
+
+                                <TextView
+                                    android:id="@+id/textViewOutrosUnidadeValor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_book"
+                                    android:text=""
+                                    android:importantForAccessibility="no"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/greyText"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="44dp"
+                            android:background="@drawable/icgrouprepasses"
+                            android:backgroundTint="@color/greyText"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textSeguridade"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text="@string/seguridade"
+                                    android:importantForAccessibility="no"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/branco"
+                                    android:textSize="14sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/corSegu" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/textOutros"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp"
+                                    android:fontFamily="@font/caixa_std_bold"
+                                    android:text="@string/outros"
+                                    android:importantForAccessibility="no"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/branco"
+                                    android:textSize="14sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/corOutros" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/branco">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@color/cinzaCx"
+                        android:layout_marginTop="80dp">
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-143dp">
+
+                        <Button
+                            android:id="@+id/ButtonAposteSociais"
+                            android:layout_width="206dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/aposte_ne_ajude_ainda_mais"
+                            android:textAllCaps="false"
+                            android:background="@drawable/button_border_new_cinza"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:paddingVertical="15dp"
+                            android:textSize="16sp"
+                            android:textColor="@color/branco"
+                            />
+
+                    </RelativeLayout>
+                    
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

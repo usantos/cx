@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/domingo_00_00_0000"
+        android:fontFamily="@font/arialmt"
+        android:textSize="14sp"
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        />
+    
+    <br.gov.caixa.loterias.apostas.view.custom.PartidaViewLotecaResultado
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="110dp"
+        android:id="@+id/resultadoLotecaPartidaView"/>
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        android:fontFamily="@font/arialmt"
+        android:textSize="14sp"
+        android:text="@string/_1_de_14"
+        android:layout_marginTop="20dp"
+        android:id="@+id/paginaResultadoLotecaText"
+        />
+
+</LinearLayout>

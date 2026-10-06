@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="borderImageTimeColor">#c0c200</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#005ca9</color>
+    <color name="azulClaroSelecaotime">#cae1e4</color>
+    <color name="azulclaro">#d4dfe2</color>
+    <color name="azulpush">#0066B3</color>
+    <color name="azulBolao">#2F5095</color>
+    <color name="azulFiltro">#005EA8</color>
+    <color name="azulGradienteStart">#0082AA</color>
+    <color name="azulGradienteEnd">#005CAB</color>
+    <color name="pushbotaoaposteagora">#0164AF</color>
+    <color name="pushbotaoconferiragora">#4BBDAC</color>/
+    <color name="fundobrancocentralmsg">#F4F4F4</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="blackText">#22292E</color>
+    <color name="branco">#ffffff</color>
+    <color name="lightRed">#FEF3F4</color>
+    <color name="laranja">#d87b00</color>
+    <color name="divisor_cinza_escuro">#647479</color>
+    <color name="branco_transparente">#99ffffff</color>
+    <color name="cinza">#48586c</color>
+    <color name="cinza_grafite">#3f4b52</color>
+    <color name="cinza_grafite_2">#3a4859</color>
+    <color name="grafite">#637A97</color>
+    <color name="linhaDivisa">#d0e0e3</color>
+    <color name="linhaLoteca">#AFCACF</color>
+    <color name="fundoApostas">#f7fafa</color>
+    <color name="disabled">#f7fafa</color>
+    <color name="cinza2">#d4dfe2</color>
+    <color name="cinzaClaro">#EBF2F4</color>
+    <color name="cinzaclaro">#eff5f6</color>
+    <color name="cinzaCx">#ebf1f2</color>
+    <color name="cinzaescuro">#4e596b</color>
+    <color name="cinza_button">#a5aab6</color>
+    <color name="cinza_total">#929ea0</color>
+    <color name="cinza_divisoria">#B3C6CA</color>
+    <color name="verdeazul">#54bbab</color>
+    <color name="verde_acompanha_compras">#52BBAA</color>
+    <color name="amarelo">#feb21e</color>
+    <color name="azul_salvar_cartao">#1F5C8F</color>
+    <color name="cinza_salvar_cartao_desabilitado">#939598</color>
+
+    <color name="verdesenatrevo">#579a66</color>
+
+    <color name="megasenamedio">#009b63</color>
+    <color name="supersetemedio">#80C342</color>
+    <color name="diasortemedio">#D2B11B</color>
+    <color name="lotofacilmedio">#702a82</color>
+    <color name="quinamedio">#2A2A86</color>
+    <color name="duplasenamedio">#90214a</color>
+    <color name="lotomaniamedio">#f58220</color>
+    <color name="mais_milionaria_media" >#252D6C</color>
+
+    <color name="megasenamedio_transparente">#99009b63</color>
+    <color name="supersete_claro_transparente">#80DDE89C</color>
+    <color name="diasortemedio_transparente">#99A0522D</color>
+
+    <color name="lotecaClaroToolbar">#C80226</color>
+    <color name="lotecaEscuroToolbar">#9F0220</color>
+    <color name="selecaoLotecaResultado">#f9765e</color>
+
+    <color name="lotogolclaro">#00b7e3</color>
+    <color name="lotogolescuro">#009fc5</color>
+    <color name="lotogolEscuroToolBar">#00a8de</color>
+
+
+    <color name="lotomaniaEscuroToolBar">#f99d1c</color>
+    <color name="timemaniamediaescuro">#B6B128</color>
+    <color name="timemaniaClaroToolBar">#BEB92A</color>
+    <color name="timemaniaCorTexto">#2D8563</color>
+    <color name="azulescuro">#3964a4</color>
+    <color name="azulTexto">#004c8c</color>
+    <color name="azulFormNovoTipoPagamento">#005cad</color>
+    <color name="azulTitcaixa">#3864A3</color>
+    <color name="pretoLinhaFormNovoTipoPagamento">#3e576d</color>
+    <color name="verdeagua">#00bcac</color>
+    <color name="azulLabel">#00437a</color>
+    <color name="greyText">#404b52</color>
+    <color name="laranjacaixa">#f39200</color>
+    <color name="amareloQueimado">#f9b000</color>
+    <color name="colorLimao">#f5fec1</color>
+    <color name="colorLimaoCx">#afca0b</color>
+    <color name="transparente50">#64ffffff</color>
+    <color name="textColorToolbar">#0164a8</color>
+    <color name="transparente80">#CCFFFFFF</color>
+    <color name="transparenteAzul10">#E6005eab</color>
+    <color name="vermelhoBilhetes">#f9765e</color>
+    <color name="azulfavoritas">#00b5e5</color>
+    <color name="statuscolorstart">#368378</color>
+    <color name="statuscolorend">#034073</color>
+    <color name="corEdu">#003C4D</color>
+    <color name="corGoiaba">#801905</color>
+    <color name="corEsp">#216E62</color>
+    <color name="corSeg">#465200</color>
+    <color name="corSegu">#753C61</color>
+    <color name="corOutros">#664800</color>
+    <color name="transparente">#00ff0000</color>
+    <color name="cinzabotaoapostedesativado">#f8f8f8</color>
+    <color name="cinzaseekbar">#b3c7cb</color>
+    <color name="azulescuroapostafavorita">#1f2948</color>
+    <color name="cinzabordanaoselecionado">#d3e2e5</color>
+    <color name="cinzanaoselecionado">#64747A</color>
+    <color name="cinzatextoselecionado">#d3e3e6</color>
+    <color name="cinzaHeaderTelaAjuda">#3a4859</color>
+    <color name="cinzaGloboLotogol">#d2d4da</color>
+    <color name="cinzaDisable">#d7e0e2</color>
+    <color name="cinzaIdcaixa">#616971</color>
+    <color name="edittextlinecinza">#5f758f</color>
+    <color name="verdemusgo">#afca0b</color>
+    <color name="roxoclaro">#b26f9b</color>
+    <color name="verdemediotransparente">#66009b63</color>
+    <color name="cinzamercadopago">#D7E0E2</color>
+    <color name="verdeclaro">#b2fdbb</color>
+    <color name="azul_meu_cartao">#50B4E9</color>
+
+    <color name="cinzaApostaConfirmada">#d9e3e6</color>
+    <color name="white60">#99ffffff</color>
+    <color name="black">#000000</color>
+    <color name="white_6">#66ffffff</color>
+    <color name="green_6">#66ffffff</color>
+
+    <color name="azul_card">#035FA9</color>
+    <color name="verde_card">#51B7AB</color>
+    <color name="cinza_card">#F0F5F6</color>
+
+    <!-- Jogo Responsável -->
+    <color name="jr_start">#2F4D8F</color>
+    <color name="jr_end">#233E7B</color>
+    <color name="jr_radio_bg">#DAE8EB</color>
+    <color name="jr_radio_text_selected">#005CA9</color>
+    <color name="jr_radio_text_unselected">#4E5A5D</color>
+    <color name="jr_amarelo">#EAAA28</color>
+    <color name="jr_azul_text_title">#0164A8</color>
+    <color name="jr_laranja">#E0611A</color>
+    <color name="jr_email">#F15700</color>
+    <color name="jr_cinza_bg">#EEEEEE</color>
+    <color name="jr_cinza_separator">#E0E0E0</color>
+    <color name="jr_cinza_text">#48586C</color>
+    <color name="jr_cinza_text_claro">#8D989A</color>
+    <color name="jr_nvl_1">#92A4C3</color>
+    <color name="jr_nvl_2">#6C86B1</color>
+    <color name="jr_nvl_3">#4768A0</color>
+    <color name="jr_nvl_4">#2C4F8B</color>
+
+    <color name="verde_tutorial">#008254</color>
+    <color name="verde_item_supersete">#008254</color>
+    <color name="cinza130_supersete">#3f4b52</color>
+    <color name="cinza_tutorial">#47586C</color>
+    <color name="cinza_borda">#C4C4C4</color>
+    <color name="botao_desabilitado">#cfdfe2</color>
+    <color name="cinza_item_desabilitado">#767f8b</color>
+    <color name="azul_mercado_pago">#50B4E9</color>
+    <color name="laranja_recarga_pay">#FE8832</color>
+    <color name="verde_pix">#32BCAD</color>
+    <color name="cinza_pix_disabled">#757575</color>
+
+
+    <color name="azul_efetivada">#143DA6</color>
+    <color name="vermelho_cancelada">#900000</color>
+    <color name="verde_premio_pago">#008254</color>
+
+    <color name="azul_minhas_compras">#143DA6</color>
+    <color name="vermelho_minhas_compras">#900000</color>
+    <color name="amarelo_minhas_compras">#EAAA28</color>
+    <color name="verde_minhas_compras">#008254</color>
+    <color name="verde_botao_minhas_compras">#4BBDAC</color>
+
+    <color name="amarelo_favoritado">#FDB932</color>
+
+    <color name="vermelho_dialog">#F60E0E</color>
+    <color name="vermelho_erro">#b12b2b</color>
+    <color name="vermelho_borda_dialog">#D15973</color>
+    <color name="azul_alterar">#004680</color>
+    <color name="cinza_titulo_jogo_loteca">#3f4b52</color>
+    <color name="azul_neptune">#165285</color>
+    <color name="campo_desabilitado">#F3F5F5</color>
+    <color name="azul_caixa">#006BB6</color>
+    <color name="azul_header_caixa">#0865AE</color>
+    <color name="cinza_texto">#3F4B55</color>]
+    <color name="cinza_hint">#788994</color>
+    <color name="cinza_texto_desabilitado">#9BB0BA</color>
+    <color name="cinza_divisor">#E7ECEF</color>
+
+    <color name="verde_divisor_sucesso">#57C6BE</color>
+
+    <!--Disque 180 -->
+    <color name="rosa_radio_text">#E781A6</color>
+
+    <color name="laranja_fundo_switch">#FFB647</color>
+
+    <color name="label_nao_sim">#007AFF</color>
+
+    <!-- Forma de Pagamento - Novo Layout  -->
+    <color name="link_cartoes">#0066B8</color>
+    <color name="fundoFormaPagamento">#F5F5F5</color>
+    <color name="fundoCartao">#ECFAFF</color>
+    <!--color name="fundoCartaoCredito">#BDBDBD</color-->
+    <color name="fundoCartaoCredito">#DADADA</color>
+    <color name="tarjaAmarela">#FCF7E6</color>
+    <color name="bordaDigitacaoCVV">#4BBDAC</color>
+    <color name="numeroDigitacaoCVV">#4BB8A9</color>
+    <color name="pesquisa_msgpush">#E5E5E5</color>
+
+    <color name="mp_darker_gray">#ABABAB</color>
+    <color name="mp_warm_grey">#b7999999</color>
+    <color name="mp_color_red_error">#FF2B2B</color>
+    <color name="mp_error_red_pink">#F04449</color>
+
+    <color name="azul_botao_pix">#0077DB</color>
+
+    <!--  Novas cores MARKETPLACE  -->
+    <color name="bolao_barra_titulo">#0066B3</color>
+    <color name="bolao_laranja">#F79C31</color>
+    <color name="bolao_botao_cinza">#B1AEAE</color>
+    <color name="bolao_linha">#D9D9D9</color>
+    <color name="bolao_linha_clara">#F4F4F4</color>
+    <color name="bolao_hint">#3A4859</color>
+    <color name="bolao_gray_stroke">#E8E6E6</color>
+    <color name="bolao_black_loterias">#1F2A47</color>
+    <color name="bolao_trilha_slider_ativa">#D9D9D9</color> <!--Figma #757575-->
+    <color name="bolao_slider_trilha_ativa">#54BBAB</color>
+    <color name="bolao_slider_trilha_inativa">#D9D9D9</color>
+    <color name="bolao_slider_areola">#54BBAB</color>
+    <color name="bolao_slider_marcador">#FFFFFF</color>
+    <color name="mega_verde_claro_mkp">#00A651</color>
+    <color name="mega_verde_escuro_mkp">#00984A</color>
+    <color name="quina_claro_mkp">#2E3192</color>
+    <color name="quina_escuro_mkp">#2A2A86</color>
+    <color name="dupla_sena_claro_mkp">#A62B43</color>
+    <color name="dupla_sena_escuro_mkp">#97263C</color>
+    <color name="lotofacil_claro_mkp">#91278F</color>
+    <color name="lotofacil_escuro_mkp">#851F82</color>
+    <color name="lotomania_claro_mkp">#E67200</color>
+    <color name="lotomania_escuro_mkp">#CC6500</color>
+    <color name="milionaria_claro_mkp">#2A3580</color>
+    <color name="milionaria_escuro_mkp">#262F76</color>
+    <color name="dia_sorte_claro_mkp">#E3C021</color>
+    <color name="dia_sorte_escuro_mkp">#AE9319</color>
+    <color name="dia_sorte_letra_mkp">#7E6906</color>
+    <color name="dia_sorte_letra_fundo_escuro_mkp">#038041</color>
+    <color name="dia_sorte_cor_mkp">#AE9318</color>
+    <color name="super_sete_claro_mkp">#BED730</color>
+    <color name="super_sete_escuro_mkp">#839F38</color>
+    <color name="super_sete_letra_mkp">#038141</color>
+    <color name="timemania_claro_mkp">#FFF200</color>
+    <color name="timemania_escuro_mkp">#E5DB1A</color>
+    <color name="timemania_letra_mkp">#038141</color>
+    <color name="loteca_claro_mkp">#ED1C24</color>
+    <color name="loteca_escuro_mkp">#C61017</color>
+    <color name="loteca_numbers">#8C2424</color>
+    <color name="mega_verde_opaco_mkp">#0F885C</color>
+    <color name="bolao_azul_subtitulo">#095A9C</color>
+    <color name="cor_bola_unselected">#ADC0C4</color>
+    <color name="cotas_boloes">#373E4A</color>
+    <color name="azul_detalhe_aposta">#4FA7B2</color>
+    <color name="bolao_azul_filtro">#005CA9</color>
+    <color name="bolao_branco_hight_light">#E5F2FC</color>
+
+    <!-- Instantanea -->
+    <color name="instantanea_claro">#00BBE6</color>
+    <color name="instantanea_escuro">#009CB5</color>
+
+    <!-- Combo -->
+    <color name="combo_claro">#1577C1</color>
+    <color name="combo_escuro">#0066B3</color>
+    <color name="combo_trevo_laranja">#F07D1B</color>
+
+    <!-- Resgate pix -->
+    <color name="fonte_resgate">#2E484D</color>
+    <color name="fonte_verde_resgate">#45C0AE</color>
+
+    <!--  Novas cores -->
+    <color name="blue_caixa">#0066B3</color>
+    <color name="verdeazul_inativo">#DDF1EE</color>
+    <color name="cinza_desativado">#8FB5BC</color>
+    <color name="cinza_desativado_mkp">#E5E5E5</color>
+    <color name="azul_combo">#007BBC</color>
+
+    <!-- Combos - Conforme Figma -->
+    <color name="cinza_combos">#4F556B</color>
+    <color name="borda_combos">#BCBCBC</color>
+    <color name="background_detalhe_combo">#FAFAFA </color>
+    <color name="azul_detalhe_combo">#3162A4</color>
+
+    <color name="laranjaLoto">#FDF1E6</color>
+
+    <!-- Apostas favoritas -->
+    <color name="cinza130">#22292E</color>
+    <color name="cinza110">#404B52</color>
+    <color name="cinza90">#64747A</color>
+    <color name="cinza70">#9EB2B8</color>
+    <color name="cinza30">#EBF1F2</color>
+    <!-- Snackbar -->
+    <color name="snackbar_success">#263238</color>
+    <color name="snackbar_error">#C52B2F</color>
+
+    <color name="cinza_corner">#F0F2F2</color>
+
+    <!-- Outubro Rosa   -->
+    <color name="outubro_rosa_primario">#F4ADBC</color>
+    <color name="outubro_rosa_secundario">#EE3E7F</color>
+    <color name="outubro_rosa_texto">#9C005C</color>
+</resources>

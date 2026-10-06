@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tols="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_card_carrinho_favorito"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_card"
+        android:backgroundTint="@color/verde_card"
+        android:minHeight="70dp"
+        tols:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_nome_carrinho"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:autoSizeMaxTextSize="14dp"
+            android:autoSizeMinTextSize="8sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:lines="1"
+            android:text="@string/carrinho_favorito"
+            android:textColor="@color/branco"
+            android:textSize="14dp"
+            android:fontFamily="@font/caixa_std_regular"
+            tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
+            tols:layout_constraintStart_toStartOf="parent"
+            tols:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_valor_total_carrinho"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:autoSizeMaxTextSize="14dp"
+            android:autoSizeMinTextSize="8sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:lines="1"
+            android:text="@string/r_30_00"
+            android:visibility="invisible"
+            android:textColor="@color/branco"
+            android:textSize="14dp"
+            android:fontFamily="@font/caixa_std_regular"
+            tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
+            tols:layout_constraintStart_toEndOf="@id/tv_nome_carrinho"
+            tols:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/ib_excluir_carrinho"
+            android:layout_width="40dp"
+            android:layout_height="70dp"
+            android:background="@color/transparente"
+            android:src="@drawable/ic_icone_lixeira"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
+            tols:layout_constraintEnd_toEndOf="parent"
+            tols:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/ib_lupa_detalhes"
+            android:layout_width="40dp"
+            android:layout_height="70dp"
+            android:background="@color/transparente"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:src="@drawable/ic_lupa_carrinho_fav"
+            tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
+            tols:layout_constraintEnd_toStartOf="@id/ib_excluir_carrinho"
+            tols:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/ib_transformar_carrinho"
+            android:layout_width="40dp"
+            android:layout_height="70dp"
+            android:background="@color/transparente"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_carrinho"
+            tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
+            tols:layout_constraintEnd_toStartOf="@+id/ib_lupa_detalhes"
+            tols:layout_constraintTop_toTopOf="parent"
+            tols:tint="@color/branco" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_fim_card"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            tols:layout_constraintGuide_begin="70dp" />
+
+        <LinearLayout
+            android:id="@+id/ll_apostas_carrinho"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            tols:layout_constraintTop_toBottomOf="@id/tv_nome_carrinho"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

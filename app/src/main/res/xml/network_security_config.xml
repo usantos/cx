@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true"> simlo.tqs.caixa </domain>
+        <domain includeSubdomains="true"> simlo.tqs.caixa.gov.br </domain>
+        <domain includeSubdomains="true"> sispl-api-apostas-des-esteiras.nprd2.caixa </domain>
+    </domain-config>
+<!--    <base-config>-->
+<!--        <trust-anchors>-->
+<!--            <certificates src="system"/>-->
+<!--            <certificates src="user"/>-->
+<!--        </trust-anchors>-->
+<!--    </base-config>-->
+</network-security-config>

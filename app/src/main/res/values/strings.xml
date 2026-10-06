@@ -1,0 +1,1805 @@
+<resources>
+    <string name="title_activity_introducao">introducaoActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="button">Botão</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_carrinho">_Carrinho_ de apostas</string>
+    <string name="title_activity_forma_pagamento">Forma de _pagamento_</string>
+    <string name="title_activity_confirmacao_pagamento">_Confirmação_</string>
+    <string name="title_activity_minhas_apostas">Minhas _apostas_</string>
+    <string name="title_activity_dados_pessoais">_Dados Pessoais_</string>
+    <string name="title_dados_pessoais">Dados Pessoais</string>
+    <string name="loterias_caixa">Loterias Caixa</string>
+    <string name="logo_caixa">Logo da Caixa</string>
+    <string name="label_receber_notificacoes">Receber notificações</string>
+    <string name="cadastro_atualizado_com_sucesso">
+    Seu cadastro foi atualizado com sucesso.
+</string>
+
+    <string name="navigation_drawer_open">Menu principal</string>
+    <string name="navigation_drawer_close">Fechar menu</string>
+    <string name="olausuario">Início menu principal</string>
+
+    <string name="action_settings">Configurações</string>
+    <string name="action_duvidas">Dúvidas</string>
+
+    <string name="valorDessaAposta">Valor dessa\naposta</string>
+    <string name="imagemCarrinho">Carrinho</string>
+    <string name="carrinhoDeApostas">Carrinho \nde apostas</string>
+    <string name="carrinho_apostas">Carrinho de Apostas</string>
+    <string name="label_premio_estimado_concurso_numero">Pr\u00eamio estimado Concurso %d</string>
+    <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
+    <string name="label_premio_estimado">Pr\u00eamio estimado</string>
+
+    <string name="escolhaOmes">_Escolha_\no m\u00eas de sorte</string>
+    <string name="adicionarAoCarrinho">_Adicionar_\nao carrinho de apostas</string>
+    <string name="limparAposta">Limpar aposta</string>
+    <string name="label_limpar">Limpar</string>
+    <string name="limparCarrinho">Limpar carrinho</string>
+
+    <string name="completarCartela">_Completar_\ncom números aleatórios</string>
+    <string name="completarBotao">Completar aleatoriamente</string>
+    <string name="completar">Completar</string>
+    <string name="aposta_aleatoria">Aposta aleatória</string>
+    <string name="completar_jogo">Completar jogo</string>
+
+    <string name="surpresinhaTitulo">Surpresinha</string>
+    <string name="surpresinhaInfo">Na Surpresinha os números ficam\nmascarados até a efetivação da compra.</string>
+    <string name="surpresinhaQtdInfo">Você ainda pode escolher quantas\nSurpresinhas quer apostar neste concurso.</string>
+    <string name="surpresinhaInfoNova">Você ainda pode escolher quantos jogos Surpresinha quer apostar neste concurso:</string>
+    <string name="surpresinhaTime">O time também entra na surpresa! Mas, se quiser, você pode escolher o seu favorito.</string>
+    <string name="titulo_dialog">Titulo da dialog</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="ajuda_dialog">Ajuda</string>
+    <string name="salvar_carrinho">Salvar Carrinho</string>
+    <string name="mensagem_ccompra_cancelada_dialog">Não foi possível concluir essa compra\ne sua aposta não foi efetivada.\n\nDeseja realizar uma nova tentativa\nde compra com o mesmo carrinho?</string>
+    <string name="mensagem_compra_cancelada_dialog">Não foi possível concluir essa compra e sua aposta não foi efetivada. Você pode salvar esse mesmo carrinho para tentar novamente. Deseja salvar esta compra como carrinho favorito?</string>
+    <string name="tenta_novamente_dialog">Tentar Novamente</string>
+    <string name="ok">OK</string>
+    <string name="label_sim">Sim</string>
+    <string name="label_nao">Não</string>
+    <string name="label_compra_valor">Compra %d</string>
+
+    <string name="label_compra_lista_valor">_Total:_</string>
+    <string name="label_compra_lista_situacao">Situação:</string>
+    <string name="label_compra_lista_situacao_descricao">Situação: _%s_</string>
+    <string name="label_compra_lista_processada_por">Compra processada por: _%s_</string>
+    <string name="label_compra_lista_meio_de_pagamento">Meio de pagamento: _%s_</string>
+    <string name="label_compra_lista_alterar_compra">Alterar Compra</string>
+    <string name="label_compra_lista_tentar_novamente">Tentar Novamente</string>
+
+    <string name="label_atencao">Atenção</string>
+    <string name="label_atencao_exclama">Atenção!</string>
+    <string name="tituloSalvarAposta">Salve esta aposta :)</string>
+    <string name="label_salvar_aposta">Salvar aposta</string>
+    <string name="label_de_nome">Dê um nome</string>
+
+    <string name="verCarrinho">_Ver carrinho_\nde apostas</string>
+    <string name="added_bet_to_cart">Aposta adicionada ao carrinho com sucesso!</string>
+    <string name="verCarrinhoVazio">OK</string>
+    <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
+    <string name="infoConcluaPagamentoBolao">Conclua o pagamento de suas \napostas dentro do prazo</string>
+    <string name="tituloApostaFeita">Aposta inserida no \ncarrinho com sucesso.</string>
+    <string name="tituloComboFeito">Combo inserido no \ncarrinho com sucesso.</string>
+    <string name="tituloBolaoFeito">Bolão inserido no \ncarrinho com sucesso.</string>
+    <string name="novaAposta">Fazer nova aposta</string>
+    <string name="confirmarApostas">Confira suas apostas e siga para o pagamento</string>
+    <string name="confirmacao">Confirmação</string>
+    <string name="label_acompanhe_suas_compras">_Ir para_\ncompras</string>
+    <string name="label_acompanhe_suas_compras_pix">_Acompanhe_\nsuas compras</string>
+    <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
+    <string name="fazerNovaAposta">Fazer nova aposta</string>
+    <string name="continuarApostando">Continuar apostando</string>
+
+    <string name="adicionarFormaPagamento">_Adicionar_\nforma de pagamento</string>
+    <string name="tituloFormaPagamento">Agora é pra valer!</string>
+    <string name="infoFormaPagamento">Selecione sua forma de pagamento para prosseguir</string>
+    <string name="apostarAutorizarCobranca">_Apostar_\ne autorizar cobrança</string>
+    <string name="msg_campos_em_branco">Preencha todos os campos antes de prosseguir.</string>
+
+    <string name="total">Total</string>
+
+    <string name="confirmacaoPagamentoInfoApostasPIX">Acompanhe a situação \ne detalhamento da compra. \nVocê estará concorrendo quando \na APOSTA aparececer como EFETIVADA.</string>
+    <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
+    <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
+    <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
+    <string name="compra_sendo_processada">Sua compra está sendo processada</string>
+    <string name="confirmacaoPagamentoProcessamento">Estamos processando sua compra.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, sua aposta precisa estar com status _efetivada_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo2">Após a conclusão do pagamento, sua aposta será enviada para processamento.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo3">Você pode acompanhar o andamento em _Minhas Compras_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo4">Se a aposta não for efetivada, o valor será devolvido.</string>
+    <string name="minhasApostas">Minhas apostas</string>
+    <string name="btn_title_voltarAoInicio">Voltar ao início</string>
+    <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
+    <string name="label_concurso_atual">Informações do concurso atual</string>
+    <string name="novaFormaPagamentoTitulo">Cadastrar cartão</string>
+    <string name="novaFormaPagamentoNenhumCartaoCadastrado">Notamos que você ainda não possui nenhum cartão de crédito cadastrado. Para continuar, informe:</string>
+    <string name="title_activity_main_teste">MainTesteActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_principal">PrincipalActivity</string>
+    <string name="title_activity_termos_uso">_Termo de uso_</string>
+    <string name="title_activity_repasses_sociais">_Repasses sociais_</string>
+    <string name="title_activity_teste">TesteActivity</string>
+    <string name="title_activity_toolbar">_Loterias Caixa_</string>
+    <string name="title_activity_login">Login</string>
+    <string name="titulo_central_mensagens">Notificações</string>
+    <string name="pesquisa_push">Pesquisar</string>
+    <string name="pesquisa_push_vazia">Você não possui mensagens</string>
+    <string name="pesquisa_push_nao_lida">Você não possui mensagens não lidas</string>
+    <string name="msg_push_excluir_todas">Deseja excluir todas as mensagens ?</string>
+    <string name="msg_push_excluir">Deseja excluir todas a mensagens ?</string>
+    <string name="msg_push_excluir_item">Deseja excluir esta mensagem ?</string>
+    <string name="msg_push_marcar_lidas">Deseja marcar todas a mensagens como lidas ?</string>
+    <string name="msg_push_marcar_lida_item">Deseja marcar esta mensagem como lida ?</string>
+    <string name="msg_push_botaocategoria">Realiza ação da categoria</string>
+    <string name="erro_401">Não autorizado</string>
+    <string name="erro_408">Tempo de resposta esgotou</string>
+    <string name="erro_500">Ocorreu um erro inesperado, mas não se preocupe, já estamos trabalhando nisso. Quer nos ajudar reportando o problema?</string>
+    <string name="seminternet">Parece que sua internet está com alguma instabilidade. Verifique sua conexão e tente novamente.</string>
+    <string name="connectionServerErro">Falha na tentativa de conexão com o servidor</string>
+    <string name="erro_mail_provider">Não há nenhum aplicativo de e-mail instalado!</string>
+    <string name="sistema_indisponivel">O Tempo de conexão expirou.</string>
+    <string name="btn_finalizar">Finalizar</string>
+    <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com o</string>
+    <string name="termo_de_uso_underline"><u>termo de uso</u>.</string>
+    <string name="declaracao_termo_uso_politica_privacidade_termos">Li e concordo com os termos de uso.</string>
+    <string name="declaracao_notificacoes">Aceito receber notificações de loterias.</string>
+    <string name="CEP">CEP</string>
+    <string name="codigo_loterica">Código Lotérica</string>
+    <string name="cod_loterica">Cod. Lotérica: </string>
+    <string name="enviando_email">Enviar e-mail usando:"</string>
+    <string name="label_lembrar_valor_minimo">O valor mínimo do carrinho é R$2,50</string>
+    <string name="numeros_sorteados">Números sorteados</string>
+    <string name="inibir_teimosinha">Para Teimosinhas são exibidos os números apostados e os números sorteados apenas do primeiro concurso apostado. A conferência das apostas, no entanto, é realizada para todos os concursos. Em breve a funcionalidade será aprimorada para exibir os números apostados e os números sorteados de todos os concursos da Teimosinha.</string>
+    <string name="inibir_teimosinha_V2">A conferência dos jogos da Teimosinha é realizada para todos os concursos apostados, no entanto, é exibida apenas a do primeiro concurso.</string>
+    <string name="alerta_teimosinha_original_apos_resgate">Esta aposta com Teimosinha não é mais válida para acompanhamento. Utilize a aposta de troca gerada após o resgate do prêmio, para acompanhar os próximos sorteios.</string>
+
+    <!-- email-->
+    <string name="email_padrao">CEDESBR456@caixa.gov.br</string>
+    <string name="email_assunto">[APP Loterias] - Erro de serviço</string>
+    <string name="quero">Quero</string>
+
+    <!-- Messages-->
+
+    <string name="MA002">Por favor, verifique o preenchimento dos campos:</string>
+    <string name="MN002"> Idade informada menor que 18 anos.</string>
+    <string name="MA003"> Você tem mais de 18 anos?</string>
+    <string name="MA010">Deseja remover a aposta do carrinho?</string>
+    <string name="MA011">Deseja remover todas as apostas do carrinho?</string>
+    <string name="MA013">Não é permitido incluir uma nova aposta no carrinho, pois a quantidade máxima de aposta já foi atingida.</string>
+    <string name="MA014"> O valor máximo de apostas permitida diariamente será excedido com a inclusão dessa aposta. Deseja prosseguir com a inclusão da aposta?</string>
+    <string name="MA015">Existe uma aposta idêntica em seu carrinho. Deseja prosseguir com a inclusão?</string>
+
+    <string name="MA016">Um número não pode ser marcado como obrigatório e proibido.</string>
+    <string name="MA019">Aposta favorita excluída com sucesso!</string>
+    <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>
+    <string name="erro_carregar_dados">Erro ao carregar os dados</string>
+    <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
+    <string name="msg_erro_data_invalida"> Data Inválida</string>
+    <string name="label_excluir_aposta">Excluir aposta favorita</string>
+    <string name="label_adicionar_aposta">Adicionar aposta no carrinho</string>
+    <string name="MI053">Prêmio resgatado com sucesso! Sua aposta possui Teimosinha e continuará participando dos próximos concursos. Foi gerado um recibo de troca válido para os próximos concursos, e este já está disponível em \'Minhas Apostas\'. </string>
+    <string name="MN003">Para continuar é necessário o aceite do termo.</string>
+    <string name="termo_novo">O termo de Uso foi Atualizado. É necessário aceitar novamente.</string>
+    <string name="exclusao_cartao">Deseja realmente excluir essa forma de pagamento?</string>
+
+
+    <string name="title_activity_lista_rapidao">_Rapidão_</string>
+    <string name="titulo_lista_rapidao">O jeito mais fácil para apostar</string>
+    <string name="title_activity_rapidao_config">RapidaoConfigActivity</string>
+    <string name="title_activity_selecao_modalidades_rapidao">SelecaoModalidadesRapidaoActivity
+    </string>
+    <string name="title_activity_numeros_rapidao">NumerosRapidaoActivity</string>
+
+    <string name="title_cpf">CPF</string>
+    <string name="label_nome">Nome</string>
+    <string name="label_nome_mae">Nome da Mãe</string>
+    <string name="label_cep">CEP</string>
+    <string name="label_municipio">Município</string>
+    <string name="title_uf">UF</string>
+    <string name="label_nascimento">Nascimento</string>
+    <string name="label_email">E-mail</string>
+    <string name="label_cadastro_rapido">O cadastro é bem rápido.\nPara começar, informe os dados abaixo:</string>
+    <string name="label_encontre_lotorica_atraves_endereco_cep_codigo">Para isso, encontre a lotérica através\nde seu endereço, CEP ou código.</string>
+    <string name="label_empate">Empate</string>
+    <string name="label_nome_do_seu_time">Nome do seu time</string>
+    <string name="label_nome_do_time">Nome do time</string>
+    <string name="label_suas_apostas">Suas apostas</string>
+    <string name="label_suas_apostas_loteca">Loteca</string>
+    <string name="label_suas_apostas_explica">Escolha os resultados dos jogos abaixo.\nVocê precisa apostar em todos os jogos, sendo que pelo menos 1 palpite deve ser duplo
+        (apostar nos dois times ou em um time e no empate) ou triplo (apostar em empate e nos dois times).
+        Você ganha com 13 ou 14 palpites corretos.</string>
+    <string name="label_jogos">Partidas:</string>
+    <string name="label_simples">Simples:</string>
+    <string name="label_duplas">Duplas:</string>
+    <string name="label_triplas">Triplas:</string>
+    <string name="label_dois_pontos">:</string>
+    <string name="label_resultado_das_partidas">Informe o resultado das partidas</string>
+    <string name="label_selecionar_times_aleatoriamente">_Selecionar_\ntimes aleatoriamente</string>
+    <string name="label_selecionar_time_aleatoriamente">_Selecionar_\ntime aleatoriamente</string>
+    <string name="label_escolha_time_coracao">_Escolha_\no time do coração</string>
+    <string name="label_escolher_time">Escolher time do Coração</string>
+    <string name="label_escolha_trevos">_Escolher_\nos Trevos</string>
+    <string name="label_escolha_time_seu_coracao">Escolha o time do seu coração</string>
+
+    <string name="label_concurso">Concurso</string>
+    <string name="label_abertura">Abertura</string>
+    <string name="label_proximo_sorteio">Próximo sorteio</string>
+    <string name="label_encerramento_apostas">Encerramento das apostas</string>
+    <string name="label_encerramento">Encerramento</string>
+    <string name="label_regras_jogo">Regras do jogo</string>
+    <string name="label_mega_sena">mega-sena</string>
+    <string name="label_mais_milionaria">+milionária</string>
+    <string name="label_mais_milionaria_maiscula">+Milionária</string>
+    <string name="label_lotofacil">lotofácil</string>
+    <string name="label_quina">quina</string>
+    <string name="label_dupla_sena">dupla sena</string>
+    <string name="label_lotomania">lotomania</string>
+    <string name="label_timemania">timemania</string>
+    <string name="label_loteca">loteca</string>
+    <string name="label_lotogol">lotogol</string>
+    <string name="label_federal">federal</string>
+    <string name="label_dia_de_sorte">dia de sorte</string>
+    <string name="label_super_sete">super sete</string>
+    <string name="label_ajuda">ajuda</string>
+    <string name="time_surpresa">Time Surpresa</string>
+    <string name="escolha_outro_time">Escolher outro time</string>
+    <string name="paginacao_um_de_dois">_1_ | 2</string>
+    <string name="paginacao_dois_de_dois">_2_ | 2</string>
+    <string name="paginacao_quantidade">&#160;| %s</string>
+    <string name="label_complete_placar_aleatoriamente">_Complete_\no placar aleatoriamente</string>
+    <string name="label_quantidade_gols_cada_time">a quantidade de gols de cada time.</string>
+    <string name="title_activity_favoritas">Favoritas</string>
+    <string name="title_activity_favoritas_bold">_Apostas favoritas_</string>
+    <string name="title_activity_lista_compras">Minhas Compras</string>
+
+    <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
+    <string name="msg_qtd_max_loteca">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
+    <string name="label_combinacao_invalida_loteca">Essa combinação de simples, duplos e triplos não é permitida para a Loteca. Tente outra combinação.</string>
+    <string name="btn_entendi">entendi</string>
+    <string name="button_entendi">Entendi</string>
+    <string name="msg_qtd_max_ultrapassada_milionaria">Você aumentou a quantidade de trevos, o valor será alterado. Fique atento ao valor final da sua aposta."</string>
+    <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
+    <string name="msg_qtd_max_col_super_sete">Você só pode selecionar 3 números por coluna</string>
+    <string name="msg_bloqueio_coluna_super_sete_marcar">Você precisa selecionar {qtdColunas} número(s) em cada coluna antes de selecionar outro nessa</string>
+    <string name="msg_bloqueio_coluna_super_sete_desmarcar">Você não pode fazer isso, pois nessa coluna é necessário ter selecionado {qtdColunas} número(s)</string>
+    <string name="colunas">Colunas</string>
+
+    <string name="label_aposta_salva_carinha">Aposta salva :)</string>
+    <string name="label_favorita_no_carrinho">Essa aposta foi para o seu carrinho</string>
+    <string name="label_new_favorita_no_carrinho">Aposta favorita inserida com sucesso</string>
+    <string name="label_sem_teimosinha">Teimosinha</string>
+    <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
+    <string name="label_aposta_espelho">Aposta espelho</string>
+    <string name="label_aposte_agora">Aposte agora</string>
+    <string name="botao_aposte_agora">Aposte\n_agora_</string>
+    <string name="label_experimente">Experimente</string>
+    <string name="label_aposte_aqui">_Aposte_ aqui</string>
+    <string name="label_faca_login_cadastre">Faça login/cadastre-se</string>
+    <string name="label_coluna">Coluna</string>
+    <string name="label_time">Time</string>
+    <string name="title_activity_ler_bilhetes">LerBilhetesActivity</string>
+    <string name="title_activity_ler_bilhetes_escolha_jogo">Resultado</string>
+    <string name="label_x_minusculo">x</string>
+    <string name="title_activity_resultado_ler_bilhetes">_Resultado da aposta_</string>
+    <string name="title_activity_detalhes_compras">Apostas da Compra</string>
+    <string name="label_empty_list_compras">Você ainda não possui compras neste mês.</string>
+    <string name="label_declaracao_termo_uso">Declaro ter lido e concordado com os\ntermos de uso</string>
+    <string name="title_continuar">Continuar</string>
+    <string name="MA008">Tem certeza que deseja sair?</string>
+
+    <string name="label_voce_apostou">Você apostou</string>
+    <string name="label_para">Para</string>
+    <string name="label_numero">número</string>
+    <string name="label_numeros">números</string>
+    <string name="label_sorteio">sorteio</string>
+    <string name="label_sorteios">sorteios</string>
+    <string name="label_posicione_ler_bilhetes">Posicione a linha abaixo sobre o código de barras\ne aguarde a focalização da câmera.</string>
+    <string name="label_digite_aposta_realizada">_Digitar_ sua aposta realizada</string>
+
+    <!-- Minhas apostas -->
+    <string name="label_aqui_voce_pode_acompanhar">Aqui você pode acompanhar todas suas apostas realizadas nos últimos 6 meses. Boa sorte!</string>
+    <string name="label_ver_resultados">Ver resultados</string>
+    <string name="label_historico_de_apostas">Histórico de apostas</string>
+    <string name="label_para_a_sorte_todo_mundo">O próximo ganhador pode ser você. Já pensou?</string>
+    <string name="label_selecione_mes_ano">Selecione o período</string>
+    <string name="label_selecione_mes">Selecione o mês</string>
+    <string name="label_aposta_concurso">Concurso %d</string>
+    <string name="label_aposta_concurso_bold">Conc. _%d_</string>
+    <string name="label_aposta_concursos">Conc. %d a %d</string>
+    <string name="label_adicionar">Adicionar</string>
+    <string name="label_adicionar_carrinho_apostas">ao carrinho de apostas</string>
+    <string name="label_editar_aposta">Editar\naposta</string>
+    <string name="editar_aposta">Editar aposta</string>
+    <string name="total_do_carrinho">Total do carrinho</string>
+    <string name="label_carrinho_apostas">Carrinho\nde apostas</string>
+    <string name="label_carrinho_apostas_limpo">Carrinho de apostas</string>
+    <string name="label_salve_aposta">Salve esta aposta :)</string>
+    <string name="concurso">Concurso</string>
+    <string name="concursos">Concursos</string>
+    <string name="data_da_aposta">Data da aposta:</string>
+    <string name="seus_numeros">Seus números</string>
+    <string name="sua_aposta">Sua aposta</string>
+    <string name="conferir_resultados">Conferir resultados</string>
+
+    <string name="carregando">Carregando…</string>
+
+    <string name="key_introducao">key_introducao</string>
+    <string name="key_idade">key_idade</string>
+    <string name="title_activity_jogos_confirmados_premio">JogosConfirmadosPremioActivity</string>
+    <string name="title_activity_jogos_confirmados_premio_mercado_pago">JogosConfirmadosPremioMercadoPagoActivity</string>
+
+    <string name="label_faixa_premiacao">Faixa de\npremiação</string>
+    <string name="label_sorteio_case">Sorteio</string>
+    <string name="label_premiacao">Premiação</string>
+    <string name="label_premiacao_bold">_Premia\u00e7\u00e3o_</string>
+    <string name="label_premiacao_primeiro_sorteio_bold">_Premia\u00e7\u00e3o - 1º sorteio_</string>
+    <string name="label_premiados_primeiro_sorteio_bold">_Premiados - 1º sorteio_</string>
+    <string name="label_premiacao_segundo_sorteio_bold">_Premia\u00e7\u00e3o - 2º sorteio_</string>
+    <string name="label_premiados_segundo_sorteio_bold">_Premiados - 2º sorteio_</string>
+    <string name="label_ganhadores_regiao_primeiro_sorteio_bold">_Ganhadores por regi\u00e3o - 1º sorteio_</string>
+    <string name="label_ganhadores_regiao_segundo_sorteio_bold">_Ganhadores por regi\u00e3o - 2º sorteio_</string>
+    <string name="label_nao_foi_dessa_vez">Não premiado ou ainda não apurado</string>
+    <string name="label_pode_comemorar">Pode comemorar!</string>
+    <string name="label_voce_foi_premiado">você foi premiado com total de \n {ValorPremio}</string>
+    <string name="label_voce_foi_premiado_exclamacao">você foi premiado!</string>
+    <string name="label_estimativa_de_premio">Estimativa de prêmio</string>
+    <string name="label_limite_diario">Limite diário</string>
+    <string name="label_abertura_aposta">Abertura da aposta</string>
+    <string name="label_premio">Prêmio</string>
+    <string name="label_veja_retirar_premio">Escolha como resgatar seu prêmio</string>
+    <string name="label_time_coracao">Time do coração&#160;</string>
+    <string name="label_time_coracao_dois_pontos">Time do coração:&#160;</string>
+    <string name="label_dia_sorte_dois_pontos">Mês de sorte:&#160;</string>
+    <string name="label_trevos_dois_pontos">Trevos: </string>
+    <string name="label_empty"> </string>
+    <string name="label_rapidao">Rapidão</string>
+    <string name="label_apostas_fav_rapidao_empty">Você ainda não possui apostas favoritas. É muito fácil! Simule uma aposta e adicione como favorita.</string>
+    <string name="label_faca_apostas_apenas_um_clique">Faça várias apostas\nem apenas um clique.</string>
+    <string name="label_ler_bilhestes">_Conferir bilhetes_</string>
+    <string name="label_ler_bilhestes_bold">_Conferir_ _bilhetes_</string>
+    <string name="label_repassados_boas_causas_bold">_repassados_ para boas causas em {ano_repassometro}.</string>
+    <string name="label_apostou_loterica_confira_resultados">Apostou em uma lotérica?\n Confira aqui os seus resultados.</string>
+    <string name="label_favoritas">Favoritas</string>
+    <string name="label_suas_apostas_sorte_apenas_clique">Suas apostas da sorte\n em apenas um clique. :)</string>
+    <string name="label_conceda_permissao_camera">Por favor conceda a permissão da câmera para usar o leitor de bilhetes.</string>
+    <string name="label_sua_aposta">Sua aposta</string>
+    <string name="label_concurso_abreviado_espaco">Conc.&#160;</string>
+    <string name="label_data_aposta">Data da aposta:</string>
+    <string name="label_dt_aposta">Data aposta:</string>
+    <string name="label_conferir_resultado">Conferir resultado</string>
+    <string name="label_nao_apurado">Não apurado</string>
+    <string name="label_concurso_prescrito">Concurso prescrito</string>
+    <string name="label_efetivada">Efetivada</string>
+    <string name="label_teimosinha">Teimosinha</string>
+    <string name="label_aposta_troca">Aposta\nde troca</string>
+    <string name="label_validade_premio">Validade do prêmio:</string>
+    <string name="label_numero_bilhete">Número do bilhete:</string>
+    <string name="label_noventa_dias">90 dias</string>
+    <string name="label_aposta">aposta</string>
+    <string name="label_apostas">apostas</string>
+    <string name="label_resultado">Resultado</string>
+    <string name="label_loterica_titulo">_Lotérica_</string>
+    <string name="label_loterica">Lotérica</string>
+    <string name="label_agencia_caixa">Agência CAIXA</string>
+    <string name="label_mercado_pago">Mercado Pago</string>
+    <string name="label_pix">Pix</string>
+    <string name="label_premio_pago">O prêmio deste bilhete já foi pago. Parabéns :)</string>
+    <string name="tit_premio_pago">Prêmio Pago</string>
+    <string name="label_emitir_comprovante">Emita o seu comprovante da aposta</string>
+    <string name="label_diriga_loterica_preferencia">Dirija-se à lotérica de sua preferência</string>
+    <string name="label_apresente_recibo_documento_identificacao_originais">Apresente seu recibo de aposta e seu documento de identificação originais</string>
+    <string name="label_apresente_recibo_aposta">Apresente seu recibo de aposta</string>
+    <string name="label_premio_sub_titulo_resultado_valor">Você pode receber o seu prêmio em qualquer unidade lotérica (caso não possua incidência de Imposto de Renda) ou em qualquer agência da CAIXA.</string>
+    <string name="label_receber_agencia">Para receber em uma Agência</string>
+    <string name="label_receber_unidade_loterica">Para receber em uma Unidade Lotérica</string>
+    <string name="label_numerico_um">1</string>
+    <string name="label_numerico_dois">2</string>
+    <string name="label_numerico_tres">3</string>
+    <string name="label_situacao_list_apostas_confirmadas">Situação -&#160;</string>
+    <string name="label_empty_list_apostas_confirmadas">Você ainda não fez apostas no período selecionado. Aproveite para apostar agora!</string>
+    <string name="label_ganhador">ganhador</string>
+    <string name="label_numero_ganhador">%d ganhador</string>
+    <string name="label_ganhadores">ganhadores</string>
+    <string name="label_numero_ganhadores">%d ganhadores</string>
+    <string name="label_acerto">acerto</string>
+    <string name="label_acertos">acertos</string>
+    <string name="label_sucesso">Sucesso</string>
+    <string name="label_otimo_novo_nome_sua_aposta">Ótimo! o novo nome da sua aposta é</string>
+    <string name="texto_futura_bold">_%s_</string>
+    <string name="texto_caixaStd_bold">_%s_</string>
+    <string name="label_pre_pagamento">O Valor total da sua compra é de {valorCompra}. Confirma?</string>
+    <string name="label_verificar_valor_carrinho">Antes de finalizar sua compra, verifique o valor total e as apostas contidas no seu carrinho.</string>
+
+
+    <!-- Agência Resgate Prêmio -->
+    <string name="label_agencia_minusculo">agência</string>
+    <string name="label_dirigir_para_agencia">Dirija-se a uma agência de sua preferência</string>
+    <string name="label_apresente_documento_identificacao_original">Apresente seus documentos pessoais (RG, CPF, Comprovante de Endereço)</string>
+    <string name="label_gerar_pdf">Gerar PDF</string>
+    <string name="label_resgatar_premio_loterica">Você quer resgatar seu prêmio nas Casas Lotéricas? <u>Clique Aqui</u></string>
+
+    <!--Mock-->
+    <string name="title_activity_restrito_dezoito_anos">RestritoDezoitoAnosActivity</string>
+
+    <!-- DIA SORTE -->
+    <string name="dia_sorte_escolha_dia">Escolha os _n\u00fameros_</string>
+    <string name="escolha_de_seis_a_doze_numeros">Escolha de 6 a 12 números</string>
+    <string name="dia_sorte_escolha_mes">Escolha o _mês_ de sorte</string>
+    <string name="label_mes_surpresa">M\u00eas surpresa</string>
+    <string name="label_escolher_outro_mes">Escolher outro m\u00eas</string>
+    <string name="label_mes_sorte">M\u00eas de sorte&#160;</string>
+    <string name="label_mes_sorte_dois_pontos">M\u00eas de sorte:&#160;</string>
+    <string name="label_mes_desejado">M\u00eas de sorte</string>
+    <string name="label_aposta_ganhadora">%d aposta ganhadora</string>
+    <string name="label_apostas_ganhadoras">%d apostas ganhadoras</string>
+    <string name="label_texto_barra_texto">%s / %s</string>
+    <string name="label_arrecadacao_total_bold">_Arrecada\u00e7\u00e3o total_</string>
+    <string name="label_ganhadores_regiao_bold">_Ganhadores por regi\u00e3o_</string>
+    <string name="label_tres_interrogacoes">\???\</string>
+    <string name="label_comprovante_aposta">Comprovante de aposta - %s</string>
+
+    <!-- Comprovante -->
+    <string name="label_comprovante_premio">Comprovante do prêmio - %s</string>
+    <string name="label_data_sorteio">Data de sorteio</string>
+    <string name="label_valor_aposta">Valor da aposta</string>
+    <string name="title_activity_cadastrar_confirmacao">CadastrarConfirmacao</string>
+    <string name="title_activity_alterar_dados_login_caixa">Alterar dados</string>
+    <string name="label_corpo_equipe">(%s) %s</string>
+    <string name="label_local_pagamento">Local do pagamento</string>
+    <string name="label_nsu_pagamento">NSU do pagamento</string>
+    <string name="label_nsu_pagamento_nsu">NSU pagamento: %s</string>
+    <string name="label_digite_cod_seguranca">Digite o Código de Segurança do seu cartão. \n\nApós a confirmação, o valor não poderá ser estornado. Confirma o pagamento?</string>
+    <string name="label_selecione_cartao">Ao menos um cartão precisa estar selecionado.</string>
+    <string name="label_adicione_um_cartao">Para efetuar o pagamento, um cartão de crédito será necessário. Adicione um e prossiga.</string>
+    <string name="label_informa_cvv">Favor informar o CVV</string>
+    <string name="label_informe">Informe</string>
+    <string name="botao_digitar_aposta">_Digitar_ sua aposta realizada</string>
+    <string name="termos_nao_aceitos">Para continuar é necessário o aceite do termo.</string>
+    <string name="MA021">E-mail inválido.</string>
+    <string name="label_agencia_maiuscula">Agência</string>
+    <string name="label_agencia_bold">_Agência_</string>
+    <string name="key_usuario_logado">usuariologado</string>
+    <string name="label_time_sorteado_espaco">Time sorteado&#160;</string>
+    <string name="label_time_coracao_dois_pontos_time">Time do cora\u00e7\u00e3o: %s</string>
+    <string name="label_premiados">Premiados</string>
+    <string name="label_veja_mais_detalhes">Veja mais detalhes</string>
+    <string name="label_2_sorteio">2º sorteio</string>
+    <string name="label_1_sorteio">1º sorteio</string>
+    <string name="label_voltar_bold">_Voltar_</string>
+    <string name="label_domingo">&#160;</string>
+    <string name="label_resultados">Resultados</string>
+    <string name="label_ultimo_resultado">Último resultado</string>
+    <string name="label_acumulou_exclamacao">ACUMULOU!</string>
+    <string name="label_nao_houve_acertador">Sem ganhadores</string>
+    <string name="label_mes_sorte_dois_pontos_mes">M\u00eas de sorte: %s</string>
+    <string name="label_mes_sorteado">M\u00eas de sorte&#160;</string>
+    <string name="label_zero">0 (zero)</string>
+    <string name="title_activity_rapidao_aposta_favorita_selecao">
+        RapidaoApostaFavoritaSelecaoActivity
+    </string>
+    <string name="label_explicacao_atualizacao">O seu aplicativo está desatualizado. Para continuar será necessário efetuar a atualização.</string>
+
+    <!-- Versão App -->
+    <string name="title_atualizar">Atualizar</string>
+    <string name="label_app_indisponivel">O aplicativo está temporariamente indisponível. Tente novamente mais tarde.</string>
+
+    <string name="nao_concluiu_operacao">Não foi possível concluir esta operação. Por favor, tente novamente.</string>
+    <string name="nao_concluiu_operacao_nova">Não foi possível concluir esta operação. Por favor, tente novamente mais tarde.</string>
+    <string name="title_tente_novamente">Tentar novamente</string>
+    <string name="label_rapidao_resolve">Deixa que o _Rapidão_ resolve!</string>
+
+
+    <string name="label_limites_1">Selecione os _limites da sua compra,_</string>
+    <string name="label_limites_2">\nsuas _modalidades favoritas._</string>
+    <string name="label_numeros_proibidos"><![CDATA[Fuja dos números  <font color=\'#EE0000\'>\"proibidos\"</font> que não te dão sorte]]></string>
+    <string name="botao_configure_agora">Configure\n_Agora_</string>
+    <string name="botao_gerar_rapidao">Gerar\n_Rapidao_</string>
+    <string name="label_bem_vindo_ao">Bem vindo ao</string>
+    <string name="label_ganhe_tempo">Ganhe tempo no seu dia a dia,\nCrie apostas com apenas um clique</string>
+    <string name="label_rapidao_explicacao">O rapidão é um misturador de combinações de\napostas que pode ter a sua cara. Basta configurar\nseu funcionamento...</string>
+    <string name="label_varias_apostas">Várias apostas com apenas um clique.</string>
+    <string name="botao_gerar_nrapidao">Gerar\\nRapidao</string>
+    <string name="botao_configure_nagora">Configure\\nAgora</string>
+    <string name="label_tambem_pode">Também pode!</string>
+    <string name="label_quer_adicionar">Quer adicionar suas apostas favoritas?\n_Também pode!_</string>
+    <string name="label_modalidades_favoritas">Selecione os limites da sua compra,\\nsuas modalidades favoritas.</string>
+    <string name="label_configure_o_rapidao">Configure o que o rapidão vai misturar:</string>
+    <string name="title_cadastrar">Cadastrar</string>
+    <string name="title_voltar">Voltar</string>
+    <string name="title_orientacaoCodigoBarras">Posicione a linha abaixo sobre o código de barras e aguarde a focalização da câmera.</string>
+    <string name="title_digitarCodigoBarras">Digitar sua aposta realizada</string>
+    <string name="title_numCartao">Número do cartão</string>
+    <string name="title_nomeIgualAoCartao">Nome igual ao do cartão</string>
+    <string name="title_cvv">Código de segurança</string>
+    <string name="title_anoValidade">Ano de validade</string>
+    <string name="title_salvarCartao">Salvar este cartão para futuras apostas</string>
+    <string name="label_salvar_Cartao">Salvar cartão para compras futuras</string>
+    <string name="label_ciente_cpf_titularidadeo">Estou ciente que o cartão utilizado para pagar a aposta deve ser de minha titularidade.</string>
+    <string name="title_mesDeValidade">Mês de validade</string>
+    <string name="title_anoDeValidade">Ano de validade</string>
+    <string name="title_sair">Sair</string>
+    <string name="title_minhaArea">Minha área</string>
+    <string name="title_lerBilhete">Conferir Bilhete</string>
+    <string name="title_repassesSociais">Repasses sociais</string>
+    <string name="title_notificacoes">Notificações</string>
+    <string name="title_aguarde">Aguarde</string>
+    <string name="title_sorteio">Sorteio</string>
+    <string name="title_apostasEncerram">Apostas se encerram em</string>
+    <string name="title_cadastroRealizado">Seu cadastro foi realizado com sucesso.</string>
+    <string name="title_cadastroRealizadoExcelente">Excelente! Seu cadastro foi realizado com sucesso!</string>
+    <string name="title_cadastroAtualizado">Seu cadastro foi atualizado com sucesso.</string>
+    <string name="title_aguardeRedirecionamento">Aguarde apenas um instante enquanto te redirecionamos para a home.</string>
+    <string name="title_informeNumBilhete">Por favor, informe o número do seu bilhete.</string>
+    <string name="title_apostas_favoritas">Apostas favoritas</string>
+    <string name="title_orientacaoRapidao">Selecione as opções que você quer contemplar no Rapidão.</string>
+    <string name="title_salvar">Salvar</string>
+    <string name="title_entendi">Entendi</string>
+    <string name="title_restrito18anos">O uso do aplicativo é restrito a maiores de 18 anos.</string>
+    <string name="title_modalidades">Modalidades</string>
+    <string name="apostar_imagem">Apostar é para maiores. Jogo responsável. 18+!</string>
+    <string name="title_selecioneOpcoesRapidao">Selecione as opções que você quer contemplar no Rapidão.</string>
+    <string name="mercado_pago_mes_invalido">Mês inválido.</string>
+    <string name="title_saibaMais"><u>Saiba mais sobre o Jogo Responsável.</u></string>
+    <string name="numero_cartao_invalido">Número do cartão inválido.</string>
+
+    <!-- Mercado pago -->
+    <string name="mercado_pago_ano_invalido">Ano inválido.</string>
+    <string name="mercado_pago_email_invalido">Email inválido.</string>
+    <string name="mercado_pago_padrao">Não foi possível realizar o pagamento.\nFavor entrar em contato com o Mercado Pago através do site\nwww.mercadopago.com.br.</string>
+    <string name="mercado_pago_digito_verificador_invalido">O CPF vinculado ao e-mail informado deve ser o mesmo CPF cadastrado nas Loterias CAIXA.</string>
+    <string name="mercado_pago_digito_verificador_titular_invalido">Revise o seu documento.</string>
+    <string name="mercado_pago_digital_invalida">Digital inválida.</string>
+    <string name="mercado_pago_tipo_metodo_pagamento_invalido">Tipo de pagamento inválido.</string>
+    <string name="mercado_pago_id_metodo_pagamento_invalido">Método de pagamento inválido.</string>
+    <string name="mercado_pago_consumidor_nao_permitido">A operação não esta permitida para o consumidor.</string>
+    <string name="mercado_pago_vendedor_nao_permitido">A operação não esta permitida para o vendedor.</string>
+    <string name="mercado_pago_usuarios_invalidos_envolvidos">Usuários inválidos estão envolvidos na transação.</string>
+    <string name="mercado_pago_consumidor_igual_vendedor">O consumidor possui os mesmos dados do vendedor.</string>
+    <string name="mercado_pago_nome_titular_invalido">Nome do titular inválido.</string>
+    <string name="mercado_pago_cliente_nao_autorizado">Cliente não autorizado.</string>
+    <string name="mercado_pago_metodo_pagamento_vazio">Método de pagamento está vazio.</string>
+    <string name="mercado_pago_codigo_seguranca_invalido">O código de segurança esta inválido.</string>
+    <string name="mercado_pago_codigo_seguranca_vazio">O código de segurança está vazio.</string>
+    <string name="mercado_pago_metodo_pagamento_invalido">Método de pagamento inválido.</string>
+    <string name="mercado_pago_numero_cartao_Vazio">O número do cartão está vazio.</string>
+    <string name="mercado_pago_numero_cartao_Incorreto">Preencha o número do cartão corretamente.</string>
+    <string name="mercado_pago_mes_vazio">O mês está vazio.</string>
+    <string name="mercado_pago_ano_vazio">O ano está vazio.</string>
+    <string name="mercado_pago_nome_titular_vazio">O nome do titular esta vazio.</string>
+    <string name="mercado_pago_numero_documento_vazio">O número do documento está vazio.</string>
+    <string name="mercado_pago_tipo_vazio">O tipo está vazio.</string>
+    <string name="mercado_pago_data_expiracao_invalida">Data de expiração inválida.</string>
+    <string name="mercado_pago_digite_numero_cartao">Digite o número do seu cartão.</string>
+    <string name="mercado_pago_escolha_mes">Escolha um mês.</string>
+    <string name="mercado_pago_escolha_ano">Escolha um ano.</string>
+    <string name="mercado_pago_informe_documento">Informe seu documento.</string>
+    <string name="mercado_pago_informe_banco_emissor">Informe seu banco emissor.</string>
+    <string name="mercado_pago_digite_nome_sobrenome">Digite o nome e sobrenome.</string>
+    <string name="mercado_pago_digite_codigo_seguranca">Digite o código de segurança.</string>
+    <string name="mercado_pago_erro_numero_cartao_digite_novamente">Há algo de errado com esse número do cartão. Digite novamente.</string>
+    <string name="mercado_pago_confira_cod_seguranca">Confira o código de segurança.</string>
+    <string name="mercado_pago_digite_nome_valido">Por favor, digite um nome válido.</string>
+    <string name="mercado_pago_confira_documento">Confira seu documento.</string>
+    <string name="mercado_pago_confira_data">Confira a data.</string>
+    <string name="mercado_pago_sem_pagamento_usuarios_outro_pais">Não pode efetuar pagamentos a usuários de outros países.</string>
+    <string name="mercado_pago_escolha_outro_cartao_ou_forma_pagamento">Escolha outro cartão ou outra forma de pagamento.</string>
+    <string name="mercado_pago_nao_conseguimos_processar_pagamento">Não conseguimos processar seu pagamento.</string>
+    <string name="mercado_pago_nao_processamos_o_pagamento_escolha_outro_cartao_forma_pagamento">Não processamos pagamentos para o valor selecionado. Escolha outro cartão ou outra forma de pagamento.</string>
+    <string name="mercado_pago_usuario_teste_real">Uma das partes com a qual está tentando realizar o pagamento é um usuário de teste e a outra é um usuário real.</string>
+    <string name="mercado_pago_nao_pode_efetuar_pagamento">Você não pode efetuar pagamentos.</string>
+    <string name="mercado_pago_meio_pagamento_nao_disponivel">O meio de pagamento não está disponível nesse momento. Escolha outro cartão ou outra forma de pagamento.</string>
+    <string name="mercado_pago_realizaou_pagamento_similar">Você realizou um pagamento similar há poucos instantes. Tente novamente em alguns minutos.</string>
+    <string name="mercado_pago_erro_default">Não foi possível realizar a operação. Entre em contato com o meio de pagamento pelo endereço www.mercadopago.com.br/ajuda</string>
+    <string name="mercado_pago_erro_payment_not_found">Meio de pagamento não encontrado. Revise o número do seu cartão.</string>
+    <string name="resultados_selecione_opcoes">Selecione a modalidade para\n ver os seus resultados</string>
+    <string name="resultados_selecione_opcoes_description">Selecione a modalidade para ver os seus resultados</string>
+
+    <!-- Resultados -->
+    <string name="resultados_titulo">Concurso nº %s</string>
+    <string name="resultados_botao">Concurso\nnº _%s_</string>
+    <string name="resultados_data_sorteio">Data do sorteio: %s</string>
+    <string name="resultados_data_resultado">Data do resultado: %s</string>
+    <string name="resultados_numeros_sorteados">Números sorteados:</string>
+    <string name="resultados_placeholder_toolbar">Nº do concurso</string>
+    <string name="resultados_validacao_concurso">O último concurso apurado é o %s</string>
+    <string name="carrinho_fav_btn">Carrinhos\nfavoritos</string>
+
+    <!-- Carrinhos Favoritos -->
+    <string name="carrinho_fav_titulo">_Carrinhos Favoritos_</string>
+    <string name="carrinho_fav_lbl_msg">Carrinho favorito salvo com sucesso.</string>
+    <string name="carrinho_fav_manter_surp">Manter apostas como\nsurpresinhas</string>
+    <string name="carrinho_fav_subtitulo">Aqui estão todos os seus carrinhos favoritos.</string>
+    <string name="carrinho_fav_lbl_desc">Você pode excluir, detalhar e transformar no seu carrinho atual.</string>
+    <string name="carrinho_fav_det_subtitulo">Apostas do carrinho favorito escolhido</string>
+    <string name="carrinho_fav_det_desc">Nesta área estão todas as suas apostas da sorte.\nÉ só escolher e apostar. Boa sorte!</string>
+    <string name="carrinho_fav_vazio">Você ainda não possui carrinhos favoritos.</string>
+    <string name="carrinho_fav_deseja_excluir">Deseja realmente excluir este carrinho favorito?</string>
+    <string name="carrinho_fav_deseja_excluir_aposta">Deseja realmente excluir esta aposta?</string>
+    <string name="carrinho_fav_incluir_carrinho">Incluir no carrinho</string>
+    <string name="carrinho_fav_segmented_desc">Existem 2 concursos abertos para a {modalidade}.\nDeseja incluir no carrinho qual concurso?</string>
+    <string name="cartoes_titulo_menu_lat">Cartões</string>
+
+    <!-- Meus Cartões -->
+    <string name="cartoes_titulo">Pagamento</string>
+    <string name="cartoes_subt_menu_lat">Cartões cadastrados</string>
+    <string name="cartoes_desc_menu_lat">Confira aqui sua lista de cartões salvos</string>
+    <string name="cartoes_subt">Seus Cartões</string>
+    <string name="cartoes_desc">Escolha um cartão e cruze os dedos</string>
+    <string name="cartoes_sem_cartao">Você ainda não possui um cartão de crédito cadastrado. A inclusão de um ou mais cartões de crédito deve ser feita ao realizar uma compra.</string>
+    <string name="rsgt_lt_btn_gerar">Gerar\nnovamente</string>
+    <string name="meus_cartoes">Meus Cartões</string>
+
+
+    <!-- Resgate Lotérica -->
+    <string name="rsgt_lt_msg_qr_valido">O QR Code é válido por {tempo} minutos\nacompanhe o contador:</string>
+    <string name="rsgt_lt_msg_qr_invalido">O QR Code expirou</string>
+    <string name="rsgt_lt_msg_info_3">Aproveite seu _prêmio_!</string>
+    <string name="label_loterica_minusculo">lotérica</string>
+
+    <!-- Loterica Resgate Prêmio -->
+    <string name="label_diriga_unidade_loterica_preferencia">Escolha uma Lotérica mais próxima</string>
+    <string name="label_apresente_qr_code_acima">Mostre o QR Code ao atendente</string>
+    <string name="label_aproveite_premio">Aproveite seu prêmio</string>
+    <string name="label_digite_cpf">Digite seu CPF</string>
+
+    <!-- Avaliar Aplicativo -->
+    <string name="aval_titulo">Gostando do App Loterias CAIXA?</string>
+    <string name="aval_desc">Avalie e nos ajude a melhorar sua experiência</string>
+    <string name="aval_positivo">Agora</string>
+    <string name="aval_negativo">Deixar para depois</string>
+    <string name="conf_rapd_selecione_limites">Selecione os limites da sua compra e suas modalidades favoritas.</string>
+
+    <!-- Nova Configuração do Rapidão-->
+    <string name="conf_rapd_titulo_bold">_Rapidão_</string>
+    <string name="conf_rapd_premio_minimo">Prêmio mínimo</string>
+    <string name="conf_rapd_nossas_sugestoes">Nossas sugestões:</string>
+    <string name="conf_rapd_valor_max_aposta">Valor máximo da aposta</string>
+    <string name="conf_rapd_valor_min_aposta">Valor mínimo da aposta</string>
+    <string name="conf_rapd_escolha_max_aposta">Escolha  o valor _máximo_ em reais da sua aposta</string>
+    <string name="conf_rapd_escolha_min_aposta">Escolha  o valor _mínimo_ em reais da sua aposta</string>
+    <string name="conf_rapd_escolha_modalide">Selecione as opções que você quer contemplar no Rapidão.</string>
+    <string name="conf_rapd_popup_limite_min">Mínimo de _R$ {limite_min}_ e máximo de _R$ {limite_max}_.</string>
+    <string name="conf_rapd_popup_limite_max">O limite é de _R$ {limite_max}_.</string>
+    <string name="conf_rapd_popup_limite_titulo_max">Valor máximo da aposta</string>
+    <string name="conf_rapd_popup_limite_titulo_min">Valor mínimo da aposta</string>
+    <string name="conf_rapd_popup_limite_placeholder_max">Digite o valor máximo</string>
+    <string name="conf_rapd_popup_limite_placeholder_min">Digite o valor mínimo</string>
+    <string name="conf_rapd_obrigatorios_desc">Selecione os números que deverão aparecer em suas apostas.</string>
+    <string name="conf_rapd_obrigatorios_titulo">Números obrigatórios</string>
+    <string name="conf_rapd_proibidos_desc">Selecione os números que não deverão aparecer em suas apostas.</string>
+    <string name="conf_rapd_proibidos_titulo">Números proibidos</string>
+    <string name="conf_rapd_resumo">Resumo</string>
+    <string name="conf_rapd_verifique_opcoes">Verifique e confirme suas opções de Rapidão.</string>
+    <string name="ops">Ops!</string>
+
+    <string name="titulo_dialog_filtro_apostas">Filtro de apostas</string>
+    <string name="titulo_dialog_filtro_compras">Filtro de compras</string>
+
+    <!-- Filtros -->
+    <string name="modalidades_selecionadas">Modalidades Selecionadas</string>
+    <string name="tit_selecione_data">Selecione o período</string>
+    <string name="ultimos_qtd_dias">Últimos {quantidade} dias</string>
+    <string name="numeros_obrigatorios">Números obrigatórios</string>
+
+
+    <string name="numeros_proibidos">Números proibidos</string>
+    <string name="apostas_favoritas">Apostas favoritas</string>
+    <string name="aposta_favorita">Aposta Favorita</string>
+    <string name="aposta_favorita_label">Aposta favorita</string>
+    <string name="aposta_favoritada">Aposta Favoritada</string>
+    <string name="resgatar">Resgatar</string>
+    <string name="resgatar_premio_mp">Resgatar prêmio</string>
+    <string name="excelente">Excelente :)</string>
+    <string name="solicitacao_efetuada_sucesso">Solicitação efetuada com sucesso!</string>
+    <string name="confirmar_email">Para receber seu prêmio, por favor confirme seu email:</string>
+    <string name="premio_disponivel">Em breve seu prêmio estará disponível em sua conta no mercado pago</string>
+    <string name="placeholder_versao">v1.0.0</string>
+    <string name="selecione_os_numeros">Selecione os números que deverão aparecer em suas apostas.</string>
+    <string name="limpar_selecao">Limpar seleção</string>
+    <string name="placeholder_mega_sena">MegaSena</string>
+    <string name="placeholder_dia_de_sorte">dia de sorte</string>
+    <string name="placeholder_julho">Julho</string>
+    <string name="placeholder_prognosticos">20-10-3-50-50-09</string>
+    <string name="placeholder_valor_100">R$100,00</string>
+    <string name="placeholder_titulo">Titulo</string>
+    <string name="placeholder_one">One</string>
+    <string name="placeholder_two">Two</string>
+    <string name="placeholder_three">three</string>
+    <string name="atualizar">Atualizar</string>
+    <string name="cadastrar">Finalizar cadastro</string>
+    <string name="limite_titulo">Limite Diário de Apostas</string>
+    <string name="restringe_limite_ao_minimo">O valor mínimo é %1$s</string>
+    <string name="restringe_limite_ao_maximo">O valor máximo é %1$s</string>
+    <string name="limite_maximo_e_minimo">R$ %1$s até %2$s</string>
+    <string name="dados_limite_compra">Solicitar limite acima de %1$s</string>
+    <string name="precisamos_que_voc_informe_numa_lot_rica_de_sua_prefer_ncia">Precisamos que você informe uma lotérica de sua preferência.</string>
+    <string name="cidade">Cidade</string>
+    <string name="bairro">Bairro</string>
+    <string name="um_concurso">1 concurso</string>
+    <string name="zero">0</string>
+    <string name="mega_sena">Mega-sena</string>
+    <string name="cadastro_rapido">O cadastro é bem rápido. Para começar, informe os dados abaixo:</string>
+    <string name="estes_s_o_seus_dados_pessoais_por_favor_mantenha_os_sempre_atualizados">Estes são seus dados pessoais. Por favor, mantenha-os sempre atualizados.</string>
+    <string name="salvar">Salvar</string>
+    <string name="nesta_rea_est_o_todas_as_suas_apostas_da_sorte_s_escolher_e_apostar_boa_sorte">Nesta área estão todas as suas apostas da sorte. É só escolher e apostar. Boa Sorte!</string>
+    <string name="aposta_favoritas_descricao">Aqui ficam seus números favoritos, prontos pra você jogar sempre que precisar.</string>
+    <string name="selecione_modalidade">Selecione a modalidade</string>
+    <string name="loterica">lotérica</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet.</string>
+    <string name="o_ponto_de_atendimento_nmais_pr_ximo_de_voc">O ponto de atendimento mais próximo de você é:</string>
+    <string name="loterica_placeholder">Lotérica QI 25</string>
+    <string name="placeholder_endereco">SHIS QI 25 - Lago Sul, Brasília - DF CEP 71660 440 3367-6888</string>
+    <string name="pr_mio">Prêmio</string>
+    <string name="para_receber_seu_pr_mio_npor_favor_confirme_seu_email">Para receber seu prêmio,  \npor favor confirme seu e-mail:</string>
+    <string name="e_mail">E-mail</string>
+    <string name="em_breve_seu_pr_mio_estar_dispon_vel_em_sua_conta_no_mercado_pago">Em breve seu prêmio estará disponível em sua conta no mercado pago</string>
+    <string name="um_email_foi_enviado_para_dmalva_monumenta_com_br_com_todas_as_informa_es_e_passo_a_passo_para_o_recebimento_de_seu_pr_mio">Um email foi enviado para dmalva@monumenta.com.br com todas as informações e passo-a-passo para o recebimento de seu prêmio</string>
+    <string name="voltar">Voltar</string>
+    <string name="resgatar_novo_premio">Resgatar novo prêmio</string>
+    <string name="conferir_aposta">Conferir Aposta</string>
+    <string name="selecione_a_aposta_realizada">Selecione a aposta realizada:</string>
+    <string name="acompanhe_todas_as_compras_que_voc_j_realizou_em_nosso_aplicativo">Acompanhe todas as compras que você já realizou em nosso aplicativo.</string>
+    <string name="selecione_o_m_s">Selecione o mês e ano</string>
+    <string name="o_seu_pacote_de_apostas_prontas_para_serem_adquiridas_em_um_toque">O seu pacote de apostas prontas para serem adquiridas em um toque</string>
+    <string name="n_meros_obrigat_rios">Números obrigatórios</string>
+    <string name="selecione_os_n_meros_que_dever_o_aparecer_em_suas_apostas">Selecione os números que deverão aparecer em suas apostas.</string>
+    <string name="limpar_sele_o">Limpar seleção</string>
+    <string name="carrinho_nde_apostas">Carrinho de apostas</string>
+    <string name="pr_mio_m_nimo">Prêmio mínimo</string>
+    <string name="r_00_00">R$ 00,00</string>
+    <string name="_100_milh_es">100 milhões</string>
+    <string name="valor_m_nimo_da_aposta">Valor mínimo da aposta</string>
+    <string name="_1_real">1 real</string>
+    <string name="_100_reais">100 reais</string>
+    <string name="valor_m_ximo_da_aposta">Valor máximo da aposta</string>
+    <string name="quais_modalidades_voc_quer_no_rapid_o">Quais modalidades você quer no rapidão?</string>
+    <string name="adicionar_nou_remover">Adicionar  ou remover</string>
+    <string name="n_meros_proibidos">Números proibidos</string>
+    <string name="em_2017_as_loterias_j_destinaram">Em 2017, as Loterias CAIXA já destinaram</string>
+    <string name="para_melhorar_o_pa_s">para melhorar o país.</string>
+    <string name="para_cada_nr_1_00_napostados_nas_nloterias_federais">Para cada  R$1,00 apostados nas loterias CAIXA</string>
+    <string name="r_0_48_ns_o_destinados_na_programas_sociais">R$0,48* são destinados a programas sociais</string>
+    <string name="r_0_48">R$0,48*</string>
+    <string name="r_1">R$1,00</string>
+    <string name="para_cada">Para cada</string>
+    <string name="programas_sociais">São destinados a programas sociais</string>
+    <string name="apostados_loterias">apostados nas Loterias CAIXA</string>
+    <string name="entenda_como">Entenda como</string>
+    <string name="esse_dinheiro_distribu_do">esse dinheiro é distribuído:</string>
+    <string name="educa_o">Educação</string>
+    <string name="cultura">Cultura</string>
+    <string name="esporte">Esporte</string>
+    <string name="seguran_a">Segurança</string>
+    <string name="seguridade">Seguridade</string>
+    <string name="outros">Outros</string>
+    <string name="o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios">*O valor inclui a parcela correspondente ao imposto de renda sobre os prêmios.</string>
+    <string name="aposte_ne_ajude_ainda_mais">Aposte e ajude ainda mais</string>
+    <string name="termos_de_uso">_Termo de uso_</string>
+    <string name="termos_de_uso_sem_">Termo de uso</string>
+    <string name="pol_tica_nde_privacidade">Política de privacidade</string>
+    <string name="d_vidas">Dúvidas</string>
+    <string name="nome_do_carrinho_favorito">Nome do carrinho favorito</string>
+    <string name="titulo">Titulo</string>
+    <string name="botao">Botão</string>
+    <string name="loteca">loteca</string>
+    <string name="selecione_as_op_es_e_clique_em_adicionar">Selecione as opções e clique em adicionar</string>
+    <string name="escolha_o_tipo_de_concurso">Escolha o tipo de concurso que você quer participar:</string>
+    <string name="tipo_de_concurso">Tipo de Concurso</string>
+    <string name="selecione_a_qtd_de_teimosinhas">Selecione a qtd. de teimosinhas</string>
+    <string name="quantidade_teimosinhas">Quantidade de teimosinhas</string>
+    <string name="sem_teimosinha">Sem teimosinha</string>
+    <string name="incluir_espelho">Deseja incluir a aposta espelho para esse jogo da Lotomania?</string>
+    <string name="adicionar_no_carrinho">Adicionar no carrinho</string>
+    <string name="adicionar_ao_carrinho">Adicionar ao carrinho</string>
+    <string name="cvv">CVV</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_7">7</string>
+    <string name="tres_pontos">...</string>
+    <string name="valor_selecionado">Valor selecionado:</string>
+    <string name="r_130_00">R$130,00</string>
+    <string name="pular_introdu_o">Pular introdução</string>
+    <string name="acessar_aplicativo">Acessar o aplicativo</string>
+    <string name="todas_as_apostas_na_palma_da_sua_m_o_o_dia_inteiro_todos_os_dias">Todas as apostas na palma da sua mão, o dia inteiro, todos os dias. ;)</string>
+    <string name="uma_nova_experi_ncia">Uma nova experiência</string>
+    <string name="novas_funcionalidades">Novas funcionalidades</string>
+    <string name="suas_apostas_ainda_mais_f_ceis_e_muito_mais_r_pidas">Suas apostas ainda mais fáceis e muito mais rápidas.</string>
+    <string name="mais_praticidade">Mais praticidade</string>
+    <string name="acompanhe_e_gerencie_todas_as_suas_apostas">Acompanhe e gerencie todas as suas apostas.</string>
+    <string name="voc_utilizar_o_sistema_nico_de_cadastro_da_caixa">Você utilizará o sistema único de cadastro da caixa</string>
+    <string name="menos">-</string>
+    <string name="mais">+</string>
+    <string name="coluna">Coluna</string>
+    <string name="time">Time</string>
+    <string name="time_do_cora_o">Time do coração</string>
+    <string name="placeholder_flamengo">FLAMENGO</string>
+    <string name="time_pais">Time/Pais</string>
+    <string name="_0">0</string>
+    <string name="placeholder_concurso_data">Nº 2584 | 17/07/2016</string>
+    <string name="d_um_novo_nome_para_sua_aposta">Dê um novo nome para sua aposta</string>
+    <string name="quot_o_pr_mio_meu_quot">\"o prêmio é meu!\"</string>
+    <string name="agora_vai">agora vai</string>
+    <string name="_01">01</string>
+    <string name="domingo_00_00_0000">Domingo (00/00/0000)</string>
+    <string name="_1_de_14">1 de 14</string>
+    <string name="r_4_50">R$ 4,50</string>
+    <string name="minha_rea">Minha área</string>
+    <string name="veja_os_resultados">Veja os resultados</string>
+    <string name="n_mero_do_concurso">Número do concurso</string>
+    <string name="_00000">00000</string>
+    <string name="_000">000</string>
+    <string name="dados_pessoais">Dados pessoais</string>
+    <string name="ol">Olá, %!</string>
+    <string name="tv">TextView</string>
+    <string name="apresentar_trevo">Apresentar trevo</string>
+    <string name="ic_outubro_rosa">Outubro Rosa</string>
+    <string name="ic_notificacao">Notificações</string>
+    <string name="_7_n_meros">7 números</string>
+    <string name="r_0_00">R$ 0,00</string>
+    <string name="carrinho_favorito">Carrinho Favorito</string>
+    <string name="r_30_00">R$ 30,00</string>
+    <string name="_4395">**** **** **** 4395</string>
+    <string name="mastercard">Mastercard</string>
+    <string name="amex">American Express</string>
+    <string name="elo">Elo</string>
+    <string name="visa">Visa</string>
+    <string name="hipercard">Hipercard</string>
+    <string name="master">Mastercard</string>
+    <string name="placeholder_numero_conc">Nº 1456</string>
+    <string name="placeholder_data_hora_concurso">10/04 | 18h00</string>
+    <string name="placeholder_proximo_sorteio">09/12</string>
+    <string name="placeholder_data_encerramento">11/04 | 15h50</string>
+    <string name="placeholder_lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.  Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.  Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.  Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.  Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.</string>
+    <string name="referrer">\?referrer=</string>
+    <string name="referrer_uri"><![CDATA[&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome]]></string>
+    <string name="event_alterar_dados_caixa">ENTROU_ALTERAR_DADOS_CAIXA</string>
+    <string name="extra_tipo_aposta">tipoAposta</string>
+    <string name="extra_modalidade">modalidade</string>
+    //TODO: MEGA 30 ANOS//
+    <string name="numero_concurso">NUMERO_CONCURSO</string>
+    <string name="extra_especial">especial</string>
+    <string name="evento_gerenciar_apostas_detalhes">ENTROU_GERENCIAR_APOSTAS_DETALHE</string>
+    <string name="v">v</string>
+    <string name="extra_is_busca_param">IS_BUSCA_PARAM</string>
+    <string name="flavor_prd">prd</string>
+    <string name="endereco_apk_caixa">http://www.caixa.gov.br/atendimento/aplicativos/Documents/aplicativo-loterias-online.apk</string>
+    <string name="endereco_mobilidade_instalador">https://loja.mobilidade.caixa.gov.br/applicationcenter/installers.html</string>
+    <string name="bom_ver_voce">Que bom ver _você por aqui_ :)</string>
+    <string name="bom_ver_voce_cadastro">Que bom ver você por aqui</string>
+    <string name="traco">-</string>
+    <string name="string_vazia" />
+    <string name="cpf">CPF</string>
+    <string name="nome">Nome</string>
+    <string name="barra_n">\n</string>
+    <string name="uf">UF</string>
+    <string name="somente_numeros">Somente números</string>
+    <string name="municipio">Município</string>
+    <string name="email">E-mail</string>
+    <string name="sucesso_cadastro">_Excelente_! Seu cadastro foi realizado com sucesso!</string>
+    <string name="aguarde_redirecionamento">Aguarde apenas um instante enquanto te redirecionamos para suas apostas.</string>
+    <string name="selecione_municipio_primeiro">Selecione primeiro o Município, assim nossa precisão de Bairros será incrível.</string>
+    <string name="selecione_primeiro_uf">Selecione primeiro a UF, assim nossa precisão de municípios será incrível.</string>
+    <string name="evento_carrinho_offline">ENTROU_CARRINHO_DE_APOSTAS_OFFLINE</string>
+    <string name="evento_limpou_carrinho_online">LIMPOU_CARRINHO_DE_APOSTAS_ONLINE</string>
+    <string name="evento_limpou_carrinho_offline">LIMPOU_CARRINHO_DE_APOSTAS_LOCAL</string>
+    <string name="underline">_</string>
+    <string name="quebra_html"><![CDATA[<br>]]></string>
+    <string name="espaco_em_branco">" "</string>
+    <string name="evento_entrou_carrinho_online">ENTROU_CARRINHO_DE_APOSTAS_ONLINE</string>
+    <string name="evento_entrou_combos_online">ENTROU_COMBOS_ONLINE</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="evento_entrou_formas_pagamento">ENTROU_FORMAS_DE_PAGAMENTO</string>
+    <string name="evento_carregou_boloes_disponiveis">CARREGOU_BOLOES_DISPONIVEIS</string>
+    <string name="delete_loterica_favorita">DELETOU_LOTERICA_FAVORITA</string>
+    <string name="evento_carregou_lotericas_favoritas">CARREGOU_LOTERICAS_FAVORITAS</string>
+    <string name="deletou_lotericas_favoritas">CARREGOU_LOTERICAS_FAVORITAS</string>
+    <string name="evento_carregou_detalhe_bolao">CARREGOU_DETALHE_BOLAO</string>
+    <string name="string_true">true</string>
+    <string name="string_false">false</string>
+    <string name="evento_pagamento_sucesso">EFETUOU_PAGAMENTO_SUCESSO</string>
+    <string name="evento_pagamento_sucesso_async">EFETUOU_PAGAMENTO_SUCESSO_ASYNC</string>
+    <string name="bin">bin=</string>
+    <string name="public_key"><![CDATA[&public_key=]]></string>
+    <string name="response_dois_pontos">Response:</string>
+    <string name="payment_method_id">payment_method_id</string>
+    <string name="card_id">card_id</string>
+    <string name="issuer">issuer</string>
+    <string name="thumbnail">thumbnail</string>
+    <string name="error_dois_pontos">Error:</string>
+    <string name="volleyError">volleyError</string>
+    <string name="volleyError_dois_pontos">volleyError:</string>
+    <string name="zero_ponto_zero">0.0</string>
+    <string name="modalidade">modalidade</string>
+    <string name="tipoAposta">tipoAposta</string>
+    <string name="valorAposta">valorAposta</string>
+    <string name="yyyy">yyyy</string>
+    <string name="underline_com_espaco">&#160;_&#160;</string>
+    <string name="dd_mm">dd/MM</string>
+    <string name="dd_mm_yyyy">dd/MM/yyyy</string>
+    <string name="dd_mm_yyyy_hh_mm_ss">dd/MM/yyyy HH:mm:ss</string>
+    <string name="dd_mm_yyyy_hh_mm">dd/MM/yyyy HH:mm</string>
+    <string name="eeee">EEEE</string>
+    <string name="hh_mm_ss">HH:mm:ss</string>
+    <string name="hh_mm">HH:mm</string>
+    <string name="as_espacado">&#160;às&#160;</string>
+    <string name="sorteio">Sorteio</string>
+    <string name="resultado">Resultado</string>
+    <string name="ajuda">ajuda</string>
+    <string name="seus_dados_pessoais">Estes são seus dados pessoais. Por favor, mantenha-os sempre atualizados.</string>
+    <string name="evento_entrou_editar_cadastro">ENTROU_EDITAR_CADASTRO</string>
+    <string name="evento_edicao_cadastro_sucesso">EFETUOU_EDICAO_CADASTRO_SUCESSO</string>
+    <string name="cadastro_atualizado">_Seu cadastro_ foi atualizado com sucesso.</string>
+    <string name="aguarde_redirecionamento_tela_inicial">Aguarde apenas um instante enquanto te redirecionamos para a tela inicial.</string>
+    <string name="evento_entrou_lista_favoritos">ENTROU_LISTA_FAVORITOS</string>
+    <string name="numeros_da_sorte_no_mesmo_lugar"> </string>
+    <string name="nesta_area_estao_todas_suas_apostas">Seus números da sorte organizados para você escolher e repetir sempre que quiser.</string>
+    <string name="informe_codigo_bilhete">Informe o código do bilhete!</string>
+    <string name="evento_entrou_tour_tela_1">ENTROU_TOUR_TELA1</string>
+    <string name="evento_entrou_tour_tela_2">ENTROU_TOUR_TELA2</string>
+    <string name="evento_entrou_tour_tela_3">ENTROU_TOUR_TELA3</string>
+    <string name="evento_entrou_tour_tela_4">ENTROU_TOUR_TELA4</string>
+    <string name="logoLoteriasCaixa">Logo Loterias Caixa</string>
+    <string name="evento_pagina_1de4">Logo imagem CEF Loterias, Página 1 de 4</string>
+    <string name="evento_pagina_2de4">Página 2 de 4</string>
+    <string name="evento_pagina_3de4">Página 3 de 4</string>
+    <string name="evento_pagina_4de4">Página 4 de 4</string>
+    <string name="evento_pulou_tour">PULOU_TOUR</string>
+    <string name="teste_xxx">Teste xxx</string>
+    <string name="tipo_caixa">tipoCaixa</string>
+    <string name="premio_disponivel_em_breve_mp">Em breve seu prêmio estará disponível  em sua conta no mercado pago</string>
+    <string name="email_enviado_para">Um e-mail foi enviado para&#160;</string>
+    <string name="label_visualizar_comprovante_premio">Visualizar comprovante de prêmio</string>
+    <string name="com_o_passo_a_passo">&#160;com os dados de recebimento do seu prêmio.</string>
+    <string name="valor_premio">valorPremio</string>
+    <string name="val_premio">Valor do prêmio:</string>
+    <string name="id_aposta">idAposta</string>
+    <string name="email_minusculo">email</string>
+    <string name="email_maiusculo">EMAIL</string>
+    <string name="um">1</string>
+    <string name="posicione_linha_codigo_barras">Posicione a linha abaixo sobre o código de barras e aguarde a focalização da câmera.</string>
+    <string name="response">Response</string>
+    <string name="evento_entrou_lista_compras">ENTROU_LISTA_COMPRAS</string>
+    <string name="evento_entrou_msg_push">ENTROU_MSG_PUSH</string>
+    <string name="de_espacado">&#160;de&#160;</string>
+    <string name="evento_entrou_lista_apostas_rapidao">ENTROU_LISTA_APOSTAS_RAPIDAO</string>
+    <string name="evento_entrou_adicao_forma_pagamento">ENTROU_ADICAO_FORMA_DE_PAGAMENTO</string>
+    <string name="evento_efetuou_adicao_forma_pagamento_sucesso">EFETUOU_ADICAO_FORMA_DE_PAGAMENTO_SUCESSO</string>
+    <string name="evento_efetuou_pagamento_sucesso">EFETUOU_PAGAMENTO_SUCESSO</string>
+    <string name="mensagem">mensagem</string>
+    <string name="chave_abrindo">{</string>
+    <string name="volley_error">volleyError</string>
+    <string name="not_found">not_found</string>
+    <string name="extra_is_tipo_nr_obrigatorios">isTipoNrObrigatorios</string>
+    <string name="extra_numeros_contrarios">numerosContrarios</string>
+    <string name="evento_seleciona_numeros_obrigatorios_config_rapidao">ENTROU_SELECIONA_NUMEROS_OBRIGATORIOS_CONFIG_RAPIDAO</string>
+    <string name="extra_numeros_obrigatorios">numerosobrigatorios</string>
+    <string name="evento_entrou_seleciona_numeros_proibidos_config_rapidao">ENTROU_SELECIONA_NUMEROS_PROIBIDOS_CONFIG_RAPIDAO</string>
+    <string name="extra_numeros_proibidos">numerosProibidos</string>
+    <string name="numeros_nao_devem_aparecer">Selecione os números que não deverão aparecer em suas apostas.</string>
+    <string name="extra_numeros_rapidao">numerosRapidao</string>
+    <string name="extra_modalidade_apostar_agora">MODALIDADE_APOSTAR_AGORA</string>
+    <string name="pt">pt</string>
+    <string name="br">BR</string>
+    <string name="ola_usuario">Olá, _%_!</string>
+    <string name="percent">%</string>
+    <string name="bem_vindo_ao_app">Olá, seja bem-vindo ao  App Loterias.</string>
+    <string name="evento_entrou_lista_modalidades">ENTROU_LISTA_MODALIDADES</string>
+    <string name="valor_minimo_compra">valor mínimo da compra: %s</string>
+    <string name="evento_entrou_menu_trevo">ENTROU_MENU_TREVO</string>
+    <string name="evento_logout_sucesso">EFETUOU_LOGOUT_SUCESSO</string>
+    <string name="evento_logout_offline_sucesso">EFETUOU_LOGOUT_OFFLINE_SUCESSO</string>
+    <string name="aposte_por">_Aposte_\npor</string>
+    <string name="evento_entrou_simular_aposta_modalidade">ENTROU_SIMULAR_APOSTA</string>
+    <string name="evento_entrou_tutorial_mais_milionaria">ENTROU_TUTORIAL_MAIS_MILIONARIA</string>
+    <string name="evento_entrou_instantanea">ENTROU_INSTANTANEA</string>
+    <string name="evento_entrou_combo">ENTROU_COMBO</string>
+    <string name="extra_apostas_favoritas">apostasFavoritas</string>
+    <string name="extra_apostas_salvas">apostasSalvas</string>
+    <string name="extra_tipos_apostas">tiposAposta</string>
+    <string name="evento_entrou_lista_modalidade_config_rapidao">ENTROU_LISTA_MODALIDADE_CONFIG_RAPIDAO</string>
+    <string name="evento_entrou_lista_favoritas_config_rapidao">ENTROU_LISTA_FAVORITAS_CONFIG_RAPIDAO</string>
+    <string name="evento_entrou_configuracoes_rapidao">ENTROU_CONFIGURACOES_RAPIDAO</string>
+    <string name="zero_milhao">0 milhão</string>
+    <string name="evento_efetuou_configuracoes_rapidao_sucesso">EFETUOU_CONFIGURACOES_RAPIDAO_SUCESSO</string>
+    <string name="ponto">.</string>
+    <string name="virgula">,</string>
+    <string name="cifrao">$</string>
+    <string name="r_cifrao">R$</string>
+    <string name="barra_barra_s">\\s</string>
+    <string name="evento_entrou_repassometro">ENTROU_REPASSOMETRO</string>
+    <string name="em_espaco">Em&#160;</string>
+    <string name="ja_destinaram">, as Loterias CAIXA já destinaram</string>
+    <string name="html_repasse_1"><![CDATA[<html>Para cada <br><strong><font color=\"#afca0b\">R$1,00</font></strong><br>apostados nas<br>loterias federais</html>]]></string>
+    <string name="html_repasse_2"><![CDATA[<html><strong><font color=\"#00437A\">R$0,48</font></strong><br>são destinados<br>a programas sociais</html>]]></string>
+    <string name="aposte_e_ajude"><![CDATA[<html>_Aposte_<br>e ajude ainda mais</html>]]></string>
+    <string name="mil_reais">mil reais</string>
+    <string name="milhoes_de_reais">milhões de reais</string>
+    <string name="milhao_de_reais">milhão de reais</string>
+    <string name="bilhoes_de_reais">bilhões de reais</string>
+    <string name="bilhao_de_reais">bilhão de reais</string>
+    <string name="reais">reais</string>
+    <string name="chave_tempo_chave">{tempo}</string>
+    <string name="mm_ss_percent_d2">%02d:%02d</string>
+    <string name="evento_entrou_validacao_dezoito_anos">ENTROU_VALIDACAO_DEZOITO_ANOS</string>
+    <string name="app_para_maior_de_18">O uso do aplicativo é restrito a maiores de _18 anos._</string>
+    <string name="chave_valor_premio_chave">{ValorPremio}</string>
+    <string name="extra_valor_premio">valorPremio</string>
+    <string name="extra_id_aposta">idAposta</string>
+    <string name="extra_tipos_aposta">tiposAposta</string>
+    <string name="percent_d_numeros">%d números</string>
+    <string name="percent_d_trevos">%d números</string>
+    <string name="percent_d_concurso">%d concurso</string>
+    <string name="extra_valor_aposta">valorAposta</string>
+    <string name="extra_equipe_selecionada">equipeSelecionada</string>
+    <string name="evento_efetuou_adicao_aposta_favorita_sucesso">EFETUOU_ADICAO_APOSTA_FAVORITA_SUCESSO</string>
+    <string name="espaco_numeros_por_espaco">&#160;números por&#160;</string>
+    <string name="espaco_concurso">&#160;concurso</string>
+    <string name="espaco_concursos">&#160;concursos</string>
+    <string name="unterline_mega_sena_underline">_mega-sena_</string>
+    <string name="underline_quina_underline">_quina_</string>
+    <string name="underline_lotofacil_underline">_lotofácil_</string>
+    <string name="underline_dupla_sena_underline">_dupla sena_</string>
+    <string name="underline_timemania_underline">_timemania_</string>
+    <string name="underline_lotomania_underline">_lotomania_</string>
+    <string name="underline_loteca_underline">_loteca_</string>
+    <string name="underline_lotogol_underline">_lotogol_</string>
+    <string name="underline_dia_de_Sorte_underline">_dia de sorte_</string>
+    <string name="underline_super_sete_underline">_super sete_</string>
+    <string name="underline_mais_milionaria_underline">_+Milionária_</string>
+    <string name="underline_mega_virada_underline">_mega da virada_</string>
+    <string name="underline_quina_sao_joao_underline">_quina de são joão_</string>
+    <string name="underline_lotofacil_independencia_underline">_lotofácil da independência_</string>
+    <string name="underline_dupla_pascoa_underline">_dupla de páscoa_</string>
+    <string name="extra_qtd_dezenas_possiveis_selecionado">qtdDezenasPossiveisSelecionado</string>
+    <string name="extra_numero_concurso_atual">numeroConcursoAtual</string>
+    <string name="extra_data_sorteio_atual">dataSorteioAtual</string>
+    <string name="extra_type_game_color_light">typeGameColorLight</string>
+    <string name="extra_type_game_color_Dark">typeGameColorDark</string>
+    <string name="evento_entrou_selecao_prognosticos">ENTROU_SELECAO_PROGNOSTICOS</string>
+    <string name="quant_de_numeros">Quantidade de números</string>
+    <string name="numeros_text">Escolha em quantos números você quer jogar:</string>
+    <string name="espaco_numeros">&#160;números</string>
+    <string name="evento_entrou_popup_teimosinha">ENTROU_POPUP_TEIMOSINHA</string>
+    <string name="teimosinhas_maiusculo">Teimosinhas</string>
+    <string name="teimosinhas_text">Escolha em quantos números você quer jogar:</string>
+    <string name="teimosinhas_descricao">Escolha em quantos concursos você quer participar com este mesmo jogo:</string>
+    <string name="extra_ajuda">ajuda</string>
+    <string name="mailto_dois_pontos">mailto:</string>
+    <string name="utf_8">UTF-8</string>
+    <string name="text_html_charset_utf_8">text/html; charset=UTF-8</string>
+    <string name="evento_entrou_termos_de_uso">ENTROU_TERMO_DE_USO</string>
+    <string name="evento_entrou_duvidas">ENTROU_DUVIDAS</string>
+    <string name="evento_efetuou_login_sucesso">EFETUOU_LOGIN_SUCESSO</string>
+    <string name="cpf_minusculo">cpf</string>
+    <string name="barra_barra_ponto">\\.</string>
+    <string name="name">name</string>
+    <string name="especial_maiusculo">ESPECIAL</string>
+    <string name="percent_zero_dois_d">%02d</string>
+    <string name="percent_d_traco">%d -&#160;</string>
+    <string name="percent_zero_dois_d_traco">%02d -&#160;</string>
+    <string name="barra_n_time_do_coracao_dois_pontos_espaco">\nTime do coração:&#160;</string>
+    <string name="barra_n_mes_da_sorte_dois_pontos">\nMês de sorte:&#160;</string>
+    <string name="conferindo_resultado_ponto">Conferindo resultado.</string>
+    <string name="situacao_dois_pontos_espaco">situação:&#160;</string>
+    <string name="premiada_maiusculo">Premiada</string>
+    <string name="situacao_dois_pontos_underline">situação: _</string>
+    <string name="nao_foi_possivel_conferir_o_resultado">Não foi possível conferir o resultado.</string>
+    <string name="percent_d_percent_s">%d %s</string>
+    <string name="tres_interrogacoes">\???</string>
+    <string name="percent_d">%d</string>
+    <string name="barra">/</string>
+    <string name="x_x">XX</string>
+    <string name="x_x_traco">XX -&#160;</string>
+    <string name="chave_modalidade_chave">{modalidade}</string>
+    <string name="ambos">Ambos</string>
+    <string name="carrinho_favorito_titulo">Carrinho Favorito</string>
+    <string name="mascara_cartao_sem_ultimos_digitos">**** **** ****</string>
+    <string name="mascara_cartao">**** </string>
+    <string name="venc_ponto_dois_pontos">Venc.:</string>
+    <string name="evento_efetuou_exclusao_forma_pagamento_sucesso">EFETUOU_EXCLUSAO_FORMA_DE_PAGAMENTO_SUCESSO</string>
+    <string name="dia_de_sorte">dia de sorte</string>
+    <string name="barra_n_time_do_coracao_dois_pontos">\nTime do coração: </string>
+    <string name="barra_n_mes_de_sorte_dois_pontos">\nMês de sorte: </string>
+    <string name="espaco_barra_reta_espaco">&#160;|&#160;</string>
+    <string name="espaco_nome_da_aposta">&#160;nome da aposta</string>
+    <string name="evento_efetuou_exclusao_favorito">EFETUOU_EXCLUSAO_FAVORITO</string>
+    <string name="evento_efetuou_inclusao_favorito_no_carrinho">EFETUOU_INCLUSAO_FAVORITO_NO_CARRINHO</string>
+    <string name="evento_efetuou_troca_do_nome_da_aposta_favorita">EFETUOU_TROCA_DO_NOME_DA_APOSTA_FAVORITA</string>
+    <string name="barrra_aspas">\"</string>
+    <string name="adicionar_carrinho_favoritas_view">adicionarCarrinhoFavoritasView</string>
+    <string name="virgula_espaco">,&#160;</string>
+    <string name="espaco_de_espaco">&#160;de&#160;</string>
+    <string name="concurso_barra_n_barra_n">Concurso\n\n</string>
+    <string name="barra_n_barra_n_ainda_sem_estimativa_de_premio">\n\nainda sem estimativa de prêmio.</string>
+    <string name="proximo_concurso_barra_n_barra_n">Próximo Concurso\n\n</string>
+    <string name="barra_n_aguardando_estimativa_de_premio">\nAguardando estimativa de prêmio</string>
+    <string name="barra_n_barra_n_aguardando_estimativa_de_premio">\n\nAguardando estimativa de prêmio</string>
+    <string name="percent_d_dia">%d dia</string>
+    <string name="percent_d_dias">%d dias</string>
+    <string name="espaco_e_espaco">&#160;e&#160;</string>
+    <string name="percent_d_hora">%d hora</string>
+    <string name="percent_d_horas">%d horas</string>
+    <string name="menos_uma_hora">Menos de uma hora</string>
+    <string name="espaco_teimosinhas">&#160;Teimosinhas</string>
+    <string name="espaco_teimosinha">&#160;Teimosinha</string>
+    <string name="nao_teimosinhas">Por ser uma modalidade especial, esse concurso não permite teimosinhas.</string>
+    <string name="extra_compra_dto">CompraDTO</string>
+    <string name="extra_ordem">ordem</string>
+    <string name="extra_tempo_pix">tempoPix</string>
+    <string name="data_dois_pontos_espaco">Data:&#160;</string>
+    <string name="textoInfoSelecioneFormaPagamento">textoInfoSelecioneFormaPagamento</string>
+    <string name="como_jogar">Como jogar</string>
+    <string name="no_whatsapp">Não existe whatsapp instalado neste celular.</string>
+    <string name="cef_id_tit">CAIXA Loterias</string>
+    <string name="cef_id1">CNPJ 24.038.490.0001-83\nED. José Alencar - SEPN 512, Conjunto C, Lote 12, Asa Norte, Brasília - DF\nCEP 70760-500 BRASÍLIA - DF</string>
+
+    <!-- Tutorial SuperSete -->
+    <string name="bem_vindo_super_sete">Bem vindo ao  \n_Super Sete_</string>
+    <string name="jogo_simples">Jogue marcando _1_ número em\ncada uma das 7 colunas.</string>
+    <string name="como_apostar">Veja como Apostar</string>
+    <string name="pular">Pular</string>
+    <string name="apostas_combinadas">Apostas combinadas</string>
+    <string name="apostas_combinadas_desc">Você pode escolher mais números por coluna fazendo apostas combinadas.</string>
+    <string name="pronto">Pronto  :)</string>
+    <string name="confirmar_carrinho">Agora você só precisa confirmar o seu carrinho de apostas e selecionar a opção _Avançar para forma de pagamento_.</string>
+    <string name="aumente_suas_chances">Aumente suas chances de ganhar apostando agora mesmo!</string>
+    <string name="avancar">Avançar</string>
+    <string name="iniciar_aposta">Iniciar aposta</string>
+    <string name="bloq_local_fora_brasil">As apostas de Loterias só podem ser realizadas em território brasileiro.</string>
+
+    <!-- Restrição de Geolocalização -->
+    <string name="bloq_local_desativada_msg">Precisamos conferir se você está em território brasileiro.\nHabilite sua localização.</string>
+    <string name="bloq_local_brasil">BR</string>
+
+    <string name="bloq_local_permitir">Permitir acesso a localização</string>
+
+    <string name="bloq_local_ir_config">Ir para configurações</string>
+    <string name="bloq_local_erro">Não foi possível recuperar sua localização. Por favor, tente novamente</string>
+    <string name="bloq_local_tente_nvm">Tentar novamente</string>
+    <string name="google_url_market">market://details?id=</string>
+
+    <!-- Loja do Google -->
+    <string name="google_url_playstore">https://play.google.com/store/apps/details?id=</string>
+    <string name="erro_req">Opa, ocorreu um erro na sua requisição. Por favor, tente novamente dentro de alguns instantes.</string>
+
+    <!-- Popup -->
+    <string name="mp_token_url_redirect">https://registration-br.mercadopago.com/registration-mp?mode=mp&amp;external_registration_token={token}</string>
+
+    <!-- Mercado Pago -->
+    <string name="msg_conc_nao_aberto">Concurso {num_concurso} ainda não aberto para aposta. Tente novamente mais tarde.</string>
+
+    <!-- Carrossel -->
+    <string name="carrinho_favorito_ja_adicionado">Este carrinho favorito foi adicionado recentemente ao carrinho de compras. Deseja continuar?</string>
+    <string name="valor_atual_do_carrinho">Valor atual do carrinho</string>
+    <string name="mais_999">...</string>
+    <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
+    <string name="percent_d_minutos">%d minutos </string>
+    <string name="percent_d_segundos">%d segundos</string>
+    <string name="aposta_encerrada">Encerradas</string>
+    <string name="apostas">Apostas</string>
+
+    <!-- App Center -->
+    <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
+    <string name="trevosTitulo">Trevos</string>
+
+    <!-- Trevos -->
+    <string name="trevosInfo">Escolha a quantidade de trevos</string>
+    <string name="valores_para_apostas_com_2_trevos">* Valores para apostas com 2 trevos</string>
+    <string name="voce_escolheu_x_numeros">Você escolheu _x_ números</string>
+    <string name="subtitulo_trevos">Agora escolha de 2 a 6 trevos \npara marcar nesta aposta</string>
+    <string name="text_trevos">Escolha de 2 a 6 trevos \npara marcar nesta aposta</string>
+    <string name="trevos">trevos</string>
+    <string name="para_aposta_com_x_numeros">Para a aposta com x números</string>
+    <string name="quant_de_trevos">Quantidade de trevos</string>
+    <string name="informe_favorita">Informe um nome para salvar sua aposta favorita:</string>
+    <string name="trevos_por"> trevos por </string>
+    <string name="completar_trevos_aleatoriamente">_Completar_\n Trevos aleatoriamente</string>
+    <string name="comecar_tutorial">_Começar_\n tutorial</string>
+    <string name="pular_tutorial">_Pular_\n apresentação</string>
+    <string name="divisor_paginacao">|</string>
+    <string name="trevos_dois_pontos">"Trevos: "</string>
+    <string name="underline_trevos_underline">_trevos_</string>
+    <string name="trevos_sorteados">Trevos sorteados</string>
+    <string name="trevos_">Trevos:</string>
+    <string name="n_mero">Números</string>
+    <string name="escolha_a_quantidade_de_n_meros">Escolha a quantidade de números</string>
+    <string name="label_mais_milionaria_acentuado">+milionária</string>
+    <string name="ver_detalhe_da_aposta">Ver detalhe da aposta</string>
+    <string name="Trevos">Trevos</string>
+    <string name="vamos_comecar">Vamos começar?</string>
+    <string name="tutorial_fechar">Fechar</string>
+    <string name="tutorial_pular">Pular para\no final</string>
+    <string name="bundle_key_url">url</string>
+    <string name="url_ajuda_mercado_pago">https://www.mercadopago.com.br/ajuda#from-section=menu</string>
+    <string name="url_ajuda_recarga_pay"><![CDATA[https://recargapay.com.br/ajuda_caixa_form?reason=loterias-caixa&sub_reason=Problemas-com-meu-pagamento&subject=Ajuda%20com%20meu%20pagamento]]></string>
+    <string name="compra_existente_24_horas">Existe compra efetivada, em processamento ou aguardando efetivação da aposta com o mesmo valor do carrinho atual nas últimas 24 horas. Você gostaria de revisar o carrinho atual?</string>
+    <string name="verificamos_compra_demorando_ou_processando">Verificamos que sua compra está em processamento e está demorando mais que o esperado. Aguarde alguns instantes e verifique na área  "Minhas compras" se a compra foi processada antes de tentar novamente.</string>
+
+    <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>
+    <string name="digitar_codigo">Digitar o código</string>
+    <string name="tentar_novamente">Tentar novamente</string>
+    <string name="como_voc_prefere_pagar">Preencha os dados de cartão de crédito de sua titularidade</string>
+    <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a opção de sua preferência e preencher os dados do cartão de crédito</string>
+    <string name="leia_instrucoes_pix">Antes de prosseguir, leia atentamente as instruções abaixo.</string>
+    <string name="resgate_seleciona_chave_pix">Para resgatar o seu prêmio escolha o tipo de Chave Pix a ser utilizado</string>
+    <string name="copia_codigo_instrucoes_pix">Copie o código abaixo e utilize o Pix Copia e Cola no aplicativo que você fará o pagamento.</string>
+    <string name="adicionar_cartao">Adicionar cartão</string>
+    <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
+    <string name="nao_e_possivel_eliminar_cartao_favorito">Não é possível eliminar o cartão favorito.</string>
+    <string name="deseja_realmente_exluir_cartao">Tem certeza que deseja excluir o cartão com final </string>
+    <string name="alterar_favorito_interrogacao">Alterar Favorito?</string>
+    <string name="confirmar_alterar_cartao_favorito">Deseja alterar seu cartão preferido? Confirmar?</string>
+
+    <string name="confira_cartoes_salvos_mercado_pago">Confira aqui sua lista de cartões salvos no Mercado Pago</string>
+
+    <string name="confira_cartoes_salvos_recargapa_pay">Confira aqui sua lista de cartões salvos no RecargaPay</string>
+    <string name="compra_processada_por">Compra processada por:</string>
+    <string name="selecione_o_meio_de_pagamento_que_ira_processar_a_compra">Selecione o meio de pagamento que irá processar a compra utilizando o cartão de crédito de sua escolha</string>
+    <string name="bundle_key_config">CONFIG</string>
+    <string name="abre_chave_nsb_fecha_chave">{nsb}</string>
+
+    <string name="situaco">Situação</string>
+    <string name="faixa">Faixa</string>
+    <string name="valor">Valor</string>
+    <string name="mensagem_carrinho_vazio_dialog">Você não fez nenhuma aposta. Escolha a sua modalidade favorita e boa sorte!</string>
+    <string name="title_orientacaoCodigoBarras2">Posicione a câmera sobre o código de barras e aguarde. A leitura é automática.</string>
+
+    <string name="title_orientacaoQrCode">Posicione a câmera sobre o QR Code e aguarde. A leitura é automática.</string>
+    <string name="title_CodigoBarras">Código de barras</string>
+
+    <string name="title_QrCode">QR Code</string>
+    <string name="title_digiteSuaAposta">Digite a sua aposta</string>
+    <string name="leitor_digital">Acessar com biometria</string>
+    <string name="label_notificacoes">Receber notificações</string>
+    <string name="aceito_receber_notificacoes">Aceito receber notificações de Loterias.</string>
+    <string name="entrar">Entrar como</string>
+    <string name="ativar_biometria">Necessário habilitar biometria</string>
+    <string name="habilitar">Habilitar</string>
+    <string name="desativar_biometria">Desativar biometria</string>
+    <string name="desativar_biometria_mensagem">Desaja desativar a biometria e acessar apenas com o Login Caixa?</string>
+    <string name="biometria_popup_titulo">Loterias Caixa</string>
+    <string name="loterias_caixa_titulo">Loterias Caixa</string>
+    <string name="biometria_popup_descricao">Desbloqueie seu celular</string>
+    <string name="trocar_de_usuario"><u>Trocar de usuário</u></string>
+
+    <string name="cartao_de_credito">Cartão de Crédito</string>
+    <string name="como_pagar_pix">Como pagar com pix</string>
+
+    <string name="orientacao_pix_checkbox">Estou ciente que somente será aceito o pagamento realizado em conta de titularidade do apostador.</string>
+    <string name="pagar_agora">Pagar agora!</string>
+    <string name="pix_copia_cola">Pix Copia e Cola</string>
+    <string name="pix_codigo_pago_unica_vez">*O código poderá ser pago somente 1 vez.</string>
+    <string name="pix_voce_tem">Você tem</string>
+    <string name="pix_contador">9m 59seg</string>
+    <string name="pix_para_efetuar_pagamento">Para efetuar o pagamento</string>
+    <string name="popup_pix_nao_autorizado">Pagamento não autorizado</string>
+    <string name="gerar_novo_codigo">Gerar novo Código</string>
+
+    <!-- Popup Pix nao autorizado -->
+    <string name="gerar_novo_codigo_pix">Gerar \nnovo Código Pix</string>
+    <string name="alterar_forma_pagamento">Alterar Pagamento</string>
+    <string name="popup_pix_nao_autorizado_descricao">CPF do pagamento diferente do CPF do apostador. Não se preocupe, o Pix foi devolvido para a conta de pagamento \n\nVocê pode gerar novo código Pix ou alterar a forma de pagamento para concluir sua compra.</string>
+    <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
+    <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="title_activity_resgate_pix">_Resgate de Prêmio via Pix_</string>
+    <string name="title_activity_resgate_mercado_pago">_Resgate de Prêmio via Mercado Pago_</string>
+    <string name="popup_pix_cpf_vinculado">Somente será realizado resgate em Chave Pix vinculada ao CPF do apostador.</string>
+
+    <!-- Pix Resgate Prêmio -->
+    <string name="trocar_tipo_chave">Trocar Tipo de\n Chave</string>
+    <string name="trocar_forma_resgate">Trocar Forma\n de Resgate</string>
+    <string name="trocar_chave">Trocar Chave</string>
+    <string name="pix_continuar">Continuar</string>
+    <string name="pix_chave_invalida">Chave Inválida</string>
+    <string name="popup_pix_cpf_nao_vinculado">Não existe Chave Pix vinculada a este CPF</string>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="pix_comprovante_em_breve">Em breve seu prêmio estará disponível em sua conta</string>
+    <string name="chave_sem_vinculo">A chave digitada não está vinculada ao seu CPF</string>
+    <string name="resgate_nao_autorizado">Resgate não autorizado</string>
+    <string name="id_pagamento">ID do Pagamento:</string>
+
+    <string name="visualizar_comprovante">_Visualizar_\ncomprovante</string>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="resgate_pix_concluido">Resgate concluído!</string>
+
+    <string name="salvar_chave_pix_para_resgates_futuros">Salvar Chave Pix para resgates futuros</string>
+    <string name="desistir">Desistir</string>
+    <string name="chaves_favoritas">Chaves Favoritas</string>
+
+    <!-- Popup Pix Estornado -->
+    <string name="titulo_tela_preferencias_notificacao">Preferências de _Notificações_</string>
+    <string name="todas_as_notificacoes">Todas as notificações</string>
+    <string name="pagamentos_resgates">Pagamentos e Resgates</string>
+    <string name="lembretes_sorte">Lembretes da Sorte</string>
+    <string name="resultados_disponiveis">Resultados Disponíveis</string>
+    <string name="dicas_novidades">Dicas e Novidades</string>
+    <string name="alertas_segurancas">Alertas de Segurança ou Disponibilidade de Serviços</string>
+    <string name="confirmacao_e_pendencias_de_pagamentos">Confirmação e pendências de pagamentos e confirmação de resgates realizados</string>
+    <string name="avisos_quando_houver_oportunidade_ganhar_mais">Avisos quando houver oportunidades de ganhar mais (concurso especial, prêmio acumulado)</string>
+    <string name="avisos_resultados_disponiveis">Avisos quando resultados das suas apostas estiverem disponíveis para conferência</string>
+    <string name="novos_produtos_app">Novos produtos ou serviços no App</string>
+    <string name="avisos_melhorar_experiencia">Avisos para proteger você e melhorar sua experiência</string>
+
+
+    <!-- Push Notification -->
+    <string-array name="dia_sorte_meses">
+        <item>Janeiro</item>
+        <item>Fevereiro</item>
+        <item>Março</item>
+        <item>Abril</item>
+        <item>Maio</item>
+        <item>Junho</item>
+        <item>Julho</item>
+        <item>Agosto</item>
+        <item>Setembro</item>
+        <item>Outubro</item>
+        <item>Novembro</item>
+        <item>Dezembro</item>
+    </string-array>
+    <string-array name="orientacao_pix_list">
+        <item>Copie o código gerado e pague dentro do prazo que será apresentado;</item>
+        <item>Entre no aplicativo da sua instituição financeira e \nacesse o ambiente Pix;</item>
+        <item>Escolha a opção Pix Copia e Cola;</item>
+        <item>Cole o código Pix;</item>
+        <item>Confirme as informações e realize o pagamento.</item>
+    </string-array>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="tempo_zerado">00:00</string>
+    <string name="codigo_expirado">Código Expirado</string>
+
+    <string name="premio_pix_ja_creditado">Seu prêmio já foi creditado na conta vinculada à Chave informada.</string>
+    <string name="tem_certeza_excluir_chave_favorita_xxxx">Tem certeza que deseja excluir dos favoritos a chave xxxx?</string>
+    <string name="escolha_o_tipo_de_chave">Escolha o tipo de chave</string>
+
+    <!-- Popup Pix Estornado -->
+    <string name="popup_pix_estorno_pagamento_devolvido">Pagamento Devolvido</string>
+    <string name="popup_pix_estorno_nao_possivel">Não foi possível registrar a aposta.</string>
+
+    <!-- Mensagens Disque 180  -->
+    <string name="tituloMsgDisque180">Central de Atendimento à Mulher</string>
+    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência pelo WhatsApp do canal 180.</string>
+    <string name="falha_comunicacao_situacao_aposta">Falha de comunicação! Clique para conferir.</string>
+
+    <!-- Meio Pagamento Novo Layout -->
+    <string name="cartaoCredito">Cartão de Crédito</string>
+    <string name="escolhaUmProcessador">Escolha um dos processadores abaixo e cadastre um cartão de crédito de sua titularidade ou escolha um cartão salvo para continuar.</string>
+    <string name="gere_codigo_pix_copia_cola">Gere um código Pix Copia e Cola para pagar suas apostas.</string>
+    <string name="pagarVia">Pagar via:</string>
+    <string name="bandeirasAceitas">Bandeiras aceitas</string>
+    <string name="semCartaoRecargaPay">Você ainda não possui cartão salvo no processador Recarga Pay</string>
+    <string name="semCartaoMercadoPago">Você ainda não possui cartão salvo no processador Mercado Pago</string>
+    <string name="novoCartaoCredito">Novo Cartão de Crédito</string>
+    <string name="adicionarCartao">Adicionar Cartão</string>
+    <string name="listarMais">Listar Mais</string>
+    <string name="listarMenos">Listar Menos</string>
+    <string name="voceDesejaExcluir">Você tem certeza de que deseja excluir o cartão {bandeira} final {XXXX} dos cartões salvos?</string>
+    <string name="naoExcluir">Não excluir</string>
+    <string name="excluir">Excluir</string>
+    <string name="favoritar_carrinho">Favoritar carrinho</string>
+    <string name="favoritar_aposta">Favoritar aposta</string>
+    <string name="exemplo_aposta">Ex: Aposta do João</string>
+    <string name="suaTitularidade">O cartão de crédito adicionado deve ser de sua titularidade</string>
+
+    <!-- Confirmar Cartão - CVV -->
+    <string name="confirmarCartao">_Confirmar cartão_</string>
+    <string name="confirmarDados">Confirme os dados do cartão escolhido</string>
+    <string name="incluirCodigo">Incluir Código de Verificação</string>
+    <string name="xxx">XXX</string>
+    <string name="informarCvv">_Informar CVV_</string>
+    <string name="insiraCodigoSeguranca">Insira o código de segurança do seu cartão de crédito</string>
+    <string name="normalmenteNoVerso">Normalmente localizado no verso do seu cartão</string>
+    <string name="digiteSeuCvv">Digite seu código de segurança</string>
+    <string name="cartaoFinal">cartão final</string>
+    <string name="confirmarCvv">Confirmar</string>
+    <string name="apostar">Apostar</string>
+    <string name="confirmarDadosCartao">_Confirmar dados do cartão_</string>
+    <string name="confirmarDigitado">Confirme os dados digitados</string>
+
+    <!-- Deeplink -->
+    <string name="deeplink_path_combos">https://loteriasonline.caixa.gov.br/silce-web/#combos</string>
+    <string name="deeplink_path_apostas">https://loteriasonline.caixa.gov.br/silce-web/#apostas</string>
+    <string name="depplink_path_compras">https://loteriasonline.caixa.gov.br/silce-web/#compras</string>
+
+    <string name="depplink_path_carrinho">https://www.loteriasonline.caixa.gov.br/silce-web/#/carrinho</string>
+    <string name="depplink_path_bolao_todas">https://www.loteriasonline.caixa.gov.br/silce-web/#/bolao-caixa/todas-modalidades</string>
+    <string name="depplink_path_bolao">https://www.loteriasonline.caixa.gov.br/silce-web/#/bolao-caixa</string>
+
+    <string name="depplink_path_bolao_loterico">https://www.loteriasonline.caixa.gov.br/silce-web/#/bolao-caixa/</string>
+
+    <string name="depplink_path_apostador">https://www.loteriasonline.caixa.gov.br/silce-web/#/apostador/atualizar</string>
+    <string name="depplink_path_cartoes">https://www.loteriasonline.caixa.gov.br/silce-web/#/cartoes</string>
+    <string name="depplink_path_carrinhos_favoritos"> https://www.loteriasonline.caixa.gov.br/silce-web/#/carrinhos/favoritos</string>
+    <string name="depplink_path_apostas_favoritas">https://www.loteriasonline.caixa.gov.br/silce-web/#/apostas/favoritas</string>
+
+    <string name="depplink_path_resultado_mais_milionaria">https://loterias.caixa.gov.br/Paginas/Mais-Milionaria.aspx</string>
+    <string name="depplink_path_resultado_mega_sena">https://loterias.caixa.gov.br/Paginas/Mega-Sena.aspx</string>
+    <string name="depplink_path_resultado_lotofacil">https://loterias.caixa.gov.br/Paginas/Lotofacil.aspx</string>
+    <string name="depplink_path_resultado_quina">https://loterias.caixa.gov.br/Paginas/Quina.aspx</string>
+    <string name="depplink_path_resultado_lotomania">https://loterias.caixa.gov.br/Paginas/Lotomania.aspx</string>
+    <string name="depplink_path_resultado_timemania">https://loterias.caixa.gov.br/Paginas/Timemania.aspx</string>
+    <string name="depplink_path_resultado_dupla_sena">https://loterias.caixa.gov.br/Paginas/Dupla-Sena.aspx</string>
+    <string name="depplink_path_resultado_loteca">https://loterias.caixa.gov.br/Paginas/Loteca.aspx</string>
+    <string name="depplink_path_resultado_dia_sorte">https://loterias.caixa.gov.br/Paginas/Dia-de-Sorte.aspx</string>
+    <string name="depplink_path_resultado_super_sete">https://loterias.caixa.gov.br/Paginas/Super-Sete.aspx</string>
+
+    <string name="depplink_path_mais_milionaria">https://www.loteriasonline.caixa.gov.br/silce-web/#/mais-milionaria</string>
+    <string name="depplink_path_mega_sena">https://www.loteriasonline.caixa.gov.br/silce-web/#/mega-sena</string>
+    <string name="depplink_path_lotofacil">https://www.loteriasonline.caixa.gov.br/silce-web/#/lotofacil</string>
+    <string name="depplink_path_quina">https://www.loteriasonline.caixa.gov.br/silce-web/#/quina</string>
+    <string name="depplink_path_lotomania">https://www.loteriasonline.caixa.gov.br/silce-web/#/lotomania</string>
+    <string name="depplink_path_timemania">https://www.loteriasonline.caixa.gov.br/silce-web/#/timemania</string>
+    <string name="depplink_path_dupla_sena">https://www.loteriasonline.caixa.gov.br/silce-web/#/dupla-sena</string>
+    <string name="depplink_path_loteca">https://www.loteriasonline.caixa.gov.br/silce-web/#/loteca</string>
+    <string name="depplink_path_dia_sorte">https://www.loteriasonline.caixa.gov.br/silce-web/#/dia-de-sorte</string>
+    <string name="depplink_path_super_sete">https://www.loteriasonline.caixa.gov.br/silce-web/#/super-sete</string>
+
+    <string name="depplink_path_mega_sena_especial">https://www.loteriasonline.caixa.gov.br/silce-web/#/mega-sena/especial</string>
+    <string name="depplink_path_dupla_sena_especial">https://www.loteriasonline.caixa.gov.br/silce-web/#/dupla-sena/especial</string>
+    <string name="depplink_path_quina_especial">https://www.loteriasonline.caixa.gov.br/silce-web/#/quina/especial</string>
+    <string name="depplink_path_lotofacil_especial">https://www.loteriasonline.caixa.gov.br/silce-web/#/lotofacil/especial</string>
+
+    <!-- Push Notification -->
+    <string name="default_notification_channel_id">CanalLoteriasId</string>
+    <string name="default_notification_name">Loterias</string>
+    <string name="default_notification_channel_descricao">Canal Loterias</string>
+    <string name="icone_notificacoes">Notificações</string>
+    <string name="contador_notificacoes">0</string>
+    <string name="title_central_notificacao">Central notificação</string>
+    <string name="pagamento_nao_identificado_dentro_do_prazo">Não recebemos seu Pix dentro do prazo.\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma aposta e gerar novo código para pagamento.</string>
+    <string name="pix_cancelado_descricao">Não recebemos seu Pix dentro do prazo previsto para efetuar sua aposta e você não está concorrendo. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. Deseja salvar esta compra como carrinho favorito?</string>
+    <string name="pagamento_pix_nao_identificado">Não identificamos o seu pagamento dentro do prazo previsto para efetuar sua aposta e você não está concorrendo. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. E não se preocupe! Caso o pagamento seja identificado, será estornado para a conta pagadora. Deseja salvar esta compra como carrinho favorito?</string>
+    <string name="alerta_precisa_estar_no_brasil">As apostas só podem ocorrer em território nacional. Suas apostas serão mantidas no carrinho para a conclusão da compra quando você estiver no país.</string>
+    <string name="posso_consultar_sua_localizacao">As apostas só podem ocorrer em território nacional. Portanto, você somente conseguirá pagar uma compra se estiver no Brasil, não havendo impedimento para utilizar os demais serviços.\nPodemos consultar a sua localização?</string>
+
+    <!-- Strings de boloes mkp -->
+    <string name="filtrar">_Filtrar_</string>
+    <string name="filtros">_Filtros_</string>
+    <string name="filtrar_modalidades">Filtrar</string>
+    <string name="modalidades">Modalidades</string>
+    <string name="valor_minimo_cota">Valor Mínimo Cota</string>
+    <string name="valor_maximo_cota">Valor Máximo Cota</string>
+    <string name="quantidade_cotas">Quantidade de Cotas</string>
+    <string name="quantidade_min_cotas">Quant. de Cotas Mínima</string>
+    <string name="quantidade_max_cotas">Quant. de Cotas Máxima</string>
+    <string name="quantidade_dezenas">Quantidade de Dezenas</string>
+    <string name="qtd_min_menor_2">Quantidade mínima não pode ser menor que 2</string>
+    <string name="qtd_min_maior_max">Quantidade mínima não pode ser maior que a máxima</string>
+    <string name="qtd_max_menor_2">Quantidade máxima não pode ser menor que 2</string>
+    <string name="qtd_max_maior_100">Quantidade máxima não pode ser maior que 100</string>
+    <string name="qtd_dezenas_menor_5">Quantidade de dezenas não pode ser inferior a 5</string>
+    <string name="qtd_dezenas_maior_20">Quantidade de dezenas não pode ser superior a 21</string>
+    <string name="limpar_filtros">Limpar Filtros</string>
+    <string name="aplicar">Aplicar</string>
+    <string name="numeros_quero">Números que quero</string>
+    <string name="numeros_nao_quero">Números que não quero</string>
+    <string name="nome_ou_codigo">Nome ou código</string>
+    <string name="apostas_boloes">_Compre seu bolão_</string>
+    <string name="descritivo_tela_bolao">Veja aqui os bolões em destaque. Você também pode personalizar sua busca no campo filtros</string>
+    <string name="cotas_bolao">Cotas bolão</string>
+    <string name="combo_apostas">Combos de apostas</string>
+    <string name="apostas_individuais">Apostas individuais</string>
+    <string name="cota_reservada">Cota reservada</string>
+    <string name="cota_expirada">Cota expirada</string>
+    <string name="carrinho_cotas_expiradas">Você deve retirar as cotas expiradas do carrinho para avançar para pagamento</string>
+    <string name="loteca_nao_favorita">Apostas da Loteca e Bolões não são salvos no carrinho favorito.</string>
+    <string name="pagamento_pix_estornado">Não foi possível completar a sua aposta e seu Pix será devolvido. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. Deseja salvar esta compra como carrinho favorito?</string>
+    <string name="extra_data_hora_expiracao_reserva">dataHoraExpiracaoReserva</string>
+    <string name="extra_especial_reserva">isEspecialReserva</string>
+    <string name="label_cota_concurso_bold">Cota: </string>
+    <string name="label_voltar_apostas_individuais">_Voltar Apostas Individuais_</string>
+    <string name="label_bolao_bar_marketplace">_Bolão CAIXA_</string>
+    <string name="alterar_pesquisa">_Alterar_\na pesquisa com novos filtros</string>
+    <string name="pesquisar_novamente">_Pesquisar Novamente_\ncom os mesmos parâmetros</string>
+    <string name="descritivo_loterica">Insira o nome da lotérica ou o código somente com os \nnúmeros do segundo campo, com 6 dígitos. Exemplo: \nE.Lotérico 10.000004-01, digite 000004.</string>
+    <string name="atencao_descricao_gerar_pix">Caso precise recuperar este código ou consultar o status da compra acesse o menu \"Minhas Compras\".</string>
+    <string name="ir_para_minhas_compras">Ir para as\n_Minhas Compras_</string>
+    <string name="descricao_filtro_vazio">Não encontramos nenhum bolão que corresponda à sua pesquisa!</string>
+    <string name="descricao_erro_filtro">Ocorreu um erro.\nTente novamente</string>
+    <string name="primeiro_sorteiro">Primeiro sorteio</string>
+    <string name="segundo_sorteiro">Segundo sorteio</string>
+    <string name="seus_jogos">Seus jogos</string>
+
+    <!-- Jogo Responsavel -->
+    <string name="autoavaliacao_apostador">Autoavaliação para o Apostador</string>
+    <string name="autoavaliacao_bem_vindo">Bem-vindo ao processo de\nautoavaliação Loterias CAIXA!</string>
+    <string name="autoavaliacao_texto">A partir de agora, uma vez por ano, será necessário que você responda poucas e rápidas perguntas para que possamos entender seu perfil e orientá-lo sobre como evitar ou tratar, se for o caso, o desenvolvimento do transtorno do jogo compulsivo.</string>
+    <string name="btn_autoavaliacao_start">Seguir para autoavaliação</string>
+    <string name="tv_autoavaliacao_1">Este app é válido para qualquer tipo de aposta a dinheiro, e tem como base os critérios de avaliação breve da prevalência de Transtorno do jogo, por meio da escala de rastreio</string>
+    <string name="tv_autoavaliacao_2">NODS*-CLIP Problem Gambling Screen</string>
+    <string name="tv_autoavaliacao_3">*Volberg, R. A., Munck, I. M., &amp; Petry, N. M. (2011). A quick and simple screening method for pathological and problem gamblers in addiction programs and practices. The American Journal on Addictions, 20, 220–227.</string>
+    <string name="anterior">Anterior</string>
+    <string name="proximo">Próximo</string>
+    <string name="fechar">Fechar</string>
+    <string name="concluido">Concluido</string>
+    <string name="autoavaliacao_ajuda">Onde Procurar Ajuda</string>
+    <string name="autoavaliacao_parabens">_Parabéns!_\nO seu hábito de apostar não está interferindo em sua vida, você é um jogador responsável.</string>
+    <string name="autoavaliacao_atencao">_Muita atenção!_\nSe você respondeu "sim" para um ou mais dessas questões, recomendamos que você procure avaliação adicional.</string>
+    <string name="autosuspensao_suspensao">Suspensão temporária</string>
+    <string name="tv_autosuspensao_1">1.Essa ação acarretará na impossibilidade de efetuar compras de apostas no Portal loterias na internet e app loterias durante o periodo selecionado</string>
+    <string name="tv_autosuspensao_2">1.1 O periodo de suspensão pode ser de 24 hs, 48 hs, 7 dias, 15 dias ou 30 dias, o critério do apostador </string>
+    <string name="tv_autosuspensao_3">1.2 A suspensão passa a valer a partir da confirmação da solicitação</string>
+    <string name="tv_autosuspensao_4">1.3 A suspensão temporária de compras é irreversível enquanto durar o periodo selecionado</string>
+    <string name="tv_suspensao_pergunta">Selecione abaixo o período de suspensão das compras</string>
+    <string name="tv_24_horas">24 horas</string>
+    <string name="tv_48_horas">48 horas</string>
+    <string name="tv_7_dias">7 dias</string>
+    <string name="tv_15_dias">15 dias</string>
+    <string name="tv_30_dias">30 dias</string>
+    <string name="tv_estou_ciente">Estou ciente e concordo com as informações acima</string>
+    <string name="suspender_apostas">Confirmar Suspensão</string>
+    <string name="tv_confirma_suspensao">A suspensão temporária de compras é irreversível durante o período selecionado.\n\nVocê confirma a suspensão por _XX ?_</string>
+    <string name="tv_suspenso_ate">A suspensão realizada com o prazo de XX\n\nUsuário suspenso até o dia\nYY</string>
+    <string name="tv_suspenso_ate_novo">Você foi deslogado e a suspensão temporária efetivada pelo período escolhido. Só será possível fazer novas compras após a suspensão.\n\nXX, às YY.</string>
+    <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
+    <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>
+    <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
+    <string name="autosuspensao_alerta_nova">Há uma suspensão temporária ativa para compras. Novas apostas poderão ser realizadas no Portal Loterias Online e no Aplicativo Loterias CAIXA após o término do período selecionado.</string>
+    <string name="todas_modalidades">Todas as\nmodalidades</string>
+    <string name="todas">Todas</string>
+    <string name="gerar_comprovante">Gerar Comprovante</string>
+    <string name="gr_comprovante">Gerar comprovante</string>
+    <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
+    <string name="usuario_bloqueio_parcial">Usuário habilitado apenas para consultas.</string>
+    <string name="label_loterica_filtro">Lotéricas</string>
+    <string name="nome_loteria">Nome da Lotérica:</string>
+    <string name="codigo_loteria">Código:</string>
+    <string name="nao_sei_cep">Não sei o meu CEP</string>
+    <string name="nao_sei_cep_dados_pessoais"><u>Não sei o meu CEP</u></string>
+    <string name="jogo_responsavel">Jogo Responsável</string>
+    <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
+    <string name="voce_sera_redirecionado_para_o_site_dos_correios">Você será redirecionado para o site dos Correios</string>
+    <string name="url_jogo_responsavel">https://www.caixa.gov.br/jogo-responsavel/Paginas/default.aspx</string>
+    <string name="voce_sera_redirecionado_para_o_site_jogo_responsavel">Você será redirecionado para o portal do Jogo Responsável</string>
+
+    <string name="alerta_descricao_pagamento_nao_identificado">Você possui compra(s) cancelada(s) por falta de identificação do pagamento dentro do tempo limite para efetivação das apostas. As apostas contidas na compra não concorrem a qualquer concurso. Não se preocupe, caso tenha realizado o pagamento realizaremos o estorno do valor para a conta pagadora.</string>
+    <string name="acompanhe_suas_compras">Acompanhe suas compras</string>
+    <string name="orientacoes_pix_expirado_tela_pagamento">A validade do seu código de pagamento Pix expirou.\nCaso tenha realizado o pagamento, aguarde enquanto realizamos o processamento.\nPagamentos identificados fora do tempo limite para efetivação das apostas serão estornados.\nAcompanhe o status da sua compra acessando o menu "Minhas Compras".</string>
+    <string name="verificar_pagamento">_Verificar Pagamento_</string>
+    <string name="mensagem_pop_up_aguardando_confirmacao_pix">Pagamento ainda não identificado.\nCaso tenha realizado o pagamento, aguarde enquanto realizamos o processamento.\nPagamentos identificados fora do tempo limite para efetivação de apostas serão estornados.\nAcompanhe o processamento do seu pedido na opção "Minhas Compras".</string>
+    <string name="label_voltar_ao_inicio">Voltar ao início</string>
+    <string name="label_aguardar_a_confirmaco_de_pagamento">Você deseja aguardar a confirmação de pagamento?</string>
+    <string name="mensagem_pop_up_aguardando_confirmacao_pix_pergunta">Pagamento ainda não identificado.\nCaso tenha realizado o pagamento, aguarde enquanto realizamos o processamento.\nPagamentos identificados fora do tempo limite para efetivação de apostas serão estornados.\nAcompanhe o processamento do seu pedido na opção "Minhas Compras".\n\nVocê deseja aguardar a confirmação de pagamento?</string>
+    <string name="conheca_mais_milionaria">Conheça o novo jogo +milionária. \nVamos explicar como funciona \n nessa nova modalidade.</string>
+    <string name="chegou_a_milionaria">Chegou a +milionária</string>
+    <string name="aposte">_Aposte_</string>
+    <string name="instantanea_texto_card">Diversão e prêmios na hora</string>
+    <string name="portal_instantanea">Acesse e jogue\nno Portal da _INSTANTÂNEA_</string>
+    <string name="portal_combo">Mais que apostas: combos criados\npara aumentar suas chances\nde realizar o que você deseja.</string>
+
+    <string name="_100">100</string>
+    <string name="_5_a_21">5 a 21</string>
+    <string name="alerta_numero_ja_escolhido_quero_nao_quero">Não é possível selecionar um número já escolhido no outro filtro.</string>
+    <string name="Quero_Nao_Quero_Impossivel_de_Identificar">Dezenas Quero ou Não Quero impossível de identificar. Activity for result de FiltraMarketplaceActivity retornando dado incorreto</string>
+    <string name="interrogacoes">\???</string>
+    <string name="mes_da_sorte_interrogacoes">\nMês de sorte: ???</string>
+    <string name="time_do_coracao_interrogacoes">\nTime do coração: ???</string>
+    <string name="apostas_inclu_das_no_combo">Apostas incluídas no combo</string>
+    <string name="cep_invalido">O CEP informado não foi localizado. Por favor, insira um CEP válido.</string>
+    <string name="valor_do_credito">Valor do Crédito</string>
+    <string name="resgate_processado_via">Resgate processado via</string>
+    <string name="escolha_chave_pix_restae_premio">Escolha a chave Pix que deseja receber o resgate do prêmio.</string>
+    <string name="outra_chave">Outra Chave</string>
+    <string name="label_chave">Chave</string>
+    <string name="hint_outra_chave">Celular / e-mail / Chave aleatória</string>
+    <string name="ciente_resgate_pix">Estou ciente que o resgate de prêmio só poderá ser realizado para uma conta de titularidade do apostador.</string>
+    <string name="confirmar_chave_pix_resgate">Confirmar a chave Pix para o resgate.</string>
+    <string name="dados_titular_chave">Dados do titular da chave:</string>
+    <string name="seu_resgate_foi_solicitado_com_sucesso">Seu resgate foi solicitado com sucesso!</string>
+    <string name="voce_pode_acompanhar_situacao">Você pode acompanhar a situação do resgate pelo menu Minhas apostas enquanto ele é processado.</string>
+    <string name="acesse_minhas_apostas">Acesse \n_Minhas apostas_</string>
+    <string name="arg_goto_minhas_apostas">GO_TO_MINHAS_APOSTAS</string>
+    <string name="para_comprar_seu_bolao">para comprar o seu bolão</string>
+    <string name="ainda_da_tempo">O registro de apostas individuais para o _concurso %d_ foi encerrado. Mas ainda dá tempo de comprar seu bolão e concorrer a esse sorteio.\nAcesse _\"Compre seu bolão\"_ e participe!</string>
+    <string name="confirmacao_continuar_experimente">Para continuar utilizando a funcionalidade, você precisa efetuar o login no app Loterias Caixa. Deseja efetuar o login?</string>
+    <string name="continuar_experimente">Continuar no Experimente</string>
+    <string name="efetuar_login">Efetuar o login</string>
+    <string name="orientacoes_arrendondamento_bolao">*Devido a regras de arredondamento, o valor cobrado pela cota deste
+        bolão poderá ser menor que o exibido.
+    </string>
+    <string name="hora_dois_pontos">"Hora: "</string>
+    <string name="txt_lista_combos_top">Confira nossos combos e escolha o seu favorito!\nAproveite para aumentar suas chances de ganhar.</string>
+    <string name="titulo_combos">_Combos de Apostas_</string>
+    <string name="especial">Especial</string>
+    <string name="card_de_combo">Card de Combo</string>
+    <string name="texto_header_detalhe_combo">Com esse pacote você garante apostas para todas as modalidades, incluindo teimosinhas para a semana inteira. Já pensou?</string>
+    <string name="texto_ver_ou_nao_numeros_escolhidos_detalhe_combo">Os números dos jogos dos combos são escolhidos aleatoriamente pelo sistema. Mas antes de efetuar o pagamento é possível visualizar os números selecionados.</string>
+    <string name="quantidade_de_apostas">Quantidade de Apostas</string>
+    <string name="excluir_quantidade">Excluir Quantidade</string>
+    <string name="ver_numeros_escolhidos_antes_de_pagar">Quero ver os números escolhidos antes de pagar.</string>
+    <string name="adicionar_apostas">Adicionar apostas</string>
+    <string name="remover_apostas">Remover apostas</string>
+    <string name="adicionar_ao_carrinho_de_compras">Adicionar ao carrinho de apostas</string>
+    <string name="card_de_aposta_contida_neste_combo">Aposta contida neste combo</string>
+    <string name="quantidade_de_palpites">Quantidade de Palpites</string>
+    <string name="excluir_numeros">Excluir Números</string>
+
+    <string name="tipo_aposta_bolao">Bolão</string>
+    <string name="tipo_aposta_combo">Combo</string>
+    <string name="tipo_aposta_combos">Combos</string>
+    <string name="tipo_aposta_espelho">Espelho</string>
+    <string name="tipo_aposta_surpresinha">Surpresinha</string>
+    <string name="tipo_aposta_teimosinha">Teimosinha</string>
+    <string name="tipo_aposta_troca">Aposta de Troca</string>
+    <string name="selecione_modalidade_desejada">Selecione a modalidade desejada</string>
+    <string name="voce_ainda_nao_tem_apostas">Você ainda não tem apostas favoritas. Que tal adicionar uma agora?</string>
+    <string name="exclui_favorita">Deseja excluir a aposta favorita: xxx?</string>
+    <string name="exclui_loterica_favorita">Deseja excluir xxx da sua lista de favoritas?</string>
+    <string name="sem_modalidade">Você ainda não tem apostas favoritas desta modalidade. Que tal adicionar uma agora?</string>
+    <string name="incluir_aposta_favorita">Incluir aposta favorita</string>
+    <string name="label_modal_checkbox_aposta_espelho">Ao selecionar esta opção, o sistema fará a aposta automaticamente, escolhendo os 50 números que não foram registrados na sua aposta original.</string>
+
+    <string name="label_boloes">Bolões</string>
+    <string name="label_lotericas_favoritas">Lotéricas Favoritas</string>
+    <string name="label_boloes_loterica">Bolões da Lotérica</string>
+    <string name="imagem_de_coracao_para_favoritar">Imagem de coração para favoritar lotérica</string>
+    <string name="estado_vazio_mkp_descricao">Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente.</string>
+    <string name="vazio_Lotericas_favoritas">Você ainda não possui nenhuma lotérica favorita.</string>
+    <string name="sem_boloes_lotericas_favoritas">Esta lotérica não possui bolões disponíveis no momento.</string>
+    <string name="msg_incluir_favorita">Deseja incluir %1$s na sua lista de favoritas?</string>
+    <string name="msg_excluir_favorita">Deseja excluir %1$s da sua lista de favoritas?</string>
+    <string name="loterica_favorita">Lotérica Favorita</string>
+    <string name="loterica_favorita_bold">_Lotérica Favorita_</string>
+    <string name="favoritar_loterica">Favoritar Lotérica</string>
+    <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
+    <string name="detalhes_bolao">Detalhes do bolão</string>
+    <string name="detalhes_combo">Detalhes do combo</string>
+    <!-- DETALHE MINHAS APOSTAS -->
+    <string name="label_aposta_maiuscula">Aposta</string>
+    <string name="resultado_concurso">Resultado do Concurso</string>
+    <string name="label_situacao">Situação:</string>
+    <string name="label_time_sorteado">Time sorteado</string>
+    <string name="label_time_do_coracao">Time do coração:</string>
+    <string name="label_mes_sorteado_">Mês sorteado</string>
+    <string name="label_mes_de_sorte">Mês de sorte:</string>
+    <string name="label_meses">Mês de sorte</string>
+    <string name="label_trevos_sorteados">Trevos sorteados</string>
+    <string name="label_trevos">Trevos</string>
+    <string name="label_concurso_nao_apurado">Concurso\nnão apurado</string>
+    <string name="label_concurso_nao_premiado">Não premiado</string>
+    <string name="label_concurso_premio_pago">Prêmio pago</string>
+    <string name="label_acertos_dois_pontos">Acertos:</string>
+    <string name="label_acertos_nenhum">nenhum</string>
+    <string name="label_premio_dois_pontos">Prêmio:</string>
+    <string name="erro_minhas_apostas_teimosinha">Não conseguimos processar sua solicitação.\nTente novamente!</string>
+    <string name="erro_minhas_apostas_nao_apurado">Concurso em apuração. A conferência de apostas estará disponível após a divulgação dos resultados.</string>
+    <string name="label_cidade_uf">Cidade/UF:</string>
+    <string name="label_surpresinha">| Surpresinha</string>
+    <string name="label_legenda">Legenda</string>
+    <string name="palpite">palpite</string>
+    <string name="acessibilidade_legenda_botao">Legenda, botão</string>
+
+
+    <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>
+    <string name="marcador_oval">Marcador oval (bullet) para item de lista</string>
+    <string name="botao_duvidas">Botão dúvidas</string>
+    <string name="duvidas">Dúvidas</string>
+
+    <!-- MEGA 30 ANOS   -->
+    <string name="mega_sena_30_anos">mega-sena 30 anos</string>
+    <string name="mega_sena_30_anos_duas_linhas">mega-sena\n30 anos</string>
+
+    <!-- LOTECA PAIS -->
+    <string name="loteca_pais">loteca dos pais</string>
+    <string name="loteca_pais_duas_linhas">loteca\ndos pais</string>
+
+    <string name="caixa_loterias">Você será direcionado para o site da CAIXA Loterias e sairá do aplicativo. Deseja continuar?</string>
+    <string name="hyperlink_generico">Você será direcionado para a WEB. Deseja continuar?</string>
+    <string name="label_cancelar">Cancelar</string>
+    <string name="label_confirmar">Confirmar</string>
+    <string name="contest_example">1234 - 4321</string>
+    <string name="contest_bet">(24 apostas)</string>
+    <string name="contest_date">Data aposta</string>
+    <string name="contest_timestamp_example">01/01/2026</string>
+    <string name="contest_timestamp_example_hour">11h20</string>
+    <string name="contest_example_waiting">Aguardando</string>
+    <string name="button_get_reward">Resgatar Prêmio</string>
+    <string name="contest_reward_valid_time">Validade prêmio: 90 dias</string>
+    <string name="button_generate_receipt">Gerar comprovante</string>
+    <string name="expandablelistview_expanded_text">Expandido.</string>
+    <string name="expandablelistview_retracted_text">Recolhido.</string>
+    <string name="expandablelistview_retracted">Recolher</string>
+    <string name="expandablelistview_expanded">Expandir</string>
+    <string name="txt_rewarded">premiado</string>
+    <string name="txt_space">" "</string>
+    <string name="txt_space_with_word">" de "</string>
+    <string name="txt_voltar">Voltar</string>
+    <string name="txt_duvidas">Dúvidas</string>
+    <string name="txt_numeros_sorteados">Números sorteados</string>
+    <string name="txt_titulo_numeros_sorteados">Números sorteados</string>
+    <string name="txt_meus_numeros">Meus números</string>
+    <string name="txt_titulo_meus_numeros">Meus números</string>
+    <string name="txt_time_sorteado">Time sorteado</string>
+    <string name="txt_titulo_time_sorteado">Time sorteado</string>
+
+    <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
+    <string name="txt_como_jogar">Como jogar</string>
+    <string name="txt_apostas_identicas">Existem apostas idênticas em seu carrinho, por favor verifique.</string>
+
+    <string name="txt_buscar_exemplo">Insira o nome da lotérica ou o código somente com os números do segundo campo, com 6 dígitos, Exemplo: E.Lotérico 10.000004-01, digite 000004.</string>
+    <string name="txt_name_code">Nome ou código</string>
+    <string name="txt_lotericas">Lotéricas</string>
+    <string name="txt_buscar_lotericas">Buscar Lotericas</string>
+    <string name="txt_back">Voltar</string>
+    <string name="txt_choose_your_reward">Escolha como resgatar seu prêmio</string>
+    <string name="txt_contest">Concurso</string>
+    <string name="txt_concursos">Concursos</string>
+    <string name="receba_na_hora">Receba na hora</string>
+    <string name="retire_qualquer_loterica">Retire em qualquer lotérica</string>
+    <string name="valores_isencao_ir">Valores acima da isenção do IR</string>
+    <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Aguarde e tente novamente mais tarde.</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="pedido_desculpas">Pedimos desculpas pelo transtorno.\nTente novamente em breve</string>
+    <string name="app_indisponivel">O aplicativo está\ntemporariamente indisponível</string>
+    <string name="internet_instavel">Parece que sua internet\nestá com alguma instabilidade</string>
+    <string name="verifique_conexao">Verifique sua conexão\ne tente novamente</string>
+
+    <string name="text_descartar">Ao voltar para a página inicial, sua aposta em edição será descartada. Deseja continuar?</string>
+    <string name="xx">XX</string>
+    <string name="outubro_rosa">Outubro Rosa</string>
+    <string name="outubro_rosa_paragrafo_1">Campanha anual que conscientiza sobre a _importância da prevenção, do diagnóstico precoce e do tratamento adequado_ do câncer de mama e do câncer do colo do útero.</string>
+    <string name="outubro_rosa_paragrafo_2">O Ministério da Saúde orienta 3 dicas para melhorar a qualidade de vida e aumentar as chances de cura: _manter hábitos saudáveis, ter atenção aos sinais do corpo e fazer exames regulares._ </string>
+    <string name="tokenactivity">TokenActivity</string>
+    <string name="biometrialogin">BiometriaLogin</string>
+
+    <string name="central_notificacoes">Central de notificações</string>
+    <string name="marcar_todas_como_lidas">Marcar todas como lidas</string>
+    <string name="deseja_marcar_todas_como_lidas">Deseja marcar todas as notificações como lidas?</string>
+    <string name="deseja_excluir_notificacao">Deseja excluir a notificação</string>
+    <string name="excluir_todas_notificacoes">Excluir todas as notificações</string>
+    <string name="excluir_notificacoes">Excluir notificações</string>
+    <string name="excluir_notificacao">Excluir notificação</string>
+    <string name="tab_todas">Todas</string>
+    <string name="tab_nao_lidas">Não lidas (0)</string>
+    <string name="sem_notificacao">Ainda não há notificações.</string>
+    <string name="sem_notificacao_nao_lida">Não há notificações não lidas.</string>
+    <string name="fique_atento">Fique de olho nas novidades e atualizações.</string>
+    <string name="deseja_excluir_todas">Deseja excluir todas as notificações?</string>
+
+    <string name="sessao_expirada">Sua sessão expirou. É necessário realizar o login novamente para continuar utilizando o aplicativo Loterias CAIXA.</string>
+    <string name="adicionarNovaAposta">Adicionar nova aposta</string>
+    <string name="irParaPagamento">Ir para pagamento</string>
+    <string name="txt_prefix_conc">Conc. %1$s</string>
+    <string name="txt_carrinho">Carrinho</string>
+    <string name="countdown_timer_zero">00:00</string>
+    <string name="txt_cota">cota reservada nº %1$d de %2$d</string>
+    <string name="txt_label_conc">Conc. %1$d</string>
+    <string name="aposta_removida_carrinho">Aposta removida do carrinho</string>
+    <string name="aposta_nao_removida_carrinho">Aposta não foi removida do carrinho.</string>
+    <string name="carrinho_vazio">Seu carrinho está vazio</string>
+
+    <string name="confirmar_exclusao_aposta">Deseja excluir esta aposta do carrinho?</string>
+    <string name="confirmar_exclusao_combo">Deseja excluir este combo do carrinho?</string>
+    <string name="confirmar_exclusao_bolao">Deseja excluir esta cota de bolão do carrinho?</string>
+
+    <string name="excluir_bolao_titulo">Deseja excluir o bolão?</string>
+    <string name="excluir_bolao_mensagem">O bolão selecionado será removido do carrinho</string>
+    <string name="manter_bolao">Manter bolão</string>
+
+    <string name="excluir_combo_titulo">Deseja excluir o combo?</string>
+    <string name="excluir_combo_mensagem">O combo selecionado será removido do carrinho</string>
+    <string name="manter_combo">Manter combo</string>
+
+    <string name="excluir_aposta_titulo">Deseja excluir a aposta?</string>
+    <string name="excluir_aposta_mensagem">A aposta selecionada será removida do carrinho</string>
+    <string name="manter_aposta">Manter aposta</string>
+
+    <string name="excluir_todas_apostas_titulo">Deseja excluir todas as apostas?</string>
+    <string name="todas_as_apostas">Todas as apostas selecionadas serão removidas do carrinho</string>
+
+    <string name="carrinho_trevos">trevos</string>
+    <string name="carrinho_mes_da_sorte">mês da sorte</string>
+    <string name="carrinho_time_do_coracao">time do coração</string>
+</resources>

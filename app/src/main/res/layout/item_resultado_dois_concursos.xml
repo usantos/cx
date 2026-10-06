@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/item_resultado_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="@string/label_1_sorteio"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="15.8sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerNumerosResultado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="19dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="@string/label_2_sorteio"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="15.8sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerNumerosResultadoSegundoSorteio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="19dp" />
+
+        <View
+            android:id="@+id/tracoViewDivisoriaResultado"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/megasenamedio" />
+
+        <LinearLayout
+            android:id="@+id/linearlayoutPremiadosListaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado
+            android:id="@+id/partidaViewDetalhesResultadoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</RelativeLayout>

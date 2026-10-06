@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="72dp"
+        android:layout_height="56dp"
+        android:background="@drawable/background_trapeze_loteca_tollbar">
+
+        <ImageView
+            android:id="@+id/ic_trevo_modalidade"
+            android:layout_width="22dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/icon_trevo"
+            android:layout_marginLeft="16dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/titulo_modalidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="203dp"
+        android:layout_marginTop="17dp"
+        android:text="@string/loteca"
+        android:textColor="@color/branco"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/action_fechar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/icon_fechar" />
+</LinearLayout>

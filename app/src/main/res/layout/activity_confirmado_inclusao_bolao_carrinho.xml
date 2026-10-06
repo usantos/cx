@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity">
+
+
+    <FrameLayout
+        android:id="@+id/id_fragment_sub_barra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_corpo"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_corpo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/mega_verde_escuro_mkp"
+        app:layout_constraintTop_toBottomOf="@+id/id_fragment_sub_barra"
+        app:layout_constraintBottom_toTopOf="@+id/id_fragment_rodape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/tag_bolao_carrinho"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_tag_bolao"-->
+<!--            android:visibility="visible"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/layout_corpo"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+
+
+        <ImageView
+            android:id="@+id/imageSetaApontandoCarrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/rectangle_5_copy"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/textTituloTela"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tituloBolaoFeito"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="14.2sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/imageSetaApontandoCarrinho"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_white_with_rouded_black_border"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
+            app:layout_constraintTop_toTopOf="@id/imageSetaApontandoCarrinho"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <ImageView
+                android:id="@+id/img_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_timer"
+                android:backgroundTint="@color/branco"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/txt_contador"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="00:15:00"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/branco"
+                android:layout_marginStart="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/img_timer"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textObservacaoConfirmacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/infoConcluaPagamentoBolao"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:fontFamily="@font/caixa_std_bold"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timer"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_arrendondamento"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:padding="4dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textObservacaoConfirmacao"
+        >
+            <TextView
+                android:id="@+id/text_arrendondamento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/orientacoes_arrendondamento_bolao"
+                android:textAlignment="center"
+                android:textColor="@color/branco"
+                android:fontFamily="@font/caixa_std_bold"
+                android:textSize="12sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/id_fragment_rodape"
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/botaoLinearLayoutVoltarPrincipal"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="51dp"
+        android:background="@color/cinza"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:text=""
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/branco"
+        app:layout_constraintTop_toTopOf="@id/id_fragment_rodape"
+        app:layout_constraintBottom_toTopOf="@id/id_fragment_rodape"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/txtVoltarAoInicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/btn_title_voltarAoInicio"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="17.7sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

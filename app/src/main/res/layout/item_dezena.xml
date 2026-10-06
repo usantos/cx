@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="2dp"
+    android:paddingVertical="4dp">
+
+    <ToggleButton
+        android:id="@+id/tv_item_numero"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:padding="0dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:fontFamily="@font/caixa_std_bold"
+        android:background="@drawable/ic_item_dezena"
+        android:focusable="true"
+        android:importantForAccessibility="yes"
+        android:textOff="01"
+        android:textOn="01" />
+
+</FrameLayout>

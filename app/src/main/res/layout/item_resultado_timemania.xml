@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/item_resultado_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerNumerosResultado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="19dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/timeCoracaoImage"
+                android:layout_width="41dp"
+                android:layout_height="34dp"
+                android:src="@drawable/ic_timecoracao" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelTimeCoracaoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="@string/label_time_coracao"
+                    android:textColor="@color/timemania_letra_mkp"
+                    android:textSize="14.2sp" />
+
+                <TextView
+                    android:id="@+id/textTimeCoracao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp"
+                    tools:text="Flamengo" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/tracoViewDivisoriaResultado"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="19dp"
+            android:background="@color/megasenamedio" />
+
+        <br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado
+            android:id="@+id/partidaViewDetalhesResultadoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</RelativeLayout>

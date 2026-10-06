@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/branco">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutCustom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradiente_titulo_caixa">
+
+            <TextView
+                android:id="@+id/tituloCustom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/label_atencao"
+                android:textAlignment="center"
+                android:textColor="@color/branco"
+                android:textSize="20sp"
+                android:fontFamily="@font/caixa_std_bold" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutCustom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/popup_pix_cpf_vinculado"
+                android:justificationMode="inter_word"
+                android:textSize="18sp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:layout_gravity="center"
+                android:padding="14dp"
+                />
+
+
+            <RelativeLayout
+                android:id="@+id/linhaDivisaoBotoes"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/listaItensDialog"
+                android:background="@color/cinza2"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linhaDivisaoBotoes"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+                android:layout_marginBottom="16dp"
+                >
+
+                <Button
+                    android:id="@+id/btnCustom1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/btn_rounded_vermelho_dialog"
+                    android:text="@string/trocar_tipo_chave"
+                    android:textAllCaps="false"
+                    android:textColor="@color/vermelho_dialog"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:gravity="center"
+                    />
+
+                <Button
+                    android:id="@+id/btnCustom2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/verdeazul"
+                    android:background="@drawable/btn_rounded_green_outlined"
+                    android:text="@string/trocar_forma_resgate"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:gravity="center"/>
+
+                <Button
+                    android:id="@+id/btnCustom3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/verdeazul"
+                    android:background="@drawable/btn_rounded_green_outlined"
+                    android:text="@string/pix_continuar"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <style>
+   @page {
+      margin: 2cm;
+   }
+   #header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+   }
+   #footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      text-align center;
+   }
+   #content {
+      margin-top: 70px;
+      margin-botton: 40px;
+   }
+   .page-break {
+      page-break-before: always;
+   }
+      </style>
+   <meta charset="utf-8">
+</head>
+<body style="font-family: Helvetica;">
+<div id="header">
+   <div style="width: 100%">
+      <p style="color:#0267b2; font-size: 14px; margin: 0px;"><b>Loterias</b></p>
+      <div style="width: 75%; float: left;">
+         <b style="color:#0267b2;font-size: 14px;">{header_tipo_comprovante_txt}</b>
+      </div>
+      <div style="width: 25%; float: right;">
+         <img src="data:image/png;base64,{base_64_logo}" width="89px" height="20px" style="float: right; margin-right: 10px;" />
+      </div>
+   </div>
+   <hr size="2" width="100%" align="left" color="orange" style="margin-top:25px">
+</div>
+<div id="content">
+   <div style="color:#4E596B; text-align: right; width: 100%; margin-right: 10px;">
+      <p>Página #X de #Y</p>
+   </div>
+   <p style="color:#0267b2; font-size: 10px; margin-top: 12px;"><b>Dados da Aposta</b></p>
+   <div style="width:100%;  outline:0.15em solid orange; float:left; margin-bottom: 60px">
+      <div style="width: 45%; float: left; margin-left: 20px; margin-top: 20px; margin-bottom: 20px" >
+         <p style="margin: 0px; font-size:10px; color:#4E596B; margin-top: 4px;"><strong>Nome:</strong> {header_nome}</p>
+         <p style="margin: 0px; font-size:10px; color:#4E596B; margin-top: 4px;"><strong>CPF:</strong> {header_cpf}</p>
+         <p style="margin: 0px; font-size:10px; color:#4E596B; margin-top: 4px;"><strong>Modalidade:</strong> {header_modalidade}</p>
+         <p style="margin: 0px; font-size:10px; color:#4E596B; margin-top: 4px;"><strong>{header_concurso_titulo}</strong> {header_concurso_valor}</p>
+      </div>
+      <div style="width: 45%; float: left; margin-left: 10px; margin-top: 20px; margin-bottom: 20px" >
+         <p style="margin: 0px; font-size:10px; color:#4E596B; margin-top: 4px;"><strong>Data da Aposta:</strong> {header_data_aposta}</p>
+         <p style="margin: 0px; font-size:10px; color:#4E596B; margin-top: 4px;"><strong>Hora da Aposta:</strong> {header_hora_aposta}</p>
+         <p style="margin: 0px; font-size:10px; color:#4E596B; margin-top: 4px;"><strong>Subcanal de Compra:</strong> {header_subcanal}</p>
+         <p style="margin: 0px; font-size:10px; color:#4E596B; margin-top: 4px;"><strong>Valor Total da Aposta:</strong> {header_valor_total_aposta}</p>
+      </div>
+   </div>
+   <p style="color:#4E596B; font-size: 10px;"><b>Seus números:</b></p>
+   <div style="width: 100%; float: left;">
+      <p style="margin-left: 70px; margin-right: 70px; font-size:14px; margin-top: 0px; margin-bottom: 50px; color:#4E596B;">{body_lista_itens_aposta}</p>
+   </div>
+
+   <div style="width:100%; outline:0.15em solid orange; float: left; margin-top: 7px;">
+      <img src="data:image/png;base64,{base_64_codigo_barras}" style="margin: 16px auto; display: block;" />
+      <p style="text-align: center; color:#4E596B; font-size:18px;">{body_codigo_nsbi}</p>
+   </div>
+   <div style="width:100%; float: left; margin-top: 18px; text-align: center; font-size:10px; color:#4E596B;"><strong>Confira o recibo da aposta<br>Validade do prêmio: 90 dias</strong></div>
+</div>
+<div id="footer">
+   <div  style="width:100%;  float: left; text-align: left; color: #888888; font-size: 9px; line-height: 7px; margin-bottom: 20px">
+      <div style="float: left; width: 20%;">
+         <p style="margin: 0; color: #143DA6; font-size: 14px;"><strong>0800 726 0101</strong></p>
+         <br>
+         <p style="margin: 0; font-size: 10px; line-height: 10px;">SAC (Sugestões, reclamações e elogios)</p>
+      </div>
+      <div style="float: left; width: 20%;">
+         <p style="margin: 0; color: #143DA6; font-size: 14px;"><strong> 4004 0104</strong></p>
+         <br>
+         <p style="margin: 0; font-size: 10px; line-height: 10px;"> Alô CAIXA (Regiões Metropolitanas)</p>
+      </div>
+      <div style="float: left; width: 20%;">
+         <p style="margin: 0; color: #143DA6; font-size: 14px;"><strong> 0800 104 0104</strong></p>
+         <br>
+         <p style="margin: 0; font-size: 10px; line-height: 10px;"> Alô CAIXA (Demais Regiões)</p>
+      </div>
+      <div style="float: left; width: 20%;">
+         <p style="margin: 0; color: #143DA6; font-size: 14px;"><strong> 0800 726 0207</strong></p>
+         <br>
+         <p style="margin: 0; font-size: 10px; line-height: 10px;"> Atendimento CAIXA Cidadão</p>
+      </div>
+      <div style="float: left; width: 20%;">
+         <p style="margin: 0; color: #143DA6; font-size: 14px;"><strong> 0800 725 7474</strong></p>
+         <br>
+         <p style="margin: 0; font-size: 10px; line-height: 10px;"> Ouvidoria</p>
+      </div>
+   </div>
+   <!-- p>Página <span id="page-number"></span> de <span id="total-pages"></span></p -->
+</div>
+</body>
+</html>

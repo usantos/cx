@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_rapidao"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/gl_tutorial_rapidao"
+        app:srcCompat="@drawable/icone_rapidao" />
+
+    <View
+        android:id="@+id/v_linha"
+        android:layout_width="150dp"
+        android:layout_height="1dp"
+        android:background="@color/verdeazul"
+        app:layout_constraintLeft_toLeftOf="@id/tv_bem_vindo"
+        app:layout_constraintRight_toRightOf="@id/tv_bem_vindo"
+        app:layout_constraintTop_toBottomOf="@id/gl_tutorial_rapidao" />
+
+    <TextView
+        android:id="@+id/tv_bem_vindo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_bem_vindo_ao"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/verdeazul"
+        android:textSize="20sp"
+        android:fontFamily="@font/caixa_std_bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_linha" />
+
+    <TextView
+        android:id="@+id/tv_rapidao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_rapidao"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/amareloQueimado"
+        android:textSize="25sp"
+        android:fontFamily="@font/caixa_std_bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_bem_vindo" />
+
+    <TextView
+        android:id="@+id/tv_texto_rapidao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:text="@string/conf_rapd_selecione_limites"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rapidao" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_tutorial_rapidao"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="0dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/swipeLayoutButtonPush"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="#2E2565"
+            >
+
+            <ImageButton
+                android:id="@+id/btn_msg_lida"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#2E2565"
+                android:gravity="center"
+                android:src="@drawable/ic_carta_msglidas" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="#900000">
+
+            <ImageButton
+                android:id="@+id/btn_msg_eliminar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#900000"
+                android:gravity="center"
+                android:src="@drawable/ic_lixeira_push" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/surface_push"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/pesquisa_msgpush"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_cabecalho"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/pesquisa_msgpush"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/icon_ImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_logo_money"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/data_texto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="01/01/2023"
+                android:textColor="@color/cinzaescuro"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/titulo_msgpush"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="Titulo msg"
+                android:textColor="@color/cinzaescuro"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/icon_ImageView"
+                app:layout_constraintEnd_toStartOf="@id/data_texto"
+                />
+
+            <TextView
+                android:id="@+id/text_preview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="mensagem preview"
+                android:textColor="@color/cinzaescuro"
+                android:textSize="16sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toBottomOf="@id/titulo_msgpush"
+                app:layout_constraintStart_toEndOf="@id/icon_ImageView"
+                app:layout_constraintEnd_toStartOf="@id/data_texto"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/expandedLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:background="@drawable/ic_cabec_push_branco"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/mensagem_texto"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:padding="12dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/cinzaescuro"
+                    android:textSize="12dp" />
+
+                <Button
+                    android:id="@+id/buttonCompart"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:paddingLeft="8dp"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="right"
+                    android:background="@drawable/ic_compartilhar"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonMsgExpandida"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:padding="8dp"
+                    android:text="botaoMsg"
+                    android:textAllCaps="false"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.daimajia.swipe.SwipeLayout>

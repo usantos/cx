@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- "Icone trevo"-->
+    <item
+        android:id="@+id/central_notificacao"
+        android:title="@string/title_central_notificacao"
+        app:actionLayout="@layout/sino_notificacao"
+        android:visible="true"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/action_outubro_rosa"
+        android:icon="@drawable/ic_outubro_rosa"
+        android:title="@string/ic_outubro_rosa"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_apresentar_trevo"
+        android:icon="@drawable/icon_trevo_toolbar"
+        android:title="@string/apresentar_trevo"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/status_toolbar_icon"
+        android:orderInCategory="100"
+        android:visible="false"
+        android:title="@string/action_settings"
+        app:showAsAction="always" />
+</menu>

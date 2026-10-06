@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/branco"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.TermosAceiteActivity"
+    tools:showIn="@layout/activity_termos_aceite">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:focusable="false"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_termo_aceite2"
+            android:layout_width="match_parent"
+            android:focusable="false"
+            android:layout_height="match_parent">
+
+
+            <ScrollView
+                android:id="@+id/scrollViewTermoAceite2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="30dp"
+                android:importantForAccessibility="no"
+                android:focusable="false"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/footerAceiteTermo">
+
+                <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/webViewConteudo2"
+                    android:layout_width="match_parent"
+                    android:focusable="true"
+                    android:importantForAccessibility="yes"
+                    android:layout_height="wrap_content" />
+
+
+            </ScrollView>
+
+            <RelativeLayout
+                android:id="@+id/footerAceiteTermo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/drawer_linha_divisao_cinza_claro"
+                android:visibility="gone">
+
+            </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

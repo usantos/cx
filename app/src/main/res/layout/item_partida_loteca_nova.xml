@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_partida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:importantForAccessibility="yes"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" >
+
+        <TextView
+            android:id="@+id/label_jogo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Jogo 01:"
+            android:importantForAccessibility="no"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textSize="18sp"
+            android:layout_marginTop="0dp"
+            android:layout_marginStart="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/label_vencedor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="VENCEDOR"
+            android:importantForAccessibility="no"
+            android:fontFamily="@font/caixa_std_bold"
+            android:textSize="18sp"
+            android:layout_marginTop="0dp"
+            android:layout_marginStart="4dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/label_jogo" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/check_equipe_1"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:checked="true"
+        android:clickable="false"
+        android:focusable="true"
+        android:text=""
+        android:background="@drawable/ic_radio_unchecked"
+        android:buttonTint="@android:color/black"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/cl_partida"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <View
+        android:id="@+id/check_empate"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:focusable="true"
+        android:text=""
+        android:background="@drawable/ic_radio_checked"
+        android:backgroundTint="@android:color/black"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/check_equipe_1"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <View
+        android:id="@+id/check_equipe_2"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:checked="false"
+        android:clickable="false"
+        android:focusable="true"
+        android:text=""
+        android:background="@drawable/ic_radio_unchecked"
+        android:buttonTint="@android:color/black"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/check_empate"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/nome_equipe_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="EQUIPE1/UF"
+        android:focusable="true"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textSize="16sp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintTop_toTopOf="@id/check_equipe_1"
+        app:layout_constraintBottom_toBottomOf="@id/check_equipe_1"
+        app:layout_constraintStart_toEndOf="@id/check_equipe_1"/>
+
+    <TextView
+        android:id="@+id/nome_empate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="EMPATE"
+        android:focusable="true"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textSize="16sp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintTop_toTopOf="@id/check_empate"
+        app:layout_constraintBottom_toBottomOf="@id/check_empate"
+        app:layout_constraintStart_toEndOf="@id/check_empate"/>
+
+    <TextView
+        android:id="@+id/nome_equipe_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="EQUIPE2/UF"
+        android:focusable="true"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textSize="16sp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintTop_toTopOf="@id/check_equipe_2"
+        app:layout_constraintBottom_toBottomOf="@id/check_equipe_2"
+        app:layout_constraintStart_toEndOf="@id/check_equipe_2"/>
+
+    <View
+        android:id="@+id/v_linha_divisoria_loteca"
+        android:layout_width="200dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintTop_toBottomOf="@id/nome_equipe_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="115dp"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@drawable/bg_time"
+    android:id="@+id/itemTimeCoracaoLinearLayout">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitCenter"
+        android:id="@+id/time_coracao_image"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/timeCoracaoNome"
+        android:layout_alignBottom="@id/time_coracao_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal"
+        android:textSize="14.2sp"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textColor="@color/cinza"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeCoracaoUf"
+        android:textSize="14.2sp"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textColor="@color/cinza"/>
+
+</LinearLayout>

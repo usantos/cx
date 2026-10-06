@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/resultadoApostaScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/branco"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.ResultadoLerBilhetesActivity"
+    tools:showIn="@layout/activity_resultado_ler_bilhetes">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/corpoBilhetePremiadoLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado
+                android:id="@+id/contentResultadoPremiado"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:text="@string/label_veja_retirar_premio"
+                android:textColor="@color/verdeazul"
+                android:textSize="14.2sp"
+                android:fontFamily="@font/caixa_std_bold" />
+
+            <LinearLayout
+                android:id="@+id/informacoesPremioZeradoLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="39dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/enumeradorZeradoUmText"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/shape_linha_divisiva"
+                        android:gravity="center"
+                        android:text="@string/label_numerico_um"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="17.5sp"
+                        android:fontFamily="@font/caixa_std_bold" />
+
+                    <TextView
+                        style="@style/CaixaStdRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/text_margin_20"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:layout_marginStart="@dimen/text_margin_small"
+                        android:layout_toEndOf="@+id/enumeradorZeradoUmText"
+                        android:text="@string/label_dirigir_para_agencia"
+                        android:textColor="@color/cinza"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="39dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/enumeradorZeradoDoisText"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/shape_linha_divisiva"
+                        android:gravity="center"
+                        android:text="@string/label_numerico_dois"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="17.5sp"
+                        android:fontFamily="@font/caixa_std_bold" />
+
+                    <TextView
+                        style="@style/CaixaStdRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/text_margin_20"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:layout_marginStart="@dimen/text_margin_small"
+                        android:layout_toEndOf="@+id/enumeradorZeradoDoisText"
+                        android:text="@string/label_apresente_recibo_documento_identificacao_originais"
+                        android:textColor="@color/cinza"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/informacoesPremioLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/CaixaStdRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/activity_vertical_margin"
+                    android:layout_marginStart="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="@string/label_premio_sub_titulo_resultado_valor"
+                    android:textColor="@color/cinza"
+                    android:textSize="14sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="39dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/enumeradorUmText"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/shape_linha_divisiva"
+                        android:gravity="center"
+                        android:text="@string/label_numerico_um"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="17.5sp"
+                        android:fontFamily="@font/caixa_std_bold" />
+
+                    <TextView
+                        style="@style/CaixaStdRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/text_margin_20"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:layout_marginStart="@dimen/text_margin_small"
+                        android:layout_toEndOf="@+id/enumeradorUmText"
+                        android:text="@string/label_receber_agencia"
+                        android:textAlignment="center"
+                        android:textColor="@color/cinza"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/activity_vertical_margin"
+                    android:layout_marginStart="67dp"
+                    android:layout_marginTop="22dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="@dimen/image_margin_small"
+                        android:src="@drawable/ic_rectangle_8" />
+
+                    <TextView
+                        style="@style/CaixaStdRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text="@string/label_dirigir_para_agencia"
+                        android:textColor="@color/cinza"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/activity_vertical_margin"
+                    android:layout_marginStart="67dp"
+                    android:layout_marginTop="22dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="@dimen/image_margin_small"
+                        android:src="@drawable/ic_rectangle_8" />
+
+                    <TextView
+                        style="@style/CaixaStdRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text="@string/label_apresente_recibo_documento_identificacao_originais"
+                        android:textColor="@color/cinza"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="31dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/enumeradorDoisText"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/shape_linha_divisiva"
+                        android:gravity="center"
+                        android:text="@string/label_numerico_dois"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="17.5sp"
+                        android:fontFamily="@font/caixa_std_bold" />
+
+                    <TextView
+                        style="@style/CaixaStdRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/text_margin_20"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:layout_marginStart="@dimen/text_margin_small"
+                        android:layout_toEndOf="@+id/enumeradorDoisText"
+                        android:text="@string/label_receber_unidade_loterica"
+                        android:textColor="@color/cinza"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="67dp"
+                    android:layout_marginTop="22dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="@dimen/image_margin_small"
+                        android:src="@drawable/ic_rectangle_8" />
+
+                    <TextView
+                        style="@style/CaixaStdRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text="@string/label_diriga_loterica_preferencia"
+                        android:textColor="@color/cinza"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="67dp"
+                    android:layout_marginTop="22dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="@dimen/image_margin_small"
+                        android:src="@drawable/ic_rectangle_8" />
+
+                    <TextView
+                        style="@style/CaixaStdRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text="@string/label_apresente_recibo_aposta"
+                        android:textColor="@color/cinza"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/corpoBilheteNaoPremiadoLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/backgroundTopoNaoPremiadoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="111dp"
+                android:background="@color/mega_verde_escuro_mkp">
+
+                <TextView
+                    android:id="@+id/statusResultadoNaoPremiadTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:textColor="@color/branco"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/caixa_std_bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/aposteAgoraNaoPremiadoLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/botaoAposteAgora2"
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="17dp"
+                    android:background="@drawable/button_white_with_border_disabled"
+                    android:backgroundTint="#3A485B"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14.2sp"
+                    android:fontFamily="@font/caixa_std_bold"
+                    tools:text="@string/label_aposte_agora" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mensagemNaoPremiadoLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/branco">
+
+                <TextView
+                    android:id="@+id/mensagemNaoPremiadoTextView"
+                    style="@style/CaixaStdRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="68dp"
+                    android:layout_marginStart="68dp"
+                    android:layout_marginTop="41dp"
+                    tools:text="@string/label_aposte_agora"
+                    android:textAlignment="center"
+                    android:textColor="@color/cinza"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

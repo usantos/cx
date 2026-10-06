@@ -1,0 +1,108 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:text="Legenda"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textSize="16sp"
+        android:textColor="@color/blue_caixa" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/blue_caixa"
+        android:layout_marginVertical="10dp"/>
+
+    <!-- Item 1 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_marginTop="2dp"
+            android:id="@+id/image_aposta_partida_loteca_selecionado"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="19dp"
+            android:background="@drawable/ic_opcao_aposta_escolhida" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_roudend_less_branco"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="TIME/UF"
+            android:contentDescription="TIME UF, caixa branca sólida"
+            android:importantForAccessibility="yes"
+            android:textSize="16sp"
+            android:paddingTop="2dp"
+            android:textColor="@color/cinza_titulo_jogo_loteca"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="| Palpite escolhido"
+            android:textSize="12sp"
+            android:textColor="@color/cinza_titulo_jogo_loteca"
+            android:paddingStart="20dp"/>
+    </LinearLayout>
+
+    <!-- Item 2 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_marginTop="2dp"
+            android:id="@+id/image_aposta_partida_loteca_nao_selecionado"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="19dp"
+            android:background="@drawable/ic_opcao_aposta_nao_escolhida" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="TIME/UF"
+            android:textSize="16sp"
+            android:textColor="@color/cinza_titulo_jogo_loteca" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="| Palpite não escolhido"
+            android:textSize="12sp"
+            android:textColor="@color/cinza_titulo_jogo_loteca"
+            android:paddingStart="24dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/blue_caixa"
+        android:layout_marginVertical="10dp"/>
+
+    <Button
+        android:id="@+id/btnFechar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/caixa_std_semi_bold"
+        android:text="Fechar"
+        android:textAllCaps="false"
+        android:textColor="@color/blue_caixa"
+        android:background="@android:color/transparent"
+        android:layout_gravity="end"/>
+</LinearLayout>

@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <Button
+        android:id="@+id/buttonRemoverFormaPagamento"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/icon_fechar" />
+
+    <TextView
+        android:id="@+id/textNumeroCartaoMask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/_4395"
+        android:textSize="14sp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="0dp"
+        android:layout_below="@+id/textBandeiraCartao"
+        android:layout_alignLeft="@+id/textBandeiraCartao"
+        android:layout_alignStart="@+id/textBandeiraCartao"
+        style="@style/editTextCaixaRegularTheme"/>
+
+    <TextView
+        android:id="@+id/textBandeiraCartao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/mastercard"
+        android:textColor="@color/azulTexto"
+        android:textSize="14sp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@+id/imageViewSelecionado"
+        android:layout_toEndOf="@+id/imageViewSelecionado"
+        style="@style/editTextCaixaRegularTheme"/>
+
+    <ImageView
+        android:id="@+id/imageViewSelecionado"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/imageViewCartao"
+        android:layout_toRightOf="@+id/imageViewCartao"
+        app:srcCompat="@drawable/icon_alerta" />
+
+    <ImageView
+        android:id="@+id/imageViewCartao"
+        android:layout_width="37dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp"
+        android:layout_centerVertical="true"
+         />
+</RelativeLayout>

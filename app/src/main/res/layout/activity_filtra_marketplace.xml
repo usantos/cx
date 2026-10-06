@@ -1,0 +1,692 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/carrinhoScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <include layout="@layout/app_bar_marketplace" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+
+    <ScrollView
+        android:id="@+id/scroll_filtra_market"
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:clipToPadding="false"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@id/id_somador_carrinho"
+        app:layout_constraintTop_toTopOf="@id/gl_toolbar"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constrain_filtro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toTopOf="@id/scroll_filtra_market"
+            app:layout_constraintTop_toTopOf="@id/scroll_filtra_market">
+
+            <TextView
+                android:id="@+id/text_filtrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/filtrar_modalidades"
+                android:textAlignment="textStart"
+                android:textColor="@color/blue_caixa"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_modalidades"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/modalidades"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_filtrar" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lista_modalidades"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/text_modalidades" />
+
+            <TextView
+                android:id="@+id/text_loterica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/label_loterica_filtro"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lista_modalidades" />
+
+            <EditText
+                android:id="@+id/edit_loterica"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                android:hint="@string/nome_ou_codigo"
+                android:inputType="text"
+                android:fontFamily="@font/caixa_std_regular"
+                android:paddingStart="8dp"
+                android:textColor="@color/bolao_hint"
+                android:textColorHint="@color/bolao_hint"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_loterica" />
+
+
+            <AutoCompleteTextView
+                android:id="@+id/autoComplete_loterica"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                android:ellipsize="end"
+                android:hint="@string/nome_ou_codigo"
+                android:inputType="text"
+                android:paddingStart="8dp"
+                android:singleLine="true"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/bolao_hint"
+                android:textColorHint="@color/bolao_hint"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_loterica" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewLoterica"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:nestedScrollingEnabled="false"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_loterica" />
+
+<!--            <View-->
+<!--                android:id="@+id/view_espaco_inferior"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="10dp"-->
+<!--                android:layout_marginTop="0dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/recyclerViewLoterica"-->
+<!--                tools:layout_editor_absoluteX="0dp" />-->
+
+            <TextView
+                android:id="@+id/text_loterica_descritivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:lineSpacingExtra="4dp"
+                android:text="@string/descritivo_loterica"
+                android:textAlignment="gravity"
+                android:textColor="@color/bolao_hint"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewLoterica" />
+
+            <TextView
+                android:id="@+id/text_valor_min_aposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/valor_minimo_cota"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineCentroFiltro"
+                app:layout_constraintTop_toBottomOf="@id/text_loterica_descritivo" />
+
+            <TextView
+                android:id="@+id/text_valor_max_aposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/valor_maximo_cota"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@+id/guidelineCentroFiltro"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_loterica_descritivo" />
+
+            <EditText
+                    android:id="@+id/edit_val_min"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_white_with_rouded_black_border"
+                    android:inputType="numberDecimal"
+                    android:maxLength="14"
+                    android:drawableStart="@drawable/ic_real_cifrao"
+                    android:drawablePadding="5dp"
+                    android:textColor="@color/bolao_hint"
+                    android:hint="0,00"
+                    android:textColorHint="@color/bolao_hint"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:importantForAccessibility="no"
+                    android:focusable="true"
+                    android:importantForAutofill="no"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineCentroFiltro"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_valor_min_aposta" />
+
+            <EditText
+                android:id="@+id/edit_val_max"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                android:inputType="numberDecimal"
+                android:maxLength="14"
+                android:drawableStart="@drawable/ic_real_cifrao"
+                android:drawablePadding="5dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/bolao_hint"
+                android:textColorHint="@color/bolao_hint"
+                android:hint="0,00"
+                android:textSize="14sp"
+                android:importantForAutofill="no"
+                android:importantForAccessibility="no"
+                android:focusable="true"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/guidelineCentroFiltro"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_valor_min_aposta" />
+
+            <TextView
+                android:id="@+id/text_quant_min_cotas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/quantidade_min_cotas"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineCentroFiltro"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_val_min" />
+
+            <EditText
+                android:id="@+id/quant_min_cotas"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                android:hint="@string/_2"
+                android:fontFamily="@font/caixa_std_regular"
+                android:inputType="number"
+                android:maxLength="14"
+                android:paddingStart="8dp"
+                android:importantForAutofill="no"
+                android:textColor="@color/bolao_hint"
+                android:textColorHint="@color/bolao_hint"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineCentroFiltro"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_quant_min_cotas" />
+
+            <TextView
+                android:id="@+id/text_quant_max_cotas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/quantidade_max_cotas"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/guidelineCentroFiltro"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_val_min" />
+
+
+            <EditText
+                android:id="@+id/quant_max_cotas"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                android:inputType="number"
+                android:maxLength="14"
+                android:hint="@string/_100"
+                android:paddingStart="8dp"
+                android:importantForAutofill="no"
+                android:textColor="@color/bolao_hint"
+                android:textColorHint="@color/bolao_hint"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/guidelineCentroFiltro"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_quant_max_cotas" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerValidaQtdCotas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/quant_min_cotas"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/txt_valida_cota_min"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/qtd_min_menor_2"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/vermelho_dialog"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/caixa_std_bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/txt_valida_cota_max"
+                    android:layout_width="180dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/qtd_min_menor_2"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/vermelho_dialog"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/caixa_std_bold"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@id/guidelineValidaQtdCotas"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineValidaQtdCotas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="197dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <TextView
+                android:id="@+id/text_quantidade_apostas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/quantidade_de_apostas"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineCentroFiltro"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/containerValidaQtdCotas" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_qtde_apostas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="12dp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineCentroFiltro"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_quantidade_apostas" />
+
+            <View
+                android:id="@+id/view_div_qtd_dezenas"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@+id/rv_qtde_apostas" />
+
+            <TextView
+                android:id="@+id/txt_quantidade_dezenas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:text="@string/quantidade_dezenas"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_div_qtd_dezenas" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_accordion_qtd_dezenas"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/ic_accordion_plus_azul"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_div_qtd_dezenas" />
+
+            <LinearLayout
+                android:id="@+id/accordionContentQtdDezenas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_quantidade_dezenas">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_qtd_dezenas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+                <Button
+                    android:id="@+id/btn_excluir_qtd_dezenas"
+                    android:layout_width="127dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/btn_round_outlined"
+                    android:fontFamily="@font/caixa_std_semi_bold"
+                    android:text="@string/excluir_quantidade"
+                    android:textColor="@color/azulFiltro"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_div_qtd_dezenas_selecionada"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@id/accordionContentQtdDezenas" />
+
+
+            <TextView
+                android:id="@+id/txt_numeros_quero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/numeros_quero"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_div_qtd_dezenas_selecionada" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_accordion_quero"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_accordion_plus_azul"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view_div_qtd_dezenas_selecionada" />
+
+            <LinearLayout
+                android:id="@+id/accordionContentQuero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_numeros_quero">
+
+                <!-- Conteudo Acordeon -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_quero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_marginTop="10dp"/>
+                <Button
+                    android:id="@+id/btn_excluir_num_quero"
+                    android:layout_width="127dp"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/excluir_numeros"
+                    android:layout_gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                    android:background="@drawable/btn_round_outlined"
+                    android:textColor="@color/azulFiltro"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/caixa_std_semi_bold" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_div_num_quero"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@+id/accordionContentQuero" />
+
+            <TextView
+                android:id="@+id/txt_numeros_nao_quero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/numeros_nao_quero"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_div_num_quero" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_accordion_nao_quero"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_accordion_plus_azul"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view_div_num_quero" />
+
+            <LinearLayout
+                android:id="@+id/accordionContentNaoQuero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_numeros_nao_quero">
+
+                <!-- Conteudo Acordeon -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_nao_quero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_marginTop="10dp"/>
+                <Button
+                    android:id="@+id/btn_excluir_num_nao_quero"
+                    android:layout_width="127dp"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/excluir_numeros"
+                    android:layout_gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                    android:background="@drawable/btn_round_outlined"
+                    android:textColor="@color/azulFiltro"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/caixa_std_semi_bold" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_div_num_nao_quero"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@+id/accordionContentNaoQuero" />
+
+
+            <androidx.constraintlayout.widget.Group
+                    android:id="@+id/groupQueroNaoQuero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="txt_numeros_quero, img_accordion_quero, view_div_num_quero,
+                    txt_numeros_nao_quero, view_div_num_nao_quero, img_accordion_nao_quero, view_div_num_nao_quero,
+                    "/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_botoes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/view_div_num_nao_quero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+            <Button
+                android:id="@+id/btn_limpar_filtros"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/btn_round_outlined"
+                android:text="@string/limpar_filtros"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                android:textColor="@color/azulFiltro"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_aplicar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_aplicar"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/btn_rounded_blue"
+                android:text="@string/aplicar"
+                android:textColor="@color/branco"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:textAlignment="center"
+                app:layout_constraintStart_toEndOf="@id/btn_limpar_filtros"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineCentroFiltro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/id_somador_carrinho"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

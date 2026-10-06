@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="129dp"
+    android:theme="@style/AppTheme.AppBarOverlay"
+    android:background="@drawable/background_gradient_verde">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+    <View
+        android:layout_width="130dp"
+        android:layout_height="1dp"
+        android:background="@color/verdeagua"
+        android:layout_gravity="end"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/branco"
+        android:lines="2"
+        android:textSize="14sp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:text="@string/estes_s_o_seus_dados_pessoais_por_favor_mantenha_os_sempre_atualizados"
+        android:id="@+id/subtitleToolbar"
+        android:padding="15dp"/>
+</com.google.android.material.appbar.AppBarLayout>

@@ -1,0 +1,10 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- cor de fundo -->
+    <solid android:color="@color/blue_caixa" />
+
+    <!-- aqui é o equivalente ao cornerRadius -->
+    <corners android:radius="4dp" />
+
+</shape>

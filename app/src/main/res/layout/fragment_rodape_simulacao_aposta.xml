@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="94dp"
+    android:background="@color/azulclaro"
+    android:id="@+id/layout_fragmento">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_valor_aposta"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAccessibility="yes"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_divisao"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/textInfoValorAposta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/valorDessaAposta"
+            android:importantForAccessibility="no"
+            android:textAlignment="center"
+            android:textColor="@color/azulescuro"
+            android:textSize="12sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintTop_toBottomOf="@id/gl_divisao"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/valorApostaCartela"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_bold"
+            tools:text="R$ 4,50"
+            android:padding="2dp"
+            android:importantForAccessibility="no"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@id/gl_divisao"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/simularApostaLayoutCarrinhoApostas"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="@string/carrinho_apostas"
+        android:importantForAccessibility="yes"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_divisa"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <Button
+            android:id="@+id/botaoCarrinho"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/icon_carrinho"
+            android:importantForAccessibility="no"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/gl_divisa"
+            android:clickable="false" />
+
+        <ImageView
+            android:id="@+id/circuloQuantidade"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/ic_shape_oval"
+            android:backgroundTint="#FDAB01"
+            android:layout_marginTop="6dp"
+            android:translationZ="2dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/botaoCarrinho"
+            app:layout_constraintStart_toEndOf="@+id/botaoCarrinho"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvQuantidadeApostas"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:translationZ="2dp"
+            android:paddingEnd="1dp"
+            android:paddingStart="1dp"
+            android:text="0"
+            android:textSize="7sp"
+            android:padding="1dp"
+            android:fontFamily="@font/caixa_std_bold"
+            android:lineHeight="10dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@id/circuloQuantidade"
+            app:layout_constraintStart_toStartOf="@id/circuloQuantidade"
+            app:layout_constraintBottom_toBottomOf="@id/circuloQuantidade"
+            app:layout_constraintEnd_toEndOf="@id/circuloQuantidade"
+            />
+
+        <TextView
+            android:id="@+id/textInfoCarrinho"
+            android:translationZ="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="false"
+            android:text="@string/carrinhoDeApostas"
+            android:textAlignment="center"
+            android:textColor="@color/azulescuro"
+            android:importantForAccessibility="no"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gl_divisa"
+            android:textSize="12sp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_valor_carrinho"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="yes"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/valorAtualCarrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R$ 0,00"
+            android:textColor="#3964A4"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_valor_atual_carrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/valor_atual_do_carrinho"
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/valorAtualCarrinho"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

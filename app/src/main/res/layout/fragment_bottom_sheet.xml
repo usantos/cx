@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/design_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_bottom_sheet"
+    android:paddingBottom="50dp">
+
+    <View
+        android:id="@+id/indicator_top"
+        android:layout_width="44dp"
+        android:layout_height="5dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_card"
+        android:backgroundTint="@color/jr_cinza_separator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/jr_bs_titulo"
+        android:textColor="@color/jr_azul_text_title"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indicator_top" />
+
+    <TextView
+        android:id="@+id/tv_descricao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/jr_bs_desc"
+        android:textColor="@color/cinza_total"
+        android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_titulo" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_descricao">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:paddingBottom="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_descricao">
+
+            <TextView
+                android:id="@+id/tv_caixa_tile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/jr_bs_caixa_titulo"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_caixa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:text="@string/jr_bs_caixa_tel"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_caixa_tile" />
+
+            <TextView
+                android:id="@+id/tv_caixa_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:padding="1dp"
+                android:text="@string/jr_bs_caixa_tel_1"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_caixa" />
+
+            <TextView
+                android:id="@+id/tv_caixa_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:padding="1dp"
+                android:text="@string/jr_bs_caixa_tel_2"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_caixa_1" />
+
+            <TextView
+                android:id="@+id/tv_caixa_op_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:text="@string/jr_bs_op_6"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_caixa_2" />
+
+            <TextView
+                android:id="@+id/tv_caixa_op_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:text="@string/jr_bs_op_2"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_6" />
+
+            <TextView
+                android:id="@+id/tv_caps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="2dp"
+                android:text="@string/jr_caps_titulo"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_2" />
+
+            <TextView
+                android:id="@+id/tv_caps_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/jr_caps_site"
+                android:textColor="@color/jr_email"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_caps" />
+
+            <TextView
+                android:id="@+id/tv_proamjo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="2dp"
+                android:text="@string/jr_bs_proamjo"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_caps_site" />
+
+            <TextView
+                android:id="@+id/tv_proamjo_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/jr_bs_proamjo_end"
+                android:textColor="@color/jr_cinza_text_claro"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_proamjo" />
+
+            <TextView
+                android:id="@+id/tv_proamjo_tels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:padding="2dp"
+                android:text="@string/jr_bs_proamjo_tels"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_proamjo_end" />
+
+            <TextView
+                android:id="@+id/tv_proamjo_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="email|all"
+                android:padding="2dp"
+                android:text="@string/jr_bs_proamjo_email"
+                android:textColor="@color/jr_email"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_proamjo_tels" />
+
+            <TextView
+                android:id="@+id/tv_avb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="2dp"
+                android:text="@string/jr_bs_avb"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_proamjo_email" />
+
+            <TextView
+                android:id="@+id/tv_avb_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/jr_bs_avb_end"
+                android:textColor="@color/jr_cinza_text_claro"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_avb" />
+
+            <TextView
+                android:id="@+id/tv_avb_tels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:padding="2dp"
+                android:text="@string/jr_bs_avb_tel"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_avb_end" />
+
+            <TextView
+                android:id="@+id/tv_avb_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:autoLink="email|all"
+                android:text="@string/jr_bs_avb_email"
+                android:textColor="@color/jr_email"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_avb_tels" />
+
+            <TextView
+                android:id="@+id/tv_proad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="2dp"
+                android:text="@string/jr_bs_proad"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_avb_email" />
+
+            <TextView
+                android:id="@+id/tv_proad_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/jr_bs_proad_end"
+                android:textColor="@color/jr_cinza_text_claro"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_proad" />
+
+            <TextView
+                android:id="@+id/tv_proad_tels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:padding="2dp"
+                android:text="@string/jr_bs_proad_tels"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_proad_end" />
+
+            <TextView
+                android:id="@+id/tv_proad_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:autoLink="email|all"
+                android:text="@string/jr_bs_proad_email"
+                android:textColor="@color/jr_email"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_proad_tels" />
+
+            <TextView
+                android:id="@+id/tv_scm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="2dp"
+                android:text="@string/jr_bs_scm"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_proad_email" />
+
+            <TextView
+                android:id="@+id/tv_scm_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/jr_bs_scm_end"
+                android:textColor="@color/jr_cinza_text_claro"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_scm" />
+
+            <TextView
+                android:id="@+id/tv_scm_tels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:padding="2dp"
+                android:text="@string/jr_bs_scm_tel"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_scm_end" />
+
+            <TextView
+                android:id="@+id/tv_ja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="2dp"
+                android:text="@string/jr_ja_titulo"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_scm_tels" />
+
+
+            <TextView
+                android:id="@+id/tv_ja_tels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:padding="2dp"
+                android:text="@string/jr_ja_tels"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_ja" />
+
+            <TextView
+                android:id="@+id/tv_ja_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:autoLink="email|all"
+                android:text="@string/jr_ja_site"
+                android:textColor="@color/jr_email"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_ja_tels" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

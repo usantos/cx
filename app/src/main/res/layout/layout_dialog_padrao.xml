@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="14dp"
+    android:background="@color/branco">
+
+    <TextView
+        android:id="@+id/titulo_dialog_padrao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        tools:text="Atenção"
+        android:textColor="@color/blue_caixa"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_bold"
+       />
+    <View
+        android:id="@+id/divider_dialog_padrao"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="17dp"
+        android:background="@color/cinza70"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/conteudo_dialog_padrao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textAlignment="textStart"
+        tools:text="Você será direcionado para o side da CAIXA Loterias e sairá do aplicativo. Deseja continuar?"
+        android:textColor="@color/cinza110"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+        <LinearLayout
+            android:id="@+id/layout_botoes_padrao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="end"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/button_negativo"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:textAllCaps="false"
+                tools:text="Cancelar"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:ellipsize="end"/>
+
+            <Button
+                android:id="@+id/button_positivo"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:textAllCaps="false"
+                tools:text="Confirmar"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:textColor="@color/blue_caixa"
+                android:ellipsize="end"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_tres_botoes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btn_top"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:textAllCaps="false"
+                tools:text="Gerar novo código"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:textColor="@color/blue_caixa"
+                android:textSize="16sp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                />
+
+            <Button
+                android:id="@+id/btn_center"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:textAllCaps="false"
+                tools:text="Alterar pagamento"
+                android:textSize="16sp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/cinza110"
+                 />
+
+            <Button
+                android:id="@+id/btn_bottom"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:textAllCaps="false"
+                tools:text="Voltar ao início"
+                android:textSize="16sp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/cinza110"
+                />
+
+    </LinearLayout>
+</LinearLayout>
