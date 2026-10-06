@@ -1743,6 +1743,31 @@ public class SimulaFragment extends BaseEtapaFragment {
         return getStateAtual().isBotaoAdicionarHabilitado();
     }
 
+    @Override protected boolean suportaApostaShake() { return true; }
+
+    @Override protected boolean apostaShakeCompleta() {
+        return getStateAtual().isBotaoAdicionarHabilitado();
+    }
+
+    @Override protected void preencherApostaShake(boolean renovar) {
+        if (renovar) {
+            if (tipoJogo != ModalidadeEnum.SUPER_7 && parametroJogo != null) {
+                List<Integer> nova = br.gov.caixa.loterias.apostas.utils.shake.ApostaShakeRandom.numeros(
+                        getStateAtual().getQtdDezenasPossiveisSelecionado(),
+                        getDezenasSelecionadasState(), 1,
+                        parametroJogo.getPrognosticoMaximo(), true, new java.util.Random());
+                onLimparRodapeClicado();
+                simularDezenasAdapter.atualizaSelecionados(nova);
+                atualizarDezenasSelecionadas(nova);
+                atualizarValorENotificarEstadoCartela();
+                return;
+            }
+            preencheNumerosAleatorios();
+        } else {
+            solicitarCompletarAposta();
+        }
+    }
+
     @Override
     public EtapaAposta getEtapa() {
         return EtapaAposta.NUMEROS;

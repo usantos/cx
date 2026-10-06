@@ -174,6 +174,22 @@ public class MesesFragment2 extends BaseEtapaFragment {
         );
     }
 
+    @Override protected boolean suportaApostaShake() { return true; }
+    @Override protected boolean apostaShakeCompleta() { return possuiMesSelecionado(); }
+    @Override protected void preencherApostaShake(boolean renovar) {
+        if (!renovar) {
+            onCompletarRodapeClicado();
+            return;
+        }
+        List<ParametroMesDeSorte> meses = parametroJogoDTO != null ? parametroJogoDTO.getMeses() : null;
+        if (meses == null || meses.size() < 2) return;
+        ParametroMesDeSorte atual = getStateAtual().getMesSelecionado();
+        List<ParametroMesDeSorte> alternativas = new ArrayList<>(meses);
+        alternativas.remove(atual);
+        dispatch(new SimulaUiEvent.SelecionarMesDaSorte(
+                alternativas.get(new Random().nextInt(alternativas.size()))));
+    }
+
     public void onLimparRodapeClicado() {
 
         dispatch(

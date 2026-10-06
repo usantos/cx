@@ -1312,6 +1312,11 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
         atualizarValorENotificarEstadoCartela();
     }
 
+    @Override protected boolean suportaApostaShake() { return true; }
+    @Override protected void preencherApostaShake(boolean renovar) {
+        preencherPartidasAleatoriasLoteca();
+    }
+
     private void preencherPartidasAleatoriasLoteca() {
 
         if (parametroJogo == null

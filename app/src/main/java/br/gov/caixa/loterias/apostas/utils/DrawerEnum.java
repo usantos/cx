@@ -8,6 +8,7 @@ public enum DrawerEnum {
     MENU_FAVORITAS("Apostas favoritas"),
     MENU_CARRINHOS_FAVORITOS("Carrinhos favoritos"),
     MENU_MEUS_CARTOES("Meus cartões"),
+    MENU_APOSTA_SHAKE("Aposta Shake"),
     MENU_RESULTADOS("Resultados"),
     MENU_RAPIDAO("Rapidão"),
     MENU_COFERIR_BILHETE("Conferir bilhetes"),

@@ -139,6 +139,9 @@ import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
+import br.gov.caixa.loterias.apostas.utils.shake.ApostaShakePreferences;
+import br.gov.caixa.loterias.apostas.utils.shake.ApostaShakeMenuController;
+import android.view.MotionEvent;
 
 public class PrincipalActivity extends LoteriasBaseAppActivity
         implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
@@ -200,6 +203,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private AnimacoesAcessoRapido animacoesAcessoRapido, animacoesOutubroRosa;
 
     private CarrinhoModel model;
+    private static final int REQ_TUTORIAL_SHAKE = 6287;
+    private boolean tutorialShakeAberto;
+    private boolean tutorialShakeExibido;
+    private String tutorialShakeUsuario;
+    private ApostaShakeMenuController shakeMenuController;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -241,6 +249,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             toggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
         }
         drawerLayout.addDrawerListener(toggle);
+        shakeMenuController = new ApostaShakeMenuController(this, () -> {
+            if (sideMenuExpandableListView.getExpandableListAdapter() instanceof SideMenuExpandleAdapter) {
+                ((SideMenuExpandleAdapter) sideMenuExpandableListView.getExpandableListAdapter()).notifyDataSetChanged();
+            }
+        });
         toggle.syncState();
         toolbarListener();
         layoutSideMenu();
@@ -922,6 +935,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_TUTORIAL_SHAKE) tutorialShakeAberto = false;
         if (resultCode == RESULT_OK && requestCode == 1) {
             callWebservice();
         }
@@ -1404,6 +1418,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         expandableListDetail = ExpandableListDataSideMenu.getData();
         expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
+        expandableListAdapter.setShakeController(shakeMenuController);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
         sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> AbrirMenusGroup(expandableListTitle.get(groupPosition)));
         sideMenuExpandableListView.setOnGroupClickListener((expandableListView, view, i, l) -> {
@@ -1422,6 +1437,27 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             return false;
         });
 
+    }
+
+    @Override protected void onPostResume() {
+        super.onPostResume();
+        String usuarioAtual = DadosUsuarioBO.obterCpf();
+        if (!usuarioAtual.equals(tutorialShakeUsuario)) {
+            tutorialShakeUsuario = usuarioAtual;
+            tutorialShakeAberto = false;
+            tutorialShakeExibido = false;
+        }
+        if (!isFinishing() && !ApostaShakePreferences.isTutorialConcluido()
+                && !tutorialShakeAberto && !tutorialShakeExibido) {
+            tutorialShakeAberto = true;
+            tutorialShakeExibido = true;
+            startActivityForResult(new Intent(this, TutorialApostaShakeActivity.class), REQ_TUTORIAL_SHAKE);
+        }
+    }
+
+    @Override public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN && shakeMenuController != null) shakeMenuController.aoTocarTela();
+        return super.dispatchTouchEvent(event);
     }
 
     private void redirecionaRapidao() {

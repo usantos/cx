@@ -31,6 +31,7 @@ public class ExpandableListDataSideMenu {
 
         expandableListDetail.put(DrawerEnum.MENU_MINHA_AREA, minhaArea);
         expandableListDetail.put(DrawerEnum.MENU_RESULTADOS, new ArrayList<>());
+        expandableListDetail.put(DrawerEnum.MENU_APOSTA_SHAKE, new ArrayList<>());
         if(SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.IS_RAPIDAO.get(), ConfiguracoesDefaultEnum.IS_RAPIDAO.asBoolean())){
             expandableListDetail.put(DrawerEnum.MENU_RAPIDAO, new ArrayList<>());
         }
