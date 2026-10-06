@@ -470,7 +470,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         if (state.isValorGrande()) {
 
             if (!mudouTamanhoValor) {
-                TextViewUtils.mudarTamanhoPorPorcentagem(tvValorAposta, -30);
+                TextViewUtils.mudarTamanhoPorPorcentagem(tvValorAposta, -5);
 
                 mudouTamanhoValor = true;
             }
@@ -478,7 +478,7 @@ public class LotecaActivity extends LoteriasBaseAppActivity implements CartelaFr
         } else {
 
             if (mudouTamanhoValor) {
-                TextViewUtils.mudarTamanhoPorPorcentagem(tvValorAposta, 30);
+                TextViewUtils.mudarTamanhoPorPorcentagem(tvValorAposta, 5);
 
                 mudouTamanhoValor = false;
             }
