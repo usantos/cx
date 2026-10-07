@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,6 +61,7 @@ public class TimesFragment extends BaseEtapaFragment {
     private List<ParametroEquipe> listaEquipeFiltro;
 
     private boolean isEscolhaTimeCoracaoSurpresinha;
+    private NestedScrollView scrollTimes;
 
     public TimesFragment() {
     }
@@ -210,6 +212,7 @@ public class TimesFragment extends BaseEtapaFragment {
                                     R.id.informe_nome_time
                             );
         }
+        scrollTimes = view.findViewById(R.id.scrollTimes);
     }
 
     private void inicializar() {
@@ -701,22 +704,43 @@ public class TimesFragment extends BaseEtapaFragment {
             return;
         }
 
-        List<ParametroEquipe> equipes =
-                parametro.getEquipes();
+        List<ParametroEquipe> equipes = parametro.getEquipes();
+        int randomInt = Utils.getRandom().nextInt(equipes.size());
 
-        Random random =
-                Utils.getRandom();
+        selecionarEquipe(equipes.get(randomInt));
+        rolarAteTime(randomInt);
+    }
 
-        int randomInt =
-                random.nextInt(
-                        equipes.size()
-                );
+    private void rolarAteTime(int position) {
+        if (gridTimes == null || scrollTimes == null) {
+            return;
+        }
 
-        selecionarEquipe(
-                equipes.get(
-                        randomInt
-                )
-        );
+        gridTimes.post(() -> {
+            if (getView() == null) {
+                return;
+            }
+
+            RecyclerView.ViewHolder holder =
+                    gridTimes.findViewHolderForAdapterPosition(position);
+
+            if (holder == null) {
+                return;
+            }
+
+            Rect rect = new Rect();
+            holder.itemView.getDrawingRect(rect);
+
+            scrollTimes.offsetDescendantRectToMyCoords(
+                    holder.itemView,
+                    rect
+            );
+
+            scrollTimes.smoothScrollTo(
+                    0,
+                    Math.max(0, rect.top - scrollTimes.getPaddingTop())
+            );
+        });
     }
 
     private void limparTimeSelecionado() {
