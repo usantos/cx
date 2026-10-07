@@ -7,12 +7,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -41,6 +43,9 @@ public final class ApostaShakeMenuController {
         ocultar.setText(R.string.shake_menu_ocultar_aviso);
         ocultar.setTextColor(activity.getResources().getColor(R.color.cinza110));
         ocultar.setTextSize(14);
+        androidx.core.widget.CompoundButtonCompat.setButtonTintList(ocultar, android.content.res.ColorStateList.valueOf(
+                androidx.core.content.ContextCompat.getColor(activity, R.color.blue_caixa)));
+        ocultar.setGravity(Gravity.CENTER);
         confirmacao = DialogUtils.dialogTituloDoisBotoesReturn(activity,
                 activity.getString(ativar ? R.string.shake_menu_ativar : R.string.shake_menu_desativar),
                 activity.getString(ativar ? R.string.shake_menu_confirmar_ativar : R.string.shake_menu_confirmar_desativar),
@@ -55,10 +60,15 @@ public final class ApostaShakeMenuController {
         if (confirmacao == null) return;
         confirmacao.setOnDismissListener(dialog -> { confirmacao = null; atualizar.run(); });
         confirmacao.show();
+        TextView mensagem = confirmacao.findViewById(R.id.conteudo_dialog_padrao);
+        if (mensagem != null) mensagem.setGravity(Gravity.CENTER);
         View buttons = confirmacao.findViewById(R.id.layout_botoes_padrao);
         if (buttons != null && buttons.getParent() instanceof LinearLayout) {
             LinearLayout parent = (LinearLayout) buttons.getParent();
-            parent.addView(ocultar, parent.indexOfChild(buttons));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.CENTER_HORIZONTAL;
+            parent.addView(ocultar, parent.indexOfChild(buttons), params);
         }
     }
     private void aplicar(boolean ativa) { ApostaShakePreferences.setAtiva(ativa); atualizar.run(); }

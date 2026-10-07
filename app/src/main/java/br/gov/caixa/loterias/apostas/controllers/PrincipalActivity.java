@@ -1452,7 +1452,33 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             tutorialShakeAberto = true;
             tutorialShakeExibido = true;
             startActivityForResult(new Intent(this, TutorialApostaShakeActivity.class), REQ_TUTORIAL_SHAKE);
+        } else if (!isFinishing() && ApostaShakePreferences.isTooltipPendente()) {
+            abrirMenuComTooltipShake();
         }
+    }
+
+    private void abrirMenuComTooltipShake() {
+        drawerLayout.openDrawer(GravityCompat.START, false);
+        android.widget.ExpandableListAdapter adapter = sideMenuExpandableListView.getExpandableListAdapter();
+        for (int i = 0; i < adapter.getGroupCount(); i++) {
+            if (adapter.getGroup(i) == DrawerEnum.MENU_APOSTA_SHAKE) {
+                sideMenuExpandableListView.setSelectedGroup(i);
+                break;
+            }
+        }
+        // Aguarda o layout do menu para ancorar o aviso no item visível.
+        sideMenuExpandableListView.getViewTreeObserver().addOnPreDrawListener(
+                new android.view.ViewTreeObserver.OnPreDrawListener() {
+                    @Override public boolean onPreDraw() {
+                        sideMenuExpandableListView.getViewTreeObserver().removeOnPreDrawListener(this);
+                        View anchor = sideMenuExpandableListView.findViewById(R.id.shakeMenuRow);
+                        if (ApostaShakePreferences.isTooltipPendente()
+                                && shakeMenuController.mostrarTooltip(anchor, true)) {
+                            ApostaShakePreferences.consumirTooltip();
+                        }
+                        return true;
+                    }
+                });
     }
 
     @Override public boolean dispatchTouchEvent(MotionEvent event) {
