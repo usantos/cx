@@ -13,38 +13,12 @@ import br.gov.caixa.loterias.apostas.view.features.volantenovo.presentation.Simu
 import br.gov.caixa.loterias.apostas.view.features.volantenovo.presentation.SimulaUiState;
 import br.gov.caixa.loterias.apostas.view.features.volantenovo.presentation.SimulaViewModel;
 import br.gov.caixa.loterias.apostas.view.fragment.EtapaFragment;
-import br.gov.caixa.loterias.apostas.utils.shake.ApostaShakeController;
 
 public abstract class BaseEtapaFragment
         extends Fragment
         implements EtapaFragment {
 
     protected SimulaViewModel viewModel;
-    private ApostaShakeController apostaShake;
-
-    protected boolean suportaApostaShake() { return false; }
-    protected boolean apostaShakeCompleta() { return possuiSelecaoValida(); }
-    protected void preencherApostaShake(boolean renovar) { }
-
-    @Override public void onResume() {
-        super.onResume();
-        if (!suportaApostaShake()) return;
-        if (apostaShake == null) {
-            apostaShake = new ApostaShakeController(requireActivity(), new ApostaShakeController.Volante() {
-                @Override public boolean disponivel() {
-                    return isResumed() && isVisible() && !getStateAtual().isSurpresinhaHabilitada();
-                }
-                @Override public boolean completo() { return apostaShakeCompleta(); }
-                @Override public void preencher(boolean renovar) { preencherApostaShake(renovar); }
-            });
-        }
-        apostaShake.iniciar();
-    }
-
-    @Override public void onPause() {
-        if (apostaShake != null) apostaShake.parar();
-        super.onPause();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

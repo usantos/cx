@@ -211,7 +211,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme" />
-        <activity android:name=".controllers.TutorialApostaShakeActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.IntroducaoActivity"
             android:configChanges="orientation"
@@ -415,6 +414,11 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.DetalheDuvidaActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controllers.ModalidadesFavoritasActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

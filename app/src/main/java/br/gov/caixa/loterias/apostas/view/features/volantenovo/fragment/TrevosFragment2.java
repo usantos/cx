@@ -28,7 +28,6 @@ import br.gov.caixa.loterias.apostas.model.model.TrevoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.EtapaAposta;
-import br.gov.caixa.loterias.apostas.utils.shake.ApostaShakeRandom;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
@@ -252,20 +251,6 @@ public class TrevosFragment2 extends BaseEtapaFragment implements OnItemClickLis
 
     public void onCompletarRodapeClicado() {
         completarTrevosAleatoriamente();
-    }
-
-    @Override protected boolean suportaApostaShake() { return true; }
-    @Override protected boolean apostaShakeCompleta() { return isApostaTrevosCompleta(); }
-    @Override protected void preencherApostaShake(boolean renovar) {
-        if (!renovar) {
-            onCompletarRodapeClicado();
-            return;
-        }
-        ParametroValorApostaDTO valor = getValorTrevosAtual();
-        if (valor == null || valor.getNumeroTrevos() == null) return;
-        atualizarTrevosSelecionados(ApostaShakeRandom.numeros(
-                valor.getNumeroTrevos(), getTrevosSelecionados(), 1,
-                parametro.getTrevos().getQtdMaxima(), true, new java.util.Random()));
     }
 
     public void onLimparRodapeClicado() {

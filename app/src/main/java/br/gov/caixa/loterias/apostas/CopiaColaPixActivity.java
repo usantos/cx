@@ -92,7 +92,12 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		};
 	}
 
+	private boolean compraRegistrada;
+
 	private void finalizaProcessoCompraSucesso() {
+		if (compraRegistrada) return;
+		compraRegistrada = true;
+		new br.gov.caixa.loterias.apostas.utils.ModalidadePreferences(this).recordPurchase(CarrinhoSingleton.getInstance().getCarrinho());
 		try {
 			new CompraModel(CopiaColaPixActivity.this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
 

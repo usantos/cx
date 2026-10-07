@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/branco"
+    android:orientation="vertical">
+
+    <include layout="@layout/app_bar_degrade_pesquisa" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listaModalidadesFavoritas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/semModalidadesFavoritas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="24dp"
+            android:gravity="center"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textSize="18sp"
+            android:textColor="@color/blackText"
+            android:text="@string/modalidades_favoritas_vazio"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

@@ -20,6 +20,7 @@ public class ExpandableListDataSideMenu {
             minhaArea.add(DrawerEnum.MENU_MINHAS_APOSTAS);
         }
         minhaArea.add(DrawerEnum.MENU_COMPRAS);
+        minhaArea.add(DrawerEnum.MENU_MODALIDADES_FAVORITAS);
         minhaArea.add(DrawerEnum.MENU_FAVORITAS);
         minhaArea.add(DrawerEnum.MENU_CARRINHOS_FAVORITOS);
         minhaArea.add(DrawerEnum.MENU_MEUS_CARTOES);
@@ -40,7 +41,6 @@ public class ExpandableListDataSideMenu {
         expandableListDetail.put(DrawerEnum.MENU_TERMO_USO, new ArrayList<>());
         expandableListDetail.put(DrawerEnum.MENU_DUVIDAS, new ArrayList<>());
         expandableListDetail.put(DrawerEnum.MENU_SOBRE_CAIXA, new ArrayList<>());
-        expandableListDetail.put(DrawerEnum.MENU_APOSTA_SHAKE, new ArrayList<>());
 
         return expandableListDetail;
     }

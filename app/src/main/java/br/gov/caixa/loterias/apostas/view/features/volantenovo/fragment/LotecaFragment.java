@@ -2,9 +2,6 @@ package br.gov.caixa.loterias.apostas.view.features.volantenovo.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,16 +62,11 @@ import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
-import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
 public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterListener, LotogolListener {
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
     private static final int MAXIMO_PALPITES_LOTECA = 26;
-    private SensorManager mSensorManager;
 
-    private final SensorEventListener mSensorListener = new LoteriasSensorEventListener(0.00f,
-            SensorManager.GRAVITY_EARTH,
-            SensorManager.GRAVITY_EARTH).getSensor();
 
     private List<Dezena> dezenas = new ArrayList<>();
     private HashSet<ParametroPartida> partidasSelecionadas;
@@ -238,8 +230,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSensorManager = (SensorManager) this.context.getSystemService(Context.SENSOR_SERVICE);
-        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         viewModel = new ViewModelProvider(
                 requireActivity()
         ).get(LotecaViewModel.class);
@@ -379,18 +369,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cartela_novo, container, false);
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-    }
-
-    @Override
-    public void onPause() {
-        mSensorManager.unregisterListener(mSensorListener);
-        super.onPause();
     }
 
     @Override
@@ -1310,11 +1288,6 @@ public class LotecaFragment extends BaseEtapaFragment implements LocateAdapterLi
             partidasSelecionadas.remove(parametroPartida);
         }
         atualizarValorENotificarEstadoCartela();
-    }
-
-    @Override protected boolean suportaApostaShake() { return true; }
-    @Override protected void preencherApostaShake(boolean renovar) {
-        preencherPartidasAleatoriasLoteca();
     }
 
     private void preencherPartidasAleatoriasLoteca() {

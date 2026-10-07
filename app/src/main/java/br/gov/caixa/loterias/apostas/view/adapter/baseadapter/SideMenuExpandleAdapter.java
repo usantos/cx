@@ -30,14 +30,11 @@ import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
-import br.gov.caixa.loterias.apostas.utils.shake.ApostaShakePreferences;
 
 public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<DrawerEnum> expandableListTitle;
     private HashMap<DrawerEnum, List<DrawerEnum>> expandableListDetail;
-    private br.gov.caixa.loterias.apostas.utils.shake.ApostaShakeMenuController shakeController;
-    public void setShakeController(br.gov.caixa.loterias.apostas.utils.shake.ApostaShakeMenuController controller) { shakeController = controller; }
 
     public SideMenuExpandleAdapter(Context context, List<DrawerEnum> expandableListTitle,
                                    HashMap<DrawerEnum, List<DrawerEnum>> expandableListDetail) {
@@ -124,39 +121,6 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int listPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         DrawerEnum drawerEnum = (DrawerEnum) getGroup(listPosition);
-        if (drawerEnum == DrawerEnum.MENU_APOSTA_SHAKE) {
-            if (convertView == null || convertView.findViewById(R.id.switchApostaShake) == null) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.list_group_aposta_shake, parent, false);
-            }
-            com.google.android.material.switchmaterial.SwitchMaterial shake = convertView.findViewById(R.id.switchApostaShake);
-            shake.setOnCheckedChangeListener(null);
-            shake.setChecked(ApostaShakePreferences.isAtiva());
-            boolean outubroRosa = EspecialUtils.isOutubroRosa();
-            int accent = ContextCompat.getColor(context, outubroRosa
-                    ? R.color.outubro_rosa_secundario : R.color.blue_caixa);
-            ((TextView) convertView.findViewById(R.id.shakeMenuTitle)).setTextColor(
-                    ContextCompat.getColor(context, outubroRosa ? R.color.outubro_rosa_secundario : R.color.cinza110));
-            ((ImageView) convertView.findViewById(R.id.shakeMenuIcon)).setImageTintList(
-                    android.content.res.ColorStateList.valueOf(accent));
-            ((ImageView) convertView.findViewById(R.id.shakeMenuInfo)).setImageTintList(
-                    android.content.res.ColorStateList.valueOf(accent));
-            shake.setThumbTintList(null);
-            shake.setTrackTintList(null);
-            shake.setThumbDrawable(ContextCompat.getDrawable(context, outubroRosa
-                    ? R.drawable.shake_switch_thumb_rosa : R.drawable.shake_switch_thumb));
-            shake.setTrackDrawable(ContextCompat.getDrawable(context, outubroRosa
-                    ? R.drawable.shake_switch_track_rosa : R.drawable.shake_switch_track));
-            final View row = convertView;
-            shake.setOnClickListener(v -> {
-                if (shakeController != null) shakeController.alterarAtivacao();
-                shake.setChecked(ApostaShakePreferences.isAtiva());
-            });
-            convertView.findViewById(R.id.shakeMenuInfo).setOnClickListener(v -> {
-                if (shakeController != null) shakeController.mostrarTooltip(row, false);
-            });
-            return convertView;
-        }
-        if (convertView != null && convertView.findViewById(R.id.switchApostaShake) != null) convertView = null;
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);

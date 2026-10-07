@@ -300,7 +300,12 @@ public class ConfirmarCartaoActivity extends LoteriasBaseAppActivity {
 		AlertDialogUtils.dismiss();
 	}
 
+	private boolean compraRegistrada;
+
 	private void onCompraSuccess() {
+		if (compraRegistrada) return;
+		compraRegistrada = true;
+		new br.gov.caixa.loterias.apostas.utils.ModalidadePreferences(this).recordPurchase(CarrinhoSingleton.getInstance().getCarrinho());
 		new CompraModel(this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
 		AlertDialogUtils.dismiss();
 		AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));

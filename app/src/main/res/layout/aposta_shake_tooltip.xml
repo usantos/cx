@@ -1,6 +1,0 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
-    <ImageView android:id="@+id/shakeTooltipPointer" android:layout_width="16dp" android:layout_height="8dp" android:layout_marginStart="156dp" android:src="@drawable/shake_tooltip_pointer" android:importantForAccessibility="no" />
-    <TextView android:id="@+id/shakeTooltipText" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:gravity="center"
-        android:background="@drawable/shake_tooltip_background" android:text="@string/shake_menu_tooltip"
-        android:textColor="@color/branco" android:textSize="14sp" android:fontFamily="@font/caixa_std_regular" />
-</LinearLayout>

@@ -655,23 +655,6 @@ public class TimesFragment extends BaseEtapaFragment {
         selecionarTimeAleatorio();
     }
 
-    @Override protected boolean suportaApostaShake() { return true; }
-    @Override protected boolean apostaShakeCompleta() {
-        ParametroEquipe equipe = getEquipeSelecionadaAtual();
-        return equipe != null && equipe.isSelecionado();
-    }
-    @Override protected void preencherApostaShake(boolean renovar) {
-        if (!renovar) {
-            selecionarTimeAleatorio();
-            return;
-        }
-        if (parametro == null || parametro.getEquipes() == null || parametro.getEquipes().size() < 2) return;
-        ParametroEquipe atual = getEquipeSelecionadaAtual();
-        List<ParametroEquipe> alternativas = new ArrayList<>(parametro.getEquipes());
-        alternativas.remove(atual);
-        selecionarEquipe(alternativas.get(Utils.getRandom().nextInt(alternativas.size())));
-    }
-
     public void onLimparRodapeClicado() {
         dispatch(
                 new SimulaUiEvent.LimparApostaSolicitado()

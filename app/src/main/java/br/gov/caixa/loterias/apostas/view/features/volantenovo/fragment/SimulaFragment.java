@@ -2,9 +2,6 @@ package br.gov.caixa.loterias.apostas.view.features.volantenovo.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,16 +64,11 @@ import br.gov.caixa.loterias.apostas.view.features.volantenovo.presentation.Simu
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
-import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
 public class SimulaFragment extends BaseEtapaFragment {
     private static final int QUANTIDADE_COLUNA_LISTA = 6;
     private static final String QUANTIDADE_COLUNAS = "{qtdColunas}";
-    private SensorManager mSensorManager;
 
-    private final SensorEventListener mSensorListener = new LoteriasSensorEventListener(0.00f,
-            SensorManager.GRAVITY_EARTH,
-            SensorManager.GRAVITY_EARTH).getSensor();
 
     private List<Dezena> dezenas = new ArrayList<>();
     private List<List<Integer>> matrizSelecionada;
@@ -247,8 +239,6 @@ public class SimulaFragment extends BaseEtapaFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSensorManager = (SensorManager) this.context.getSystemService(Context.SENSOR_SERVICE);
-        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
         parentActivity = ((SimulaActivity) getActivity());
         identificarTipoJogo();
@@ -419,18 +409,6 @@ public class SimulaFragment extends BaseEtapaFragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cartela_novo, container, false);
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-    }
-
-    @Override
-    public void onPause() {
-        mSensorManager.unregisterListener(mSensorListener);
-        super.onPause();
     }
 
     @Override
@@ -1741,31 +1719,6 @@ public class SimulaFragment extends BaseEtapaFragment {
     @Override
     public boolean possuiSelecaoValida() {
         return getStateAtual().isBotaoAdicionarHabilitado();
-    }
-
-    @Override protected boolean suportaApostaShake() { return true; }
-
-    @Override protected boolean apostaShakeCompleta() {
-        return getStateAtual().isBotaoAdicionarHabilitado();
-    }
-
-    @Override protected void preencherApostaShake(boolean renovar) {
-        if (renovar) {
-            if (tipoJogo != ModalidadeEnum.SUPER_7 && parametroJogo != null) {
-                List<Integer> nova = br.gov.caixa.loterias.apostas.utils.shake.ApostaShakeRandom.numeros(
-                        getStateAtual().getQtdDezenasPossiveisSelecionado(),
-                        getDezenasSelecionadasState(), 1,
-                        parametroJogo.getPrognosticoMaximo(), true, new java.util.Random());
-                onLimparRodapeClicado();
-                simularDezenasAdapter.atualizaSelecionados(nova);
-                atualizarDezenasSelecionadas(nova);
-                atualizarValorENotificarEstadoCartela();
-                return;
-            }
-            preencheNumerosAleatorios();
-        } else {
-            solicitarCompletarAposta();
-        }
     }
 
     @Override

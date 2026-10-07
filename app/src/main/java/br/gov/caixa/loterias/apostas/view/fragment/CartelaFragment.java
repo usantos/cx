@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -100,17 +97,13 @@ import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
-import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
 	private static final int QUANTIDADE_COLUNA_LISTA = 5;
-	private SensorManager mSensorManager;
+
 	private BigDecimal valorEmReais = BigDecimal.ZERO;
 	private LotecaAdapter lotecaAdapter;
 
-	private final SensorEventListener mSensorListener = new LoteriasSensorEventListener(0.00f,
-																						SensorManager.GRAVITY_EARTH,
-																						SensorManager.GRAVITY_EARTH).getSensor();
 
 	private List<Dezena> dezenas = new ArrayList<>();
 	private List<Integer> dezenasSelecionadas = new ArrayList<>();
@@ -265,8 +258,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
-		mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
 
 
@@ -373,18 +364,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		titleLoteca = view.findViewById(R.id.titleInformeBold);
 		ViewCompat.setAccessibilityHeading(titleLoteca,true);
 		return view;
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-	}
-
-	@Override
-	public void onPause() {
-		mSensorManager.unregisterListener(mSensorListener);
-		super.onPause();
 	}
 
 	@Override

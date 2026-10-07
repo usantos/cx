@@ -28,6 +28,10 @@ android {
         versionName = PRD_VERSION_NAME
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+        // Apostas confirmadas por modalidade para considerar a frequência na ordenação.
+        buildConfigField "int", "MODALIDADE_REORDER_MIN_USAGE", "10"
+        // Quantidade máxima de modalidades favoritas.
+        buildConfigField "int", "MODALIDADE_MAX_FAVORITES", "5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         testOptions {
@@ -394,7 +398,7 @@ dependencies {
     implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
     //FilaBRA
-    implementation 'com.filabra.adapter:FilaBRAAdapter:2.6.5.1'
+    implementation files('libs/FilaBRAAdapter-2.6.5.1.aar')
 
     //Joda time
     implementation 'net.danlew:android.joda:2.14.2.1'
@@ -441,4 +445,3 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 }
-

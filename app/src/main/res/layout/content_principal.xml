@@ -52,6 +52,7 @@
     <com.google.android.material.button.MaterialButton
         android:theme="@style/Theme.MaterialComponents.Light.Bridge"
         android:id="@+id/buttonHomeBet"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="84dp"
         android:layout_alignParentBottom="true"
@@ -83,7 +84,7 @@
         android:textAllCaps="false"
         android:textColor="@color/branco"
         android:textSize="16sp"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:text=""
         android:fontFamily="@font/caixa_std_regular" />
 

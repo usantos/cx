@@ -139,9 +139,6 @@ import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
-import br.gov.caixa.loterias.apostas.utils.shake.ApostaShakePreferences;
-import br.gov.caixa.loterias.apostas.utils.shake.ApostaShakeMenuController;
-import android.view.MotionEvent;
 
 public class PrincipalActivity extends LoteriasBaseAppActivity
         implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
@@ -203,11 +200,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private AnimacoesAcessoRapido animacoesAcessoRapido, animacoesOutubroRosa;
 
     private CarrinhoModel model;
-    private static final int REQ_TUTORIAL_SHAKE = 6287;
-    private boolean tutorialShakeAberto;
-    private boolean tutorialShakeExibido;
-    private String tutorialShakeUsuario;
-    private ApostaShakeMenuController shakeMenuController;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -249,11 +241,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             toggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, R.color.outubro_rosa_secundario));
         }
         drawerLayout.addDrawerListener(toggle);
-        shakeMenuController = new ApostaShakeMenuController(this, () -> {
-            if (sideMenuExpandableListView.getExpandableListAdapter() instanceof SideMenuExpandleAdapter) {
-                ((SideMenuExpandleAdapter) sideMenuExpandableListView.getExpandableListAdapter()).notifyDataSetChanged();
-            }
-        });
         toggle.syncState();
         toolbarListener();
         layoutSideMenu();
@@ -425,6 +412,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     @Override
     protected void onResume() {
         super.onResume();
+        if (homeAdapter != null) homeAdapter.refreshOrdering();
+        navegarParaFavoritaSelecionada();
+        modalidadeUsageSync.refresh(this, () -> {
+            if (!isFinishing() && !isDestroyed() && homeAdapter != null) homeAdapter.refreshOrdering();
+        });
         String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase(new Locale(getResources().getString(R.string.pt), getResources().getString(R.string.br))).split(getResources().getString(R.string.espaco_em_branco));
         String nomeUsuario = StringUtils.capitalizer(separarNome[0]+getResources().getString(R.string.espaco_em_branco)+separarNome[separarNome.length - 1]);
 
@@ -527,16 +519,53 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         dbLoteriasHelper.getReadableDatabase();
     }
 
+    private final br.gov.caixa.loterias.apostas.utils.ModalidadeUsageSync modalidadeUsageSync =
+            new br.gov.caixa.loterias.apostas.utils.ModalidadeUsageSync();
+
+    private static final int REQ_MODALIDADES_FAVORITAS = 7305;
+    private ModalidadeEnum favoritaSelecionada;
+    private boolean carrosselRenderizado;
+
+    private void navegarParaFavoritaSelecionada() {
+        if (favoritaSelecionada == null || homeAdapter == null || infiniteAdapter == null) return;
+        homeCarousel.post(() -> {
+            if (favoritaSelecionada == null || isFinishing() || isDestroyed()) return;
+            int position = retornaPosicaoPorModalidade(favoritaSelecionada);
+            favoritaSelecionada = null;
+            if (position >= 0) homeCarousel.smoothScrollToPosition(infiniteAdapter.getClosestPosition(position));
+        });
+    }
+
     private void montarCarrossel() {
+        carrosselRenderizado = false;
+        ocultarBotoesHomeParaResultados();
         data = montaListaModalidades();
         homeAdapter = new HomeAdapter(this, this, data, buttonHomeBet);
         infiniteAdapter = InfiniteScrollAdapter.wrap(homeAdapter);
         homeCarousel.setAdapter(infiniteAdapter);
+        navegarParaFavoritaSelecionada();
+        homeAdapter.setOnOrderingChanged(() -> homeCarousel.post(() -> {
+            if (data != null && !data.isEmpty()) {
+                updateHomeButtonsForPosition(infiniteAdapter.getRealCurrentPosition());
+            }
+        }));
         homeCarousel.addScrollListener(this);
         homeCarousel.addOnItemChangedListener(this);
         homeCarousel.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
+
+        // Aguarda o primeiro layout dos cards antes de apresentar as ações da modalidade.
+        homeCarousel.getViewTreeObserver().addOnPreDrawListener(new android.view.ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                if (homeCarousel.getChildCount() == 0 || homeCarousel.isLayoutRequested()) return true;
+                homeCarousel.getViewTreeObserver().removeOnPreDrawListener(this);
+                carrosselRenderizado = true;
+                updateHomeButtonsForPosition(infiniteAdapter.getRealCurrentPosition());
+                return true;
+            }
+        });
 
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(false);
     }
@@ -870,11 +899,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private OnAnimacaoViewListener onAnimacaoAcessoRapido() {
         return () -> {
-            if (SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(),ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean()) &&
-                    temBolaoModalidadeDisponivel(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade())){
-                buttonHomeBolao.setVisibility(View.VISIBLE);
-            }
-            buttonHomeBet.setVisibility(View.VISIBLE);
+            if (infiniteAdapter != null) updateHomeButtonsForPosition(infiniteAdapter.getRealCurrentPosition());
         };
     }
 
@@ -935,7 +960,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQ_TUTORIAL_SHAKE) tutorialShakeAberto = false;
+        if (requestCode == REQ_MODALIDADES_FAVORITAS && resultCode == RESULT_OK && data != null) {
+            favoritaSelecionada = (ModalidadeEnum) data.getSerializableExtra(ModalidadesFavoritasActivity.EXTRA_SELECTED_MODALIDADE);
+        }
         if (resultCode == RESULT_OK && requestCode == 1) {
             callWebservice();
         }
@@ -994,7 +1021,15 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     private void updateHomeButtonsForPosition(int adapterPosition) {
+        if (!carrosselRenderizado || infiniteAdapter == null || data == null || data.isEmpty()) {
+            ocultarBotoesHomeParaResultados();
+            return;
+        }
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
+        if (adapterPosition < 0 || adapterPosition >= data.size()) {
+            ocultarBotoesHomeParaResultados();
+            return;
+        }
 
         if (data != null
                 && adapterPosition >= 0
@@ -1004,8 +1039,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             if (buttonHomeBolao != null)  buttonHomeBolao.setVisibility(View.GONE);
             return;
         }
-
-        if (buttonHomeBet != null && !temAnimacoesAbertas()) buttonHomeBet.setVisibility(View.VISIBLE);
 
         //TODO: MEGA 30 ANOS//
         //TODO: LOTECA PAIS//
@@ -1083,6 +1116,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 buttonHomeBolao.setVisibility(View.GONE);
             }
         }
+        buttonHomeBet.setVisibility(temAnimacoesAbertas() ? View.GONE : View.VISIBLE);
     }
 
     public void ocultarBotoesHomeParaResultados() {
@@ -1095,9 +1129,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             int adapterPosition = infiniteAdapter.getRealCurrentPosition();
             updateHomeButtonsForPosition(adapterPosition); // reaplica regras de apresentação
         }
-        // Garante que fiquem visíveis após recalcular (se as regras mandarem ocultar o bolão, ele seguirá GONE)
-        if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
-        // buttonHomeBolao é controlado por updateHomeButtonsForPosition
     }
 
 
@@ -1369,6 +1400,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
                 break;
+            case MENU_MODALIDADES_FAVORITAS:
+                fecharAnimacoesAbertas();
+                startActivityForResult(new Intent(PrincipalActivity.this, ModalidadesFavoritasActivity.class), REQ_MODALIDADES_FAVORITAS);
+                break;
             case MENU_CARRINHOS_FAVORITOS:
                 fecharAnimacoesAbertas();
                 startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
@@ -1418,7 +1453,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         expandableListDetail = ExpandableListDataSideMenu.getData();
         expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
-        expandableListAdapter.setShakeController(shakeMenuController);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
         sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> AbrirMenusGroup(expandableListTitle.get(groupPosition)));
         sideMenuExpandableListView.setOnGroupClickListener((expandableListView, view, i, l) -> {
@@ -1437,27 +1471,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             return false;
         });
 
-    }
-
-    @Override protected void onPostResume() {
-        super.onPostResume();
-        String usuarioAtual = DadosUsuarioBO.obterCpf();
-        if (!usuarioAtual.equals(tutorialShakeUsuario)) {
-            tutorialShakeUsuario = usuarioAtual;
-            tutorialShakeAberto = false;
-            tutorialShakeExibido = false;
-        }
-        if (!isFinishing() && !ApostaShakePreferences.isTutorialConcluido()
-                && !tutorialShakeAberto && !tutorialShakeExibido) {
-            tutorialShakeAberto = true;
-            tutorialShakeExibido = true;
-            startActivityForResult(new Intent(this, TutorialApostaShakeActivity.class), REQ_TUTORIAL_SHAKE);
-        }
-    }
-
-    @Override public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN && shakeMenuController != null) shakeMenuController.aoTocarTela();
-        return super.dispatchTouchEvent(event);
     }
 
     private void redirecionaRapidao() {

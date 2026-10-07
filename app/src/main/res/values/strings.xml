@@ -1649,6 +1649,7 @@
     <string name="vazio_Lotericas_favoritas">Você ainda não possui nenhuma lotérica favorita.</string>
     <string name="sem_boloes_lotericas_favoritas">Esta lotérica não possui bolões disponíveis no momento.</string>
     <string name="msg_incluir_favorita">Deseja incluir %1$s na sua lista de favoritas?</string>
+    <string name="modalidades_favoritas_limite">Você chegou ao limite de Modalidades favoritadas. Favor remover alguma e tente novamente.</string>
     <string name="msg_excluir_favorita">Deseja excluir %1$s da sua lista de favoritas?</string>
     <string name="loterica_favorita">Lotérica Favorita</string>
     <string name="loterica_favorita_bold">_Lotérica Favorita_</string>
@@ -1803,74 +1804,46 @@
     <string name="carrinho_mes_da_sorte">mês da sorte</string>
     <string name="carrinho_time_do_coracao">time do coração</string>
 
-    <string name="aposta_shake">Aposta Shake</string>
-
-    <string name="aposta_shake_confirmacao">Você perderá a aposta atual, deseja realmente realizar outra aposta?</string>
-
-    <string name="aposta_shake_sim">Sim</string>
-
-    <string name="aposta_shake_nao">Não</string>
 
 
-    <string name="shake_menu_info">Informações sobre Aposta Shake</string>
-
-    <string name="shake_menu_tooltip">Agite o celular para preencher sua aposta com números aleatórios</string>
-
-    <string name="shake_menu_ativar">Ativar Aposta Shake</string>
-
-    <string name="shake_menu_desativar">Desativar Aposta Shake</string>
-
-    <string name="shake_menu_confirmar_ativar">Deseja ativar a Aposta Shake nas modalidades de loterias?</string>
-
-    <string name="shake_menu_confirmar_desativar">Deseja desativar a Aposta Shake nas modalidades de loterias?</string>
-
-    <string name="shake_menu_ocultar_aviso">Não exibir o aviso novamente</string>
 
 
-    <string name="shake_tutorial_titulo_1">Conheça a Aposta Shake!</string>
 
-    <string name="shake_tutorial_titulo_2">Abra o volante de apostas</string>
 
-    <string name="shake_tutorial_titulo_3">Agite o celular\npara completar</string>
 
-    <string name="shake_tutorial_titulo_4">Aposta completada\nautomaticamente!</string>
 
-    <string name="shake_tutorial_titulo_5">Ative ou desative\nno menu lateral</string>
 
-    <string name="shake_tutorial_titulo_6">Vamos testar?</string>
 
-    <string name="shake_tutorial_destaque_1">Aposta Shake!</string>
 
-    <string name="shake_tutorial_destaque_2">Abra o volante</string>
 
-    <string name="shake_tutorial_destaque_3">Agite o celular</string>
 
-    <string name="shake_tutorial_destaque_4">Aposta completada</string>
 
-    <string name="shake_tutorial_destaque_5">menu lateral</string>
 
-    <string name="shake_tutorial_destaque_6" />
 
-    <string name="shake_tutorial_descricao_1">Nova funcionalidade: Aposta Shake. Complete apostas automaticamente chacoalhando seu celular!</string>
 
-    <string name="shake_tutorial_descricao_2">Volante da Mega-Sena aberto, ainda sem números selecionados.</string>
 
-    <string name="shake_tutorial_descricao_3">Ilustração de um celular sendo agitado para completar a aposta.</string>
 
-    <string name="shake_tutorial_descricao_4">Volante da Mega-Sena com seis números preenchidos automaticamente.</string>
 
-    <string name="shake_tutorial_descricao_5">Menu lateral com a opção Aposta Shake e o switch para ativar ou desativar.</string>
 
-    <string name="shake_tutorial_descricao_6">Agora é só ativar a funcionalidade, abrir um volante e agitar o celular para completar sua aposta automaticamente!</string>
 
-    <string name="shake_tutorial_pular">Pular tutorial</string>
 
-    <string name="shake_tutorial_fechar">Fechar tutorial</string>
 
-    <string name="shake_tutorial_anterior">Etapa anterior</string>
 
-    <string name="shake_tutorial_proximo">Próxima etapa</string>
 
-    <string name="shake_tutorial_etapa">Etapa %1$d de %2$d</string>
 
+
+
+
+
+
+
+
+
+
+    <string name="modalidade_favoritar_generico">Favoritar modalidade</string>
+    <string name="modalidades_favoritas_titulo">Modalidades favoritas</string>
+    <string name="modalidades_favoritas_vazio">Você ainda não possui modalidades favoritas. Toque no coração de uma modalidade na tela inicial para adicioná-la.</string>
+    <string name="modalidade_favorita_excluir">Excluir %1$s das modalidades favoritas</string>
+    <string name="modalidade_favoritar">Favoritar %1$s</string>
+    <string name="modalidade_remover_favorito">Remover %1$s dos favoritos</string>
 </resources>
