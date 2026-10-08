@@ -99,7 +99,8 @@ public final class ApostaShakeMenuController {
             return false;
         });
         tooltip.setOnDismissListener(() -> { handler.removeCallbacks(fecharTooltip); tooltip = null; automatica = false; });
-        tooltip.showAsDropDown(anchor);
+        tooltip.showAsDropDown(anchor, 0,
+                -Math.round(8 * activity.getResources().getDisplayMetrics().density));
         content.announceForAccessibility(activity.getString(R.string.shake_menu_tooltip));
         if (automatico) handler.postDelayed(fecharTooltip, 5000);
         return true;

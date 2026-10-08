@@ -1814,7 +1814,7 @@
 
     <string name="shake_menu_info">Informações sobre Aposta Shake</string>
 
-    <string name="shake_menu_tooltip">Agite o celular para preencher sua aposta com números aleatórios</string>
+    <string name="shake_menu_tooltip">Agite o celular para preencher\nsua aposta com números aleatórios</string>
 
     <string name="shake_menu_ativar">Ativar Aposta Shake</string>
 
