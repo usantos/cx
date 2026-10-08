@@ -29,6 +29,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Mina de Ouro"
+        android:breakStrategy="simple"
+        android:hyphenationFrequency="none"
         android:fontFamily="@font/caixa_std_bold"
         android:textColor="@color/blackText"
         android:layout_marginStart="20dp"
