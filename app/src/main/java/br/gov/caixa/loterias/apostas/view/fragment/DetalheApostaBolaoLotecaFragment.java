@@ -164,7 +164,7 @@ public class DetalheApostaBolaoLotecaFragment extends ApostaConfirmadaDetalhesFr
 
 	@NonNull
 	private static ConfiguracaoLoteca getConfigLoteca() {
-		return new ConfiguracaoLoteca(R.color.branco, R.color.loteca_escuro_mkp, R.color.branco);
+		return new ConfiguracaoLoteca(R.color.branco);
 	}
 
 	private List<PartidaLotecaDTO> getPartidas() {

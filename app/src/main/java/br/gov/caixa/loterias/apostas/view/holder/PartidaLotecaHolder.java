@@ -62,17 +62,22 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 			nomeEquipe2.setText(Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()) + legenda);
 		}
 
-		if (configuracaoLoteca != null) {
-			nomeEquipe1.setTextColor(context.getResources().getColor(configuracaoLoteca.getCorTexto()));
-			nomeEquipe2.setTextColor(context.getResources().getColor(configuracaoLoteca.getCorTexto()));
-			nomeEmpate.setTextColor(context.getResources().getColor(configuracaoLoteca.getCorTexto()));
-		}
 		aplicaChecks(partida);
-		aplicaFonte(partida);
 		if (resultado != null){
 			aplicaResultados(position);
 		}
 		jogo.setText(context.getString(R.string.jogo_numero, position + 1));
+		aplicaFonte(partida);
+		if (configuracaoLoteca != null) {
+			isCompras();
+		}
+	}
+
+	private void isCompras(){
+		jogo.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
+		nomeEquipe1.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
+		nomeEquipe2.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
+		nomeEmpate.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
 	}
 
 	private void aplicaFonte(PartidaLotecaDTO partida) {

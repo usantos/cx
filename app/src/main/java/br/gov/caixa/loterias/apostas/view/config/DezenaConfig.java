@@ -10,6 +10,8 @@ public class DezenaConfig {
 	private int layout;
 
 	private boolean isQueroNaoQuero;
+	private int colorDefault = R.color.cinza110;
+
 
 	public DezenaConfig(boolean isDezena, int color, int layout, ShapeConfig shapeConfig, boolean isClickable) {
 		this.isLabelDezena = isDezena;
@@ -43,7 +45,11 @@ public class DezenaConfig {
 		return color;
 	}
 	public int getColorDefault(){
-		return R.color.cinza110;
+		return colorDefault;
+	}
+	public DezenaConfig setColorDefault(int colorDefault) {
+		this.colorDefault = colorDefault;
+		return this;
 	}
 
 	public void setColor(int color) {
