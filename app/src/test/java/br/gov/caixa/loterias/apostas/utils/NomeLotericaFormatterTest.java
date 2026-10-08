@@ -26,4 +26,12 @@ public class NomeLotericaFormatterTest {
     @Test public void nomeAusenteNaoCausaErro() {
         assertEquals("", NomeLotericaFormatter.formatar(null));
     }
+    @Test public void favoritasAte27CaracteresPermaneceEmUmaLinha() {
+        String nome = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        assertEquals(nome, NomeLotericaFormatter.formatar(nome, 27));
+    }
+    @Test public void favoritasPalavraQueCruza27DesceInteira() {
+        assertEquals("Lotérica Mina de Ouro A\nlotérica", NomeLotericaFormatter.formatar(
+                "Lotérica Mina de Ouro A lotérica", 27));
+    }
 }

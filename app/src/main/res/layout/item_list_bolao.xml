@@ -111,7 +111,7 @@
                 android:id="@+id/cidade_bolao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/caixa_std_regular"
                 android:text="Brasília - DF"
                 android:textColor="@color/cinza110"
