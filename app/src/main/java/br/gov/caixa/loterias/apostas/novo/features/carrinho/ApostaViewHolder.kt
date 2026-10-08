@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.novo.features.carrinho
 
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Typeface
 import android.view.Gravity
@@ -19,9 +20,11 @@ import br.gov.caixa.loterias.apostas.R
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum
+import br.gov.caixa.loterias.apostas.utils.DialogUtils
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP
 import br.gov.caixa.loterias.apostas.utils.ViewUtils
 import br.gov.caixa.loterias.apostas.utils.dpToPx
+import br.gov.caixa.loterias.apostas.view.custom.ApostaPartidaLotecaView
 
 class ApostaViewHolder(
     itemView: View, private val onExcluir: (IdentificaoDeUmaApostaDas8Modalidades<*>) -> Unit
@@ -33,6 +36,8 @@ class ApostaViewHolder(
     private val containerSuperSete = itemView.findViewById<LinearLayout>(R.id.containerSuperSete)
 
     private val containerNumeros = itemView.findViewById<LinearLayout>(R.id.containerNumeros)
+
+    private val containerLoteca = itemView.findViewById<LinearLayout>(R.id.containerLoteca)
 
     private val containerColunasSuperSete =
         itemView.findViewById<LinearLayout>(R.id.containerColunasSuperSete)
@@ -55,6 +60,7 @@ class ApostaViewHolder(
 
     private val btnExcluir = itemView.findViewById<ImageView>(R.id.btnExcluir)
 
+    private val btnLegendaLoteca = itemView.findViewById<ImageView>( R.id.legendaLoteca)
     private val tamanhoColunaSuperSete = itemView.dpToPx(22)
     private val margemColunaSuperSete = itemView.dpToPx(6)
 
@@ -67,7 +73,13 @@ class ApostaViewHolder(
         val aposta = item.aposta
         val estilo = EstiloModalidadeMKP(aposta.modalidade)
         val isSuperSete = aposta.modalidade == ModalidadeEnum.SUPER_7
+        val isLoteca = aposta.modalidade == ModalidadeEnum.LOTECA
         val isSurpresinha = aposta.surpresinha == true
+
+        if (!isLoteca) {
+            btnLegendaLoteca.visibility = View.GONE
+            btnLegendaLoteca.setOnClickListener(null)
+        }
 
         configurarModalidade(
             aposta = aposta, estilo = estilo
@@ -78,14 +90,22 @@ class ApostaViewHolder(
         )
         tvValor.text = ViewUtils.getMoedaFormat(aposta.valor)
 
-        containerSuperSete.visibility = if (isSuperSete) View.VISIBLE else View.GONE
-        containerNumeros.visibility = if (isSuperSete) View.GONE else View.VISIBLE
-
         if (isSuperSete) {
+            containerSuperSete.visibility = View.VISIBLE
+            containerNumeros.visibility = View.GONE
+            containerLoteca.visibility = View.GONE
             configurarSuperSete(
                 aposta = aposta, isSurpresinha = isSurpresinha
             )
+        } else if(isLoteca){
+            containerLoteca.visibility = View.VISIBLE
+            containerSuperSete.visibility = View.GONE
+            containerNumeros.visibility = View.GONE
+            configurarLoteca(aposta)
         } else {
+            containerNumeros.visibility = View.VISIBLE
+            containerLoteca.visibility = View.GONE
+            containerSuperSete.visibility = View.GONE
             adicionarNumeros(
                 container = containerNumeros,
                 numeros = aposta.listaNumerosSelecionados.orEmpty(),
@@ -359,6 +379,37 @@ class ApostaViewHolder(
                     )
                 )
             }
+        }
+    }
+
+    private fun configurarLoteca(aposta: IdentificaoDeUmaApostaDas8Modalidades<*>) {
+        containerLoteca.removeAllViews()
+
+        aposta.partidasLoteca.orEmpty().forEachIndexed { index, partida ->
+            val view = ApostaPartidaLotecaView.build(containerLoteca.context).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    topMargin = itemView.dpToPx(8)
+                    bottomMargin = itemView.dpToPx(8)
+                }
+                setLayout(partida, index)
+                findViewById<TextView>(R.id.tv_titulo)?.textSize = 14f
+                findViewById<View>(R.id.divisor_partida_loteca)?.visibility = View.GONE
+            }
+            containerLoteca.addView(view)
+        }
+
+        btnLegendaLoteca.visibility = View.VISIBLE
+        btnLegendaLoteca.setOnClickListener {
+            val dialog = DialogUtils.buildCustomDialog(
+                itemView.context,
+                R.layout.dialog_legenda_loteca_carrinho,
+                true,
+                R.id.btnFechar
+            ) { d: Dialog? -> d!!.dismiss() }
+
+            dialog?.show()
         }
     }
 
