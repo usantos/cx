@@ -4,21 +4,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.gson.Gson;
-
-import java.util.List;
-import java.util.Objects;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -26,6 +19,8 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComboAdapter
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.onComboClickListener;
+import java.util.List;
+import java.util.Objects;
 
 public class CombosActivity extends SettingToolbarActivity implements onComboClickListener {
     public static final String ARG_COMBO = "ARG_COMBO";
@@ -53,9 +48,9 @@ public class CombosActivity extends SettingToolbarActivity implements onComboCli
         fragmentSomadorCarrinho();
     }
 
-    private void setViews() {
+    private void setViews(){
         listaCombosRcv = findViewById(R.id.rcv_lista_combos);
-        View view_id_fg_somador_carrinho = findViewById(R.id.id_somador_carrinho);
+        View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
         view_id_fg_somador_carrinho.setOnClickListener(view -> vaiProCarrinho());
 
         toolbar = findViewById(R.id.toolbar);
@@ -66,18 +61,19 @@ public class CombosActivity extends SettingToolbarActivity implements onComboCli
     }
 
 
-    private void configuraListaCombosRcv() {
+
+    private void configuraListaCombosRcv(){
         List<CombosDTO> combos = SessaoUsuario.getInstance().getListCombosDTO();
 
-        if (combos != null && !combos.isEmpty()) {
-            listaComboAdapter = new ListaComboAdapter(combos, CombosActivity.this, this);
+        if(combos != null && !combos.isEmpty()){
+            listaComboAdapter = new ListaComboAdapter(combos,CombosActivity.this,this);
             listaCombosRcv.setAdapter(listaComboAdapter);
             RecyclerView.LayoutManager layoutListacombos = new GridLayoutManager(this, QUANTIDADE_COLUNA_LISTA_COMBOS);
             listaCombosRcv.setLayoutManager(layoutListacombos);
 
             listaCombosRcv.setNestedScrollingEnabled(true);
 
-        } else {
+        }else{
             DialogUtils.dialogEntendiListener(CombosActivity.this, getString(R.string.nao_concluiu_operacao),
 
                     new OnDialogBotaoListener() {
@@ -99,10 +95,11 @@ public class CombosActivity extends SettingToolbarActivity implements onComboCli
     }
 
 
+
     private void fragmentSomadorCarrinho() {
-        if (somadorCarrinhoFragment == null) {
-            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho, "TELA LISTA COMBOS");
-        } else {
+        if(somadorCarrinhoFragment == null){
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA LISTA COMBOS" );
+        }else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }
 

@@ -165,11 +165,7 @@ class ServerMethods {
 
      //DADOS CORPORATIVOS
      static final String MODALIDADES_PATH = "/modalidades";
-     static final String HISTORICO_NOTIFICACAO = "/historico-notificacoes";
-     static final String HISTORICO_NOTIFICACAO_NAO_LIDAS = "/historico-notificacoes/nao-visualizadas";
      static final String LER_NOTIFICACAO = "historico-notificacoes/{idNotificacao}/visualiza";
-     static final String REMOVE_NOTIFICACAO = "/historico-notificacoes/{idNotificacao}/remove";
-     static final String LIMPA_NOTIFICACOES = "/historico-notificacoes/limpa";
      static final String APP_VERSAO_ATUALIZACAO_PATH = "/app/valida-versao/{versao-app}";
      static final String UFS_PATH = "/ufs";
      static final String MUNICIPIOS_PATH = "/municipios";

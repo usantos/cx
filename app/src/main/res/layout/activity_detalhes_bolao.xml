@@ -33,7 +33,7 @@
             android:layout_height="0dp"
             android:fillViewport="true"
             app:layout_constraintTop_toTopOf="@+id/layout_detalhes_bolao"
-            app:layout_constraintBottom_toTopOf="@id/painel_compra_bolao">
+            app:layout_constraintBottom_toTopOf="@id/id_fg_rodape">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -250,28 +250,13 @@
                     app:layout_constraintTop_toBottomOf="@id/id_valor_total"
                     app:layout_constraintStart_toStartOf="@id/id_valor_total" />
 
-                <TextView
-                    android:id="@+id/text_arredondamento"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/orientacoes_arrendondamento_bolao"
-                    android:textColor="@color/cinza90"
-                    android:fontFamily="@font/caixa_std_regular"
-                    android:textSize="12sp"
-                    app:layout_constraintTop_toBottomOf="@id/id_numero_qtd_cotas"
-                    app:layout_constraintStart_toStartOf="@id/id_valor_total"
-                    app:layout_constraintEnd_toEndOf="@id/layout_loterica_detalhes" />
-
-
-
                 <View
                     android:id="@+id/id_linha_divisoria2"
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
                     android:background="@color/cinza2"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintTop_toBottomOf="@id/text_arredondamento"
+                    app:layout_constraintTop_toBottomOf="@id/id_numero_qtd_cotas"
                     app:layout_constraintStart_toStartOf="parent"/>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -285,7 +270,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="16dp"
+                    android:layout_height="150dp"
                     app:layout_constraintTop_toBottomOf="@id/id_lista_jogos"
                     tools:layout_editor_absoluteX="0dp" />
 
@@ -293,78 +278,124 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <LinearLayout
-            android:id="@+id/painel_compra_bolao"
+        <Button
+            android:id="@+id/id_btn_add"
+            android:layout_width="190dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="51dp"
+            android:background="@drawable/background_border_verde"
+            tools:backgroundTint="@color/mega_verde_escuro_mkp"
+            android:elevation="15dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="@string/adicionarAoCarrinho"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            android:textColor="@color/branco"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/id_layout_qtd_cotas"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            tools:backgroundTint="@color/mega_verde_escuro_mkp"
+            android:background="@drawable/background_border_verde"
+            android:layout_marginBottom="16dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@id/id_btn_add"
+            app:layout_constraintStart_toStartOf="@id/id_btn_add"
+            app:layout_constraintEnd_toEndOf="@id/id_btn_add"
+            >
+
+            <TextView
+                android:id="@+id/valor_cota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="R$ 50,00"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:textColor="@color/branco"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/label_quantidade_cotas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantidade de Cotas"
+                android:textSize="14sp"
+                android:textColor="@color/branco"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintTop_toBottomOf="@id/valor_cota"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/quantidade_cotas"
+                android:layout_width="50dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="@string/_1"
+                android:textColor="@color/branco"
+                android:textAlignment="center"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
+
+            <Button
+                android:id="@+id/diminui_cota"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ic_botao_surpresinha"
+                android:backgroundTint="@color/cinza2"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/menos"
+                android:textColor="@color/mega_verde_escuro_mkp"
+                android:textSize="24sp"
+                app:layout_constraintRight_toLeftOf="@+id/quantidade_cotas"
+                app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
+
+            <Button
+                android:id="@+id/aumenta_cota"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ic_botao_surpresinha"
+                android:backgroundTint="@color/branco"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/mais"
+                android:textColor="@color/mega_verde_escuro_mkp"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toRightOf="@+id/quantidade_cotas"
+                app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/id_fg_rodape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/branco"
-            android:elevation="4dp"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/id_layout_qtd_cotas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="56dp"
-                android:layout_marginHorizontal="16dp"
-                android:paddingTop="4dp">
-                <TextView
-                    android:id="@+id/label_quantidade_cotas"
-                    android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:labelFor="@id/quantidade_cotas" android:text="@string/mkp_quantidade_cotas" android:textSize="14sp"
-                    android:textColor="@color/mkp_rodape_texto" android:fontFamily="@font/caixa_std_regular"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/diminui_cota"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" />
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/diminui_cota"
-                    android:layout_width="48dp" android:layout_height="48dp"
-                    android:minWidth="0dp" android:minHeight="0dp" android:padding="0dp"
-                    android:background="@drawable/mkp_botao_quantidade" app:backgroundTint="@null"
-                    android:stateListAnimator="@null" android:text="@string/menos"
-                    android:textColor="@color/branco" android:textSize="16sp"
-                    android:contentDescription="@string/mkp_diminuir_cotas"
-                    app:layout_constraintEnd_toStartOf="@id/quantidade_cotas"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" />
-                <TextView
-                    android:id="@+id/quantidade_cotas"
-                    android:layout_width="36dp" android:layout_height="36dp"
-                    android:gravity="center" android:text="@string/_1" android:textSize="18sp"
-                    android:textColor="@color/mkp_rodape_texto" android:fontFamily="@font/caixa_std_regular"
-                    android:accessibilityLiveRegion="polite"
-                    app:layout_constraintEnd_toStartOf="@id/aumenta_cota"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" />
-                <View android:layout_width="0dp" android:layout_height="1dp"
-                    android:background="@color/mkp_rodape_texto"
-                    app:layout_constraintStart_toStartOf="@id/quantidade_cotas"
-                    app:layout_constraintEnd_toEndOf="@id/quantidade_cotas"
-                    app:layout_constraintBottom_toBottomOf="@id/quantidade_cotas" />
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/aumenta_cota"
-                    android:layout_width="48dp" android:layout_height="48dp"
-                    android:minWidth="0dp" android:minHeight="0dp" android:padding="0dp"
-                    android:background="@drawable/mkp_botao_quantidade" app:backgroundTint="@null"
-                    android:stateListAnimator="@null" android:text="@string/mais"
-                    android:textColor="@color/branco" android:textSize="16sp"
-                    android:contentDescription="@string/mkp_aumentar_cotas"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/id_fg_somador_carrinho"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <Button android:id="@+id/id_btn_add"
-                android:layout_width="match_parent" android:layout_height="48dp"
-                android:layout_marginHorizontal="24dp" android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp" android:background="@drawable/mkp_fundo_adicionar"
-                android:stateListAnimator="@null" android:text="@string/mkp_adicionar_carrinho"
-                android:textAllCaps="false" android:textSize="16sp"
-                android:textColor="@color/branco" android:fontFamily="@font/caixa_std_bold" />
-            <FrameLayout android:id="@+id/id_fg_rodape"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp" android:layout_marginBottom="8dp" />
-            <FrameLayout android:id="@+id/id_fg_somador_carrinho"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:visibility="gone" />
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

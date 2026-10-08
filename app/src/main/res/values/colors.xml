@@ -293,9 +293,6 @@
     <color name="cinza90">#64747A</color>
     <color name="cinza70">#9EB2B8</color>
     <color name="cinza30">#EBF1F2</color>
-    <!-- Snackbar -->
-    <color name="snackbar_success">#263238</color>
-    <color name="snackbar_error">#C52B2F</color>
 
     <color name="cinza_corner">#F0F2F2</color>
 

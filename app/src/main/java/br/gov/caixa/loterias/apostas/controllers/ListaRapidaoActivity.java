@@ -82,7 +82,7 @@ public class ListaRapidaoActivity extends LoteriasBaseAppActivity {
     public void atualizaLayout() {
         if (apostas != null) {
             configuraRecyclerViewCarrinhoAposta();
-            FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho, "TELA CARRINHO RAPIDAO");
+            FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA CARRINHO RAPIDAO");
         }
         configuraListeners();
     }

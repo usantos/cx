@@ -151,7 +151,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private void startFragmentSomadorCarrinho() {
         if(somadorCarrinhoFragment == null){
-            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho, true);
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, true);
         }else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }

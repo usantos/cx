@@ -51,7 +51,7 @@ public class DialogUtils {
     private static final String BTN_NAO = "Não";
     private static final float LARGURA_DIALOG_PADRAO = 0.85f; // Define a largura da dialog como 85% da largura da tela
 
- // PADRONIZAÇÃO DAS DIALOGS
+    // PADRONIZAÇÃO DAS DIALOGS
 
     /*
         DIALOG PADRÃO 1 - Maioria dos casos. Cria e abre a Dialog.
@@ -445,44 +445,6 @@ public class DialogUtils {
     }
 
 
-    public static void dialogLegendaLoteca(Context context) {
-        if (isContextInvalido(context)) {
-            return;
-        }
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.dialog_legenda_loteca, null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogUtilsTheme);
-        builder.setView(view);
-        builder.setCancelable(false);
-        final AlertDialog dialog = builder.create();
-
-        Button btnFechar = view.findViewById(R.id.btnFechar);
-        btnFechar.setOnClickListener(v -> dialog.dismiss());
-        TextView tvTitulo = view.findViewById(R.id.legenda);
-        ViewCompat.setAccessibilityHeading(tvTitulo, true);
-        tvTitulo.setFocusableInTouchMode(true);
-        tvTitulo.requestFocus();
-
-        dialog.setOnShowListener(d -> {
-            if (tvTitulo.getVisibility() == View.VISIBLE) {
-                tvTitulo.post(() -> tvTitulo.sendAccessibilityEvent(
-                        AccessibilityEvent.TYPE_VIEW_FOCUSED
-                ));
-            }
-
-        });
-
-        try {
-            if (!isContextInvalido(context)) {
-                dialog.show();
-            }
-        } catch (WindowManager.BadTokenException | IllegalStateException e) {
-            return;
-        }
-    }
-
-
     /*
          MÉTODO AUXILIAR: Constrói e exibe a dialog para os cenários com apenas ação em um botão.
     */
@@ -493,7 +455,6 @@ public class DialogUtils {
                 labelBotaoPositivo, listener::onButtonClick,
                 null, null, null, null);
     }
-
 
 
     /*
@@ -676,11 +637,6 @@ public class DialogUtils {
                 labelBtnPositivo, listener::PositiveButton,
                 labelBtnNegativo, listener::NegativeButton, null, null);
     }
-    public static Dialog dialogEntendiReturn(Context context, String conteudo, OnDialogBotaoListener listener) {
-        return buildDialogReturn(context, TITULO_PADRAO, conteudo, BTN_ENTENDI,
-                listener::onButtonClick, null, null, null, null);
-    }
-
     public static Dialog dialogTituloConfirmarReturn(Context context, String titulo, String conteudo, OnDialogBotaoListener onPositivoListener){
         return buildDialogReturn(context, titulo, conteudo, BTN_CONFIRMAR, onPositivoListener::onButtonClick, BTN_CANCELAR, null, null, null);
     }
@@ -983,5 +939,42 @@ public class DialogUtils {
             return;
         }
 
+    }
+
+    public static void dialogLegendaLoteca(Context context) {
+        if (isContextInvalido(context)) {
+            return;
+        }
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.dialog_legenda_loteca, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogUtilsTheme);
+        builder.setView(view);
+        builder.setCancelable(false);
+        final AlertDialog dialog = builder.create();
+
+        Button btnFechar = view.findViewById(R.id.btnFechar);
+        btnFechar.setOnClickListener(v -> dialog.dismiss());
+        TextView tvTitulo = view.findViewById(R.id.legenda);
+        ViewCompat.setAccessibilityHeading(tvTitulo, true);
+        tvTitulo.setFocusableInTouchMode(true);
+        tvTitulo.requestFocus();
+
+        dialog.setOnShowListener(d -> {
+            if (tvTitulo.getVisibility() == View.VISIBLE) {
+                tvTitulo.post(() -> tvTitulo.sendAccessibilityEvent(
+                        AccessibilityEvent.TYPE_VIEW_FOCUSED
+                ));
+            }
+
+        });
+
+        try {
+            if (!isContextInvalido(context)) {
+                dialog.show();
+            }
+        } catch (WindowManager.BadTokenException | IllegalStateException e) {
+            return;
+        }
     }
 }

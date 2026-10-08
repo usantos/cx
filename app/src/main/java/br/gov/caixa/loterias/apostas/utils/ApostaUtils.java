@@ -35,16 +35,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
 public class ApostaUtils {
 
-	public static boolean isTeimosinhaOriginalComPremioResgatado(IdentificaoDeUmaApostaDas8Modalidades aposta){
-		return aposta != null
-				&& aposta.getQuantidadeTeimosinhas() != null
-				&& aposta.getQuantidadeTeimosinhas() > 0
-				&& !Boolean.TRUE.equals(aposta.getTroca())
-				&& aposta.getSituacao() != null
-				&& aposta.getSituacao().getValor() != null
-				&& aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO;
-	}
-
 	private static IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchidaGenerica(ParametroJogoDTO parametroJogo,
 																	 List<Integer> dezenasSelecionadas,
 																	 BigDecimal valorTotalAposta,

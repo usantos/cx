@@ -66,22 +66,6 @@ public class AlertDialogExperimenteLogarSingleton {
         }catch (Exception e){}
     }
 
-    public static void showSessaoExpirada(Activity activity, Runnable onEntendi) {
-        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
-            return;
-        }
-        dismissDialog();
-        alertDialog = DialogUtils.dialogEntendiReturn(activity,
-                activity.getString(R.string.sessao_expirada),
-                (dialog, which) -> {
-                    dismissDialog();
-                    onEntendi.run();
-                });
-        if (alertDialog != null) {
-            alertDialog.show();
-        }
-    }
-
     private static boolean isShow(){
         if(alertDialog != null){
             return alertDialog.isShowing();

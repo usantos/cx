@@ -1,6 +1,12 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import android.app.Activity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 

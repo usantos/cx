@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.NomeLotericaFormatter;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.BotaoFavoritar;
@@ -154,11 +155,8 @@ public class BolaoHolder extends FiltroHolder<CotasBolaoDTO> implements View.OnC
             botaoFavoritar.setVisibility(View.VISIBLE);
             modalidade.setVisibility(View.GONE);
             loterica.setVisibility(View.VISIBLE);
-            if (bolao.getNomeFantasia().length() > 13) {
-                loterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia().substring(0, 13).concat("...")));
-            } else {
-                loterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
-            }
+            loterica.setText(NomeLotericaFormatter.formatar(
+                    StringUtils.capitalizerNovo(bolao.getNomeFantasia() == null ? "" : bolao.getNomeFantasia())));
             valorPremio.setVisibility(View.GONE);
             valorPremioPorExtenso.setVisibility(View.GONE);
             cidade.setVisibility(View.VISIBLE);
@@ -218,9 +216,27 @@ public class BolaoHolder extends FiltroHolder<CotasBolaoDTO> implements View.OnC
         boolean conjuntoVerdade = !Boolean.FALSE.equals(filtro.isTodasAsModalidades());
         containerModalidade.setVisibility(isFiltradoLoterica(filtro) && conjuntoVerdade? View.VISIBLE:View.GONE);
         containerLoterica.setVisibility(isFiltradoLoterica(filtro) && conjuntoVerdade? View.GONE:View.VISIBLE);
+        alinharValorCota(isFiltradoLoterica(filtro) && conjuntoVerdade);
         int dp = isFiltradoLoterica(filtro)? MODALIDADE_MARGIN_START : LOTERICA_MARGIN_START;
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) cotasEDezenas.getLayoutParams();
         params.setMarginStart(dpToPx(dp, cotasEDezenas.getContext()));
+    }
+
+    private void alinharValorCota(boolean exibindoModalidade) {
+        TextView tituloValor = itemView.findViewById(R.id.valor_cota);
+        ConstraintLayout.LayoutParams tituloParams = (ConstraintLayout.LayoutParams) tituloValor.getLayoutParams();
+        ConstraintLayout.LayoutParams valorParams = (ConstraintLayout.LayoutParams) valor.getLayoutParams();
+        ConstraintLayout.LayoutParams setaParams = (ConstraintLayout.LayoutParams) seta.getLayoutParams();
+        // Ao reciclar, restaura também o alinhamento da lista filtrada por lotérica.
+        tituloParams.topToTop = exibindoModalidade ? ConstraintLayout.LayoutParams.PARENT_ID : ConstraintLayout.LayoutParams.UNSET;
+        tituloParams.bottomToTop = exibindoModalidade ? R.id.valor_bolao : ConstraintLayout.LayoutParams.UNSET;
+        tituloParams.bottomToBottom = exibindoModalidade ? ConstraintLayout.LayoutParams.UNSET : R.id.container_loterica;
+        valorParams.bottomToBottom = exibindoModalidade ? ConstraintLayout.LayoutParams.PARENT_ID : ConstraintLayout.LayoutParams.UNSET;
+        setaParams.topToTop = exibindoModalidade ? ConstraintLayout.LayoutParams.PARENT_ID : R.id.valor_cota;
+        setaParams.bottomToBottom = exibindoModalidade ? ConstraintLayout.LayoutParams.PARENT_ID : R.id.valor_cota;
+        tituloValor.setLayoutParams(tituloParams);
+        valor.setLayoutParams(valorParams);
+        seta.setLayoutParams(setaParams);
     }
 
     private void valorEstimado(CotasBolaoDTO bolao) {

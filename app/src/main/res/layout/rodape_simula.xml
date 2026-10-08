@@ -157,7 +157,7 @@
                 android:importantForAccessibility="no"
                 android:textColor="@color/cinza110"
                 android:textSize="14sp"
-                />
+                 />
 
         </LinearLayout>
 
@@ -225,7 +225,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/ic_shape_oval"
                 android:backgroundTint="#FDAB01"
-                />
+                 />
 
             <TextView
                 android:id="@+id/tvQuantidadeApostas"
@@ -239,7 +239,7 @@
                 android:textColor="@color/cinza110"
                 android:textSize="12sp"
                 android:fontFamily="@font/caixa_std_bold"
-                />
+                 />
 
         </FrameLayout>
 

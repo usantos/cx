@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:backgroundTint="@color/transparente"
-                android:src="@drawable/trash"
+                android:src="@drawable/ic_lixeira_nova"
                 android:visibility="gone"
                 app:tint="@color/branco" />
 
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:backgroundTint="@color/transparente"
-                android:src="@drawable/ic_estrela_20"
+                android:src="@drawable/ic_estrela"
                 android:visibility="gone"
                 app:tint="@color/branco" />
 

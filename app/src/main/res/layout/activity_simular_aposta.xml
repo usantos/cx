@@ -456,7 +456,7 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <FrameLayout
-        android:id="@+id/id_somador_carrinho"
+        android:id="@+id/id_fg_somador_carrinho"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         app:layout_constraintBottom_toBottomOf="parent"

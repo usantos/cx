@@ -49,7 +49,6 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
@@ -62,7 +61,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UF;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
@@ -109,8 +107,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     private TextView validadePremioText, validadePremioLabel, gerarConprovanteTxt;
 
     private TextView tvLabelMinhasApostas, tvLabelLegenda, tvLabelLotecaAcertos, tvLotecaAcertos, tvLabelLotecaPremio, tvLotecaPremio;
-    private TextView tvTotalCarrinho, tvQuantidadeApostas, adicionarTxt;
-    private View adicionarCarrinhoBtn;
 
 
     private TipoApostaLinhaView tipoApostaLinhaView;
@@ -133,7 +129,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         aplicaCores();
         setupToolbar();
         desativaComponentes();
-        exibeAlertaTeimosinhaOriginalAposResgate();
 
         if (isConcursoNaoApurado(aposta)) {
             populaTela();
@@ -142,22 +137,11 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         }
     }
 
-    private void exibeAlertaTeimosinhaOriginalAposResgate(){
-        if (ApostaUtils.isTeimosinhaOriginalComPremioResgatado(aposta)){
-            DialogUtils.dialogEntendi(this, getString(R.string.alerta_teimosinha_original_apos_resgate));
-        }
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         AlertDialogUtils.dismiss();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        atualizaResumoCarrinho();
     }
 
     private void pegaExtras() {
@@ -309,27 +293,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         //Botoes
         clbottons = findViewById(R.id.v_bottom);
         llAdicFav = findViewById(R.id.ll_adic_fav);
-        adicionarCarrinhoBtn = findViewById(R.id.adicionarCarrinhoBtn);
-        adicionarTxt = findViewById(R.id.adicionarTxt);
-        tvTotalCarrinho = findViewById(R.id.tvTotalCarrinho);
-        tvQuantidadeApostas = findViewById(R.id.tvQuantidadeApostas);
-    }
-
-    private void atualizaResumoCarrinho() {
-        CarrinhoDTO carrinho = CarrinhoSingleton.getInstance().getCarrinho();
-        BigDecimal valor = carrinho != null && carrinho.getValorTotal() != null
-                ? carrinho.getValorTotal()
-                : BigDecimal.ZERO;
-        int quantidade = carrinho != null && carrinho.getApostas() != null
-                ? carrinho.getApostas().size()
-                : 0;
-
-        if (tvTotalCarrinho != null) {
-            ViewUtils.setMoedaFormatHtml(valor, tvTotalCarrinho);
-        }
-        if (tvQuantidadeApostas != null) {
-            tvQuantidadeApostas.setText(quantidade > 999 ? getString(R.string.mais_999) : String.valueOf(quantidade));
-        }
     }
 
     private void setAccessibilityAnchor() {
@@ -441,10 +404,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
         clScroll.setBackgroundColor(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
-        adicionarCarrinhoBtn.setBackgroundTintList(
-                ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorEscura()))
-        );
-        adicionarTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
         concursoLabel.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         concursoTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));

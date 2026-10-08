@@ -24,7 +24,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PushRegistrarDispositivoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PushRegistrarDispositivoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
@@ -276,85 +275,12 @@ public class DadosUsuarioBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
-    public void getHistoricoNotificacao(final RequestListener<NotificacaoResponse> listener) {
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-
-        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
-
-        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.HISTORICO_NOTIFICACAO, queryParams, NotificacaoResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(), headers);
-
-        request.setErrorListener(interceptError(request, headers, listener));
-        getServiceConnection().request(request, listener);
-    }
-
-    public void getHistoricoNotificacaoNaoLidas(final RequestListener<NotificacaoResponse> listener) {
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-
-        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
-
-        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.HISTORICO_NOTIFICACAO_NAO_LIDAS, queryParams, NotificacaoResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(), headers);
-
-        request.setErrorListener(interceptError(request, headers, listener));
-        getServiceConnection().request(request, listener);
-    }
-
     public void putLerNotificacao(final RequestListener<RetornoPadraoResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         final GsonRequest request = getServiceConnection().buildPutRequest(
                 ServerMethods.LER_NOTIFICACAO.replace("{idNotificacao}", UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getId().toString()),
-                new LinkedHashMap<>(),
-                null, RetornoPadraoResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(), headers);
-
-        request.setErrorListener(interceptError(request, headers, listener));
-        getServiceConnection().request(request, listener);
-    }
-
-    public void putLerIdNotificacao(Long id, final RequestListener<RetornoPadraoResponse> listener) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
-
-        final GsonRequest request = getServiceConnection().buildPutRequest(
-                ServerMethods.LER_NOTIFICACAO.replace("{idNotificacao}", id.toString()),
-                new LinkedHashMap<>(),
-                null, RetornoPadraoResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(), headers);
-
-        request.setErrorListener(interceptError(request, headers, listener));
-        getServiceConnection().request(request, listener);
-    }
-
-    public void putRemoveNotificacao(Long id, final RequestListener<RetornoPadraoResponse> listener) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
-
-        final GsonRequest request = getServiceConnection().buildPutRequest(
-                ServerMethods.REMOVE_NOTIFICACAO.replace("{idNotificacao}", id.toString()),
-                new LinkedHashMap<>(),
-                null, RetornoPadraoResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(), headers);
-
-        request.setErrorListener(interceptError(request, headers, listener));
-        getServiceConnection().request(request, listener);
-    }
-
-    public void putLimpaNotificacoes(final RequestListener<RetornoPadraoResponse> listener) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
-
-        final GsonRequest request = getServiceConnection().buildPutRequest(
-                ServerMethods.LIMPA_NOTIFICACOES,
                 new LinkedHashMap<>(),
                 null, RetornoPadraoResponse.class,
                 listener.getSilceListener(),

@@ -43,22 +43,12 @@ public class NotificacaoDTO {
   @SerializedName("id")
   private Long id = null;
 
-  public NotificacaoDTO() {
-  }
-
   public NotificacaoDTO titulo(String titulo) {
     this.titulo = titulo;
     return this;
   }
 
-  public NotificacaoDTO(Long id, String titulo, String conteudo, Data dataVisualizacao) {
-    this.id = id;
-    this.titulo = titulo;
-    this.conteudo = conteudo;
-    this.dataVisualizacao = dataVisualizacao;
-  }
-
-  /**
+   /**
    * Get titulo
    * @return titulo
   **/
@@ -166,9 +156,6 @@ public class NotificacaoDTO {
     this.dataVisualizacao = dataVisualizacao;
   }
 
-  public boolean isLida() {
-    return dataVisualizacao != null;
-  }
   public NotificacaoDTO id(Long id) {
     this.id = id;
     return this;

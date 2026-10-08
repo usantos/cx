@@ -12,7 +12,6 @@ import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppState;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 
@@ -40,10 +39,8 @@ public abstract class LoteriasBaseAppActivity extends AppCompatActivity {
 
 			KeycloakBO kc = KeycloakBO.getInstance();
 
-			if (kc.getAccessToken() == null) {
+			if (kc.getAccessToken() == null || kc.isAccessTokenExpirado()) {
 				redirectToLogin();
-			} else if (kc.isAccessTokenExpirado()) {
-				AlertDialogExperimenteLogarSingleton.showSessaoExpirada(this, this::redirectToLogin);
 			}
 		}
 	}

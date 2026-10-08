@@ -31,7 +31,7 @@ import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.LocalizacaoActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;

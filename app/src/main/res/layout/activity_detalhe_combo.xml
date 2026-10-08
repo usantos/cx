@@ -131,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:background="@color/branco"
-            app:layout_constraintBottom_toTopOf="@id/id_somador_carrinho">
+            app:layout_constraintBottom_toTopOf="@id/id_fg_somador_carrinho">
 
             <TextView
                 android:id="@+id/txtValorCombo"
@@ -245,7 +245,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout
-            android:id="@+id/id_somador_carrinho"
+            android:id="@+id/id_fg_somador_carrinho"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

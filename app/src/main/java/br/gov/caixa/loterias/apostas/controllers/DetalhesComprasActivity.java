@@ -23,36 +23,22 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
+import br.gov.caixa.loterias.apostas.model.bo.*;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.WebViewActivity;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
-import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepresaResponse;
 import br.gov.caixa.loterias.apostas.model.model.ApostaConfirmadaModel;
 import br.gov.caixa.loterias.apostas.model.model.DetalhesCompraModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -398,7 +384,7 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
     }
 
     private OnSilceListener<AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades> onReapostaListener() {
-        return new OnSilceListener<>() {
+        return new OnSilceListener<AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades>() {
             @Override
             public void success(AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades payload) {
                 AlertDialogUtils.dismiss();

@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -80,7 +79,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
@@ -97,7 +95,6 @@ import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisActivity;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -152,7 +149,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     public AppBarLayout navigationBarListaModalidade;
     public DiscreteScrollView homeCarousel;
     private Toolbar toolbar;
-    private ImageView imgBadgeNaoLida;
     private DrawerLayout drawerLayout;
     private MaterialButton buttonHomeBet, buttonHomeBolao;
     private TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes,
@@ -178,7 +174,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
-    private View actionApresentarTrevo, actionSettings, actionCentralNotificacao, actionOutubroRosa;
+    private View actionApresentarTrevo, actionOutubroRosa; //actionSettings, actionApresentarPush;
     private InfiniteScrollAdapter infiniteAdapter;
     private HomeAdapter homeAdapter;
     private View viewNotification;
@@ -192,7 +188,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private int ano;
     private Boolean expandido = false;
     private static final int REQ_CARRINHO = 1001;
-    private static final int REQ_CENTRAL_NOTIFICACAO = 2001;
     private Integer numeroConcurso = null;
     private ModalidadeEnum tipoModalidade = null;
     private TextView textoInformativoCaixa, nomeCaixa;
@@ -319,7 +314,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         this.atalhoOutubroRosa = findViewById(R.id.atalhoRapidoOutubroRosa);
         this.sideMenuExpandableListView = findViewById(R.id.sideMenuExpandableListView);
         this.viewSair = findViewById(R.id.viewSair);
-        View view_id_fg_somador_carrinho = findViewById(R.id.id_somador_carrinho);
+        View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
         this.textoInformativoCaixa = recolherMenu.findViewById(R.id.nav_user_text);
         this.arrow = recolherMenu.findViewById(R.id.imagemMaisOpcoes);
         this.iconeTrevoDrawer = findViewById(R.id.iconTrevo);
@@ -466,6 +461,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 }
             });
         }
+
     }
 
     private boolean possuiApostasDuplicadas(CarrinhoDTO carrinho) {
@@ -496,7 +492,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private void fragmentSomadorCarrinho() {
         if(somadorCarrinhoFragment == null){
-            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_somador_carrinho,"TELA PRINCIPAL" );
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA PRINCIPAL" );
         }else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }
@@ -805,7 +801,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
 
                 actionApresentarTrevo = toolbar.findViewById(R.id.action_apresentar_trevo);
-                actionCentralNotificacao = toolbar.findViewById(R.id.central_notificacao);
+                //actionApresentarPush = toolbar.findViewById(R.id.action_pushmsg);
 
                 if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
@@ -819,12 +815,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                                 fechaAnimacaoSePreciso(animacoesOutubroRosa, onAnimacaoFecharAcessoRapido(animacoesAcessoRapido, atalhoRapidoLoterias));
                             }
                         }
-                    });
-                }
-                if (actionCentralNotificacao != null) {
-                    NotificacoesNaoLidas();
-                    actionCentralNotificacao.setOnClickListener(view -> {
-                        startActivityForResult(new Intent(PrincipalActivity.this, CentralNotificacaoActivity.class), REQ_CENTRAL_NOTIFICACAO);
                     });
                 }
 
@@ -927,10 +917,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
         if (requestCode == REQ_CARRINHO && resultCode == 2) {
             RateUtils.solicitarReview(this);
-        }
-        if (requestCode == REQ_CENTRAL_NOTIFICACAO && resultCode == RESULT_OK && data != null) {
-            int qtdNaoLidas = data.getIntExtra("QTD_NAO_LIDAS", 0);
-            atualizarBadgeNotificacao(qtdNaoLidas);
         }
     }
 
@@ -1574,32 +1560,5 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             }
         });
     }
-
-    private void atualizarBadgeNotificacao(int qtdNaoLidas) {
-        imgBadgeNaoLida = findViewById(R.id.imgBadgeNaoLida);
-        if (imgBadgeNaoLida == null) {
-            return;
-        }
-        imgBadgeNaoLida.setVisibility(qtdNaoLidas > 0 ? View.VISIBLE : View.GONE);
-    }
-
-    private void NotificacoesNaoLidas() {
-        DadosUsuarioBO.getInstance().getHistoricoNotificacaoNaoLidas(new RequestListener<NotificacaoResponse>() {
-            @Override
-            public void onResponse(NotificacaoResponse response) {
-                if (response != null && response.getPayload() != null) {
-                    atualizarBadgeNotificacao(response.getPayload().size());
-                } else {
-                    atualizarBadgeNotificacao(0);
-                }
-            }
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                atualizarBadgeNotificacao(0);
-            }
-        });
-
-    }
-
 
 }

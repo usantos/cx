@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostas.novo.features.dadospessoais.DadosPessoaisActivity;
 import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;

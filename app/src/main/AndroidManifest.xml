@@ -85,10 +85,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".controllers.CentralNotificacaoActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
-        <activity
             android:name=".controllers.CombosActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -260,7 +256,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".novo.features.carrinho.CarrinhoActivity"
+            android:name=".controllers.CarrinhoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
