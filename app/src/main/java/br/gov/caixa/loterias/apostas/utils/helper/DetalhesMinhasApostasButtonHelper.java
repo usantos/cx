@@ -1,15 +1,17 @@
 package br.gov.caixa.loterias.apostas.utils.helper;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+import static br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity.LER_CARRINHO_LOCAL;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -29,7 +31,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.novo.features.carrinho.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.view.activity.ResultadoApostaConfirmadaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
@@ -61,6 +63,7 @@ import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.features.volantenovo.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
 
@@ -73,8 +76,9 @@ public class DetalhesMinhasApostasButtonHelper {
     private SessaoUsuario sessaoUsuario;
     private Uri fileApostaUri, filePremioUri;
 
-    private RelativeLayout layoutnomeApostaLayout, favoritadoLayout, favoriteBtn, layoutTextoSalveAposta;
-    private EditText nomeApostaEditTxt;
+    private RelativeLayout favoritadoLayout, favoriteBtn, layoutTextoSalveAposta;
+    private  LinearLayout llAdicFav;
+    private ConstraintLayout vBottom;
     private ApostaFavoritaDTO apostaFavoritaDTO;
     private ApostaFavoritaModel model;
     public DetalhesMinhasApostasButtonHelper(AppCompatActivity activity) {
@@ -89,23 +93,29 @@ public class DetalhesMinhasApostasButtonHelper {
         RelativeLayout carrinhoApostasBtn = activity.findViewById(R.id.carrinhoApostasBtn);
         RelativeLayout editarApostaBtn = activity.findViewById(R.id.editarApostaBtn);
         RelativeLayout adicionarCarrinhoBtn = activity.findViewById(R.id.adicionarCarrinhoBtn);
+        LinearLayout layoutAcoesAposta = activity.findViewById(R.id.layoutAcoesAposta);
         ConstraintLayout comprovanteLayout = activity.findViewById(R.id.comprovanteLayout);
-        ImageView salvarApostaImg = activity.findViewById(R.id.salvarApostaImg);
-
         setAccessibility(carrinhoApostasBtn);
 
         favoritadoLayout = activity.findViewById(R.id.favoritadoLayout);
         favoriteBtn = activity.findViewById(R.id.favoriteBtn);
         layoutTextoSalveAposta  = activity.findViewById(R.id.layoutTextoSalveAposta);
 
-        layoutnomeApostaLayout  = activity.findViewById(R.id.layoutnomeApostaLayout);
-        nomeApostaEditTxt = activity.findViewById(R.id.nomeApostaEditTxt);
+        llAdicFav  = activity.findViewById(R.id.ll_adic_fav);
+        vBottom  = activity.findViewById(R.id.v_bottom);
 
         if (isBolao) {
-            adicionarCarrinhoBtn.setVisibility(View.GONE);
+            llAdicFav.setVisibility(View.GONE);
+            int height = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    70,
+                    activity.getResources().getDisplayMetrics()
+            );
+
+            ViewGroup.LayoutParams params = vBottom.getLayoutParams();
+            params.height = height;
+            vBottom.setLayoutParams(params);
             favoriteBtn.setVisibility(View.GONE);
-            favoritadoLayout.setVisibility(View.GONE);
-            editarApostaBtn.setVisibility(View.GONE);
         }
 
         clResgatePremio.setOnClickListener(v-> startResgateActivity());
@@ -114,8 +124,6 @@ public class DetalhesMinhasApostasButtonHelper {
         editarApostaBtn.setOnClickListener(v -> editarApostaBtn());
         adicionarCarrinhoBtn.setOnClickListener(v -> adicionarCarrinhoBtn());
         comprovanteLayout.setOnClickListener(v -> getComprovantePdf());
-        salvarApostaImg.setOnClickListener(v -> salvarApostaImg());
-
         favoriteBtn.setOnClickListener(v-> favoriteBtn());
         favoritadoLayout.setOnClickListener(v -> favoritadoLayout());
         layoutTextoSalveAposta.setOnClickListener(v -> layoutTextoSalveAposta());
@@ -345,8 +353,8 @@ public class DetalhesMinhasApostasButtonHelper {
     }
 
 
-    private void salvarApostaImg() {
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(nomeApostaEditTxt.getText().toString())) {
+    private void salvarApostaFavorita(String nome) {
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(nome)) {
             AlertDialogUtils.show(activity);
 
             ParametroJogoDTO parametroJogo;
@@ -358,14 +366,10 @@ public class DetalhesMinhasApostasButtonHelper {
                 modalidade.setValor(parametroJogo.getConcurso().getModalidadeDetalhada().getValor());
                 apostaFavoritaDTO.setModalidade(modalidade);
             }
-            if (nomeApostaEditTxt != null && nomeApostaEditTxt.getText() != null && nomeApostaEditTxt.getText().toString() != null){
-                if(nomeApostaEditTxt.getText().toString().length() > 25){
-                    apostaFavoritaDTO.setNome(nomeApostaEditTxt.getText().toString().substring(0, 25));
-                } else {
-                    apostaFavoritaDTO.setNome(nomeApostaEditTxt.getText().toString());
-                }
+            if (nome.length() > 25) {
+                apostaFavoritaDTO.setNome(nome.substring(0, 25));
             } else {
-                apostaFavoritaDTO.setNome("");
+                apostaFavoritaDTO.setNome(nome);
             }
             if(aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
                 apostaFavoritaDTO.setParametroTrevo(new ParametroTrevo());
@@ -424,7 +428,6 @@ public class DetalhesMinhasApostasButtonHelper {
             public void success(NetworkResponse payload) {
                 AlertDialogUtils.dismiss();
                 favoritadoLayout.setVisibility(View.VISIBLE);
-                layoutnomeApostaLayout.setVisibility(View.GONE);
                 favoriteBtn.setVisibility(View.INVISIBLE);
             }
 
@@ -436,28 +439,34 @@ public class DetalhesMinhasApostasButtonHelper {
     }
 
     private void favoriteBtn() {
-        if (layoutnomeApostaLayout.getVisibility() == View.VISIBLE){
-            layoutnomeApostaLayout.setVisibility(View.GONE);
-        } else {
-            layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+        Dialog dialog = DialogUtils.buildDialogFavoritar(
+                activity,
+                activity.getString(R.string.favoritar_aposta),
+                activity.getString(R.string.exemplo_aposta),
+                activity.getString(R.string.informe_favorita),
+                new OnDialogFavoritarListener() {
+                    @Override
+                    public void Confirmar(String nome, boolean manterSurpresinhas) {
+                        salvarApostaFavorita(nome);
+                    }
+
+                    @Override
+                    public void Cancelar() {
+                    }
+                },
+                false
+        );
+
+        if (dialog != null) {
+            dialog.show();
         }
-        if(favoritadoLayout.getVisibility() == View.VISIBLE){
-            favoritadoLayout.setVisibility(View.INVISIBLE);
-            layoutnomeApostaLayout.setVisibility(View.VISIBLE);
-        }
-        favoriteBtn.setVisibility(View.VISIBLE);
     }
 
     private void favoritadoLayout() {
-        if(favoritadoLayout.getVisibility() == View.VISIBLE){
-            favoritadoLayout.setVisibility(View.INVISIBLE);
-            layoutnomeApostaLayout.setVisibility(View.VISIBLE);
-            favoriteBtn.setVisibility(View.VISIBLE);
-        }
+        favoriteBtn();
     }
 
     private void layoutTextoSalveAposta() {
-        layoutnomeApostaLayout.setVisibility(View.VISIBLE);
-        layoutTextoSalveAposta.setClickable(false);
+        favoriteBtn();
     }
 }
