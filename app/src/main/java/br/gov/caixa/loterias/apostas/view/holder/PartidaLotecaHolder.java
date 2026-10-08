@@ -10,6 +10,8 @@ import androidx.core.content.res.ResourcesCompat;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.utils.Utils;
@@ -48,19 +50,10 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 
 	@Override
 	public void bind(PartidaLotecaDTO partida, int position) {
-		//TODO//
 		String legenda = " " + partida.getLegendaAbreviada();
-		if (partida.getEquipe1().getParametroEquipe().getIndicadorSelecao() != null && partida.getEquipe1().getParametroEquipe().getIndicadorSelecao()) {
-			nomeEquipe1.setText(Utils.getEquipeNome(partida.getEquipe1().getParametroEquipe()) + legenda);
-		} else {
-			nomeEquipe1.setText(Utils.getEquipeComUf(partida.getEquipe1().getParametroEquipe()) + legenda);
-		}
 
-		if (partida.getEquipe2().getParametroEquipe().getIndicadorSelecao() != null && partida.getEquipe2().getParametroEquipe().getIndicadorSelecao()) {
-			nomeEquipe2.setText(Utils.getEquipeNome(partida.getEquipe2().getParametroEquipe()) + legenda);
-		} else {
-			nomeEquipe2.setText(Utils.getEquipeComUf(partida.getEquipe2().getParametroEquipe()) + legenda);
-		}
+		nomeEquipe1.setText(getNomeEquipe(partida.getEquipe1()) + legenda);
+		nomeEquipe2.setText(getNomeEquipe(partida.getEquipe2()) + legenda);
 
 		aplicaChecks(partida);
 		if (resultado != null){
@@ -73,6 +66,22 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 		}
 	}
 
+	private String getNomeEquipe(EquipeDTO equipe) {
+		if (equipe == null) {
+			return "";
+		}
+		ParametroEquipe parametro = equipe.getParametroEquipe();
+		if (parametro == null) {
+			return equipe.getNome() != null ? equipe.getNome() : "";
+		}
+		if (Boolean.TRUE.equals(parametro.getIndicadorSelecao())) {
+			return Utils.getEquipeNome(parametro);
+		}
+		return Utils.getEquipeComUf(parametro);
+	}
+	private boolean isVitoria(EquipeDTO equipe) {
+		return equipe != null && Boolean.TRUE.equals(equipe.getVitoria());
+	}
 	private void isCompras(){
 		jogo.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
 		nomeEquipe1.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTexto()));
@@ -81,12 +90,12 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 	}
 
 	private void aplicaFonte(PartidaLotecaDTO partida) {
-		aplicaFonte(nomeEmpate, partida.getEmpate());
-		aplicaFonte(nomeEquipe1, partida.getEquipe1().getVitoria());
-		aplicaFonte(nomeEquipe2, partida.getEquipe2().getVitoria());
+		aplicaFonte(nomeEmpate, Boolean.TRUE.equals(partida.getEmpate()));
+		aplicaFonte(nomeEquipe1, isVitoria(partida.getEquipe1()));
+		aplicaFonte(nomeEquipe2, isVitoria(partida.getEquipe2()));
 	}
 
-	private void aplicaFonte(TextView txt, Boolean devePintar) {
+	private void aplicaFonte(TextView txt, boolean devePintar) {
 		if (devePintar) {
 			txt.setTypeface(ViewUtils.getFontCaixaStdBold(context));
 		}
@@ -95,11 +104,11 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 	private void aplicaResultados(int position) {
 		if (resultado.getPartidasLoteca() != null && !resultado.getPartidasLoteca().isEmpty()){
 			PartidaLotecaDTO partida = (PartidaLotecaDTO) resultado.getPartidasLoteca().get(position);
-			if (partida.getEquipe1() != null && partida.getEquipe1().getVitoria() != null && partida.getEquipe1().getVitoria()){
+			if (isVitoria(partida.getEquipe1())){
 				aplicaCorSelecionado(nomeEquipe1);
-			} else if (partida.getEquipe2() != null && partida.getEquipe2().getVitoria() != null && partida.getEquipe2().getVitoria()){
+			} else if (isVitoria(partida.getEquipe2())){
 				aplicaCorSelecionado(nomeEquipe2);
-			} else if (partida.getEmpate() != null && partida.getEmpate()){
+			} else if (Boolean.TRUE.equals(partida.getEmpate())){
 				aplicaCorSelecionado(nomeEmpate);
 			}
 		}
@@ -111,9 +120,9 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 	}
 
 	private void aplicaChecks(PartidaLotecaDTO partida) {
-		aplicaCheck(checkEquipe1, partida.getEquipe1().getVitoria());
-		aplicaCheck(checkEmpate, partida.getEmpate());
-		aplicaCheck(checkEquipe2, partida.getEquipe2().getVitoria());
+		aplicaCheck(checkEquipe1, isVitoria(partida.getEquipe1()));
+		aplicaCheck(checkEmpate, Boolean.TRUE.equals(partida.getEmpate()));
+		aplicaCheck(checkEquipe2, isVitoria(partida.getEquipe2()));
 	}
 
 	private void aplicaCheck(ImageView imageView, boolean isCheck) {
@@ -129,5 +138,4 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 			}
 		}
 	}
-
 }
