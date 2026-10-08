@@ -222,7 +222,7 @@ public class ComprasDezenasView extends LinearLayout {
                                 true,
                                 getMascaraSurpresinha(aposta.getQuantidadeNumeros()),
                                 new ArrayList<>(),
-                                getDezenaConfigSurpresinha(new EstiloModalidadeMKP(aposta.getModalidade())),
+                                getDezenaConfigSurpresinha(aposta.getModalidade()),
                                 null
                         )
                 );
@@ -241,7 +241,7 @@ public class ComprasDezenasView extends LinearLayout {
             JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(aposta.getModalidade(), corFonte,
                     aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
                     new ArrayList<>(), getDezenaConfig(
-                    new EstiloModalidadeMKP(aposta.getModalidade())
+                    aposta.getModalidade()
             ), getTrevoConfig());
             dezenasRecyclerView.setAdapter(adpterJogos);
             dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -257,9 +257,7 @@ public class ComprasDezenasView extends LinearLayout {
                     corFonte,
                     aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
                     new ArrayList<>(),
-                    getDezenaConfig(new EstiloModalidadeMKP(aposta.getModalidade()
-                            )
-                    ));
+                    getDezenaConfig(aposta.getModalidade()));
             dezenasRecyclerView.setAdapter(adpterJogos);
             dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
@@ -269,7 +267,7 @@ public class ComprasDezenasView extends LinearLayout {
                                 true,
                                 getMascaraSurpresinha(aposta.getQuantidadeNumeros()),
                                 new ArrayList<>(),
-                                getDezenaConfigSurpresinha(new EstiloModalidadeMKP(aposta.getModalidade())),
+                                getDezenaConfigSurpresinha(aposta.getModalidade()),
                                 null
                         )
                 );
@@ -279,7 +277,7 @@ public class ComprasDezenasView extends LinearLayout {
                         new ListaDezenaRecyclerView(
                                 getDezenas(aposta.getListaNumerosSelecionados()),
                                 new ArrayList<>(),
-                                getDezenaConfig(new EstiloModalidadeMKP(aposta.getModalidade())),
+                                getDezenaConfig(aposta.getModalidade()),
                                 null
                         )
                 );
@@ -297,7 +295,7 @@ public class ComprasDezenasView extends LinearLayout {
                             getMascaraSurpresinha(
                                     aposta.getQuantidadeNumeros()),
                             new ArrayList<>(),
-                            getDezenaConfigSurpresinha(new EstiloModalidadeMKP(aposta.getModalidade())),
+                            getDezenaConfigSurpresinha(aposta.getModalidade()),
                             null
                     ));
             dezenasRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
@@ -321,7 +319,7 @@ public class ComprasDezenasView extends LinearLayout {
                     new ListaDezenaRecyclerView(
                             getDezenas(aposta.getListaNumerosSelecionados()),
                             new ArrayList<>(),
-                            getDezenaConfig(new EstiloModalidadeMKP(aposta.getModalidade())),
+                            getDezenaConfig(aposta.getModalidade()),
                             null
                     )
             );
@@ -383,13 +381,21 @@ public class ComprasDezenasView extends LinearLayout {
         return (int) Utils.getIdUnico();
     }
 
-    private DezenaConfig getDezenaConfigSurpresinha(EstiloModalidadeMKP estilo) {
+    private DezenaConfig getDezenaConfigSurpresinha(ModalidadeEnum modalidade) {
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
         ShapeConfig shapeConfig = new ShapeConfig(estilo.getCorClara(), R.color.mega_verde_escuro_mkp);
-
-        return new DezenaConfig(false, corFonte,
+        DezenaConfig dezenaConfig = new DezenaConfig(
+                false,
+                corFonte,
                 R.layout.item_dezena_detalhe,
-                shapeConfig, false)
-                .setColorDefault(estilo.getCorFonteFundoEscuro());
+                shapeConfig, false
+        );
+        switch (modalidade) {
+            case DIA_DE_SORTE, MEGA_SENA:
+                return dezenaConfig.setColorDefault(estilo.getCorFonteFundoClaro());
+            default:
+                return dezenaConfig.setColorDefault(estilo.getCorFonteFundoEscuro());
+        }
     }
 
     private DezenaConfig getDezenaConfigSuper7() {
@@ -440,11 +446,28 @@ public class ComprasDezenasView extends LinearLayout {
         return new ConfiguracaoLoteca(R.color.branco);
     }
 
-    private DezenaConfig getDezenaConfig(EstiloModalidadeMKP estilo) {
-        ShapeConfig shapeConfig = new ShapeConfig(R.color.branco, R.color.mega_verde_escuro_mkp);
-        return new DezenaConfig(false, corFonte,
+    private DezenaConfig getDezenaConfig(ModalidadeEnum modalidade) {
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+
+        ShapeConfig shapeConfig = new ShapeConfig(
+                R.color.branco,
+                R.color.mega_verde_escuro_mkp
+        );
+
+        DezenaConfig config = new DezenaConfig(
+                false,
+                corFonte,
                 R.layout.item_dezena_detalhe,
-                shapeConfig, false)
-                .setColorDefault(estilo.getCorFonteFundoEscuro());
+                shapeConfig,
+                false
+        );
+
+        switch (modalidade) {
+            case DIA_DE_SORTE, MEGA_SENA:
+                return config.setColorDefault(estilo.getCorFonteFundoClaro());
+
+            default:
+                return config.setColorDefault(estilo.getCorFonteFundoEscuro());
+        }
     }
 }
