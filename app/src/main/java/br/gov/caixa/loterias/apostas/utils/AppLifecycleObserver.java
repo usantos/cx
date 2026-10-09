@@ -6,6 +6,19 @@ import androidx.lifecycle.LifecycleOwner;
 
 public class AppLifecycleObserver implements DefaultLifecycleObserver {
 
+    // Explicit implementations also work with instrumented lifecycle interfaces in Debug.
+    @Override
+    public void onCreate(@NonNull LifecycleOwner owner) {}
+
+    @Override
+    public void onResume(@NonNull LifecycleOwner owner) {}
+
+    @Override
+    public void onPause(@NonNull LifecycleOwner owner) {}
+
+    @Override
+    public void onDestroy(@NonNull LifecycleOwner owner) {}
+
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
         // app -> background

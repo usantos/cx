@@ -17,6 +17,8 @@ android {
     compileSdkVersion 37
     buildToolsVersion '36.0.0'
     defaultConfig {
+        // ./gradlew assembleTqsDebug -PhomeV2=false restaura a home anterior.
+        buildConfigField "boolean", "HOME_V2", providers.gradleProperty("homeV2").orElse("true").get().toBoolean().toString()
         resValue "string", "app_name", "Loterias"
         applicationId "br.gov.caixa.loterias.apostas"
         minSdkVersion 23
@@ -394,7 +396,7 @@ dependencies {
     implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
     //FilaBRA
-    implementation 'com.filabra.adapter:FilaBRAAdapter:2.6.5.1'
+    implementation files('libs/FilaBRAAdapter-2.6.5.1.aar')
 
     //Joda time
     implementation 'net.danlew:android.joda:2.14.2.1'
@@ -441,4 +443,3 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 }
-

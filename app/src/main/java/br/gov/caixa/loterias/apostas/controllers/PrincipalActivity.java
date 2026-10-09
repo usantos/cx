@@ -71,6 +71,7 @@ import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnAnimacaoViewListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -184,6 +185,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private View actionApresentarTrevo, actionSettings, actionCentralNotificacao, actionOutubroRosa;
     private InfiniteScrollAdapter infiniteAdapter;
     private HomeAdapter homeAdapter;
+    private br.gov.caixa.loterias.apostas.view.homev2.HomeV2View homeV2;
     private View viewNotification;
     private PopupWindow popupNotification;
     private AnimatorSet anim;
@@ -271,6 +273,86 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         TimerNotificarCotasExpiradasSingleton.getInstance(this).iniciarVerificacao();
         aplicaOutubroRosa();
+        if (BuildConfig.HOME_V2) configurarHomeV2();
+    }
+
+    private void configurarHomeV2() {
+        android.view.ViewGroup container = findViewById(R.id.coordinatorModalidades);
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
+            child.setVisibility(View.GONE);
+            child.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        }
+        homeV2 = new br.gov.caixa.loterias.apostas.view.homev2.HomeV2View(this,
+                new br.gov.caixa.loterias.apostas.view.homev2.HomeV2View.Actions() {
+                    @Override public void bet(Modalidade modalidade) { abrirHomeV2Modalidade(modalidade, false); }
+                    @Override public void pool(Modalidade modalidade) { abrirHomeV2Modalidade(modalidade, true); }
+                    @Override public void cart() { vaiProCarrinho(); }
+                    @Override public void favorites() { clickRelativeLayoutContentFavoritas(); }
+                    @Override public void results() { AbrirMenusGroup(DrawerEnum.MENU_RESULTADOS); }
+                    @Override public void modalityResults(ModalidadeEnum modalidade) {
+                        fecharAnimacoesAbertas();
+                        Intent intent = new Intent(PrincipalActivity.this, VisualizarResultadosActivity.class);
+                        intent.putExtra(SelecaoModalidadesResultados.MODALIDADE, ModalidadeEnum.fromString(modalidade));
+                        startActivity(intent);
+                    }
+                    @Override public void games() {
+                        if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
+                            tratarMenuMinhaArea(DrawerEnum.MENU_MINHAS_APOSTAS);
+                        } else {
+                            AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false, null);
+                        }
+                    }
+                    @Override public void menu() { drawerLayout.openDrawer(GravityCompat.START); }
+                    @Override public void notifications() {
+                        startActivityForResult(new Intent(PrincipalActivity.this, CentralNotificacaoActivity.class), REQ_CENTRAL_NOTIFICACAO);
+                    }
+                    @Override public void profile() { drawerLayout.openDrawer(GravityCompat.START); }
+                    @Override public boolean canPool(ModalidadeEnum modalidade) {
+                        return SharedPreferencesUtils.getValorBoolean(ConfiguracoesEnum.BOLAO.get(),
+                                ConfiguracoesDefaultEnum.BOLAO_HABILITADO.asBoolean()) && temBolaoModalidadeDisponivel(modalidade);
+                    }
+                });
+        container.addView(homeV2, new android.view.ViewGroup.LayoutParams(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+        if (data != null) homeV2.bind(data);
+    }
+
+    private void abrirHomeV2Modalidade(Modalidade modalidade, boolean bolao) {
+        if (modalidadesParaListar == null || AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this, 2)) return;
+        for (int i = 0; i < modalidadesParaListar.size(); i++) {
+            ConcursoDTO concurso = modalidadesParaListar.get(i).getParametroJogo().getConcurso();
+            if (concurso.getModalidade() == modalidade.getTipoModalidade()
+                    && java.util.Objects.equals(concurso.getNumero(), modalidade.getConcurso().getNumero())
+                    && concurso.getTipoConcurso() == modalidade.getConcurso().getTipoConcurso()) {
+                buttonHomeBet.setTag(i);
+                if (bolao) clickButtonBolao(); else clickButtonHomeBet();
+                return;
+            }
+        }
+    }
+
+    private void carregarResultadosHomeV2() {
+        for (Modalidade item : data) {
+            if (item.getTipoModalidade() != ModalidadeEnum.MEGA_SENA
+                    && item.getTipoModalidade() != ModalidadeEnum.MAIS_MILIONARIA
+                    && item.getTipoModalidade() != ModalidadeEnum.QUINA) continue;
+            ApostaSilceBO.getInstance().getResultadoModalidade(ModalidadeEnum.fromString(item.getTipoModalidade()),
+                    new RequestListener<br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse>() {
+                        @Override public void onResponse(br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse response) {
+                            if (isFinishing() || isDestroyed() || response.getPayload() == null) return;
+                            if (response.getRedirect() != null) {
+                                RedirectNetwork.checkRedirectSucesso(response.getRedirect(), PrincipalActivity.this);
+                                return;
+                            }
+                            item.setResultadoConcursoDTO(response.getPayload());
+                            if (homeV2 != null) homeV2.bind(data);
+                        }
+                        @Override public void onErrorResponse(VolleyError error) {
+                            // Keep the result shortcut available when the service cannot load.
+                        }
+                    });
+        }
     }
 
     private void aplicaOutubroRosa() {
@@ -539,6 +621,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 .build());
 
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(false);
+        if (homeV2 != null) {
+            homeV2.bind(data);
+            carregarResultadosHomeV2();
+        }
     }
 
     @Override
@@ -553,9 +639,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     private void callWebservice() {
-        AlertDialogUtils.show(PrincipalActivity.this);
+        // Home V2 owns its loading state; do not cover it with the full-screen dialog.
+        if (homeV2 == null) AlertDialogUtils.show(PrincipalActivity.this);
 
         if(SessaoUsuarioUtil.precisaAtualizar()){
+            if (homeV2 != null) homeV2.startLoading();
             new ParametrosSimulacaoModel(PrincipalActivity.this)
                     .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
                         @Override
@@ -1279,7 +1367,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     protected void vaiProCarrinho() {
         fecharAnimacoesAbertas();
-        if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
+        if (homeV2 != null || (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible())) {
             startActivityForResult(
                     new Intent(PrincipalActivity.this, CarrinhoActivity.class),
                     REQ_CARRINHO
