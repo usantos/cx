@@ -28,9 +28,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
+import java.util.Set;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -55,6 +58,7 @@ import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.model.model.LotericaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AnalyticsHelper;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -136,10 +140,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     String numeroConcurso;
     String nomeModalidade = "";
 
+    private boolean lotericasCarregadas = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setViews();
+        getInfoBoloesLotericas();
     }
 
     private void setViews(){
@@ -252,8 +259,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     @Override
     protected void onResume() {
         super.onResume();
-        getInfoBoloesLotericas();
-
         if (parametroJogo != null
                 && parametroJogo.getConcurso() != null
                 && parametroJogo.getConcurso().getNumero() != null) {
@@ -266,6 +271,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                     nomeModalidade != null ? nomeModalidade : "",
                     numeroConcurso
             );
+        }
+        
+        if (lotericasCarregadas) {
+            atualizaLotericasFavoritas();
         }
     }
 
@@ -451,6 +460,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 }
 
                 setLotericasFavoritas(payload);
+                lotericasCarregadas = true;
                 configuraListView();
 
                 if (lotericasList == null || lotericasList.isEmpty()) {
@@ -470,6 +480,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
                 bolaoFooterAdapter.mostrarLoading(false);
+                lotericasCarregadas = true; 
                 initLotericasVazia();
             }
         });
@@ -1209,32 +1220,70 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         );
     }
 
-    private void atualizaFavoritoTodasListas(Long lotericaId, boolean isFavorita) {
-        //Atualiza na lista do carrossel
-        if (carrosselList != null) {
-            for (CotasBolaoDTO bolao : carrosselList) {
-                if (bolao.getLoterica().equals(lotericaId)) {
-                    bolao.setLotericaFavorita(isFavorita);
-                }
-            }
-        }
-
-
-        //Atualiza na lista principal
-        if (bolaoList != null) {
-            for (CotasBolaoDTO bolao : bolaoList) {
-                if (bolao.getLoterica().equals(lotericaId)) {
-                    bolao.setLotericaFavorita(isFavorita);
-                }
-            }
-        }
-        if (listAdapter != null) {
-            listAdapter.notifyDataSetChanged();
-        }
-        if (fragBarraTituloFiltroLoterica != null) {
-            fragBarraTituloFiltroLoterica.setFavoritar(isFavorita);
-        }
+    private void atualizaFavoritoTodasListas(Long lotericaId, boolean isFavorita){
+        if(lotericaId != null){
+            aplicaFlag(carrosselList, lotericaId, isFavorita);
+            aplicaFlag(bolaoList, lotericaId, isFavorita);
+        }       
+        atualizaViewsFavoritas(isFavorita);
         AlertDialogUtils.dismiss();
+    }
+
+    private void sincronizaLotericasFavoritas(List<LotericaFavoritaDTO> favoritas){
+        Set<Long> favoritasIds = new HashSet<>();
+        for (LotericaFavoritaDTO favorita: favoritas) {
+            favoritasIds.add(favorita.getCodigo());
+        }
+
+        aplicaFlagPorConjunto(carrosselList, favoritasIds);
+        aplicaFlagPorConjunto(bolaoList, favoritasIds);
+
+        Boolean favBarra = isFiltradoLoterica() ? favoritasIds.contains(filtro.getLotericaDTO().getId()) : null;
+        atualizaViewsFavoritas(favBarra);
+    }
+
+    private void atualizaLotericasFavoritas(){
+        if(lotericaModel == null) return;
+        lotericaModel.buscaLotericas(new OnSilceListener<List<LotericaFavoritaDTO>>() {
+            @Override
+            public void success(List<LotericaFavoritaDTO> payload) {
+                if(payload == null) return;
+                lotericasList = payload;
+                lotericaModel.setListLotericas(new ArrayList<>(lotericasList));
+                configuraListView();
+                sincronizaLotericasFavoritas(lotericasList);
+                if(btnLotericasFavoritas.isChecked()) seletorLotericasFavoritas();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                DialogUtils.dialogEntendi(BolaoActivity.this, getString(R.string.nao_concluiu_operacao));
+            }
+        });
+    }
+
+    private void aplicaFlag(List<CotasBolaoDTO> lista, Long id, boolean isFavorita){
+        if(lista == null) return;
+        for(CotasBolaoDTO bolao: lista){
+            if(id.equals(bolao.getLoterica())) bolao.setLotericaFavorita(isFavorita);
+        }
+    }
+
+    private void aplicaFlagPorConjunto(List<CotasBolaoDTO> lista, Set<Long> ids){
+        if(lista == null) return;
+        for(CotasBolaoDTO bolao: lista){
+            bolao.setLotericaFavorita(ids.contains(bolao.getLoterica()));
+        }
+    }
+
+    private void atualizaViewsFavoritas(Boolean favoritaBarra){
+        if(listAdapter != null) listAdapter.notifyDataSetChanged();
+        if(bolaoHeaderAdapter != null){           
+            bolaoHeaderAdapter.notificaAlteracaoCarrossel();
+        }
+        if(fragBarraTituloFiltroLoterica != null && favoritaBarra != null){
+            fragBarraTituloFiltroLoterica.setFavoritar(favoritaBarra);
+        }
     }
 
     private void detalhesBolao(CotasBolaoDTO bolao) {
