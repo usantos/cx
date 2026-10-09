@@ -61,7 +61,7 @@ import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.SelecaoConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.activity.SimulaActivity;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.activity.SimulaActivity;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
@@ -319,7 +319,6 @@ public class DetalhesMinhasApostasButtonHelper {
                     });
 
                 }catch (Exception e){
-                    e.printStackTrace();
                     Log.d("ApostaConfirmadaDetAct", "Não foi possível acessar o serviço para baixar comprovante de aposta");
                 }
             }
@@ -347,7 +346,6 @@ public class DetalhesMinhasApostasButtonHelper {
                         }
                     });
                 }catch (Exception e){
-                    e.printStackTrace();
                     Log.d("ApostaConfirmadaDetAct", "Não foi possível acessar o serviço para baixar comprovante de prêmio");
                 }
             }

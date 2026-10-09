@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -36,16 +37,20 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
 
-    private Button buttonTentarNovamente;
     private Boolean isBuscaParametro;
     private AlertDialog loadViewProgress;
     private TextView txtVersion, tvMensagem;
+
+    private TextView tvMensagem1, tvMensagem2;
     private Spinner ambienteSpinner;
+
+    private View buttonTentarNovamente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_app_indisponivel);
+        //setContentView(R.layout.activity_app_indisponivel);
+        setContentView(R.layout.activity_app_indisponivel_novo);
 
         pegaExtras();
         setaViews();
@@ -79,7 +84,7 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
                 }
             });
         }
-        }
+    }
 
     private void showAlertAndExit(AmbienteEnum selectedAmbiete) {
         DialogUtils.dialogTituloEntendiListener(AppIndisponivelActivity.this,
@@ -95,11 +100,14 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
     }
 
     private void setaViews(){
-        txtVersion = findViewById(R.id.txtVersao);
         tvMensagem = findViewById(R.id.tv_mensagem);
+        tvMensagem1 = findViewById(R.id.tv_mensagem1);
+        tvMensagem2 = findViewById(R.id.tv_mensagem2);
+
         buttonTentarNovamente = findViewById(R.id.tenteNovamenteButton);
         ambienteSpinner = findViewById(R.id.spin_ambiente);
 
+        txtVersion = findViewById(R.id.txtVersao);
         txtVersion.setText( TextUtils.concat( getResources().getString(R.string.v) ,BuildConfig.VERSION_NAME));
     }
 
@@ -108,10 +116,23 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
     }
 
     private void atualizaMsg() {
-        if (!AppUtils.isNetworkAvailable(AppIndisponivelActivity.this)) {
-            tvMensagem.setText(getResources().getString(R.string.seminternet));
-        } else {
-            tvMensagem.setText(getResources().getString(R.string.label_app_indisponivel));
+        //Tela antiga activity_app_indisponivel
+        if (tvMensagem != null) {
+            if (!AppUtils.isNetworkAvailable(AppIndisponivelActivity.this)) {
+                tvMensagem.setText(getResources().getString(R.string.seminternet));
+            } else {
+                tvMensagem.setText(getResources().getString(R.string.label_app_indisponivel));
+            }
+        }
+        //Tela nova activity_app_indisponivel_novo
+        if (tvMensagem1 != null) {
+            if (!AppUtils.isNetworkAvailable(AppIndisponivelActivity.this)) {
+                tvMensagem1.setText(getResources().getString(R.string.internet_instavel));
+                tvMensagem2.setText(getResources().getString(R.string.verifique_conexao));
+            } else {
+                tvMensagem1.setText(getResources().getString(R.string.app_indisponivel));
+                tvMensagem2.setText(getResources().getString(R.string.pedido_desculpas));
+            }
         }
     }
 

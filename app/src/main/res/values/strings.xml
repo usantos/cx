@@ -176,6 +176,7 @@
     <string name="MA016">Um número não pode ser marcado como obrigatório e proibido.</string>
     <string name="MA019">Aposta favorita excluída com sucesso!</string>
     <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>
+    <string name="erro_carregar_dados">Erro ao carregar os dados</string>
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>
     <string name="label_excluir_aposta">Excluir aposta favorita</string>
@@ -256,7 +257,7 @@
     <string name="title_activity_lista_compras">Minhas Compras</string>
 
     <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
-    <string name="msg_qtd_max_loteca">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
+    <string name="msg_qtd_max_loteca">Você aumentou a quantidade de palpites, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
     <string name="label_combinacao_invalida_loteca">Essa combinação de simples, duplos e triplos não é permitida para a Loteca. Tente outra combinação.</string>
     <string name="btn_entendi">entendi</string>
     <string name="button_entendi">Entendi</string>
@@ -423,9 +424,6 @@
 
     <!--Mock-->
     <string name="title_activity_restrito_dezoito_anos">RestritoDezoitoAnosActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- DIA SORTE -->
     <string name="dia_sorte_escolha_dia">Escolha os _n\u00fameros_</string>
@@ -788,6 +786,7 @@
     <string name="titulo">Titulo</string>
     <string name="botao">Botão</string>
     <string name="loteca">loteca</string>
+    <string name="legendaLoteca">Icone de lupa - Detalha a legenda da loteca</string>
     <string name="selecione_as_op_es_e_clique_em_adicionar">Selecione as opções e clique em adicionar</string>
     <string name="escolha_o_tipo_de_concurso">Escolha o tipo de concurso que você quer participar:</string>
     <string name="tipo_de_concurso">Tipo de Concurso</string>
@@ -842,6 +841,7 @@
     <string name="ol">Olá, %!</string>
     <string name="tv">TextView</string>
     <string name="apresentar_trevo">Apresentar trevo</string>
+    <string name="ic_outubro_rosa">Outubro Rosa</string>
     <string name="ic_notificacao">Notificações</string>
     <string name="_7_n_meros">7 números</string>
     <string name="r_0_00">R$ 0,00</string>
@@ -1607,7 +1607,7 @@
     <string name="confirmacao_continuar_experimente">Para continuar utilizando a funcionalidade, você precisa efetuar o login no app Loterias Caixa. Deseja efetuar o login?</string>
     <string name="continuar_experimente">Continuar no Experimente</string>
     <string name="efetuar_login">Efetuar o login</string>
-    <string name="orientacoes_arrendondamento_bolao">Devido a regras de arredondamento, o valor cobrado pela Cota deste
+    <string name="orientacoes_arrendondamento_bolao">*Devido a regras de arredondamento, o valor cobrado pela cota deste
         bolão poderá ser menor que o exibido.
     </string>
     <string name="hora_dois_pontos">"Hora: "</string>
@@ -1649,6 +1649,7 @@
     <string name="estado_vazio_mkp_descricao">Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente.</string>
     <string name="vazio_Lotericas_favoritas">Você ainda não possui nenhuma lotérica favorita.</string>
     <string name="sem_boloes_lotericas_favoritas">Esta lotérica não possui bolões disponíveis no momento.</string>
+    <string name="erro_busca_lotericas">Não foi possível atualizar a lista de lotéricas favoritas.</string>
     <string name="msg_incluir_favorita">Deseja incluir %1$s na sua lista de favoritas?</string>
     <string name="msg_excluir_favorita">Deseja excluir %1$s da sua lista de favoritas?</string>
     <string name="loterica_favorita">Lotérica Favorita</string>
@@ -1728,7 +1729,8 @@
     <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
     <string name="txt_como_jogar">Como jogar</string>
     <string name="txt_apostas_identicas">Existem apostas idênticas em seu carrinho, por favor verifique.</string>
-
+    <string name="txt_empate">EMPATE</string>
+    <string name="jogo_numero">Jogo %1$02d</string>
     <string name="txt_buscar_exemplo">Insira o nome da lotérica ou o código somente com os números do segundo campo, com 6 dígitos, Exemplo: E.Lotérico 10.000004-01, digite 000004.</string>
     <string name="txt_name_code">Nome ou código</string>
     <string name="txt_lotericas">Lotéricas</string>
@@ -1741,8 +1743,17 @@
     <string name="retire_qualquer_loterica">Retire em qualquer lotérica</string>
     <string name="valores_isencao_ir">Valores acima da isenção do IR</string>
     <string name="nao_concluiu_aposta">Não foi possível efetuar essa aposta. Aguarde e tente novamente mais tarde.</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="pedido_desculpas">Pedimos desculpas pelo transtorno.\nTente novamente em breve</string>
+    <string name="app_indisponivel">O aplicativo está\ntemporariamente indisponível</string>
+    <string name="internet_instavel">Parece que sua internet\nestá com alguma instabilidade</string>
+    <string name="verifique_conexao">Verifique sua conexão\ne tente novamente</string>
+
     <string name="text_descartar">Ao voltar para a página inicial, sua aposta em edição será descartada. Deseja continuar?</string>
     <string name="xx">XX</string>
+    <string name="outubro_rosa">Outubro Rosa</string>
+    <string name="outubro_rosa_paragrafo_1">Campanha anual que conscientiza sobre a _importância da prevenção, do diagnóstico precoce e do tratamento adequado_ do câncer de mama e do câncer do colo do útero.</string>
+    <string name="outubro_rosa_paragrafo_2">O Ministério da Saúde orienta 3 dicas para melhorar a qualidade de vida e aumentar as chances de cura: _manter hábitos saudáveis, ter atenção aos sinais do corpo e fazer exames regulares._ </string>
     <string name="tokenactivity">TokenActivity</string>
     <string name="biometrialogin">BiometriaLogin</string>
 

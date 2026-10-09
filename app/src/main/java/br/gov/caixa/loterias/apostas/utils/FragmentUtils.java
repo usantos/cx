@@ -41,7 +41,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.LotericaEmptyFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment2;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.fragment.MesesFragment2;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.OrientacaoPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
@@ -49,10 +49,10 @@ import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment2;
-import br.gov.caixa.loterias.apostas.view.fragment.TimesFragment;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.fragment.SurpresinhaFragment2;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.fragment.TimesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment2;
+import br.gov.caixa.loterias.apostas.view.features.volantenovo.fragment.TrevosFragment2;
 
 public class FragmentUtils {
 

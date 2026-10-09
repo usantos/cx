@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -265,6 +266,22 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         lotericaAdapter = new LotericaAdapter(listLotericaDTO, onItemClickListener());
         recyclerViewLoterica.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewLoterica.setAdapter(lotericaAdapter);
+        recyclerViewLoterica.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NotNull RecyclerView recyclerView, @NotNull MotionEvent event) {
+                // Mantem o gesto na lista de sugestoes, sem consumir o toque de selecao.
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        recyclerView.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        recyclerView.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
 
     }
 

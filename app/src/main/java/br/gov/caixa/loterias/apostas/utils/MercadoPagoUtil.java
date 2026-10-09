@@ -190,9 +190,7 @@ public class MercadoPagoUtil {
                     precisaAtualizar = true;
                 }
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
             } catch (Exception e){
-                e.printStackTrace();
             }
         }
 
@@ -222,9 +220,7 @@ public class MercadoPagoUtil {
                     precisaAtualizar = true;
                 }
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
             } catch (Exception e){
-                e.printStackTrace();
             }
         }
 

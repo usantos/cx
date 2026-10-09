@@ -15,6 +15,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,7 +26,9 @@ import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DividerUtils;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
@@ -68,6 +73,9 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         String expandedListText = itemEnum.toString();
 
         expandedListTextView.setText(expandedListText);
+        if (EspecialUtils.isOutubroRosa()){
+            expandedListTextView.setTextColor(ContextCompat.getColor(context, R.color.outubro_rosa_secundario));
+        }
 
         List<DrawerEnum> children = expandableListDetail.get(expandableListTitle.get(listPosition));
 
@@ -140,7 +148,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
 
         switch (drawerEnum) {
             case MENU_MINHA_AREA:
-                imageViewGroup.setImageResource(R.drawable.menu1_area);
+                imageViewGroup.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_menu_minha_area));
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 listTitleTextView.setHint("este botão possue subitem");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
@@ -155,7 +163,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 description.append(": ").append(totalItens).append(" itens, início");
                 break;
             case MENU_RESULTADOS:
-                imageViewGroup.setImageResource(R.drawable.menu3_resultados);
+                imageViewGroup.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_menu_resultados));
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
@@ -165,7 +173,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 DividerUtils.setDividerVisible(layoutItem, true);
                 break;
             case MENU_RAPIDAO:
-                imageViewGroup.setImageResource(R.drawable.menu4_rapidao);
+                imageViewGroup.setBackground(ContextCompat.getDrawable(context, R.drawable.menu4_rapidao));
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 listTitleTextView.setHint("botão" + drawerEnum.toString());
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
@@ -175,7 +183,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 DividerUtils.setDividerVisible(layoutItem, true);
                 break;
             case MENU_COFERIR_BILHETE:
-                imageViewGroup.setImageResource(R.drawable.menu5_bilhetes);
+                imageViewGroup.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_menu_conferir_bilhete));
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
@@ -185,7 +193,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 DividerUtils.setDividerVisible(layoutItem, true);
                 break;
             case MENU_JOGO_RESPONSAVEL:
-                imageViewGroup.setImageResource(R.drawable.menu6_jogo_responsavel);
+                imageViewGroup.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_menu_jogo_responsavel));
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 listTitleTextView.setHint("este botão possue subitem");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
@@ -197,7 +205,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 description.insert(0, isExpanded  ? "Expandido: " : "Recolhido: ");
                 break;
             case MENU_REPASSES_SOCIAIS:
-                imageViewGroup.setImageResource(R.drawable.menu7_repasses);
+                imageViewGroup.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_menu_repasses_socieais));
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
@@ -207,7 +215,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 DividerUtils.setDividerVisible(layoutItem, true);
                 break;
             case MENU_TERMO_USO:
-                imageViewGroup.setImageResource(R.drawable.menu_termo_uso);
+                imageViewGroup.setBackground(ContextCompat.getDrawable(context, R.drawable.menu_termo_uso));
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
@@ -217,7 +225,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 DividerUtils.setDividerVisible(layoutItem, true);
                 break;
             case MENU_DUVIDAS:
-                imageViewGroup.setImageResource(R.drawable.ic_questions);
+                imageViewGroup.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_questions));
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
@@ -228,7 +236,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
 //                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
             case MENU_SOBRE_CAIXA:
-                imageViewGroup.setImageResource(R.drawable.link);
+                imageViewGroup.setBackground(ContextCompat.getDrawable(context, R.drawable.link));
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
@@ -238,18 +246,14 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                     DialogUtils.dialogConfirmar(
                             context,
                             context.getString(R.string.caixa_loterias),
-                            new OnDialogBotaoListener() {
-                                @Override
-                                public void onButtonClick(DialogInterface dialog, int which) {
-                                    String url = "https://www.caixa.gov.br/sobre-a-caixa/governanca-corporativa/caixa-loterias/Paginas/default.aspx";
-                                    Intent i = new Intent(Intent.ACTION_VIEW);
-                                    i.setData(Uri.parse(url));
-                                    context.startActivity(i);
-                                }
+                            (dialog, which) -> {
+                                String url = "https://www.caixa.gov.br/sobre-a-caixa/governanca-corporativa/caixa-loterias/Paginas/default.aspx";
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse(url));
+                                context.startActivity(i);
                             }
                     )
                 );
-
 
                 break;
             default:
@@ -257,6 +261,11 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         }
 
         listTitleTextView.setContentDescription(description.toString());
+        if (EspecialUtils.isOutubroRosa()){
+            listTitleTextView.setTextColor(ContextCompat.getColor(context, R.color.outubro_rosa_secundario));
+            imagemMaisOpcoes.setBackground(VectorUtils.getShape(R.drawable.ic_seta, R.color.outubro_rosa_secundario));
+            imageViewGroup.getBackground().setTint(ContextCompat.getColor(context, R.color.outubro_rosa_secundario));
+        }
         convertView.setFocusable(false);
         convertView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         return convertView;

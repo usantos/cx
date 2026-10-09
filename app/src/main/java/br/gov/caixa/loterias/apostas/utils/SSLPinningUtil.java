@@ -45,24 +45,22 @@ public class SSLPinningUtil {
             HttpsURLConnection.setDefaultSSLSocketFactory(context1.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier((arg0, arg1) -> true);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
     public static RequestQueue pinagemPRD(Context ctx, ServicoEnum servico) {
-        InputStream inputStream = null;
-        if (servico == ServicoEnum.NUVEM   || servico == ServicoEnum.APOSTADOR){
-            inputStream = ctx.getResources().openRawResource(CertificadoNuvemSingleton.getInstance().getCertificadoAtual());
-
-            return new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
-        } else if (servico == ServicoEnum.SILCE){
-            inputStream = ctx.getResources().openRawResource(CertificadoSilceSingleton.getInstance().getCertificadoAtual());
-        } else if (servico == ServicoEnum.MICROSERVICO){
-            inputStream = ctx.getResources().openRawResource(CertificadoMicroServicoSingleton.getInstance().getCertificadoAtual());
+        InputStream inputStream;
+        switch (servico) {
+            case SILCE:
+                inputStream = ctx.getResources().openRawResource(CertificadoSilceSingleton.getInstance().getCertificadoAtual());
+                break;
+            case MICROSERVICO:
+                inputStream = ctx.getResources().openRawResource(CertificadoMicroServicoSingleton.getInstance().getCertificadoAtual());
+                break;
+            default:
+                //Se ServicoEnum for NUVEM, APOSTADOR ou BFF, não existe pinagem.
+                return new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
         }
-//        else {
-//            inputStream = ctx.getResources().openRawResource(CertificadoNovaAPISingleton.getInstance().getCertificadoAtual());
-//        }
 
         RequestQueue requestQueue = null;
         try {
@@ -101,7 +99,6 @@ public class SSLPinningUtil {
             };
             requestQueue = Volley.newRequestQueue(ctx, hurlStack);
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return requestQueue;

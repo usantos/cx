@@ -162,7 +162,11 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			valorPremioPorExtenso.setTextColor(corLetraLista);
 			concurso.setTextColor(corLetraLista);
 		} else {
-			cabecalho.setBackground(VectorUtils.getShape(R.drawable.rounded_card_cabecalho_bolao, estilo.getCorClara()));
+			if (EspecialUtils.isParametrosOutubroRosa() && bolao.getModalidade() == ModalidadeEnum.MEGA_SENA){
+				cabecalho.setBackground(VectorUtils.getShape(R.drawable.rounded_card_cabecalho_bolao, estilo.getCorEscura()));
+			} else {
+				cabecalho.setBackground(VectorUtils.getShape(R.drawable.rounded_card_cabecalho_bolao, estilo.getCorClara()));
+			}
 		}
 
 		btnDetalhes.setTextColor(corLetraLista);

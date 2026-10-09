@@ -538,7 +538,8 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
 
     private void buscaDetalhesCompras() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaSilceBO.getInstance().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        //ApostaSilceBO.getInstance().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        ServicoFactoryUtil.getComprasLegadoService().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 dataHoraServidor = response.getDataHoraServidor();

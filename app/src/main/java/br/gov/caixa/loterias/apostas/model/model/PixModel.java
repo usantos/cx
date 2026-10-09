@@ -26,7 +26,8 @@ public class PixModel extends AppModel {
 	public void gerarCodigoPix(OnSilceListener<GerarPixDTO> listener) {
 		MeioPagamentoPix meioPagamento = new MeioPagamentoPix(6, null, false, "");
 
-		ServicoFactoryUtil.getApostaService().gerarCodigoPix(meioPagamento, new RequestListener<GerarPixResponse>() {
+		//ServicoFactoryUtil.getApostaService().gerarCodigoPix(meioPagamento, new RequestListener<GerarPixResponse>() {
+		ServicoFactoryUtil.getComprasService().gerarCodigoPix(meioPagamento, new RequestListener<GerarPixResponse>() {
 			@Override
 			public void onResponse(GerarPixResponse response) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_entrou_formas_pagamento));

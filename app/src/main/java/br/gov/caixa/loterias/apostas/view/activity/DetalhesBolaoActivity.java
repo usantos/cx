@@ -79,7 +79,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private TextView textQtdDezenas, textQtdCotas;
 	private Button btnAdd, btnDiminui, btnAumenta;
 	private TextView tvQtdCotas;
-	private RecyclerView listaJogos;
+    private RecyclerView listaJogos;
 	private JogosBolaoRecyclerView listaAdapter;
 	private PartidasLotecaRecyclerViewAdapter partidasAdapter;
 	private SuperSeteRecyclerViewAdapter superSeteAdpter;
@@ -156,10 +156,14 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 			getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
 		}
 
-		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
-		tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
-		btnAdd.setBackground(VectorUtils.getShape(R.drawable.mkp_fundo_adicionar, estilo.getCorClara()));
-		btnAdd.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+		if (EspecialUtils.isParametrosOutubroRosa() && modalidade == ModalidadeEnum.MEGA_SENA){
+			tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+			tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+			} else {
+			tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
+			tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
+		}
+
 		textQtdDezenas.setTextColor(ContextCompat.getColor(this, R.color.cinza90));
 		textQtdCotas.setTextColor(ContextCompat.getColor(this, R.color.cinza90));
 	}
@@ -456,7 +460,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 
 	private void fragmentSomadorCarrinho() {
 		if(somadorCarrinhoFragment == null){
-			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, false);
+			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, true);
 		}else {
 			somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
 		}
