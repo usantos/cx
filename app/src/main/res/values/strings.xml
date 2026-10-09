@@ -1644,6 +1644,7 @@
     <string name="estado_vazio_mkp_descricao">Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente.</string>
     <string name="vazio_Lotericas_favoritas">Você ainda não possui nenhuma lotérica favorita.</string>
     <string name="sem_boloes_lotericas_favoritas">Esta lotérica não possui bolões disponíveis no momento.</string>
+    <string name="erro_busca_lotericas">Não foi possível atualizar a lista de lotericas favoritas.</string>
     <string name="msg_incluir_favorita">Deseja incluir %1$s na sua lista de favoritas?</string>
     <string name="msg_excluir_favorita">Deseja excluir %1$s da sua lista de favoritas?</string>
     <string name="loterica_favorita">Lotérica Favorita</string>
