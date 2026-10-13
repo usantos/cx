@@ -317,3 +317,7 @@ gradle-app.setting
 /app/.idea
 .idea
 .idea/*
+
+# Python caches produced by migration verification scripts
+__pycache__/
+*.py[cod]
