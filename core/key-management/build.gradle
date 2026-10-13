@@ -1,0 +1,42 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'jacoco'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+kotlin { jvmToolchain(17) }
+
+dependencies {
+    implementation libs.gson
+    implementation libs.kotlinx.coroutines.core
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+def coverageData = fileTree(layout.buildDirectory).include('jacoco/test.exec')
+def coverageClasses = files(fileTree(
+        dir: layout.buildDirectory.dir('classes/kotlin/main'),
+        includes: ['**/SignedKeySetVerifier*.class', '**/PublicKeySetRepository*.class']
+))
+
+tasks.register('jacocoTestCoverageReport', JacocoReport) {
+    dependsOn tasks.named('test')
+    executionData.setFrom(coverageData)
+    sourceDirectories.setFrom(files('src/main/java'))
+    classDirectories.setFrom(coverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+
+tasks.named('jacocoTestCoverageVerification', JacocoCoverageVerification).configure {
+    dependsOn tasks.named('jacocoTestCoverageReport')
+    executionData.setFrom(coverageData)
+    sourceDirectories.setFrom(files('src/main/java'))
+    classDirectories.setFrom(coverageClasses)
+    violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.95 } } }
+}
+
+tasks.named('check').configure { dependsOn tasks.named('jacocoTestCoverageVerification') }

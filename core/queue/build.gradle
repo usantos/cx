@@ -1,0 +1,62 @@
+apply plugin: 'com.android.library'
+apply plugin: 'jacoco'
+
+android {
+    namespace = 'br.gov.caixa.loterias.core.queue'
+    compileSdk 37
+    defaultConfig { minSdk 24 }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    testOptions {
+        unitTests.all {
+            jacoco.includeNoLocationClasses = true
+            jacoco.excludes = ['jdk.internal.*']
+        }
+    }
+}
+
+dependencies {
+    compileOnly files('../../third-party/FilaBRAAdapter-2.6.5.1.aar')
+    implementation libs.androidx.appcompat
+    implementation libs.gson
+    testImplementation libs.junit4
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+def coverageExecutionData = fileTree(layout.buildDirectory).include('jacoco/testDebugUnitTest.exec')
+def coverageSourceDirectories = files('src/main/java')
+def coverageClassDirectories = files(fileTree(
+        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        includes: ['**/QueueConsoleEventParser.class']
+))
+
+tasks.register('jacocoDebugCoverageReport', JacocoReport) {
+    dependsOn tasks.named('testDebugUnitTest')
+    executionData.from(coverageExecutionData)
+    sourceDirectories.from(coverageSourceDirectories)
+    classDirectories.from(coverageClassDirectories)
+    reports { xml.required = true; html.required = true }
+}
+
+tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoDebugCoverageReport')
+    executionData.from(coverageExecutionData)
+    sourceDirectories.from(coverageSourceDirectories)
+    classDirectories.from(coverageClassDirectories)
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.95
+            }
+        }
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn tasks.named('jacocoDebugCoverageVerification')
+}

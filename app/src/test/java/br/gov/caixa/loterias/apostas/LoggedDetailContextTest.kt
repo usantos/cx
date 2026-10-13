@@ -1,0 +1,111 @@
+package br.gov.caixa.loterias.apostas
+
+import br.gov.caixa.loterias.core.domain.betting.*
+import br.gov.caixa.loterias.core.domain.marketplace.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.retail.Retailer
+import br.gov.caixa.loterias.core.domain.tickets.*
+import java.math.BigDecimal
+import org.junit.Assert.*
+import org.junit.Test
+
+class LoggedDetailContextTest {
+    @Test fun restoresDetailAndSportsEditSeedForSameOwner() {
+        val team = SportsTeam(7, "Time", countryNumber = 55, selectionIndicator = true)
+        val match = SportsMatch(1, team, SportsTeam(2, "Visitante"), "Legenda", "A")
+        val bet = ConfirmedBet(17, "Loteca", 42, "05/10/2026", "Confirmada", listOf(1, 2),
+            prize = BigDecimal("123.45"), originalRecurringBet = true, redeemedPrize = true,
+            exchangeBetId = 25, modalityId = 9, statusId = 3, contestTypeId = 2, poolShare = true,
+            surprise = true, time = "12:34", numberColumns = listOf(listOf(1), listOf(2)),
+            clovers = listOf(3, 4), favoriteTeam = team, luckyMonth = LuckyMonth(5, "Maio", "MAI"),
+            lotecaSelections = listOf(LotecaMatchSelection(match, true, false, true)),
+            lotogolSelections = listOf(LotogolMatchSelection(match, 2, 1)), recurringDraws = 5,
+            quantity = 8, mirror = true, exchange = true, combo = true)
+        val purchase = Purchase(11, "05/10/2026", "Paga", "Pix", BigDecimal("99.01"), "pix", "expira", 3, 4, "12:34", "e2e")
+        val filter = MarketplaceFilter("1.23", "4.56", 1, 4, 5, 6, "123", "Mega", listOf(7, 8), listOf(9), 1, 2)
+        val retailer = Retailer(123, "001", "Nome", "Legal", "Rua", "Bairro", "Cidade", "SP", true)
+        val original = LoggedDetailContext("owner").apply {
+            selectedBet = bet; betToEdit = bet; selectedPurchase = purchase
+            marketplaceFilter = filter; selectedMarketplaceRetailer = retailer; checkedTicketBets = listOf(bet)
+        }
+        val restored = LoggedDetailContextCodec.restore(LoggedDetailContextCodec.save(original)!!, "owner")!!
+        assertEquals(bet, restored.selectedBet)
+        assertEquals(bet, restored.betToEdit)
+        assertEquals(purchase, restored.selectedPurchase)
+        assertEquals(filter, restored.marketplaceFilter)
+        assertEquals(retailer, restored.selectedMarketplaceRetailer)
+        assertEquals(listOf(bet), restored.checkedTicketBets)
+    }
+    @Test fun refusesAnotherOwnerAndLoggedOutSession() {
+        val bytes = LoggedDetailContextCodec.save(LoggedDetailContext("owner"))!!
+        assertNull(LoggedDetailContextCodec.restore(bytes, "another"))
+        assertNull(LoggedDetailContextCodec.restore(bytes, null))
+        assertNull(LoggedDetailContextCodec.save(LoggedDetailContext(null)))
+    }
+    @Test fun malformedAndOversizedPayloadsAreDiscarded() {
+        assertNull(LoggedDetailContextCodec.restore(byteArrayOf(1, 2, 3), "owner"))
+        assertNull(LoggedDetailContextCodec.restore(ByteArray(200_000), "owner"))
+        val context = LoggedDetailContext("owner").apply {
+            selectedPurchase = Purchase(1, "date", "status", "pix", BigDecimal.ONE, "x".repeat(200_000))
+        }
+        assertNull(LoggedDetailContextCodec.save(context))
+    }
+    @Test fun logoutClearRemovesAllPrivateSelections() {
+        val context = LoggedDetailContext("owner").apply {
+            selectedBet = ConfirmedBet(1, "Mega", 1, "date", "status", listOf(1))
+            betToEdit = selectedBet; checkedTicketBets = listOf(selectedBet!!)
+            marketplaceFilter = MarketplaceFilter.forModality(1, 2)
+        }
+        context.clear()
+        assertNull(context.selectedBet); assertNull(context.betToEdit)
+        assertEquals(emptyList<ConfirmedBet>(), context.checkedTicketBets)
+        assertEquals(MarketplaceFilter.empty(), context.marketplaceFilter)
+    }
+    @Test fun defersPrivateFieldsUntilSameOwnerAuthenticatesAgain() {
+        val original = LoggedDetailContext("owner").apply {
+            selectedBet = ConfirmedBet(17, "Mega", 42, "date", "Confirmada", listOf(1, 2))
+        }
+        val pending = LoggedDetailContextCodec.defer(LoggedDetailContextCodec.save(original)!!)!!
+        pending.reconcile(null)
+        assertEquals(DetailRestorationOutcome.Pending, pending.restorationOutcome)
+        assertNull(pending.selectedBet)
+        val recreatedBeforeAuthentication = LoggedDetailContextCodec.defer(LoggedDetailContextCodec.save(pending)!!)!!
+        recreatedBeforeAuthentication.reconcile("owner")
+        assertEquals(DetailRestorationOutcome.Restored, recreatedBeforeAuthentication.restorationOutcome)
+        assertEquals(original.selectedBet, recreatedBeforeAuthentication.selectedBet)
+    }
+    @Test fun foreignAuthenticationPermanentlyDiscardsPendingSnapshot() {
+        val original = LoggedDetailContext("owner").apply {
+            selectedBet = ConfirmedBet(17, "Mega", 42, "date", "Confirmada", listOf(1, 2))
+        }
+        val pending = LoggedDetailContextCodec.defer(LoggedDetailContextCodec.save(original)!!)!!
+        pending.reconcile("another")
+        assertEquals(DetailRestorationOutcome.Discarded, pending.restorationOutcome)
+        assertNull(pending.selectedBet)
+        pending.reconcile("owner")
+        assertNull(pending.selectedBet)
+    }
+    @Test fun explicitLogoutDiscardsPendingSnapshotBeforeAuthentication() {
+        val original = LoggedDetailContext("owner").apply {
+            selectedBet = ConfirmedBet(17, "Mega", 42, "date", "Confirmada", listOf(1, 2))
+        }
+        val pending = LoggedDetailContextCodec.defer(LoggedDetailContextCodec.save(original)!!)!!
+        pending.clear()
+        assertEquals(DetailRestorationOutcome.None, pending.restorationOutcome)
+        assertNull(LoggedDetailContextCodec.save(pending))
+        pending.reconcile("owner")
+        assertNull(pending.selectedBet)
+    }
+
+    @Test fun losingAuthenticationImmediatelyHidesCurrentPrivateFields() {
+        val bet = ConfirmedBet(17, "Mega", 42, "date", "Confirmada", listOf(1, 2))
+        val context = LoggedDetailContext("owner").apply { selectedBet = bet; betToEdit = bet }
+        context.reconcile(null)
+        assertNull(context.selectedBet)
+        assertNull(context.betToEdit)
+        assertEquals(DetailRestorationOutcome.Pending, context.restorationOutcome)
+        context.reconcile("owner")
+        assertEquals(bet, context.selectedBet)
+        assertEquals(bet, context.betToEdit)
+    }
+
+}

@@ -1,0 +1,70 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+apply plugin: 'jacoco'
+
+android {
+    namespace = 'br.gov.caixa.loterias.core.presentation'
+    compileSdk 37
+    defaultConfig {
+        minSdk 24
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    buildTypes { debug { enableAndroidTestCoverage = true } }
+    testCoverage { jacocoVersion = '0.8.13' }
+    buildFeatures { compose = true }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    api project(':core:domain')
+    coreLibraryDesugaring libs.desugar.jdk.libs
+    implementation project(':core:design-system')
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.material3
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.ui.tooling.preview
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.kotlinx.coroutines.core
+    debugImplementation libs.androidx.compose.ui.tooling
+    testImplementation libs.junit4
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    debugImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+}
+
+// The shared service-notice rules retain their own gate after extraction from retail.
+jacoco { toolVersion = '0.8.13' }
+def noticeCoverageData = fileTree(layout.buildDirectory).include('jacoco/testDebugUnitTest.exec', 'outputs/code_coverage/**/*.ec')
+def noticeCoverageClasses = files(fileTree(
+        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        includes: ['**/LegacyNoticeFormatting*.class', '**/ServiceNoticeRules*.class', '**/ServiceNoticeUiState*.class', '**/ServiceConnectionRules*.class', '**/ServiceFailure*.class', '**/ServiceRedirectEvent*.class']
+))
+tasks.register('verifyNoticeCoverageInputs') {
+    dependsOn tasks.named('testDebugUnitTest'), 'connectedDebugAndroidTest'
+    doLast {
+        if (noticeCoverageClasses.asFileTree.isEmpty() || noticeCoverageData.isEmpty()) {
+            throw new GradleException('Cobertura dos avisos compartilhados sem classes ou execução de testes.')
+        }
+    }
+}
+tasks.register('jacocoNoticeReport', JacocoReport) {
+    dependsOn tasks.named('verifyNoticeCoverageInputs')
+    executionData.from(noticeCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(noticeCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+tasks.register('jacocoNoticeVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoNoticeReport')
+    executionData.from(noticeCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(noticeCoverageClasses)
+    violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.9501 } } }
+}
+tasks.named('check').configure { dependsOn tasks.named('jacocoNoticeVerification') }

@@ -1,0 +1,19 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <size android:width="85dp" android:height="71dp" />
+            <solid android:color="#EE3E7F" />
+        </shape>
+    </item>
+    <item
+        android:left="90dp"
+        android:top="-113dp"
+        android:right="-200dp"
+        android:bottom="-50dp">
+        <rotate android:fromDegrees="20">
+            <shape android:shape="rectangle">
+                <solid android:color="#F4ADBC" />
+            </shape>
+        </rotate>
+    </item>
+</layer-list>

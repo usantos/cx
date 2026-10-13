@@ -1,0 +1,70 @@
+apply plugin: 'com.android.library'
+apply plugin: 'jacoco'
+
+android {
+    namespace = 'br.gov.caixa.loterias.core.preferences'
+    compileSdk 37
+    defaultConfig {
+        minSdk 24
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    buildTypes { debug { enableAndroidTestCoverage = true } }
+    testCoverage { jacocoVersion = '0.8.13' }
+    testOptions { unitTests.all { jacoco.includeNoLocationClasses = true; jacoco.excludes = ['jdk.internal.*'] } }
+}
+
+dependencies {
+    coreLibraryDesugaring libs.desugar.jdk.libs
+    implementation project(':core:domain')
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.gson
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+    androidTestImplementation libs.junit4
+    androidTestImplementation libs.kotlinx.coroutines.core
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+def preferencesCoverageData = fileTree(layout.buildDirectory).include(
+        'jacoco/testDebugUnitTest.exec', 'outputs/code_coverage/**/*.ec'
+)
+def preferencesCoverageClasses = files(fileTree(
+        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        includes: [
+                '**/SharedPreferencesOnboardingRepository.class',
+                '**/SharedPreferencesFavoriteCartUsageRepository.class',
+                '**/*RecentPurchase*.class',
+                '**/*LegacyLocalSessionDataRepository*.class',
+                '**/AndroidLegacySessionDataStore*.class',
+                '**/LegacyLocalCartReader*.class',
+                '**/*LegacyCart*.class'
+        ]
+))
+tasks.register('jacocoDebugCoverageReport', JacocoReport) {
+    dependsOn tasks.named('testDebugUnitTest')
+    dependsOn 'connectedDebugAndroidTest'
+    doFirst {
+        if (preferencesCoverageClasses.asFileTree.isEmpty() || preferencesCoverageData.isEmpty()) {
+            throw new GradleException('Preferences coverage requires compiled classes and test execution data.')
+        }
+    }
+    executionData.from(preferencesCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(preferencesCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoDebugCoverageReport')
+    executionData.from(preferencesCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(preferencesCoverageClasses)
+    violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.9501 } } }
+}
+tasks.named('check').configure { dependsOn tasks.named('jacocoDebugCoverageVerification') }

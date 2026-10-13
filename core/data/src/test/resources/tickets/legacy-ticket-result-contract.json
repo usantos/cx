@@ -1,0 +1,16 @@
+{
+  "payload": {
+    "situacao": {"valor": 103, "descricao": "PREMIADO_AINDA_CONCORRENDO"},
+    "valorPremio": 999.99,
+    "modalidade": {"valor": 2, "descricao": "MEGA_SENA"},
+    "premio": {
+      "id": 77, "valorLiquido": 123.45,
+      "concursos": [{"concurso": {"numero": 2800}, "situacao": "Premiado",
+        "faixas": [
+          {"id": 91, "nome": "Quadra", "quantidadeAcertos": 4, "sorteio": 1, "valorLiquido": 100.00, "valorPremioCota": 12.50},
+          {"id": 92, "nome": "Quina", "quantidadeAcertos": 5, "sorteio": 2, "valorLiquido": 110.95}
+        ]}],
+      "concursosNaoPremiado": [{"concurso": {"numero": 2801}, "situacao": "Não apurado"}]
+    }
+  }
+}

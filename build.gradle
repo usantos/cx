@@ -1,52 +1,29 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '2.1.0'
+        kotlin_version = '2.4.10'
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url = uri("https://plugins.gradle.org/m2/")
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.13.1'
-        classpath "com.google.gms:google-services:4.4.1"
-        classpath "com.google.firebase:firebase-crashlytics-gradle:2.9.9"
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
-        classpath "com.github.triplet.gradle:play-publisher:3.8.6"
+        classpath 'com.android.tools.build:gradle:9.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:$kotlin_version"
+        classpath 'com.google.devtools.ksp:symbol-processing-gradle-plugin:2.3.6'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.60.1'
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
-        maven { url "https://jitpack.io" }
-
-        maven {
-            url 'https://s3.amazonaws.com/fabric-artifacts-private/internal-snapshots'
-        }
-        maven {
-            url 'https://maven.fabric.io/public'
-        }
-        maven {
-            url 's3://mobile-artifacts-repo/releases'
-            credentials(AwsCredentials) {
-                accessKey "AKIAXZ36BNOEOOHHXSPJ" // Chave fornecida pelo time da Topaz OFD
-                secretKey "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" // Chave fornecida pelo time da Topaz OFD
-            }
-        }
-        maven {
-            url "https://artifacts.mercadolibre.com/repository/android-releases"
-        }
-
-        maven {
-            url("http://binario.caixa:8081/repository/releases/")
-            setAllowInsecureProtocol(true)
-        }
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
@@ -54,5 +31,366 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+tasks.register('verifyComposeMigration') {
+    group = 'verification'
+    description = 'Ensures the modern application graph contains no legacy UI artifacts.'
+    doLast {
+        def roots = [file('app'), file('core'), file('feature')]
+        def javaProductionSources = roots.collectMany { root ->
+            fileTree(root).matching { include '**/src/main/**/*.java' }.files
+        }
+        if (!javaProductionSources.isEmpty()) {
+            throw new GradleException("O aplicativo migrado deve usar Kotlin: ${javaProductionSources}")
+        }
+        if (file('app-compose').exists()) {
+            throw new GradleException('O módulo temporário app-compose não pode ser recriado; o aplicativo deve permanecer em :app.')
+        }
 
+        def requiredManifest = file('app/src/main/AndroidManifest.xml').canonicalFile
+        // Android desenha a pré-splash antes do runtime Compose; este style é configuração
+        // obrigatória da plataforma e não contém hierarquia de View/layout.
+        def requiredPlatformTheme = file('app/src/main/res/values/themes.xml').canonicalFile
+        def adaptiveIcon = file('app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml').canonicalFile
+        def adaptiveRoundIcon = file('app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml').canonicalFile
+        def allowedPlatformXml = [requiredManifest, requiredPlatformTheme, adaptiveIcon, adaptiveRoundIcon] as Set
+        // Recursos de desenho preservam os vetores/LayerDrawables originais; não são telas XML.
+        // A lista é explícita: qualquer novo XML requer auditoria e continua bloqueado por padrão.
+        def legacyResourceInventory = file('docs/LEGACY_DRAWABLE_RESOURCES.txt')
+        def allowedLegacyResourceXml = legacyResourceInventory.readLines('UTF-8')
+                .findAll { it.trim() && !it.startsWith('#') }.collect { file(it).canonicalFile } as Set
+        def drawingElements = ['vector', 'path', 'group', 'clip-path', 'shape', 'solid', 'stroke',
+                'corners', 'padding', 'size', 'gradient', 'layer-list', 'item', 'rotate', 'inset',
+                'selector', 'bitmap', 'scale', 'clip', 'level-list', 'transition', 'animated-vector', 'target'] as Set
+        allowedLegacyResourceXml.each { source ->
+            if (!source.isFile()) throw new GradleException("Recurso legado registrado ausente: ${source}")
+            def root = new groovy.xml.XmlSlurper(false, false).parse(source)
+            def isDrawing = source.parentFile.name.startsWith('drawable') &&
+                    root.depthFirst().every {
+                        drawingElements.contains(it.name()) ||
+                                (root.name() == 'vector' && it.name() == 'aapt:attr' &&
+                                        it.@name.text() in ['android:fillColor', 'android:strokeColor'])
+                    }
+            def nativeParityThemes = [
+                    file('feature/betting/src/main/res/values/rapid_picker_styles.xml').canonicalFile,
+                    file('feature/betting/src/main/res/values/betting_favorite_dialog_styles.xml').canonicalFile,
+                    file('feature/betting/src/main/res/values/betting_simulation_styles.xml').canonicalFile,
+            ] as Set
+            def isPickerTheme = nativeParityThemes.contains(source) &&
+                    root.name() == 'resources' && root.children().every { it.name() == 'style' } &&
+                    root.depthFirst().every { it.name() in ['resources', 'style', 'item'] }
+            if (!isDrawing && !isPickerTheme) {
+                throw new GradleException("Somente desenhos/tema nativo de paridade podem ser registrados; layout XML continua proibido: ${source}")
+            }
+        }
+        def unexpectedXml = roots.collectMany { root ->
+            fileTree(root).matching { include '**/src/**/*.xml' }.files
+        }.findAll { source ->
+            !allowedPlatformXml.contains(source.canonicalFile) && !allowedLegacyResourceXml.contains(source.canonicalFile)
+        }
+        if (!requiredManifest.isFile()) {
+            throw new GradleException('AndroidManifest.xml obrigatório ausente no módulo :app.')
+        }
+        if (!requiredPlatformTheme.isFile()) {
+            throw new GradleException('Tema de pré-splash obrigatório ausente no módulo :app.')
+        }
+        if (!adaptiveIcon.isFile() || !adaptiveRoundIcon.isFile()) {
+            throw new GradleException('Definições de ícone adaptativo obrigatórias ausentes no módulo :app.')
+        }
+        if (!unexpectedXml.isEmpty()) {
+            throw new GradleException("XML não permitido no código-fonte Compose: ${unexpectedXml}")
+        }
 
+        def forbiddenControllers = roots.collectMany { root ->
+            fileTree(root).matching {
+                include '**/src/main/**/*.kt', '**/src/main/**/*.java'
+            }.files
+        }.findAll { source ->
+            source.name != 'MainActivity.kt' &&
+                    (source.text =~ /\b(class|object)\s+\w*(Activity|Fragment)\b/).find()
+        }
+        if (!forbiddenControllers.isEmpty()) {
+            throw new GradleException("Activities/Fragments de feature encontrados: ${forbiddenControllers}")
+        }
+
+        def hosts = fileTree(file('app/src/main')).matching {
+            include '**/*.kt', '**/*.java'
+        }.files.findAll { source ->
+            (source.text =~ /\bclass\s+\w*Activity\b/).find()
+        }
+        if (hosts.size() != 1 || hosts.first().name != 'MainActivity.kt') {
+            throw new GradleException("O app deve ter exatamente uma Activity host; encontradas: ${hosts}")
+        }
+
+        def fragmentUsage = roots.collectMany { root ->
+            fileTree(root).matching { include '**/src/main/**/*.kt', '**/src/main/**/*.java' }.files
+        }.findAll { source ->
+            (source.text =~ /androidx\.fragment|\bclass\s+\w+\s*:\s*\w*Fragment\b/).find()
+        }
+        if (!fragmentUsage.isEmpty()) {
+            throw new GradleException("Uso de Fragment encontrado: ${fragmentUsage}")
+        }
+    }
+}
+
+tasks.register('verifyLegacyUiInventory') {
+    group = 'verification'
+    description = 'Requires an explicit Compose replacement for every legacy setContentView entry.'
+    doLast {
+        def inventory = file('docs/LEGACY_UI_INVENTORY.tsv')
+        def layoutBaseline = file('docs/LEGACY_LAYOUT_BASELINE.txt')
+        def composeRouteCatalog = file('docs/COMPOSE_ROUTES.txt')
+        if (!inventory.isFile()) throw new GradleException('Inventário da UI legada ausente.')
+        if (!layoutBaseline.isFile()) throw new GradleException('Baseline completa dos layouts legados ausente.')
+        if (!composeRouteCatalog.isFile()) throw new GradleException('Catálogo executável das rotas Compose ausente.')
+        def legacyLayouts = layoutBaseline.readLines('UTF-8').findAll { !it.trim().isEmpty() }
+        if (legacyLayouts.size() != 396 || legacyLayouts.toSet().size() != 396 || legacyLayouts.any { !it.endsWith('.xml') }) {
+            throw new GradleException("A baseline deve preservar os 396 layouts XML legados; encontrados: ${legacyLayouts.size()}")
+        }
+        def composeRoutes = composeRouteCatalog.readLines('UTF-8').findAll { !it.trim().isEmpty() }
+        // 77 destinos/estados navegáveis + Home e filtro. Telas legadas absorvidas por
+        // componentes internos são registradas após `#` no inventário, não como rotas.
+        if (composeRoutes.size() != 79 || composeRoutes.toSet().size() != 79) {
+            throw new GradleException("O catálogo deve conter os 79 destinos Compose únicos; encontrados: ${composeRoutes.size()}")
+        }
+        def lines = inventory.readLines('UTF-8').findAll { !it.trim().isEmpty() }
+        if (lines.first() != 'legacy_owner\tlegacy_layout\tcompose_target\tdisposition') {
+            throw new GradleException('Cabeçalho inválido em LEGACY_UI_INVENTORY.tsv.')
+        }
+        def rows = lines.drop(1).collect { line -> line.split('\t', -1) }
+        if (rows.size() != 95 || rows.any { it.size() != 4 }) {
+            throw new GradleException("O inventário deve conter os 95 pontos legados com quatro colunas; encontrados: ${rows.size()}")
+        }
+        def duplicateKeys = rows.groupBy { "${it[0]}|${it[1]}" }.findAll { key, values -> values.size() > 1 }.keySet()
+        if (!duplicateKeys.isEmpty()) throw new GradleException("Entradas legadas duplicadas: ${duplicateKeys}")
+        def invalidDisposition = rows.findAll { it[3] !in ['compose', 'removed-debug-ui', 'replaced-platform-ui'] }
+        if (!invalidDisposition.isEmpty()) throw new GradleException("Situação não auditada: ${invalidDisposition}")
+
+        def sourceText = [file('app/src/main'), file('feature')].collectMany { root ->
+            fileTree(root).matching { include '**/*.kt', '**/*.java' }.files
+        }.collect { it.text }.join('\n')
+        def missingRoutes = rows.findAll { it[3] == 'compose' }.collect { it[2].split('#')[0] }.unique().findAll { route ->
+            route !in ['home', 'marketplace/filter'] && !sourceText.contains('"' + route + '"')
+        }
+        if (!missingRoutes.isEmpty()) throw new GradleException("Alvos Compose ausentes do catálogo: ${missingRoutes}")
+        def uncataloguedTargets = rows.findAll { it[3] == 'compose' }
+                .collect { it[2].split('#')[0] }.unique().findAll { !(it in composeRoutes) }
+        if (!uncataloguedTargets.isEmpty()) throw new GradleException("Alvos fora de COMPOSE_ROUTES.txt: ${uncataloguedTargets}")
+    }
+}
+
+tasks.register('verifyCleanArchitecture') {
+    group = 'verification'
+    description = 'Enforces inward dependencies for Domain, Data and feature presentation.'
+    doLast {
+        def domainSources = fileTree(file('core/domain/src/main')).matching {
+            include '**/*.kt', '**/*.java'
+        }.files
+        def invalidDomain = domainSources.findAll { source ->
+            (source.text =~ /import\s+(android|androidx|retrofit2|okhttp3|br\.gov\.caixa\.loterias\.core\.(data|network|auth|queue))/).find()
+        }
+        if (!invalidDomain.isEmpty()) {
+            throw new GradleException("Domain depende de camada externa: ${invalidDomain}")
+        }
+
+        def featureSources = fileTree(file('feature')).matching {
+            include '**/src/main/**/*.kt', '**/src/main/**/*.java'
+        }.files
+        def featureInfrastructureImports = featureSources.findAll { source ->
+            (source.text =~ /import\s+br\.gov\.caixa\.loterias\.core\.(data|network)\b/).find()
+        }
+        if (!featureInfrastructureImports.isEmpty()) {
+            throw new GradleException("Feature acessa Data/Network diretamente: ${featureInfrastructureImports}")
+        }
+
+        def viewModelsUsingRepositories = featureSources.findAll { source ->
+            source.name.endsWith('ViewModel.kt') &&
+                    (source.text =~ /import\s+.*Repository\b/).find()
+        }
+        if (!viewModelsUsingRepositories.isEmpty()) {
+            throw new GradleException("ViewModel deve depender de UseCase, não Repository: ${viewModelsUsingRepositories}")
+        }
+
+        def repositoryImplementations = fileTree(file('core/data/src/main')).matching {
+            include '**/*Repository*.kt', '**/*Repository*.java'
+        }.files
+        def repositoriesUsingRetrofit = repositoryImplementations.findAll { source ->
+            (source.text =~ /\bLoteriasApi\b|retrofit2\./).find()
+        }
+        if (!repositoriesUsingRetrofit.isEmpty()) {
+            throw new GradleException("Repository deve acessar a API por DataSource: ${repositoriesUsingRetrofit}")
+        }
+
+        def hiltApplication = file('app/src/main/java/br/gov/caixa/loterias/apostas/LoteriasApplication.kt').text
+        def host = file('app/src/main/java/br/gov/caixa/loterias/apostas/MainActivity.kt').text
+        def module = file('app/src/main/java/br/gov/caixa/loterias/apostas/di/ApplicationModule.kt').text
+        if (!hiltApplication.contains('@HiltAndroidApp') ||
+                !host.contains('@AndroidEntryPoint') ||
+                !module.contains('@InstallIn(SingletonComponent::class)')) {
+            throw new GradleException('O composition root deve usar Hilt no Application, host e módulo Singleton.')
+        }
+    }
+}
+
+tasks.register('modernCheck') {
+    group = 'verification'
+    description = 'Runs build, lint, tests, coverage gates and Compose architecture checks.'
+    dependsOn 'verifyComposeMigration', 'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyCleanArchitecture', 'verifyCaixaDS', 'verifyFilaBraAar', 'verifyNetworkSecurity', 'verifyAppIdentityAndFlavors',
+            ':app:assembleDebug',
+            ':app:testPrdDebugUnitTest', ':app:testTqsDebugUnitTest', ':app:testAutomacaoDebugUnitTest',
+            ':app:lintPrdDebug', ':app:lintTqsDebug', ':app:lintAutomacaoDebug',
+            ':core:common:check', ':core:domain:check', ':core:data:check', ':core:auth:check', ':core:design-system:check', ':core:key-management:check', ':core:network:check', ':core:queue:check', ':core:presentation:check', ':core:preferences:check',
+            ':feature:marketplace-filter:check', ':feature:marketplace:check',
+            ':feature:onboarding:check', ':feature:account:check',
+            ':feature:betting:check', ':feature:cart:check', ':feature:payment:check',
+            ':feature:support:check', ':feature:tickets:check', ':feature:results:check',
+            ':feature:responsible-gaming:check', ':feature:notifications:check', ':feature:retail:check', ':feature:home:check'
+}
+
+// AGP 9.2 lint consulta as fontes Java geradas pelo Hilt de outros variants. Executar
+// os três analyzers simultaneamente pode remover/recriar esses diretórios no meio da
+// análise. A matriz continua completa, mas é deliberadamente serializada por flavor.
+project(':app').tasks.configureEach { task ->
+    if (task.name in ['testPrdDebugUnitTest', 'testTqsDebugUnitTest', 'testAutomacaoDebugUnitTest']) {
+        task.mustRunAfter ':app:assembleDebug'
+    } else if (task.name == 'lintPrdDebug') {
+        task.mustRunAfter ':app:testPrdDebugUnitTest', ':app:testTqsDebugUnitTest', ':app:testAutomacaoDebugUnitTest'
+    } else if (task.name == 'lintTqsDebug') {
+        task.mustRunAfter ':app:lintPrdDebug'
+    } else if (task.name == 'lintAutomacaoDebug') {
+        task.mustRunAfter ':app:lintTqsDebug'
+    }
+}
+
+tasks.register('releaseCheck') {
+    group = 'verification'
+    description = 'Builds every minified release flavor and validates legacy backend parity.'
+    dependsOn 'verifyLegacyBackendParity', 'verifyNetworkSecurity',
+            ':app:assemblePrdRelease', ':app:assembleTqsRelease', ':app:assembleAutomacaoRelease'
+}
+
+tasks.register('verifyLegacyBackendParity') {
+    group = 'verification'
+    description = 'Prevents any backend operation used by the legacy app from being omitted from Retrofit.'
+    doLast {
+        def baseline = file('docs/LEGACY_BACKEND_BASELINE.tsv')
+        if (!baseline.isFile()) throw new GradleException('Baseline dos serviços legados ausente.')
+        def lines = baseline.readLines('UTF-8').findAll { !it.trim().isEmpty() }
+        if (lines.first() != 'method\tpath') throw new GradleException('Cabeçalho inválido em LEGACY_BACKEND_BASELINE.tsv.')
+        def expected = lines.drop(1) as Set
+        if (expected.size() != 99) {
+            throw new GradleException("A baseline deve conter as 99 operações usadas no legado; encontradas: ${expected.size()}")
+        }
+
+        def apiText = fileTree(file('core/network/src/main')).matching { include '**/*Api.kt' }
+                .files.collect { it.getText('UTF-8') }.join('\n')
+        def matcher = apiText =~ /@(GET|POST|PUT|DELETE|PATCH)\("([^"]+)"\)/
+        def migrated = [] as Set
+        matcher.each { match -> migrated.add("${match[1]}\t${match[2]}") }
+        def missing = expected - migrated
+        if (!missing.isEmpty()) {
+            throw new GradleException("Operações do backend legado ausentes no Retrofit: ${missing.sort()}")
+        }
+    }
+}
+
+tasks.register('verifyAppIdentityAndFlavors') {
+    group = 'verification'
+    description = 'Ensures the official application namespace and environment matrix remain configured.'
+    doLast {
+        def appBuild = file('app/build.gradle').text
+        def requiredSnippets = [
+                "namespace = 'br.gov.caixa.loterias.apostas'",
+                "applicationId 'br.gov.caixa.loterias.apostas'",
+                'productFlavors',
+                'prd {',
+                'tqs {',
+                'automacao {',
+        ]
+        def missing = requiredSnippets.findAll { !appBuild.contains(it) }
+        if (!missing.isEmpty()) {
+            throw new GradleException("Identidade ou flavors obrigatórias ausentes: ${missing}")
+        }
+        def unexpectedPackage = fileTree(file('app/src')).matching {
+            include '**/*.kt', '**/*.java'
+        }.files.findAll { source -> source.text.contains('br.gov.caixa.loterias.compose') }
+        if (!unexpectedPackage.isEmpty()) {
+            throw new GradleException("Pacote temporário compose ainda referenciado: ${unexpectedPackage}")
+        }
+    }
+}
+
+tasks.register('verifyNetworkSecurity') {
+    group = 'verification'
+    description = 'Checks TLS pinning, release logging and its operational documentation.'
+    doLast {
+        def activeRoots = [file('app/src/main'), file('core/network/src/main'), file('core/key-management/src/main')]
+        def sources = activeRoots.collectMany { root ->
+            fileTree(root).matching { include '**/*.kt', '**/*.java' }.files
+        }
+        def unsafeTls = sources.findAll { source ->
+            (source.text =~ /(?i)(trustAll|allowAllHostname|HostnameVerifier|X509TrustManager)/).find()
+        }
+        if (!unsafeTls.isEmpty()) {
+            throw new GradleException("Implementação TLS permissiva no grafo moderno: ${unsafeTls}")
+        }
+
+        def appBuild = file('app/build.gradle').text
+        if (!(appBuild =~ /release\s*\{[\s\S]*?ENABLE_NETWORK_LOGGING',\s*'false'/).find()) {
+            throw new GradleException('Logs de rede devem permanecer desabilitados em release.')
+        }
+        if (!(appBuild =~ /release\s*\{[\s\S]*?ENABLE_MOCK_BACKEND',\s*'false'/).find()) {
+            throw new GradleException('O backend mock deve permanecer desabilitado em release.')
+        }
+        if (!file('docs/SECURE_PIN_ROTATION.md').isFile()) {
+            throw new GradleException('Documentação operacional da rotação de pins ausente.')
+        }
+        if (!file('docs/MOCK_BACKEND.md').isFile()) {
+            throw new GradleException('Documentação operacional do backend mock ausente.')
+        }
+    }
+}
+
+tasks.register('verifyCaixaDS') {
+    group = 'verification'
+    description = 'Enforces CaixaDS as the visual contract of Compose features.'
+    doLast {
+        def consumerRoots = [file('app'), file('core/presentation'), file('feature')]
+        def sources = consumerRoots.collectMany { root ->
+            fileTree(root).matching { include '**/src/main/**/*.kt' }.files
+        }
+        def literalColors = sources.findAll { source ->
+            (source.text =~ /Color\s*\(\s*0[xX][0-9A-Fa-f]+/).find() ||
+                    (source.text =~ /Color\.(White|Black|Red|Blue|Green|Yellow)\b/).find()
+        }
+        if (!literalColors.isEmpty()) {
+            throw new GradleException("Cores literais fora do CaixaDS: ${literalColors}")
+        }
+
+        def appHost = file('app/src/main/java/br/gov/caixa/loterias/apostas/MainActivity.kt')
+        if (!appHost.text.contains('CaixaDSTheme')) {
+            throw new GradleException('MainActivity deve aplicar CaixaDSTheme no conteúdo Compose.')
+        }
+        if (!file('docs/CAIXA_DS.md').isFile()) {
+            throw new GradleException('Documentação do CaixaDS ausente.')
+        }
+    }
+}
+
+tasks.register('verifyFilaBraAar') {
+    group = 'verification'
+    description = 'Checks the pinned FilaBRA binary before packaging.'
+    doLast {
+        def aar = file('third-party/FilaBRAAdapter-2.6.5.1.aar')
+        def expected = 'a27b67e45b6e9aa58346f90d61d18bed11160baf24f577d6c8119ba50bdf2bdd'
+        if (!aar.isFile()) throw new GradleException("FilaBRA AAR ausente: ${aar}")
+        def digest = java.security.MessageDigest.getInstance('SHA-256')
+        aar.withInputStream { stream ->
+            byte[] buffer = new byte[8192]
+            for (int read = stream.read(buffer); read != -1; read = stream.read(buffer)) {
+                digest.update(buffer, 0, read)
+            }
+        }
+        def actual = digest.digest().encodeHex().toString()
+        if (actual != expected) throw new GradleException("Checksum FilaBRA inválido: ${actual}")
+    }
+}

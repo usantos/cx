@@ -1,0 +1,38 @@
+apply from: rootProject.file('gradle/compose-feature.gradle')
+apply plugin: 'jacoco'
+android { namespace = 'br.gov.caixa.loterias.feature.onboarding' }
+
+dependencies {
+    implementation project(':core:domain')
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.lottie.compose
+    testImplementation libs.kotlinx.coroutines.test
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    debugImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+def onboardingCoverageData = fileTree(layout.buildDirectory).include('jacoco/testDebugUnitTest.exec')
+def onboardingCoverageClasses = files(fileTree(
+        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        includes: ['**/StartupViewModel*.class', '**/StartupStatusContentKt.class', '**/StartupStatusKind.class', '**/OnboardingViewModel*.class', '**/OnboardingUiState*.class']
+))
+tasks.register('jacocoDebugCoverageReport', JacocoReport) {
+    dependsOn tasks.named('testDebugUnitTest')
+    executionData.from(onboardingCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(onboardingCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoDebugCoverageReport')
+    executionData.from(onboardingCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(onboardingCoverageClasses)
+    violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.95 } } }
+}
+tasks.named('check').configure { dependsOn tasks.named('jacocoDebugCoverageVerification') }

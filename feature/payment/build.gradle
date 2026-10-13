@@ -1,0 +1,62 @@
+apply from: rootProject.file('gradle/compose-feature.gradle')
+apply plugin: 'jacoco'
+android {
+    namespace = 'br.gov.caixa.loterias.feature.payment'
+    defaultConfig { testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
+}
+
+dependencies {
+    implementation project(':core:domain')
+    implementation libs.androidx.activity.compose
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.kotlinx.coroutines.core
+    testImplementation libs.kotlinx.coroutines.test
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    debugImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+def paymentCoverageData = fileTree(layout.buildDirectory).include('jacoco/testDebugUnitTest.exec')
+def paymentCoverageClasses = files(fileTree(
+        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        includes: [
+                '**/PaymentRulesKt.class',
+                '**/PurchaseNoticeRulesKt.class',
+                '**/PurchaseNoticeUiState*.class',
+                '**/MercadoPagoRegistrationViewModel*.class',
+                '**/MercadoPagoRegistrationUiState*.class',
+                '**/MercadoPagoRegistrationConsent*.class',
+                '**/PaymentViewModel*.class',
+                '**/PaymentUiState*.class',
+                '**/PaymentCardViewModel*.class',
+                '**/PaymentCardUiState*.class',
+                '**/PaymentTerminalViewModel*.class',
+                '**/PaymentTerminalUiState*.class'
+        ]
+))
+tasks.register('verifyPaymentCoverageInputs') {
+    dependsOn tasks.named('testDebugUnitTest')
+    doLast {
+        if (paymentCoverageClasses.asFileTree.isEmpty() || paymentCoverageData.isEmpty()) {
+            throw new GradleException('Cobertura de pagamento sem classes ou execução de testes.')
+        }
+    }
+}
+tasks.register('jacocoDebugCoverageReport', JacocoReport) {
+    dependsOn tasks.named('verifyPaymentCoverageInputs')
+    executionData.from(paymentCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(paymentCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoDebugCoverageReport')
+    executionData.from(paymentCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(paymentCoverageClasses)
+    violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.9501 } } }
+}
+tasks.named('check').configure { dependsOn tasks.named('jacocoDebugCoverageVerification') }

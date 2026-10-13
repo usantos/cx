@@ -1,0 +1,56 @@
+apply from: rootProject.file('gradle/compose-feature.gradle')
+android { namespace = 'br.gov.caixa.loterias.feature.results' }
+apply plugin: 'jacoco'
+
+android {
+    testOptions {
+        unitTests.all {
+            jacoco.includeNoLocationClasses = true
+            jacoco.excludes = ['jdk.internal.*']
+        }
+    }
+}
+
+dependencies {
+    implementation libs.androidx.activity.compose
+    implementation project(':core:domain')
+    implementation project(':core:design-system')
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.kotlinx.coroutines.core
+    testImplementation libs.kotlinx.coroutines.test
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+def resultCoverageData = fileTree(layout.buildDirectory).include('jacoco/testDebugUnitTest.exec')
+def resultCoverageClasses = files(fileTree(
+        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        includes: ['**/ResultsViewModel.class', '**/ResultsUiState.class']
+))
+
+tasks.register('jacocoDebugCoverageReport', JacocoReport) {
+    dependsOn tasks.named('testDebugUnitTest')
+    executionData.from(resultCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(resultCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+
+tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoDebugCoverageReport')
+    executionData.from(resultCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(resultCoverageClasses)
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.95
+            }
+        }
+    }
+}
+
+tasks.named('check').configure { dependsOn tasks.named('jacocoDebugCoverageVerification') }

@@ -1,0 +1,47 @@
+apply from: rootProject.file('gradle/compose-feature.gradle')
+apply plugin: 'jacoco'
+android {
+    namespace = 'br.gov.caixa.loterias.feature.notifications'
+    defaultConfig { testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
+    buildTypes { debug { enableAndroidTestCoverage = true } }
+    testCoverage { jacocoVersion = '0.8.13' }
+}
+
+dependencies {
+    implementation project(':core:domain')
+    testImplementation libs.kotlinx.coroutines.test
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    debugImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+}
+
+jacoco { toolVersion = '0.8.13' }
+def notificationCoverageData = fileTree(layout.buildDirectory).include('jacoco/testDebugUnitTest.exec', 'outputs/code_coverage/**/*.ec')
+def notificationCoverageClasses = files(fileTree(
+        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        includes: ['**/*.class']
+))
+tasks.register('verifyNotificationCoverageInputs') {
+    dependsOn tasks.named('testDebugUnitTest'), 'connectedDebugAndroidTest'
+    doLast {
+        if (notificationCoverageClasses.asFileTree.isEmpty() || notificationCoverageData.isEmpty()) {
+            throw new GradleException('Cobertura de notificações sem classes ou execução de testes.')
+        }
+    }
+}
+tasks.register('jacocoDebugTestReport', JacocoReport) {
+    dependsOn tasks.named('verifyNotificationCoverageInputs')
+    executionData.from(notificationCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(notificationCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoDebugTestReport')
+    executionData.from(notificationCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(notificationCoverageClasses)
+    violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.9501 } } }
+}
+tasks.named('check').configure { dependsOn tasks.named('jacocoDebugCoverageVerification') }

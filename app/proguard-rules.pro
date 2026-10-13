@@ -1,115 +1,60 @@
-# Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in /Users/igorvilar/Library/Android/sdk/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
-# directive in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Keep generic type information and annotations consumed by Retrofit/Gson/AppAuth.
+-keepattributes Signature,InnerClasses,EnclosingMethod
+-keepattributes RuntimeVisibleAnnotations,RuntimeInvisibleAnnotations,AnnotationDefault,Exceptions
 
-# Add any project specific keep options here:
+# Retrofit creates implementations of these interfaces with java.lang.reflect.Proxy.
+-keep interface br.gov.caixa.loterias.core.network.LoteriasApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.LegacyBackendApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.BetsHistoryApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.MercadoPagoApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.RecargaPayApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.PurchaseBackendApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.AccountVerificationBackendApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.NotificationReadApi { *; }
+-keepclasseswithmembers,allowshrinking,allowoptimization,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Gson deserializes API payloads reflectively. Names may be obfuscated because wire names are
+# fixed by @SerializedName, but fields and constructors must remain available.
+-keepclassmembers,allowobfuscation class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+-keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.network.ApiEnvelope { *; }
+-keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.network.**Dto { *; }
+# Shared HTTP error metadata is also read reflectively and intentionally is not a UI/domain model.
+-keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.network.BackendErrorMetadata { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Hilt/KSP normally ships consumer rules; retain DI entry points and generated components as a
+# defensive rule for release builds that use R8 full mode.
+-keep @dagger.hilt.EntryPoint class * { *; }
+-keep @dagger.hilt.android.HiltAndroidApp class * { *; }
+-keep class br.gov.caixa.loterias.apostas.Hilt_* { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
-
-# Firebase
--keep class com.google.firebase.** { *; }
--dontwarn com.google.firebase.**
-
-# AppAuth
+# Browser authentication state is persisted/deserialized by AppAuth.
 -keep class net.openid.appauth.** { *; }
 -dontwarn net.openid.appauth.**
 
-# Gson
--keep class com.google.gson.** { *; }
--dontwarn com.google.gson.**
+# Firebase supplies consumer rules, but Remote Config/Crash reporting are release-critical.
+-keep class com.google.firebase.remoteconfig.** { *; }
+-keep class com.google.firebase.messaging.** { *; }
+-dontwarn com.google.firebase.**
 
-# Glide
--keep class com.bumptech.glide.** { *; }
--keep class com.bumptech.glide.load.** { *; }
--dontwarn com.bumptech.glide.**
+# The homologated FilaBRA binary has no consumer-rules.pro inside the AAR and uses reflection.
+-keep class br.com.caixa.filabra.** { *; }
+-keep class br.gov.caixa.filabra.** { *; }
+-keep class com.caixa.filabra.** { *; }
+-keep class com.filabra.adapter.** { *; }
+-dontwarn br.com.caixa.filabra.**
+-dontwarn br.gov.caixa.filabra.**
+-dontwarn com.caixa.filabra.**
+-dontwarn com.filabra.adapter.**
 
-# ZXing (scanner de código de barras)
--keep class com.journeyapps.barcodescanner.** { *; }
--dontwarn com.journeyapps.barcodescanner.**
+# Preserve actionable production stack traces while keeping source file paths private.
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# AppCenter
--keep class com.microsoft.appcenter.** { *; }
--dontwarn com.microsoft.appcenter.**
-
-# Joda-Time
--keep class org.joda.time.** { *; }
--dontwarn org.joda.time.**
-
-# Volley
--keep class com.android.volley.** { *; }
--dontwarn com.android.volley.**
-
-# Lottie
--keep class com.airbnb.lottie.** { *; }
--dontwarn com.airbnb.lottie.**
-
-# RootBeer
--keep class com.scottyab.rootbeer.** { *; }
--dontwarn com.scottyab.rootbeer.**
-
-# MercadoLibre SDK
--keep class com.mercadolibre.android.device.** { *; }
--dontwarn com.mercadolibre.android.device.**
-
-# Topaz OFD
--keep class br.com.topaz.** { *; }
--dontwarn br.com.topaz.**
-
-# Swagger
--keep class io.swagger.annotations.** { *; }
--dontwarn io.swagger.annotations.**
-
-# Apache Commons
--keep class org.apache.commons.** { *; }
--dontwarn org.apache.commons.**
-
-# MaskedEditText
--keep class com.github.pinball83.** { *; }
--dontwarn com.github.pinball83.**
-
-# CurrencyEditText
--keep class com.github.BlacKCaT27.** { *; }
--dontwarn com.github.BlacKCaT27.**
-
-# CircleIndicator
--keep class me.relex.circleindicator.** { *; }
--dontwarn me.relex.circleindicator.**
-
-# QR Generator
--keep class androidmads.library.qrgenearator.** { *; }
--dontwarn androidmads.library.qrgenearator.**
-
-# Flexbox (se estiver usando a versão AAR)
--keep class com.google.android.flexbox.** { *; }
--dontwarn com.google.android.flexbox.**
-
-# Reflection (WebView JS interface)
+# Android WebView JavaScript bridges, if a receipt flow exposes one.
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
-}
-
-# Preserva nomes de arquivos e linhas para stacktraces
--keepattributes SourceFile,LineNumberTable
-
-# Preserva todos os campos da classe BuildConfig
--keep class **.BuildConfig {
-    <fields>;
 }

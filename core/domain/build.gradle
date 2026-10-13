@@ -1,0 +1,72 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'jacoco'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+kotlin { jvmToolchain(17) }
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    api project(':core:common')
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation libs.kotlinx.coroutines.test
+}
+
+jacoco {
+    toolVersion = '0.8.13'
+}
+
+// Domain models are also exercised by the real DTO/SQLite migration contract tests.
+// Merge their execution data against these same Domain classes rather than duplicating tests.
+def domainCoverageExecution = files(
+        fileTree(layout.buildDirectory).include('jacoco/test.exec'),
+        fileTree(project(':core:data').layout.buildDirectory).include('jacoco/test.exec'),
+        fileTree(project(':core:preferences').layout.buildDirectory).include('jacoco/testDebugUnitTest.exec')
+)
+def domainCoverageClasses = files(sourceSets.main.output)
+def domainCoverageSources = files('src/main/java', 'src/main/kotlin')
+
+tasks.register('verifyDomainCoverageInputs') {
+    dependsOn tasks.named('test')
+    dependsOn ':core:data:test', ':core:preferences:testDebugUnitTest'
+    doLast {
+        if (domainCoverageExecution.isEmpty() || domainCoverageClasses.asFileTree.matching { include '**/*.class' }.isEmpty()) {
+            throw new GradleException('Cobertura de domain sem classes ou execução de testes.')
+        }
+    }
+}
+
+tasks.named('jacocoTestReport', JacocoReport).configure {
+    dependsOn tasks.named('verifyDomainCoverageInputs')
+    executionData.setFrom(domainCoverageExecution)
+    sourceDirectories.setFrom(domainCoverageSources)
+    classDirectories.setFrom(domainCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+
+tasks.named('jacocoTestCoverageVerification', JacocoCoverageVerification).configure {
+    dependsOn tasks.named('jacocoTestReport')
+    executionData.setFrom(domainCoverageExecution)
+    sourceDirectories.setFrom(domainCoverageSources)
+    classDirectories.setFrom(domainCoverageClasses)
+
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.9501
+            }
+        }
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn tasks.named('jacocoTestCoverageVerification')
+}

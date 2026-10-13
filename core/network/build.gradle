@@ -1,0 +1,103 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'jacoco'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+kotlin { jvmToolchain(17) }
+
+dependencies {
+    implementation project(':core:key-management')
+    api libs.retrofit
+    api libs.gson
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.okhttp
+    implementation libs.retrofit.converter.gson
+
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.okhttp.mockwebserver
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+// Repository contract tests exercise the actual HTTP clients, providers and envelopes.
+def networkCoverageData = files(
+        fileTree(layout.buildDirectory).include('jacoco/test.exec'),
+        fileTree(project(':core:data').layout.buildDirectory).include('jacoco/test.exec')
+)
+def networkCoverageSources = files('src/main/java')
+def networkCoverageClasses = files(fileTree(
+        dir: layout.buildDirectory.dir('classes/kotlin/main'),
+        includes: [
+                '**/BearerTokenInterceptor.class',
+                '**/SilceTransportInterceptor*.class',
+                '**/CloudBackendRouting*.class',
+                '**/NetworkClientFactory.class',
+                '**/PinnedHostInterceptor*.class',
+                '**/CurlLoggingInterceptor.class',
+                '**/MockBackendInterceptor.class',
+                '**/ServerTimeAdapterFactory*.class',
+                '**/PurchaseBackendClient*.class',
+                '**/PurchaseBackendResponse*.class',
+                '**/PurchaseBackendApiProvider*.class',
+                '**/PurchaseProcessingDto*.class',
+                '**/PurchaseEnvelopeDto*.class',
+                '**/PurchaseErrorEnvelopeDto*.class',
+                '**/MercadoPagoRegistrationEnvelopeDto*.class',
+                '**/PrizeRedemptionEnvelopeDto*.class',
+                '**/PrizeBackendApiProvider*.class',
+                '**/SingleAttemptTransactionInterceptor*.class',
+                '**/BackendHttpFailure*.class',
+                '**/BackendErrorMetadata*.class',
+                '**/PurchaseHttpException*.class',
+                '**/LegacyCart*Dto*.class',
+                '**/AccountVerificationRequestDto*.class',
+                '**/AccountVerification*.class',
+                '**/AccountSessionDto*.class',
+                '**/AccountNotificationDto*.class',
+                '**/NotificationRead*.class',
+        ]
+))
+
+tasks.register('verifyNetworkCoverageInputs') {
+    dependsOn tasks.named('test'), ':core:data:test'
+    doLast {
+        if (networkCoverageClasses.asFileTree.isEmpty() || networkCoverageData.isEmpty()) {
+            throw new GradleException('Cobertura de rede sem classes ou execução de testes.')
+        }
+    }
+}
+tasks.register('jacocoTestCoverageReport', JacocoReport) {
+    dependsOn tasks.named('verifyNetworkCoverageInputs')
+    executionData.setFrom(networkCoverageData)
+    sourceDirectories.setFrom(networkCoverageSources)
+    classDirectories.setFrom(networkCoverageClasses)
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+tasks.named('jacocoTestCoverageVerification', JacocoCoverageVerification).configure {
+    dependsOn tasks.named('jacocoTestCoverageReport')
+    executionData.setFrom(networkCoverageData)
+    sourceDirectories.setFrom(networkCoverageSources)
+    classDirectories.setFrom(networkCoverageClasses)
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.9501
+            }
+        }
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn tasks.named('jacocoTestCoverageVerification')
+}

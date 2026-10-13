@@ -1,0 +1,354 @@
+[
+  {
+    "id": 8,
+    "name": "Lotofácil",
+    "contest": 3798,
+    "draw": "06/10/2026",
+    "maxNumber": 25,
+    "min": 15,
+    "max": 20,
+    "basePrice": "3.50"
+  },
+  {
+    "id": 1,
+    "name": "Quina",
+    "contest": 7136,
+    "draw": "06/10/2026",
+    "maxNumber": 80,
+    "min": 5,
+    "max": 15,
+    "basePrice": "3.00"
+  },
+  {
+    "id": 20,
+    "name": "Timemania",
+    "contest": 2451,
+    "draw": "06/10/2026",
+    "maxNumber": 80,
+    "min": 10,
+    "max": 10,
+    "basePrice": "3.50",
+    "teams": [
+      {
+        "number": 1,
+        "name": "ABC",
+        "state": "RN"
+      },
+      {
+        "number": 2,
+        "name": "ÁGUIA DE MARABÁ",
+        "state": "PA"
+      },
+      {
+        "number": 3,
+        "name": "ALTOS",
+        "state": "PI"
+      },
+      {
+        "number": 4,
+        "name": "AMAZONAS",
+        "state": "AM"
+      },
+      {
+        "number": 5,
+        "name": "AMERICA",
+        "state": "MG"
+      },
+      {
+        "number": 6,
+        "name": "AMERICA",
+        "state": "RN"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Super Sete",
+    "contest": 908,
+    "draw": "07/10/2026",
+    "maxNumber": 9,
+    "min": 7,
+    "max": 21,
+    "basePrice": "3.00",
+    "selectedDigit": 0,
+    "priceScope": "observed7through12only",
+    "prices": [
+      {
+        "numbers": 7,
+        "amount": "3"
+      },
+      {
+        "numbers": 8,
+        "amount": "6"
+      },
+      {
+        "numbers": 9,
+        "amount": "12"
+      },
+      {
+        "numbers": 10,
+        "amount": "24"
+      },
+      {
+        "numbers": 11,
+        "amount": "48"
+      },
+      {
+        "numbers": 12,
+        "amount": "96"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "+Milionária",
+    "contest": 396,
+    "draw": "07/10/2026",
+    "maxNumber": 50,
+    "min": 6,
+    "max": 12,
+    "basePrice": "6",
+    "priceScope": "observed6through11with2clovers-and6numbers-with2through6clovers",
+    "prices": [
+      {
+        "numbers": 6,
+        "clovers": 2,
+        "amount": "6"
+      },
+      {
+        "numbers": 7,
+        "clovers": 2,
+        "amount": "42"
+      },
+      {
+        "numbers": 8,
+        "clovers": 2,
+        "amount": "168"
+      },
+      {
+        "numbers": 9,
+        "clovers": 2,
+        "amount": "504"
+      },
+      {
+        "numbers": 10,
+        "clovers": 2,
+        "amount": "1260"
+      },
+      {
+        "numbers": 11,
+        "clovers": 2,
+        "amount": "2772"
+      },
+      {
+        "numbers": 6,
+        "clovers": 3,
+        "amount": "18"
+      },
+      {
+        "numbers": 6,
+        "clovers": 4,
+        "amount": "36"
+      },
+      {
+        "numbers": 6,
+        "clovers": 5,
+        "amount": "60"
+      },
+      {
+        "numbers": 6,
+        "clovers": 6,
+        "amount": "90"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Lotomania",
+    "contest": 2985,
+    "draw": "07/10/2026",
+    "maxNumber": 100,
+    "min": 50,
+    "max": 50,
+    "basePrice": "3",
+    "prices": [
+      {
+        "numbers": 50,
+        "amount": "3"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Dupla Sena",
+    "contest": 3018,
+    "draw": "07/10/2026",
+    "maxNumber": 50,
+    "min": 6,
+    "max": 15,
+    "basePrice": "3",
+    "recurring": [
+      0,
+      2,
+      3,
+      4,
+      6,
+      8,
+      9,
+      12
+    ],
+    "prices": [
+      {
+        "numbers": 6,
+        "amount": "3"
+      },
+      {
+        "numbers": 7,
+        "amount": "21"
+      },
+      {
+        "numbers": 8,
+        "amount": "84"
+      },
+      {
+        "numbers": 9,
+        "amount": "252"
+      },
+      {
+        "numbers": 10,
+        "amount": "630"
+      },
+      {
+        "numbers": 11,
+        "amount": "1386"
+      },
+      {
+        "numbers": 12,
+        "amount": "2772"
+      },
+      {
+        "numbers": 13,
+        "amount": "5148"
+      },
+      {
+        "numbers": 14,
+        "amount": "9009"
+      },
+      {
+        "numbers": 15,
+        "amount": "15015"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Dia de Sorte",
+    "contest": 1316,
+    "draw": "06/10/2026",
+    "maxNumber": 31,
+    "min": 7,
+    "max": 15,
+    "basePrice": "2.50",
+    "selectedMonth": 1,
+    "months": [
+      {
+        "number": 1,
+        "name": "Janeiro",
+        "short": "JAN"
+      },
+      {
+        "number": 2,
+        "name": "Fevereiro",
+        "short": "FEV"
+      },
+      {
+        "number": 3,
+        "name": "Março",
+        "short": "MAR"
+      },
+      {
+        "number": 4,
+        "name": "Abril",
+        "short": "ABR"
+      },
+      {
+        "number": 5,
+        "name": "Maio",
+        "short": "MAI"
+      },
+      {
+        "number": 6,
+        "name": "Junho",
+        "short": "JUN"
+      },
+      {
+        "number": 7,
+        "name": "Julho",
+        "short": "JUL"
+      },
+      {
+        "number": 8,
+        "name": "Agosto",
+        "short": "AGO"
+      },
+      {
+        "number": 9,
+        "name": "Setembro",
+        "short": "SET"
+      },
+      {
+        "number": 10,
+        "name": "Outubro",
+        "short": "OUT"
+      },
+      {
+        "number": 11,
+        "name": "Novembro",
+        "short": "NOV"
+      },
+      {
+        "number": 12,
+        "name": "Dezembro",
+        "short": "DEZ"
+      }
+    ],
+    "prices": [
+      {
+        "numbers": 7,
+        "amount": "2.5"
+      },
+      {
+        "numbers": 8,
+        "amount": "20"
+      },
+      {
+        "numbers": 9,
+        "amount": "90"
+      },
+      {
+        "numbers": 10,
+        "amount": "300"
+      },
+      {
+        "numbers": 11,
+        "amount": "825"
+      },
+      {
+        "numbers": 12,
+        "amount": "1980"
+      },
+      {
+        "numbers": 13,
+        "amount": "4290"
+      },
+      {
+        "numbers": 14,
+        "amount": "8580"
+      },
+      {
+        "numbers": 15,
+        "amount": "16087.5"
+      }
+    ]
+  }
+]

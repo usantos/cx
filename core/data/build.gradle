@@ -1,0 +1,63 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'jacoco'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+kotlin { jvmToolchain(17) }
+
+dependencies {
+    implementation project(':core:domain')
+    implementation project(':core:network')
+    implementation libs.kotlinx.coroutines.core
+
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.core
+    testImplementation libs.kotlinx.coroutines.test
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+def dataCoverageExecution = fileTree(layout.buildDirectory).include('jacoco/test.exec')
+// Include coroutine bodies and nested mappers; dropping '$' classes hides repository behavior.
+def dataCoverageClasses = files(fileTree(layout.buildDirectory.dir('classes/kotlin/main')).include('**/*.class'))
+def dataCoverageSources = files('src/main/java', 'src/main/kotlin')
+
+tasks.register('verifyDataCoverageInputs') {
+    dependsOn tasks.named('test')
+    doLast {
+        if (dataCoverageClasses.asFileTree.isEmpty() || dataCoverageExecution.isEmpty()) {
+            throw new GradleException('Cobertura de data sem classes ou execução de testes.')
+        }
+    }
+}
+
+tasks.named('jacocoTestReport', JacocoReport).configure {
+    dependsOn tasks.named('verifyDataCoverageInputs')
+    executionData.setFrom(dataCoverageExecution)
+    sourceDirectories.setFrom(dataCoverageSources)
+    classDirectories.setFrom(dataCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+
+tasks.named('jacocoTestCoverageVerification', JacocoCoverageVerification).configure {
+    dependsOn tasks.named('jacocoTestReport')
+    executionData.setFrom(dataCoverageExecution)
+    sourceDirectories.setFrom(dataCoverageSources)
+    classDirectories.setFrom(dataCoverageClasses)
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.9501
+            }
+        }
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn tasks.named('jacocoTestCoverageVerification')
+}
