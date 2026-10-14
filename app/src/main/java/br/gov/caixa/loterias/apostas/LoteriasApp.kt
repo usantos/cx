@@ -293,16 +293,18 @@ fun LoteriasApp(
     }
     val requestVisitorLogin: (String) -> Unit = { route -> visitorLoginRequest = route }
     visitorLoginRequest?.let { route ->
+        val callbacks = VisitorLoginCallbacks(
+            route = route, navController = navController,
+            pendingRequest = { visitorLoginRequest },
+            clearRequest = { visitorLoginRequest = null },
+            continueAfterLogin = { visitorReturnRoute = it },
+        )
         br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyDialog(
             title = "Atenção",
             message = "Para continuar utilizando a funcionalidade, você precisa efetuar o login no app Loterias Caixa. Deseja efetuar o login?",
             positiveLabel = "Sim", negativeLabel = "Não",
-            onPositive = {
-                visitorLoginRequest = null
-                visitorReturnRoute = route
-                navController.navigate(LoginNavigation.authorize)
-            },
-            onNegative = { visitorLoginRequest = null },
+            onPositive = callbacks::onPositive,
+            onNegative = callbacks::onNegative,
         )
     }
     val handleBetEntry: (BetEntryDecision, Boolean) -> Unit = { decision, returnViaHome ->
