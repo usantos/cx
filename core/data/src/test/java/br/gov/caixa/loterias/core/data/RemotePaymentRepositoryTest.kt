@@ -281,6 +281,56 @@ class RemotePaymentRepositoryTest {
         assertEquals("saved-token", source.authorizedCard)
     }
 
+    @Test fun `RecargaPay create card normalizes profile birthdate and preserves request fields`() = runTest {
+        val birthdates = listOf(
+            "Jan 1, 1990" to "1990-01-01",
+            "Mon Jan 01 00:00:00 1990" to "1990-01-01",
+            "1990-01-01" to "1990-01-01",
+            "2000-02-29" to "2000-02-29",
+            null to "",
+        )
+        for ((profileDate, expectedDate) in birthdates) {
+            val source = FakeSource().apply {
+                profileValue = Gson().fromJson(json("""{
+                    "cpf":"12345678901","nome":"Pessoa","email":"mock@caixa.gov.br",
+                    "dataNascimento":${Gson().toJson(profileDate)},
+                    "telefone":{"ddd":"61","numero":"999999999"}
+                }"""), UserProfileDto::class.java)
+            }
+            val draft = PaymentCardDraft("5555 5555 5555 4444", "PESSOA", 11, 2031, false)
+
+            val result = RemotePaymentRepository(source).submitCardPayment(
+                CardPaymentRequest(5, PaymentCardSelection.New(draft), "123"),
+            )
+
+            assertTrue(result is CardSubmissionOutcome.Submitted)
+            assertEquals("profile date $profileDate", json("""{
+                "type":"CREDIT","brand":"MASTERCARD","number":"5555555555554444",
+                "cardHolder":{"type":"NATURAL","name":"Pessoa","email":"mock@caixa.gov.br",
+                    "document":"12345678901","birthdate":"$expectedDate","phones":["61999999999"]},
+                "expirationDate":{"month":11,"year":2031},"securityCode":"123","shouldSave":false
+            }"""), source.rpBody)
+        }
+    }
+
+    @Test fun `RecargaPay rejects malformed profile birthdate before card creation`() = runTest {
+        for (profileDate in listOf("not-a-date", "1990-02-30")) {
+            val source = FakeSource().apply {
+                profileValue = UserProfileDto(birthDate = profileDate)
+            }
+            val draft = PaymentCardDraft("5555555555554444", "PESSOA", 11, 2031, false)
+
+            val result = SubmitCardPayment(RemotePaymentRepository(source))(
+                CardPaymentRequest(5, PaymentCardSelection.New(draft), "123"),
+            )
+
+            assertTrue("profile date $profileDate", result is AppResult.Failure)
+            assertEquals(listOf("rpCustomer", "profile"), source.calls)
+            org.junit.Assert.assertNull(source.rpBody)
+            org.junit.Assert.assertNull(source.registerBody)
+        }
+    }
+
     @Test fun `card submission rejects absent or invalid provider responses`() = runTest {
         val source = FakeSource()
         val repository = RemotePaymentRepository(source)

@@ -27,6 +27,10 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import java.math.BigDecimal
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Date
+import java.util.Locale
 import kotlinx.coroutines.CancellationException
 
 interface PaymentRemoteDataSource {
@@ -313,7 +317,7 @@ class RemotePaymentRepository(private val remote: PaymentRemoteDataSource) : Pay
                         addProperty("name", profile.name.orEmpty())
                         addProperty("email", profile.email.orEmpty())
                         addProperty("document", profile.cpf.orEmpty())
-                        addProperty("birthdate", profile.birthDate.orEmpty())
+                        addProperty("birthdate", recargaPayBirthdate(profile.birthDate))
                         add("phones", com.google.gson.JsonArray().apply {
                             add(listOfNotNull(profile.phone?.areaCode, profile.phone?.number).joinToString("").ifBlank { "+55999999999" })
                         })
@@ -332,6 +336,15 @@ class RemotePaymentRepository(private val remote: PaymentRemoteDataSource) : Pay
         require(cardToken.isNotBlank()) { "Token do cartão indisponível" }
         require(brand.isNotBlank()) { "Bandeira do cartão não identificada" }
         return cardToken to brand
+    }
+
+    @Suppress("DEPRECATION")
+    private fun recargaPayBirthdate(value: String?): String {
+        if (value.isNullOrEmpty()) return ""
+        // ISO dates are calendar dates; preserve them without a time zone conversion.
+        runCatching { LocalDate.parse(value) }.getOrNull()?.let { return it.toString() }
+        // CX DataUtil accepts Date(String) representations from the profile service.
+        return SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).format(Date(value))
     }
 
     private fun JsonElement?.toCards(paymentMethodId: Long) = objects().map { value ->
