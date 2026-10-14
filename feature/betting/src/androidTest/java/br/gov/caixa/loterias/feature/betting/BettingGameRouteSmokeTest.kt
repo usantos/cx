@@ -36,6 +36,43 @@ import org.junit.Test
 class BettingGameRouteSmokeTest {
     @get:Rule val compose = createComposeRule()
 
+    @Test fun successfulAdditionStaysOnVolanteShowsAcknowledgementAndAllowsSecondBet() {
+        val addBet = AddBetFake()
+        val notifications = AtomicInteger(0)
+        val game = LotteryGameParameters(
+            modality = LotteryModality(9, "Mais Milionária", "MAIS_MILIONARIA"),
+            contestNumber = 2900, drawDate = "10/09/2026", recurringOptions = listOf(2), maximumNumber = 50, minimumSelection = 6,
+            maximumSelection = 6, minimumClovers = 2, maximumClovers = 6,
+            maximumCloverNumber = 6, maximumSurprises = 3,
+            prices = listOf(BetPrice(6, 2, BigDecimal("18.00"))),
+        )
+        val model = BettingGameViewModel(9, GetBettingParametersUseCase {
+            AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
+        }, addBet)
+        compose.setContent { CaixaDSTheme(darkTheme = false) {
+            BettingGameRoute(model, onBack = {}, onAdded = { notifications.incrementAndGet() })
+        } }
+        compose.waitUntil(10_000) { !model.state.value.loading }
+        compose.onNodeWithText("+milionária").assertIsDisplayed()
+        compose.runOnIdle { (1..6).forEach(model::toggleNumber); model.primaryAction() }
+        compose.onNodeWithTag("betting-clover-1").assertIsDisplayed()
+        saveDeviceCapture("compose-task5-plus-clovers")
+        compose.runOnIdle { model.selectMode(BetEntryMode.SURPRISE); model.addToCart() }
+        compose.waitUntil(10_000) { model.state.value.addedToCart }
+        compose.onNodeWithText("Aposta adicionada ao carrinho com sucesso!").assertIsDisplayed()
+        compose.runOnIdle {
+            assertEquals(BetEntryMode.MANUAL, model.state.value.mode)
+            assertEquals(1, addBet.calls.get())
+            assertEquals(1, notifications.get())
+        }
+        compose.onNodeWithText("Entendi").performClick()
+        compose.onNodeWithText("+milionária").assertIsDisplayed()
+        compose.runOnIdle { model.selectMode(BetEntryMode.SURPRISE); model.addToCart() }
+        compose.waitUntil(10_000) { addBet.calls.get() == 2 && model.state.value.addedToCart }
+        compose.onNodeWithText("Aposta adicionada ao carrinho com sucesso!").assertIsDisplayed()
+        compose.runOnIdle { assertEquals(2, notifications.get()) }
+    }
+
     /** Exercises the Compose header, selectors, and help action without submitting a bet. */
     @Test fun megaSenaLoadsComposeHeaderAndSelectorsWithoutSubmittingABet() {
         val addBet = AddBetFake()

@@ -44,6 +44,78 @@ class BettingGameViewModelTest {
     @Before fun setUp() = Dispatchers.setMain(UnconfinedTestDispatcher())
     @After fun tearDown() = Dispatchers.resetMain()
 
+    @Test fun `successful inclusion resets surprise draft immediately before acknowledgement`() = runTest {
+        val model = viewModel(2)
+        advanceUntilIdle()
+        model.selectMode(BetEntryMode.SURPRISE)
+        model.chooseNumberQuantity(7)
+        model.chooseRecurringDraws(2)
+        model.increaseSurpriseQuantity()
+        model.addToCart()
+        advanceUntilIdle()
+        assertTrue(model.state.value.addedToCart)
+        assertEquals(BetEntryMode.MANUAL, model.state.value.mode)
+        assertEquals(BetSelectionStep.NUMBERS, model.state.value.selectionStep)
+        assertEquals(6, model.state.value.numberQuantity)
+        assertEquals(0, model.state.value.recurringDraws)
+        assertEquals(1, model.state.value.surpriseQuantity)
+        assertTrue(model.state.value.selectedNumbers.isEmpty())
+        assertEquals((addResult as AppResult.Success).value, model.state.value.confirmedCart)
+        model.acknowledgeCartAddition()
+        assertFalse(model.state.value.addedToCart)
+        (1..6).forEach(model::toggleNumber)
+        model.addToCart()
+        advanceUntilIdle()
+        assertTrue(model.state.value.addedToCart)
+        assertEquals(false, submitted?.surprise)
+        assertEquals(0, submitted?.recurringDraws)
+        assertEquals(1, submitted?.quantity)
+    }
+
+    @Test fun `failed inclusion preserves extras and confirmed success resets all draft fields`() = runTest {
+        val team = SportsTeam(1, "Time", "SP")
+        val month = LuckyMonth(1, "Janeiro")
+        val plus = game(id = MAIS_MILIONARIA_ID).copy(
+            minimumClovers = 2, maximumClovers = 6, maximumCloverNumber = 6,
+            teams = listOf(team), luckyMonths = listOf(month), acceptsMirror = true,
+            prices = listOf(BetPrice(6, 2, BigDecimal("18.00"))),
+        )
+        parameterResult = successParameters(plus)
+        val model = BettingGameViewModel(MAIS_MILIONARIA_ID,
+            GetBettingParametersUseCase { parameterResult }, AddBetToCartUseCase { addResult },
+            FixedCoroutineDispatchers(UnconfinedTestDispatcher()),
+            initialNumbers = (1..6).toList(), initialClovers = listOf(1,2),
+            initialTeam = team, initialLuckyMonth = month, initialRecurringDraws = 2,
+            initialMirror = true,
+        )
+        advanceUntilIdle()
+        model.primaryAction()
+        val before = model.state.value
+        addResult = AppResult.Failure(AppError.Network)
+        model.addToCart(); advanceUntilIdle()
+        assertEquals(before.selectedNumbers, model.state.value.selectedNumbers)
+        assertEquals(before.selectedClovers, model.state.value.selectedClovers)
+        assertEquals(team, model.state.value.selectedTeam)
+        assertEquals(month, model.state.value.selectedLuckyMonth)
+        assertEquals(2, model.state.value.recurringDraws)
+        assertTrue(model.state.value.generateMirror)
+        assertEquals(BetSelectionStep.COMPLEMENT, model.state.value.selectionStep)
+        assertNull(model.state.value.confirmedCart)
+        addResult = AppResult.Success(ShoppingCart(7, BigDecimal("72.00"), emptyList(), totalBetCount = 4))
+        model.addToCart(); advanceUntilIdle()
+        with(model.state.value) {
+            assertTrue(addedToCart)
+            assertTrue(selectedNumbers.isEmpty()); assertTrue(selectedClovers.isEmpty())
+            assertNull(selectedTeam); assertNull(selectedLuckyMonth); assertEquals("", teamQuery)
+            assertTrue(lotecaOutcomes.isEmpty()); assertTrue(lotogolScores.isEmpty())
+            assertTrue(superSevenColumns.all(Set<Int>::isEmpty))
+            assertFalse(generateMirror); assertEquals(0, recurringDraws)
+            assertEquals(2, manualCloverQuantity); assertEquals(2, surpriseCloverQuantity)
+            assertEquals(BigDecimal("18.00"), totalPrice)
+            assertEquals(4, confirmedCart?.betCount)
+        }
+    }
+
     @Test fun `prepared parameters render immediately before queued IO runs`() = runTest {
         var requests = 0
         val model = BettingGameViewModel(
@@ -741,6 +813,10 @@ class BettingGameViewModelTest {
         assertEquals(listOf(0, 1), submitted?.superSevenColumns?.first())
         assertTrue(requireNotNull(submitted).numbers.isEmpty())
 
+        assertTrue(viewModel.state.value.superSevenColumns.all(Set<Int>::isEmpty))
+        viewModel.acknowledgeCartAddition()
+        repeat(7) { viewModel.toggleSuperSevenDigit(it, it) }
+        viewModel.toggleSuperSevenDigit(0, 1)
         viewModel.toggleSuperSevenDigit(0, 2)
         assertEquals(15, viewModel.state.value.numberQuantity)
         viewModel.toggleSuperSevenDigit(0, 3)
@@ -849,7 +925,7 @@ class BettingGameViewModelTest {
         advanceUntilIdle()
         assertEquals(months.last(), submitted?.luckyMonth)
 
-        // A successful inclusion exits this simulator; Surpresinha starts a new entry.
+        // Exercise an independent Surpresinha draft after the acknowledged manual flow.
         val surprise = this@BettingGameViewModelTest.viewModel(DIA_DE_SORTE_ID)
         advanceUntilIdle()
         surprise.selectMode(BetEntryMode.SURPRISE)

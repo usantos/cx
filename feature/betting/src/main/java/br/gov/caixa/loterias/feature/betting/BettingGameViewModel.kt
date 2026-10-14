@@ -52,6 +52,7 @@ data class BettingGameUiState(
     val warningMessage: String? = null,
     val errorMessage: String? = null,
     val addedToCart: Boolean = false,
+    val confirmedCart: br.gov.caixa.loterias.core.domain.cart.ShoppingCart? = null,
     val duplicateConfirmation: Boolean = false,
     val minimumCartAmount: BigDecimal = BigDecimal.ZERO,
     val favoriteExpanded: Boolean = false,
@@ -691,6 +692,8 @@ class BettingGameViewModel(
         return true
     }
 
+    fun acknowledgeCartAddition() = updateState { it.copy(addedToCart = false) }
+
     fun dismissMessage() = updateState { it.copy(warningMessage = null, errorMessage = null) }
 
     fun confirmLocalDuplicate() { updateState { it.copy(duplicateConfirmation = false) }; addToCart(allowLocalDuplicate = true) }
@@ -747,7 +750,18 @@ class BettingGameViewModel(
                 cloverQuantity = if (surprise) current.surpriseCloverQuantity else current.selectedClovers.size,
             )
             when (val result = addBet(draft)) {
-                is AppResult.Success -> updateState { it.copy(loading = false, addedToCart = true) }
+                is AppResult.Success -> updateState {
+                    BettingGameUiState(
+                        loading = false,
+                        game = game,
+                        minimumCartAmount = it.minimumCartAmount,
+                        numberQuantity = availableNumberQuantities(game).firstOrNull() ?: game.minimumSelection,
+                        manualCloverQuantity = game.minimumClovers,
+                        surpriseCloverQuantity = game.minimumClovers,
+                        addedToCart = true,
+                        confirmedCart = result.value,
+                    )
+                }
                 is AppResult.Failure -> applyFailure(result.error)
             }
         }

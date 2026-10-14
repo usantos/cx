@@ -38,6 +38,34 @@ class ActiveCartSummaryUiTest {
         override suspend fun saveFavorite(name: String) = error("Unused")
     }
 
+    @Test fun simulatorAdditionRefreshAndReturnAfterDeletionReadCurrentCart() {
+        val repository = Repository()
+        val getCart = GetCurrentCart(repository)
+        var revision by mutableIntStateOf(0)
+        compose.setContent {
+            CaixaDSTheme {
+                val snapshot = activeResumingCartSummary(getCart, revision)
+                CaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
+            }
+        }
+        compose.waitUntil { repository.reads.get() >= 1 }
+        compose.onNodeWithText("R$ 39,00", useUnmergedTree = true).assertIsDisplayed()
+        val previousReads = repository.reads.get()
+        repository.snapshot = ShoppingCart(1, BigDecimal("57.00"), emptyList(), totalBetCount = 10)
+        compose.runOnIdle { revision++ }
+        compose.waitUntil { repository.reads.get() > previousReads }
+        compose.onNodeWithText("R$ 57,00", useUnmergedTree = true).assertIsDisplayed()
+        compose.onNodeWithText("10", useUnmergedTree = true).assertIsDisplayed()
+        compose.activityRule.scenario.moveToState(androidx.lifecycle.Lifecycle.State.STARTED)
+        repository.snapshot = ShoppingCart(1, BigDecimal.ZERO, emptyList(), totalBetCount = 0)
+        val readsBeforeReturn = repository.reads.get()
+        compose.activityRule.scenario.moveToState(androidx.lifecycle.Lifecycle.State.RESUMED)
+        compose.waitUntil { repository.reads.get() > readsBeforeReturn }
+        // The shared summary intentionally disappears when the cart is empty.
+        compose.waitUntil { compose.onAllNodesWithText("R$ 57,00", useUnmergedTree = true).fetchSemanticsNodes().isEmpty() }
+        compose.onNodeWithText("R$ 57,00", useUnmergedTree = true).assertDoesNotExist()
+    }
+
     @Test fun returningToResumedMarketplaceReloadsCurrentCart() {
         val repository = Repository()
         val getCart = GetCurrentCart(repository)

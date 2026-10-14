@@ -118,7 +118,7 @@ fun BettingGameRoute(
         }
     }
     BackHandler(enabled = !state.loading, onBack = returnOrConfirm)
-    BettingShakeEffect(shakeEnabled, state, viewModel, showExitConfirmation || showNumberQuantity || showCloverQuantity || showRecurring || state.favoriteExpanded || state.favoriteOverwriteConfirmation || state.errorMessage != null || state.warningMessage != null || state.duplicateConfirmation)
+    BettingShakeEffect(shakeEnabled, state, viewModel, showExitConfirmation || showNumberQuantity || showCloverQuantity || showRecurring || state.favoriteExpanded || state.favoriteOverwriteConfirmation || state.errorMessage != null || state.warningMessage != null || state.duplicateConfirmation || state.addedToCart)
     LaunchedEffect(state.addedToCart) { if (state.addedToCart) onAdded() }
 
     CaixaDSLegacyScaffold(
@@ -202,6 +202,10 @@ fun BettingGameRoute(
         onPositive = { showHelp = false },
     )
 
+    if (state.addedToCart) BettingMessageDialog(
+        title = "Atenção", message = "Aposta adicionada ao carrinho com sucesso!",
+        positiveLabel = "Entendi", onPositive = viewModel::acknowledgeCartAddition,
+    )
     if (state.duplicateConfirmation) BettingMessageDialog(
         title = "Atenção", message = br.gov.caixa.loterias.core.domain.cart.VISITOR_DUPLICATE_CONFIRMATION,
         positiveLabel = "Sim", negativeLabel = "Não", onPositive = viewModel::confirmLocalDuplicate, onNegative = viewModel::cancelLocalDuplicate,
@@ -401,11 +405,14 @@ private fun ManualBetContent(state: BettingGameUiState, viewModel: BettingGameVi
             .padding(horizontal = 8.dp).verticalScroll(rememberScrollState()),
     ) {
         if (state.selectionStep == BetSelectionStep.COMPLEMENT) {
+            // CX keeps textSelecionados visible even when TREVOS sets its text to empty.
+            // Its 16dp top margin includes the enclosing 1dp border already drawn here.
+            val complementPromptTop = if (game.modality.id == MAIS_MILIONARIA_ID) 15.dp else 11.dp
             Text(when (game.modality.id) {
                 TIMEMANIA_ID -> "Escolha o time do coração:"
                 DIA_DE_SORTE_ID -> "Escolha o mês de sorte:"
                 else -> ""
-            }, Modifier.padding(start = promptInset, top = 11.dp, bottom = 8.dp), fontFamily = CaixaDSFontFamily, fontSize = 16.sp, color = CaixaDSColorTokens.LegacySocialGraphite, style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)))
+            }, Modifier.padding(start = promptInset, top = complementPromptTop, bottom = 8.dp), fontFamily = CaixaDSFontFamily, fontSize = 16.sp, color = CaixaDSColorTokens.LegacySocialGraphite, style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)))
             when (game.modality.id) {
                 TIMEMANIA_ID -> TeamOfTheHeartContent(state, viewModel)
                 DIA_DE_SORTE_ID -> LuckyMonthContent(state, viewModel)
@@ -778,7 +785,7 @@ private fun BettingLegacyGameHeader(
 ) {
     val game = state.game
     val modalityId = game?.modality?.id ?: fallbackModalityId ?: 0
-    val fallbackTitle = game?.modality?.name ?: fallbackBettingTitle(modalityId)
+    val fallbackTitle = if (modalityId == MAIS_MILIONARIA_ID) "+milionária" else game?.modality?.name ?: fallbackBettingTitle(modalityId)
     val style = caixaDSLotteryStyle(modalityId, fallbackTitle)
     val metrics = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true))
     Column(Modifier.fillMaxWidth().background(CaixaDSColorTokens.White).statusBarsPadding()) {

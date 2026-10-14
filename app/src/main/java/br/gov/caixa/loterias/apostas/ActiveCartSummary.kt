@@ -27,11 +27,11 @@ internal fun activeCartSummary(getCurrentCart: GetCurrentCartUseCase, refreshKey
 
 /** Re-read the backend cart whenever this destination becomes active after a reservation or edit. */
 @Composable
-internal fun activeResumingCartSummary(getCurrentCart: GetCurrentCartUseCase): ShoppingCart? {
+internal fun activeResumingCartSummary(getCurrentCart: GetCurrentCartUseCase, refreshKey: Any? = null): ShoppingCart? {
     var resumeRevision by remember(getCurrentCart) { androidx.compose.runtime.mutableIntStateOf(0) }
     androidx.lifecycle.compose.LifecycleResumeEffect(getCurrentCart) {
         resumeRevision++
         onPauseOrDispose { }
     }
-    return if (resumeRevision == 0) null else activeCartSummary(getCurrentCart, resumeRevision)
+    return if (resumeRevision == 0) null else activeCartSummary(getCurrentCart, resumeRevision to refreshKey)
 }

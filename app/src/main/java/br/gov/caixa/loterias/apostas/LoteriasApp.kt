@@ -745,7 +745,8 @@ fun LoteriasApp(
                     dispatchers = appContainer.dispatchers,
                 )
             }
-            val gameCartSummary = activeCartSummary(appContainer.currentCart)
+            var gameCartRevision by remember { androidx.compose.runtime.mutableIntStateOf(0) }
+            val gameCartSummary = activeResumingCartSummary(appContainer.currentCart, gameCartRevision)
             BettingGameRoute(
                 onHelp = { navController.navigate("support/terms?tab=FAQ") },
                 cartTotal = gameCartSummary?.total ?: java.math.BigDecimal.ZERO,
@@ -754,7 +755,7 @@ fun LoteriasApp(
                 shakeEnabled = appContainer.shakeSettings.enabled(),
                 viewModel = bettingGameViewModel,
                 onBack = navController::popBackStack,
-                onAdded = { navController.navigate(betAdditionRoute(bettingGameViewModel.state.value)) },
+                onAdded = { gameCartRevision++ },
             )
         }
         composable("betting/rapid") {
@@ -1037,7 +1038,8 @@ fun LoteriasApp(
                     dispatchers = appContainer.dispatchers,
                 )
             }
-            val gameCartSummary = activeCartSummary(appContainer.currentCart)
+            var gameCartRevision by remember { androidx.compose.runtime.mutableIntStateOf(0) }
+            val gameCartSummary = activeResumingCartSummary(appContainer.currentCart, gameCartRevision)
             BettingGameRoute(
                 onHelp = { navController.navigate("support/terms?tab=FAQ") },
                 fallbackModalityId = modalityId,
@@ -1052,7 +1054,7 @@ fun LoteriasApp(
                 },
                 onAdded = {
                     betToEdit = null
-                    navController.navigate(betAdditionRoute(bettingGameViewModel.state.value))
+                    gameCartRevision++
                 },
             )
         }
