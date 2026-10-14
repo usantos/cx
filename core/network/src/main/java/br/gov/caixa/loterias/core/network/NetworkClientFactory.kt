@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkClientFactory {
-    /** A logout belongs to one captured login and must never replay or follow a redirect. */
+    /** Logout stays bound to one login; only explicit authenticated renewal may repeat it. */
     fun createSessionLogout(
         baseUrl: String,
         clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder(),
@@ -17,12 +17,13 @@ object NetworkClientFactory {
         publicKeySet: PublicKeySet? = null,
         debugOptions: NetworkDebugOptions = NetworkDebugOptions(),
         mockOptions: MockBackendOptions = MockBackendOptions(),
+        sessionRefreshHandler: SessionRefreshHandler? = null,
     ): SessionLogoutApi = retrofit(
         baseUrl, AuthTokenProvider { null },
         clientBuilder.followRedirects(false).followSslRedirects(false).retryOnConnectionFailure(false)
             .addInterceptor(AccountVerificationSessionInterceptor())
             .addInterceptor(SingleAttemptTransactionInterceptor()),
-        gson, publicKeySet, debugOptions, mockOptions, attachBearerToken = false,
+        gson, publicKeySet, debugOptions, mockOptions, attachBearerToken = false, sessionRefreshHandler = sessionRefreshHandler,
     ).create(SessionLogoutApi::class.java)
 
     fun createNotificationRead(
@@ -32,12 +33,13 @@ object NetworkClientFactory {
         publicKeySet: PublicKeySet? = null,
         debugOptions: NetworkDebugOptions = NetworkDebugOptions(),
         mockOptions: MockBackendOptions = MockBackendOptions(),
+        sessionRefreshHandler: SessionRefreshHandler? = null,
     ): NotificationReadApi = retrofit(
         baseUrl, AuthTokenProvider { null },
         clientBuilder.followRedirects(false).followSslRedirects(false).retryOnConnectionFailure(false)
             .addInterceptor(AccountVerificationSessionInterceptor())
             .addInterceptor(SingleAttemptTransactionInterceptor()),
-        gson, publicKeySet, debugOptions, mockOptions, attachBearerToken = false,
+        gson, publicKeySet, debugOptions, mockOptions, attachBearerToken = false, sessionRefreshHandler = sessionRefreshHandler,
     ).create(NotificationReadApi::class.java)
 
     fun createAccountVerification(
@@ -47,17 +49,18 @@ object NetworkClientFactory {
         publicKeySet: PublicKeySet? = null,
         debugOptions: NetworkDebugOptions = NetworkDebugOptions(),
         mockOptions: MockBackendOptions = MockBackendOptions(),
+        sessionRefreshHandler: SessionRefreshHandler? = null,
     ): AccountVerificationBackendClient = AccountVerificationBackendClient(
         retrofit(
             baseUrl, AuthTokenProvider { null },
             clientBuilder.followRedirects(false).followSslRedirects(false).retryOnConnectionFailure(false)
                 .addInterceptor(AccountVerificationSessionInterceptor())
                 .addInterceptor(SingleAttemptTransactionInterceptor()),
-            gson, publicKeySet, debugOptions, mockOptions, attachBearerToken = false,
-        ).create(AccountVerificationBackendApi::class.java), gson,
+            gson, publicKeySet, debugOptions, mockOptions, attachBearerToken = false, sessionRefreshHandler = sessionRefreshHandler,
+    ).create(AccountVerificationBackendApi::class.java), gson,
     )
 
-    /** Prize redemption is an explicit transaction, never an automatic HTTP follow-up. */
+    /** Prize redemption forbids transport follow-ups; authenticated renewal is explicit. */
     fun createPrizeRedemption(
         baseUrl: String,
         tokenProvider: AuthTokenProvider,
@@ -66,11 +69,12 @@ object NetworkClientFactory {
         publicKeySet: PublicKeySet? = null,
         debugOptions: NetworkDebugOptions = NetworkDebugOptions(),
         mockOptions: MockBackendOptions = MockBackendOptions(),
+        sessionRefreshHandler: SessionRefreshHandler? = null,
     ): LegacyBackendApi = retrofit(
         baseUrl, tokenProvider,
         clientBuilder.followRedirects(false).followSslRedirects(false).retryOnConnectionFailure(false)
             .addInterceptor(SingleAttemptTransactionInterceptor()),
-        gson, publicKeySet, debugOptions, mockOptions,
+        gson, publicKeySet, debugOptions, mockOptions, sessionRefreshHandler = sessionRefreshHandler,
     ).create(LegacyBackendApi::class.java)
 
     fun createPurchaseBackend(
@@ -81,13 +85,14 @@ object NetworkClientFactory {
         publicKeySet: PublicKeySet? = null,
         debugOptions: NetworkDebugOptions = NetworkDebugOptions(),
         mockOptions: MockBackendOptions = MockBackendOptions(),
+        sessionRefreshHandler: SessionRefreshHandler? = null,
     ): PurchaseBackendClient = PurchaseBackendClient(
         retrofit(
             baseUrl, tokenProvider,
             clientBuilder.followRedirects(false).followSslRedirects(false).retryOnConnectionFailure(false)
                 .addInterceptor(SingleAttemptTransactionInterceptor()),
-            gson, publicKeySet, debugOptions, mockOptions,
-        ).create(PurchaseBackendApi::class.java),
+            gson, publicKeySet, debugOptions, mockOptions, sessionRefreshHandler = sessionRefreshHandler,
+    ).create(PurchaseBackendApi::class.java),
         gson,
     )
 
@@ -105,6 +110,7 @@ object NetworkClientFactory {
         publicKeySet: PublicKeySet? = null,
         debugOptions: NetworkDebugOptions = NetworkDebugOptions(),
         mockOptions: MockBackendOptions = MockBackendOptions(),
+        sessionRefreshHandler: SessionRefreshHandler? = null,
     ): LoteriasApi = retrofit(
         baseUrl = baseUrl,
         tokenProvider = tokenProvider,
@@ -112,7 +118,7 @@ object NetworkClientFactory {
         gson = gson,
         publicKeySet = publicKeySet,
         debugOptions = debugOptions,
-        mockOptions = mockOptions,
+        mockOptions = mockOptions, sessionRefreshHandler = sessionRefreshHandler,
     ).create(LoteriasApi::class.java)
 
     fun createLegacy(
@@ -123,6 +129,7 @@ object NetworkClientFactory {
         publicKeySet: PublicKeySet? = null,
         debugOptions: NetworkDebugOptions = NetworkDebugOptions(),
         mockOptions: MockBackendOptions = MockBackendOptions(),
+        sessionRefreshHandler: SessionRefreshHandler? = null,
     ): LegacyBackendApi = retrofit(
         baseUrl = baseUrl,
         tokenProvider = tokenProvider,
@@ -130,7 +137,7 @@ object NetworkClientFactory {
         gson = gson,
         publicKeySet = publicKeySet,
         debugOptions = debugOptions,
-        mockOptions = mockOptions,
+        mockOptions = mockOptions, sessionRefreshHandler = sessionRefreshHandler,
     ).create(LegacyBackendApi::class.java)
 
     fun createBetsHistory(
@@ -141,6 +148,7 @@ object NetworkClientFactory {
         publicKeySet: PublicKeySet? = null,
         debugOptions: NetworkDebugOptions = NetworkDebugOptions(),
         mockOptions: MockBackendOptions = MockBackendOptions(),
+        sessionRefreshHandler: SessionRefreshHandler? = null,
     ): BetsHistoryApi = retrofit(
         baseUrl = baseUrl,
         tokenProvider = tokenProvider,
@@ -148,7 +156,7 @@ object NetworkClientFactory {
         gson = gson,
         publicKeySet = publicKeySet,
         debugOptions = debugOptions,
-        mockOptions = mockOptions,
+        mockOptions = mockOptions, sessionRefreshHandler = sessionRefreshHandler,
     ).create(BetsHistoryApi::class.java)
 
     fun createMercadoPago(
@@ -196,10 +204,20 @@ object NetworkClientFactory {
         debugOptions: NetworkDebugOptions,
         mockOptions: MockBackendOptions,
         attachBearerToken: Boolean = true,
+        sessionRefreshHandler: SessionRefreshHandler? = null,
     ): Retrofit {
         val client = clientBuilder
             .apply {
-                if (attachBearerToken) addInterceptor(BearerTokenInterceptor(tokenProvider))
+                // Renewal sees the raw body, before the one-shot transport guard and SILCE encoding.
+                val singleAttempt = interceptors().filterIsInstance<SingleAttemptTransactionInterceptor>()
+                interceptors().removeAll(singleAttempt.toSet())
+                if (attachBearerToken) {
+                    addInterceptor(AccountVerificationSessionInterceptor(required = false))
+                    addInterceptor(BearerTokenInterceptor(tokenProvider))
+                }
+                sessionRefreshHandler?.let { addInterceptor(SessionRefreshInterceptor(it)) }
+                singleAttempt.forEach(::addInterceptor)
+                if (attachBearerToken) addInterceptor(BoundDeletionSingleAttemptInterceptor())
             }
             .addInterceptor(CurlLoggingInterceptor(debugOptions))
             .addInterceptor(MockBackendInterceptor(mockOptions))

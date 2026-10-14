@@ -30,6 +30,11 @@ class BettingTutorialTest {
         assertNull(tutorialPageAfterSecondary(definition, 4))
     }
 
+    @Test fun `pool skip label matches the two line legacy action`() {
+        assertEquals("Pular para\no final", tutorialSecondaryLabel(tutorialDefinition("betting/tutorial"), 0))
+        assertEquals("Fechar", tutorialSecondaryLabel(tutorialDefinition("betting/tutorial"), 4))
+    }
+
     @Test fun `plus tutorial exposes seven legacy lottie pages`() {
         val definition = tutorialDefinition("betting/tutorial-plus")
 

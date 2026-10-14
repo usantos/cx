@@ -125,6 +125,7 @@ import br.gov.caixa.loterias.core.domain.account.PostLoginDestination
 fun LoteriasApp(
     appContainer: AppContainer,
     startDestination: String = "account/login",
+    onForegroundSessionRestart: () -> Unit = {},
 ) {
     val navController = rememberNavController()
     val externalUriHandler = androidx.compose.ui.platform.LocalUriHandler.current
@@ -133,7 +134,11 @@ fun LoteriasApp(
     var preparedBettingParameters by remember(sessionIdentity?.ownerKey) {
         mutableStateOf<br.gov.caixa.loterias.core.domain.betting.BettingParameters?>(null)
     }
+    var marketplaceRevision by rememberSaveable(sessionIdentity?.ownerKey) { mutableStateOf(0) }
     var marketplaceFilter by loggedDetailContext::marketplaceFilter
+    var marketplaceClearFilter by loggedDetailContext::marketplaceClearFilter
+    var lastAppliedFilterRetailer by loggedDetailContext::lastAppliedFilterRetailer
+    var retailerMarketplaceFilter by loggedDetailContext::retailerMarketplaceFilter
     var selectedPurchase by loggedDetailContext::selectedPurchase
     var selectedBet by loggedDetailContext::selectedBet
     var betToEdit by loggedDetailContext::betToEdit
@@ -159,6 +164,8 @@ fun LoteriasApp(
     var foregroundExpiryMarker by rememberSaveable { mutableStateOf<String?>(null) }
     val resetLoggedNavigation: () -> Unit = {
         marketplaceFilter = MarketplaceFilter.empty()
+        marketplaceClearFilter = MarketplaceFilter.empty()
+        lastAppliedFilterRetailer = null
         selectedPurchase = null
         selectedBet = null
         betToEdit = null
@@ -184,22 +191,40 @@ fun LoteriasApp(
         if (logoutState.localSessionEnded) resetLoggedNavigation()
     }
     val onLogout: () -> Unit = { logoutViewModel.start(simulated = BuildConfig.ENABLE_MOCK_BACKEND) }
+    var prizeChannelHost by remember { mutableStateOf(false) }
+    val resetForegroundNavigation: () -> Unit = {
+        resetLoggedNavigation()
+        onForegroundSessionRestart()
+    }
+    val latestForegroundReset by androidx.compose.runtime.rememberUpdatedState(resetForegroundNavigation)
     val foregroundNoticeController = remember(appContainer, navController) {
         ForegroundSessionNoticeController(appContainer.foregroundSession,
-            { appContainer.localClock.instant().epochSecond }, resetLoggedNavigation)
+            { appContainer.localClock.instant().epochSecond }, { latestForegroundReset() })
     }
-    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner, appContainer, navController) {
-        val observer = ForegroundSessionLifecycleObserver(
+    val lifecycleOwner = androidx.lifecycle.ProcessLifecycleOwner.get()
+    val foregroundObserver = remember(appContainer, navController) {
+        ForegroundSessionLifecycleObserver(
             appContainer.foregroundSession,
             currentRoute = { navController.currentBackStackEntry?.destination?.route },
-            hasLoggedContext = { appContainer.authenticatedSessionIdentity.captureIdentity() != null },
             nowSeconds = { appContainer.localClock.instant().epochSecond },
-            onLogin = resetLoggedNavigation,
+            onLogin = { latestForegroundReset() },
             onExpired = { foregroundExpiryMarker = foregroundNoticeController.show(it) },
+            backgroundState = appContainer.foregroundBackground,
+            prizeChannelHost = { prizeChannelHost },
         )
+    }
+    LaunchedEffect(prizeChannelHost) { foregroundObserver.onRouteEntered() }
+    DisposableEffect(lifecycleOwner, foregroundObserver, navController) {
+        val observer = foregroundObserver
+        val destinationListener = androidx.navigation.NavController.OnDestinationChangedListener { _, _, _ ->
+            observer.onRouteEntered()
+        }
+        navController.addOnDestinationChangedListener(destinationListener)
         lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+            navController.removeOnDestinationChangedListener(destinationListener)
+        }
     }
     foregroundExpiryMarker?.let { marker ->
         foregroundNoticeController.restore(marker)?.let { accept ->
@@ -416,7 +441,7 @@ fun LoteriasApp(
                 shakeSettings = appContainer.shakeSettings,
                 networkAvailability = appContainer.networkAvailability,
                 userName = appContainer.currentUserIdentity.currentUser()?.name,
-                environmentLabel = homeEnvironmentLabel(BuildConfig.FLAVOR, BuildConfig.API_BASE_URL),
+                environmentLabel = homeEnvironmentLabel(BuildConfig.FLAVOR, appContainer.environment.apiBaseUrl),
                 onOpen = { route ->
                     if (requiresVisitorLogin(route) && appContainer.currentUserIdentity.currentUser() == null) {
                         if (opensVisitorDestinationBeforeLogin(route)) {
@@ -441,6 +466,8 @@ fun LoteriasApp(
                         is br.gov.caixa.loterias.core.domain.betting.PoolEntryDecision.Ready -> {
                             marketplaceFilter = MarketplaceFilter.forModality(decision.request.modalityId,
                                 if (decision.request.contestType == "ESPECIAL") 2 else 1)
+                            marketplaceClearFilter = marketplaceFilter
+                            lastAppliedFilterRetailer = null
                             navController.navigate(if (decision.showTutorial) PoolTutorialRoute.from(decision.request) else "betting/pools")
                         }
                         is br.gov.caixa.loterias.core.domain.betting.PoolEntryDecision.CompleteAccount ->
@@ -542,6 +569,8 @@ fun LoteriasApp(
                         marketplaceFilter = if (modality > 0) MarketplaceFilter.forModality(
                             modality, entry.arguments?.getInt("contestTypeId") ?: 1,
                         ) else MarketplaceFilter.empty()
+                        marketplaceClearFilter = marketplaceFilter
+                        lastAppliedFilterRetailer = null
                         navController.navigate("betting/pools") {
                             popUpTo(PoolTutorialRoute.pattern) { inclusive = true }
                         }
@@ -604,8 +633,8 @@ fun LoteriasApp(
                         if (spec.route == "account/register-confirmation" && (accountCompletionRequired || visitorReturnRoute != null)) recheckAccountCompletion()
                         else nextDestination(spec.route)?.let { navController.navigate(it) } ?: navController.popBackStack()
                     },
-                    ssoAccountUrl = BuildConfig.SSO_ACCOUNT_URL +
-                        "?referrer=" + BuildConfig.SSO_CLIENT_ID +
+                    ssoAccountUrl = appContainer.environment.ssoAccountUrl +
+                        "?referrer=" + appContainer.environment.ssoClientId +
                         "&referrer_uri=" + Uri.encode(BuildConfig.SSO_ACCOUNT_REFERRER_URI),
                 )
             }
@@ -1138,6 +1167,9 @@ fun LoteriasApp(
                     serverTime = appContainer.serverTime,
                     getCurrentCart = appContainer.currentCart,
                     removeCartItem = appContainer.removeCartItem,
+                    removeExpiredPoolShare = appContainer.removeExpiredPoolShare,
+                    reservationSessions = appContainer.authenticatedSessionIdentity,
+                    reservationSessionChanges = appContainer.sessionIdentityChanges,
                     clearCart = appContainer.clearCart,
                     dispatchers = appContainer.dispatchers,
                     getBettingParameters = appContainer.bettingParameters,
@@ -1150,6 +1182,17 @@ fun LoteriasApp(
                 )
             }
             val cartState by cartViewModel.state.collectAsStateWithLifecycle()
+            var lastObservedCart by remember(cartViewModel) {
+                mutableStateOf<br.gov.caixa.loterias.core.domain.cart.ShoppingCart?>(null)
+            }
+            LaunchedEffect(cartState.cart) {
+                cartState.cart?.let { current ->
+                    if (lastObservedCart != null && lastObservedCart != current) {
+                        marketplaceRevision++
+                    }
+                    lastObservedCart = current
+                }
+            }
             if (cartState.parametersUnavailable) {
                 SimulationRecoveryPanel(
                     loading = cartState.loadingParameters,
@@ -1189,7 +1232,17 @@ fun LoteriasApp(
                     navController.navigate(serviceRedirectRoute(it))
                 },
                 onBack = navController::popBackStack,
-                onContinueBetting = { navController.navigate("betting/home") },
+                onContinueBetting = {
+                    val parent = navController.previousBackStackEntry?.destination?.route
+                    marketplaceRevision++
+                    when (cartNewBetReturn(parent)) {
+                        CartNewBetReturn.Parent -> navController.popBackStack()
+                        CartNewBetReturn.Home -> navController.navigate("home") {
+                            popUpTo("home") { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    }
+                },
                 onPayment = { navController.navigate("payment/method") },
                 onPoolDetail = { code -> navController.navigate("betting/pool-detail/${Uri.encode(code)}") },
                 onComboDetail = { id -> navController.navigate("betting/combo-detail/${id.toInt()}") },
@@ -1257,7 +1310,12 @@ fun LoteriasApp(
                 )
             }
             CartAdditionRoute(
-                onBack = navController::popBackStack,
+                onBack = {
+                    val parent = navController.previousBackStackEntry?.destination?.route
+                    if (shouldClosePoolDetailAfterChild(parent, contentChanged = true))
+                        navController.popBackStack(requireNotNull(parent), inclusive = true)
+                    else navController.popBackStack()
+                },
                 viewModel = additionViewModel,
                 onHome = {
                     navController.navigate("home") {
@@ -1347,6 +1405,8 @@ fun LoteriasApp(
                 viewModel = loginViewModel,
                 authentication = appContainer.authentication,
                 versionName = BuildConfig.VERSION_NAME,
+                environmentSelectorVisible = appContainer.environmentSettings.selectorVisible,
+                environmentSelector = { enabled -> LoginEnvironmentSelector(appContainer, enabled) },
                 onAuthenticated = { destination ->
                     val authenticatedOwner = appContainer.authenticatedSessionIdentity.captureIdentity()?.ownerKey
                     loggedDetailContext.reconcile(authenticatedOwner)
@@ -1448,6 +1508,7 @@ fun LoteriasApp(
                 appContainer = appContainer,
                 betId = betId,
                 keySuffix = betId.toString(),
+                onForegroundHostChanged = { prizeChannelHost = it },
                 onRedirect = onPrizeRedirect,
                 onBetEntry = onPrizeBetEntry,
                 onBack = navController::popBackStack,
@@ -1556,8 +1617,13 @@ fun LoteriasApp(
                 repeatViewModel
             }
             androidx.compose.foundation.layout.Box {
+            var cartRevision by remember { androidx.compose.runtime.mutableIntStateOf(0) }
+            val cartSummary = activeCartSummary(appContainer.currentCart, cartRevision)
             ConfirmedBetsDataRoute(
                 viewModel = ticketsViewModel,
+                cartTotal = cartSummary?.total ?: java.math.BigDecimal.ZERO,
+                cartBetCount = cartSummary?.betCount ?: 0,
+                onCart = { navController.navigate("cart/current") },
                 onHelp = { navController.navigate("support/terms?tab=FAQ") },
                 onAddToCart = { bet -> repeatRequest += 1; repeatBet = bet },
                 onBetNow = { navController.navigate("home") { popUpTo("home"); launchSingleTop = true } },
@@ -1569,7 +1635,8 @@ fun LoteriasApp(
                     )
                 },
             )
-            repeatViewModel?.let { BetRepeatActionsOverlay(it, onServiceRedirect = onTicketServiceRedirect) }
+            repeatViewModel?.let { BetRepeatActionsOverlay(it, onServiceRedirect = onTicketServiceRedirect,
+                onCartChanged = { cartRevision++ }) }
             }
         }
         composable("results/confirmed-bet") {
@@ -1777,26 +1844,54 @@ fun LoteriasApp(
             )
         }
         composable(AppDestination.MARKETPLACE_FILTER.route) {
+            val filterRetailer = selectedMarketplaceRetailer.takeIf {
+                navController.previousBackStackEntry?.destination?.route == "betting/pool-view"
+            }
+            val filterEntry = marketplaceFilterEntry(
+                if (filterRetailer != null) retailerMarketplaceFilter else marketplaceFilter,
+                if (filterRetailer != null) MarketplaceFilter.empty() else marketplaceClearFilter,
+                lastAppliedFilterRetailer, filterRetailer)
             val filterViewModel = viewModel {
                 MarketplaceFilterViewModel(
                     appContainer.marketplaceFilterParameters,
                     appContainer.bettingParameters,
                     appContainer.searchRetailers,
                     appContainer.dispatchers,
+                    initialFilter = filterEntry.initialFilter,
+                    clearFilter = filterEntry.clearFilter,
+                    lotteryEnabled = filterEntry.retailer == null,
+                    initialRetailer = filterEntry.initialRetailer,
                 )
             }
+            val cartSummary = activeCartSummary(appContainer.currentCart)
             MarketplaceFilterRoute(
                 viewModel = filterViewModel,
+                cartTotal = cartSummary?.total ?: java.math.BigDecimal.ZERO,
+                cartBetCount = cartSummary?.betCount ?: 0,
+                onCart = { navController.navigate("cart/current") },
                 onBack = navController::popBackStack,
+                onBackReset = { filter ->
+                    if (filterEntry.retailer != null) {
+                        retailerMarketplaceFilter = MarketplaceFilter.empty().withLottery(filterEntry.retailer.id.toString())
+                    } else {
+                        marketplaceFilter = filter
+                        lastAppliedFilterRetailer = null
+                    }
+                },
                 onApply = { filter ->
-                    marketplaceFilter = filter
-                    navController.navigate("betting/pools") {
-                        popUpTo("betting/pools") { inclusive = true }
+                    if (filterEntry.retailer != null) retailerMarketplaceFilter = filter
+                    else {
+                        marketplaceFilter = filter
+                        lastAppliedFilterRetailer = filterViewModel.state.value.selectedRetailer
+                    }
+                    navController.navigate(filterEntry.resultDestination) {
+                        popUpTo(filterEntry.resultDestination) { inclusive = true }
                     }
                 },
             )
         }
         composable("betting/pools") {
+            val marketplaceCartSummary = activeResumingCartSummary(appContainer.currentCart)
             val marketplaceViewModel = viewModel(key = "marketplace-${marketplaceFilter.hashCode()}") {
                 MarketplaceViewModel(
                     appContainer.searchMarketplace,
@@ -1805,27 +1900,38 @@ fun LoteriasApp(
                     appContainer.favoriteRetailers,
                     appContainer.setRetailerFavorite,
                     appContainer.dispatchers,
+                    getBettingParameters = appContainer.bettingParameters,
                 )
             }
             MarketplaceRoute(
                 viewModel = marketplaceViewModel,
+                refreshRevision = marketplaceRevision,
+                cartTotal = marketplaceCartSummary?.total ?: java.math.BigDecimal.ZERO,
+                cartBetCount = marketplaceCartSummary?.betCount ?: 0,
+                onCart = { navController.navigate("cart/current") },
                 onBack = navController::popBackStack,
                 onFilter = { navController.navigate(AppDestination.MARKETPLACE_FILTER.route) },
                 onHelp = { navController.navigate("support/terms?tab=FAQ") },
                 onRetailerSelected = { retailer ->
                     selectedMarketplaceRetailer = retailer
+                    retailerMarketplaceFilter = MarketplaceFilter.empty().withLottery(retailer.id.toString())
                     navController.navigate("betting/pool-view")
                 },
-                onPoolSelected = { code -> navController.navigate("betting/pool-detail/${Uri.encode(code)}") },
+                onPoolSelected = { code ->
+                    val pool = marketplaceViewModel.state.value.pools.firstOrNull { it.code == code }
+                    navController.navigate("betting/pool-detail/${Uri.encode(code)}?favoriteVisible=true&retailerFavorite=${pool?.favoriteLottery == true}")
+                },
                 onPoolReserved = { confirmation ->
+                    marketplaceRevision++
                     navController.navigate(confirmation.poolAdditionRoute())
                 },
             )
         }
         composable("betting/pool-view") {
+            val marketplaceCartSummary = activeResumingCartSummary(appContainer.currentCart)
             val retailerFilter = selectedMarketplaceRetailer
-                ?.let { marketplaceFilter.withLottery(it.id.toString()) }
-                ?: marketplaceFilter
+                ?.let { retailerMarketplaceFilter.withLottery(it.id.toString()) }
+                ?: retailerMarketplaceFilter
             val marketplaceViewModel = viewModel(key = "marketplace-pool-view-${retailerFilter.hashCode()}") {
                 MarketplaceViewModel(
                     appContainer.searchMarketplace,
@@ -1834,10 +1940,15 @@ fun LoteriasApp(
                     appContainer.favoriteRetailers,
                     appContainer.setRetailerFavorite,
                     appContainer.dispatchers,
+                    getBettingParameters = appContainer.bettingParameters,
                 )
             }
             MarketplaceRoute(
                 viewModel = marketplaceViewModel,
+                refreshRevision = marketplaceRevision,
+                cartTotal = marketplaceCartSummary?.total ?: java.math.BigDecimal.ZERO,
+                cartBetCount = marketplaceCartSummary?.betCount ?: 0,
+                onCart = { navController.navigate("cart/current") },
                 onBack = {
                     selectedMarketplaceRetailer = null
                     navController.popBackStack()
@@ -1845,8 +1956,12 @@ fun LoteriasApp(
                 onFilter = { navController.navigate(AppDestination.MARKETPLACE_FILTER.route) },
                 onHelp = { navController.navigate("support/terms?tab=FAQ") },
                 onRetailerSelected = {},
-                onPoolSelected = { code -> navController.navigate("betting/pool-detail/${Uri.encode(code)}") },
+                onPoolSelected = { code ->
+                    val pool = marketplaceViewModel.state.value.pools.firstOrNull { it.code == code }
+                    navController.navigate("betting/pool-detail/${Uri.encode(code)}?favoriteVisible=true&retailerFavorite=${pool?.favoriteLottery == true}")
+                },
                 onPoolReserved = { confirmation ->
+                    marketplaceRevision++
                     navController.navigate(confirmation.poolAdditionRoute())
                 },
                 retailerView = true,
@@ -1890,22 +2005,42 @@ fun LoteriasApp(
             }
         }
         composable(
-            route = "betting/pool-detail/{poolCode}",
-            arguments = listOf(navArgument("poolCode") { type = NavType.StringType }),
+            route = "betting/pool-detail/{poolCode}?favoriteVisible={favoriteVisible}&retailerFavorite={retailerFavorite}",
+            arguments = listOf(
+                navArgument("poolCode") { type = NavType.StringType },
+                navArgument("favoriteVisible") { type = NavType.BoolType; defaultValue = false },
+                navArgument("retailerFavorite") { type = NavType.BoolType; defaultValue = false },
+            ),
         ) { entry ->
             val poolCode = requireNotNull(entry.arguments?.getString("poolCode"))
+            val detailCartSummary = activeResumingCartSummary(appContainer.currentCart)
             val detailViewModel = viewModel(key = "pool-detail-$poolCode") {
                 MarketplaceDetailViewModel(
                     poolCode,
                     appContainer.marketplaceDetail,
                     appContainer.addMarketplacePoolToCart,
                     appContainer.dispatchers,
+                    setRetailerFavorite = appContainer.setRetailerFavorite,
+                    initialFavorite = if (entry.arguments?.getBoolean("favoriteVisible") == true)
+                        entry.arguments?.getBoolean("retailerFavorite") ?: false else null,
                 )
+            }
+            val detailState by detailViewModel.state.collectAsStateWithLifecycle()
+            var lastObservedFavorite by remember(detailViewModel) { mutableStateOf(detailState.favoriteLottery) }
+            LaunchedEffect(detailState.favoriteLottery) {
+                detailState.favoriteLottery?.let { current ->
+                    if (lastObservedFavorite != null && lastObservedFavorite != current) marketplaceRevision++
+                    lastObservedFavorite = current
+                }
             }
             MarketplaceDetailRoute(
                 viewModel = detailViewModel,
+                cartTotal = detailCartSummary?.total ?: java.math.BigDecimal.ZERO,
+                cartBetCount = detailCartSummary?.betCount ?: 0,
+                onCart = { navController.navigate("cart/current") },
                 onBack = navController::popBackStack,
                 onPoolReserved = { confirmation ->
+                    marketplaceRevision++
                     navController.navigate(confirmation.poolAdditionRoute())
                 },
             )
@@ -1997,6 +2132,7 @@ private fun PrizeRedemptionDestination(
     onHelp: () -> Unit,
     onHome: () -> Unit,
     onMyBets: () -> Unit,
+    onForegroundHostChanged: (Boolean) -> Unit = {},
 ) {
     val authenticatedUser = appContainer.currentUserIdentity.currentUser()
     val prizeViewModel = viewModel(key = "prize-redemption-$keySuffix") {
@@ -2019,6 +2155,12 @@ private fun PrizeRedemptionDestination(
             networkAvailability = appContainer.networkAvailability,
             dispatchers = appContainer.dispatchers,
         )
+    }
+    val prizeState by prizeViewModel.state.collectAsStateWithLifecycle()
+    val channelHost = legacyPrizeForegroundHost(prizeState.stage)
+    DisposableEffect(channelHost) {
+        onForegroundHostChanged(channelHost)
+        onDispose { onForegroundHostChanged(false) }
     }
     val registrationViewModel = paymentRegistrationViewModel(appContainer)
     PrizeRedemptionRoute(

@@ -6,6 +6,19 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class MarketplaceFilterMapperTest {
+    @Test fun `zero values mean no money constraint as in the CX apply callback`() {
+        val filter = MarketplaceFilterUiState(minimumValue = "0,00", maximumValue = "0").toDomain()
+        assertEquals("", filter.minimumValue)
+        assertEquals("", filter.maximumValue)
+    }
+
+    @Test fun `restored retailer identifier survives reopening until text is edited`() {
+        val original = br.gov.caixa.loterias.core.domain.marketplace.MarketplaceFilter.empty().withLottery("101")
+        val state = marketplaceFilterState(original, true)
+        assertEquals("101", state.toDomain().lottery)
+        assertEquals("", state.reduce(MarketplaceFilterAction.ChangeLottery("Centro")).toDomain().lottery)
+    }
+
     @Test
     fun `ui state maps every filter and backend identifier to domain`() {
         val modality = MarketplaceFilterModalityUi(2, "Mega-Sena", "Mega-Sena", 1, listOf(6), 60)

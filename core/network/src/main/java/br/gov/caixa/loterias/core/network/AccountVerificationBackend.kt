@@ -35,11 +35,14 @@ class AccountVerificationSession(
 
 class AccountVerificationSessionExpiredException : IOException("Sessão da verificação de cadastro encerrada")
 
-internal class AccountVerificationSessionInterceptor : Interceptor {
+internal class AccountVerificationSessionInterceptor(private val required: Boolean = true) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
         val request = chain.request()
         val session = request.tag(AccountVerificationSession::class.java)
-            ?: throw AccountVerificationSessionExpiredException()
+        if (session == null) {
+            if (required) throw AccountVerificationSessionExpiredException()
+            return chain.proceed(request)
+        }
         session.requireCurrent()
         // token() must read token and lease atomically (SessionTokenStore.tokenFor in the host).
         // Overwrite any caller header; never fall back to BearerTokenInterceptor's current login.

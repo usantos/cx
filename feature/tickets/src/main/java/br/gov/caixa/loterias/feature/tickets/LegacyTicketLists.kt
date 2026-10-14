@@ -97,7 +97,7 @@ internal fun LegacyTicketPeriodSelector(label: String, value: String, options: L
 
 @Composable
 internal fun LegacyEmptyBets(onBetNow: (() -> Unit)?) {
-    Column(Modifier.fillMaxWidth().padding(top = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(Modifier.fillMaxWidth().padding(top = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text("Você ainda não fez apostas no período selecionado. Aproveite para apostar agora!",
             Modifier.padding(horizontal = 16.dp), color = CaixaDSColorTokens.LegacyTicketIntro,
             style = ticketListText(14.sp, FontWeight.Bold), textAlign = TextAlign.Center)

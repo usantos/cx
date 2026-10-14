@@ -15,10 +15,22 @@ import java.nio.charset.CodingErrorAction
 import java.security.MessageDigest
 
 /**
- * Additional checks ONLY for the ID token returned directly by AppAuth's TLS token exchange.
- * This is not a signature verifier and must never authenticate an ID token from an Intent/cache.
+ * Additional checks ONLY for tokens returned directly by AppAuth's configured TLS token exchange.
+ * This is not a signature verifier and must never authenticate a token from an Intent/cache.
  */
 internal class TokenEndpointIdentity(private val decodeBase64Url: (String) -> ByteArray) {
+    /** Only for the fresh authorization-code response from the configured TLS token endpoint. */
+    fun authorizationOwnerKey(idToken: String?, accessToken: String?, requestedScope: String?,
+        configuration: OidcConfiguration, expectedNonce: String, nowSeconds: Long): String {
+        check(!accessToken.isNullOrBlank()) { "Identidade da autenticação inválida" }
+        // A present ID token must pass the existing OIDC checks; never downgrade an invalid ID.
+        if (idToken != null) return ownerKey(idToken, configuration, expectedNonce, nowSeconds)
+        check(requestedScope?.split(Regex("\\s+"))?.contains("openid") != true) {
+            "Identidade da autenticação inválida"
+        }
+        return validatedOwnerKey(accessToken, configuration, expectedNonce, nowSeconds, false, true)
+    }
+
     fun ownerKey(token: String, configuration: OidcConfiguration, expectedNonce: String, nowSeconds: Long): String =
         validatedOwnerKey(token, configuration, expectedNonce, nowSeconds, false)
 
@@ -30,8 +42,36 @@ internal class TokenEndpointIdentity(private val decodeBase64Url: (String) -> By
         return owner
     }
 
+    /** Only for a regular refresh response directly from the configured TLS token endpoint. */
+    fun regularRefreshOwnerKey(idToken: String?, accessToken: String?, context: RegularSessionRefreshContext,
+        previousIdToken: String?, expectedOwner: String, nowSeconds: Long): String {
+        check(!accessToken.isNullOrBlank() && expectedOwner.matches(Regex("[0-9a-f]{64}"))) {
+            "Identidade da autenticação inválida"
+        }
+        try { validateConfiguration(context.configuration); check(context.originalNonce.isNotBlank()) }
+        catch (_: Exception) { throw IllegalStateException("Identidade da autenticação inválida") }
+        // OIDC refresh may omit ID. The prior ID and owner were already validated at login;
+        // its old expiration is irrelevant to this newly issued access credential.
+        val idOwner = idToken?.let { refreshedOwnerKey(it, context.configuration, context.originalNonce, expectedOwner, nowSeconds) }
+        if (context.mode == RegularSessionIdentityMode.OAUTH_ACCESS) {
+            val accessOwner = validatedOwnerKey(accessToken, context.configuration, context.originalNonce,
+                nowSeconds, true, true)
+            check(accessOwner == expectedOwner) { "Identidade da autenticação inválida" }
+            return accessOwner
+        }
+        check(idOwner != null || !previousIdToken.isNullOrBlank()) { "Identidade da autenticação inválida" }
+        return idOwner ?: expectedOwner
+    }
+
+    fun regularRefreshResponse(idToken: String?, accessToken: String?, refreshToken: String?,
+        request: RegularSessionRefreshRequest, nowSeconds: Long): RegularSessionRefreshResponse {
+        check(!accessToken.isNullOrBlank() && !refreshToken.isNullOrBlank()) { "Resposta de renovação inválida" }
+        return RegularSessionRefreshResponse(accessToken, refreshToken, regularRefreshOwnerKey(idToken,
+            accessToken, request.context, request.previousIdToken, request.ownerKey, nowSeconds), idToken)
+    }
+
     private fun validatedOwnerKey(token: String, configuration: OidcConfiguration, expectedNonce: String,
-        nowSeconds: Long, refresh: Boolean): String {
+        nowSeconds: Long, refresh: Boolean, oauthAccess: Boolean = false): String {
         try {
             check(token.length in 1..65_536 && expectedNonce.isNotBlank())
             validateConfiguration(configuration)
@@ -43,16 +83,21 @@ internal class TokenEndpointIdentity(private val decodeBase64Url: (String) -> By
             check(claims.string("iss") == configuration.expectedIssuer)
             val subject = claims.string("sub")
             check(subject.isNotBlank() && subject.length <= 255 && subject.all { it.code <= 127 })
-            val audience = claims.get("aud")
-            val audiences = if (audience.isJsonArray) audience.asJsonArray.map { it.strictString() } else listOf(audience.strictString())
-            // No other audiences have been approved for this native client.
-            check(audiences.isNotEmpty() && audiences.all { it == configuration.clientId })
-            if (claims.has("azp")) check(claims.string("azp") == configuration.clientId)
-            if (!refresh || claims.has("nonce")) check(claims.string("nonce") == expectedNonce)
+            if (!oauthAccess || claims.has("aud")) {
+                val audience = claims.get("aud")
+                val audiences = if (audience.isJsonArray) audience.asJsonArray.map { it.strictString() } else listOf(audience.strictString())
+                check(audiences.isNotEmpty() && audiences.all { it.isNotBlank() })
+                // ID audiences identify the native client. Keycloak access audiences identify
+                // resource servers (and may be omitted); native binding is the required azp.
+                if (!oauthAccess) check(audiences.all { it == configuration.clientId })
+            }
+            if (oauthAccess || claims.has("azp")) check(claims.string("azp") == configuration.clientId)
+            if ((!refresh && !oauthAccess) || claims.has("nonce")) check(claims.string("nonce") == expectedNonce)
             val expiration = claims.number("exp")
             val issuedAt = claims.number("iat")
             check(nowSeconds >= 0 && expiration > nowSeconds && issuedAt >= 0 && issuedAt < expiration)
             check(issuedAt.toBigDecimal().subtract(nowSeconds.toBigDecimal()).abs() <= 600.toBigDecimal())
+            if (oauthAccess && claims.has("nbf")) check(claims.number("nbf") <= nowSeconds)
             return ownerHash(configuration, subject)
         } catch (_: Exception) {
             // Never propagate parser input, subject or token claims through an error/log.

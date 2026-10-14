@@ -62,14 +62,15 @@ class MarketplaceFilterReducerTest {
     }
 
     @Test
-    fun `retailer selection stores display and forces all modalities`() {
+    fun `retailer selection enables all card without changing modality identifiers`() {
         val retailer = retailer()
         val result = MarketplaceFilterUiState(selectedModality = mega)
             .reduce(MarketplaceFilterAction.SelectRetailer(retailer))
 
         assertEquals("000101 - Lotérica Centro", result.lottery)
         assertEquals(retailer, result.selectedRetailer)
-        assertNull(result.selectedModality)
+        assertEquals(mega, result.selectedModality)
+        assertEquals(true, result.allModalitiesHighlighted)
         assertEquals(emptyList<Retailer>(), result.retailerSuggestions)
     }
 

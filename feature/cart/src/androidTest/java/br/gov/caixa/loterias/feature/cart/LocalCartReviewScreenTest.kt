@@ -124,6 +124,61 @@ class LocalCartReviewScreenTest {
         compose.runOnIdle { assertEquals(0, fixture.discards); assertEquals(0, fixture.sends) }
     }
 
+    @Test fun preservedAccountSnapshotShowsNumbersCloversAndFlagsWithoutMutationActions() {
+        val fixture = Fixture().apply {
+            remoteCart = remoteCart.copy(items = listOf(CartItem(11, CartItemKind.INDIVIDUAL_BET,
+                "+Milionária da conta", "", BigDecimal.TEN, modalityCode = "MAIS_MILIONARIA",
+                contestNumber = 42, numberQuantity = 6, recurringDraws = 3,
+                selectedNumbers = listOf(listOf(1, 2, 3, 4, 5, 6)), selectedClovers = listOf(2, 4),
+                badges = CartItemBadge.entries.toSet(), complementaryLabel = "Concurso especial",
+                gameRows = listOf("Jogo preservado"))))
+        }
+        show(fixture)
+        listOf("01 - 02 - 03 - 04 - 05 - 06", "Trevos: 02 - 04", "6 números", "3 concursos",
+            "Concurso especial", "Jogo preservado").forEach {
+            compose.onNodeWithText(it).performScrollTo().assertIsDisplayed()
+        }
+        compose.onNodeWithContentDescription("Excluir").assertDoesNotExist()
+        compose.runOnIdle { assertEquals(0, fixture.sends); assertEquals(0, fixture.discards) }
+    }
+
+    @Test fun remotePoolAndComboRemainReadOnlyDuringPreservedBetReview() {
+        val fixture = Fixture().apply {
+            remoteCart = remoteCart.copy(items = listOf(
+                CartItem(11, CartItemKind.POOL_SHARE, "Bolão da conta", "", BigDecimal.TEN,
+                    modalityCode = "QUINA", contestNumber = 42,
+                    poolShare = CartPoolShare("REVIEW42", 2, 10, "2000-01-01T00:00:00Z")),
+                CartItem(12, CartItemKind.COMBO, "Combo da conta", "", BigDecimal.ONE,
+                    modalityCode = "LOTOFACIL", comboBetCount = 3),
+            ))
+        }
+        show(fixture)
+        listOf("Bolão REVIEW42", "02/10", "Cota expirada", "00:00", "3 apostas incluídas").forEach {
+            compose.onNodeWithText(it).performScrollTo().assertIsDisplayed()
+        }
+        compose.onNodeWithContentDescription("Excluir").assertDoesNotExist()
+        compose.onNodeWithText("Ver detalhes").assertDoesNotExist()
+        compose.runOnIdle { assertEquals(0, fixture.sends); assertEquals(0, fixture.discards) }
+    }
+
+    @Test fun preservedRemoteModalitiesKeepTheirLabelsAndNoItemDeletion() {
+        val codes = listOf("MEGA_SENA", "LOTOFACIL", "QUINA", "LOTOMANIA", "TIMEMANIA",
+            "DUPLA_SENA", "DIA_DE_SORTE", "SUPER_SETE", "MAIS_MILIONARIA")
+        val fixture = Fixture().apply {
+            remoteCart = remoteCart.copy(items = codes.mapIndexed { index, code ->
+                CartItem(100L + index, CartItemKind.INDIVIDUAL_BET, "Preservada $code", "01 02 03",
+                    BigDecimal.ONE, modalityCode = code)
+            })
+        }
+        show(fixture)
+        codes.forEach {
+            compose.onNode(hasScrollAction()).performScrollToNode(hasText("Preservada $it"))
+            compose.onNodeWithText("Preservada $it").assertIsDisplayed()
+        }
+        compose.onNodeWithContentDescription("Excluir").assertDoesNotExist()
+        compose.runOnIdle { assertEquals(0, fixture.sends); assertEquals(0, fixture.discards) }
+    }
+
     private fun deleteButton() = compose.onNodeWithText("Excluir apostas preservadas")
 
     private fun show(fixture: Fixture) {

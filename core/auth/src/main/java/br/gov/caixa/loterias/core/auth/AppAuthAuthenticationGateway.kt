@@ -3,7 +3,11 @@ package br.gov.caixa.loterias.core.auth
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Looper
 import android.util.Base64
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
@@ -21,12 +25,20 @@ import net.openid.appauth.TokenResponse
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
+internal fun rotatedBiometricCredential(request: RegularSessionRefreshRequest, response: RegularSessionRefreshResponse,
+    enabled: Boolean, previous: BiometricCredential?): BiometricCredential? {
+    if (!enabled || previous == null || request.context.mode != RegularSessionIdentityMode.OIDC ||
+        previous.ownerKey != request.ownerKey || response.ownerKey != request.ownerKey ||
+        previous.nonce != request.context.originalNonce || response.refreshToken.isBlank()) return null
+    return BiometricCredential(response.refreshToken, previous.ownerKey, previous.nonce)
+}
+
 class AppAuthAuthenticationGateway(
     context: Context,
     private val configuration: OidcConfiguration,
     private val tokenStore: SessionTokenStore,
     private val requestPolicy: AuthorizationRequestPolicy,
-) : AuthenticationGateway, EndSessionGateway, BiometricAuthenticationGateway {
+) : AuthenticationGateway, EndSessionGateway, BiometricAuthenticationGateway, RegularSessionRefreshExecutor {
     private val appContext = context.applicationContext
     private val biometricCredentials = EncryptedBiometricCredentialStore(appContext,
         "${configuration.sessionNamespace}|${configuration.expectedIssuer}|${configuration.clientId}")
@@ -116,7 +128,8 @@ class AppAuthAuthenticationGateway(
     private fun commitBiometricTokens(tokens: TokenResponse, pending: PendingAuthorization<String>, owner: String,
         refresh: String, nonce: String) {
         check(biometricEnabled)
-        check(tokenStore.completeAuthorization(pending.ticket, tokens.accessToken!!, tokens.idToken, owner)) {
+        check(tokenStore.completeAuthorization(pending.ticket, tokens.accessToken!!, tokens.idToken, owner,
+            tokens.refreshToken ?: refresh, RegularSessionRefreshContext(configuration, nonce, RegularSessionIdentityMode.OIDC))) {
             "Tentativa de autenticação encerrada"
         }
         try { biometricCredentials.write(BiometricCredential(refresh, owner, nonce)) }
@@ -128,6 +141,51 @@ class AppAuthAuthenticationGateway(
     private val endSessions = EndSessionRegistry<EndSessionRequest>()
     private var logoutIdToken: String? = null
     private val endpointIdentity = TokenEndpointIdentity { Base64.decode(it, Base64.URL_SAFE or Base64.NO_WRAP or Base64.NO_PADDING) }
+
+    // Every gateway mutation already takes this monitor. Acquire it before the store monitor
+    // so disable/logout/new login cannot interleave with post-CAS credential persistence.
+    @Synchronized override fun withCommitGuard(commit: () -> RegularSessionRefreshResult): RegularSessionRefreshResult = commit()
+
+    override fun afterCommit(request: RegularSessionRefreshRequest, response: RegularSessionRefreshResponse) {
+        check(Thread.holdsLock(this) && Thread.holdsLock(tokenStore)) { "Renovação sem proteção de sessão" }
+        val credential = rotatedBiometricCredential(request, response, biometricEnabled, biometricCredentials.read()) ?: return
+        try { biometricCredentials.write(credential) }
+        catch (_: Exception) {
+            // Session refresh has already committed. Remove stale remembered credentials so
+            // storage failure falls back to browser login without undoing the active session.
+            biometricCredentials.clearCredential()
+        }
+    }
+
+    /** OkHttp's worker calls this; AppAuth delivers its callback independently on the main loop. */
+    override fun execute(request: RegularSessionRefreshRequest): RegularSessionRefreshResponse {
+        check(Looper.myLooper() != Looper.getMainLooper()) { "Renovação requer uma thread de trabalho" }
+        check(request.context.configuration == configuration && request.refreshToken.isNotBlank()) {
+            "Contexto de renovação inválido"
+        }
+        val exchange = TokenRequest.Builder(AuthorizationServiceConfiguration(Uri.parse(configuration.authorizationEndpoint),
+            Uri.parse(configuration.tokenEndpoint)), configuration.clientId)
+            .setGrantType(GrantTypeValues.REFRESH_TOKEN).setRefreshToken(request.refreshToken)
+            .setNonce(request.context.originalNonce).build()
+        val finished = CountDownLatch(1)
+        val response = AtomicReference<TokenResponse?>()
+        val failure = AtomicReference<AuthorizationException?>()
+        service.performTokenRequest(exchange) { tokens, error ->
+            response.set(tokens)
+            failure.set(error)
+            finished.countDown()
+        }
+        val completed = try { finished.await(30, TimeUnit.SECONDS) }
+        catch (_: InterruptedException) {
+            Thread.currentThread().interrupt()
+            throw IllegalStateException("Renovação interrompida")
+        }
+        check(completed && failure.get() == null) { "Não foi possível renovar a sessão" }
+        val tokens = checkNotNull(response.get()) { "Resposta de renovação inválida" }
+        // No session/biometric mutation here: coordinator commits only if its lease is current.
+        return endpointIdentity.regularRefreshResponse(tokens.idToken, tokens.accessToken, tokens.refreshToken,
+            request, System.currentTimeMillis() / 1000)
+    }
 
     @Synchronized override fun createAuthorizationIntent(): Intent {
         biometricAttempts.cancel()
@@ -178,13 +236,17 @@ class AppAuthAuthenticationGateway(
                 }
             }
             currentCoroutineContext().ensureActive()
-            val ownerKey = endpointIdentity.ownerKey(checkNotNull(tokens.idToken) { "ID token ausente" },
+            val ownerKey = endpointIdentity.authorizationOwnerKey(tokens.idToken, tokens.accessToken, pending.request.scope,
                 configuration, checkNotNull(pending.request.nonce), System.currentTimeMillis() / 1000)
             currentCoroutineContext().ensureActive()
             synchronized(this) {
-                check(tokenStore.completeAuthorization(pending.ticket, tokens.accessToken!!, tokens.idToken, ownerKey)) { "Tentativa de autenticação encerrada" }
+                val mode = if (tokens.idToken != null) RegularSessionIdentityMode.OIDC else RegularSessionIdentityMode.OAUTH_ACCESS
+                check(tokenStore.completeAuthorization(pending.ticket, tokens.accessToken!!, tokens.idToken, ownerKey,
+                    tokens.refreshToken, RegularSessionRefreshContext(configuration, checkNotNull(pending.request.nonce), mode))) {
+                    "Tentativa de autenticação encerrada"
+                }
                 try {
-                    if (biometricEnabled && !tokens.refreshToken.isNullOrBlank()) biometricCredentials.write(
+                    if (biometricEnabled && tokens.idToken != null && !tokens.refreshToken.isNullOrBlank()) biometricCredentials.write(
                         BiometricCredential(tokens.refreshToken!!, ownerKey, checkNotNull(pending.request.nonce)))
                     else biometricCredentials.clearCredential()
                 } catch (failure: Exception) { logout(); throw failure }

@@ -24,6 +24,9 @@ internal class LoggedDetailContext(owner: String?) {
     internal var pendingSnapshot: ByteArray? = null
         private set
     var marketplaceFilter by mutableStateOf(MarketplaceFilter.empty())
+    var marketplaceClearFilter by mutableStateOf(MarketplaceFilter.empty())
+    var lastAppliedFilterRetailer by mutableStateOf<Retailer?>(null)
+    var retailerMarketplaceFilter by mutableStateOf(MarketplaceFilter.empty())
     var selectedPurchase by mutableStateOf<Purchase?>(null)
     var selectedBet by mutableStateOf<ConfirmedBet?>(null)
     var betToEdit by mutableStateOf<ConfirmedBet?>(null)
@@ -40,6 +43,9 @@ internal class LoggedDetailContext(owner: String?) {
 
     private fun clearFields() {
         marketplaceFilter = MarketplaceFilter.empty()
+        marketplaceClearFilter = MarketplaceFilter.empty()
+        lastAppliedFilterRetailer = null
+        retailerMarketplaceFilter = MarketplaceFilter.empty()
         selectedPurchase = null
         selectedBet = null
         betToEdit = null
@@ -72,6 +78,9 @@ internal class LoggedDetailContext(owner: String?) {
             pendingSnapshot = null
             if (restored != null) {
                 marketplaceFilter = restored.marketplaceFilter
+                marketplaceClearFilter = restored.marketplaceClearFilter
+                lastAppliedFilterRetailer = restored.lastAppliedFilterRetailer
+                retailerMarketplaceFilter = restored.retailerMarketplaceFilter
                 selectedPurchase = restored.selectedPurchase
                 selectedBet = restored.selectedBet
                 betToEdit = restored.betToEdit
@@ -103,14 +112,14 @@ internal fun rememberLoggedDetailContext(owner: String?): LoggedDetailContext {
 
 /** A single size budget protects the activity Bundle; invalid/oversized contexts are discarded. */
 internal object LoggedDetailContextCodec {
-    private const val VERSION = 1
+    private const val VERSION = 2
     private const val MAX_BYTES = 96 * 1024
     private const val MAX_ITEMS = 512
 
     fun defer(bytes: ByteArray): LoggedDetailContext? = runCatching {
         if (bytes.size > MAX_BYTES) return null
         DataInputStream(ByteArrayInputStream(bytes)).use { input ->
-            require(input.readInt() == VERSION)
+            require(input.readInt() in 1..VERSION)
             require(input.readUTF().isNotBlank())
         }
         LoggedDetailContext(null).apply { defer(bytes) }
@@ -134,6 +143,9 @@ internal object LoggedDetailContextCodec {
             out.filter(context.marketplaceFilter)
             out.optional(context.selectedMarketplaceRetailer) { retailer(it) }
             out.items(context.checkedTicketBets) { bet(it) }
+            out.filter(context.marketplaceClearFilter)
+            out.optional(context.lastAppliedFilterRetailer) { retailer(it) }
+            out.filter(context.retailerMarketplaceFilter)
         }
         bytes.toByteArray()
     }.getOrNull()
@@ -141,7 +153,8 @@ internal object LoggedDetailContextCodec {
     fun restore(bytes: ByteArray, owner: String?): LoggedDetailContext? = runCatching {
         if (owner.isNullOrBlank() || bytes.size > MAX_BYTES) return null
         DataInputStream(ByteArrayInputStream(bytes)).use { input ->
-            if (input.readInt() != VERSION || input.readUTF() != owner) return null
+            val version = input.readInt()
+            if (version !in 1..VERSION || input.readUTF() != owner) return null
             LoggedDetailContext(owner).apply {
                 selectedPurchase = input.optional { purchase() }
                 selectedBet = input.optional { bet() }
@@ -149,6 +162,13 @@ internal object LoggedDetailContextCodec {
                 marketplaceFilter = input.filter()
                 selectedMarketplaceRetailer = input.optional { retailer() }
                 checkedTicketBets = input.items { bet() }
+                if (version >= 2) {
+                    marketplaceClearFilter = input.filter()
+                    lastAppliedFilterRetailer = input.optional { retailer() }
+                    retailerMarketplaceFilter = input.filter()
+                } else {
+                    marketplaceClearFilter = MarketplaceFilter.forModality(marketplaceFilter.modalityId ?: 0, marketplaceFilter.contestType ?: 0)
+                }
                 require(input.available() == 0)
             }
         }

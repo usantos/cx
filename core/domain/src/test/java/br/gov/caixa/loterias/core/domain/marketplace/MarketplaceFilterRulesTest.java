@@ -36,10 +36,14 @@ public class MarketplaceFilterRulesTest {
     }
 
     @Test
-    public void validate_rejectsInvertedMoneyRange() {
-        MarketplaceFilter filter = filter("10,50", "9,99", 1, 2,
+    public void validate_leavesMoneyRangeToBackendAsLegacyFilterDoes() {
+        MarketplaceFilter filter = filter("500.00", "10.00", 2, 100,
                 Collections.emptyList(), Collections.emptyList());
-        assertInvalid(MarketplaceFilterRules.validate(filter), "valor mínimo");
+        assertTrue(MarketplaceFilterRules.validate(filter).isValid());
+        assertEquals("500.00", MarketplaceFilterRules.toQuery(filter).get("valorMinimoCota"));
+        assertEquals("10.00", MarketplaceFilterRules.toQuery(filter).get("valorMaximoCota"));
+        assertInvalid(MarketplaceFilterRules.validate(filter("500.00", "10.00", 1, 2,
+                Collections.emptyList(), Collections.emptyList())), "menor que 2");
     }
 
     @Test

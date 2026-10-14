@@ -101,10 +101,12 @@ private fun AnimatedLotteryTutorial(
         CaixaDSColorTokens.LegacyTutorialGreen
     }
 
-    LaunchedEffect(state.page) {
-        if (pagerState.currentPage != state.page) pagerState.animateScrollToPage(state.page)
+    RapidPagerSynchronization(pagerState, state.page, onPageSelected)
+    if (state.spec.route == "betting/tutorial") {
+        PoolTutorialLegacyLayout(state, definition, pagerState, onClose, onPrimary,
+            onSecondary, onToggleDoNotShowAgain)
+        return
     }
-    LaunchedEffect(pagerState.currentPage) { onPageSelected(pagerState.currentPage) }
 
     Box(
         Modifier

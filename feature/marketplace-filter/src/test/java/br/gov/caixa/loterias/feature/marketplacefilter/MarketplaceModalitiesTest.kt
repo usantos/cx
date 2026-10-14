@@ -27,7 +27,7 @@ class MarketplaceModalitiesTest {
 
         val result = marketplaceModalities(parameters)
 
-        assertEquals(listOf("Todas", "Mega-Sena"), result.map { it.name })
+        assertEquals(listOf("mega sena"), result.map { it.name })
         assertEquals(listOf(6, 8), result.last().numberOptions)
         assertEquals(60, result.last().maximumNumber)
         assertEquals(2, result.last().id)
@@ -50,7 +50,7 @@ class MarketplaceModalitiesTest {
 
         val result = marketplaceModalities(parameters).last()
 
-        assertEquals("Lotofácil da Independência", result.name)
+        assertEquals("lotofácil da independência", result.name)
         assertEquals("Lotofácil", result.baseName)
         assertEquals(8, result.id)
         assertEquals(2, result.contestType)
@@ -70,7 +70,7 @@ class MarketplaceModalitiesTest {
                 PoolModalityAvailability(99, "UNKNOWN", "NORMAL"),
             ),
         )
-        assertEquals(2, marketplaceModalities(parameters).size)
+        assertEquals(1, marketplaceModalities(parameters).size)
     }
 
     @Test

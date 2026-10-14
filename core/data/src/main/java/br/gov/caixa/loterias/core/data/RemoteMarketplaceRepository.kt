@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.core.data
 
 import br.gov.caixa.loterias.core.domain.marketplace.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea
 import br.gov.caixa.loterias.core.domain.marketplace.MarketplaceFilterRules
 import br.gov.caixa.loterias.core.domain.marketplace.MarketplaceRepository
 import br.gov.caixa.loterias.core.domain.marketplace.MarketplacePage
@@ -19,16 +20,23 @@ class RemoteMarketplaceRepository(
     private val remote: MarketplaceRemoteDataSource,
 ) : MarketplaceRepository, MarketplaceDetailRepository, MarketplacePurchaseRepository {
     override suspend fun search(filter: MarketplaceFilter, page: Int): MarketplacePage {
+        val area = if (filter.lottery.isNotBlank()) MarketplaceSearchArea.RETAILER
+            else filter.searchArea ?: MarketplaceSearchArea.NATIONAL
         val paging = linkedMapOf(
-            "tipoConsulta" to "2",
-            "idMunicipio" to "0",
-            "idUf" to "0",
-            "pagina" to page.coerceAtLeast(0).toString(),
-            "qtdPorPagina" to "20",
+            "tipoConsulta" to area.backendValue.toString(),
+            "idMunicipio" to filter.municipalityId.toString(),
+            "idUf" to filter.stateId.toString(),
+            "pagina" to (page.coerceAtLeast(0) + 1).toString(),
+            "qtdPorPagina" to "30",
         )
         val payload = requireNotNull(
             remote.pools(paging + MarketplaceFilterRules.toQuery(filter)),
         ) { "Resposta do Marketplace sem payload" }
+        val currentPage = payload.currentPage?.minus(1)?.coerceAtLeast(0) ?: page.coerceAtLeast(0)
+        val terminalEmpty = payload.pools.isNullOrEmpty() && area.next() == null
+        val lastPage = if (terminalEmpty) currentPage
+            else payload.lastPage?.minus(1)?.coerceAtLeast(0) ?: page.coerceAtLeast(0)
+        val nextArea = if (currentPage >= lastPage) area.next() else null
         return MarketplacePage(
             pools = payload.pools.orEmpty().map { pool ->
                 val location = listOfNotNull(
@@ -59,9 +67,12 @@ class RemoteMarketplaceRepository(
                     lastSharePriceWithFeeValue = lastSharePrice,
                 )
             },
-            currentPage = payload.currentPage ?: page.coerceAtLeast(0),
-            lastPage = payload.lastPage ?: page.coerceAtLeast(0),
+            currentPage = currentPage,
+            lastPage = lastPage,
             totalRecords = payload.totalRecords ?: payload.pools.orEmpty().size,
+            nextArea = nextArea,
+            continueAutomatically = (currentPage < lastPage || nextArea != null) &&
+                payload.pools.orEmpty().size < 30,
         )
     }
 
@@ -92,20 +103,27 @@ class RemoteMarketplaceRepository(
             totalShares = payload.totalShares ?: 0,
             betQuantity = payload.betQuantity ?: 0,
             numberQuantity = payload.numberQuantity ?: 0,
-            sharePriceWithoutFee = payload.sharePriceWithoutFee.orEmpty(),
+            sharePriceWithoutFee = (payload.lastSharePriceWithoutFee ?: payload.sharePriceWithoutFee).orEmpty(),
             lastShareFee = payload.lastShareFee.orEmpty(),
             lastSharePriceWithFee = payload.lastSharePriceWithFee.orEmpty(),
             bets = payload.bets.orEmpty().map { bet ->
+                val numbers = bet.numbers
                 MarketplaceBet(
-                    numbers = bet.numbers.flattenNumbers(),
+                    numbers = numbers.flattenNumbers(),
                     clovers = bet.clovers.orEmpty(),
                     surprise = bet.surprise == true,
+                    numberColumns = if (numbers?.isJsonArray == true && numbers.asJsonArray.any { it.isJsonArray })
+                        numbers.asJsonArray.map { it.flattenNumbers() } else emptyList(),
+                    favoriteTeam = bet.favoriteTeam.toDomainSportsTeam(),
+                    luckyMonth = bet.luckyMonth.toDomainLuckyMonth(),
+                    lotecaSelections = bet.lotecaMatches.orEmpty().mapNotNull { it.toDomainLotecaSelection() },
                 )
             },
             contestType = payload.contestType ?: 1,
             drawDate = payload.drawDate.orEmpty().trim(),
             serviceFeePerShare = payload.serviceFeePerShare ?: BigDecimal.ZERO,
             lastSharePriceWithFeeValue = payload.lastSharePriceWithFee.toMoneyValue(),
+            regularSharePriceWithFee = payload.regularSharePriceWithFee ?: payload.lastSharePriceWithFee.toMoneyValue(),
         )
     }
 

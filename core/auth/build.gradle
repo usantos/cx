@@ -34,7 +34,8 @@ def authCoverageClasses = files(fileTree(
         dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
         includes: ['**/SessionTokenStore*.class', '**/AuthorizationAttempt*.class', '**/PendingAuthorization*.class',
                    '**/EndSessionRegistry*.class', '**/EndSessionLaunch*.class', '**/EndSessionOutcome*.class',
-                   '**/TokenEndpointIdentity*.class', '**/BiometricAttemptRegistry*.class']
+                   '**/TokenEndpointIdentity*.class', '**/BiometricAttemptRegistry*.class',
+                   '**/RegularSessionRefreshCoordinator*.class', '**/BackendSessionRefresh*.class']
 ))
 
 tasks.register('verifyAuthCoverageInputs') {

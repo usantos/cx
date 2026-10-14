@@ -64,6 +64,8 @@ fun LoginRoute(
     onSessionInvalidated: () -> Unit,
     authorizeOnEnter: Boolean = false,
     onAuthorizationCancelled: () -> Unit = {},
+    environmentSelectorVisible: Boolean = false,
+    environmentSelector: @Composable (Boolean) -> Unit = {},
     biometricPrompt: (Activity, android.content.Intent, (android.content.Intent?) -> Unit) -> (() -> Unit) =
         ::showBiometricPrompt,
 ) {
@@ -136,6 +138,8 @@ fun LoginRoute(
         onTryNow = { if (viewModel.enterVisitor()) onTryNow() },
         onLogin = authorize,
         onBiometricChanged = viewModel::setBiometricEnabled,
+        environmentSelector = environmentSelector,
+        environmentSelectorVisible = environmentSelectorVisible,
     )
     if (state.blockedAccountCheckFailed) {
         br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyDialog(
@@ -164,6 +168,8 @@ fun LoginScreen(
     onLogin: () -> Unit,
     onBiometricChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    environmentSelectorVisible: Boolean = false,
+    environmentSelector: @Composable (Boolean) -> Unit = {},
 ) {
     val view = LocalView.current
     DisposableEffect(view) {
@@ -276,7 +282,11 @@ fun LoginScreen(
                 )
                 CaixaDSLoginSwitch(checked = state.biometricEnabled)
             }
-            Spacer(Modifier.height(CaixaDS.spacing.xl))
+            if (environmentSelectorVisible) {
+                Box(Modifier.fillMaxWidth().height(48.dp).padding(start = 10.dp)) {
+                    environmentSelector(!state.authorizationPending && !state.isLoading)
+                }
+            } else Spacer(Modifier.height(CaixaDS.spacing.xl))
             Text(
                 text = "v. $versionName",
                 color = CaixaDS.colors.onBrand,

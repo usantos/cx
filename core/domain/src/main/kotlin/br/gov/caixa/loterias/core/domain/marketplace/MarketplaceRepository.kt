@@ -12,8 +12,10 @@ data class MarketplacePage(
     val currentPage: Int,
     val lastPage: Int,
     val totalRecords: Int,
+    val nextArea: MarketplaceSearchArea? = null,
+    val continueAutomatically: Boolean = false,
 ) {
-    val canLoadMore: Boolean get() = currentPage < lastPage
+    val canLoadMore: Boolean get() = currentPage < lastPage || nextArea != null
 }
 
 data class MarketplacePool(
@@ -83,10 +85,15 @@ data class MarketplacePoolDetail(
     val drawDate: String = "",
     val serviceFeePerShare: BigDecimal = BigDecimal.ZERO,
     val lastSharePriceWithFeeValue: BigDecimal = BigDecimal.ZERO,
+    val regularSharePriceWithFee: BigDecimal = lastSharePriceWithFeeValue,
 )
 
 data class MarketplaceBet(
     val numbers: List<Int>,
     val clovers: List<Int>,
     val surprise: Boolean,
+    val numberColumns: List<List<Int>> = emptyList(),
+    val favoriteTeam: br.gov.caixa.loterias.core.domain.betting.SportsTeam? = null,
+    val luckyMonth: br.gov.caixa.loterias.core.domain.betting.LuckyMonth? = null,
+    val lotecaSelections: List<br.gov.caixa.loterias.core.domain.betting.LotecaMatchSelection> = emptyList(),
 )

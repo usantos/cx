@@ -17,6 +17,9 @@ class MarketplaceFilter @JvmOverloads constructor(
     unwantedNumbers: List<Int>?,
     modalityId: Int? = null,
     contestType: Int? = null,
+    val searchArea: MarketplaceSearchArea? = null,
+    val municipalityId: Long = 0,
+    val stateId: Long = 0,
 ) {
     val minimumValue = minimumValue.orEmpty().trim()
     val maximumValue = maximumValue.orEmpty().trim()
@@ -30,6 +33,11 @@ class MarketplaceFilter @JvmOverloads constructor(
     val contestType = contestType.positiveOrNull()
     val wantedNumbers: List<Int> = immutableCopy(wantedNumbers)
     val unwantedNumbers: List<Int> = immutableCopy(unwantedNumbers)
+
+    fun withSearchArea(area: MarketplaceSearchArea?) = copy(searchArea = area)
+    fun withSearchLocation(location: MarketplaceLocation) = copy(
+        municipalityId = location.municipalityId, stateId = location.stateId,
+    )
 
     fun withBetQuantity(value: Int?) = copy(betQuantity = value)
     fun withNumberQuantity(value: Int?) = copy(numberQuantity = value)
@@ -46,9 +54,12 @@ class MarketplaceFilter @JvmOverloads constructor(
         lottery: String? = this.lottery,
         modalityId: Int? = this.modalityId,
         contestType: Int? = this.contestType,
+        searchArea: MarketplaceSearchArea? = this.searchArea,
+        municipalityId: Long = this.municipalityId,
+        stateId: Long = this.stateId,
     ) = MarketplaceFilter(
         minimumValue, maximumValue, minimumShares, maximumShares, betQuantity,
-        numberQuantity, lottery, modality, wantedNumbers, unwantedNumbers, modalityId, contestType,
+        numberQuantity, lottery, modality, wantedNumbers, unwantedNumbers, modalityId, contestType, searchArea, municipalityId, stateId,
     )
 
     override fun equals(other: Any?): Boolean = this === other || other is MarketplaceFilter &&
@@ -57,11 +68,13 @@ class MarketplaceFilter @JvmOverloads constructor(
         betQuantity == other.betQuantity && numberQuantity == other.numberQuantity &&
         lottery == other.lottery && modality == other.modality &&
         modalityId == other.modalityId && contestType == other.contestType &&
+        searchArea == other.searchArea && municipalityId == other.municipalityId && stateId == other.stateId &&
         wantedNumbers == other.wantedNumbers && unwantedNumbers == other.unwantedNumbers
 
     override fun hashCode(): Int = Objects.hash(
         minimumValue, maximumValue, minimumShares, maximumShares, betQuantity,
         numberQuantity, lottery, modality, modalityId, contestType, wantedNumbers, unwantedNumbers,
+        searchArea, municipalityId, stateId,
     )
 
     companion object {

@@ -42,13 +42,11 @@ internal fun visibleCartSections(items: List<CartItem>): List<CartSectionItems> 
     items.filter { it.kind == kind }.takeIf(List<CartItem>::isNotEmpty)?.let { CartSectionItems(kind, it) }
 }
 
-internal fun canClearCart(cart: ShoppingCart?): Boolean = cart != null &&
-    (cart.betCount > 0 || cart.items.any { it.kind == CartItemKind.POOL_SHARE || it.kind == CartItemKind.COMBO })
+/** Current CX CarrinhoActivity counts displayed individual, combo and pool cards. */
+internal fun canClearCart(cart: ShoppingCart?): Boolean = cart?.items?.isNotEmpty() == true
 
-internal fun canFavoriteCart(cart: ShoppingCart?, authenticated: Boolean): Boolean {
-    if (!authenticated || cart == null || cart.betCount <= 0) return false
-    return cart.items.all { it.kind == CartItemKind.INDIVIDUAL_BET }
-}
+internal fun canFavoriteCart(cart: ShoppingCart?, authenticated: Boolean): Boolean =
+    authenticated && cart?.items?.isNotEmpty() == true && cart.items.none { it.kind == CartItemKind.POOL_SHARE }
 
 internal fun quantityLabel(quantity: Int, singular: String, plural: String): String =
     "${quantity.coerceAtLeast(0)} ${if (quantity == 1) singular else plural}"

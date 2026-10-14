@@ -370,6 +370,12 @@ object ApplicationModule {
     fun cartDataSource(source: RetrofitLoteriasRemoteDataSource): CartRemoteDataSource = source
 
     @Provides
+    fun removeExpiredPoolShare(source: RetrofitLoteriasRemoteDataSource,
+        binding: br.gov.caixa.loterias.core.data.AccountVerificationSessionBinding):
+        br.gov.caixa.loterias.core.domain.cart.RemoveExpiredPoolShareUseCase =
+        br.gov.caixa.loterias.core.data.RemoveExpiredRemotePoolShare(source, binding::bind)
+
+    @Provides
     fun favoriteCartDataSource(source: RetrofitLoteriasRemoteDataSource): FavoriteCartRemoteDataSource = source
 
     @Provides
@@ -462,8 +468,15 @@ object ApplicationModule {
     @Provides @Singleton
     fun bettingRepository(source: BettingRemoteDataSource,
         local: br.gov.caixa.loterias.core.domain.cart.VisitorCartRepository,
-        tokenStore: SessionTokenStore): BettingRepository =
-        br.gov.caixa.loterias.core.domain.cart.SessionBettingRepository(RemoteBettingRepository(source), local) { tokenStore.token() != null }
+        tokenStore: SessionTokenStore,
+        environmentSettings: br.gov.caixa.loterias.apostas.EnvironmentSettings): BettingRepository =
+        br.gov.caixa.loterias.core.domain.cart.SessionBettingRepository(
+            br.gov.caixa.loterias.core.domain.betting.SessionBettingParametersRepository(
+                RemoteBettingRepository(source),
+                { environmentSettings.effective.sessionNamespace + "|" + environmentSettings.effective.apiBaseUrl },
+                tokenStore::captureIdentity,
+            ), local,
+        ) { tokenStore.token() != null }
 
     @Provides @Singleton
     fun rapidBettingRepository(source: RapidBettingRemoteDataSource): RapidBettingRepository =
@@ -538,7 +551,18 @@ object ApplicationModule {
         br.gov.caixa.loterias.core.domain.betting.PrepareHomeBettingAction(verifyAccess, features, onboarding) { tokenStore.token() != null }
 
     @Provides
-    fun searchMarketplace(repository: MarketplaceRepository): SearchMarketplaceUseCase = SearchMarketplace(repository)
+    fun searchMarketplace(
+        repository: MarketplaceRepository,
+        account: AccountRemoteDataSource,
+        sessions: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentityProvider,
+    ): SearchMarketplaceUseCase = SearchMarketplace(repository,
+        br.gov.caixa.loterias.core.domain.marketplace.MarketplaceLocationProvider {
+            val identity = requireNotNull(sessions.captureIdentity()) { "Sessão necessária para buscar bolões" }
+            val municipality = requireNotNull(account.currentUserProfile()?.municipalityId)
+            check(sessions.isCurrent(identity)) { "Sessão substituída durante a consulta" }
+            br.gov.caixa.loterias.core.domain.marketplace.MarketplaceLocation(municipality.number ?: 0, municipality.stateId ?: 0)
+        },
+    )
 
     @Provides
     fun marketplaceDetail(repository: MarketplaceDetailRepository): GetMarketplaceDetailUseCase =
@@ -826,20 +850,24 @@ object ApplicationModule {
         @ApplicationContext context: Context,
         tokenStore: SessionTokenStore,
         requestPolicy: br.gov.caixa.loterias.core.auth.AuthorizationRequestPolicy,
+        environmentSettings: br.gov.caixa.loterias.apostas.EnvironmentSettings,
     ): AppAuthAuthenticationGateway = AppAuthAuthenticationGateway(
         context = context,
         configuration = OidcConfiguration(
-            authorizationEndpoint = BuildConfig.SSO_AUTH_URL,
-            tokenEndpoint = BuildConfig.SSO_TOKEN_URL,
-            clientId = BuildConfig.SSO_CLIENT_ID,
-            redirectUri = BuildConfig.SSO_REDIRECT_URI,
-            endSessionEndpoint = BuildConfig.SSO_LOGOUT_URL,
-            postLogoutRedirectUri = BuildConfig.SSO_REDIRECT_URI,
-            sessionNamespace = BuildConfig.API_BASE_URL,
+            authorizationEndpoint = environmentSettings.effective.ssoAuthUrl,
+            tokenEndpoint = environmentSettings.effective.ssoTokenUrl,
+            clientId = environmentSettings.effective.ssoClientId,
+            redirectUri = environmentSettings.effective.ssoRedirectUri,
+            endSessionEndpoint = environmentSettings.effective.ssoLogoutUrl,
+            postLogoutRedirectUri = environmentSettings.effective.ssoRedirectUri,
+            sessionNamespace = environmentSettings.effective.sessionNamespace,
         ),
         tokenStore = tokenStore,
         requestPolicy = requestPolicy,
     )
+
+    @Provides
+    fun regularSessionRefresh(gateway: AppAuthAuthenticationGateway): br.gov.caixa.loterias.core.auth.RegularSessionRefreshExecutor = gateway
 
     @Provides
     fun authentication(gateway: AppAuthAuthenticationGateway): AuthenticationGateway = gateway

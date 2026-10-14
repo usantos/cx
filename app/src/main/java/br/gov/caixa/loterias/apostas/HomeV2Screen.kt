@@ -552,6 +552,8 @@ internal fun HomeV2Content(
     val presentation = remember(preferences) { HomeV2Presentation(preferences) { currentActions } }
     val density = LocalDensity.current
     CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 1f)) {
-        MaterialTheme { presentation.Home(lotteries, loading, results) }
+        // CX mounts this presentation in a separate Compose root with Material3 defaults.
+        // Explicit typography prevents the application host from changing spacing/wrapping.
+        MaterialTheme(typography = Typography()) { presentation.Home(lotteries, loading, results) }
     }
 }

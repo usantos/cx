@@ -19,40 +19,38 @@ import org.junit.Assert.assertEquals
 class CartSummaryIntegrationTest {
     @get:Rule val compose = createComposeRule()
 
-    @Test fun groupedComboShowsFullSnapshotCountAndClearingRemovesSummaryAndToolbarActions() {
+    @Test fun groupedComboUsesDisplayedCardCountAndClearingKeepsZeroSummary() {
         val combo = CartItem(8, CartItemKind.COMBO, "Combo", "2 apostas", BigDecimal("9.25"), comboBetCount = 2)
         show(ShoppingCart(1, BigDecimal("25.50"), listOf(combo), totalBetCount = 4))
-        compose.onNodeWithText("Valor atual do carrinho", useUnmergedTree = true).assertIsDisplayed()
+        compose.onNodeWithText("Total do carrinho", useUnmergedTree = true).assertIsDisplayed()
         compose.onNodeWithText("R$ 25,50", useUnmergedTree = true).assertIsDisplayed()
-        compose.onNodeWithText("4", useUnmergedTree = true).assertIsDisplayed()
-        compose.onNodeWithContentDescription("Salvar carrinho favorito").assertDoesNotExist()
+        compose.onNodeWithText("1", useUnmergedTree = true).assertIsDisplayed()
+        compose.onNodeWithContentDescription("Salvar carrinho favorito").assertIsDisplayed()
         compose.onNodeWithContentDescription("Excluir todas as apostas").performClick()
         compose.onNodeWithText("Deseja excluir todas as apostas do carrinho?").assertIsDisplayed()
         compose.onNodeWithText("Sim").performClick()
-        compose.onNodeWithText("Valor atual do carrinho", useUnmergedTree = true).assertDoesNotExist()
+        compose.onNodeWithText("R$ 0,00", useUnmergedTree = true).assertIsDisplayed()
         compose.onNodeWithContentDescription("Excluir todas as apostas").assertDoesNotExist()
         compose.onNodeWithContentDescription("Salvar carrinho favorito").assertDoesNotExist()
     }
 
-    @Test fun explicitlyEmptyFlatSnapshotHidesTotalAndToolbarDespiteStaleIndividualCard() {
+    @Test fun displayedIndividualCardControlsToolbarDespiteOldEmptyFlatCount() {
         val individual = CartItem(1, CartItemKind.INDIVIDUAL_BET, "Mega-Sena", "01 02 03 04 05 06", BigDecimal("3.50"))
         show(ShoppingCart(1, BigDecimal.ZERO, listOf(individual), totalBetCount = 0))
-        compose.onNodeWithText("Mega-Sena").assertIsDisplayed()
-        compose.onNodeWithText("Valor atual do carrinho", useUnmergedTree = true).assertDoesNotExist()
-        compose.onNodeWithContentDescription("Excluir todas as apostas").assertDoesNotExist()
-        compose.onNodeWithContentDescription("Salvar carrinho favorito").assertDoesNotExist()
+        compose.onNodeWithText("mega-sena").assertIsDisplayed()
+        compose.onNodeWithText("R$ 0,00", useUnmergedTree = true).assertIsDisplayed()
+        compose.onNodeWithText("1", useUnmergedTree = true).assertIsDisplayed()
+        compose.onNodeWithContentDescription("Excluir todas as apostas").assertIsDisplayed()
+        compose.onNodeWithContentDescription("Salvar carrinho favorito").assertIsDisplayed()
     }
 
-    @Test fun emptyCartRetainsPaymentActionAndMinimumNoticeAndRunsCheckoutGates() {
+    @Test fun emptyCartDisablesPaymentBeforeStartingCheckoutGates() {
         val calls = mutableListOf<String>()
         show(ShoppingCart(1, BigDecimal.ZERO, emptyList()), checkoutCalls = calls, minimum = BigDecimal("30"))
         compose.onNodeWithText("Carrinho de apostas").assertIsDisplayed()
-        compose.onNodeWithText("Lembre-se que o valor mínimo do total\nde compras nesse aplicativo é R$30,00")
-            .assertIsDisplayed()
-        compose.onNodeWithText("Seu carrinho está vazio.").assertDoesNotExist()
-        compose.onNodeWithText("Avançar\npara a forma de pagamento").assertIsEnabled().performClick()
         compose.onNodeWithText("Carrinho vazio").assertIsDisplayed()
-        compose.runOnIdle { assertEquals(listOf("account", "location", "recent:0", "validate"), calls) }
+        compose.onNodeWithText("Ir para pagamento").assertIsNotEnabled()
+        compose.runOnIdle { assertEquals(emptyList<String>(), calls) }
     }
 
     @Test fun favoriteDialogLimitsInputToThirtyCharactersAndCancelClearsTheDraft() {

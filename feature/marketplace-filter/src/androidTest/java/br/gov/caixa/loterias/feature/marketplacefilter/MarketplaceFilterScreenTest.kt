@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import org.junit.Rule
 import org.junit.Test
 
@@ -31,12 +32,12 @@ class MarketplaceFilterScreenTest {
         }
 
         compose.onNodeWithText("Filtros").assertIsDisplayed()
-        compose.onNodeWithText("Modalidade").assertIsDisplayed()
-        compose.onNodeWithText("Quantidade de apostas").assertIsDisplayed()
-        compose.onNodeWithText("Quantidade de dezenas").assertIsDisplayed()
-        compose.onNodeWithText("Números que quero").assertIsDisplayed()
-        compose.onNodeWithText("Números que não quero").assertIsDisplayed()
-        compose.onAllNodesWithText("Todas").assertCountEquals(1)
+        compose.onNodeWithText("Modalidades").assertIsDisplayed()
+        compose.onNodeWithText("Quantidade de Apostas").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Quantidade de Dezenas").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Números que quero").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Números que não quero").performScrollTo().assertIsDisplayed()
+        compose.onAllNodesWithText("Todas as\nmodalidades").assertCountEquals(1)
     }
 
     @Test

@@ -426,7 +426,8 @@ private fun LegacyBottomAction(label: String, onClick: (() -> Unit)?, edit: Bool
 /** Shared list/detail repeat action dialogs; preserves the existing ViewModel decisions and callbacks. */
 @Composable
 fun BetRepeatActionsOverlay(viewModel: BetDetailViewModel, showLoading: Boolean = true,
-    onServiceRedirect: ((br.gov.caixa.loterias.core.domain.service.ServiceRedirect) -> Unit)? = null) {
+    onServiceRedirect: ((br.gov.caixa.loterias.core.domain.service.ServiceRedirect) -> Unit)? = null,
+    onCartChanged: (() -> Unit)? = null) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     if (onServiceRedirect != null) {
         val failure = state.serviceFailure
@@ -456,7 +457,7 @@ fun BetRepeatActionsOverlay(viewModel: BetDetailViewModel, showLoading: Boolean 
             title = "Atenção",
             message = "Aposta adicionada ao carrinho com sucesso!",
             positiveLabel = "Entendi",
-            onPositive = viewModel::dismissCartAddition,
+            onPositive = { viewModel.dismissCartAddition(); onCartChanged?.invoke() },
             onDismiss = viewModel::dismissCartAddition,
         )
     }

@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.core.domain.retail.SetRetailerFavoriteUseCase
 import br.gov.caixa.loterias.core.domain.retail.GetFavoriteRetailersUseCase
 import br.gov.caixa.loterias.core.domain.retail.Retailer
 import java.math.BigDecimal
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -51,6 +52,90 @@ class MarketplaceViewModelTest {
         serviceFeePerShare = BigDecimal("2.50"),
         lastSharePriceWithFeeValue = BigDecimal("12.50"),
     )
+
+    @Test
+    fun `exhausts local pages then starts state and national at page zero`() = runTest(dispatcherRule.dispatcher) {
+        val calls = mutableListOf<Pair<br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea?, Int>>()
+        val repository = MarketplaceRepository { filter, page ->
+            calls += filter.searchArea to page
+            val next = when (filter.searchArea) {
+                br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.MUNICIPALITY ->
+                    if (page == 1) br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.STATE else null
+                br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.STATE ->
+                    br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.NATIONAL
+                else -> null
+            }
+            MarketplacePage(listOf(pool.copy(code = "${filter.searchArea}-$page")), page,
+                if (filter.searchArea == br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.MUNICIPALITY) 1 else 0, 1, next)
+        }
+        val viewModel = viewModel(repository, filter = MarketplaceFilter.empty().withSearchArea(
+            br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.MUNICIPALITY))
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        repeat(3) {
+            viewModel.loadMore()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        }
+        assertEquals(listOf(
+            br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.MUNICIPALITY to 0,
+            br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.MUNICIPALITY to 1,
+            br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.STATE to 0,
+            br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.NATIONAL to 0,
+        ), calls)
+        assertEquals(4, viewModel.state.value.pools.size)
+        assertFalse(viewModel.state.value.canLoadMore)
+    }
+
+    @Test
+    fun `empty municipality and state automatically continue until national results`() = runTest(dispatcherRule.dispatcher) {
+        val calls = mutableListOf<Int>()
+        val repository = MarketplaceRepository { filter, page ->
+            calls += page
+            val area = requireNotNull(filter.searchArea)
+            MarketplacePage(if (area == br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.NATIONAL) listOf(pool) else emptyList(),
+                0, 0, 1, area.next())
+        }
+        val viewModel = viewModel(repository, filter = MarketplaceFilter.empty().withSearchArea(
+            br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.MUNICIPALITY))
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(listOf(0, 0, 0), calls)
+        assertEquals(listOf(pool), viewModel.state.value.pools)
+        assertFalse(viewModel.state.value.canLoadMore)
+    }
+
+    @Test
+    fun `backend order supplies four carousel pools and remaining list without duplication`() = runTest(dispatcherRule.dispatcher) {
+        val values = (1..7).map { pool.copy(code = "B$it") }
+        val vm = viewModel(MarketplaceRepository { _, _ -> MarketplacePage(values, 0, 0, values.size) })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(listOf("B1", "B2", "B3", "B4"), vm.state.value.carouselPools.map { it.code })
+        assertEquals(listOf("B5", "B6", "B7"), vm.state.value.listPools.map { it.code })
+    }
+
+    @Test
+    fun `contest header uses current simulation parameters instead of pool advertisement data`() = runTest(dispatcherRule.dispatcher) {
+        val game = br.gov.caixa.loterias.core.domain.betting.LotteryGameParameters(
+            br.gov.caixa.loterias.core.domain.betting.LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
+            4100, "2026-12-31", 60, 6, 20, 1, emptyList(), emptyList(),
+            estimatedPrize = BigDecimal("7654321"),
+        )
+        val vm = MarketplaceViewModel(
+            SearchMarketplace(MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) }),
+            MarketplaceFilter.forModality(2, 1),
+            AddMarketplacePoolToCartUseCase { AppResult.Success(cartWithReservation()) },
+            GetFavoriteRetailersUseCase { AppResult.Success(emptyList()) },
+            SetRetailerFavoriteUseCase { _, _ -> AppResult.Success(Unit) },
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            getBettingParameters = br.gov.caixa.loterias.core.domain.betting.GetBettingParametersUseCase {
+                AppResult.Success(br.gov.caixa.loterias.core.domain.betting.BettingParameters(
+                    BigDecimal.ZERO, BigDecimal.ZERO, 0, listOf(game)))
+            },
+        )
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(4100, vm.state.value.contestHeader?.contestNumber)
+        assertEquals(BigDecimal("7654321"), vm.state.value.contestHeader?.estimatedPrize)
+        assertEquals("2026-12-31", vm.state.value.contestHeader?.drawDate)
+        assertEquals(listOf(pool), vm.state.value.pools)
+    }
 
     @Test
     fun `loads first page and next page`() = runTest(dispatcherRule.dispatcher) {
@@ -294,6 +379,71 @@ class MarketplaceViewModelTest {
 
         assertFalse(viewModel.state.value.favoriteRetailersLoading)
         assertTrue(viewModel.state.value.favoriteRetailersError!!.contains("lotéricas favoritas"))
+    }
+
+    @Test
+    fun `confirmed child changes refresh queries once while read only returns keep the baseline`() = runTest(dispatcherRule.dispatcher) {
+        var searches = 0
+        var favorites = 0
+        val viewModel = viewModel(
+            MarketplaceRepository { _, _ ->
+                searches++
+                MarketplacePage(listOf(pool), 0, 0, 1)
+            },
+            favoriteRetailers = GetFavoriteRetailersUseCase {
+                favorites++
+                AppResult.Success(emptyList())
+            },
+        )
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        viewModel.observeChildRevision(7)
+        viewModel.observeChildRevision(7)
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, searches)
+        assertEquals(1, favorites)
+
+        viewModel.observeChildRevision(8)
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(2, searches)
+        assertEquals(2, favorites)
+        // Re-entering the route with the same retained ViewModel must not issue another GET.
+        viewModel.observeChildRevision(8)
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(2, searches)
+        assertEquals(2, favorites)
+
+        viewModel.observeChildRevision(9)
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(3, searches)
+        assertEquals(3, favorites)
+    }
+
+    @Test
+    fun `favorite tab deletion stays locked until confirmed backend success or failure`() = runTest(dispatcherRule.dispatcher) {
+        for (succeeds in listOf(true, false)) {
+            val result = CompletableDeferred<AppResult<Unit>>()
+            var calls = 0
+            val viewModel = viewModel(
+                MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool.copy(favoriteLottery = true)), 0, 0, 1) },
+                favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(listOf(retailer())) },
+                favorite = SetRetailerFavoriteUseCase { _, _ -> calls++; result.await() },
+            )
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            viewModel.requestFavoriteRetailerRemoval(10)
+            viewModel.confirmFavoriteRetailerRemoval()
+            assertEquals(setOf(10L), viewModel.state.value.updatingFavoriteLotteryIds)
+            dispatcherRule.dispatcher.scheduler.runCurrent()
+            viewModel.requestFavoriteRetailerRemoval(10)
+            assertNull(viewModel.state.value.pendingFavoriteRetailerRemoval)
+            viewModel.confirmFavoriteRetailerRemoval()
+            assertEquals(1, calls)
+            result.complete(if (succeeds) AppResult.Success(Unit) else AppResult.Failure(AppError.Network))
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertTrue(viewModel.state.value.updatingFavoriteLotteryIds.isEmpty())
+            assertEquals(if (succeeds) 0 else 1, viewModel.state.value.favoriteRetailers.size)
+            assertEquals(!succeeds, viewModel.state.value.pools.single().favoriteLottery)
+            assertEquals(!succeeds, viewModel.state.value.actionError != null)
+        }
     }
 
     private suspend fun loadedViewModel(): MarketplaceViewModel {

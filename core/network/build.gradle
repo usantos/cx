@@ -33,6 +33,8 @@ def networkCoverageClasses = files(fileTree(
         dir: layout.buildDirectory.dir('classes/kotlin/main'),
         includes: [
                 '**/BearerTokenInterceptor.class',
+                '**/SessionRefreshInterceptor*.class',
+                '**/BoundDeletionSingleAttemptInterceptor*.class',
                 '**/SilceTransportInterceptor*.class',
                 '**/CloudBackendRouting*.class',
                 '**/NetworkClientFactory.class',

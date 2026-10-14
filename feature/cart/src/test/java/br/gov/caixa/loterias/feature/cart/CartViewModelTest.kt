@@ -843,6 +843,164 @@ class CartViewModelTest {
         assertFalse(vm.state.value.loading)
     }
 
+    @Test fun `manual removal and clear reserve cart before a same turn expiration tick`() = runTest(dispatcherRule.dispatcher) {
+        for (clear in listOf(false, true)) {
+            val response = kotlinx.coroutines.CompletableDeferred<AppResult<ShoppingCart>>()
+            var calls = 0
+            val vm = viewModel(load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
+                remove = { calls++; response.await() }, clear = { calls++; response.await() })
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            if (clear) { vm.requestClear(); vm.confirmClear() }
+            else { vm.requestRemoval(item()); vm.confirmRemoval() }
+            assertTrue(vm.state.value.loading)
+            vm.refreshExpiredReservations()
+            dispatcherRule.dispatcher.scheduler.runCurrent()
+            assertEquals(1, calls)
+            response.complete(AppResult.Success(emptyCart())); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertFalse(vm.state.value.loading)
+            assertEquals(emptyCart(), vm.state.value.cart)
+        }
+    }
+
+    @Test fun `expiry blocks payment clear manual removal and reload until callback completes`() = runTest(dispatcherRule.dispatcher) {
+        val response = kotlinx.coroutines.CompletableDeferred<AppResult<ShoppingCart>>()
+        var deleteCalls = 0
+        var clearCalls = 0
+        var accountCalls = 0
+        var loadCalls = 0
+        val vm = viewModel(load = { loadCalls++; AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
+            remove = { deleteCalls++; response.await() },
+            clear = { clearCalls++; AppResult.Success(emptyCart()) },
+            verifyAccount = { accountCalls++; AppResult.Success(CartPaymentAccountDecision.Allowed) })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.requestRemoval(item()); vm.requestClear()
+        vm.refreshExpiredReservations()
+        // A click in the same dispatch turn must already be blocked, before DELETE starts.
+        assertTrue(vm.state.value.loading)
+        vm.requestPayment(); vm.confirmRemoval(); vm.confirmClear(); vm.load()
+        dispatcherRule.dispatcher.scheduler.runCurrent()
+        assertEquals(1, deleteCalls)
+        assertEquals(0, clearCalls)
+        assertEquals(0, accountCalls)
+        assertEquals(1, loadCalls)
+        vm.requestRemoval(item()); vm.requestClear()
+        assertNull(vm.state.value.pendingRemoval)
+        assertFalse(vm.state.value.clearConfirmation)
+        response.complete(AppResult.Failure(AppError.Network))
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertFalse(vm.state.value.loading)
+        vm.requestClear(); vm.confirmClear(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, clearCalls)
+    }
+
+    @Test fun `unavailable parameters do not suppress the expiration callback`() = runTest(dispatcherRule.dispatcher) {
+        var calls = 0
+        var parameterCallbacks = 0
+        val vm = viewModel(load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
+            parameters = { parameterCallbacks++; AppResult.Success(validParameters().copy(games = emptyList())) },
+            remove = { calls++; AppResult.Failure(AppError.Network) })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertTrue(vm.state.value.parametersUnavailable)
+        vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, calls)
+        assertEquals(2, parameterCallbacks)
+    }
+
+    @Test fun `late initial parameters cannot repopulate ended session`() = runTest(dispatcherRule.dispatcher) {
+        val owner = br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity("a".repeat(64))
+        val changes = kotlinx.coroutines.flow.MutableStateFlow<br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity?>(owner)
+        val sessions = object : br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentityProvider {
+            override fun captureIdentity() = changes.value
+            override fun isCurrent(identity: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity) = changes.value === identity
+        }
+        val response = kotlinx.coroutines.CompletableDeferred<AppResult<BettingParameters>>()
+        val vm = viewModel(sessions = sessions, changes = changes, parameters = {
+            kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) { response.await() }
+        })
+        dispatcherRule.dispatcher.scheduler.runCurrent()
+        changes.value = null; dispatcherRule.dispatcher.scheduler.runCurrent()
+        response.complete(AppResult.Success(validParameters())); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(BigDecimal.ZERO, vm.state.value.minimumCartAmount)
+        assertNull(vm.state.value.cart)
+    }
+
+    @Test fun `expiry removes both shares of same pool only once even on network failure`() = runTest(dispatcherRule.dispatcher) {
+        val expired = poolCart("2026-09-04T11:59:00Z")
+        val second = expired.items.single().copy(id = 13)
+        val snapshot = expired.copy(items = expired.items + second)
+        val removed = mutableListOf<Long>()
+        val vm = viewModel(load = { AppResult.Success(snapshot) }, remove = {
+            removed += it.id
+            AppResult.Failure(AppError.Network)
+        })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.refreshExpiredReservations(); vm.refreshExpiredReservations()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(listOf(12L, 13L), removed)
+        assertNull(vm.state.value.pendingRemoval)
+        assertEquals(snapshot, vm.state.value.cart)
+    }
+
+    @Test fun `expiry allows a new reservation with same item and pool but changed expiration`() = runTest(dispatcherRule.dispatcher) {
+        var snapshot = poolCart("2026-09-04T11:58:00Z")
+        var calls = 0
+        val vm = viewModel(load = { AppResult.Success(snapshot) }, remove = {
+            calls++; AppResult.Failure(AppError.Network)
+        })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        snapshot = poolCart("2026-09-04T11:59:00Z")
+        vm.load(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(2, calls)
+    }
+
+    @Test fun `expiry binds original identity and drops late response after logout or login`() = runTest(dispatcherRule.dispatcher) {
+        for (replacement in listOf(null, br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity("b".repeat(64)))) {
+            val owner = br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity("a".repeat(64))
+            val changes = kotlinx.coroutines.flow.MutableStateFlow<br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity?>(owner)
+            val sessions = object : br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentityProvider {
+                override fun captureIdentity() = changes.value
+                override fun isCurrent(identity: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity) = changes.value === identity
+            }
+            val response = kotlinx.coroutines.CompletableDeferred<AppResult<ShoppingCart>>()
+            var captured: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity? = null
+            var cancelled = false
+            val vm = viewModel(load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
+                sessions = sessions, changes = changes, bound = br.gov.caixa.loterias.core.domain.cart.RemoveExpiredPoolShareUseCase { _, identity ->
+                    captured = identity
+                    try { kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) { response.await() } }
+                    finally { cancelled = !kotlin.coroutines.coroutineContext[kotlinx.coroutines.Job]!!.isActive }
+                })
+            dispatcherRule.dispatcher.scheduler.runCurrent()
+            vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.runCurrent()
+            assertTrue(captured === owner)
+            changes.value = replacement; dispatcherRule.dispatcher.scheduler.runCurrent()
+            response.complete(AppResult.Success(emptyCart())); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertTrue(cancelled)
+            assertNull(vm.state.value.cart)
+            vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertTrue(captured === owner)
+        }
+    }
+
+    @Test fun `identity replaced before ticker prevents deletion`() = runTest(dispatcherRule.dispatcher) {
+        val owner = br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity("a".repeat(64))
+        var current: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity? = owner
+        val sessions = object : br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentityProvider {
+            override fun captureIdentity() = current
+            override fun isCurrent(identity: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity) = current === identity
+        }
+        var calls = 0
+        val vm = viewModel(load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) }, sessions = sessions,
+            bound = br.gov.caixa.loterias.core.domain.cart.RemoveExpiredPoolShareUseCase { _, _ -> calls++; AppResult.Success(emptyCart()) })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        current = br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity("a".repeat(64))
+        vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, calls)
+    }
+
     private fun viewModel(
         load: suspend () -> AppResult<ShoppingCart> = { AppResult.Success(cart()) },
         remove: suspend (CartItem) -> AppResult<ShoppingCart> = { AppResult.Success(emptyCart()) },
@@ -862,6 +1020,9 @@ class CartViewModelTest {
         serverTime: br.gov.caixa.loterias.core.common.ServerTimeSource = br.gov.caixa.loterias.core.common.ServerTimeSource {
             java.time.Instant.parse("2026-09-04T12:00:00Z")
         },
+        sessions: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentityProvider? = null,
+        changes: kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity?>? = null,
+        bound: br.gov.caixa.loterias.core.domain.cart.RemoveExpiredPoolShareUseCase? = null,
     ) = CartViewModel(
         checkCheckoutLocation = CheckCheckoutLocationUseCase { location() },
         recordLocationRequest = RecordCheckoutLocationRequestUseCase { recordLocationRequest() },
@@ -878,6 +1039,9 @@ class CartViewModelTest {
         saveCurrentCartFavorite = saveFavorite?.let { callback -> SaveCurrentCartFavoriteUseCase { callback(it) } },
         authenticated = authenticated,
         networkAvailability = network,
+        reservationSessions = sessions,
+        reservationSessionChanges = changes,
+        removeExpiredPoolShare = bound,
     )
 
     companion object {

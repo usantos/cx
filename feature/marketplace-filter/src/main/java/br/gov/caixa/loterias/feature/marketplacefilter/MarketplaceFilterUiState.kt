@@ -21,6 +21,8 @@ data class MarketplaceFilterUiState(
     val selectedModality: MarketplaceFilterModalityUi? = null,
     val lottery: String = "",
     val selectedRetailer: Retailer? = null,
+    val restoredRetailerId: String = "",
+    val allModalitiesHighlighted: Boolean = false,
     val cachedRetailers: List<Retailer> = emptyList(),
     val retailerSuggestions: List<Retailer> = emptyList(),
     val retailerLoading: Boolean = false,

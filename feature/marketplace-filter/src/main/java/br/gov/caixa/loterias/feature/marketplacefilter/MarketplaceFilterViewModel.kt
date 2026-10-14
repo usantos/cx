@@ -22,11 +22,17 @@ class MarketplaceFilterViewModel(
     private val getBettingParameters: GetBettingParametersUseCase,
     private val searchRetailers: SearchRetailersUseCase,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
+    private val initialFilter: MarketplaceFilter = MarketplaceFilter.empty(),
+    private val clearFilter: MarketplaceFilter = MarketplaceFilter.forModality(initialFilter.modalityId ?: 0, initialFilter.contestType ?: 0),
+    lotteryEnabled: Boolean = true,
+    initialRetailer: br.gov.caixa.loterias.core.domain.retail.Retailer? = null,
 ) : ViewModel() {
     private val mutableState = MutableStateFlow(
-        MarketplaceFilterUiState(
-            numberOptions = allNumberQuantityOptions,
-        ),
+        marketplaceFilterState(initialFilter, lotteryEnabled).let { restored ->
+            initialRetailer?.takeIf { it.id.toString() == initialFilter.lottery }?.let { retailer ->
+                restored.copy(selectedRetailer = retailer, lottery = retailerDisplayLabel(retailer))
+            } ?: restored
+        },
     )
     val state = mutableState.asStateFlow()
 
@@ -37,10 +43,30 @@ class MarketplaceFilterViewModel(
         loadParameters()
     }
 
+    /** CX's RESULT_OK without a filter payload rebuilds the last search modality only. */
+    fun filterAfterBack(): MarketplaceFilter = MarketplaceFilter.forModality(initialFilter.modalityId ?: 0, initialFilter.contestType ?: 0)
+
     fun onAction(action: MarketplaceFilterAction) {
         when (action) {
             MarketplaceFilterAction.Apply -> applyFilter()
             MarketplaceFilterAction.Back -> Unit
+            MarketplaceFilterAction.Clear -> mutableState.update { current ->
+                val clean = marketplaceFilterState(clearFilter, current.lotteryEnabled)
+                val selected = clean.selectedModality?.let { previous ->
+                    current.modalities.firstOrNull { it.id == previous.id && it.contestType == previous.contestType } ?: previous
+                }
+                clean.copy(
+                    modalities = (if (!current.lotteryEnabled) listOf(allModalities) else emptyList()) + current.modalities.filterNot { it.isAll },
+                    selectedModality = selected,
+                    numberOptions = selected?.numberOptions ?: allNumberQuantityOptions,
+                    betOptions = current.betOptions,
+                    configurationError = current.configurationError,
+                    lottery = if (current.lotteryEnabled) "" else current.lottery,
+                    selectedRetailer = if (current.lotteryEnabled) null else current.selectedRetailer,
+                    restoredRetailerId = if (current.lotteryEnabled) "" else current.restoredRetailerId,
+                    allModalitiesHighlighted = !current.lotteryEnabled,
+                )
+            }
             is MarketplaceFilterAction.ChangeLottery -> changeLottery(action.value)
             is MarketplaceFilterAction.ChangeMinimumShares,
             is MarketplaceFilterAction.ChangeMaximumShares -> mutableState.update {
@@ -59,12 +85,12 @@ class MarketplaceFilterViewModel(
                 val modalities = (bettingOutcome as? AppResult.Success)?.value
                     ?.let(::marketplaceModalities).orEmpty()
                 val selected = current.selectedModality?.let { previous ->
-                    modalities.firstOrNull { it.id == previous.id && it.contestType == previous.contestType }
+                    modalities.firstOrNull { it.id == previous.id && it.contestType == previous.contestType } ?: previous
                 }
                 val valid = (filterOutcome as? AppResult.Success)?.value?.isValid == true &&
                     bettingOutcome is AppResult.Success
                 current.copy(
-                    modalities = modalities,
+                    modalities = (if (current.selectedRetailer != null || current.restoredRetailerId.isNotBlank()) listOf(allModalities) else emptyList()) + modalities,
                     selectedModality = selected,
                     betOptions = betOptions,
                     numberOptions = selected?.numberOptions ?: allNumberQuantityOptions,

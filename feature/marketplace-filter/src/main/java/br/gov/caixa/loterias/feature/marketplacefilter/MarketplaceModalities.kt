@@ -9,14 +9,14 @@ internal val allNumberQuantityOptions = (5..26).toList()
 
 internal val allModalities = MarketplaceFilterModalityUi(
     id = null,
-    name = "Todas",
+    name = "Todas as\nmodalidades",
     contestType = null,
     numberOptions = allNumberQuantityOptions,
     maximumNumber = 80,
 )
 
 internal fun marketplaceModalities(parameters: BettingParameters): List<MarketplaceFilterModalityUi> =
-    listOf(allModalities) + parameters.availablePoolModalities.mapNotNull { available ->
+    parameters.availablePoolModalities.mapNotNull { available ->
         parameters.gameFor(available)?.toFilterModality(available)
     }.distinctBy { it.id to it.contestType }
 
@@ -36,7 +36,8 @@ private fun LotteryGameParameters.toFilterModality(
         available.contestType.equals("E", ignoreCase = true)
     return MarketplaceFilterModalityUi(
         id = available.modalityId.takeIf { it > 0 } ?: modality.id.takeIf { it > 0 },
-        name = if (special) modality.specialName.ifBlank { modality.name } else modality.name,
+        name = (if (special) modality.specialName.ifBlank { modality.name } else
+            if (modality.code in setOf("MEGA_SENA", "MEGASENA")) "mega sena" else modality.name).lowercase(java.util.Locale.ROOT),
         baseName = modality.name,
         contestType = if (special) 2 else 1,
         numberOptions = prices.map { it.numberQuantity }.filter { it > 0 }.distinct().sorted(),

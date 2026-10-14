@@ -51,7 +51,10 @@ internal fun DrawPayoutRows(title: String, payouts: List<DrawPayout>, color: Col
 }
 
 @Composable
-internal fun DrawResultSupplement(result: DrawResult, color: Color, includeFirstPayouts: Boolean = false) {
+internal fun DrawResultSupplement(
+    result: DrawResult, color: Color, includeFirstPayouts: Boolean = false,
+    includeContestSummary: Boolean = true,
+) {
     if (includeFirstPayouts) DrawPayoutRows(
         if (result.secondDrawPayouts.isNotEmpty()) "Premiação do 1º sorteio" else "Premiação",
         result.payouts, color, drawModalityCode(result.modality),
@@ -72,6 +75,9 @@ internal fun DrawResultSupplement(result: DrawResult, color: Color, includeFirst
             Text(winner.description, color = color)
         }
     }
+    // VisualizarResultadosActivity renders prize details and revenue only.
+    // The service summary belongs to other result presentations in CX.
+    if (!includeContestSummary) return
     if (result.specialContest) Text("Concurso especial", Modifier.padding(top = 12.dp), color = color, fontWeight = FontWeight.Bold)
     if (result.drawLocation.isNotBlank()) Text("Local do sorteio: ${result.drawLocation}", Modifier.padding(top = 16.dp), color = color)
     if (result.notice.isNotBlank()) Text(result.notice, Modifier.padding(top = 12.dp), color = color)

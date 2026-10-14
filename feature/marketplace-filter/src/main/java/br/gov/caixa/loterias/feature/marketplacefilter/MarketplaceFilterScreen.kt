@@ -1,7 +1,8 @@
 package br.gov.caixa.loterias.feature.marketplacefilter
 
+import java.math.BigDecimal
+
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -51,6 +52,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -60,6 +62,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import br.gov.caixa.loterias.core.designsystem.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.CaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.CaixaDSMarketplaceFilterCurrencyIcon
+import br.gov.caixa.loterias.core.designsystem.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.CaixaDSCartSummary
 import br.gov.caixa.loterias.core.designsystem.CaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.CaixaDSIcons
 import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyDialog
@@ -73,6 +80,9 @@ fun MarketplaceFilterScreen(
     state: MarketplaceFilterUiState,
     onAction: (MarketplaceFilterAction) -> Unit,
     modifier: Modifier = Modifier,
+    cartTotal: BigDecimal = BigDecimal.ZERO,
+    cartBetCount: Int = 0,
+    onCart: (() -> Unit)? = null,
 ) {
     var numberDialog by remember { mutableStateOf<NumberDialog?>(null) }
     val showWantedFilters = state.selectedModality?.hidesWantedNumbers != true
@@ -82,7 +92,7 @@ fun MarketplaceFilterScreen(
         onBack = { onAction(MarketplaceFilterAction.Back) },
         modifier = modifier.fillMaxSize().testTag("marketplace_filter_screen"),
         gradientTopBar = false,
-        bottomBar = { LegacyCartSummary() },
+        bottomBar = { CaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart) },
     ) { padding ->
         Column(modifier = Modifier.padding(padding).verticalScroll(rememberScrollState())) {
             LegacyLabel(
@@ -92,12 +102,15 @@ fun MarketplaceFilterScreen(
                 fontSize = 14,
             )
             LegacyLabel("Modalidades", Modifier.padding(start = 10.dp, top = 10.dp))
-            LazyRow(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+            LazyRow(modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
                 items(state.modalities) { modality ->
                     ModalityCard(
                         modality = modality,
-                        selected = modality == state.selectedModality ||
-                            (modality.isAll && state.selectedModality == null),
+                        selected = when {
+                            state.allModalitiesHighlighted -> modality.isAll
+                            state.selectedModality != null -> modality.id == state.selectedModality.id && modality.contestType == state.selectedModality.contestType
+                            else -> modality == state.modalities.firstOrNull()
+                        },
                         onClick = { onAction(MarketplaceFilterAction.SelectModality(modality)) },
                     )
                 }
@@ -110,6 +123,7 @@ fun MarketplaceFilterScreen(
                     onValueChange = { onAction(MarketplaceFilterAction.ChangeLottery(it)) },
                     placeholder = "Nome ou código",
                     keyboardType = KeyboardType.Text,
+                    fontSize = 16,
                     modifier = Modifier.padding(start = 12.dp, top = 10.dp, end = 20.dp),
                 )
                 RetailerSearchFeedback(
@@ -124,8 +138,7 @@ fun MarketplaceFilterScreen(
                         "E.Lotérico 10.000004-01, digite 000004.",
                     modifier = Modifier.fillMaxWidth().padding(start = 12.dp, top = 10.dp, end = 20.dp),
                     color = CaixaDS.colors.legacyGraphite,
-                    fontSize = 12.sp,
-                    lineHeight = 16.sp,
+                    style = filterText(12),
                 )
             }
 
@@ -157,9 +170,9 @@ fun MarketplaceFilterScreen(
 
             LegacyLabel(
                 if (state.selectedModality?.baseName.equals("Loteca", ignoreCase = true)) {
-                    "Quantidade de palpites"
+                    "Quantidade de Palpites"
                 } else {
-                    "Quantidade de apostas"
+                    "Quantidade de Apostas"
                 },
                 Modifier.padding(start = 10.dp, top = 10.dp),
             )
@@ -171,7 +184,7 @@ fun MarketplaceFilterScreen(
 
             LegacyDivider()
             LegacyAccordionSelector(
-                title = "Quantidade de dezenas",
+                title = "Quantidade de Dezenas",
                 testTag = "number_quantity_selector",
                 selected = state.selectedNumberQuantity?.let(::listOf).orEmpty(),
                 onOpen = { numberDialog = NumberDialog.Quantity },
@@ -255,7 +268,7 @@ fun MarketplaceFilterScreen(
         }
         LegacyNumberSelectionDialog(
             title = when (dialog) {
-                NumberDialog.Quantity -> "Quantidade de dezenas"
+                NumberDialog.Quantity -> "Quantidade de Dezenas"
                 NumberDialog.Wanted -> "Números que quero"
                 NumberDialog.Unwanted -> "Números que não quero"
             },
@@ -280,6 +293,11 @@ fun MarketplaceFilterScreen(
 
 private enum class NumberDialog { Quantity, Wanted, Unwanted }
 
+private fun filterText(size: Int = 14, weight: FontWeight = FontWeight.Normal) = TextStyle(
+    fontFamily = CaixaDSFontFamily, fontSize = size.sp, fontWeight = weight,
+    platformStyle = PlatformTextStyle(includeFontPadding = true),
+)
+
 @Composable
 private fun LegacyLabel(
     text: String,
@@ -287,7 +305,7 @@ private fun LegacyLabel(
     color: Color = CaixaDS.colors.legacyText,
     fontSize: Int = 12,
 ) {
-    Text(text, modifier, color = color, fontSize = fontSize.sp, fontWeight = FontWeight.Bold)
+    Text(text, modifier, color = color, style = filterText(fontSize, FontWeight.Bold))
 }
 
 @Composable
@@ -296,18 +314,8 @@ private fun ModalityCard(
     selected: Boolean,
     onClick: () -> Unit,
 ) {
-    val modalityColor = when (modality.baseName) {
-        "Mega-Sena" -> CaixaDSColorTokens.MegaSena
-        "Lotofácil" -> CaixaDSColorTokens.Lotofacil
-        "Quina" -> CaixaDSColorTokens.Quina
-        "+Milionária" -> CaixaDSColorTokens.MaisMilionaria
-        "Dupla Sena" -> CaixaDSColorTokens.DuplaSena
-        "Timemania" -> CaixaDSColorTokens.Timemania
-        "Dia de Sorte" -> CaixaDSColorTokens.DiaDeSorte
-        "Super Sete" -> CaixaDSColorTokens.SuperSete
-        "Loteca" -> CaixaDSColorTokens.Orange700
-        else -> CaixaDS.colors.legacyPrimaryButton
-    }
+    val palette = caixaDSLotteryStyle(modality.id ?: 0, modality.baseName)
+    val modalityColor = palette.light
     Card(
         modifier = Modifier.padding(8.dp).size(110.dp).clickable(onClick = onClick),
         shape = RoundedCornerShape(8.dp),
@@ -316,50 +324,40 @@ private fun ModalityCard(
     ) {
         Column(Modifier.fillMaxSize()) {
             Box(
-                modifier = Modifier.fillMaxWidth().weight(1f).background(modalityColor),
+                modifier = Modifier.fillMaxWidth().weight(1f).background(if (selected) { if (modality.isAll) CaixaDS.colors.legacyFilterBlue else modalityColor } else CaixaDSColorTokens.White),
                 contentAlignment = Alignment.Center,
             ) {
                 if (modality.isAll) {
                     Text(
-                        "Todas",
-                        color = CaixaDS.colors.onBrand,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
+                        "Todas as\nmodalidades",
+                        color = if (selected) CaixaDSColorTokens.White else CaixaDS.colors.legacyFilterBlue,
+                        style = filterText(14, FontWeight.Bold).copy(fontFamily = CaixaDSLegacyFuturaFontFamily),
                     )
                 } else {
                     CaixaDSLotteryMark(
                         modifier = Modifier.size(33.dp),
-                        lightColor = CaixaDS.colors.onBrand,
-                        accentColor = CaixaDS.colors.onBrand,
+                        lightColor = if (selected) palette.content else palette.light,
+                        accentColor = if (selected) palette.content.copy(alpha = 0.5f) else palette.light.copy(alpha = 0.5f),
                     )
                 }
                 if (selected) {
-                    Box(
-                        Modifier.align(Alignment.TopEnd).padding(5.dp).size(18.dp)
-                            .background(CaixaDS.colors.surface, CircleShape),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            CaixaDSIcons.Confirm,
-                            contentDescription = "Selecionada",
-                            tint = modalityColor,
-                            modifier = Modifier.size(14.dp),
-                        )
-                    }
+                    Icon(CaixaDSIcons.Confirm, "Selecionada",
+                        Modifier.align(Alignment.TopEnd).padding(top = 5.dp, end = 3.dp).size(12.dp),
+                        tint = palette.content)
+
                 }
             }
             if (!modality.isAll) {
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(33.dp).background(modalityColor),
+                    modifier = Modifier.fillMaxWidth().height(33.dp).background(palette.dark),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         modality.name,
-                        color = CaixaDS.colors.onBrand,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
+                        color = palette.darkContent,
+                        style = filterText(12, FontWeight.Bold).copy(fontFamily = CaixaDSLegacyFuturaFontFamily),
                         textAlign = TextAlign.Center,
-                        maxLines = 1,
+                        maxLines = 2,
                     )
                 }
             }
@@ -480,27 +478,28 @@ private fun LegacyInput(
     keyboardType: KeyboardType,
     modifier: Modifier = Modifier,
     currency: Boolean = false,
+    fontSize: Int = 14,
 ) {
     BasicTextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = { onValueChange(if (keyboardType == KeyboardType.Decimal || keyboardType == KeyboardType.Number) it.take(14) else it) },
         modifier = modifier.fillMaxWidth().height(48.dp).border(
             1.dp,
-            CaixaDS.colors.legacyGraphite,
+            CaixaDSColorTokens.Black,
             RoundedCornerShape(4.dp),
-        ).padding(horizontal = 8.dp),
-        textStyle = TextStyle(color = CaixaDS.colors.legacyGraphite, fontSize = 14.sp),
+        ),
+        textStyle = filterText(fontSize).copy(color = CaixaDS.colors.legacyGraphite),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         singleLine = true,
         decorationBox = { inner ->
             Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
                 if (currency) {
-                    Text("R$", color = CaixaDS.colors.legacyGraphite, fontSize = 14.sp)
+                    Icon(CaixaDSMarketplaceFilterCurrencyIcon, "R$", Modifier.width(44.dp).height(49.dp), tint = Color.Unspecified)
                     Spacer(Modifier.width(5.dp))
                 }
-                Box(Modifier.weight(1f)) {
+                Box(Modifier.weight(1f).padding(start = if (currency) 0.dp else 8.dp, end = 8.dp)) {
                     if (value.isEmpty()) {
-                        Text(placeholder, color = CaixaDS.colors.legacyGraphite, fontSize = 14.sp)
+                        Text(placeholder, color = CaixaDS.colors.legacyGraphite, style = filterText(fontSize))
                     }
                     inner()
                 }
@@ -539,10 +538,9 @@ private fun NumberCell(value: Int, selected: Boolean, onClick: () -> Unit) {
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                value.toString(),
+                value.toString().padStart(2, '0'),
                 color = if (selected) CaixaDS.colors.onBrand else CaixaDS.colors.legacyGraphite,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
+                style = filterText(12, FontWeight.Bold),
             )
         }
     }
@@ -669,47 +667,6 @@ private fun LegacyActionButton(
         contentPadding = PaddingValues(0.dp),
     ) {
         Text(text, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-    }
-}
-
-@Composable
-private fun LegacyCartSummary() {
-    Row(
-        modifier = Modifier.fillMaxWidth().height(36.dp).background(CaixaDS.colors.legacyFilterBlue),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            "R$ 00,00",
-            modifier = Modifier.padding(start = 8.dp),
-            color = CaixaDS.colors.onBrand,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-        )
-        Text(
-            "Valor atual do carrinho",
-            modifier = Modifier.padding(start = 8.dp).weight(1f),
-            color = CaixaDS.colors.onBrand,
-            fontSize = 12.sp,
-        )
-        Box(
-            modifier = Modifier.fillMaxHeight().width(72.dp).background(CaixaDS.colors.legacyCartDark),
-            contentAlignment = Alignment.Center,
-        ) {
-            val iconColor = CaixaDS.colors.onBrand
-            Canvas(Modifier.size(24.dp)) {
-                drawLine(iconColor, start = center.copy(x = size.width * .2f), end = center.copy(x = size.width * .78f), strokeWidth = 2.dp.toPx())
-                drawLine(iconColor, start = center.copy(x = size.width * .3f, y = size.height * .25f), end = center.copy(x = size.width * .4f, y = size.height * .7f), strokeWidth = 2.dp.toPx())
-                drawCircle(iconColor, radius = 2.dp.toPx(), center = center.copy(x = size.width * .43f, y = size.height * .82f))
-                drawCircle(iconColor, radius = 2.dp.toPx(), center = center.copy(x = size.width * .72f, y = size.height * .82f))
-            }
-            Box(
-                modifier = Modifier.align(Alignment.TopEnd).padding(top = 5.dp, end = 12.dp).size(16.dp)
-                    .background(CaixaDS.colors.accent, CircleShape),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text("0", color = CaixaDS.colors.legacyCartDark, fontSize = 7.sp, fontWeight = FontWeight.Bold)
-            }
-        }
     }
 }
 

@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.feature.cart
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -31,25 +32,21 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import br.gov.caixa.loterias.core.designsystem.CaixaDSCurrentCartDeleteIcon
+import br.gov.caixa.loterias.core.designsystem.CaixaDSCurrentCartIcon
+import br.gov.caixa.loterias.core.designsystem.CaixaDSCurrentCartColors
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.CaixaDS
 import br.gov.caixa.loterias.core.designsystem.CaixaDSTextInputDialog
-import br.gov.caixa.loterias.core.designsystem.CaixaDSCartActions
-import br.gov.caixa.loterias.core.designsystem.CaixaDSCartSummary
-import br.gov.caixa.loterias.core.designsystem.CaixaDSCartSummaryTokens
 import br.gov.caixa.loterias.core.designsystem.CaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.CaixaDSIcons
 import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyPurchaseFavoriteIcon
-import br.gov.caixa.loterias.core.designsystem.R as CaixaDSR
 import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyDialog
 import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyScaffold
 import br.gov.caixa.loterias.core.domain.cart.CartItem
@@ -80,6 +77,7 @@ fun CurrentCartRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val cart = state.cart
+    BackHandler(onBack = onBack)
     ServiceFailureOverlay(state.validationFailure, viewModel::acceptValidationNotice,
         viewModel::dismissValidationNotice, viewModel::consumeValidationRedirect, onValidationRedirect)
     CartLocationDialogs(state, viewModel, onLocationBlocked)
@@ -96,16 +94,12 @@ fun CurrentCartRoute(
             onPayment()
         }
     }
-    val reservedPoolCodes = cart?.items.orEmpty().mapNotNull { it.poolShare?.code }.sorted()
-    LaunchedEffect(reservedPoolCodes) {
-        while (reservedPoolCodes.isNotEmpty()) {
-            viewModel.refreshExpiredReservations()
-            delay(60_000)
-        }
-    }
     CaixaDSLegacyScaffold(
         title = "Carrinho de apostas",
         topBarTitleSize = 20.sp,
+        gradientTopBar = false,
+        topBarEndColor = CurrentCartBlue,
+        topBarNavigationWidth = 48.dp,
         topBarTitleWeight = FontWeight.SemiBold,
         onBack = onBack,
         containerColor = CaixaDSColorTokens.White,
@@ -114,33 +108,23 @@ fun CurrentCartRoute(
             Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
                 if (canClearCart(cart)) {
                     IconButton(onClick = viewModel::requestClear, modifier = Modifier.size(48.dp)) {
-                        Icon(painterResource(CaixaDSR.drawable.legacy_cart_toolbar_delete), "Excluir todas as apostas", Modifier.size(19.dp, 25.dp), tint = CaixaDSColorTokens.White)
+                        Icon(CaixaDSCurrentCartDeleteIcon, "Excluir todas as apostas", Modifier.size(20.dp), tint = CaixaDSColorTokens.White)
                     }
                 } else {
                     Spacer(Modifier.size(48.dp))
                 }
                 if (canFavoriteCart(cart, state.authenticated)) {
                     IconButton(onClick = viewModel::requestFavorite, modifier = Modifier.size(48.dp)) {
-                        Icon(CaixaDSLegacyPurchaseFavoriteIcon, "Salvar carrinho favorito", Modifier.size(24.dp), tint = CaixaDSColorTokens.White)
+                        Icon(CaixaDSLegacyPurchaseFavoriteIcon, "Salvar carrinho favorito", Modifier.size(20.dp), tint = CaixaDSColorTokens.White)
                     }
                 }
             }
         },
         bottomBar = {
-            Column(
-                Modifier.fillMaxWidth().background(CaixaDS.colors.surface),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                CaixaDSCartActions(
-                    onContinueBetting = onContinueBetting,
-                    onPayment = viewModel::requestPayment,
-                    paymentEnabled = cart != null && !state.loading && !state.loadingParameters && !state.parametersUnavailable,
-                )
-                // The legacy FrameLayout retains its slot when the fragment is GONE.
-                Box(Modifier.fillMaxWidth().height(CaixaDSCartSummaryTokens.Height)) {
-                    CaixaDSCartSummary(cart?.total ?: BigDecimal.ZERO, cart?.betCount ?: 0)
-                }
-            }
+            CurrentCartFooter(cart,
+                paymentEnabled = cart != null && cart.items.isNotEmpty() && cart.total > BigDecimal.ZERO &&
+                    !state.loading && !state.loadingParameters && !state.parametersUnavailable,
+                onAdd = onContinueBetting, onPay = viewModel::requestPayment)
         },
     ) { padding ->
         when {
@@ -217,6 +201,10 @@ fun CurrentCartRoute(
             onPositive = viewModel::dismissConfirmation,
         )
     }
+    // This window must be above confirmation/name dialogs, as in CX's blocking request overlay.
+    if (state.loading || state.loadingParameters || state.expirationRemovalInFlight) {
+        br.gov.caixa.loterias.core.designsystem.CaixaDSAuthenticationLoadingDialog()
+    }
 }
 
 @Composable
@@ -233,39 +221,36 @@ private fun CartContent(
     LaunchedEffect(hasExpiringShare) {
         while (hasExpiringShare) {
             nowMillis = viewModel.reservationNow().toEpochMilli()
+            viewModel.refreshExpiredReservations()
             delay(1_000)
         }
     }
-    LazyColumn(Modifier.fillMaxSize().padding(padding), contentPadding = PaddingValues(bottom = 24.dp)) {
-        item {
-            Text(
-                "Confirme suas apostas",
-                Modifier.fillMaxWidth().padding(start = 20.dp, top = 20.dp),
-                color = CaixaDS.colors.legacyPrimaryButton,
-                fontSize = 14.2.sp,
-                fontWeight = FontWeight.Bold,
-            )
-            if (state.minimumCartAmount > BigDecimal.ZERO) {
-                Text(
-                    buildAnnotatedString {
-                        append("Lembre-se que o valor mínimo do total\nde compras nesse aplicativo é ")
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                            // ViewUtils.setMoedaFormatHtml(value, view, prefix) joined symbol and amount.
-                            append(formatCartAmount(state.minimumCartAmount).replace(" ", "").replace("\u00a0", ""))
-                        }
-                    },
-                    Modifier.fillMaxWidth().padding(start = 20.dp, top = 20.dp),
-                    color = CaixaDSColorTokens.Black,
-                    fontSize = 14.2.sp,
-                )
+    if (items.isEmpty()) {
+        Box(Modifier.fillMaxSize().padding(padding), contentAlignment = BiasAlignment(0f, 0.1f)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(CaixaDSCurrentCartIcon, null, Modifier.size(140.dp), tint = CaixaDSCurrentCartColors.EmptyIcon)
+                Text("Carrinho vazio", Modifier.padding(top = 16.dp), color = CurrentCartBlue,
+                    fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
             }
+        }
+        return
+    }
+    LazyColumn(Modifier.fillMaxSize().padding(padding).padding(horizontal = 24.dp), contentPadding = PaddingValues(bottom = 24.dp)) {
+        item {
+            Text("Confira suas apostas e siga para o pagamento",
+                Modifier.fillMaxWidth().padding(top = 24.dp), color = CurrentCartBlue,
+                style = cartText(14, FontWeight.Bold))
+            // Current CX item_header_carrinho_fixo renders this resource literally;
+            // effective configured limits remain exclusively in CartViewModel/checkout.
+            Text("O valor mínimo do carrinho é R$2,50",
+                Modifier.fillMaxWidth().padding(top = 7.dp), color = CaixaDSColorTokens.Black, style = cartText())
             state.errorMessage?.let {
-                Text(it, Modifier.padding(horizontal = 20.dp), color = CaixaDS.colors.error)
+                Text(it, Modifier.padding(top = 7.dp), color = CaixaDS.colors.error)
             }
             if (state.cart?.expiredPoolShareRemoved == true) {
                 Text(
                     "A(s) cota(s) expirada(s) foram excluídas do seu carrinho.",
-                    Modifier.padding(horizontal = 20.dp),
+                    Modifier.padding(top = 7.dp),
                     color = CaixaDS.colors.error,
                 )
             }
@@ -273,7 +258,7 @@ private fun CartContent(
         visibleCartSections(items).forEach { section ->
             item { CartSection(section.kind.sectionTitle) }
             items(section.items, key = { "${it.kind}-${it.id}" }) { item ->
-                CartRow(
+                CurrentCartRow(
                     item,
                     now = Instant.ofEpochMilli(nowMillis),
                     onDelete = { viewModel.requestRemoval(item) },
@@ -290,8 +275,11 @@ private fun CartContent(
 
 @Composable
 private fun CartSection(title: String) {
-    Text(title, Modifier.fillMaxWidth().padding(start = 20.dp, top = 20.dp, bottom = 5.dp), color = CaixaDS.colors.legacyCartDark)
-    Box(Modifier.fillMaxWidth().height(1.dp).background(CaixaDS.colors.legacyLine))
+    Text(title, Modifier.fillMaxWidth().padding(top = 40.dp), color = CurrentCartBlue,
+        style = cartText(14, FontWeight.Bold))
+    Spacer(Modifier.height(13.dp))
+    Box(Modifier.fillMaxWidth().height(1.dp).background(CaixaDSCurrentCartColors.SectionDivider))
+    Spacer(Modifier.height(12.dp))
 }
 
 @Composable
@@ -469,9 +457,9 @@ private fun CartError(message: String, padding: PaddingValues, onRetry: () -> Un
 
 private val CartItemKind.sectionTitle: String
     get() = when (this) {
-        CartItemKind.POOL_SHARE -> "Cotas de bolão"
-        CartItemKind.INDIVIDUAL_BET -> "Apostas individuais"
-        CartItemKind.COMBO -> "Combos"
+        CartItemKind.POOL_SHARE -> "Cotas Bolão"
+        CartItemKind.INDIVIDUAL_BET -> "Apostas Individuais"
+        CartItemKind.COMBO -> "Combo de Apostas"
     }
 
 private val CartItemBadge.label: String

@@ -54,7 +54,8 @@ import kotlinx.coroutines.delay
 private enum class QueueGateState { WAITING, NO_INTERNET, PASSED }
 
 @Composable
-fun FilaBraAppGate(activity: Activity, container: AppContainer) {
+fun FilaBraAppGate(activity: Activity, container: AppContainer,
+    onForegroundSessionRestart: () -> Unit = { restartForegroundSession(activity) }) {
     var minimumSplashElapsed by remember { mutableStateOf(false) }
     var networkSecurityReady by remember { mutableStateOf(false) }
     var securityFailed by remember { mutableStateOf(false) }
@@ -83,14 +84,14 @@ fun FilaBraAppGate(activity: Activity, container: AppContainer) {
         return
     }
     if (BuildConfig.ENABLE_MOCK_BACKEND) {
-        MockBackendAppGate(container, minimumSplashElapsed)
+        MockBackendAppGate(container, minimumSplashElapsed, onForegroundSessionRestart)
         return
     }
 
     var state by remember { mutableStateOf(QueueGateState.WAITING) }
     var attempt by remember { mutableIntStateOf(0) }
     val gateway = remember {
-        FilaBraQueueGateway(BuildConfig.FILABRA_ACCOUNT_SYSTEM_NAME, BuildConfig.FILABRA_QUEUE_SYSTEM_NAME)
+        FilaBraQueueGateway(container.environment.queueAccount, container.environment.queueSystem)
     }
     val startupViewModel = viewModel {
         StartupViewModel(
@@ -122,7 +123,8 @@ fun FilaBraAppGate(activity: Activity, container: AppContainer) {
     when (state) {
         QueueGateState.PASSED -> StartupGateContent(startupState, startupViewModel::retry, container.networkAvailability) {
             if (minimumSplashElapsed) {
-                LoteriasApp(container, startDestination = startupDestination(container.shouldShowIntroduction()))
+                LoteriasApp(container, startDestination = startupDestination(container.shouldShowIntroduction()),
+                    onForegroundSessionRestart = onForegroundSessionRestart)
             } else {
                 LegacySplashScreen()
             }
@@ -135,7 +137,8 @@ fun FilaBraAppGate(activity: Activity, container: AppContainer) {
 }
 
 @Composable
-private fun MockBackendAppGate(container: AppContainer, minimumSplashElapsed: Boolean) {
+private fun MockBackendAppGate(container: AppContainer, minimumSplashElapsed: Boolean,
+    onForegroundSessionRestart: () -> Unit) {
     val scenario = remember { MockBackendScenario.from(BuildConfig.MOCK_BACKEND_SCENARIO) }
     var suspensionAcknowledged by remember { mutableStateOf(false) }
     val startupViewModel = viewModel(key = "mock-startup-${scenario.name}") {
@@ -159,7 +162,8 @@ private fun MockBackendAppGate(container: AppContainer, minimumSplashElapsed: Bo
                     onAction = { suspensionAcknowledged = true },
                 )
             } else {
-                LoteriasApp(container, startDestination = mockStartDestination(scenario))
+                LoteriasApp(container, startDestination = mockStartDestination(scenario),
+                    onForegroundSessionRestart = onForegroundSessionRestart)
             }
         } else {
             LegacySplashScreen()

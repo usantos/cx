@@ -26,7 +26,12 @@ data class MarketplaceUiState(
     val favoriteRetailersLoading: Boolean = false,
     val favoriteRetailersError: String? = null,
     val pendingFavoriteRetailerRemoval: Long? = null,
-)
+    val contestHeader: br.gov.caixa.loterias.core.domain.betting.LotteryGameParameters? = null,
+) {
+    // CX uses one ordered search response for both sections, never a separate carousel endpoint.
+    val carouselPools: List<MarketplacePool> get() = pools.take(4)
+    val listPools: List<MarketplacePool> get() = pools.drop(4)
+}
 
 sealed interface MarketplaceAction {
     data object Retry : MarketplaceAction

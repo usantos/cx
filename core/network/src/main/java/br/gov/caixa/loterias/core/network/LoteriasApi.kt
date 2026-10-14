@@ -8,6 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
+import retrofit2.http.Tag
 import retrofit2.http.Path
 
 interface LoteriasApi {
@@ -101,6 +102,12 @@ interface LoteriasApi {
 
     @DELETE("logado/carrinhos/apostas/{id}")
     suspend fun removeCartBet(@Path("id") id: Long): ApiEnvelope<CartDto>
+
+    @DELETE("logado/carrinhos/apostas/{id}")
+    suspend fun removeBoundCartBet(
+        @Path("id") id: Long,
+        @Tag session: AccountVerificationSession,
+    ): ApiEnvelope<CartDto>
 
     @DELETE("logado/carrinhos/combos/{id}")
     suspend fun removeCartCombo(@Path("id") id: Long): ApiEnvelope<CartDto>

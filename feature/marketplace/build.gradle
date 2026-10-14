@@ -5,7 +5,7 @@ apply plugin: 'jacoco'
 android {
     namespace = 'br.gov.caixa.loterias.feature.marketplace'
     compileSdk 37
-    defaultConfig { minSdk 24 }
+    defaultConfig { minSdk 24; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
     buildFeatures { compose = true }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -29,6 +29,10 @@ dependencies {
     implementation libs.androidx.lifecycle.viewmodel.compose
     implementation libs.kotlinx.coroutines.core
 
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    debugImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     testImplementation libs.junit4
     testImplementation libs.kotlinx.coroutines.test
 }

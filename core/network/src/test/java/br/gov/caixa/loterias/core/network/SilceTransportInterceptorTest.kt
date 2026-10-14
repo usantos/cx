@@ -97,6 +97,21 @@ class SilceTransportInterceptorTest {
         assertEquals("{}", decrypt(Base64.getDecoder().decode(server.takeRequest().body.readUtf8())).toString(Charsets.ISO_8859_1))
     }
 
+    @Test fun `encoded SILCE transaction retains one shot guard against automatic 503 followup`() {
+        MockWebServer().use { server ->
+            server.start()
+            server.enqueue(MockResponse().setResponseCode(503).setHeader("Retry-After", "0"))
+            server.enqueue(MockResponse().setBody("{}"))
+            val client = OkHttpClient.Builder().retryOnConnectionFailure(false)
+                .addInterceptor(SingleAttemptTransactionInterceptor())
+                .addInterceptor(SilceTransportInterceptor(server.url(BASE))).build()
+            client.newCall(Request.Builder().url(server.url(BASE + "apostas/7/resgatar-premio"))
+                .post("{}".toRequestBody()).build()).execute().use { assertEquals(503, it.code) }
+            assertEquals(1, server.requestCount)
+            assertEquals("{}", decrypt(Base64.getDecoder().decode(server.takeRequest().body.readUtf8())).toString(Charsets.ISO_8859_1))
+        }
+    }
+
     private fun decrypt(envelope: ByteArray): ByteArray {
         val key = Base64.getDecoder().decode("QEm06ZAThg1E314zziahsg==")
         val iv = Base64.getDecoder().decode("8hQLtNV44Y1bIeONmlr+Dg==")

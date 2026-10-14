@@ -23,7 +23,7 @@ class CartActionsIntegrationTest {
 
     @Test fun individualDetailsStayVisibleAndRemovalRequiresConfirmation() {
         show(listOf(individual))
-        compose.onNodeWithText("Concurso 2800").assertIsDisplayed()
+        compose.onNodeWithText("Conc. 2800").assertIsDisplayed()
         compose.onNodeWithText("01 - 02 - 03 - 04 - 05 - 06").assertIsDisplayed()
         compose.onNodeWithText("Trevos: 02 - 04").assertIsDisplayed()
         compose.onNodeWithText("Complemento").assertIsDisplayed()
@@ -32,7 +32,7 @@ class CartActionsIntegrationTest {
         compose.runOnIdle { assertEquals(emptyList<String>(), calls) }
         compose.onNodeWithContentDescription("Excluir").performClick()
         compose.onNodeWithText("Sim").performClick()
-        compose.onNodeWithText("+Milionária").assertDoesNotExist()
+        compose.onNodeWithText("+milionária").assertDoesNotExist()
         compose.runOnIdle { assertEquals(listOf("remove:1"), calls) }
     }
 
@@ -50,33 +50,33 @@ class CartActionsIntegrationTest {
 
     @Test fun recentPurchaseCanBeReviewedOrExplicitlyContinued() {
         show(listOf(individual), recentPurchase = true)
-        compose.onNodeWithText("Avançar\npara a forma de pagamento").performClick()
+        compose.onNodeWithText("Ir para pagamento").performClick()
         compose.onNodeWithText("Sim").performClick()
         compose.runOnIdle { assertEquals(emptyList<String>(), calls) }
-        compose.onNodeWithText("Avançar\npara a forma de pagamento").performClick()
+        compose.onNodeWithText("Ir para pagamento").performClick()
         compose.onNodeWithText("Não").performClick()
         compose.runOnIdle { assertEquals(listOf("payment"), calls) }
     }
 
     @Test fun loginRequiredPromptsBeforeOpeningAuthorization() {
         show(listOf(individual), account = CartPaymentAccountDecision.LoginRequired)
-        compose.onNodeWithText("Avançar\npara a forma de pagamento").performClick()
+        compose.onNodeWithText("Ir para pagamento").performClick()
         compose.onNodeWithText("Não").performClick()
-        compose.onNodeWithText("Avançar\npara a forma de pagamento").performClick()
+        compose.onNodeWithText("Ir para pagamento").performClick()
         compose.onNodeWithText("Sim").performClick()
         compose.runOnIdle { assertEquals(listOf("login"), calls) }
     }
 
     @Test fun suspendedAccountCannotProceedToPayment() {
         show(listOf(individual), account = CartPaymentAccountDecision.Suspended)
-        compose.onNodeWithText("Avançar\npara a forma de pagamento").performClick()
+        compose.onNodeWithText("Ir para pagamento").performClick()
         compose.onNodeWithText("Entendi").performClick()
         compose.runOnIdle { assertEquals(emptyList<String>(), calls) }
     }
 
     @Test fun unavailableLocationBlocksCheckoutUntilAcknowledgment() {
         show(listOf(individual), location = CheckoutLocationStatus.OUTSIDE_BRAZIL)
-        compose.onNodeWithText("Avançar\npara a forma de pagamento").performClick()
+        compose.onNodeWithText("Ir para pagamento").performClick()
         compose.onNodeWithText(CART_LOCATION_BLOCKED).assertIsDisplayed()
         compose.onNodeWithText("Entendi").performClick()
         compose.runOnIdle { assertEquals(listOf("home"), calls) }
@@ -84,7 +84,7 @@ class CartActionsIntegrationTest {
 
     @Test fun locationConsentCanBeDeclinedWithoutOpeningSettingsOrPaying() {
         show(listOf(individual), location = CheckoutLocationStatus.PERMISSION_REQUIRED)
-        compose.onNodeWithText("Avançar\npara a forma de pagamento").performClick()
+        compose.onNodeWithText("Ir para pagamento").performClick()
         compose.onNodeWithText(CART_LOCATION_CONSENT).assertIsDisplayed()
         compose.onNodeWithText("Não").performClick()
         compose.runOnIdle { assertEquals(emptyList<String>(), calls) }
@@ -96,22 +96,22 @@ class CartActionsIntegrationTest {
         val pool = CartItem(9, CartItemKind.POOL_SHARE, "Bolão Mega", "", BigDecimal.TEN,
             poolShare = CartPoolShare("ABC123", 2, 10, ""))
         show(listOf(combo, pool))
-        compose.onAllNodesWithText("Ver detalhes").onFirst().performScrollTo().performClick()
-        compose.onAllNodesWithText("Ver detalhes").onLast().performScrollTo().performClick()
+        compose.onAllNodesWithText("mais detalhes").onFirst().performScrollTo().performClick()
+        compose.onAllNodesWithText("mais detalhes").onLast().performScrollTo().performClick()
         compose.runOnIdle { assertEquals(setOf("combo:8", "pool:ABC123"), calls.toSet()) }
     }
 
     @Test fun failedLoadShowsRetryAndOnlyDisplaysTheCartAfterRecovery() {
         show(listOf(individual), failFirst = true)
         compose.onNodeWithText("Tentar novamente").assertIsDisplayed().performClick()
-        compose.onNodeWithText("+Milionária").assertIsDisplayed()
+        compose.onNodeWithText("+milionária").assertIsDisplayed()
         compose.onNodeWithText("Tentar novamente").assertDoesNotExist()
     }
 
     @Test fun incompleteAccountIsSentToTheRequiredRegistrationStep() {
         show(listOf(individual), account = CartPaymentAccountDecision.CompleteAccount(
             br.gov.caixa.loterias.core.domain.account.PostLoginDestination.REGISTRATION))
-        compose.onNodeWithText("Avançar\npara a forma de pagamento").performClick()
+        compose.onNodeWithText("Ir para pagamento").performClick()
         compose.runOnIdle { assertEquals(listOf("account"), calls) }
     }
 

@@ -445,7 +445,7 @@ private fun ResultContent(result: DrawResult, modality: String) {
                 Text(resultWinners(payout.winners), color = style.content, style = payoutStyle)
                 if (payout.winners > 0) Text("Prêmio: ${resultMoney(payout.value)}", color = style.content, style = payoutStyle)
             }
-            DrawResultSupplement(result, style.content)
+            DrawResultSupplement(result, style.content, includeContestSummary = false)
             Text("Arrecadação total", Modifier.padding(top = gap18), color = style.content, style = payoutStyle.copy(fontWeight = FontWeight.Bold))
             Text(resultMoney(result.totalRevenue.ifBlank { "0" }), Modifier.padding(top = gap16), color = style.content, style = payoutStyle.copy(fontWeight = FontWeight.Bold))
         }

@@ -37,11 +37,17 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.collect
+import kotlin.coroutines.coroutineContext
 
 enum class CartLocationAction { REQUEST_PERMISSION, PERMISSION_SETTINGS, PROVIDER_SETTINGS }
 
 data class CartUiState(
     val loading: Boolean = true,
+    val expirationRemovalInFlight: Boolean = false,
     val cart: ShoppingCart? = null,
     val pendingRemoval: CartItem? = null,
     val clearConfirmation: Boolean = false,
@@ -82,7 +88,15 @@ class CartViewModel(
     authenticated: Boolean = false,
     private val networkAvailability: NetworkAvailability = NetworkAvailability { ConnectionAvailability.UNKNOWN },
     private val localClock: Clock = Clock.systemDefaultZone(),
+    private val reservationSessions: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentityProvider? = null,
+    private val reservationSessionChanges: kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity?>? = null,
+    private val removeExpiredPoolShare: br.gov.caixa.loterias.core.domain.cart.RemoveExpiredPoolShareUseCase? = null,
 ) : ViewModel() {
+    private val reservationOwner = reservationSessions?.captureIdentity()
+    private var reservationSessionInvalidated = false
+    private var expirationJob: Job? = null
+    private data class ReservationKey(val itemId: Long, val poolCode: String, val expiresAt: String)
+    private val attemptedReservations = mutableSetOf<ReservationKey>()
     private var cartRequestRunning = false
     private var recentPurchaseContinuation: Pair<ShoppingCart, CartPaymentAccountDecision>? = null
     private var locationAccount: CartPaymentAccountDecision? = null
@@ -90,6 +104,13 @@ class CartViewModel(
     val state = mutableState.asStateFlow()
 
     init {
+        reservationSessionChanges?.let { changes ->
+            viewModelScope.launch {
+                changes.collect { identity ->
+                    if (identity !== reservationOwner) invalidateReservationSession()
+                }
+            }
+        }
         load()
         loadParameters()
     }
@@ -108,15 +129,72 @@ class CartViewModel(
 
     fun reservationNow(): java.time.Instant = serverTime.now()
 
-    fun refreshExpiredReservations() {
-        if (state.value.loading || state.value.loadingParameters || state.value.parametersUnavailable) return
-        if (hasExpiredPoolShares(state.value.cart, serverTime.now())) load()
+    private fun reservationSessionCurrent(): Boolean = !reservationSessionInvalidated &&
+        (reservationSessions == null || reservationOwner?.let(reservationSessions::isCurrent)
+            ?: (reservationSessions.captureIdentity() == null))
+
+    private fun invalidateReservationSession() {
+        reservationSessionInvalidated = true
+        expirationJob?.cancel()
+        viewModelScope.cancel()
+        mutableState.update { CartUiState(loading = false) }
     }
 
-    fun requestRemoval(item: CartItem) = mutableState.update { it.copy(pendingRemoval = item) }
-    fun requestClear() = mutableState.update { it.copy(clearConfirmation = true) }
+    fun refreshExpiredReservations() {
+        if (!reservationSessionCurrent()) { invalidateReservationSession(); return }
+        if (state.value.loading || expirationJob?.isActive == true) return
+        val expired = state.value.cart?.items.orEmpty().filter { item ->
+            item.kind == br.gov.caixa.loterias.core.domain.cart.CartItemKind.POOL_SHARE &&
+                item.poolShare?.let { share ->
+                    reservationExpirationInstant(share.expiresAt)?.let { !it.isAfter(serverTime.now()) } == true
+                } == true
+        }
+        if (expired.none { item -> item.poolShare?.let { ReservationKey(item.id, it.code, it.expiresAt) !in attemptedReservations } == true }) return
+        // Reserve the cart synchronously: same-turn UI actions cannot race the scheduled DELETE.
+        cartRequestRunning = true
+        mutableState.update { it.copy(loading = true, expirationRemovalInFlight = true, pendingRemoval = null, clearConfirmation = false) }
+        expirationJob = viewModelScope.launch(dispatchers.io) {
+            try {
+                for (item in expired) {
+                    coroutineContext.ensureActive()
+                    if (!reservationSessionCurrent()) { invalidateReservationSession(); return@launch }
+                    val share = item.poolShare ?: continue
+                    val key = ReservationKey(item.id, share.code, share.expiresAt)
+                    val stillPresent = state.value.cart?.items.orEmpty().any {
+                        it.id == key.itemId && it.poolShare?.code == key.poolCode && it.poolShare?.expiresAt == key.expiresAt
+                    }
+                    if (!stillPresent || !attemptedReservations.add(key)) continue
+                    // Mark before transport: timeout/503 never makes this reservation eligible for replay.
+                    val result = if (removeExpiredPoolShare != null) {
+                        val identity = reservationOwner ?: continue
+                        removeExpiredPoolShare.invoke(item, identity)
+                    } else removeCartItem(item)
+                    coroutineContext.ensureActive()
+                    if (!reservationSessionCurrent()) { invalidateReservationSession(); return@launch }
+                    applyResult(result)
+                    // The CX callback updates parameters even when deletion fails; shared TTL cache owns freshness.
+                    loadParameters()
+                    if (result is AppResult.Success) {
+                        // CX refreshes the authoritative cart after the deletion callback.
+                        val refreshed = getCurrentCart()
+                        coroutineContext.ensureActive()
+                        if (!reservationSessionCurrent()) { invalidateReservationSession(); return@launch }
+                        applyResult(refreshed)
+                    }
+                }
+            } finally {
+                if (reservationSessionCurrent()) {
+                    cartRequestRunning = false
+                    mutableState.update { it.copy(loading = false, expirationRemovalInFlight = false) }
+                }
+            }
+        }
+    }
+
+    fun requestRemoval(item: CartItem) = mutableState.update { if (it.loading) it else it.copy(pendingRemoval = item) }
+    fun requestClear() = mutableState.update { if (it.loading) it else it.copy(clearConfirmation = true) }
     fun requestFavorite() = mutableState.update {
-        if (canFavoriteCart(it.cart, it.authenticated)) it.copy(favoriteNameDialog = true, favoriteName = "", errorMessage = null) else it
+        if (!it.loading && canFavoriteCart(it.cart, it.authenticated)) it.copy(favoriteNameDialog = true, favoriteName = "", errorMessage = null) else it
     }
     fun updateFavoriteName(name: String) = mutableState.update { if (it.loading) it else it.copy(favoriteName = name.take(30), errorMessage = null) }
     fun dismissConfirmation() = mutableState.update {
@@ -132,16 +210,22 @@ class CartViewModel(
     }
 
     fun confirmRemoval() {
+        if (state.value.loading) return
         val item = state.value.pendingRemoval ?: return
+        cartRequestRunning = true
+        mutableState.update { it.copy(loading = true, pendingRemoval = null, errorMessage = null) }
         viewModelScope.launch(dispatchers.io) {
-            mutableState.update { it.copy(loading = true, pendingRemoval = null, errorMessage = null) }
-            applyResult(removeCartItem(item))
+            try { applyResult(removeCartItem(item)) } finally { cartRequestRunning = false }
         }
     }
 
-    fun confirmClear() = viewModelScope.launch(dispatchers.io) {
+    fun confirmClear() {
+        if (state.value.loading) return
+        cartRequestRunning = true
         mutableState.update { it.copy(loading = true, clearConfirmation = false, errorMessage = null) }
-        applyResult(clearCart())
+        viewModelScope.launch(dispatchers.io) {
+            try { applyResult(clearCart()) } finally { cartRequestRunning = false }
+        }
     }
 
     fun submitFavoriteName() {
@@ -346,7 +430,7 @@ class CartViewModel(
                     validationFailure = serviceFailurePresentation(validation.failure, networkAvailability, LocalDateTime.now(localClock))) }
             }
             is AppResult.Failure -> mutableState.update {
-                it.copy(loading = false, errorMessage = result.error.userMessage())
+                it.copy(loading = it.expirationRemovalInFlight, errorMessage = result.error.userMessage())
             }
         }
     }
@@ -381,7 +465,10 @@ class CartViewModel(
         mutableState.update { it.copy(loadingParameters = true, parameterRetryMessage = null) }
         viewModelScope.launch(dispatchers.io) {
             try {
-                when (val result = getParameters()) {
+                val result = getParameters()
+                coroutineContext.ensureActive()
+                if (!reservationSessionCurrent()) { invalidateReservationSession(); return@launch }
+                when (result) {
                     is AppResult.Success -> mutableState.update {
                         if (result.value.games.isEmpty()) {
                             it.copy(parametersUnavailable = true,
@@ -415,18 +502,19 @@ class CartViewModel(
                 )
             }
             is AppResult.Failure -> mutableState.update {
-                it.copy(loading = false, errorMessage = result.error.userMessage())
+                it.copy(loading = it.expirationRemovalInFlight, errorMessage = result.error.userMessage())
             }
         }
     }
 
     private fun applyResult(result: AppResult<ShoppingCart>) {
+        if (!reservationSessionCurrent()) return
         when (result) {
             is AppResult.Success -> mutableState.update {
-                it.copy(loading = false, cart = result.value, errorMessage = null)
+                it.copy(loading = it.expirationRemovalInFlight, cart = result.value, errorMessage = null)
             }
             is AppResult.Failure -> mutableState.update {
-                it.copy(loading = false, errorMessage = result.error.userMessage())
+                it.copy(loading = it.expirationRemovalInFlight, errorMessage = result.error.userMessage())
             }
         }
     }

@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.core.domain.marketplace
 
-import java.math.BigDecimal
 import java.util.Collections
 
 /** Pure business rules, independent of Android and transport libraries. */
@@ -20,13 +19,9 @@ object MarketplaceFilterRules {
     @JvmStatic
     fun validate(filter: MarketplaceFilter?): ValidationResult {
         if (filter == null) return ValidationResult.invalid("Filtro não informado")
-        val minimumValue = monetaryValue(filter.minimumValue)
-        val maximumValue = monetaryValue(filter.maximumValue)
         val minimumShares = filter.minimumShares
         val maximumShares = filter.maximumShares
         val message = when {
-            minimumValue != null && maximumValue != null && minimumValue > maximumValue ->
-                "O valor mínimo não pode ser maior que o máximo"
             minimumShares != null && minimumShares < 2 -> "Quantidade mínima não pode ser menor que 2"
             minimumShares != null && minimumShares > 100 -> "Quantidade mínima não pode ser maior que a máxima"
             maximumShares != null && maximumShares > 100 -> "Quantidade máxima não pode ser maior que 100"
@@ -60,9 +55,6 @@ object MarketplaceFilterRules {
         }
         return Collections.unmodifiableMap(query)
     }
-
-    private fun monetaryValue(value: String): BigDecimal? =
-        value.replace(".", "").replace(',', '.').toBigDecimalOrNull()
 
     class ValidationResult private constructor(val isValid: Boolean, val message: String) {
         companion object {

@@ -1,5 +1,8 @@
 package br.gov.caixa.loterias.feature.tickets
 
+import java.math.BigDecimal
+import br.gov.caixa.loterias.core.designsystem.CaixaDSCartSummary
+
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -82,7 +85,8 @@ import kotlinx.coroutines.delay
 @Composable
 fun ConfirmedBetsDataRoute(viewModel: TicketsViewModel, onBack: () -> Unit, onOpen: (ConfirmedBet) -> Unit,
     onAddToCart: ((ConfirmedBet) -> Unit)? = null, onBetNow: (() -> Unit)? = null,
-    onHelp: (() -> Unit)? = null) {
+    onHelp: (() -> Unit)? = null,
+    cartTotal: BigDecimal = BigDecimal.ZERO, cartBetCount: Int = 0, onCart: (() -> Unit)? = null) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { if (!state.loaded) viewModel.loadBets() }
     CaixaDSLegacyScaffold(title = "Minhas apostas", onBack = onBack,
@@ -97,13 +101,14 @@ fun ConfirmedBetsDataRoute(viewModel: TicketsViewModel, onBack: () -> Unit, onOp
             LegacyTicketsFilterAction(state.betFilters.activeCount, viewModel::openBetFilters)
             onHelp?.let { LegacyTicketsHelpAction(it) }
         } },
+        bottomBar = { CaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart) },
         containerColor = CaixaDSColorTokens.White) { padding ->
         androidx.compose.foundation.lazy.LazyColumn(Modifier.fillMaxSize().padding(padding)) {
             item { LegacyConfirmedBetsIntro(state.historyBackend) }
             item { LegacyTicketPeriodSelector(
                 "Selecione o período",
-                state.betFilters.period?.let { listOfNotNull(it.description, it.year?.toString()).joinToString(" de ") }.orEmpty(),
-                state.betConfiguration?.periods.orEmpty().map { listOfNotNull(it.description, it.year?.toString()).joinToString(" de ") },
+                state.betFilters.period?.description.orEmpty(),
+                state.betConfiguration?.periods.orEmpty().map { it.description },
                 Modifier.padding(start = 16.dp, end = 16.dp, top = 20.dp),
             ) { index -> state.betConfiguration?.periods?.getOrNull(index)?.let { viewModel.selectBetPeriod(it); viewModel.applyBetFilters() } } }
             item { Spacer(Modifier.height(16.dp)) }

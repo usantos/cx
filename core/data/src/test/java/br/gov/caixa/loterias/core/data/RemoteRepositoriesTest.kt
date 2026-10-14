@@ -79,6 +79,7 @@ import br.gov.caixa.loterias.core.domain.marketplace.MarketplaceFilter
 import br.gov.caixa.loterias.core.domain.marketplace.MarketplacePoolOrder
 import com.google.gson.JsonParser
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -140,6 +141,43 @@ class RemoteRepositoriesTest {
     }
 
     @Test
+    fun `short filtered municipal page automatically continues into state results`() = runBlocking {
+        val api = FakeApi(marketplace = ApiEnvelope(MarketplacePageDto(
+            currentPage = 1, lastPage = 1, totalRecords = 1,
+            pools = listOf(MarketplacePoolDto(code = "B1")),
+        )))
+        val filter = MarketplaceFilter("1,00", "9,00", 2, 8, 4, 6, "", "", emptyList(), emptyList())
+            .withSearchArea(br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.MUNICIPALITY)
+            .withSearchLocation(br.gov.caixa.loterias.core.domain.marketplace.MarketplaceLocation(123, 53))
+        val result = RemoteMarketplaceRepository(source(api)).search(filter, 0)
+        assertEquals(1, result.pools.size)
+        assertEquals(br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.STATE, result.nextArea)
+        assertTrue(result.continueAutomatically)
+    }
+
+    @Test
+    fun `regional marketplace requests preserve account location and advance only after final page`() = runBlocking {
+        val api = FakeApi(marketplace = ApiEnvelope(MarketplacePageDto(
+            currentPage = 1, lastPage = 1, totalRecords = 0, pools = emptyList(),
+        )))
+        val repository = RemoteMarketplaceRepository(source(api))
+        val filter = MarketplaceFilter.empty().withSearchLocation(
+            br.gov.caixa.loterias.core.domain.marketplace.MarketplaceLocation(123, 53))
+        for (area in br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea.entries) {
+            val result = repository.search(filter.withSearchArea(area), 0)
+            assertEquals(area.backendValue.toString(), api.marketplaceQuery["tipoConsulta"])
+            assertEquals("123", api.marketplaceQuery["idMunicipio"])
+            assertEquals("53", api.marketplaceQuery["idUf"])
+            assertEquals("1", api.marketplaceQuery["pagina"])
+            assertEquals(area.next(), result.nextArea)
+            assertEquals(area.next() != null, result.canLoadMore)
+        }
+        repository.search(filter.withLottery("987"), 0)
+        assertEquals("3", api.marketplaceQuery["tipoConsulta"])
+        assertEquals("987", api.marketplaceQuery["numeroLoterico"])
+    }
+
+    @Test
     fun `marketplace repository calls pool service with quantidadeAposta`() = runBlocking {
         val api = FakeApi()
         val result = RemoteMarketplaceRepository(source(api)).search(
@@ -149,8 +187,8 @@ class RemoteRepositoriesTest {
         assertEquals("4", api.marketplaceQuery["quantidadeAposta"])
         assertEquals("6", api.marketplaceQuery["quantidadeDezena"])
         assertEquals("2", api.marketplaceQuery["tipoConsulta"])
-        assertEquals("20", api.marketplaceQuery["qtdPorPagina"])
-        assertEquals("3", api.marketplaceQuery["pagina"])
+        assertEquals("30", api.marketplaceQuery["qtdPorPagina"])
+        assertEquals("4", api.marketplaceQuery["pagina"])
         assertEquals(8, result.totalRecords)
         assertEquals(3, result.currentPage)
         assertEquals(4, result.lastPage)
@@ -191,6 +229,97 @@ class RemoteRepositoriesTest {
         assertEquals(0, pool.contest)
         assertEquals(0, pool.availableShares)
         assertFalse(pool.favoriteLottery)
+    }
+
+    @Test fun `marketplace detail maps actual nested Loteca teams ahead of flat metadata while preserving outer winner flags`() = runBlocking {
+        val dto = com.google.gson.Gson().fromJson(
+            """{"apostas":[{"partidasLoteca":[{
+              "numero":6,"empate":true,
+              "equipe1":{"numero":999,"nome":"Wrong flat home","indicadorSelecao":true,"vitoria":true,
+                "parametroEquipe":{"numero":11,"nome":"Nested home","uf":"RJ","descricaoCurta":"NH","descricaoLonga":"Nested home long","numeroPais":55,"pais":"Brasil","siglaPais":"BR","nomeClass":"NestedClass","indicadorSelecao":false}},
+              "equipe2":{"vitoria":false,"parametroEquipe":{"numero":22,"nome":"Nested away","uf":"SP","indicadorSelecao":true,"numeroPais":44,"pais":"Outro","siglaPais":"OT"}},
+              "descricaoLegenda":"Nested fixture","letraLegenda":"N"
+            }]}]}""", MarketplacePoolDetailDto::class.java)
+        val bet = RemoteMarketplaceRepository(source(FakeApi(detail = ApiEnvelope(dto)))).detail("NESTED").bets.single()
+        val selection = bet.lotecaSelections.single()
+        val home = selection.match.home
+        assertEquals(11, home.number); assertEquals("Nested home", home.name); assertEquals("RJ", home.state)
+        assertEquals("NH", home.shortDescription); assertEquals("Nested home long", home.longDescription)
+        assertEquals(55, home.countryNumber); assertEquals("Brasil", home.country); assertEquals("BR", home.countryCode)
+        assertEquals("NestedClass", home.className); assertFalse(home.selectionIndicator)
+        assertEquals(22, selection.match.away.number); assertEquals("Nested away", selection.match.away.name)
+        assertTrue(selection.match.away.selectionIndicator)
+        assertTrue(selection.homeWin); assertTrue(selection.draw); assertFalse(selection.awayWin)
+        assertEquals("Nested fixture", selection.match.legendDescription)
+    }
+
+    @Test fun `marketplace detail uses last share without fee and preserves all backend prices independently`() = runBlocking {
+        val dto = com.google.gson.Gson().fromJson(
+            """{"vrCotaSemTarifa":"60.47","vrUltimaCotaSemTarifa":"60.48","vrTarifaServicoUltimaCota":"21.55","vrUltimaCotaComTarifa":"82.03","vrCotaComTarifa":82.02}""",
+            MarketplacePoolDetailDto::class.java)
+        val result = RemoteMarketplaceRepository(source(FakeApi(detail = ApiEnvelope(dto)))).detail("ROUNDING")
+        assertEquals("60.48", result.sharePriceWithoutFee)
+        assertEquals("21.55", result.lastShareFee)
+        assertEquals(BigDecimal("82.03"), result.lastSharePriceWithFeeValue)
+        assertEquals(BigDecimal("82.02"), result.regularSharePriceWithFee)
+        assertEquals(result.sharePriceWithoutFee.toBigDecimal() + result.lastShareFee.toBigDecimal(), result.lastSharePriceWithFeeValue)
+        val compatible = RemoteMarketplaceRepository(source(FakeApi(detail = ApiEnvelope(dto.copy(lastSharePriceWithoutFee = null))))).detail("OLD")
+        assertEquals("60.47", compatible.sharePriceWithoutFee)
+    }
+
+    @Test fun `marketplace parsed detail preserves distinct Super Sete column matrices instead of only flattened numbers`() = runBlocking {
+        val dto = com.google.gson.Gson().fromJson(
+            """{"apostas":[{"dezenas":[[1,2],[],[3]]},{"dezenas":[[],[1],[2,3]]}]}""",
+            MarketplacePoolDetailDto::class.java)
+        val api = FakeApi(detail = ApiEnvelope(dto))
+        val result = RemoteMarketplaceRepository(source(api)).detail("SUPER7")
+        assertEquals("SUPER7", api.detailCode)
+        assertEquals(listOf(1, 2, 3), result.bets[0].numbers)
+        assertEquals(result.bets[0].numbers, result.bets[1].numbers)
+        assertEquals(listOf(listOf(1, 2), emptyList<Int>(), listOf(3)), result.bets[0].numberColumns)
+        assertEquals(listOf(emptyList<Int>(), listOf(1), listOf(2, 3)), result.bets[1].numberColumns)
+    }
+
+    @Test fun `marketplace parsed detail retains team month and Loteca match metadata and every selection flag`() = runBlocking {
+        val dto = com.google.gson.Gson().fromJson(
+            """{"apostas":[{
+              "indicadorSurpresinha":true,"dezenas":[1,2],"trevos":[3,4],
+              "timeDoCoracao":{"numero":7,"nome":"Time A","uf":"DF","numeroPais":55,"descricaoCurta":"TA","nomeClass":"Equipe","indicadorSelecao":true},
+              "mesDeSorte":{"numero":10,"nome":"Outubro","abreviacao":"OUT"},
+              "partidasLoteca":[
+                {"numero":9,"equipe1":{"numero":11,"nome":"Casa","uf":"RJ","vitoria":true},"equipe2":{"numero":22,"nome":"Fora","uf":"SP","vitoria":false},"empate":true,"descricaoLegenda":"Rodada especial","letraLegenda":"E"},
+                {"numero":10,"equipe1":{"numero":33,"nome":"Casa2","vitoria":false},"equipe2":{"numero":44,"nome":"Fora2","vitoria":true},"empate":false}
+              ]
+            }],"vrCotaComTarifa":9.99,"vrUltimaCotaComTarifa":"10.00"}""",
+            MarketplacePoolDetailDto::class.java)
+        val result = RemoteMarketplaceRepository(source(FakeApi(detail = ApiEnvelope(dto)))).detail("SPORTS")
+        val bet = result.bets.single()
+        val team = requireNotNull(bet.favoriteTeam)
+        assertEquals(7, team.number); assertEquals("Time A", team.name); assertEquals("DF", team.state)
+        assertEquals(55, team.countryNumber); assertEquals("TA", team.shortDescription)
+        assertEquals("Equipe", team.className); assertTrue(team.selectionIndicator)
+        assertEquals("", team.longDescription); assertEquals("", team.country); assertEquals("", team.countryCode)
+        assertEquals(br.gov.caixa.loterias.core.domain.betting.LuckyMonth(10, "Outubro", "OUT"), bet.luckyMonth)
+        val first = bet.lotecaSelections[0]
+        assertEquals(9, first.match.number); assertEquals("Casa", first.match.home.name); assertEquals("SP", first.match.away.state)
+        assertEquals("Rodada especial", first.match.legendDescription); assertEquals("E", first.match.legendLetter)
+        assertTrue(first.homeWin); assertTrue(first.draw); assertFalse(first.awayWin)
+        val second = bet.lotecaSelections[1]
+        assertFalse(second.homeWin); assertFalse(second.draw); assertTrue(second.awayWin)
+        assertTrue(bet.surprise); assertEquals(listOf(3, 4), bet.clovers)
+        assertEquals(BigDecimal("9.99"), result.regularSharePriceWithFee)
+    }
+
+    @Test fun `marketplace parsed regular detail is compatible with absent optional modality data`() = runBlocking {
+        val dto = com.google.gson.Gson().fromJson(
+            """{"apostas":[{"dezenas":[1,2],"trevos":[4]},{"dezenas":null}]}""", MarketplacePoolDetailDto::class.java)
+        val result = RemoteMarketplaceRepository(source(FakeApi(detail = ApiEnvelope(dto)))).detail("REGULAR")
+        assertEquals(listOf(1, 2), result.bets[0].numbers)
+        assertEquals(listOf(4), result.bets[0].clovers)
+        result.bets.forEach {
+            assertTrue(it.numberColumns.isEmpty()); assertNull(it.favoriteTeam); assertNull(it.luckyMonth)
+            assertTrue(it.lotecaSelections.isEmpty()); assertFalse(it.surprise)
+        }
     }
 
     @Test
@@ -236,6 +365,17 @@ class RemoteRepositoriesTest {
         assertEquals("2", api.addedPoolShare?.contestType?.value)
         assertEquals(BigDecimal("20.00"), api.addedPoolShare?.amount)
         assertEquals(BigDecimal("2.50"), api.addedPoolShare?.serviceFee)
+    }
+
+    @Test
+    fun `marketplace detail preserves regular share price independently of first share rounding`() = runBlocking {
+        val dto = com.google.gson.Gson().fromJson(
+            """{"vrUltimaCotaComTarifa":"10.00","vrCotaComTarifa":9.99}""",
+            MarketplacePoolDetailDto::class.java,
+        )
+        val result = RemoteMarketplaceRepository(source(FakeApi(detail = ApiEnvelope(dto)))).detail("B9")
+        assertEquals(BigDecimal("10.00"), result.lastSharePriceWithFeeValue)
+        assertEquals(BigDecimal("9.99"), result.regularSharePriceWithFee)
     }
 
     @Test
@@ -710,8 +850,8 @@ class RemoteRepositoriesTest {
         private val marketplace: ApiEnvelope<MarketplacePageDto> = ApiEnvelope(
             MarketplacePageDto(
                 totalRecords = 8,
-                currentPage = 3,
-                lastPage = 4,
+                currentPage = 4,
+                lastPage = 5,
                 pools = listOf(
                     MarketplacePoolDto(
                         code = "B1",
@@ -1016,6 +1156,8 @@ class RemoteRepositoriesTest {
         }
         override suspend fun recalculateAuthorizedLimit() = profile
         override suspend fun currentCart() = cart
+        override suspend fun removeBoundCartBet(id: Long, session: br.gov.caixa.loterias.core.network.AccountVerificationSession): ApiEnvelope<CartDto> = removeCartBet(id)
+
         override suspend fun removeCartBet(id: Long): ApiEnvelope<CartDto> {
             removedBetId = id
             return cart

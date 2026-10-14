@@ -6,25 +6,43 @@ import br.gov.caixa.loterias.core.auth.ForegroundSessionAccess
 import br.gov.caixa.loterias.core.auth.ForegroundSessionCheck
 import br.gov.caixa.loterias.core.auth.ForegroundSessionStatus
 
-/** Initial entry is untouched; only a logged context that actually stopped is checked on return. */
+/** Retained by AppContainer for this process; carries no Activity, route, or credentials. */
+internal class ForegroundSessionBackgroundState {
+    internal var pending = false
+}
+
+/** Mirrors CX's process background flag, consumed by the first eligible Base host resumed. */
 internal class ForegroundSessionLifecycleObserver(
     private val tokens: ForegroundSessionAccess,
     private val currentRoute: () -> String?,
-    private val hasLoggedContext: () -> Boolean,
     private val nowSeconds: () -> Long,
     private val onLogin: () -> Unit,
     private val onExpired: (ForegroundSessionCheck) -> Unit,
+    private val historicalBetDetail: () -> Boolean = { false },
+    private val backgroundState: ForegroundSessionBackgroundState = ForegroundSessionBackgroundState(),
+    private val prizeChannelHost: () -> Boolean = { false },
 ) : DefaultLifecycleObserver {
-    private var loggedBackground = false
+    private var foreground = false
+
+    /** Navigation inside one Compose Activity must also model a resumed legacy Activity. */
+    fun onRouteEntered() = checkPendingBackground()
 
     override fun onStop(owner: LifecycleOwner) {
-        loggedBackground = hasLoggedContext() && eligibleRoute(currentRoute())
+        foreground = false
+        // Non-Base screens leave CX's global flag untouched for a later Base screen.
+        // CX checks missing access on visitor Base hosts too; only provider/non-Base
+        // routes defer consumption. Do not filter this process event by login status.
+        backgroundState.pending = true
     }
 
     override fun onResume(owner: LifecycleOwner) {
-        val returning = loggedBackground
-        loggedBackground = false
-        if (!returning || !eligibleRoute(currentRoute())) return
+        foreground = true
+        checkPendingBackground()
+    }
+
+    private fun checkPendingBackground() {
+        if (!foreground || !backgroundState.pending || !eligibleRoute(currentRoute())) return
+        backgroundState.pending = false
         val check = tokens.foregroundCheck(nowSeconds())
         when (check.status) {
             ForegroundSessionStatus.MISSING -> if (tokens.clearForegroundSession(check)) onLogin()
@@ -34,7 +52,6 @@ internal class ForegroundSessionLifecycleObserver(
     }
 
     private fun eligibleRoute(route: String?): Boolean {
-        val base = route?.substringBefore('?') ?: return false
-        return base != "account/login" && base != "account/token" && !base.startsWith("onboarding/")
+        return ForegroundSessionRoutePolicy.eligible(route, historicalBetDetail(), prizeChannelHost())
     }
 }

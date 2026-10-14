@@ -35,6 +35,49 @@ class LoggedDetailContextTest {
         assertEquals(retailer, restored.selectedMarketplaceRetailer)
         assertEquals(listOf(bet), restored.checkedTicketBets)
     }
+    @Test fun restoredMarketplaceKeepsClearBaselineAndAppliedRetailerForSameOwnerOnly() {
+        val baseline = MarketplaceFilter.forModality(2, 1)
+        val retailer = Retailer(123, "000123", "Lotérica escolhida", "", "", "", "", "SP", false)
+        val original = LoggedDetailContext("owner").apply {
+            marketplaceClearFilter = baseline
+            marketplaceFilter = baseline.withLottery("123")
+            lastAppliedFilterRetailer = retailer
+            retailerMarketplaceFilter = MarketplaceFilter.empty().withLottery("123")
+        }
+        val bytes = LoggedDetailContextCodec.save(original)!!
+        val pending = LoggedDetailContextCodec.defer(bytes)!!
+        pending.reconcile("owner")
+        assertEquals(baseline, pending.marketplaceClearFilter)
+        assertEquals(retailer, pending.lastAppliedFilterRetailer)
+        assertEquals("123", pending.retailerMarketplaceFilter.lottery)
+        assertNull(pending.retailerMarketplaceFilter.modalityId)
+        pending.clear()
+        assertEquals(MarketplaceFilter.empty(), pending.marketplaceClearFilter)
+        assertNull(pending.lastAppliedFilterRetailer)
+        assertEquals(MarketplaceFilter.empty(), pending.retailerMarketplaceFilter)
+        assertNull(LoggedDetailContextCodec.restore(bytes, "other"))
+    }
+
+    @Test fun previousVersionSnapshotRestoresItsModalityAsClearBaseline() {
+        val bytes = java.io.ByteArrayOutputStream()
+        java.io.DataOutputStream(bytes).use { out ->
+            out.writeInt(1); out.writeUTF("owner")
+            repeat(3) { out.writeBoolean(false) }
+            out.writeUTF(""); out.writeUTF("")
+            repeat(4) { out.writeBoolean(false) }
+            out.writeUTF(""); out.writeUTF("")
+            repeat(2) { out.writeInt(0) }
+            out.writeBoolean(true); out.writeInt(2)
+            out.writeBoolean(true); out.writeInt(1)
+            out.writeBoolean(false); out.writeInt(0)
+        }
+        val pending = LoggedDetailContextCodec.defer(bytes.toByteArray())!!
+        pending.reconcile("owner")
+        assertEquals(MarketplaceFilter.forModality(2, 1), pending.marketplaceClearFilter)
+        assertNull(pending.lastAppliedFilterRetailer)
+        assertEquals(MarketplaceFilter.empty(), pending.retailerMarketplaceFilter)
+    }
+
     @Test fun refusesAnotherOwnerAndLoggedOutSession() {
         val bytes = LoggedDetailContextCodec.save(LoggedDetailContext("owner"))!!
         assertNull(LoggedDetailContextCodec.restore(bytes, "another"))

@@ -32,37 +32,32 @@ class CartRulesTest {
         assertEquals(listOf(1L), sections.first().items.map { it.id })
     }
 
-    @Test fun `clear and favorite visibility preserve legacy restrictions`() {
+    @Test fun `clear and favorite visibility follow current CX displayed cards`() {
         val individual = cart(listOf(item(1, CartItemKind.INDIVIDUAL_BET)))
         assertTrue(canClearCart(individual))
         assertFalse(canFavoriteCart(individual, authenticated = false))
         assertTrue(canFavoriteCart(individual, authenticated = true))
         assertFalse(canFavoriteCart(cart(individual.items + item(2, CartItemKind.POOL_SHARE)), true))
-        assertFalse(canFavoriteCart(cart(individual.items + item(3, CartItemKind.COMBO)), true))
+        assertTrue(canFavoriteCart(cart(individual.items + item(3, CartItemKind.COMBO)), true))
         assertFalse(canClearCart(null))
         assertFalse(canFavoriteCart(null, true))
     }
 
-    @Test fun `toolbar uses flat presence independently of grouped card projections`() {
+    @Test fun `toolbar ignores old flattened count and uses displayed current CX cards`() {
         val flatOnly = ShoppingCart(1, BigDecimal.TEN, emptyList(), totalBetCount = 2)
-        assertTrue(canClearCart(flatOnly))
-        assertTrue(canFavoriteCart(flatOnly, true))
+        assertFalse(canClearCart(flatOnly))
+        assertFalse(canFavoriteCart(flatOnly, true))
         assertFalse(canFavoriteCart(flatOnly, false))
-        assertFalse(canClearCart(flatOnly.copy(totalBetCount = 0)))
-        assertFalse(canFavoriteCart(flatOnly.copy(totalBetCount = 0), true))
         assertFalse(canClearCart(cart(emptyList())))
         assertFalse(canFavoriteCart(cart(emptyList()), true))
-
-        // Stale individual projections must not override an explicitly empty flat list.
         val individual = flatOnly.copy(items = listOf(item(1, CartItemKind.INDIVIDUAL_BET)), totalBetCount = 0)
-        assertFalse(canClearCart(individual))
-        assertFalse(canFavoriteCart(individual, true))
-        // Pools and combo groups independently allow clearing, but never favoriting.
+        assertTrue(canClearCart(individual))
+        assertTrue(canFavoriteCart(individual, true))
         for (kind in listOf(CartItemKind.POOL_SHARE, CartItemKind.COMBO)) {
             val grouped = individual.copy(items = listOf(item(2, kind)))
             assertTrue(canClearCart(grouped))
-            assertFalse(canFavoriteCart(grouped, true))
-            assertFalse(canFavoriteCart(grouped.copy(totalBetCount = 2), true))
+            assertEquals(kind == CartItemKind.COMBO, canFavoriteCart(grouped, true))
+            assertEquals(kind == CartItemKind.COMBO, canFavoriteCart(grouped.copy(totalBetCount = 2), true))
         }
     }
 

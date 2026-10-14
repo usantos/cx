@@ -152,6 +152,8 @@ data class MarketplacePoolDetailDto(
     @SerializedName("vrTarifaServicoUltimaCota") val lastShareFee: String? = null,
     @SerializedName("lotericaFormatada") val formattedLottery: MarketplaceLotteryDto? = null,
     @SerializedName("apostas") val bets: List<MarketplaceBetDto>? = null,
+    @SerializedName("vrCotaComTarifa") val regularSharePriceWithFee: BigDecimal? = null,
+    @SerializedName("vrUltimaCotaSemTarifa") val lastSharePriceWithoutFee: String? = null,
 )
 
 data class MarketplaceCityDto(
@@ -172,6 +174,9 @@ data class MarketplaceBetDto(
     // Some modalities return a flat list, while Super Sete/Loteca may return matrices.
     @SerializedName("dezenas") val numbers: JsonElement? = null,
     @SerializedName("trevos") val clovers: List<Int>? = null,
+    @SerializedName("timeDoCoracao") val favoriteTeam: SportsBetTeamDto? = null,
+    @SerializedName("mesDeSorte") val luckyMonth: LuckyMonthParameterDto? = null,
+    @SerializedName("partidasLoteca") val lotecaMatches: List<LotecaBetMatchDto>? = null,
 )
 
 data class DrawResultDto(
@@ -666,6 +671,7 @@ data class SportsBetTeamDto(
     @SerializedName("nomeClass") val className: String,
     @SerializedName("vitoria") val win: Boolean? = null,
     @SerializedName("placar") val score: String? = null,
+    @SerializedName("parametroEquipe") val parameterTeam: SportsTeamParameterDto? = null,
 )
 
 data class LotecaBetMatchDto(
@@ -673,6 +679,8 @@ data class LotecaBetMatchDto(
     @SerializedName("equipe2") val away: SportsBetTeamDto,
     @SerializedName("empate") val draw: Boolean,
     @SerializedName("numero") val number: Int,
+    @SerializedName("descricaoLegenda") val legendDescription: String? = null,
+    @SerializedName("letraLegenda") val legendLetter: String? = null,
 )
 
 data class LotogolBetMatchDto(

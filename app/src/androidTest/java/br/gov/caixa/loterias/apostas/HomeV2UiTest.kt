@@ -1,5 +1,9 @@
 package br.gov.caixa.loterias.apostas
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
+import androidx.compose.runtime.mutableStateOf
+import br.gov.caixa.loterias.core.designsystem.CaixaDSTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -15,6 +19,7 @@ import java.math.BigDecimal
 @RunWith(AndroidJUnit4::class)
 class HomeV2UiTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
+    private var poolsEnabled = false
     private val calls = mutableListOf<String>()
     private val preferences = object : HomeLayoutPreferences {
         var value: String? = null
@@ -32,7 +37,7 @@ class HomeV2UiTest {
         override fun notifications() { calls += "notifications" }
         override fun cart() { calls += "cart" }
         override fun profile() { calls += "profile" }
-        override fun canPool(modalidade: HomeV2Modality) = false
+        override fun canPool(modalidade: HomeV2Modality) = poolsEnabled
     }
 
     @Test fun poolDisabledDoesNotOfferPurchaseAndBetKeepsBackendContest() {
@@ -52,12 +57,39 @@ class HomeV2UiTest {
         compose.runOnIdle { assertEquals(listOf("results", "notifications", "cart"), calls) }
     }
 
+    @Test fun homeTextGeometryMatchesCxUnderApplicationTheme() {
+        poolsEnabled = true
+        val hostTheme = mutableStateOf(false)
+        val reference = HomeV2Presentation(preferences) { actions }
+        val lottery = lottery()
+        compose.setContent {
+            if (hostTheme.value) {
+                CaixaDSTheme { HomeV2Content(listOf(lottery), false, emptyMap(), preferences, actions) }
+            } else {
+                // CX HomeV2View supplies the standard Material3 typography in its own root.
+                MaterialTheme(typography = Typography()) { reference.Home(listOf(lottery), false, emptyMap()) }
+            }
+        }
+        val labels = listOf("PRÓXIMO SORTEIO", "Prêmio estimado", "Escolha sua modalidade",
+            "Jogue com amigos e aumente suas chances de ganhar.")
+        val cxBounds = labels.associateWith { compose.onNodeWithText(it).fetchSemanticsNode().boundsInRoot }
+        compose.runOnIdle { hostTheme.value = true }
+        labels.forEach { label ->
+            val actual = compose.onNodeWithText(label).fetchSemanticsNode().boundsInRoot
+            val expected = cxBounds.getValue(label)
+            assertEquals("CX text width: $label", expected.width, actual.width, 1f)
+            assertEquals("CX text height: $label", expected.height, actual.height, 1f)
+            assertEquals("CX text position: $label", expected.top, actual.top, 1f)
+        }
+    }
+
     private fun show() {
-        val lottery = HomeLottery(2, "NORMAL", "megasena", "Mega-Sena", 4321,
+        compose.setContent { HomeV2Content(listOf(lottery()), false, emptyMap(), preferences, actions) }
+    }
+
+    private fun lottery(): HomeLottery = HomeLottery(2, "NORMAL", "megasena", "Mega-Sena", 4321,
             BigDecimal("100000000"), BigDecimal("6"), "2026-10-15T21:00:00", "", true,
             HomeLotteryKind.LOTTERY, CaixaDSColorTokens.LegacyMegaSenaLight,
             CaixaDSColorTokens.LegacyMegaSenaDark, CaixaDSColorTokens.White,
             R.drawable.trevo_megasena_fundo_branco, R.drawable.ic_calendario, R.drawable.ic_calendario)
-        compose.setContent { HomeV2Content(listOf(lottery), false, emptyMap(), preferences, actions) }
-    }
 }

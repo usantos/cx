@@ -16,6 +16,7 @@ internal data class TutorialDefinition(
     val pages: List<TutorialPage>,
     val usesLegacyOverlayControls: Boolean,
     val finalPrimaryLabel: String,
+    val skipLabel: String = "Pular",
 )
 
 internal fun tutorialDefinition(route: String): TutorialDefinition = when (route) {
@@ -29,6 +30,7 @@ internal fun tutorialDefinition(route: String): TutorialDefinition = when (route
         ),
         usesLegacyOverlayControls = true,
         finalPrimaryLabel = "Escolher\nmeu bolão",
+        skipLabel = "Pular para\no final",
     )
     "betting/tutorial-plus" -> TutorialDefinition(
         pages = listOf(
@@ -80,7 +82,7 @@ internal fun tutorialPrimaryLabel(definition: TutorialDefinition, page: Int): St
 }
 
 internal fun tutorialSecondaryLabel(definition: TutorialDefinition, page: Int): String =
-    if (definition.usesLegacyOverlayControls && page == definition.pages.lastIndex) "Fechar" else "Pular"
+    if (definition.usesLegacyOverlayControls && page == definition.pages.lastIndex) "Fechar" else definition.skipLabel
 
 internal fun tutorialPageAfterPrimary(definition: TutorialDefinition, page: Int): Int? =
     if (page < definition.pages.lastIndex) page + 1 else null

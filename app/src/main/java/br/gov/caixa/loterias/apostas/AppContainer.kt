@@ -111,8 +111,10 @@ import br.gov.caixa.loterias.core.domain.retail.DownloadPrizeReceiptUseCase
 @Singleton
 class AppContainer @Inject constructor(
     @ApplicationContext context: Context,
+    val environmentSettings: EnvironmentSettings,
     val networkAvailability: br.gov.caixa.loterias.core.common.NetworkAvailability,
     private val tokenStore: SessionTokenStore,
+    private val regularSessionRefreshExecutor: br.gov.caixa.loterias.core.auth.RegularSessionRefreshExecutor,
     private val serverClock: br.gov.caixa.loterias.core.common.MonotonicServerClock,
     val localClock: java.time.Clock,
     val prepareMercadoPagoRegistration: br.gov.caixa.loterias.core.domain.payment.PrepareMercadoPagoRegistrationUseCase,
@@ -170,6 +172,7 @@ class AppContainer @Inject constructor(
     val recalculateAuthorizedLimit: RecalculateAuthorizedLimitUseCase,
     val currentCart: GetCurrentCartUseCase,
     val removeCartItem: RemoveCartItemUseCase,
+    val removeExpiredPoolShare: br.gov.caixa.loterias.core.domain.cart.RemoveExpiredPoolShareUseCase,
     val clearCart: ClearCartUseCase,
     val validateCart: ValidateCartUseCase,
     val verifyCartPaymentAccount: br.gov.caixa.loterias.core.domain.cart.VerifyCartPaymentAccountUseCase,
@@ -232,12 +235,21 @@ class AppContainer @Inject constructor(
     val currentUserIdentity: CurrentUserIdentityProvider,
     val dispatchers: CoroutineDispatchers,
 ) {
+    val environment: EffectiveEnvironment = environmentSettings.effective
+
+    suspend fun changeEnvironment(selected: LegacyTestEnvironment): Boolean =
+        applyEnvironmentChange(environmentSettings.selection, selected) {
+            authentication.cancelAuthorization()
+            tokenStore.clear()
+        }
+
     fun prepareLoggedVisualFixture(requested: Boolean) {
         if (!shouldUseLoggedVisualFixture(BuildConfig.DEBUG, BuildConfig.ENABLE_MOCK_BACKEND, requested)) return
         if (tokenStore.captureIdentity() != null) return
         br.gov.caixa.loterias.core.auth.SyntheticSessionFixture.install(tokenStore)
     }
 
+    internal val foregroundBackground = ForegroundSessionBackgroundState()
     val sessionIdentityChanges = tokenStore.observeIdentities()
     val foregroundSession: br.gov.caixa.loterias.core.auth.ForegroundSessionAccess = tokenStore
 
@@ -249,7 +261,10 @@ class AppContainer @Inject constructor(
             br.gov.caixa.loterias.core.network.ServerTimeAdapterFactory { serverClock.synchronize(it) },
         ).create()
     }
-    private val cloudRouting = CloudBackendRouting(BuildConfig.API_BASE_URL.toHttpUrl(), BuildConfig.FLAVOR == "prd")
+    private val backendSessionRefresh = br.gov.caixa.loterias.core.auth.BackendSessionRefresh(tokenStore,
+        br.gov.caixa.loterias.core.auth.RegularSessionRefreshCoordinator(tokenStore, regularSessionRefreshExecutor))
+
+    private val cloudRouting = CloudBackendRouting(environment.apiBaseUrl.toHttpUrl(), BuildConfig.FLAVOR == "prd")
 
     private fun backendClientBuilder() = OkHttpClient.Builder().apply {
         if (!BuildConfig.ENABLE_MOCK_BACKEND) addInterceptor(cloudRouting)
@@ -316,71 +331,71 @@ class AppContainer @Inject constructor(
 
     private fun createApi(keySet: PublicKeySet) =
         NetworkClientFactory.create(
-            baseUrl = BuildConfig.API_BASE_URL, clientBuilder = backendClientBuilder(),
+            baseUrl = environment.apiBaseUrl, clientBuilder = backendClientBuilder(),
             tokenProvider = tokenStore,
             gson = backendGson,
             publicKeySet = keySet,
             debugOptions = debugOptions,
-            mockOptions = mockOptions,
+            mockOptions = mockOptions, sessionRefreshHandler = backendSessionRefresh,
         )
 
     private fun replaceMainBackendApis(keySet: PublicKeySet) {
         apiProvider.replace(createApi(keySet))
         notificationReadProvider.replace(NetworkClientFactory.createNotificationRead(
-            baseUrl = BuildConfig.API_BASE_URL, clientBuilder = backendClientBuilder(), gson = backendGson, publicKeySet = keySet,
-            debugOptions = debugOptions, mockOptions = mockOptions,
+            baseUrl = environment.apiBaseUrl, clientBuilder = backendClientBuilder(), gson = backendGson, publicKeySet = keySet,
+            debugOptions = debugOptions, mockOptions = mockOptions, sessionRefreshHandler = backendSessionRefresh,
         ))
         sessionLogoutProvider.replace(NetworkClientFactory.createSessionLogout(
-            baseUrl = BuildConfig.API_BASE_URL, clientBuilder = backendClientBuilder(), gson = backendGson, publicKeySet = keySet,
-            debugOptions = debugOptions, mockOptions = mockOptions,
+            baseUrl = environment.apiBaseUrl, clientBuilder = backendClientBuilder(), gson = backendGson, publicKeySet = keySet,
+            debugOptions = debugOptions, mockOptions = mockOptions, sessionRefreshHandler = backendSessionRefresh,
         ))
         accountVerificationProvider.replace(
             NetworkClientFactory.createAccountVerification(
-                baseUrl = BuildConfig.API_BASE_URL, clientBuilder = backendClientBuilder(),
+                baseUrl = environment.apiBaseUrl, clientBuilder = backendClientBuilder(),
                 gson = backendGson,
                 publicKeySet = keySet,
                 debugOptions = debugOptions,
-                mockOptions = mockOptions,
+                mockOptions = mockOptions, sessionRefreshHandler = backendSessionRefresh,
             ),
         )
         prizeApiProvider.replace(
             NetworkClientFactory.createPrizeRedemption(
-                baseUrl = BuildConfig.API_BASE_URL, clientBuilder = backendClientBuilder(),
+                baseUrl = environment.apiBaseUrl, clientBuilder = backendClientBuilder(),
                 tokenProvider = tokenStore,
                 gson = backendGson,
                 publicKeySet = keySet,
                 debugOptions = debugOptions,
-                mockOptions = mockOptions,
+                mockOptions = mockOptions, sessionRefreshHandler = backendSessionRefresh,
             ),
         )
         purchaseApiProvider.replace(
             NetworkClientFactory.createPurchaseBackend(
-                baseUrl = BuildConfig.API_BASE_URL, clientBuilder = backendClientBuilder(),
+                baseUrl = environment.apiBaseUrl, clientBuilder = backendClientBuilder(),
                 tokenProvider = tokenStore,
                 gson = backendGson,
                 publicKeySet = keySet,
                 debugOptions = debugOptions,
-                mockOptions = mockOptions,
+                mockOptions = mockOptions, sessionRefreshHandler = backendSessionRefresh,
             ),
         )
         legacyApiProvider.replace(
             NetworkClientFactory.createLegacy(
-                baseUrl = BuildConfig.API_BASE_URL, clientBuilder = backendClientBuilder(),
+                baseUrl = environment.apiBaseUrl, clientBuilder = backendClientBuilder(),
                 tokenProvider = tokenStore,
                 gson = backendGson,
                 publicKeySet = keySet,
                 debugOptions = debugOptions,
-                mockOptions = mockOptions,
+                mockOptions = mockOptions, sessionRefreshHandler = backendSessionRefresh,
             ),
         )
         betsHistoryApiProvider.replace(
             NetworkClientFactory.createBetsHistory(
-                baseUrl = BuildConfig.API_BASE_URL, clientBuilder = backendClientBuilder(),
+                baseUrl = environment.apiBaseUrl, clientBuilder = backendClientBuilder(),
                 tokenProvider = tokenStore,
                 gson = backendGson,
                 publicKeySet = keySet,
                 debugOptions = debugOptions,
-                mockOptions = mockOptions,
+                mockOptions = mockOptions, sessionRefreshHandler = backendSessionRefresh,
             ),
         )
         betsHistoryApiProvider.configureDynamicClients(
@@ -392,19 +407,19 @@ class AppContainer @Inject constructor(
                 gson = backendGson,
                 publicKeySet = keySet,
                 debugOptions = debugOptions,
-                mockOptions = mockOptions,
+                mockOptions = mockOptions, sessionRefreshHandler = backendSessionRefresh,
             )
         }
         paymentApiProvider.replace(
             PaymentApis(
                 mercadoPago = NetworkClientFactory.createMercadoPago(
-                    baseUrl = BuildConfig.MERCADO_PAGO_BASE_URL,
+                    baseUrl = environment.mercadoPagoBaseUrl,
                     publicKeySet = keySet,
                     debugOptions = debugOptions,
                     mockOptions = mockOptions,
                 ),
                 recargaPay = NetworkClientFactory.createRecargaPay(
-                    baseUrl = BuildConfig.RECARGA_PAY_BASE_URL,
+                    baseUrl = environment.recargaPayBaseUrl,
                     publicKeySet = keySet,
                     debugOptions = debugOptions,
                     mockOptions = mockOptions,
@@ -426,9 +441,9 @@ class AppContainer @Inject constructor(
             allowedHosts = localFallback.hosts.map(HostPublicKeyPins::hostname).toSet() +
                 setOf(
                     "*.caixa.gov.br",
-                    requireNotNull(Uri.parse(BuildConfig.API_BASE_URL).host),
-                    requireNotNull(Uri.parse(BuildConfig.MERCADO_PAGO_BASE_URL).host),
-                    requireNotNull(Uri.parse(BuildConfig.RECARGA_PAY_BASE_URL).host),
+                    requireNotNull(Uri.parse(environment.apiBaseUrl).host),
+                    requireNotNull(Uri.parse(environment.mercadoPagoBaseUrl).host),
+                    requireNotNull(Uri.parse(environment.recargaPayBaseUrl).host),
                 ),
         )
         return PublicKeySetRepository(

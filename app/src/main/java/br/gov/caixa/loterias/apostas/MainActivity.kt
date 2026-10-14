@@ -35,6 +35,7 @@ class MainActivity : androidx.activity.ComponentActivity() {
         val queueLocation = intent.getStringExtra("location")
         val visualTestRoute = intent.getStringExtra("visual_test_route").takeIf { BuildConfig.DEBUG }
         if (visualTestRoute != null) container.prepareLoggedVisualFixture(intent.getBooleanExtra("visual_test_authenticated", false))
+        val restartForegroundStartup = { restartForegroundSession(this) }
         setContent {
             // O aplicativo legado possui identidade exclusivamente clara. Manter a paleta
             // estável também evita que cards brancos recebam textos do tema escuro do sistema.
@@ -49,9 +50,9 @@ class MainActivity : androidx.activity.ComponentActivity() {
                     loading = { br.gov.caixa.loterias.feature.onboarding.LegacySplashScreen() },
                 ) {
                     if (visualTestRoute != null) {
-                        LoteriasApp(container, visualTestRoute)
+                        LoteriasApp(container, visualTestRoute, onForegroundSessionRestart = restartForegroundStartup)
                     } else if (queueLocation == null) {
-                        FilaBraAppGate(this, container)
+                        FilaBraAppGate(this, container, onForegroundSessionRestart = restartForegroundStartup)
                     } else {
                         FilaBraQueueScreen(queueLocation, this)
                     }

@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.map
 
 class SessionTokenStore : AuthTokenProvider, AuthenticatedSessionIdentityProvider, AuthenticatedSessionContentRepository, LatestNotificationSession, ForegroundSessionAccess {
     private class State(val token: String?, val attempt: AuthorizationAttempt? = null, val idToken: String? = null,
-        val identity: AuthenticatedSessionIdentity? = null, val content: AuthenticatedSessionContent? = null)
+        val identity: AuthenticatedSessionIdentity? = null, val content: AuthenticatedSessionContent? = null,
+        val refreshToken: String? = null, val refreshContext: RegularSessionRefreshContext? = null,
+        val generation: Any = Any())
     private val state = MutableStateFlow(State(null))
     private class ForegroundNotice(val marker: String, val check: ForegroundSessionCheck)
     private var foregroundNotice: ForegroundNotice? = null
@@ -32,7 +34,7 @@ class SessionTokenStore : AuthTokenProvider, AuthenticatedSessionIdentityProvide
     }
 
     /** Expiry acknowledgment cannot end a replacement session or a pending browser/biometric login. */
-    override fun clearForegroundSession(check: ForegroundSessionCheck): Boolean {
+    @Synchronized override fun clearForegroundSession(check: ForegroundSessionCheck): Boolean {
         if (check.status != ForegroundSessionStatus.EXPIRED && check.status != ForegroundSessionStatus.MISSING) return false
         val captured = check.reference as? State ?: return false
         while (true) {
@@ -94,15 +96,65 @@ class SessionTokenStore : AuthTokenProvider, AuthenticatedSessionIdentityProvide
         if (it.attempt == null && it.identity === identity) it.token else null
     }
 
-    fun replace(token: String?) {
+    /** Capture token and identity atomically; explicit headers cannot bind a different login. */
+    fun captureRefreshTicketForToken(token: String): RegularSessionRefreshTicket? {
+        val captured = state.value
+        if (captured.token != token) return null
+        return refreshTicket(captured)
+    }
+
+    fun captureRefreshTicket(): RegularSessionRefreshTicket? = refreshTicket(state.value)
+
+    private fun refreshTicket(captured: State): RegularSessionRefreshTicket? {
+        if (captured.attempt != null || captured.refreshToken == null || captured.refreshContext == null) return null
+        return captured.identity?.let { RegularSessionRefreshTicket(it, captured.generation) }
+    }
+
+    internal fun refreshTicketStatus(ticket: RegularSessionRefreshTicket): RegularSessionRefreshResult? {
+        val current = state.value
+        if (current.attempt != null || current.identity !== ticket.identity) return RegularSessionRefreshResult.STALE
+        if (current.generation !== ticket.generation) return RegularSessionRefreshResult.ALREADY_UPDATED
+        return null
+    }
+
+    internal fun refreshRequest(ticket: RegularSessionRefreshTicket): RegularSessionRefreshRequest? {
+        val current = state.value
+        if (current.attempt != null || current.identity !== ticket.identity || current.generation !== ticket.generation) return null
+        return RegularSessionRefreshRequest(current.refreshToken ?: return null, ticket.identity.ownerKey,
+            current.refreshContext ?: return null, current.idToken)
+    }
+
+    @Synchronized internal fun commitRefresh(ticket: RegularSessionRefreshTicket, response: RegularSessionRefreshResponse,
+        afterCommit: () -> Unit = {}): RegularSessionRefreshResult {
+        val access = response.accessToken.trim().takeIf(String::isNotEmpty)
+        val refresh = response.refreshToken.trim().takeIf(String::isNotEmpty)
+        while (true) {
+            val previous = state.value
+            if (previous.attempt != null || previous.identity !== ticket.identity) return RegularSessionRefreshResult.STALE
+            if (previous.generation !== ticket.generation) return RegularSessionRefreshResult.ALREADY_UPDATED
+            if (access == null || refresh == null || response.ownerKey != ticket.identity.ownerKey ||
+                (response.idToken != null && response.idToken.isBlank())) return RegularSessionRefreshResult.FAILED
+            if (state.compareAndSet(previous, State(access, idToken = response.idToken ?: previous.idToken,
+                    identity = previous.identity, content = previous.content, refreshToken = refresh,
+                    refreshContext = previous.refreshContext))) {
+                forgetInvalidForegroundNotice()
+                // This lease remains current through persistence; logout/new login use the same monitor.
+                // Optional credential persistence cannot turn an accepted token exchange into auth failure.
+                try { afterCommit() } catch (_: Exception) { }
+                return RegularSessionRefreshResult.UPDATED
+            }
+        }
+    }
+
+    @Synchronized fun replace(token: String?) {
         state.value = State(token?.trim()?.takeIf(String::isNotEmpty))
         forgetInvalidForegroundNotice()
     }
 
-    fun clear() { state.value = State(null); forgetInvalidForegroundNotice() }
+    @Synchronized fun clear() { state.value = State(null); forgetInvalidForegroundNotice() }
 
     /** Called only by the debug source-set fixture, never overrides login or a pending attempt. */
-    internal fun installVisualFixtureIfEmpty(token: String): Boolean {
+    @Synchronized internal fun installVisualFixtureIfEmpty(token: String): Boolean {
         while (true) {
             val previous = state.value
             if (previous.token != null || previous.attempt != null || previous.identity != null) return false
@@ -110,12 +162,13 @@ class SessionTokenStore : AuthTokenProvider, AuthenticatedSessionIdentityProvide
         }
     }
 
-    override fun publish(identity: AuthenticatedSessionIdentity, content: AuthenticatedSessionContent?): Boolean {
+    @Synchronized override fun publish(identity: AuthenticatedSessionIdentity, content: AuthenticatedSessionContent?): Boolean {
         while (true) {
             val previous = state.value
             if (previous.attempt != null || previous.identity !== identity) return false
             if (state.compareAndSet(previous, State(previous.token, idToken = previous.idToken,
-                    identity = previous.identity, content = content))) return true
+                    identity = previous.identity, content = content, refreshToken = previous.refreshToken,
+                    refreshContext = previous.refreshContext, generation = previous.generation))) return true
         }
     }
 
@@ -125,18 +178,19 @@ class SessionTokenStore : AuthTokenProvider, AuthenticatedSessionIdentityProvide
         if (it.attempt == null && it.content?.latestNotification === notification) it.identity else null
     }
 
-    override fun clear(identity: AuthenticatedSessionIdentity, notification: AccountNotification): Boolean {
+    @Synchronized override fun clear(identity: AuthenticatedSessionIdentity, notification: AccountNotification): Boolean {
         while (true) {
             val previous = state.value
             val content = previous.content ?: return false
             if (previous.attempt != null || previous.identity !== identity || content.latestNotification !== notification) return false
             if (state.compareAndSet(previous, State(previous.token, idToken = previous.idToken, identity = previous.identity,
-                    content = content.copy(latestNotification = null)))) return true
+                    content = content.copy(latestNotification = null), refreshToken = previous.refreshToken,
+                    refreshContext = previous.refreshContext, generation = previous.generation))) return true
         }
     }
 
     /** Atomically ends local authorization and extracts only the OIDC ID token for logout. */
-    internal fun clearForEndSession(): String? {
+    @Synchronized internal fun clearForEndSession(): String? {
         while (true) {
             val previous = state.value
             if (state.compareAndSet(previous, State(null))) {
@@ -148,33 +202,36 @@ class SessionTokenStore : AuthTokenProvider, AuthenticatedSessionIdentityProvide
 
     internal fun isAuthorizationCurrent(attempt: AuthorizationAttempt): Boolean = state.value.attempt === attempt
 
-    internal fun beginAuthorization(): AuthorizationAttempt {
+    @Synchronized internal fun beginAuthorization(): AuthorizationAttempt {
         val attempt = AuthorizationAttempt()
         while (true) {
             val previous = state.value
             // Even cancellation must not resurrect a lease captured before the new login began.
             val renewedIdentity = previous.identity?.let { AuthenticatedSessionIdentity(it.ownerKey) }
-            if (state.compareAndSet(previous, State(previous.token, attempt, previous.idToken, renewedIdentity, previous.content))) return attempt
+            if (state.compareAndSet(previous, State(previous.token, attempt, previous.idToken, renewedIdentity, previous.content, previous.refreshToken, previous.refreshContext))) return attempt
         }
     }
 
-    internal fun completeAuthorization(attempt: AuthorizationAttempt, token: String, idToken: String? = null,
-        ownerKey: String? = null): Boolean {
+    @Synchronized internal fun completeAuthorization(attempt: AuthorizationAttempt, token: String, idToken: String? = null,
+        ownerKey: String? = null, refreshToken: String? = null,
+        refreshContext: RegularSessionRefreshContext? = null): Boolean {
         val normalized = token.trim().takeIf(String::isNotEmpty) ?: return false
         val identity = ownerKey?.let(::AuthenticatedSessionIdentity)
         while (true) {
             val previous = state.value
             if (previous.attempt !== attempt) return false
-            if (state.compareAndSet(previous, State(normalized, idToken = idToken?.trim()?.takeIf(String::isNotEmpty), identity = identity))) return true
+            if (state.compareAndSet(previous, State(normalized, idToken = idToken?.trim()?.takeIf(String::isNotEmpty), identity = identity,
+                    refreshToken = refreshToken?.trim()?.takeIf(String::isNotEmpty), refreshContext = refreshContext))) return true
         }
     }
 
-    internal fun cancelAuthorization(attempt: AuthorizationAttempt? = null) {
+    @Synchronized internal fun cancelAuthorization(attempt: AuthorizationAttempt? = null) {
         while (true) {
             val previous = state.value
             if (attempt != null && previous.attempt !== attempt) return
             if (state.compareAndSet(previous, State(previous.token, idToken = previous.idToken, identity = previous.identity,
-                    content = previous.content))) return
+                    content = previous.content, refreshToken = previous.refreshToken,
+                    refreshContext = previous.refreshContext, generation = previous.generation))) return
         }
     }
 }

@@ -5,6 +5,7 @@ internal fun MarketplaceFilterUiState.reduce(action: MarketplaceFilterAction): M
         is MarketplaceFilterAction.SelectModality -> {
             copy(
                 selectedModality = action.value.takeUnless(MarketplaceFilterModalityUi::isAll),
+                allModalitiesHighlighted = action.value.isAll,
                 numberOptions = action.value.numberOptions,
                 selectedBetQuantity = null,
                 selectedNumberQuantity = null,
@@ -16,14 +17,18 @@ internal fun MarketplaceFilterUiState.reduce(action: MarketplaceFilterAction): M
             lottery = action.value,
             selectedRetailer = selectedRetailer?.takeIf { retailerDisplayLabel(it) == action.value },
             retailerMessage = null,
+            restoredRetailerId = restoredRetailerId.takeIf { action.value == lottery }.orEmpty(),
+            modalities = if (action.value.isEmpty()) modalities.filterNot { it.isAll } else modalities,
+            allModalitiesHighlighted = if (action.value.isEmpty()) false else allModalitiesHighlighted,
         )
         is MarketplaceFilterAction.SelectRetailer -> copy(
             lottery = retailerDisplayLabel(action.value),
             selectedRetailer = action.value,
             retailerSuggestions = emptyList(),
             retailerMessage = null,
-            selectedModality = null,
-            numberOptions = allNumberQuantityOptions,
+            restoredRetailerId = "",
+            modalities = listOf(allModalities) + modalities.filterNot { it.isAll },
+            allModalitiesHighlighted = true,
         )
         is MarketplaceFilterAction.ChangeMinimumValue -> copy(minimumValue = action.value)
         is MarketplaceFilterAction.ChangeMaximumValue -> copy(maximumValue = action.value)
@@ -40,6 +45,7 @@ internal fun MarketplaceFilterUiState.reduce(action: MarketplaceFilterAction): M
             betOptions = betOptions,
             numberOptions = allNumberQuantityOptions,
             lotteryEnabled = lotteryEnabled,
+            configurationError = configurationError,
         )
         MarketplaceFilterAction.Apply,
         MarketplaceFilterAction.Back -> this

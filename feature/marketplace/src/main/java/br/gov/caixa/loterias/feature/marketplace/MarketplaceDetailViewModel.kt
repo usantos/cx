@@ -19,15 +19,53 @@ class MarketplaceDetailViewModel(
     private val getMarketplaceDetail: GetMarketplaceDetailUseCase,
     private val addMarketplacePoolToCart: AddMarketplacePoolToCartUseCase,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
+    private val setRetailerFavorite: br.gov.caixa.loterias.core.domain.retail.SetRetailerFavoriteUseCase? = null,
+    private val initialFavorite: Boolean? = null,
 ) : ViewModel() {
-    private val mutableState = MutableStateFlow(MarketplaceDetailUiState())
+    private val mutableState = MutableStateFlow(MarketplaceDetailUiState(favoriteLottery = initialFavorite))
     val state: StateFlow<MarketplaceDetailUiState> = mutableState.asStateFlow()
 
     init {
         load()
     }
 
+    // init performs the first native onResume GET; later resumes refresh server availability.
+    private var firstResume = true
+
+    fun onResume() {
+        if (firstResume) {
+            firstResume = false
+        } else {
+            load()
+        }
+    }
+
     fun retry() = load()
+
+    fun requestFavorite() {
+        val current = mutableState.value
+        val favorite = current.favoriteLottery ?: return
+        if (setRetailerFavorite == null || current.isUpdatingFavorite || (current.detail?.lotteryId ?: 0) <= 0) return
+        mutableState.value = current.copy(pendingFavorite = !favorite, favoriteError = null)
+    }
+
+    fun confirmFavorite() {
+        val current = mutableState.value
+        val target = current.pendingFavorite ?: return
+        val detail = current.detail ?: return
+        val service = setRetailerFavorite ?: return
+        mutableState.value = current.copy(pendingFavorite = null, isUpdatingFavorite = true, favoriteError = null)
+        viewModelScope.launch(dispatchers.io) {
+            mutableState.value = when (service(detail.lotteryId, target)) {
+                is AppResult.Success -> mutableState.value.copy(favoriteLottery = target, isUpdatingFavorite = false)
+                is AppResult.Failure -> mutableState.value.copy(isUpdatingFavorite = false,
+                    favoriteError = "Não foi possível concluir esta operação. Por favor, tente novamente.")
+            }
+        }
+    }
+
+    fun cancelFavorite() { mutableState.value = mutableState.value.copy(pendingFavorite = null) }
+    fun dismissFavoriteError() { mutableState.value = mutableState.value.copy(favoriteError = null) }
 
     fun onAction(action: MarketplaceDetailAction) = when (action) {
         MarketplaceDetailAction.Retry -> retry()
@@ -62,6 +100,7 @@ class MarketplaceDetailViewModel(
                 requestedShares = state.selectedShares,
                 serviceFeePerShare = detail.serviceFeePerShare,
                 firstSharePriceWithFee = detail.lastSharePriceWithFeeValue,
+                regularSharePriceWithFee = detail.regularSharePriceWithFee,
             )
             when (val outcome = addMarketplacePoolToCart(order)) {
                 is AppResult.Success -> {
@@ -109,12 +148,14 @@ class MarketplaceDetailViewModel(
                         detail = detail,
                         selectedShares = if (detail.availableShares > 0) 1 else 0,
                         isLoading = false,
+                        favoriteLottery = mutableState.value.favoriteLottery,
                     )
                 }
                 is AppResult.Failure -> {
                     mutableState.value = MarketplaceDetailUiState(
                         isLoading = false,
                         errorMessage = "Não foi possível carregar os detalhes do bolão. Tente novamente.",
+                        favoriteLottery = mutableState.value.favoriteLottery,
                     )
                 }
             }

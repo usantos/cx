@@ -36,7 +36,7 @@ class CurlLoggingInterceptorTest {
             .url(server.url("/pay?token=secret-value&public=value"))
             .header("Authorization", "Bearer secret")
             .header("X-Trace", "safe")
-            .post("{\"cpf\":\"123\"}".toRequestBody("application/json".toMediaType()))
+            .post("{\"cpf\":\"fixture-cpf-content\"}".toRequestBody("application/json".toMediaType()))
             .build()
 
         client.newCall(request).execute().close()
@@ -48,7 +48,7 @@ class CurlLoggingInterceptorTest {
         assertTrue(output.contains("HTTP POST"))
         assertFalse(output.contains("secret-value"))
         assertFalse(output.contains("Bearer secret"))
-        assertFalse(output.contains("123"))
+        assertFalse(output.contains("fixture-cpf-content"))
     }
 
     @Test

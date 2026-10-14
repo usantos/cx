@@ -121,6 +121,7 @@ class RetrofitLoteriasRemoteDataSource(
     ResponsibleGamingRemoteDataSource,
     AccountRemoteDataSource,
     CartRemoteDataSource,
+    BoundCartRemovalRemoteDataSource,
     FavoriteCartRemoteDataSource,
     BettingRemoteDataSource {
     override suspend fun isVersionSupported(versionName: String) = apiProvider.current().isVersionSupported(versionName).payload
@@ -166,6 +167,8 @@ class RetrofitLoteriasRemoteDataSource(
         apiProvider.current().recalculateAuthorizedLimit().payload
     override suspend fun currentCart() = apiProvider.current().currentCart().payload
     override suspend fun removeCartBet(id: Long) = apiProvider.current().removeCartBet(id).payload
+    override suspend fun removeBoundCartBet(id: Long, session: br.gov.caixa.loterias.core.network.AccountVerificationSession) =
+        apiProvider.current().removeBoundCartBet(id, session).payload
     override suspend fun removeCartCombo(id: Long) = apiProvider.current().removeCartCombo(id).payload
     override suspend fun clearCart() = apiProvider.current().clearCart().payload
     override suspend fun validateCart() {

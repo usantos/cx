@@ -218,6 +218,11 @@ object CaixaDSColorTokens {
     val LegacyPersonalDataFooter = Color(0xFFD7E0E2)
     val LegacyPersonalDataDisabledButton = Color(0xFF8FB5BC)
     val LegacySwitchActive = Color(0xFF008254)
+    val LegacyMarketplaceNumber = Color(0xFF404B52)
+    val LegacyMarketplaceFooterText = Color(0xFF3F4B52)
+    val LegacyMarketplaceFooterDisabled = Color(0xFFD0E0E5)
+    val LegacyMarketplaceFooterDivider = Color(0xFFB6CAD2)
+    val LegacyMarketplaceFavorite = Color(0xFFD19400)
     val LegacyMarketplaceCanvas = Color(0xFFE8EFF1)
     val LegacyMarketplaceSelectedTab = Color(0xFF004A80)
     /** Cores do fluxo de carrinhos favoritos, extraídas diretamente do legado. */

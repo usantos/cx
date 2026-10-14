@@ -24,7 +24,11 @@ class MarketplaceViewModel(
     private val getFavoriteRetailers: GetFavoriteRetailersUseCase,
     private val setRetailerFavorite: SetRetailerFavoriteUseCase,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
+    private val getBettingParameters: br.gov.caixa.loterias.core.domain.betting.GetBettingParametersUseCase? = null,
 ) : ViewModel() {
+    private var lastChildRevision: Int? = null
+    private var searchFilter = filter
+    private var nextArea: br.gov.caixa.loterias.core.domain.marketplace.MarketplaceSearchArea? = null
     private val mutableState = MutableStateFlow(
         MarketplaceUiState(isLoading = true, lotteryFiltered = filter.lottery.isNotBlank()),
     )
@@ -33,9 +37,37 @@ class MarketplaceViewModel(
     init {
         search()
         loadFavoriteRetailers()
+        loadContestHeader()
     }
 
-    fun retry() = search()
+    fun observeChildRevision(revision: Int) {
+        val previous = lastChildRevision
+        lastChildRevision = revision
+        if (previous != null && previous != revision) {
+            retry()
+            loadFavoriteRetailers()
+        }
+    }
+
+    fun retry() {
+        search()
+        loadContestHeader()
+    }
+
+    private fun loadContestHeader() {
+        val modality = filter.modalityId ?: return
+        val getParameters = getBettingParameters ?: return
+        if (filter.lottery.isNotBlank()) return
+        viewModelScope.launch(dispatchers.io) {
+            val result = getParameters()
+            val games = (result as? AppResult.Success)?.value?.games.orEmpty()
+            val game = games.firstOrNull {
+                it.modality.id == modality &&
+                    (it.contestType.equals("ESPECIAL", true) || it.contestType.equals("E", true)) == (filter.contestType == 2)
+            }?.takeIf { it.contestNumber > 0 }
+            mutableState.value = mutableState.value.copy(contestHeader = game)
+        }
+    }
 
     fun onAction(action: MarketplaceAction) = when (action) {
         MarketplaceAction.Retry -> retry()
@@ -59,7 +91,8 @@ class MarketplaceViewModel(
     }
 
     fun requestFavoriteRetailerRemoval(retailerId: Long) {
-        if (mutableState.value.favoriteRetailers.none { it.id == retailerId }) return
+        if (retailerId in mutableState.value.updatingFavoriteLotteryIds ||
+            mutableState.value.favoriteRetailers.none { it.id == retailerId }) return
         mutableState.value = mutableState.value.copy(
             pendingFavoriteRetailerRemoval = retailerId,
             actionError = null,
@@ -71,17 +104,24 @@ class MarketplaceViewModel(
     }
 
     fun confirmFavoriteRetailerRemoval() {
-        val retailerId = mutableState.value.pendingFavoriteRetailerRemoval ?: return
-        mutableState.value = mutableState.value.copy(pendingFavoriteRetailerRemoval = null)
+        val snapshot = mutableState.value
+        val retailerId = snapshot.pendingFavoriteRetailerRemoval ?: return
+        if (retailerId in snapshot.updatingFavoriteLotteryIds) return
+        mutableState.value = snapshot.copy(
+            pendingFavoriteRetailerRemoval = null,
+            updatingFavoriteLotteryIds = snapshot.updatingFavoriteLotteryIds + retailerId,
+        )
         viewModelScope.launch(dispatchers.io) {
             when (setRetailerFavorite(retailerId, false)) {
                 is AppResult.Success -> mutableState.value = mutableState.value.copy(
+                    updatingFavoriteLotteryIds = mutableState.value.updatingFavoriteLotteryIds - retailerId,
                     favoriteRetailers = mutableState.value.favoriteRetailers.filterNot { it.id == retailerId },
                     pools = mutableState.value.pools.map { pool ->
                         if (pool.lotteryId == retailerId) pool.copy(favoriteLottery = false) else pool
                     },
                 )
                 is AppResult.Failure -> mutableState.value = mutableState.value.copy(
+                    updatingFavoriteLotteryIds = mutableState.value.updatingFavoriteLotteryIds - retailerId,
                     actionError = "Não foi possível concluir esta operação. Por favor, tente novamente.",
                 )
             }
@@ -91,7 +131,9 @@ class MarketplaceViewModel(
     fun loadMore() {
         val snapshot = mutableState.value
         if (snapshot.isLoading || snapshot.isLoadingMore || !snapshot.canLoadMore) return
-        load(snapshot.currentPage + 1, append = true)
+        val followingArea = nextArea
+        if (followingArea != null) searchFilter = searchFilter.withSearchArea(followingArea)
+        load(if (followingArea != null) 0 else snapshot.currentPage + 1, append = true)
     }
 
     fun toggleExpanded(poolCode: String) {
@@ -223,7 +265,11 @@ class MarketplaceViewModel(
         mutableState.value = mutableState.value.copy(actionError = null)
     }
 
-    private fun search() = load(page = 0, append = false)
+    private fun search() {
+        searchFilter = filter
+        nextArea = null
+        load(page = 0, append = false)
+    }
 
     private fun loadFavoriteRetailers() {
         mutableState.value = mutableState.value.copy(
@@ -252,9 +298,10 @@ class MarketplaceViewModel(
             mutableState.value.copy(isLoading = true, errorMessage = null)
         }
         viewModelScope.launch(dispatchers.io) {
-            when (val outcome = searchMarketplace(filter, page)) {
+            when (val outcome = searchMarketplace(searchFilter, page)) {
                 is AppResult.Success -> {
                     val result = outcome.value
+                    nextArea = result.nextArea
                     val current = mutableState.value
                     mutableState.value = current.copy(
                         pools = if (append) current.pools + result.pools else result.pools,
@@ -265,6 +312,8 @@ class MarketplaceViewModel(
                         canLoadMore = result.canLoadMore,
                         totalRecords = result.totalRecords,
                     )
+                    // An empty local area must continue outward even without a visible list footer.
+                    if (result.continueAutomatically || (result.pools.isEmpty() && result.nextArea != null)) loadMore()
                 }
                 is AppResult.Failure -> {
                     mutableState.value = mutableState.value.copy(

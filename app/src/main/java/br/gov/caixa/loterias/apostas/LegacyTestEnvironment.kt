@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.apostas
 
 /** Endpoint identities from the legacy TQS BuildConfig, not an editable URL allowlist. */
-internal enum class LegacyTestEnvironment(val apiBaseUrl: String) {
+enum class LegacyTestEnvironment(val apiBaseUrl: String) {
     EXTERNO("https://simlo.tqs.caixa.gov.br/silce-servico-rest/rest/v1/"),
     INTERNO("https://simlo.tqs.caixa/silce-servico-rest/rest/v1/"),
     INTERNO_ESTEIRA("https://silce-simlo.tqs.caixa/silce-servico-rest/rest/v1/"),

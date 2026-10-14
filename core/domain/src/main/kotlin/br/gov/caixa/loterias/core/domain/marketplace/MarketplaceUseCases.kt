@@ -10,9 +10,17 @@ fun interface SearchMarketplaceUseCase {
 
 class SearchMarketplace(
     private val repository: MarketplaceRepository,
+    private val location: MarketplaceLocationProvider? = null,
 ) : SearchMarketplaceUseCase {
     override suspend fun invoke(filter: MarketplaceFilter, page: Int) = appResultOf {
-        repository.search(filter, page)
+        val locatedFilter = location?.current()?.let(filter::withSearchLocation) ?: filter
+        val area = when {
+            filter.lottery.isNotBlank() -> MarketplaceSearchArea.RETAILER
+            filter.searchArea != null -> filter.searchArea
+            location != null -> MarketplaceSearchArea.MUNICIPALITY
+            else -> MarketplaceSearchArea.NATIONAL
+        }
+        repository.search(locatedFilter.withSearchArea(area), page)
     }
 }
 

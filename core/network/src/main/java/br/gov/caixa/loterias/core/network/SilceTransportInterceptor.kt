@@ -49,7 +49,14 @@ internal class SilceTransportInterceptor(private val baseUrl: HttpUrl) : Interce
             body.writeTo(buffer)
             val json = buffer.readUtf8().ifEmpty { "{}" }.toByteArray(Charsets.ISO_8859_1)
             val encoded = Base64.getEncoder().encodeToString(envelope(json))
-            builder.method(request.method, encoded.toRequestBody(body.contentType()))
+            val encodedBody = encoded.toRequestBody(body.contentType())
+            builder.method(request.method, object : okhttp3.RequestBody() {
+                override fun contentType() = encodedBody.contentType()
+                override fun contentLength() = encodedBody.contentLength()
+                override fun isOneShot() = body.isOneShot()
+                override fun isDuplex() = body.isDuplex()
+                override fun writeTo(sink: okio.BufferedSink) = encodedBody.writeTo(sink)
+            })
         }
         return chain.proceed(builder.build())
     }
