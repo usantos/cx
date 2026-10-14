@@ -176,6 +176,7 @@ class TicketsViewModel(
     private val validateDam: ValidateDamUseCase? = null,
     private val getPixPurchaseStatus: br.gov.caixa.loterias.core.domain.payment.GetPurchaseProgressUseCase? = null,
     private val pixNoticeClock: java.time.Clock = java.time.Clock.systemDefaultZone(),
+    private val elapsedMillis: () -> Long = { android.os.SystemClock.elapsedRealtime() },
 
 ) : ViewModel() {
     private val mutableState = MutableStateFlow(TicketsUiState())
@@ -361,7 +362,7 @@ class TicketsViewModel(
         val purchase = current.selectedPurchase ?: return
         if (current.isLoading || current.checkingPixPurchase || current.pixPurchaseCompleted ||
             current.pixPurchasePaused || current.pixPurchaseRedirect != null || current.pixPurchaseNotice != null ||
-            !purchase.isPendingPix() || purchase.paymentSecondsRemaining() <= 0) return
+            !purchase.isPendingPix() || pendingPixSecondsRemaining() <= 0) return
         val query = getPixPurchaseStatus ?: return
         mutableState.value = current.copy(checkingPixPurchase = true, errorMessage = null)
         viewModelScope.launch(dispatchers.io) {
@@ -386,7 +387,7 @@ class TicketsViewModel(
                         val details = getPurchaseDetails ?: return@launch
                         when (val refreshed = details(purchase)) {
                             is AppResult.Success -> if (mutableState.value.selectedPurchase?.id == purchase.id) {
-                                showPurchaseDetails(refreshed.value.purchase, refreshed.value.bets)
+                                showPurchaseDetails(refreshed.value.purchase, refreshed.value.bets, refreshed.value.serverDateTime)
                             }
                             is AppResult.Failure -> if (mutableState.value.selectedPurchase?.id == purchase.id) {
                                 mutableState.value = mutableState.value.copy(
@@ -439,7 +440,7 @@ class TicketsViewModel(
                 }
             } else {
                 when (val result = details(purchase)) {
-                    is AppResult.Success -> showPurchaseDetails(result.value.purchase, result.value.bets)
+                    is AppResult.Success -> showPurchaseDetails(result.value.purchase, result.value.bets, result.value.serverDateTime)
                     is AppResult.Failure -> fail("Não foi possível carregar os dados. Tente novamente.")
                 }
             }
@@ -589,7 +590,21 @@ class TicketsViewModel(
         mutableState.value = mutableState.value.copy(purchaseBetFilters = mutableState.value.purchaseBetFilters.block())
     }
 
-    private suspend fun showPurchaseDetails(purchase: Purchase, bets: List<ConfirmedBet>) {
+    private var pendingPixDeadline: PurchasePixDeadline? = null
+
+    fun pendingPixSecondsRemaining(): Long {
+        val purchase = mutableState.value.selectedPurchase ?: return 0
+        return pendingPixDeadline?.takeIf { it.purchaseId == purchase.id && it.expiresAt == purchase.paymentExpiresAt }
+            ?.remainingSeconds(elapsedMillis()) ?: 0
+    }
+
+    private suspend fun showPurchaseDetails(purchase: Purchase, bets: List<ConfirmedBet>, serverDateTime: String = "") {
+        if (purchase.isPendingPix() && (pendingPixDeadline?.purchaseId != purchase.id ||
+                pendingPixDeadline?.expiresAt != purchase.paymentExpiresAt)) {
+            pendingPixDeadline = PurchasePixDeadline.capture(purchase.id, purchase.paymentExpiresAt,
+                serverDateTime, elapsedMillis(), pixNoticeClock.instant())
+        }
+
         mutableState.value = mutableState.value.copy(
             selectedPurchase = purchase,
             bets = bets,

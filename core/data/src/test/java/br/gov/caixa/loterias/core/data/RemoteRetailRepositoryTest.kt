@@ -688,7 +688,7 @@ class RemoteRetailRepositoryTest {
         ) { _, method, _ ->
             calls += method.name
             when (method.name) {
-                "betReceiptPdf", "prizeReceiptPdf" -> "pdf".toResponseBody()
+                "betReceiptPdf", "prizeReceiptPdf" -> "%PDF-1.7\n".toResponseBody()
                 "mercadoPagoRegistrationToken" -> br.gov.caixa.loterias.core.network.MercadoPagoRegistrationEnvelopeDto("token")
                 "redeemPrize" -> br.gov.caixa.loterias.core.network.PrizeRedemptionEnvelopeDto(JsonNull.INSTANCE)
                 else -> ApiEnvelope(JsonNull.INSTANCE)
@@ -697,8 +697,8 @@ class RemoteRetailRepositoryTest {
         val source = sourceFor(api)
         source.prizeDetails(1); source.lotteryCode(1); source.consultPixKey(1, com.google.gson.JsonObject())
         source.redeemPrize(1, com.google.gson.JsonObject()); source.cancelPix(1); source.mercadoPagoToken("mail")
-        assertEquals("pdf", source.betReceiptPdf(1).decodeToString())
-        assertEquals("pdf", source.prizeReceiptPdf(1).decodeToString())
+        assertEquals("%PDF-1.7\n", source.betReceiptPdf(1).decodeToString())
+        assertEquals("%PDF-1.7\n", source.prizeReceiptPdf(1).decodeToString())
         assertEquals(listOf("prizeDetails", "retailerRedemptionCode", "consultPixKey", "redeemPrize", "cancelPixRedemption", "mercadoPagoRegistrationToken", "betReceiptPdf", "prizeReceiptPdf"), calls)
     }
 

@@ -96,8 +96,14 @@ class RetrofitTicketsRemoteDataSource(
     override suspend fun purchases(filters: Map<String, String>) =
         apiProvider.current().purchases(filters).payload
 
-    override suspend fun purchaseBets(purchaseId: Long) =
-        apiProvider.current().purchaseBets(purchaseId).payload
+    override suspend fun purchaseBets(purchaseId: Long): JsonElement? {
+        val response = apiProvider.current().purchaseBets(purchaseId)
+        val serverDateTime = response.serverDateTime ?: return response.payload
+        return JsonObject().apply {
+            add("payload", response.payload)
+            addProperty("dataHoraServidor", serverDateTime)
+        }
+    }
 
     override suspend fun savePurchaseAsFavorite(purchaseId: Long, name: String, keepSurprises: Boolean) {
         val body = JsonObject().apply {
@@ -374,7 +380,8 @@ internal fun JsonElement?.toBets(): List<ConfirmedBet> = collectObjects().filter
         status = value.text("situacao").displayName(),
         numbers = numberColumns.flatten(),
         prize = value.decimal("valorPremio"),
-        originalRecurringBet = value.bool("apostaOriginal") || value.bool("teimosinha"),
+        originalRecurringBet = !value.bool("troca") && ((value.int("quantidadeTeimosinhas") ?: 0) > 0 ||
+            value.bool("apostaOriginal") || value.bool("teimosinha")),
         redeemedPrize = value.bool("houveResgate") || value.text("situacao").contains("RESGAT", true),
         exchangeBetId = value.long("idApostaTroca"),
         modalityId = value.childInt("modalidade", "valor") ?: value.int("idModalidade")

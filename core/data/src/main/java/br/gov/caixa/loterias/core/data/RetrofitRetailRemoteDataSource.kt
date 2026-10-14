@@ -41,6 +41,16 @@ class RetrofitRetailRemoteDataSource(
         require(envelope.code == null && envelope.redirect == null) { "Não foi possível iniciar o cadastro Mercado Pago." }
         return requireNotNull(envelope.payload) { "Token de cadastro Mercado Pago ausente." }
     }
-    override suspend fun betReceiptPdf(betId: Long) = provider.current().betReceiptPdf(betId).bytes()
-    override suspend fun prizeReceiptPdf(betId: Long) = provider.current().prizeReceiptPdf(betId).bytes()
+    override suspend fun betReceiptPdf(betId: Long) = provider.current().betReceiptPdf(betId).use { decodeReceiptPdf(it.bytes()) }
+    override suspend fun prizeReceiptPdf(betId: Long) = provider.current().prizeReceiptPdf(betId).use { decodeReceiptPdf(it.bytes()) }
+}
+
+/** SILCE sends Base64 text; deployments returning raw PDF keep their original bytes. */
+internal fun decodeReceiptPdf(bytes: ByteArray): ByteArray {
+    fun ByteArray.isPdf() = size >= 5 && take(5).toByteArray().contentEquals("%PDF-".toByteArray(Charsets.US_ASCII))
+    if (bytes.isPdf()) return bytes
+    val encoded = bytes.toString(Charsets.US_ASCII).filterNot(Char::isWhitespace)
+    val decoded = java.util.Base64.getDecoder().decode(encoded)
+    require(decoded.isPdf()) { "Comprovante PDF inválido" }
+    return decoded
 }

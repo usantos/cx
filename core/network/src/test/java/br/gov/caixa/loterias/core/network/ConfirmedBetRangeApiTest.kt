@@ -9,6 +9,21 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ConfirmedBetRangeApiTest {
+    @Test fun `both PDF endpoints disable legacy crypto`() = runTest {
+        MockWebServer().use { server ->
+            repeat(2) { server.enqueue(MockResponse().setBody("JVBERi0xLjcK")) }
+            val api = Retrofit.Builder().baseUrl(server.url("/rest/v1/"))
+                .addConverterFactory(GsonConverterFactory.create()).build().create(LegacyBackendApi::class.java)
+            api.betReceiptPdf(7).close()
+            api.prizeReceiptPdf(7).close()
+            for (path in listOf("comprovante-aposta-app-pdf", "comprovante-premio-app-pdf")) {
+                val request = server.takeRequest()
+                assertEquals("/rest/v1/apostas/7/$path", request.path)
+                assertEquals("true", request.getHeader("Disable-Crypto"))
+            }
+        }
+    }
+
     @Test fun `range query repeats concursos instead of collapsing to last value`() = runTest {
         MockWebServer().use { server ->
             server.enqueue(MockResponse().setHeader("Content-Type", "application/json").setBody("""{"payload":[]}"""))

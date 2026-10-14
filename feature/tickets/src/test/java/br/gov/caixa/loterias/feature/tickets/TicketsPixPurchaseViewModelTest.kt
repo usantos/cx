@@ -22,10 +22,28 @@ class TicketsPixPurchaseViewModelTest {
     private var status: AppResult<PurchaseProgress> = AppResult.Success(PurchaseProgress(9003, 10))
     private val statusIds = mutableListOf<Long>()
     private var detailsCalls = 0
+    private var elapsed = 10_000L
     private var detailsOverride: (suspend (Purchase) -> AppResult<PurchaseDetails>)? = null
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
     @After fun tearDown() = Dispatchers.resetMain()
+
+    @Test fun `server time keeps ten minute window queryable when device is fifteen minutes ahead`() = runTest(dispatcher) {
+        detail = pending.copy(paymentExpiresAt = "2020-01-01T15:10:00.000")
+        detailsOverride = { AppResult.Success(PurchaseDetails(detail, emptyList(), "2020-01-01T15:00:00.000")) }
+        val vm = show(detail)
+        vm.checkPendingPixStatus(); advanceUntilIdle()
+        assertEquals(listOf(9003L), statusIds)
+        assertEquals(600L, vm.pendingPixSecondsRemaining())
+        elapsed += 120_000
+        assertEquals(480L, vm.pendingPixSecondsRemaining())
+        vm.loadPurchase(detail); advanceUntilIdle()
+        assertEquals("Reload must not extend the same deadline", 480L, vm.pendingPixSecondsRemaining())
+        elapsed += 480_000
+        assertEquals(0L, vm.pendingPixSecondsRemaining())
+        vm.checkPendingPixStatus(); advanceUntilIdle()
+        assertEquals(listOf(9003L), statusIds)
+    }
 
     @Test fun `pending Pix queries the selected existing purchase once without any new purchase operation`() = runTest(dispatcher) {
         val vm = show()
@@ -119,6 +137,8 @@ class TicketsPixPurchaseViewModelTest {
             getPurchaseDetails = GetPurchaseDetailsUseCase { purchase -> detailsCalls++; detailsOverride?.invoke(purchase) ?: AppResult.Success(PurchaseDetails(detail, emptyList())) },
             getPixPurchaseStatus = GetPurchaseProgressUseCase { statusIds.add(it); status },
             dispatchers = FixedCoroutineDispatchers(dispatcher),
+            elapsedMillis = { elapsed },
+            pixNoticeClock = java.time.Clock.fixed(java.time.Instant.parse("2020-01-01T18:15:00Z"), java.time.ZoneId.of("America/Sao_Paulo")),
         )
         vm.loadPurchase(purchase)
         dispatcher.scheduler.runCurrent()

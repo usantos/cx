@@ -106,9 +106,11 @@ interface LegacyBackendApi {
     @GET("apostas/{id}/detalhes-premio")
     suspend fun prizeDetails(@Path("id") betId: Long): ApiEnvelope<JsonElement>
 
+    @retrofit2.http.Headers("Disable-Crypto: true")
     @GET("apostas/{id}/comprovante-aposta-app-pdf")
     suspend fun betReceiptPdf(@Path("id") betId: Long): ResponseBody
 
+    @retrofit2.http.Headers("Disable-Crypto: true")
     @GET("apostas/{id}/comprovante-premio-app-pdf")
     suspend fun prizeReceiptPdf(@Path("id") betId: Long): ResponseBody
 

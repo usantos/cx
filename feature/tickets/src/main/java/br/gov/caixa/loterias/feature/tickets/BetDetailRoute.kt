@@ -186,8 +186,9 @@ fun BetDetailRoute(
     onFavoriteNameChange: (String) -> Unit = {},
     onSaveFavorite: () -> Unit = {},
 ) {
-    var showAlert by remember(bet.id, bet.originalRecurringBet, bet.redeemedPrize) {
-        mutableStateOf(shouldShowInvalidTeimosinhaAlert(bet.originalRecurringBet, bet.redeemedPrize))
+    val notice = teimosinhaNotice(bet)
+    var showAlert by androidx.compose.runtime.saveable.rememberSaveable(bet.id, notice) {
+        mutableStateOf(notice != null)
     }
     val pending = bet.status.contains("acompanhamento", ignoreCase = true) ||
         bet.status.contains("não apurado", ignoreCase = true)
@@ -328,9 +329,13 @@ fun BetDetailRoute(
         CaixaDSAlertDialog(
             title = "Atenção",
             message = buildAnnotatedString {
-                append("Esta aposta com Teimosinha não é mais válida para acompanhamento. Utilize a ")
-                withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("aposta de troca") }
-                append(" gerada após o resgate do prêmio, para acompanhar os próximos sorteios.")
+                if (notice == TeimosinhaNotice.ORIGINAL_PAID) {
+                    append("Esta aposta com Teimosinha não é mais válida para acompanhamento. Utilize a ")
+                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("aposta de troca") }
+                    append(" gerada após o resgate do prêmio, para acompanhar os próximos sorteios.")
+                } else {
+                    append("A conferência dos jogos da Teimosinha é realizada para todos os concursos apostados, no entanto, é exibida apenas a do primeiro concurso.")
+                }
             },
             confirmText = "Entendi",
             onConfirm = { showAlert = false },

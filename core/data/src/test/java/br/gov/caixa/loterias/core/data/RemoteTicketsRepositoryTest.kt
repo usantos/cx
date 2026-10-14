@@ -19,6 +19,15 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class RemoteTicketsRepositoryTest {
+    @Test fun `real recurring quantity and exchange identify the original paid bet`() = runTest {
+        val bets = RemoteTicketsRepository(FakeTicketsRemote(bets = json("""{"apostas":[
+            {"id":41,"modalidade":"QUINA","quantidadeTeimosinhas":3,"troca":false,"situacao":{"valor":11}},
+            {"id":42,"modalidade":"QUINA","quantidadeTeimosinhas":3,"troca":true,"apostaOriginal":true,"situacao":{"valor":11}}
+        ]}"""))).confirmedBets()
+        assertTrue(bets[0].originalRecurringBet)
+        assertFalse(bets[1].originalRecurringBet)
+    }
+
     @Test fun `history page transports actual backend even when there are no bets`() = runTest {
         val backend = br.gov.caixa.loterias.core.domain.tickets.ConfirmedBetsBackend.MICROSERVICE
         val remote = FakeTicketsRemote(backend = backend)

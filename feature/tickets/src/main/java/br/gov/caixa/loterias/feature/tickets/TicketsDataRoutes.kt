@@ -357,7 +357,7 @@ fun PurchaseDetailDataRoute(
         },
     ) { padding ->
         when {
-            state.isLoading -> LoadingData(Modifier.padding(padding))
+            state.isLoading || state.selectedPurchase?.id != purchase.id -> LoadingData(Modifier.padding(padding))
             state.errorMessage != null -> ErrorData(state.errorMessage.orEmpty(), { viewModel.loadPurchase(purchase) }, Modifier.padding(padding))
             else -> androidx.compose.foundation.lazy.LazyColumn(
                 Modifier.fillMaxSize().padding(padding),
@@ -372,7 +372,7 @@ fun PurchaseDetailDataRoute(
                         onFavorite = viewModel::openFavoriteDialog,
                     )
                 }
-                if (detail.isPendingPix()) item { PendingPurchasePix(detail, state.checkingPixPurchase, viewModel::checkPendingPixStatus) }
+                if (detail.isPendingPix()) item { PendingPurchasePix(detail, state.checkingPixPurchase, viewModel::pendingPixSecondsRemaining, viewModel::checkPendingPixStatus) }
                 if (displayedBets.isEmpty()) {
                     item {
                         CaixaDSLegacyEmptyState(
@@ -554,11 +554,11 @@ private fun FavoritePurchaseDialog(state: TicketsUiState, viewModel: TicketsView
 }
 
 @Composable
-private fun PendingPurchasePix(purchase: Purchase, checking: Boolean, onCheckPayment: () -> Unit) {
-    var remaining by remember(purchase.paymentExpiresAt) { mutableLongStateOf(purchase.paymentSecondsRemaining()) }
+private fun PendingPurchasePix(purchase: Purchase, checking: Boolean, remainingSeconds: () -> Long, onCheckPayment: () -> Unit) {
+    var remaining by remember(purchase.id, purchase.paymentExpiresAt) { mutableLongStateOf(remainingSeconds()) }
     var copied by remember(purchase.id) { androidx.compose.runtime.mutableStateOf(false) }
-    LaunchedEffect(purchase.paymentExpiresAt) {
-        while (remaining > 0) { delay(1_000); remaining = purchase.paymentSecondsRemaining() }
+    LaunchedEffect(purchase.id, purchase.paymentExpiresAt) {
+        while (remaining > 0) { delay(1_000); remaining = remainingSeconds() }
     }
     LaunchedEffect(purchase.id, copied) {
         if (copied) while (remaining > 0) {
