@@ -104,6 +104,7 @@ fun BettingGameRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showNumberQuantity by remember { mutableStateOf(false) }
+    var lotecaDescriptionBindingKey by remember { mutableStateOf(0) }
     var showRecurring by remember { mutableStateOf(false) }
     var showCloverQuantity by remember { mutableStateOf(false) }
     var showHelp by remember { mutableStateOf(false) }
@@ -135,7 +136,10 @@ fun BettingGameRoute(
         onBack = returnOrConfirm,
         bottomBar = {
             if (state.game != null) {
-                BettingLegacyFooter(state, viewModel, cartTotal, cartBetCount, requestCart.takeIf { onCart != null })
+                BettingLegacyFooter(state, viewModel, cartTotal, cartBetCount, requestCart.takeIf { onCart != null }, onClear = {
+                    viewModel.clearCurrentStep()
+                    if (state.game?.modality?.id == LOTECA_ID) lotecaDescriptionBindingKey++
+                })
             }
         },
     ) { padding ->
@@ -150,7 +154,7 @@ fun BettingGameRoute(
                 val game = requireNotNull(state.game)
                 Column(Modifier.fillMaxSize().padding(padding).padding(16.dp).clip(RoundedCornerShape(8.dp)).border(1.dp, CaixaDSColorTokens.LegacySimulationToolbar, RoundedCornerShape(8.dp)).padding(1.dp)) {
                     if (game.modality.id == LOTECA_ID) {
-                        BettingLegacyLoteca(state, viewModel, onQuantity = { showNumberQuantity = true }, onHelp = { showHelp = true })
+                        BettingLegacyLoteca(state, viewModel, onQuantity = { showNumberQuantity = true }, onHelp = { showHelp = true }, descriptionBindingKey = lotecaDescriptionBindingKey)
                     } else if (game.modality.id == LOTOGOL_ID) {
                         LotogolBetContent(state, viewModel)
                     } else {
@@ -229,7 +233,10 @@ fun BettingGameRoute(
                     "$quantity números por ${formatBetAmount(price)}"
                 }
             },
-            onSelect = viewModel::chooseNumberQuantity,
+            onSelect = { quantity ->
+                viewModel.chooseNumberQuantity(quantity)
+                if (state.game?.modality?.id == LOTECA_ID && quantity < state.numberQuantity) lotecaDescriptionBindingKey++
+            },
             onDismiss = { showNumberQuantity = false },
         )
     }
@@ -1016,7 +1023,7 @@ internal fun BettingDSButton(text: String, onClick: () -> Unit, modifier: Modifi
 }
 
 @Composable
-private fun BettingLegacyFooter(state: BettingGameUiState, viewModel: BettingGameViewModel, cartTotal: java.math.BigDecimal, cartCount: Int, onCart: (() -> Unit)?) {
+private fun BettingLegacyFooter(state: BettingGameUiState, viewModel: BettingGameViewModel, cartTotal: java.math.BigDecimal, cartCount: Int, onCart: (() -> Unit)?, onClear: () -> Unit) {
     val style = caixaDSLotteryStyle(state.game?.modality?.id ?: 0)
     val textMetrics = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true))
     val hasSelection = if (state.selectionStep == BetSelectionStep.COMPLEMENT) when (state.game?.modality?.id) {
@@ -1053,7 +1060,7 @@ private fun BettingLegacyFooter(state: BettingGameUiState, viewModel: BettingGam
                     stroke = if (randomEnabled) CaixaDSColorTokens.LegacySocialGraphite else CaixaDSColorTokens.LegacySimulationMuted,
                     retainNativeAnimator = true, enabled = randomEnabled)
             }
-            BettingDSButton("Limpar", viewModel::clearCurrentStep, Modifier.width(130.dp).height(52.dp),
+            BettingDSButton("Limpar", onClear, Modifier.width(130.dp).height(52.dp),
                 if (hasSelection) CaixaDSColorTokens.White else CaixaDSColorTokens.LegacyFavoriteFilterCanvas,
                 if (hasSelection) CaixaDSColorTokens.LegacySocialGraphite else CaixaDSColorTokens.LegacySimulationMuted,
                 stroke = if (hasSelection) CaixaDSColorTokens.LegacySocialGraphite else CaixaDSColorTokens.LegacySimulationMuted, enabled = hasSelection, retainNativeAnimator = true)

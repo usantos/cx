@@ -79,9 +79,88 @@ class BettingLotecaParityTest {
         listOf("partidas","simples","duplas","triplas").forEach { tag ->
             assertEquals("Native semibold counter TextView integer metrics",reference("0",true).measuredHeight.toFloat(),compose.onNodeWithTag("loteca-count-$tag").fetchSemanticsNode().boundsInRoot.height,0f)
         }
-        assertEquals("Flow centers first group within separator height",bounds[1].top,bounds[0].top,0f)
+        val title=compose.onNodeWithText("Suas apostas").fetchSemanticsNode().boundsInRoot
+        var nativeOffsets:List<Int> = emptyList()
+        compose.runOnIdle {
+            nativeOffsets=LotecaNativeOracle(context).counterOffsetsFromTitleBottom(context.resources.displayMetrics.widthPixels - with(compose.density) { 34.dp.roundToPx() })
+        }
+        bounds.forEachIndexed { index, actual ->
+            assertEquals("Native Flow outer center and LinearLayout inner integer gravity group $index",nativeOffsets[index].toFloat(),actual.top-title.bottom,0f)
+        }
         assertEquals("Selected TextView glyph height inside native 40dp box",reference("Selecionados: 0/15").measuredHeight.toFloat(),compose.onNodeWithText("Selecionados: 0/15").fetchSemanticsNode().boundsInRoot.height,0f)
         capture("counter-metrics")
+    }
+
+    @Test fun mountedDescriptionsKeepNativeHeightAndColorAcrossManualRandomAndClear() {
+        launch(includeTriple=false)
+        lateinit var native:LotecaNativeOracle.Row
+        compose.runOnIdle { native=LotecaNativeOracle(InstrumentationRegistry.getInstrumentation().targetContext).Row() }
+        fun bounds(tag:String)=compose.onNodeWithTag(tag).fetchSemanticsNode().boundsInRoot
+        val first=bounds("loteca-1-HOME")
+        val secondTitle=compose.onNodeWithText("Jogo 02").fetchSemanticsNode().boundsInRoot
+        fun verifyMounted() {
+            val current=bounds("loteca-1-HOME")
+            var nativeHeight=0
+            compose.runOnIdle { nativeHeight=native.height((current.width*3).toInt()) }
+            assertEquals("Mounted native card height",nativeHeight.toFloat(),current.height,0f)
+            assertEquals(first.height,current.height,0f)
+            assertEquals(secondTitle.top,compose.onNodeWithText("Jogo 02").fetchSemanticsNode().boundsInRoot.top,0f)
+            listOf(true to "/BA",false to "/RJ").forEach { (home,text) ->
+                val node=compose.onAllNodesWithText(text,useUnmergedTree=true).onFirst().assertIsDisplayed()
+                var color=0
+                compose.runOnIdle { assertEquals(android.view.View.VISIBLE,native.description(home).visibility); color=native.description(home).currentTextColor }
+                val layouts=mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
+                node.performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult) { it(layouts) }
+                assertEquals("Native mounted $text selection color",androidx.compose.ui.graphics.Color(color),layouts.single().layoutInput.style.color)
+            }
+        }
+        verifyMounted()
+        compose.onNodeWithTag("loteca-1-HOME").performClick()
+        compose.onNodeWithTag("loteca-1-AWAY").performClick()
+        compose.runOnIdle { native.select(true,true) }
+        verifyMounted()
+        capture("mounted-manual-selected")
+        compose.onNodeWithText("Completar jogo").performClick()
+        verifyMounted()
+        capture("mounted-random-selected")
+        compose.onNodeWithText("Limpar").performClick()
+        compose.runOnIdle { native.select(false,false); native.bindDescriptions() }
+        verifyMounted()
+        compose.runOnIdle { assertEquals(0,sends) }
+    }
+
+    @Test fun initialBindingHidesSelectedOrIndicatorDescriptionsAndClearRebindsUnselectedTeams() {
+        launch(initialHomeSelected=true,awayIndicator=true)
+        lateinit var native:LotecaNativeOracle.Row
+        compose.runOnIdle { native=LotecaNativeOracle(InstrumentationRegistry.getInstrumentation().targetContext).Row(true,true) }
+        compose.onAllNodesWithText("/BA").onFirst().assertDoesNotExist()
+        compose.onAllNodesWithText("/RJ").onFirst().assertDoesNotExist()
+        compose.runOnIdle { assertEquals(android.view.View.GONE,native.description(true).visibility); assertEquals(android.view.View.GONE,native.description(false).visibility) }
+        compose.onNodeWithTag("loteca-1-HOME").performClick()
+        compose.runOnIdle { native.select(false,false) }
+        compose.onAllNodesWithText("/BA").onFirst().assertDoesNotExist()
+        compose.onNodeWithTag("loteca-1-DRAW").performClick()
+        compose.onNodeWithText("Limpar").performClick()
+        compose.runOnIdle { native.select(false,false); native.bindDescriptions() }
+        compose.onAllNodesWithText("/BA").onFirst().assertIsDisplayed()
+        compose.onAllNodesWithText("/RJ").onFirst().assertDoesNotExist()
+        compose.runOnIdle { assertEquals(android.view.View.VISIBLE,native.description(true).visibility); assertEquals(android.view.View.GONE,native.description(false).visibility); assertEquals(0,sends) }
+    }
+
+    @Test fun reducingQuantityRebindsInitiallySelectedDescriptionsAfterKeepingThemOnIncrease() {
+        launch(initialHomeSelected=true,awayIndicator=true)
+        compose.onNodeWithText("15 palpites").performClick()
+        compose.onNodeWithTag("betting-option-item-1").performClick()
+        compose.onNodeWithTag("betting-option-confirm").performClick()
+        compose.onNodeWithText("Entendi").performClick()
+        compose.onAllNodesWithText("/BA").onFirst().assertDoesNotExist()
+        compose.onNodeWithText("16 palpites").performClick()
+        compose.onNodeWithTag("betting-option-item-0").performClick()
+        compose.onNodeWithTag("betting-option-confirm").performClick()
+        compose.onNodeWithText("Selecionados: 0/15").assertIsDisplayed()
+        compose.onAllNodesWithText("/BA").onFirst().assertIsDisplayed()
+        compose.onAllNodesWithText("/RJ").onFirst().assertDoesNotExist()
+        compose.runOnIdle { assertEquals(0,sends) }
     }
 
     @Test fun quantityCancelConfirmCountersReductionClearAndContinueThroughRealTouches() {
@@ -262,18 +341,19 @@ class BettingLotecaParityTest {
         compose.runOnIdle { assertEquals(3 to null,vm.state.value.lotogolScores[1]); assertEquals(0,sends) }
     }
 
-    private fun launch(id:Int=LOTECA_ID, width:Int?=null, fontScale:Float=1f, solidShield:Boolean=false, includeTriple:Boolean=true) {
+    private fun launch(id:Int=LOTECA_ID, width:Int?=null, fontScale:Float=1f, solidShield:Boolean=false, includeTriple:Boolean=true, initialHomeSelected:Boolean=false, awayIndicator:Boolean=false) {
         val badge = if (solidShield) java.io.ByteArrayOutputStream().use { stream ->
             solidBadge().compress(Bitmap.CompressFormat.PNG,100,stream)
             android.util.Base64.encodeToString(stream.toByteArray(),android.util.Base64.NO_WRAP)
         } else null
         val home=SportsTeam(1,"BAHIA","BA",countryCode="BRA",shieldBase64=badge)
-        val away=SportsTeam(2,"FLAMENGO","RJ",countryCode="BRA")
+        val away=SportsTeam(2,"FLAMENGO","RJ",countryCode="BRA",selectionIndicator=awayIndicator)
         val game=LotteryGameParameters(LotteryModality(id,if(id==LOTECA_ID)"Loteca" else "Lotogol","LOTECA"),1275,"18/10/2026",0,15,26,1,listOf(0),
             (1..12).map { BetPrice(14+it,0,BigDecimal(4L*it),it,0) } + if (includeTriple) listOf(BetPrice(16,0,BigDecimal("12"),0,1)) else emptyList(),
             matches=(1..14).map { SportsMatch(it,home,away) })
         vm=BettingGameViewModel(id,GetBettingParametersUseCase { AppResult.Success(BettingParameters(BigDecimal.ZERO,BigDecimal.ZERO,50,listOf(game))) },
-            AddBetToCartUseCase { sends++; AppResult.Success(ShoppingCart(1,BigDecimal.ZERO,emptyList())) })
+            AddBetToCartUseCase { sends++; AppResult.Success(ShoppingCart(1,BigDecimal.ZERO,emptyList())) },
+            initialLotecaSelections=if(initialHomeSelected) game.matches.map { LotecaMatchSelection(it,true,false,false) } else emptyList())
         compose.setContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale)) {
@@ -292,7 +372,7 @@ class BettingLotecaParityTest {
         val instrumentation=InstrumentationRegistry.getInstrumentation()
         compose.waitForIdle(); instrumentation.waitForIdleSync(); android.os.SystemClock.sleep(300)
         val dir=File(requireNotNull(instrumentation.targetContext.externalCacheDir),"codex-parity").apply { mkdirs() }
-        val name=if (state.startsWith("random") || state == "counter-metrics") "compose-task11-loteca-$state" else "compose-task9-loteca-$state"
+        val name=if (state.startsWith("random") || state.startsWith("mounted") || state == "counter-metrics") "compose-task11-loteca-$state" else "compose-task9-loteca-$state"
         val bitmap=requireNotNull(instrumentation.uiAutomation.takeScreenshot())
         File(dir,"$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }; bitmap.recycle()
         // Copy the synchronous bitmap; wait for shell EOF before the next UI touch.

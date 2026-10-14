@@ -219,8 +219,13 @@ private fun lotecaNativeTextHeight(fontResource: Int, fontSize: TextUnit): Modif
 }
 
 /** Grade de partidas da Loteca em Compose, com bordas unidas e estados de seleção do legado. */
+private val lotecaLinearLayoutCenter = object : Alignment.Vertical {
+    // Android LinearLayout gravity truncates the inner remainder; Flow rounds its outer center.
+    override fun align(size: Int, space: Int): Int = (space - size) / 2
+}
+
 @Composable
-internal fun BettingLegacyLoteca(state: BettingGameUiState, viewModel: BettingGameViewModel, onQuantity: () -> Unit, onHelp: () -> Unit) {
+internal fun BettingLegacyLoteca(state: BettingGameUiState, viewModel: BettingGameViewModel, onQuantity: () -> Unit, onHelp: () -> Unit, descriptionBindingKey: Int = 0) {
     val game = requireNotNull(state.game)
     val metrics = TextStyle(lineHeight = 16.sp, platformStyle = PlatformTextStyle(includeFontPadding = true))
     Column(Modifier.fillMaxSize()) {
@@ -269,7 +274,7 @@ internal fun BettingLegacyLoteca(state: BettingGameUiState, viewModel: BettingGa
                     "Triplas: " to state.lotecaOutcomes.values.count { it.size == 3 },
                 )
                 counts.forEachIndexed { index, (label, count) ->
-                    Row(Modifier.align(Alignment.CenterVertically), verticalAlignment = Alignment.CenterVertically) {
+                    Row(Modifier.align(Alignment.CenterVertically), verticalAlignment = lotecaLinearLayoutCenter) {
                         if (index > 0) {
                             Box(
                                 Modifier.padding(end = 8.dp).width(1.dp).height(20.dp)
@@ -324,6 +329,7 @@ internal fun BettingLegacyLoteca(state: BettingGameUiState, viewModel: BettingGa
                                 index = index,
                                 team = team,
                                 selected = outcome in selected,
+                                descriptionBindingKey = descriptionBindingKey,
                                 onClick = { viewModel.toggleLotecaOutcome(match.number, outcome) },
                                 modifier = Modifier.weight(1f).fillMaxHeight().testTag("loteca-${match.number}-$outcome"),
                             )
@@ -341,9 +347,13 @@ private fun LotecaOutcomeCard(
     index: Int,
     team: SportsTeam?,
     selected: Boolean,
+    descriptionBindingKey: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // Native bindTextos decides visibility once. Mounted visual updates only recolor it.
+    // Clear/rebinding explicitly invalidates this snapshot; selecting/deselecting does not.
+    val descriptionVisible = remember(team, descriptionBindingKey) { team != null && !selected && !team.selectionIndicator }
     val shape = when (index) {
         0 -> RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
         2 -> RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp)
@@ -382,13 +392,13 @@ private fun LotecaOutcomeCard(
         if (team == null) Text("placeholder", Modifier.fillMaxWidth().clearAndSetSemantics {},
             fontFamily = FontFamily.SansSerif, fontSize = 14.sp, color = Color.Transparent,
             style = TextStyle(lineHeight = 14.sp, platformStyle = PlatformTextStyle(includeFontPadding = true)))
-        if (team != null && !selected && !team.selectionIndicator) {
+        if (team != null && descriptionVisible) {
             Text(
                 if (team.countryCode.isNotBlank() && (!team.countryCode.equals("BRA", true) || team.name.equals("BRASIL", true))) "/${team.countryCode}" else team.state.takeIf(String::isNotBlank)?.let { "/$it" }.orEmpty(),
                 Modifier.fillMaxWidth(),
                 fontFamily = FontFamily.SansSerif,
                 fontSize = if (index == 0) 12.sp else 14.sp,
-                color = CaixaDSColorTokens.LegacyBetAction,
+                color = if (selected) CaixaDSColorTokens.Blue700 else CaixaDSColorTokens.LegacyBetAction,
                 textAlign = TextAlign.Center,
                 style = TextStyle(lineHeight = 14.sp, platformStyle = PlatformTextStyle(includeFontPadding = true)),
             )
