@@ -1,9 +1,29 @@
 package br.gov.caixa.loterias.apostas
 
-/** Retain a loaded screen across restoration, while a different validated lease gets fresh private state. */
+// Referential lease provenance survives configuration restoration only in this process.
+// Weak keys avoid retaining expired sessions; a restarted process cannot validate an old marker.
+private val privateEntryLeaseMarkers = java.util.WeakHashMap<br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity, String>()
+private val privateVisitorMarker = java.util.UUID.randomUUID().toString()
+
+/** Retain loaded state only when the restored marker belongs to the exact current lease. */
 @androidx.compose.runtime.Composable
-internal fun rememberPrivateEntryKey(identity: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity?): String =
-    androidx.compose.runtime.saveable.rememberSaveable(identity) { java.util.UUID.randomUUID().toString() }
+internal fun rememberPrivateEntryKey(identity: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity?): String {
+    val leaseMarker = synchronized(privateEntryLeaseMarkers) {
+        if (identity == null) privateVisitorMarker
+        else privateEntryLeaseMarkers.getOrPut(identity) { java.util.UUID.randomUUID().toString() }
+    }
+    val saver = androidx.compose.runtime.remember(leaseMarker) {
+        androidx.compose.runtime.saveable.Saver<String, Any>(
+            save = { listOf(it, leaseMarker) },
+            restore = { saved ->
+                (saved as? List<*>)?.takeIf { it.size == 2 && it[1] == leaseMarker }?.get(0) as? String
+            },
+        )
+    }
+    return androidx.compose.runtime.saveable.rememberSaveable(identity, saver = saver) {
+        java.util.UUID.randomUUID().toString()
+    }
+}
 
 internal fun openVisitorDrawerDestination(
     route: String,

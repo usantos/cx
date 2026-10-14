@@ -114,6 +114,66 @@ class VisitorPrivateLoadingUiTest {
         assertEquals(listOf("bets:Owner A"), reads.toList())
     }
 
+    @Test fun savedHistoryFromOwnerARestoredAsGuestCannotReuseLoadedPrivateViewModel() {
+        restoreHistoryWithDifferentLease(null)
+    }
+
+    @Test fun savedHistoryFromOwnerARestoredAsOwnerBLoadsFreshPrivateDataOnce() {
+        restoreHistoryWithDifferentLease(second)
+    }
+
+    @Test fun savedHistoryRestoredWithNewLeaseOfSameOwnerLoadsFreshPrivateDataOnce() {
+        restoreHistoryWithDifferentLease(AuthenticatedSessionIdentity("a".repeat(64)))
+    }
+
+    private fun restoreHistoryWithDifferentLease(replacement: AuthenticatedSessionIdentity?) {
+        var restoringLease: AuthenticatedSessionIdentity? = first
+        val restoration = StateRestorationTester(compose)
+        restoration.setContent {
+            CaixaDSTheme {
+                val lease = restoringLease
+                val label = if (lease === first) "Lease A" else "Restored lease"
+                val entryKey = rememberPrivateEntryKey(lease)
+                // Change the current lease only after saved state was captured and the old
+                // composition disposed, so rememberSaveable inputs cannot handle it live.
+                DisposableEffect(Unit) { onDispose { restoringLease = replacement } }
+                key(entryKey) {
+                    val vm = viewModel(key = "lease-restored-history-$entryKey") {
+                        TicketsViewModel(
+                            GetConfirmedBetsUseCase {
+                                reads.add(label)
+                                AppResult.Success(listOf(ConfirmedBet(1, label, 2890, "01/09/2026", "Ativa", listOf(1, 2, 3))))
+                            },
+                            GetPurchasesUseCase { error("Unexpected purchase read") },
+                            GetPurchaseBetsUseCase { error("Unexpected detail read") },
+                            CheckTicketUseCase { error("Unexpected ticket read") },
+                            isSessionCurrent = { lease != null && restoringLease === lease },
+                        )
+                    }
+                    SideEffect { model = vm }
+                    ConfirmedBetsDataRoute(vm, {}, {}, privateDataEnabled = lease != null)
+                }
+            }
+        }
+        compose.waitUntil(10_000) { reads.size == 1 && model?.state?.value?.loaded == true }
+        compose.waitForIdle()
+        val oldModel = model
+        restoration.emulateSavedInstanceStateRestore()
+        compose.waitForIdle()
+        assertNotSame("A restored marker must belong to this exact validated lease", oldModel, model)
+        compose.onAllNodesWithText("Lease A", substring = true).assertCountEquals(0)
+        if (replacement == null) {
+            assertTrue(model!!.state.value.bets.isEmpty())
+            assertFalse(model!!.state.value.loaded)
+            assertEquals(listOf("Lease A"), reads.toList())
+        } else {
+            compose.waitUntil(10_000) { model?.state?.value?.loaded == true }
+            compose.waitForIdle()
+            assertEquals(listOf("Lease A", "Restored lease"), reads.toList())
+            assertEquals("Restored lease", model!!.state.value.bets.single().modality)
+        }
+    }
+
     @Test fun guestDeclineClosesActualHistoryUnderlayWithoutPrivateQueries() {
         show("tickets/my-bets")
         compose.onNodeWithText("Últimos 7 dias").assertExists()
