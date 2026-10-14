@@ -11,6 +11,8 @@ class RegularSessionRefreshContext(
     val configuration: OidcConfiguration,
     val originalNonce: String,
     val mode: RegularSessionIdentityMode,
+    /** Only the biometric commit binds an OAuth session to an already remembered credential. */
+    internal val rememberedBiometric: Boolean = false,
 ) {
     override fun toString() = "RegularSessionRefreshContext(redacted)"
 }

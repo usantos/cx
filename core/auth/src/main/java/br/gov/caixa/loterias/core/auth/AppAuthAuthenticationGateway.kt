@@ -25,11 +25,18 @@ import net.openid.appauth.TokenResponse
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
+internal fun biometricRefreshContext(configuration: OidcConfiguration, nonce: String, idToken: String?): RegularSessionRefreshContext =
+    RegularSessionRefreshContext(configuration, nonce,
+        if (idToken != null) RegularSessionIdentityMode.OIDC else RegularSessionIdentityMode.OAUTH_ACCESS,
+        rememberedBiometric = true)
+
 internal fun rotatedBiometricCredential(request: RegularSessionRefreshRequest, response: RegularSessionRefreshResponse,
     enabled: Boolean, previous: BiometricCredential?): BiometricCredential? {
-    if (!enabled || previous == null || request.context.mode != RegularSessionIdentityMode.OIDC ||
+    if (!enabled || previous == null ||
+        (request.context.mode != RegularSessionIdentityMode.OIDC && !request.context.rememberedBiometric) ||
         previous.ownerKey != request.ownerKey || response.ownerKey != request.ownerKey ||
-        previous.nonce != request.context.originalNonce || response.refreshToken.isBlank()) return null
+        previous.nonce != request.context.originalNonce || previous.refreshToken != request.refreshToken ||
+        response.refreshToken.isBlank()) return null
     return BiometricCredential(response.refreshToken, previous.ownerKey, previous.nonce)
 }
 
@@ -156,9 +163,9 @@ class AppAuthAuthenticationGateway(
         refresh: String, credential: BiometricCredential) {
         check(biometricEnabled && sameBiometricCredential(credential, biometricCredentials.read()))
         val nonce = credential.nonce
-        val mode = if (tokens.idToken != null) RegularSessionIdentityMode.OIDC else RegularSessionIdentityMode.OAUTH_ACCESS
+        val context = biometricRefreshContext(configuration, nonce, tokens.idToken)
         check(tokenStore.completeAuthorization(pending.ticket, tokens.accessToken!!, tokens.idToken, owner,
-            refresh, RegularSessionRefreshContext(configuration, nonce, mode))) {
+            refresh, context)) {
             "Tentativa de autenticação encerrada"
         }
         try { biometricCredentials.write(BiometricCredential(refresh, owner, nonce)) }

@@ -32,6 +32,25 @@ class RegularBiometricCredentialRotationTest {
         assertNull(rotatedBiometricCredential(oauth, response, true, previous))
     }
 
+    @Test fun `bound biometric OAuth refresh rotates only complete matching credential`() {
+        val bound = RegularSessionRefreshRequest("original-refresh", owner,
+            RegularSessionRefreshContext(config, "original-nonce", RegularSessionIdentityMode.OAUTH_ACCESS,
+                rememberedBiometric = true), null)
+        val rotated = rotatedBiometricCredential(bound, response, true, previous)
+        assertNotNull(rotated)
+        assertEquals("fresh-refresh", rotated!!.refreshToken)
+        assertEquals("original-nonce", rotated.nonce)
+        assertNull(rotatedBiometricCredential(bound, response, false, previous))
+        assertNull(rotatedBiometricCredential(bound, response, true, null))
+        assertNull(rotatedBiometricCredential(bound, response, true, BiometricCredential("stale-refresh", owner, "original-nonce")))
+        assertNull(rotatedBiometricCredential(bound, response, true, BiometricCredential("original-refresh", owner, "different-nonce")))
+    }
+
+    @Test fun `OIDC cannot overwrite remembered credential changed since refresh snapshot`() {
+        assertNull(rotatedBiometricCredential(request, response, true,
+            BiometricCredential("another-refresh", owner, "original-nonce")))
+    }
+
     @Test fun `foreign owner mismatched original nonce and malformed response cannot rotate credential`() {
         assertNull(rotatedBiometricCredential(request, response, true, BiometricCredential("old", "b".repeat(64), "original-nonce")))
         assertNull(rotatedBiometricCredential(request, response, true, BiometricCredential("old", owner, "different-nonce")))
