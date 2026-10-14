@@ -1,5 +1,7 @@
 # Estado da migração para Compose
 
+> Atualização de 13/10/2026: o fechamento técnico e as correções posteriores estão em [COMPOSE_CLOSURE_20261013.md](COMPOSE_CLOSURE_20261013.md). Os resultados abaixo preservam o escopo histórico de cada rodada; a homologação real/visual continua distinguida da conversão de código.
+
 ## Leitura correta do status
 
 O corte técnico para Compose está ativo, mas a equivalência integral com o legado ainda não está homologada. Há 78/78 destinos renderizando no smoke mock, zero layout XML e zero Fragment, porém isso não prova igualdade pixel a pixel nem cobre sozinho todas as combinações de respostas, permissões e regras. As afirmações abaixo descrevem implementações já presentes; a validação comparativa tela/estado continua sendo acompanhada em `VISUAL_PARITY_MATRIX.md`.

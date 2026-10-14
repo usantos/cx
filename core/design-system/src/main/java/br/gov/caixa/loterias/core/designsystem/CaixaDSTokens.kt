@@ -239,6 +239,13 @@ object CaixaDSColorTokens {
     val LegacyCartIcon = Color(0xFF7D8DAA)
     val LegacyFavoriteSaved = Color(0xFF3BA99C)
     val LegacyHelpMarkSecondary = Color(0xFF8DD5B6)
+    /** Cores exatas da campanha, drawer e seleção esportiva do aplicativo legado. */
+    val LegacyOctoberRose = Color(0xFFEE3E7F)
+    val LegacyHomeDrawerScrim = Color(0x99000000)
+    val LegacyTimemaniaTeamSelection = Color(0xFF2D8563)
+    val LegacyLotecaSelectedBackground = Color(0xFFFEF3F4)
+    val LegacyLotecaChoiceBorder = Color(0xFFAFCACF)
+    val LegacySuspensionCheckboxUnchecked = Color(0xFF666666)
 }
 
 @Immutable

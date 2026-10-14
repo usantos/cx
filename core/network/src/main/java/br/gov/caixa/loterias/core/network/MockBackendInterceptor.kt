@@ -132,6 +132,7 @@ class MockBackendInterceptor(
         val mocked = MockBackendFixtures.resolve(
             request.url.encodedPath, options.scenario, requestBody,
             purchaseId = request.url.queryParameter("idCompraCarrinho")?.toLongOrNull() ?: 99,
+            contests = request.url.queryParameterValues("concursos").mapNotNull { it?.toIntOrNull() },
         )
         return Response.Builder()
             .request(request)
@@ -156,6 +157,7 @@ internal object MockBackendFixtures {
         scenario: MockBackendScenario,
         requestBody: String = "",
         purchaseId: Long = 99,
+        contests: List<Int> = listOf(2800),
     ): MockedHttpResponse {
         val path = encodedPath.substringAfter("/rest/v1/", encodedPath.trimStart('/'))
         if (path.matches(Regex("historico-notificacoes/[0-9]+/visualiza"))) {
@@ -274,22 +276,22 @@ internal object MockBackendFixtures {
         }
         val payload = when (scenario) {
             MockBackendScenario.EMPTY -> emptyPayload(path)
-            MockBackendScenario.APP_UPDATE_REQUIRED -> if (path.startsWith("app/valida-versao/")) "false" else successPayload(path, requestBody, purchaseId)
-            MockBackendScenario.APP_UNAVAILABLE -> successPayload(path, requestBody, purchaseId)
+            MockBackendScenario.APP_UPDATE_REQUIRED -> if (path.startsWith("app/valida-versao/")) "false" else successPayload(path, requestBody, purchaseId, contests)
+            MockBackendScenario.APP_UNAVAILABLE -> successPayload(path, requestBody, purchaseId, contests)
             MockBackendScenario.REGISTRATION_REQUIRED -> if (path == "logado/usuarios/verificar-cadastro")
-                "null,\"redirect\":\"cadastrar-apostador\"" else successPayload(path, requestBody, purchaseId)
+                "null,\"redirect\":\"cadastrar-apostador\"" else successPayload(path, requestBody, purchaseId, contests)
             MockBackendScenario.TERMS_REQUIRED -> if (path == "logado/usuarios/verificar-cadastro")
-                "null,\"redirect\":\"aceitar-termo-de-uso\"" else successPayload(path, requestBody, purchaseId)
+                "null,\"redirect\":\"aceitar-termo-de-uso\"" else successPayload(path, requestBody, purchaseId, contests)
             MockBackendScenario.SELF_ASSESSMENT_REQUIRED -> if (path == "logado/usuarios/verificar-cadastro")
-                "{\"responderAutoavaliacao\":true}" else successPayload(path, requestBody, purchaseId)
+                "{\"responderAutoavaliacao\":true}" else successPayload(path, requestBody, purchaseId, contests)
             MockBackendScenario.ACCOUNT_SUSPENDED -> if (path == "logado/usuarios/verificar-cadastro")
-                "{\"suspensaoTemporariaApostador\":true,\"limiteDiario\":0}" else successPayload(path, requestBody, purchaseId)
+                "{\"suspensaoTemporariaApostador\":true,\"limiteDiario\":0}" else successPayload(path, requestBody, purchaseId, contests)
             MockBackendScenario.ACCOUNT_PARTIALLY_BLOCKED -> if (path == "logado/usuarios/verificar-cadastro")
-                "{\"situacaoApostador\":{\"enum\":\"BLOQUEADO_PARCIAL\"},\"limiteDiario\":1000}" else successPayload(path, requestBody, purchaseId)
+                "{\"situacaoApostador\":{\"enum\":\"BLOQUEADO_PARCIAL\"},\"limiteDiario\":1000}" else successPayload(path, requestBody, purchaseId, contests)
             MockBackendScenario.POST_LOGIN_PAYMENT_NOT_IDENTIFIED -> if (path == "logado/usuarios/verificar-cadastro")
                 """{"nome":"Pessoa Mock","limiteDiario":100,"carrinho":${cart()},"pagamentoNaoIdentificado":true,
                     "ultimaNotificacao":{"id":91,"titulo":"Notificação mock","conteudo":"O aviso de pagamento tem prioridade."}}"""
-                else successPayload(path, requestBody, purchaseId)
+                else successPayload(path, requestBody, purchaseId, contests)
             MockBackendScenario.POST_LOGIN_NOTIFICATION,
             MockBackendScenario.NOTIFICATION_READ_LOGIN_REQUIRED,
             MockBackendScenario.NOTIFICATION_READ_TERMS_REQUIRED,
@@ -300,31 +302,31 @@ internal object MockBackendFixtures {
             MockBackendScenario.NOTIFICATION_READ_CONNECTION_FAILURE -> if (path == "logado/usuarios/verificar-cadastro")
                 """{"nome":"Pessoa Mock","limiteDiario":100,"carrinho":${cart()},"pagamentoNaoIdentificado":false,
                     "ultimaNotificacao":{"id":91,"titulo":"Notificação mock","conteudo":"Mensagem recebida após o login.","link":"https://www.loteriasonline.caixa.gov.br/"}}"""
-                else successPayload(path, requestBody, purchaseId)
-            MockBackendScenario.CART_EXPIRED_POOL -> if (path == "logado/carrinhos") cart(expiredPool = true) else successPayload(path, requestBody, purchaseId)
-            MockBackendScenario.PURCHASE_PROCESSING -> if (path.isPurchaseOperation()) asyncPurchase(7, purchaseId) else successPayload(path, requestBody, purchaseId)
-            MockBackendScenario.PURCHASE_APPROVED -> if (path.isPurchaseOperation()) asyncPurchase(8, purchaseId) else successPayload(path, requestBody, purchaseId)
-            MockBackendScenario.PURCHASE_REJECTED -> if (path.isPurchaseOperation()) asyncPurchase(3, purchaseId) else successPayload(path, requestBody, purchaseId)
-            MockBackendScenario.PAYMENT_NO_SAVED_CARDS -> if (path == "usuarios/cartoes") "[]" else successPayload(path, requestBody, purchaseId)
+                else successPayload(path, requestBody, purchaseId, contests)
+            MockBackendScenario.CART_EXPIRED_POOL -> if (path == "logado/carrinhos") cart(expiredPool = true) else successPayload(path, requestBody, purchaseId, contests)
+            MockBackendScenario.PURCHASE_PROCESSING -> if (path.isPurchaseOperation()) asyncPurchase(7, purchaseId) else successPayload(path, requestBody, purchaseId, contests)
+            MockBackendScenario.PURCHASE_APPROVED -> if (path.isPurchaseOperation()) asyncPurchase(8, purchaseId) else successPayload(path, requestBody, purchaseId, contests)
+            MockBackendScenario.PURCHASE_REJECTED -> if (path.isPurchaseOperation()) asyncPurchase(3, purchaseId) else successPayload(path, requestBody, purchaseId, contests)
+            MockBackendScenario.PAYMENT_NO_SAVED_CARDS -> if (path == "usuarios/cartoes") "[]" else successPayload(path, requestBody, purchaseId, contests)
             MockBackendScenario.PIX_PENDING -> when {
                 path.endsWith("gerar-cobranca-pix") -> pix(expired = false)
                 path.contains("verifica-compra-processamento") -> asyncPurchase(10, purchaseId)
-                else -> successPayload(path, requestBody, purchaseId)
+                else -> successPayload(path, requestBody, purchaseId, contests)
             }
             MockBackendScenario.PIX_EXPIRED -> when {
                 path.endsWith("gerar-cobranca-pix") -> pix(expired = true)
                 path.contains("verifica-compra-processamento") -> asyncPurchase(12, purchaseId)
-                else -> successPayload(path, requestBody, purchaseId)
+                else -> successPayload(path, requestBody, purchaseId, contests)
             }
             MockBackendScenario.DAM_BLOCKED -> if (path == "parametros/valida-represa")
-                "{\"payload\":true,\"mensagem\":\"As apostas estão temporariamente indisponíveis neste horário.\"}" else successPayload(path, requestBody, purchaseId)
+                "{\"payload\":true,\"mensagem\":\"As apostas estão temporariamente indisponíveis neste horário.\"}" else successPayload(path, requestBody, purchaseId, contests)
             MockBackendScenario.TEIMOSINHA_RESCUED -> when {
                 path == "apostas" || path == "consultar" -> teimosinhaBet()
                 path.endsWith("/resgatar-premio") -> "\"MI053\""
-                else -> successPayload(path, requestBody, purchaseId)
+                else -> successPayload(path, requestBody, purchaseId, contests)
             }
-            MockBackendScenario.PRIZE_AVAILABLE -> if (path == "apostas" || path == "consultar") prizeBet() else successPayload(path, requestBody, purchaseId)
-            else -> successPayload(path, requestBody, purchaseId)
+            MockBackendScenario.PRIZE_AVAILABLE -> if (path == "apostas" || path == "consultar") prizeBet() else successPayload(path, requestBody, purchaseId, contests)
+            else -> successPayload(path, requestBody, purchaseId, contests)
         }
         val body = if (path.startsWith("v1/") || path == "cards" || path.startsWith("cards/")) {
             payload
@@ -372,7 +374,7 @@ internal object MockBackendFixtures {
         else -> "null"
     }
 
-    private fun successPayload(path: String, requestBody: String = "", purchaseId: Long = 99): String = when {
+    private fun successPayload(path: String, requestBody: String = "", purchaseId: Long = 99, contests: List<Int> = listOf(2800)): String = when {
         path.startsWith("app/valida-versao/") -> "true"
         path == "parametros/configuraveis-app" -> appParameters()
         path == "publico/modalidades" -> modalities()
@@ -401,7 +403,13 @@ internal object MockBackendFixtures {
         path.endsWith("/resgatar-premio") || path.endsWith("/cancelar-resgate-pix") -> "{}"
         path == "usuarios/gerar-token-cadastro-mercado-pago" -> "\"mock-registration-token\""
         path == "usuarios/gerar-token-apostador-recarga-pay" -> "\"mock-recarga-customer-token\""
+        path == "resultados" -> contests.joinToString(prefix = "[", postfix = "]") { contest ->
+            result().replace("\"numero\":2800", "\"numero\":$contest")
+        }
         path.startsWith("resultados/") -> result()
+        path.endsWith("/conferir") -> """{"valor":100,"descricao":"PREMIADA"}"""
+        path.endsWith("/comprovante") || path.endsWith("/comprovante-premio") -> betReceipt(path)
+        path.matches(Regex("[0-9]+/recuperar")) -> betReceipt("apostas/$path")
         path == "autoavaliacoes/recuperar-perguntas" -> assessment()
         path == "repassometro" -> socialTransfers()
         path == "usuarios/recuperar-dados" || path == "usuarios/recalcular-limite-autorizado" -> profile()
@@ -633,8 +641,17 @@ internal object MockBackendFixtures {
 
     private fun asyncPurchase(status: Int, purchaseId: Long) = "{\"id\":$purchaseId,\"periodicidade\":1,\"repeticoes\":1,\"idSituacaoCompra\":$status}"
 
+    private fun betReceipt(path: String): String {
+        val id = path.split('/').firstOrNull { it.toLongOrNull() != null }?.toLongOrNull() ?: 100L
+        val paid = path.endsWith("/comprovante-premio")
+        return """{"nsbi":"MOCK-$id","aposta":{"id":$id,"modalidade":"MEGA_SENA",
+            "concursoInicial":2900,"situacao":{"valor":${if (paid) 11 else 100},"descricao":"${if (paid) "PAGA" else "PREMIADA"}"},
+            "dataEfetivacao":"13/10/2026","numerosSelecionados":[[5,10,23,34,42,58]]},
+            "premio":{"valorLiquido":1250,"dataPagamento":"${if (paid) "13/10/2026" else ""}","localPagamento":"${if (paid) "Lotérica" else ""}"}}"""
+    }
+
     private fun confirmedBets() = """{"totalRegistros":1,"resultado":[{"id":100,"modalidade":"MEGA_SENA",
-        "numeroConcurso":2900,"situacao":"PAGA","teimosinha":false}]}"""
+        "numeroConcurso":2900,"situacao":{"valor":11,"descricao":"PAGA"},"teimosinha":false}]}"""
 
     private fun confirmedBetsConfiguration() = """{
         "ordenacaoPadrao":{"valor":3,"descricao":"Mais recentes"},

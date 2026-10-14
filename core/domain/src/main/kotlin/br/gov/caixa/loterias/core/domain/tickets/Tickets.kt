@@ -36,6 +36,18 @@ data class ConfirmedBet(
     val mirror: Boolean = false,
     val exchange: Boolean = false,
     val combo: Boolean = false,
+    val receipt: ConfirmedBetReceipt? = null,
+    val backend: ConfirmedBetsBackend = ConfirmedBetsBackend.SILCE,
+)
+
+data class ConfirmedBetReceipt(
+    val nsbi: String = "",
+    val paymentDate: String = "",
+    val paymentTime: String = "",
+    val paymentLocation: String = "",
+    val paymentNsu: String = "",
+    val netPrize: BigDecimal? = null,
+    val awards: List<CheckedTicketAward> = emptyList(),
 )
 
 data class Purchase(
@@ -106,6 +118,8 @@ interface TicketsRepository {
     suspend fun confirmedBets(filters: Map<String, String> = emptyMap()): List<ConfirmedBet>
     suspend fun confirmedBetsPage(filters: Map<String, String>): ConfirmedBetsPage = ConfirmedBetsPage(confirmedBets(filters))
     suspend fun recoverConfirmedBet(bet: ConfirmedBet): ConfirmedBet = bet
+    suspend fun loadConfirmedBet(bet: ConfirmedBet): br.gov.caixa.loterias.core.domain.service.ServiceResult<ConfirmedBet> =
+        br.gov.caixa.loterias.core.domain.service.ServiceResult.Success(recoverConfirmedBet(bet))
     suspend fun purchases(filters: Map<String, String> = emptyMap()): List<Purchase>
     suspend fun purchaseBets(purchaseId: Long): List<ConfirmedBet>
     suspend fun purchaseDetails(purchase: Purchase): PurchaseDetails =
@@ -234,4 +248,12 @@ class CheckTicket(private val repository: TicketsRepository) : CheckTicketUseCas
         require(query.code.isNotBlank()) { "Código do bilhete obrigatório" }
         repository.checkTicket(query.copy(code = query.code.trim()))
     }
+}
+
+fun interface LoadConfirmedBetUseCase {
+    suspend operator fun invoke(bet: ConfirmedBet): br.gov.caixa.loterias.core.domain.service.ServiceResult<ConfirmedBet>
+}
+
+class LoadConfirmedBet(private val repository: TicketsRepository) : LoadConfirmedBetUseCase {
+    override suspend fun invoke(bet: ConfirmedBet) = repository.loadConfirmedBet(bet)
 }

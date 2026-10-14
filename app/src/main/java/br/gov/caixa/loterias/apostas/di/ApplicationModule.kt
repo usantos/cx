@@ -480,6 +480,10 @@ object ApplicationModule {
     fun ticketsRepository(source: TicketsRemoteDataSource): TicketsRepository = RemoteTicketsRepository(source)
 
     @Provides
+    fun loadConfirmedBet(repository: TicketsRepository): br.gov.caixa.loterias.core.domain.tickets.LoadConfirmedBetUseCase =
+        br.gov.caixa.loterias.core.domain.tickets.LoadConfirmedBet(repository)
+
+    @Provides
     fun recoverConfirmedBet(repository: TicketsRepository): RecoverConfirmedBetUseCase = RecoverConfirmedBet(repository)
 
     @Provides @Singleton
@@ -547,6 +551,10 @@ object ApplicationModule {
 
     @Provides
     fun latestResult(repository: ResultsRepository): GetLatestResultUseCase = GetLatestResult(repository)
+
+    @Provides
+    fun confirmedBetResults(repository: ResultsRepository): br.gov.caixa.loterias.core.domain.results.GetConfirmedBetResultsUseCase =
+        br.gov.caixa.loterias.core.domain.results.GetConfirmedBetResults(repository)
 
     @Provides
     fun resultByContest(repository: ResultsRepository): GetResultByContestUseCase = GetResultByContest(repository)
@@ -806,9 +814,18 @@ object ApplicationModule {
         JwtCurrentUserIdentityProvider(tokenStore)
 
     @Provides @Singleton
+    fun authorizationRequestPolicy(@ApplicationContext context: Context): br.gov.caixa.loterias.core.auth.AuthorizationRequestPolicy =
+        br.gov.caixa.loterias.apostas.authentication.loginAuthorizationRequestPolicy(
+            BuildConfig.ENABLE_MOCK_BACKEND,
+            br.gov.caixa.loterias.apostas.authentication.TopazAuthorizationDeviceInfoProvider(context),
+            br.gov.caixa.loterias.apostas.authentication.AndroidWeakBiometricAvailability(context),
+        )
+
+    @Provides @Singleton
     fun appAuthGateway(
         @ApplicationContext context: Context,
         tokenStore: SessionTokenStore,
+        requestPolicy: br.gov.caixa.loterias.core.auth.AuthorizationRequestPolicy,
     ): AppAuthAuthenticationGateway = AppAuthAuthenticationGateway(
         context = context,
         configuration = OidcConfiguration(
@@ -821,6 +838,7 @@ object ApplicationModule {
             sessionNamespace = BuildConfig.API_BASE_URL,
         ),
         tokenStore = tokenStore,
+        requestPolicy = requestPolicy,
     )
 
     @Provides

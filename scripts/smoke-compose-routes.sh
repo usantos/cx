@@ -19,6 +19,7 @@ adb logcat -c </dev/null
 while IFS= read -r route; do
   [[ -z "$route" ]] && continue
   launch_route="$route"
+  [[ "$route" == "results/home/{modality}" ]] && launch_route="results/home/megasena"
   [[ "$route" == "betting/pool-detail" ]] && launch_route="betting/pool-detail/SMOKE"
   [[ "$route" == "betting/combo-detail" ]] && launch_route="betting/combo-detail/1"
   [[ "$route" == "cart/favorite-detail" ]] && launch_route="cart/favorite-detail/1"
@@ -59,6 +60,9 @@ while IFS= read -r route; do
     FAILURES=$((FAILURES + 1))
   fi
   COUNT=$((COUNT + 1))
+  if (( COUNT % 10 == 0 )); then
+    echo "Rotas verificadas até agora: $COUNT/$EXPECTED_COUNT; falhas: $FAILURES"
+  fi
 done < "$ROUTE_CATALOG"
 
 echo "Rotas verificadas: $COUNT; falhas: $FAILURES"

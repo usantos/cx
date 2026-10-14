@@ -10,6 +10,11 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class BettingRulesTest {
+    @Test fun `currency labels use Brazilian separators and render missing amounts as zero`() {
+        assertEquals("R$ 1.234,50", formatBetAmount(BigDecimal("1234.5")))
+        assertEquals("R$ 0,00", formatBetAmount(null))
+    }
+
     @Test fun `toggle adds and removes an allowed number`() {
         assertEquals(setOf(7), toggleSelectedNumber(emptySet(), 7, 1..60, 20))
         assertEquals(emptySet<Int>(), toggleSelectedNumber(setOf(7), 7, 1..60, 20))

@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -94,9 +95,9 @@ internal fun CaixaDSComposeTermsWebView(html: String, modifier: Modifier = Modif
 
 @Composable
 private fun caixaFontBase64(): String {
-    val context = LocalContext.current
-    return remember(context) {
-        context.resources.openRawResource(CaixaDSR.font.caixa_std_regular).use { input ->
+    val resources = LocalResources.current
+    return remember(resources) {
+        resources.openRawResource(CaixaDSR.raw.caixa_std_regular_html).use { input ->
             Base64.encodeToString(input.readBytes(), Base64.NO_WRAP)
         }
     }

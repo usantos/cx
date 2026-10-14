@@ -26,3 +26,11 @@ class GetResultByContest(
         repository.byContest(modality, contest)
     }
 }
+
+fun interface GetConfirmedBetResultsUseCase {
+    suspend operator fun invoke(bet: br.gov.caixa.loterias.core.domain.tickets.ConfirmedBet): br.gov.caixa.loterias.core.domain.service.ServiceResult<List<DrawResult>>
+}
+
+class GetConfirmedBetResults(private val repository: ResultsRepository) : GetConfirmedBetResultsUseCase {
+    override suspend fun invoke(bet: br.gov.caixa.loterias.core.domain.tickets.ConfirmedBet) = repository.forConfirmedBet(bet)
+}

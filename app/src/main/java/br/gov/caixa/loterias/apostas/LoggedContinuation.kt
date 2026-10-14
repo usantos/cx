@@ -33,3 +33,6 @@ internal fun shouldUseLoggedVisualFixture(debug: Boolean, mockBackend: Boolean, 
 internal fun authenticatedContinuation(route: String?, originatingOwner: String?, authenticatedOwner: String?): String? =
     if (route?.startsWith("retail/prize/") == true &&
         (originatingOwner.isNullOrBlank() || originatingOwner != authenticatedOwner)) null else route
+
+/** Reload the authenticated list; selected details belong to the pre-authentication owner. */
+internal fun ticketQueryContinuation(): String = "tickets/my-bets"

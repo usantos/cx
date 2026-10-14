@@ -38,6 +38,16 @@ def hasReleaseSigning = releaseKeyStoreFile.isFile() &&
         releaseSigningProperties['KEY_ALIAS'] &&
         releaseSigningProperties['KEY_PASSWORD']
 
+// Preserve WorkManager 2.7.1 manifest values, including API-specific resource defaults.
+def topazWorkManagerDefaults = [
+    topazWorkInitializer: 'androidx.startup',
+    topazWorkAlarmEnabled: '@bool/enable_system_alarm_service_default',
+    topazWorkJobEnabled: '@bool/enable_system_job_service_default',
+    topazWorkForegroundEnabled: '@bool/enable_system_foreground_service_default',
+    topazWorkReceiverEnabled: 'true',
+    topazWorkInactiveReceiverEnabled: 'false',
+]
+
 android {
     namespace = 'br.gov.caixa.loterias.apostas'
     compileSdk 37
@@ -58,7 +68,8 @@ android {
         resValue 'string', 'app_name', 'Loterias'
         resValue 'string', 'status_toolbar_title', 'Loterias'
         resValue 'color', 'launcher_background', '#0077C8'
-        manifestPlaceholders = [appAuthRedirectScheme: 'br.gov.caixa.caixaloterias']
+        manifestPlaceholders = [appAuthRedirectScheme: 'br.gov.caixa.caixaloterias', topazComponentsEnabled: 'true']
+        manifestPlaceholders += topazWorkManagerDefaults
     }
 
     flavorDimensions 'environment'
@@ -145,11 +156,17 @@ android {
 
     buildTypes {
         debug {
+            manifestPlaceholders.topazComponentsEnabled = (!mockBackendEnabled).toString()
+            manifestPlaceholders += topazWorkManagerDefaults.collectEntries { key, value ->
+                [key, mockBackendEnabled ? (key == 'topazWorkInitializer' ? 'mock-disabled' : 'false') : value]
+            }
             buildConfigField 'boolean', 'ENABLE_NETWORK_LOGGING', networkLoggingEnabled.toString()
             buildConfigField 'boolean', 'ENABLE_MOCK_BACKEND', mockBackendEnabled.toString()
             buildConfigField 'String', 'MOCK_BACKEND_SCENARIO', '"' + mockBackendScenario + '"'
         }
         release {
+            manifestPlaceholders.topazComponentsEnabled = 'true'
+            manifestPlaceholders += topazWorkManagerDefaults
             buildConfigField 'boolean', 'ENABLE_NETWORK_LOGGING', 'false'
             buildConfigField 'boolean', 'ENABLE_MOCK_BACKEND', 'false'
             buildConfigField 'String', 'MOCK_BACKEND_SCENARIO', '"HAPPY_PATH"'
@@ -187,6 +204,8 @@ dependencies {
     implementation project(':core:queue')
     implementation project(':core:preferences')
     implementation files('../third-party/FilaBRAAdapter-2.6.5.1.aar')
+    implementation 'br.com.topaz:heartbeat:4.38.0.1658708'
+    implementation 'androidx.biometric:biometric:1.1.0'
     implementation project(':feature:marketplace-filter')
     implementation project(':feature:marketplace')
     implementation project(':feature:support')
@@ -216,6 +235,7 @@ dependencies {
     implementation libs.compose.webview
     implementation platform(libs.firebase.bom)
     implementation libs.firebase.config
+    implementation libs.firebase.messaging
     implementation libs.hilt.android
     ksp libs.hilt.compiler
     debugImplementation platform(libs.androidx.compose.bom)

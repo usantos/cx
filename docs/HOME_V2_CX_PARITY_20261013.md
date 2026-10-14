@@ -1,5 +1,7 @@
 # Home v2 do CX e pendências de paridade — 13/10/2026
 
+> Atualização de 13/10/2026: o fechamento técnico e as correções posteriores estão em [COMPOSE_CLOSURE_20261013.md](COMPOSE_CLOSURE_20261013.md). Os resultados abaixo preservam o escopo histórico de cada rodada; a homologação real/visual continua distinguida da conversão de código.
+
 ## Referência usada
 
 A referência é a **árvore de trabalho atual** de `/Users/ubiracysantos/Projects/cx`,

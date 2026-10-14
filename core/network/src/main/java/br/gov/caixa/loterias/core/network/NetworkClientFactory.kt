@@ -9,6 +9,22 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkClientFactory {
+    /** A logout belongs to one captured login and must never replay or follow a redirect. */
+    fun createSessionLogout(
+        baseUrl: String,
+        clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder(),
+        gson: Gson = Gson(),
+        publicKeySet: PublicKeySet? = null,
+        debugOptions: NetworkDebugOptions = NetworkDebugOptions(),
+        mockOptions: MockBackendOptions = MockBackendOptions(),
+    ): SessionLogoutApi = retrofit(
+        baseUrl, AuthTokenProvider { null },
+        clientBuilder.followRedirects(false).followSslRedirects(false).retryOnConnectionFailure(false)
+            .addInterceptor(AccountVerificationSessionInterceptor())
+            .addInterceptor(SingleAttemptTransactionInterceptor()),
+        gson, publicKeySet, debugOptions, mockOptions, attachBearerToken = false,
+    ).create(SessionLogoutApi::class.java)
+
     fun createNotificationRead(
         baseUrl: String,
         clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder(),

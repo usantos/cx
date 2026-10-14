@@ -74,6 +74,49 @@ class BetDetailViewModelTest {
         assertFalse(failure.state.value.loading)
     }
 
+    @Test fun `paid bet downloads prize receipt rather than bet receipt`() = runTest {
+        var betReceipts = 0
+        var prizeReceipts = 0
+        val paid = bet.copy(statusId = 11, redeemedPrize = true)
+        val model = BetDetailViewModel(paid,
+            RecoverConfirmedBetUseCase { AppResult.Success(it) },
+            DownloadBetReceiptUseCase { betReceipts++; AppResult.Success(byteArrayOf(1)) },
+            ValidateFavoriteBetUseCase { AppResult.Success(Unit) },
+            SaveFavoriteBetUseCase { AppResult.Success(Unit) }, cartUseCase(), FixedCoroutineDispatchers(dispatcher),
+            downloadPrizeReceipt = br.gov.caixa.loterias.core.domain.retail.DownloadPrizeReceiptUseCase {
+                prizeReceipts++; AppResult.Success(byteArrayOf(2))
+            })
+        advanceUntilIdle()
+        val receipt = async { model.receipts.first() }
+        model.downloadReceipt()
+        advanceUntilIdle()
+        assertEquals(0, betReceipts)
+        assertEquals(1, prizeReceipts)
+        assertEquals("comprovante-premio-1.pdf", receipt.await().fileName)
+    }
+
+    @Test fun `typed hydration rejection prevents repeating stale list numbers`() = runTest {
+        var additions = 0
+        val rejection = br.gov.caixa.loterias.core.domain.service.ServiceFailure.RedirectRequired(
+            br.gov.caixa.loterias.core.domain.service.ServiceRedirect.LOGIN)
+        val model = BetDetailViewModel(bet,
+            RecoverConfirmedBetUseCase { error("legacy recovery must not run") },
+            DownloadBetReceiptUseCase { AppResult.Success(byteArrayOf()) },
+            ValidateFavoriteBetUseCase { AppResult.Success(Unit) },
+            SaveFavoriteBetUseCase { AppResult.Success(Unit) },
+            AddBetToCartUseCase { additions++; AppResult.Success(ShoppingCart(1, BigDecimal.ZERO, emptyList())) },
+            FixedCoroutineDispatchers(dispatcher),
+            loadConfirmedBet = br.gov.caixa.loterias.core.domain.tickets.LoadConfirmedBetUseCase {
+                br.gov.caixa.loterias.core.domain.service.ServiceResult.Rejected(rejection)
+            })
+        advanceUntilIdle()
+        model.addCurrentBetToCart()
+        advanceUntilIdle()
+        assertEquals(rejection, model.state.value.serviceFailure)
+        assertFalse(model.state.value.detailsReady)
+        assertEquals(0, additions)
+    }
+
     @Test fun `preview bets do not request recovery`() {
         val preview = bet.copy(id = -1)
         var calls = 0

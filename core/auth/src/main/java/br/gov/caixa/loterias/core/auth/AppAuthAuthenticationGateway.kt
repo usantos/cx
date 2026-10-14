@@ -25,6 +25,7 @@ class AppAuthAuthenticationGateway(
     context: Context,
     private val configuration: OidcConfiguration,
     private val tokenStore: SessionTokenStore,
+    private val requestPolicy: AuthorizationRequestPolicy,
 ) : AuthenticationGateway, EndSessionGateway, BiometricAuthenticationGateway {
     private val appContext = context.applicationContext
     private val biometricCredentials = EncryptedBiometricCredentialStore(appContext,
@@ -132,6 +133,7 @@ class AppAuthAuthenticationGateway(
         biometricAttempts.cancel()
         logoutIdToken = null
         endSessions.clear()
+        val options = requestPolicy.capture()
         // A new builder generates fresh state, nonce and PKCE verifier for every attempt.
         val request = AuthorizationRequest.Builder(
             AuthorizationServiceConfiguration(
@@ -141,7 +143,7 @@ class AppAuthAuthenticationGateway(
             configuration.clientId,
             ResponseTypeValues.CODE,
             Uri.parse(configuration.redirectUri),
-        ).setScope("openid profile offline_access").build()
+        ).setScope(options.scope).setAdditionalParameters(options.additionalParameters).build()
         attempts.begin(requireNotNull(request.state), request)
         return service.getAuthorizationRequestIntent(request)
     }
@@ -200,8 +202,9 @@ class AppAuthAuthenticationGateway(
     @Synchronized override fun logout() {
         // A second local clear (e.g. blocked-account acknowledgment) must not lose the hint.
         biometricAttempts.cancel()
-        logoutIdToken = attempts.logout() ?: logoutIdToken
+        // A storage failure must leave the current identity available for an explicit retry.
         biometricCredentials.clearCredential()
+        logoutIdToken = attempts.logout() ?: logoutIdToken
     }
 
     @Synchronized override fun prepare(): EndSessionLaunch {

@@ -29,6 +29,9 @@ interface TicketsRemoteDataSource {
     fun confirmedBetsBackend(): br.gov.caixa.loterias.core.domain.tickets.ConfirmedBetsBackend =
         br.gov.caixa.loterias.core.domain.tickets.ConfirmedBetsBackend.SILCE
     suspend fun recoverConfirmedBet(betId: Long): JsonElement? = null
+    suspend fun checkConfirmedBet(betId: Long): JsonElement? = null
+    suspend fun confirmedBetPrizeDetails(betId: Long): JsonElement? = null
+    suspend fun confirmedBetReceipt(betId: Long, paid: Boolean, historical: Boolean): JsonElement? = null
     suspend fun purchases(filters: Map<String, String>): JsonElement?
     suspend fun purchaseBets(purchaseId: Long): JsonElement?
     suspend fun savePurchaseAsFavorite(purchaseId: Long, name: String, keepSurprises: Boolean) = Unit
@@ -78,8 +81,17 @@ class RetrofitTicketsRemoteDataSource(
 
     override suspend fun recoverConfirmedBet(betId: Long): JsonElement? {
         val route = activeBetHistoryRoute.takeIf { it.backend == BetHistoryBackend.NOVA_API } ?: return null
-        return route.baseUrl?.let { betsHistoryApiProvider?.current(it) }?.recoverBet(betId)?.payload
+        return route.baseUrl?.let { betsHistoryApiProvider?.current(it) }?.recoverBet(betId)?.checkedPayload()
     }
+
+    override suspend fun checkConfirmedBet(betId: Long) = apiProvider.current().checkBet(betId).checkedPayload()
+    override suspend fun confirmedBetPrizeDetails(betId: Long) = apiProvider.current().prizeDetails(betId).checkedPayload()
+
+    override suspend fun confirmedBetReceipt(betId: Long, paid: Boolean, historical: Boolean) = when {
+        historical -> apiProvider.current().historicalPrizeReceipt(betId)
+        paid -> apiProvider.current().prizeReceipt(betId)
+        else -> apiProvider.current().betReceipt(betId)
+    }.checkedPayload()
 
     override suspend fun purchases(filters: Map<String, String>) =
         apiProvider.current().purchases(filters).payload
@@ -164,12 +176,61 @@ class RemoteTicketsRepository(
         remote.confirmedBets(filters).toBets()
 
     override suspend fun confirmedBetsPage(filters: Map<String, String>): br.gov.caixa.loterias.core.domain.tickets.ConfirmedBetsPage {
-        val bets = remote.confirmedBets(filters).toBets()
+        val bets = remote.confirmedBets(filters).toBets().map { it.copy(backend = remote.confirmedBetsBackend()) }
         return br.gov.caixa.loterias.core.domain.tickets.ConfirmedBetsPage(bets, remote.confirmedBetsBackend())
     }
 
     override suspend fun recoverConfirmedBet(bet: ConfirmedBet): ConfirmedBet =
         remote.recoverConfirmedBet(bet.id).toBets().firstOrNull() ?: bet
+
+    override suspend fun loadConfirmedBet(bet: ConfirmedBet) = serviceResultOf {
+        require(bet.id > 0) { "Aposta inválida" }
+        val checked = if (bet.statusId in setOf(4L, 101L) || bet.status.equals("Efetivada", true)) {
+            val status = requireNotNull(remote.checkConfirmedBet(bet.id)) { "Situação da aposta ausente" }.asJsonObject
+            bet.copy(statusId = requireNotNull(status.long("valor")) { "Situação da aposta incompleta" },
+                status = status.text("descricao").displayName().ifBlank { bet.status })
+        } else bet
+        val payload = if (bet.backend == br.gov.caixa.loterias.core.domain.tickets.ConfirmedBetsBackend.NOVA_API) {
+            remote.recoverConfirmedBet(checked.id)
+        } else {
+            remote.confirmedBetReceipt(checked.id, paid = checked.statusId == 11L, historical = checked.statusId == 3L)
+        }
+        val hydrated = requireNotNull(payload.toBets().firstOrNull { it.id == checked.id }) { "Comprovante da aposta ausente" }
+        // Installed clients retain list status for Nova API/microservice and teimosinhas;
+        // both receipt endpoints have a known incorrect combo flag.
+        val keepStatus = bet.backend != br.gov.caixa.loterias.core.domain.tickets.ConfirmedBetsBackend.SILCE ||
+            hydrated.recurringDraws > 0 || checked !== bet || checked.statusId in setOf(3L, 11L, 100L)
+        val receiptRoot = payload?.takeIf(JsonElement::isJsonObject)?.asJsonObject
+        val prizeRoot = if (checked.statusId in setOf(100L, 11L) &&
+            receiptRoot?.get("premio")?.takeIf(JsonElement::isJsonObject) == null) {
+            requireNotNull(remote.confirmedBetPrizeDetails(checked.id)) { "Detalhes do prêmio ausentes" }.asJsonObject
+        } else receiptRoot
+        val prize = prizeRoot?.get("premio")?.takeIf(JsonElement::isJsonObject)?.asJsonObject
+        if (checked.statusId in setOf(100L, 11L)) requireNotNull(prize) { "Dados do prêmio ausentes" }
+        val netPrize = prize?.get("valorLiquido")?.takeUnless(JsonElement::isJsonNull)?.let {
+            runCatching { it.asBigDecimal }.getOrNull()
+        }
+        if (checked.statusId in setOf(100L, 11L)) requireNotNull(netPrize) { "Valor líquido do prêmio ausente" }
+        val receipt = br.gov.caixa.loterias.core.domain.tickets.ConfirmedBetReceipt(
+            nsbi = receiptRoot?.text("nsbi").orEmpty(),
+            paymentDate = prize?.text("dataPagamento").orEmpty(),
+            paymentTime = prize?.text("horaPagamento").orEmpty(),
+            paymentLocation = prize?.text("localPagamento").orEmpty(),
+            paymentNsu = prize?.text("nsuPagamento").orEmpty(),
+            netPrize = netPrize,
+            awards = prizeRoot?.toCheckedTicketResult()?.awards.orEmpty(),
+        )
+        hydrated.copy(
+            receipt = receipt,
+            backend = bet.backend,
+            combo = bet.combo,
+            statusId = if (keepStatus) checked.statusId else hydrated.statusId,
+            status = if (keepStatus) checked.status else hydrated.status,
+            prize = receipt.netPrize ?: hydrated.prize.takeIf { it.signum() != 0 } ?: checked.prize,
+            redeemedPrize = checked.redeemedPrize || checked.statusId in setOf(3L, 11L),
+            originalRecurringBet = hydrated.originalRecurringBet || bet.originalRecurringBet,
+        )
+    }
 
     override suspend fun purchases(filters: Map<String, String>): List<Purchase> =
         remote.purchases(filters).toPurchases()

@@ -143,7 +143,10 @@ fun LoteriasApp(
     var requestedHomeModalityId by remember { mutableStateOf<Int?>(null) }
     val logoutViewModel = viewModel(key = "session-logout") {
         br.gov.caixa.loterias.feature.account.LogoutViewModel(
-            appContainer.authentication, appContainer.endSession, appContainer.clearLocalSessionData, appContainer.dispatchers,
+            appContainer.authentication, appContainer.endSession, appContainer.clearLocalSessionData,
+            signOutSession = appContainer.signOutSession,
+            identities = appContainer.authenticatedSessionIdentity,
+            dispatchers = appContainer.dispatchers,
         )
     }
     var visitorLoginRequest by rememberSaveable { mutableStateOf<String?>(null) }
@@ -176,11 +179,11 @@ fun LoteriasApp(
             launchSingleTop = true
         }
     }
-    val onLogout: () -> Unit = {
-        if (logoutViewModel.start(simulated = BuildConfig.ENABLE_MOCK_BACKEND)) {
-            resetLoggedNavigation()
-        }
+    val logoutState by logoutViewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(logoutState.localSessionEnded) {
+        if (logoutState.localSessionEnded) resetLoggedNavigation()
     }
+    val onLogout: () -> Unit = { logoutViewModel.start(simulated = BuildConfig.ENABLE_MOCK_BACKEND) }
     val foregroundNoticeController = remember(appContainer, navController) {
         ForegroundSessionNoticeController(appContainer.foregroundSession,
             { appContainer.localClock.instant().epochSecond }, resetLoggedNavigation)
@@ -315,6 +318,13 @@ fun LoteriasApp(
             }
             launchSingleTop = true
         }
+    }
+    val onTicketServiceRedirect: (br.gov.caixa.loterias.core.domain.service.ServiceRedirect) -> Unit = { destination ->
+        if (destination in accountCompletionRedirects) {
+            visitorReturnRoute = ticketQueryContinuation()
+            visitorReturnOwnerKey = appContainer.authenticatedSessionIdentity.captureIdentity()?.ownerKey
+        }
+        navController.navigate(serviceRedirectRoute(destination)) { launchSingleTop = true }
     }
     val onPaymentRedirect: (br.gov.caixa.loterias.core.domain.payment.PurchaseRedirect) -> Unit = { destination ->
         if (destination.name in setOf("LOGIN", "REGISTER_ACCOUNT", "ACCEPT_TERMS")) visitorReturnRoute = "cart/current"
@@ -1320,6 +1330,7 @@ fun LoteriasApp(
             route = LoginNavigation.pattern,
             arguments = listOf(navArgument("authorize") { type = NavType.BoolType; defaultValue = false }),
         ) { entry ->
+            val notificationPermissionReady = br.gov.caixa.loterias.apostas.push.loginNotificationPermissionReady()
             val loginViewModel = viewModel {
                 LoginViewModel(
                     authentication = appContainer.authentication,
@@ -1329,7 +1340,7 @@ fun LoteriasApp(
             }
             LoginRoute(
                 onSessionInvalidated = onLogout,
-                authorizeOnEnter = entry.arguments?.getBoolean("authorize") == true,
+                authorizeOnEnter = notificationPermissionReady && entry.arguments?.getBoolean("authorize") == true,
                 onAuthorizationCancelled = {
                     if (entry.arguments?.getBoolean("authorize") == true) { visitorReturnRoute = null; navController.popBackStack() }
                 },
@@ -1401,11 +1412,14 @@ fun LoteriasApp(
                     appContainer.addBetToCart,
                     appContainer.dispatchers,
                     getBettingParameters = appContainer.bettingParameters,
+                    loadConfirmedBet = appContainer.loadConfirmedBet,
+                    downloadPrizeReceipt = appContainer.downloadPrizeReceipt,
                 )
             }
             BetDetailDataRoute(
                 viewModel = detailViewModel,
                 onBack = navController::popBackStack,
+                onServiceRedirect = onTicketServiceRedirect,
                 onViewResult = { recoveredBet ->
                     selectedBet = recoveredBet
                     navController.navigate("results/confirmed-bet")
@@ -1530,12 +1544,14 @@ fun LoteriasApp(
                         appContainer.validateFavoriteBet, appContainer.saveFavoriteBet,
                         appContainer.addBetToCart, appContainer.dispatchers,
                         getBettingParameters = appContainer.bettingParameters,
+                    loadConfirmedBet = appContainer.loadConfirmedBet,
+                    downloadPrizeReceipt = appContainer.downloadPrizeReceipt,
                     )
                 }
                 LaunchedEffect(repeatViewModel) {
                     // A recuperação deve terminar antes da repetição para não apagar seus diálogos.
                     repeatViewModel.state.first { !it.loading }
-                    repeatViewModel.addCurrentBetToCart().join()
+                    if (repeatViewModel.state.value.detailsReady) repeatViewModel.addCurrentBetToCart().join()
                 }
                 repeatViewModel
             }
@@ -1553,24 +1569,35 @@ fun LoteriasApp(
                     )
                 },
             )
-            repeatViewModel?.let { BetRepeatActionsOverlay(it) }
+            repeatViewModel?.let { BetRepeatActionsOverlay(it, onServiceRedirect = onTicketServiceRedirect) }
             }
         }
         composable("results/confirmed-bet") {
-            val betId = selectedBet?.id?.takeIf { it > 0 } ?: 100L
-            PrizeRedemptionDestination(
-                appContainer = appContainer,
-                betId = betId,
-                keySuffix = "confirmed-result-$betId",
-                onRedirect = onPrizeRedirect,
-                onBetEntry = onPrizeBetEntry,
-                onBack = navController::popBackStack,
-                onHelp = { navController.navigate("support/terms?tab=FAQ") },
-                onHome = {
-                    navController.navigate("home") { popUpTo("home") { inclusive = false }; launchSingleTop = true }
-                },
-                onMyBets = { navController.navigate("tickets/my-bets") { launchSingleTop = true } },
-            )
+            val bet = selectedBet ?: if (BuildConfig.ENABLE_MOCK_BACKEND) {
+                mockConfirmedBet("").copy(id = 100L)
+            } else null
+            if (bet == null || bet.id <= 0) {
+                LaunchedEffect(Unit) {
+                    if (!navController.popBackStack()) {
+                        navController.navigate("tickets/my-bets") {
+                            popUpTo(navController.graph.id) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                }
+            } else {
+                val resultModel = viewModel(key = "confirmed-results-${bet.id}") {
+                    br.gov.caixa.loterias.feature.results.ConfirmedBetResultsViewModel(
+                        bet, appContainer.confirmedBetResults, appContainer.dispatchers,
+                    )
+                }
+                br.gov.caixa.loterias.feature.results.ConfirmedBetResultRoute(
+                    bet = bet, viewModel = resultModel, onBack = navController::popBackStack,
+                    onComplete = { navController.navigate("tickets/my-bets") { launchSingleTop = true } },
+                    onServiceRedirect = onTicketServiceRedirect,
+                    onRedeemPrize = { navController.navigate("retail/prize/${bet.id}") },
+                )
+            }
         }
         composable("tickets/purchases") {
             val ticketsViewModel = viewModel {

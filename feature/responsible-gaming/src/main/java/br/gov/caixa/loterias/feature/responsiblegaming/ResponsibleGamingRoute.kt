@@ -32,10 +32,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -413,7 +413,7 @@ private fun SuspensionScreen(
                     CaixaDSLegacyCheckbox(
                         checked = state.suspensionAcknowledged,
                         onClick = { onAction(ResponsibleGamingAction.ToggleSuspensionAcknowledgement) },
-                        uncheckedColor = Color(0xFF666666),
+                        uncheckedColor = CaixaDSColorTokens.LegacySuspensionCheckboxUnchecked,
                     )
                     Spacer(Modifier.width(4.dp))
                     Text(

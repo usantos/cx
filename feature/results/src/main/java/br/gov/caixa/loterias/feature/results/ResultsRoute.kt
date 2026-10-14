@@ -363,7 +363,7 @@ private fun ResultDetailScreen(
                         Image(caixaDSLegacyLotteryClover(state.modality ?: "megasena"), null, Modifier.padding(start = 24.dp).size(23.dp))
                     }
                     Text(
-                        modalityName(state.modality).lowercase(),
+                        state.result?.let { drawResultTitle(it, modalityName(state.modality)) }?.lowercase() ?: modalityName(state.modality).lowercase(),
                         modifier = Modifier.padding(start = 8.dp),
                         color = lotteryStyle.content,
                         style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold,
@@ -409,11 +409,17 @@ private fun ResultContent(result: DrawResult, modality: String) {
         platformStyle = PlatformTextStyle(includeFontPadding = true))
     val payoutStyle = bodyStyle.copy(fontSize = 16.sp)
     Column(Modifier.fillMaxWidth().padding(top = 10.dp)) {
-        Text("Números sorteados:", Modifier.padding(start = 30.dp), color = style.darkContent, style = bodyStyle)
-        NumberRows(
-            if (modality == "supersete") result.firstDrawNumbers else result.firstDrawNumbers.sorted(),
-            Modifier.fillMaxWidth().padding(top = 20.dp), style.light,
-        )
+        if (result.lotecaMatches.isNotEmpty() || result.lotogolMatches.isNotEmpty()) {
+            Column(Modifier.padding(horizontal = 30.dp)) { DrawSportsResults(result, style.darkContent) }
+        } else {
+            Text("Números sorteados:", Modifier.padding(start = 30.dp), color = style.darkContent, style = bodyStyle)
+            if (modality == "supersete" && result.firstDrawNumberColumns.size > 1) {
+                DrawNumberColumns(result.firstDrawNumberColumns, style.darkContent)
+            } else NumberRows(
+                if (modality == "supersete") result.firstDrawNumbers else result.firstDrawNumbers.sorted(),
+                Modifier.fillMaxWidth().padding(top = 20.dp), style.light,
+            )
+        }
         if (result.secondDrawNumbers.isNotEmpty()) {
             Text("2º sorteio", Modifier.padding(top = 16.dp), color = style.darkContent, style = bodyStyle)
             NumberRows(result.secondDrawNumbers.sorted(), Modifier.fillMaxWidth().padding(top = 20.dp), style.light)
@@ -433,12 +439,13 @@ private fun ResultContent(result: DrawResult, modality: String) {
             Modifier.fillMaxWidth().padding(start = 30.dp, top = 10.dp, end = 30.dp, bottom = 84.dp)
                 .background(style.light).padding(horizontal = 16.dp).padding(bottom = 30.dp + bottom180),
         ) {
-            Text("Premiação", Modifier.padding(top = gap16), color = style.content, style = payoutStyle.copy(fontWeight = FontWeight.Bold))
+            Text(if (result.secondDrawPayouts.isNotEmpty()) "Premiação do 1º sorteio" else "Premiação", Modifier.padding(top = gap16), color = style.content, style = payoutStyle.copy(fontWeight = FontWeight.Bold))
             result.payouts.forEach { payout ->
                 Text(resultPayoutDescription(modality, payout.description), Modifier.padding(top = gap16), color = style.content, style = payoutStyle.copy(fontWeight = FontWeight.Bold))
                 Text(resultWinners(payout.winners), color = style.content, style = payoutStyle)
                 if (payout.winners > 0) Text("Prêmio: ${resultMoney(payout.value)}", color = style.content, style = payoutStyle)
             }
+            DrawResultSupplement(result, style.content)
             Text("Arrecadação total", Modifier.padding(top = gap18), color = style.content, style = payoutStyle.copy(fontWeight = FontWeight.Bold))
             Text(resultMoney(result.totalRevenue.ifBlank { "0" }), Modifier.padding(top = gap16), color = style.content, style = payoutStyle.copy(fontWeight = FontWeight.Bold))
         }

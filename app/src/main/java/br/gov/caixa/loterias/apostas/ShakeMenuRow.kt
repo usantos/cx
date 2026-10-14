@@ -82,7 +82,7 @@ internal fun ShakeMenuRow(
             Popup(alignment = Alignment.BottomCenter, offset = IntOffset(0, 8)) {
                 Surface(color = accent, shape = RoundedCornerShape(6.dp), modifier = Modifier.widthIn(max = 260.dp)) {
                     Text("Agite o celular para preencher sua aposta com números aleatórios",
-                        Modifier.fillMaxWidth().padding(16.dp), color = Color.White,
+                        Modifier.fillMaxWidth().padding(16.dp), color = CaixaDSColorTokens.White,
                         style = CaixaDS.typography.bodyMedium.copy(fontSize = 14.sp), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                 }
             }
@@ -133,7 +133,7 @@ private fun ShakeToggle(enabled: Boolean, accent: Color, onClick: () -> Unit) {
                         path.moveTo(size.width * .76f, size.height * .24f)
                         path.lineTo(size.width * .24f, size.height * .76f)
                     }
-                    drawPath(path, Color.White, style = Stroke(width = 1.8.dp.toPx(), cap = StrokeCap.Round))
+                    drawPath(path, CaixaDSColorTokens.White, style = Stroke(width = 1.8.dp.toPx(), cap = StrokeCap.Round))
                 }
             }
         }

@@ -227,6 +227,53 @@ class RapidConfigurationViewModelTest {
         assertNull(viewModel.state.value.amountLimitsError)
     }
 
+    @Test fun `custom amounts require loaded limits and retain the five real gap when crossing minimum`() = runTest {
+        val unavailable = viewModel()
+        advanceUntilIdle()
+        assertFalse(unavailable.setCustomAmount(BigDecimal("40"), true))
+        assertEquals(BigDecimal("30"), unavailable.state.value.minimumAmount)
+        assertEquals(BigDecimal("100"), unavailable.state.value.maximumAmount)
+
+        val viewModel = viewModel(getParameters = GetBettingParametersUseCase {
+            AppResult.Success(BettingParameters(BigDecimal("999"), BigDecimal("20"), 100, emptyList()))
+        }, verifyAccess = VerifyAccountAccessUseCase {
+            AppResult.Success(AccountAccess(PostLoginDestination.HOME, false, BigDecimal("200")))
+        })
+        advanceUntilIdle()
+        assertTrue(viewModel.setCustomAmount(BigDecimal("40"), true))
+        assertEquals(BigDecimal("40"), viewModel.state.value.minimumAmount)
+        assertEquals(BigDecimal("100"), viewModel.state.value.maximumAmount)
+        assertTrue(viewModel.setCustomAmount(BigDecimal("35"), false))
+        assertEquals(BigDecimal("30"), viewModel.state.value.minimumAmount)
+        assertEquals(BigDecimal("35"), viewModel.state.value.maximumAmount)
+        assertNull(viewModel.state.value.warningMessage)
+        assertTrue(viewModel.setCustomAmount(BigDecimal("200"), true))
+        assertEquals(BigDecimal("200"), viewModel.state.value.minimumAmount)
+        assertEquals(BigDecimal("200"), viewModel.state.value.maximumAmount)
+        viewModel.save()
+        advanceUntilIdle()
+        assertEquals(BigDecimal("200"), saved?.minimumAmount)
+        assertEquals(BigDecimal("200"), saved?.maximumAmount)
+    }
+
+    @Test fun `invalid server amount intervals and overlapping filters cannot be saved`() = runTest {
+        val invalidConfigurations = listOf(
+            configuration.copy(minimumAmount = BigDecimal("-1")),
+            configuration.copy(maximumAmount = BigDecimal("29")),
+            configuration.copy(excludedNumbers = setOf(1)),
+        )
+        invalidConfigurations.forEach { invalid ->
+            configurationResult = AppResult.Success(invalid)
+            val viewModel = viewModel()
+            advanceUntilIdle()
+            assertFalse(viewModel.state.value.canSave)
+            viewModel.save()
+            advanceUntilIdle()
+            assertNull(saved)
+            assertEquals("Revise a configuração do Rapidão antes de salvar.", viewModel.state.value.errorMessage)
+        }
+    }
+
     private fun viewModel(getFavorites: GetFavoriteBetsUseCase? = null, getParameters: GetBettingParametersUseCase? = null, verifyAccess: VerifyAccountAccessUseCase? = null): RapidConfigurationViewModel {
         val dispatcher = UnconfinedTestDispatcher()
         return RapidConfigurationViewModel(

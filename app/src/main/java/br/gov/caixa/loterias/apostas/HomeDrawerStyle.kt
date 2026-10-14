@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas
 
 import androidx.compose.ui.graphics.Color
+import br.gov.caixa.loterias.core.designsystem.CaixaDSColorTokens
 
 internal data class HomeDrawerStyle(
     val accent: Color,
@@ -10,8 +11,8 @@ internal data class HomeDrawerStyle(
 )
 
 internal fun homeDrawerStyle(octoberRose: Boolean): HomeDrawerStyle = HomeDrawerStyle(
-    accent = if (octoberRose) Color(0xFFEE3E7F) else Color(0xFF005CA9),
-    rowLabel = if (octoberRose) Color(0xFFEE3E7F) else Color(0xFF404B52),
-    footerLabel = if (octoberRose) Color(0xFFEE3E7F) else Color(0xFF3864A3),
-    exitBackground = if (octoberRose) Color(0xFFEE3E7F) else Color(0xFF005CA9),
+    accent = if (octoberRose) CaixaDSColorTokens.LegacyOctoberRose else CaixaDSColorTokens.Blue700,
+    rowLabel = if (octoberRose) CaixaDSColorTokens.LegacyOctoberRose else CaixaDSColorTokens.LegacySocialGraphite,
+    footerLabel = if (octoberRose) CaixaDSColorTokens.LegacyOctoberRose else CaixaDSColorTokens.LegacyDrawerInstitutionHeading,
+    exitBackground = if (octoberRose) CaixaDSColorTokens.LegacyOctoberRose else CaixaDSColorTokens.Blue700,
 )

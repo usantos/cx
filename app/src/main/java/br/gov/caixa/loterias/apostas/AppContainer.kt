@@ -124,6 +124,8 @@ class AppContainer @Inject constructor(
     private val prizeApiProvider: br.gov.caixa.loterias.core.network.PrizeBackendApiProvider,
     private val accountVerificationProvider: br.gov.caixa.loterias.core.network.AccountVerificationBackendProvider,
     private val notificationReadProvider: br.gov.caixa.loterias.core.network.NotificationReadApiProvider,
+    private val sessionLogoutProvider: br.gov.caixa.loterias.core.network.SessionLogoutApiProvider,
+    val signOutSession: br.gov.caixa.loterias.core.domain.account.SignOutSessionUseCase,
     val authentication: AuthenticationGateway,
     val endSession: br.gov.caixa.loterias.core.auth.EndSessionGateway,
     val clearLocalSessionData: br.gov.caixa.loterias.core.domain.account.ClearLocalSessionDataUseCase,
@@ -144,6 +146,7 @@ class AppContainer @Inject constructor(
     val addMarketplacePoolToCart: AddMarketplacePoolToCartUseCase,
     val latestResult: GetLatestResultUseCase,
     val resultByContest: GetResultByContestUseCase,
+    val confirmedBetResults: br.gov.caixa.loterias.core.domain.results.GetConfirmedBetResultsUseCase,
     val supportSections: GetSupportSectionsUseCase,
     val supportQuestions: GetSupportQuestionsUseCase,
     val terms: GetTermsUseCase,
@@ -205,6 +208,7 @@ class AppContainer @Inject constructor(
     val recordRecentPurchase: br.gov.caixa.loterias.core.domain.cart.RecordRecentPurchaseUseCase,
     val confirmedBets: GetConfirmedBetsUseCase,
     val recoverConfirmedBet: RecoverConfirmedBetUseCase,
+    val loadConfirmedBet: br.gov.caixa.loterias.core.domain.tickets.LoadConfirmedBetUseCase,
     val purchases: GetPurchasesUseCase,
     val purchaseBets: GetPurchaseBetsUseCase,
     val purchaseDetails: GetPurchaseDetailsUseCase,
@@ -323,6 +327,10 @@ class AppContainer @Inject constructor(
     private fun replaceMainBackendApis(keySet: PublicKeySet) {
         apiProvider.replace(createApi(keySet))
         notificationReadProvider.replace(NetworkClientFactory.createNotificationRead(
+            baseUrl = BuildConfig.API_BASE_URL, clientBuilder = backendClientBuilder(), gson = backendGson, publicKeySet = keySet,
+            debugOptions = debugOptions, mockOptions = mockOptions,
+        ))
+        sessionLogoutProvider.replace(NetworkClientFactory.createSessionLogout(
             baseUrl = BuildConfig.API_BASE_URL, clientBuilder = backendClientBuilder(), gson = backendGson, publicKeySet = keySet,
             debugOptions = debugOptions, mockOptions = mockOptions,
         ))

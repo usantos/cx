@@ -62,6 +62,7 @@ import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyDeleteIcon
 import br.gov.caixa.loterias.core.designsystem.CaixaDSIcons
 import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyFuturaFontFamily
 import br.gov.caixa.loterias.core.designsystem.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.caixaDSLegacyDrawablePainter
 import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacySelectionDialog
 import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyDialog
 import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyScaffold
@@ -317,7 +318,7 @@ fun FavoriteCartDetailRoute(
         topBarAction = onHelp?.let { action -> {
             IconButton(onClick = action) {
                 androidx.compose.foundation.Image(
-                    painterResource(R.drawable.legacy_favorite_duvidas_toolbar_icon),
+                    caixaDSLegacyDrawablePainter(R.drawable.legacy_favorite_duvidas_toolbar_icon),
                     "Ajuda",
                     Modifier.size(32.dp),
                 )

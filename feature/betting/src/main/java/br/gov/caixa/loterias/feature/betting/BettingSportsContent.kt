@@ -70,7 +70,7 @@ internal fun BettingLegacyTeams(state: BettingGameUiState, viewModel: BettingGam
                 .padding(16.dp)
                 .height(40.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(Color.White)
+                .background(CaixaDSColorTokens.White)
                 .border(1.dp, CaixaDSColorTokens.LegacySimulationMuted, RoundedCornerShape(8.dp))
                 .semantics { contentDescription = "Nome do time" },
             singleLine = true,
@@ -136,7 +136,7 @@ private fun TeamSelectionCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val selectionColor = if (selected) Color(0xFF2D8563) else Color.Transparent
+    val selectionColor = if (selected) CaixaDSColorTokens.LegacyTimemaniaTeamSelection else Color.Transparent
     Column(
         modifier
             .height(115.dp)
@@ -150,7 +150,7 @@ private fun TeamSelectionCard(
         TeamShield(team, Modifier.padding(top = 16.dp).size(40.dp))
         Text(
             team.name,
-            color = if (selected) selectionColor else Color(0xFF48586C),
+            color = if (selected) selectionColor else CaixaDSColorTokens.LegacyBetAction,
             fontFamily = CaixaDSFontFamily,
             fontSize = 14.2.sp,
             fontWeight = FontWeight.Bold,
@@ -161,7 +161,7 @@ private fun TeamSelectionCard(
         )
         Text(
             team.state,
-            color = if (selected) selectionColor else Color(0xFF48586C),
+            color = if (selected) selectionColor else CaixaDSColorTokens.LegacyBetAction,
             fontFamily = CaixaDSLegacyRegularFontFamily,
             fontSize = 14.2.sp,
             textAlign = TextAlign.Center,
@@ -271,7 +271,7 @@ internal fun BettingLegacyLoteca(state: BettingGameUiState, viewModel: BettingGa
                         Modifier.padding(bottom = 8.dp),
                         fontFamily = CaixaDSFontFamily,
                         fontSize = 16.sp,
-                        color = Color(0xFF0066B3),
+                        color = CaixaDSColorTokens.LegacyCaixaBlue,
                         style = metrics,
                     )
                     Row(Modifier.fillMaxWidth()) {
@@ -310,8 +310,8 @@ private fun LotecaOutcomeCard(
     Column(
         modifier
             .clip(shape)
-            .background(if (selected) Color(0xFFFEF3F4) else Color.White)
-            .border(2.dp, if (selected) CaixaDSColorTokens.LegacyLotecaCounter else Color(0xFFAFCACF), shape)
+            .background(if (selected) CaixaDSColorTokens.LegacyLotecaSelectedBackground else CaixaDSColorTokens.White)
+            .border(2.dp, if (selected) CaixaDSColorTokens.LegacyLotecaCounter else CaixaDSColorTokens.LegacyLotecaChoiceBorder, shape)
             .clickable(onClick = onClick)
             .padding(8.dp)
             .semantics { contentDescription = label },
@@ -322,7 +322,7 @@ private fun LotecaOutcomeCard(
                 painterResource(R.drawable.installed_betting_ic_empate),
                 null,
                 Modifier.padding(top = 16.dp, bottom = 10.dp).size(18.dp),
-                colorFilter = ColorFilter.tint(if (selected) Color(0xFF005CA9) else Color(0xFF48586C)),
+                colorFilter = ColorFilter.tint(if (selected) CaixaDSColorTokens.Blue700 else CaixaDSColorTokens.LegacyBetAction),
             )
         } else {
             TeamShield(team, Modifier.padding(top = 12.dp).size(35.dp))
@@ -331,7 +331,7 @@ private fun LotecaOutcomeCard(
             label,
             fontFamily = CaixaDSLegacyRegularFontFamily,
             fontSize = 14.sp,
-            color = if (selected) Color(0xFF005CA9) else Color(0xFF48586C),
+            color = if (selected) CaixaDSColorTokens.Blue700 else CaixaDSColorTokens.LegacyBetAction,
             textAlign = TextAlign.Center,
             style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)),
         )
@@ -340,7 +340,7 @@ private fun LotecaOutcomeCard(
                 team.state,
                 fontFamily = CaixaDSLegacyRegularFontFamily,
                 fontSize = if (index == 0) 12.sp else 14.sp,
-                color = Color(0xFF48586C),
+                color = CaixaDSColorTokens.LegacyBetAction,
                 textAlign = TextAlign.Center,
                 style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)),
             )

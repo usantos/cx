@@ -181,7 +181,7 @@ private val homeLotteryStyles = mapOf(
 private const val QUICK_ACCESS_ANIMATION_DURATION_MILLIS = 500
 private val QuickAccessContentOffset = 404.dp
 private val OctoberRoseContentOffset = 534.dp
-private val OctoberRosePink = Color(0xFFEE3E7F)
+private val OctoberRosePink = CaixaDSColorTokens.LegacyOctoberRose
 
 @Composable
 fun HomeScreen(
@@ -314,7 +314,7 @@ fun HomeScreen(
             }
         },
         drawerState = drawerState,
-        scrimColor = androidx.compose.ui.graphics.Color(0x99000000),
+        scrimColor = CaixaDSColorTokens.LegacyHomeDrawerScrim,
         drawerContent = {
             HomeDrawer(
                 shakeSettings = shakeSettings,
@@ -1271,17 +1271,7 @@ private fun homeLegacyTextStyle(size: TextUnit, weight: FontWeight = FontWeight.
 /** Original LayerDrawables preserve their20deg rotated rectangle and negative insets exactly. */
 @Composable
 private fun rememberHomeTrapezoidPainter(@DrawableRes resource: Int): Painter {
-    val context = LocalContext.current
-    return remember(context, resource) {
-        val drawable = requireNotNull(ContextCompat.getDrawable(context, resource)).mutate()
-        object : Painter() {
-            override val intrinsicSize: Size = Size.Unspecified
-            override fun DrawScope.onDraw() {
-                drawable.setBounds(0, 0, size.width.toInt(), size.height.toInt())
-                drawIntoCanvas { drawable.draw(it.nativeCanvas) }
-            }
-        }
-    }
+    return br.gov.caixa.loterias.core.designsystem.caixaDSLegacyDrawablePainter(resource)
 }
 
 @DrawableRes

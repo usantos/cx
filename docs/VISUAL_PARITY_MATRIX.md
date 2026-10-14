@@ -1,5 +1,7 @@
 # Matriz de migração visual XML → Compose
 
+> Atualização de 13/10/2026: o fechamento técnico e as correções posteriores estão em [COMPOSE_CLOSURE_20261013.md](COMPOSE_CLOSURE_20261013.md). Os resultados abaixo preservam o escopo histórico de cada rodada; a homologação real/visual continua distinguida da conversão de código.
+
 `CART_CHECKOUT_ACTION_AUDIT.md` corrige o CTA do carrinho, título, fundo branco, texto do mínimo
 e estado vazio. Ação em carrinho vazio volta a percorrer gates e validação remota, sem bloqueio
 local por mínimo/quantidade. Dois testes de botões e um de integração foram adicionados;

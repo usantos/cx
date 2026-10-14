@@ -5,6 +5,7 @@ AlterarDadosLoginCaixaActivity.java	activity_alterar_dados_login_caixa	account/c
 ApostaConfirmadaDetalhesActivity.java	activity_aposta_confirmada_detalhes	tickets/bet-detail	compose
 ApostasConfirmadasFragment.java	dialog_filtro_apostas	tickets/my-bets#filter-dialog	compose
 AppIndisponivelActivity.java	activity_app_indisponivel	onboarding/unavailable	compose
+AppIndisponivelActivity.java	activity_app_indisponivel_novo	onboarding/unavailable	compose
 ApresentarCartaoActivity.java	activity_apresentar_cartao	payment/card-preview	compose
 AtualizacaoActivity.java	activity_atualizacao	onboarding/update	compose
 AutoSuspensaoActivity.java	activity_autosuspensao	responsible/suspension	compose
@@ -17,7 +18,10 @@ CadastrarConfirmacaoActivity.java	activity_cadastrar_confirmacao	account/registe
 CadastroActivity.java	custom_dialog_list_view	account/register#selection-dialog	compose
 CarrinhoActivity.java	activity_carrinho	cart/current	compose
 CarrinhoActivity.java	custom_dialog_edit_text	cart/current#name-dialog	compose
+CarrinhoActivity.kt	activity_carrinho	cart/current	compose
+CarrinhoActivity.kt	custom_dialog_edit_text	cart/current#favorite-name	compose
 CarrinhosFavoritosActivity.java	activity_carrinhos_favoritos	cart/favorite-carts	compose
+CentralNotificacaoActivity.java	activity_central_notificacao	notifications/messages	compose
 CombosActivity.java	activity_combos	betting/combos	compose
 ConfiguracaoRapidaoActivity.java	activity_configuracao_rapidao	betting/rapid	compose
 ConfiguracaoRapidaoFragment3.java	custom_dialog_valor_aposta	betting/rapid#value-dialog	compose
@@ -28,6 +32,7 @@ ConfirmadoInclusaoCarrinhoActivity.java	activity_confirmado_inclusao_carrinho	ca
 ConfirmarCartaoActivity.java	activity_confirmar_cartao	payment/confirm-card	compose
 CopiaColaPixActivity.java	activity_copia_cola_pix	payment/pix-copy	compose
 DadosPessoaisActivity.java	activity_dados_pessoais	account/personal-data	compose
+DadosPessoaisActivity.kt	activity_dados_pessoais	account/personal-data	compose
 DadosPessoaisConfirmacaoActivity.java	activity_dados_pessoais_confirmacao	account/personal-data-confirmation	compose
 DetalheComboActivity.java	activity_detalhe_combo	betting/combo-detail	compose
 DetalheDuvidaActivity.java	activity_detalhe_duvida	support#expanded-question	compose
@@ -59,6 +64,7 @@ ListaComprasActivity.java	dialog_filtro_compras	tickets/purchases#filter-dialog	
 ListaRapidaoActivity.java	activity_lista_rapidao	betting/rapid-list	compose
 LocalizacaoActivity.java	activity_localizacao	retail/location	compose
 LoginActivity.java	activity_login	account/login	compose
+LotecaActivity.java	activity_simula_aposta	betting/simulation#loteca	compose
 MensagensPushActivity.java	activity_notificacao_msg	notifications/messages	compose
 MeusCartoesActivity.java	activity_meus_cartoes	payment/cards	compose
 MinhasApostasActivity.java	activity_apostas_confirmadas	tickets/my-bets	compose
@@ -89,6 +95,7 @@ TermosAceiteActivity.java	activity_termos_aceite	support/terms-view	compose
 TermosUsoActivity.java	activity_termos_uso	support/terms-acceptance	compose
 TokenActivity.java	activity_token	account/token	compose
 TutorialActivity.java	activity_tutorial	betting/tutorial	compose
+TutorialApostaShakeActivity.java	activity_tutorial_aposta_shake	onboarding/tutorial#shake	compose
 TutorialMaisMilionariaActivity.java	activity_tutorial_mais_milionaria	betting/tutorial-plus	compose
 TutorialSuperSeteActivity.java	activity_tutorial_super_sete	betting/tutorial-super-seven	compose
 VerBolaoActivity.java	activity_ver_bolao	betting/pool-view	compose

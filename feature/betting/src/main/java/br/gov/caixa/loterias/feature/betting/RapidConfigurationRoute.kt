@@ -331,12 +331,12 @@ private fun RapidAmountPreset(label: String, selected: Boolean, enabled: Boolean
 
 @Composable
 private fun RapidPreset(label: String, selected: Boolean, enabled: Boolean, circular: Boolean, onClick: () -> Unit) {
-    val outline = if (circular) Color(0xFF51B7AB) else Color(0xFF00984A)
+    val outline = if (circular) CaixaDSColorTokens.LegacyRapidWheel else CaixaDSColorTokens.LegacyMegaSenaDark
     val shape = if (circular) CircleShape else RoundedCornerShape(if (selected) 10.dp else 4.dp)
     Box(
         Modifier.padding(if (circular) 10.dp else 5.dp)
             .then(if (circular) Modifier.size(60.dp) else Modifier.height(48.dp))
-            .background(if (selected) Color(0xFF51B7AB) else Color.White, shape)
+            .background(if (selected) CaixaDSColorTokens.LegacyRapidWheel else CaixaDSColorTokens.White, shape)
             .border(if (selected) 0.dp else 1.dp, outline, shape)
             .then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier),
         contentAlignment = Alignment.Center,
@@ -344,7 +344,7 @@ private fun RapidPreset(label: String, selected: Boolean, enabled: Boolean, circ
         Text(
             label,
             Modifier.padding(horizontal = if (circular) 0.dp else 10.dp),
-            color = if (selected) Color.White else Color(0xFF51B7AB),
+            color = if (selected) CaixaDSColorTokens.White else CaixaDSColorTokens.LegacyRapidWheel,
             fontFamily = if (circular) CaixaDSFontFamily else br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyRegularFontFamily,
             fontWeight = if (circular) FontWeight.Bold else FontWeight.Normal,
             fontSize = if (circular) 14.sp else 17.sp,

@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.feature.betting
 
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
@@ -331,7 +333,9 @@ private fun FavoriteTrapezoid(id: Int, modifier: Modifier) {
         else -> R.drawable.legacy_favorite_trapeze_megasena_mkp
     }
     val context = LocalContext.current
-    val drawable = remember(resource, context) { requireNotNull(context.getDrawable(resource)) }
+    val resources = LocalResources.current
+    val configuration = LocalConfiguration.current
+    val drawable = remember(resource, resources, configuration, context.theme) { requireNotNull(resources.getDrawable(resource, context.theme)) }
     Canvas(modifier) {
         drawable.setBounds(0, 0, size.width.toInt(), size.height.toInt())
         drawIntoCanvas { drawable.draw(it.nativeCanvas) }

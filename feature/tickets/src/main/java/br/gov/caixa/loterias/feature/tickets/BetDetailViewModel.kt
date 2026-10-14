@@ -26,6 +26,8 @@ import kotlinx.coroutines.launch
 data class BetDetailUiState(
     val bet: ConfirmedBet,
     val loading: Boolean = false,
+    val detailsReady: Boolean = true,
+    val serviceFailure: br.gov.caixa.loterias.core.domain.service.ServiceFailure? = null,
     val errorMessage: String? = null,
     val favoriteExpanded: Boolean = false,
     val favoriteName: String = "",
@@ -54,6 +56,8 @@ class BetDetailViewModel(
     private val addBetToCart: AddBetToCartUseCase,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
     private val getBettingParameters: GetBettingParametersUseCase? = null,
+    private val loadConfirmedBet: br.gov.caixa.loterias.core.domain.tickets.LoadConfirmedBetUseCase? = null,
+    private val downloadPrizeReceipt: br.gov.caixa.loterias.core.domain.retail.DownloadPrizeReceiptUseCase? = null,
 ) : ViewModel() {
     private val mutableState = MutableStateFlow(BetDetailUiState(bet))
     val state = mutableState.asStateFlow()
@@ -63,15 +67,32 @@ class BetDetailViewModel(
 
     init {
         if (bet.id > 0) {
-            mutableState.value = mutableState.value.copy(loading = true)
-            viewModelScope.launch(dispatchers.io) {
-                mutableState.value = when (val result = recoverBet(bet)) {
-                    is AppResult.Success -> BetDetailUiState(result.value)
-                    is AppResult.Failure -> BetDetailUiState(bet)
-                }
+            mutableState.value = mutableState.value.copy(loading = true, detailsReady = false)
+            loadDetails()
+        }
+    }
+
+    fun loadDetails() = viewModelScope.launch(dispatchers.io) {
+        val bet = state.value.bet
+        mutableState.update { it.copy(loading = true, detailsReady = false, errorMessage = null, serviceFailure = null) }
+        val loader = loadConfirmedBet
+        if (loader == null) {
+            mutableState.value = when (val result = recoverBet(bet)) {
+                is AppResult.Success -> BetDetailUiState(result.value)
+                is AppResult.Failure -> BetDetailUiState(bet, detailsReady = false, errorMessage = result.error.toReceiptMessage())
+            }
+        } else when (val result = loader(bet)) {
+            is br.gov.caixa.loterias.core.domain.service.ServiceResult.Success -> mutableState.value = BetDetailUiState(result.value)
+            is br.gov.caixa.loterias.core.domain.service.ServiceResult.Failed -> mutableState.update {
+                it.copy(loading = false, errorMessage = result.error.toReceiptMessage())
+            }
+            is br.gov.caixa.loterias.core.domain.service.ServiceResult.Rejected -> mutableState.update {
+                it.copy(loading = false, serviceFailure = result.failure)
             }
         }
     }
+
+    fun dismissServiceFailure() = mutableState.update { it.copy(serviceFailure = null) }
 
     fun downloadReceipt() = viewModelScope.launch(dispatchers.io) {
         val betId = state.value.bet.id
@@ -80,9 +101,11 @@ class BetDetailViewModel(
             return@launch
         }
         mutableState.update { it.copy(loading = true, errorMessage = null) }
-        when (val result = downloadBetReceipt(betId)) {
+        val prizeReceipt = state.value.bet.redeemedPrize && downloadPrizeReceipt != null
+        val result = if (prizeReceipt) requireNotNull(downloadPrizeReceipt)(betId) else downloadBetReceipt(betId)
+        when (result) {
             is AppResult.Success -> {
-                mutableReceipts.emit(BetReceipt(result.value, "comprovante-aposta-$betId.pdf"))
+                mutableReceipts.emit(BetReceipt(result.value, "comprovante-${if (prizeReceipt) "premio" else "aposta"}-$betId.pdf"))
                 mutableState.update { it.copy(loading = false) }
             }
             is AppResult.Failure -> mutableState.update {
@@ -141,6 +164,7 @@ class BetDetailViewModel(
     }
 
     fun addCurrentBetToCart() = viewModelScope.launch(dispatchers.io) {
+        if (!state.value.detailsReady) return@launch
         val bet = state.value.bet
         val hasSelection = bet.numbers.isNotEmpty() || bet.numberColumns.any(List<Int>::isNotEmpty) ||
             bet.lotecaSelections.isNotEmpty() || bet.lotogolSelections.isNotEmpty() || bet.surprise

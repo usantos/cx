@@ -18,6 +18,7 @@ adb install -r app/build/outputs/apk/prd/debug/app-prd-debug.apk >/dev/null
 
 for route in "${routes[@]}"; do
   launch_route="$route"
+  [[ "$route" == "results/home/{modality}" ]] && launch_route="results/home/megasena"
   [[ "$route" == "betting/pool-detail" ]] && launch_route="betting/pool-detail/visual-test"
   [[ "$route" == "betting/combo-detail" ]] && launch_route="betting/combo-detail/1"
   [[ "$route" == "cart/favorite-detail" ]] && launch_route="cart/favorite-detail/1"

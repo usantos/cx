@@ -26,25 +26,27 @@ fun LogoutOverlay(viewModel: LogoutViewModel, endSession: EndSessionGateway) {
         }
     }
     LogoutStatus(state) {
-        if (state.notice == LogoutNotice.LOCAL_DATA_FAILURE) viewModel.retryLocalCleanup()
+        if (state.notice == LogoutNotice.SERVER_FAILURE) viewModel.retryServerLogout()
+        else if (state.notice == LogoutNotice.LOCAL_DATA_FAILURE) viewModel.retryLocalCleanup()
         else viewModel.dismissNotice()
     }
 }
 
 @Composable
 internal fun LogoutStatus(state: LogoutUiState, onDismissNotice: () -> Unit) {
-    if (state.clearingLocalData || state.launch != null || state.waitingForBrowser) CaixaDSAuthenticationLoadingDialog()
+    if (state.signingOut || state.clearingLocalData || state.launch != null || state.waitingForBrowser) CaixaDSAuthenticationLoadingDialog()
     state.notice?.let { notice ->
         CaixaDSLegacyDialog(
             title = "Atenção",
             message = when (notice) {
+                LogoutNotice.SERVER_FAILURE -> "Não foi possível encerrar a sessão no serviço de loterias. Seu acesso foi mantido. Tente novamente."
                 LogoutNotice.LOCAL_FAILURE -> "Não foi possível encerrar a sessão neste aplicativo. Tente novamente."
                 LogoutNotice.LOCAL_DATA_FAILURE -> "O acesso foi encerrado, mas não foi possível limpar todos os dados locais da sessão. Tente novamente para continuar com segurança."
                 LogoutNotice.CANCELLED -> "Você saiu deste aplicativo. O encerramento da sessão no navegador foi cancelado e não pôde ser confirmado."
                 LogoutNotice.UNCONFIRMED -> "Você saiu deste aplicativo, mas não foi possível confirmar o encerramento da sessão no navegador."
                 LogoutNotice.SIMULATED -> "Sessão local encerrada no modo de simulação. Nenhuma sessão real do navegador foi encerrada."
             },
-            positiveLabel = if (notice == LogoutNotice.LOCAL_DATA_FAILURE) "Tentar novamente" else "Entendi",
+            positiveLabel = if (notice == LogoutNotice.LOCAL_DATA_FAILURE || notice == LogoutNotice.SERVER_FAILURE) "Tentar novamente" else "Entendi",
             onPositive = onDismissNotice,
         )
     }

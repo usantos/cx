@@ -58,3 +58,6 @@
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
+
+# Topaz OFD: mesmo contrato de preservação do CX para JNI/reflection do SDK.
+-keep class br.com.topaz.** { *; }

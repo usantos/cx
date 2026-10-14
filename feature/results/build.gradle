@@ -26,7 +26,8 @@ jacoco { toolVersion = '0.8.13' }
 def resultCoverageData = fileTree(layout.buildDirectory).include('jacoco/testDebugUnitTest.exec')
 def resultCoverageClasses = files(fileTree(
         dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
-        includes: ['**/ResultsViewModel.class', '**/ResultsUiState.class']
+        includes: ['**/ResultsViewModel.class', '**/ResultsUiState.class',
+                   '**/ConfirmedBetResultsViewModel*.class', '**/ConfirmedBetResultsState.class']
 ))
 
 tasks.register('jacocoDebugCoverageReport', JacocoReport) {

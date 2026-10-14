@@ -1,28 +1,28 @@
 # Catálogo de telas Compose
 
-O `NavHost` registra Home, 75 fluxos catalogados e o filtro do Marketplace. Os quatro seletores internos de números, modalidade e favoritos não são destinos artificiais. Marketplace, detalhe do bolão, resultados, login, onboarding, filtro, suporte e detalhe de aposta têm implementações próprias; os demais fluxos usam componentes Compose declarativos no respectivo módulo.
+O `NavHost` registra 80 destinos catalogados, incluindo Home e o filtro do Marketplace. Os quatro seletores internos de números, modalidade e favoritos não são destinos artificiais. Marketplace, detalhe do bolão, resultados, login, onboarding, filtro, suporte e detalhe de aposta têm implementações próprias; os demais fluxos usam componentes Compose declarativos no respectivo módulo.
 
 O catálogo comprova cobertura de navegação, não igualdade visual automática. O smoke garante renderização Compose sem crash com dados mock; a paridade exata de cada estado deve ser comprovada contra a referência legada na matriz visual.
 
 | Feature | Rotas |
 |---|---:|
+| Home | 1 |
 | Onboarding | 6 |
 | Conta | 7 |
-| Apostas, bolões e combos | 18 |
+| Apostas, bolões e combos | 14 |
 | Carrinho | 5 |
 | Pagamento | 12 |
 | Bilhetes, apostas e compras | 8 |
-| Resultados | 3 |
-| Jogo responsável | 4 |
+| Resultados | 4 |
+| Jogo responsável | 5 |
 | Notificações | 2 |
 | Lotéricas e resgate | 10 |
 | Filtro Marketplace | 1 |
-| Lista/detalhe Marketplace | 2 |
-| Suporte, termos e ajuda da modalidade | 4 |
+| Suporte, termos e ajuda da modalidade | 5 |
 
-A baseline completa preserva os nomes dos 396 layouts XML anteriores em `LEGACY_LAYOUT_BASELINE.txt`. Os 95 pontos de montagem de UI inventariados possuem destino explícito em `LEGACY_UI_INVENTORY.tsv`; ambos são validados pelo `modernCheck`.
+A baseline completa preserva os nomes dos 414 layouts XML do checkout CX atual em `LEGACY_LAYOUT_BASELINE.txt`. Os 102 pontos de montagem de UI inventariados possuem destino explícito em `LEGACY_UI_INVENTORY.tsv`; ambos são validados pelo `modernCheck`.
 
-Para verificar os 78 destinos/componentes navegáveis em um emulador com o APK `prdDebug` mock instalado:
+Para verificar os 80 destinos/componentes navegáveis em um emulador com o APK `prdDebug` mock instalado:
 
 ```bash
 ./gradlew :app:assemblePrdDebug -PmockBackend=true

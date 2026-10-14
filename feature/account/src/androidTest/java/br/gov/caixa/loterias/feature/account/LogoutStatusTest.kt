@@ -12,6 +12,19 @@ import org.junit.Test
 class LogoutStatusTest {
     @get:Rule val composeRule = createComposeRule()
 
+    @Test fun serverFailureRetainsAccessAndOffersExplicitRetry() {
+        val state = mutableStateOf(LogoutUiState(notice = LogoutNotice.SERVER_FAILURE))
+        composeRule.setContent {
+            CaixaDSTheme(darkTheme = false) {
+                LogoutStatus(state.value) { state.value = LogoutUiState(signingOut = true) }
+            }
+        }
+        composeRule.onNodeWithText("Não foi possível encerrar a sessão no serviço de loterias. Seu acesso foi mantido. Tente novamente.").assertIsDisplayed()
+        composeRule.onNodeWithText("Entendi").assertDoesNotExist()
+        composeRule.onNodeWithText("Tentar novamente").performClick()
+        composeRule.onNodeWithText("Carregando…").assertIsDisplayed()
+    }
+
     @Test fun incompleteCleanupOffersExplicitRetryInsteadOfDismissal() {
         val state = mutableStateOf(LogoutUiState(notice = LogoutNotice.LOCAL_DATA_FAILURE))
         composeRule.setContent {

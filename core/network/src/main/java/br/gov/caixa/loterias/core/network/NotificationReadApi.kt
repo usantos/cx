@@ -7,6 +7,8 @@ import retrofit2.http.GET
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Tag
+import retrofit2.http.POST
+import retrofit2.http.Body
 
 data class NotificationReadEnvelopeDto(
     @SerializedName("codigo") val code: String? = null,
@@ -26,6 +28,10 @@ data class UnreadNotificationsEnvelopeDto(
 }
 
 interface NotificationReadApi {
+    @POST("push/registros")
+    suspend fun registerPushDevice(@Body body: PushRegistrationRequestDto,
+        @Tag session: AccountVerificationSession): PushRegistrationEnvelopeDto
+
     @GET("historico-notificacoes/nao-visualizadas")
     suspend fun unread(@Tag session: AccountVerificationSession): Response<UnreadNotificationsEnvelopeDto>
 

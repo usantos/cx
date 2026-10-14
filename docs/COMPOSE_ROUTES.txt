@@ -53,6 +53,7 @@ responsible/start/required
 responsible/suspension
 results/confirmed-bet
 results/detail
+results/home/{modality}
 results/modalities
 retail/location
 retail/prize

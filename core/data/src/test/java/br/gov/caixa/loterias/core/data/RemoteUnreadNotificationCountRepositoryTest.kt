@@ -44,6 +44,7 @@ class RemoteUnreadNotificationCountRepositoryTest {
 
     private fun repository(response: Response<UnreadNotificationsEnvelopeDto>, onCall: () -> Unit = {}): RemoteUnreadNotificationCountRepository {
         val provider = NotificationReadApiProvider().apply { replace(object : NotificationReadApi {
+            override suspend fun registerPushDevice(body: PushRegistrationRequestDto, session: AccountVerificationSession): PushRegistrationEnvelopeDto = error("Not used by this test")
             override suspend fun unread(session: AccountVerificationSession): Response<UnreadNotificationsEnvelopeDto> {
                 assertSame(this@RemoteUnreadNotificationCountRepositoryTest.session, session)
                 onCall(); return response

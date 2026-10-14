@@ -49,6 +49,8 @@ interface MarketplaceRemoteDataSource {
 interface ResultsRemoteDataSource {
     suspend fun latestResult(modality: String): DrawResultDto?
     suspend fun resultByContest(modality: String, contest: Int): DrawResultDto?
+    suspend fun resultsForContests(code: String, contests: List<Int>): List<DrawResultDto> =
+        contests.mapNotNull { resultByContest(code, it) }
 }
 
 interface SupportRemoteDataSource {
@@ -131,6 +133,10 @@ class RetrofitLoteriasRemoteDataSource(
         apiProvider.current().addPoolShareToCart(request).payload
     override suspend fun latestResult(modality: String) = apiProvider.current().latestResult(modality).payload
     override suspend fun resultByContest(modality: String, contest: Int) = apiProvider.current().resultByContest(modality, contest).payload
+    override suspend fun resultsForContests(code: String, contests: List<Int>): List<DrawResultDto> =
+        requireNotNull(requireNotNull(legacyApiProvider).current().resultsForContests(code, contests).checkedPayload()) {
+            "Resultados sem payload"
+        }
     override suspend fun sections() = apiProvider.current().supportSections().payload
     override suspend fun questions(sectionId: Long) = apiProvider.current().supportQuestions(sectionId).payload
     override suspend fun terms() = apiProvider.current().currentTerms().payload

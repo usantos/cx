@@ -4,7 +4,12 @@ import android.content.Intent
 import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.auth.*
 import br.gov.caixa.loterias.core.common.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.domain.account.ClearLocalSessionDataUseCase
+import br.gov.caixa.loterias.core.domain.account.SignOutSessionUseCase
+import br.gov.caixa.loterias.core.domain.account.SessionSignOutResult
+import br.gov.caixa.loterias.core.domain.service.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +24,8 @@ class LogoutViewModelTest {
     @get:Rule val dispatcherRule = MainDispatcherRule(UnconfinedTestDispatcher())
     private fun viewModel(gateway: FakeGateway, clear: ClearLocalSessionDataUseCase = ClearLocalSessionDataUseCase {
         gateway.calls += "cleanup"
-    }) = LogoutViewModel(gateway, gateway, clear, FixedCoroutineDispatchers(dispatcherRule.dispatcher))
+    }, remote: SignOutSessionUseCase = SignOutSessionUseCase { SessionSignOutResult.Confirmed(gateway.identity) }) =
+        LogoutViewModel(gateway, gateway, clear, remote, gateway, FixedCoroutineDispatchers(dispatcherRule.dispatcher))
 
     @Test fun `local logout precedes preparation and browser launches once`() {
         val gateway = FakeGateway()
@@ -69,7 +75,8 @@ class LogoutViewModelTest {
     @Test fun `local failure blocks navigation and never opens browser`() {
         val gateway = FakeGateway().apply { failure = "local" }
         val vm = viewModel(gateway)
-        assertFalse(vm.start())
+        assertTrue(vm.start())
+        assertFalse(vm.state.value.localSessionEnded)
         assertEquals(LogoutNotice.LOCAL_FAILURE, vm.state.value.notice)
         assertEquals(listOf("local"), gateway.calls)
         assertFalse(vm.start())
@@ -212,7 +219,111 @@ class LogoutViewModelTest {
         assertEquals(listOf("local"), gateway.calls)
     }
 
-    private class FakeGateway : AuthenticationGateway, EndSessionGateway {
+    @Test fun `server rejection retains credentials and explicit retry sends once before clearing`() {
+        val gateway = FakeGateway()
+        var fail = true
+        var requests = 0
+        val failure = ServiceFailure.ConnectionFailed(ServiceConnectionFailure.TIMEOUT)
+        val vm = viewModel(gateway, remote = SignOutSessionUseCase {
+            requests++
+            gateway.calls += "server"
+            if (fail) SessionSignOutResult.Rejected(failure) else SessionSignOutResult.Confirmed(gateway.identity)
+        })
+        assertTrue(vm.start())
+        assertEquals(LogoutNotice.SERVER_FAILURE, vm.state.value.notice)
+        assertEquals(failure, vm.state.value.serverFailure)
+        assertFalse(vm.state.value.localSessionEnded)
+        assertEquals(listOf("server"), gateway.calls)
+        assertFalse(vm.start())
+        fail = false
+        vm.retryServerLogout()
+        assertEquals(2, requests)
+        assertEquals(listOf("server", "server", "local", "cleanup", "prepare"), gateway.calls)
+        assertTrue(vm.state.value.localSessionEnded)
+        vm.retryServerLogout()
+        assertEquals(2, requests)
+    }
+
+    @Test fun `pending server request blocks duplicate and does not clear or open browser`() = runTest(dispatcherRule.dispatcher) {
+        val gateway = FakeGateway()
+        val reply = CompletableDeferred<SessionSignOutResult>()
+        val vm = viewModel(gateway, remote = SignOutSessionUseCase { reply.await() })
+        vm.start()
+        assertTrue(vm.state.value.signingOut)
+        assertFalse(vm.state.value.localSessionEnded)
+        assertTrue(gateway.calls.isEmpty())
+        assertFalse(vm.start())
+        reply.complete(SessionSignOutResult.Confirmed(gateway.identity))
+        assertEquals(listOf("local", "cleanup", "prepare"), gateway.calls)
+        assertTrue(vm.state.value.localSessionEnded)
+    }
+
+    @Test fun `local clear retry after confirmed server logout never repeats remote transaction`() {
+        val gateway = FakeGateway().apply { failure = "local" }
+        var requests = 0
+        val vm = viewModel(gateway, remote = SignOutSessionUseCase { requests++; SessionSignOutResult.Confirmed(gateway.identity) })
+        vm.start()
+        assertEquals(LogoutNotice.LOCAL_FAILURE, vm.state.value.notice)
+        gateway.failure = null
+        vm.dismissNotice()
+        vm.start()
+        assertEquals(1, requests)
+        assertEquals(listOf("local", "local", "cleanup", "prepare"), gateway.calls)
+    }
+
+    @Test fun `simulation skips SILCE and cleanup retry does not replay confirmed logout`() {
+        val gateway = FakeGateway()
+        val vm = viewModel(gateway, remote = SignOutSessionUseCase { error("Simulation must not call SILCE") })
+        vm.start(simulated = true)
+        assertEquals(LogoutNotice.SIMULATED, vm.state.value.notice)
+        assertTrue(vm.state.value.localSessionEnded)
+    }
+
+    @Test fun `late server success for replaced session cannot clear newer credentials`() = runTest(dispatcherRule.dispatcher) {
+        val gateway = FakeGateway()
+        val oldIdentity = gateway.identity
+        val reply = CompletableDeferred<SessionSignOutResult>()
+        val vm = viewModel(gateway, remote = SignOutSessionUseCase { reply.await() })
+        vm.start()
+        gateway.identity = AuthenticatedSessionIdentity("b".repeat(64))
+        reply.complete(SessionSignOutResult.Confirmed(oldIdentity))
+        assertEquals(LogoutNotice.SERVER_FAILURE, vm.state.value.notice)
+        assertFalse(vm.state.value.localSessionEnded)
+        assertTrue(gateway.calls.isEmpty())
+    }
+
+    @Test fun `destruction during server request prevents local clear even after reply`() = runTest(dispatcherRule.dispatcher) {
+        val gateway = FakeGateway()
+        val reply = CompletableDeferred<SessionSignOutResult>()
+        val vm = viewModel(gateway, remote = SignOutSessionUseCase { reply.await() })
+        val store = ViewModelStore().apply { put("logout", vm) }
+        vm.start()
+        store.clear()
+        reply.complete(SessionSignOutResult.Confirmed(gateway.identity))
+        assertTrue(gateway.calls.isEmpty())
+        assertFalse(vm.state.value.localSessionEnded)
+    }
+
+    @Test fun `retrying cleanup never repeats confirmed server logout`() {
+        val gateway = FakeGateway()
+        var fail = true
+        var requests = 0
+        val vm = viewModel(gateway, ClearLocalSessionDataUseCase { check(!fail) }, SignOutSessionUseCase {
+            requests++
+            SessionSignOutResult.Confirmed(gateway.identity)
+        })
+        vm.start()
+        assertEquals(LogoutNotice.LOCAL_DATA_FAILURE, vm.state.value.notice)
+        fail = false
+        vm.retryLocalCleanup()
+        assertEquals(1, requests)
+        assertEquals(listOf("local", "prepare"), gateway.calls)
+    }
+
+    private class FakeGateway : AuthenticationGateway, EndSessionGateway, AuthenticatedSessionIdentityProvider {
+        var identity = AuthenticatedSessionIdentity("a".repeat(64))
+        override fun captureIdentity() = identity
+        override fun isCurrent(identity: AuthenticatedSessionIdentity) = this.identity === identity
         val calls = mutableListOf<String>()
         var failure: String? = null
         var outcome = EndSessionOutcome.RETURNED

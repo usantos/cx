@@ -96,6 +96,7 @@ class RemoteLatestNotificationReadRepositoryTest {
         for ((failure, expected) in listOf(java.net.SocketTimeoutException() to ServiceConnectionFailure.TIMEOUT,
             java.io.IOException() to ServiceConnectionFailure.CONNECTION)) {
             val provider = NotificationReadApiProvider().apply { replace(object : NotificationReadApi {
+            override suspend fun registerPushDevice(body: PushRegistrationRequestDto, session: AccountVerificationSession): PushRegistrationEnvelopeDto = error("Not used by this test")
                 override suspend fun unread(session: AccountVerificationSession): Response<UnreadNotificationsEnvelopeDto> = error("Unused GET in PUT fixture")
                 override suspend fun markRead(notificationId: Long, session: AccountVerificationSession): Response<NotificationReadEnvelopeDto> = throw failure
             }) }
@@ -104,6 +105,7 @@ class RemoteLatestNotificationReadRepositoryTest {
         }
         val cancellation = kotlinx.coroutines.CancellationException("cancelled")
         val provider = NotificationReadApiProvider().apply { replace(object : NotificationReadApi {
+            override suspend fun registerPushDevice(body: PushRegistrationRequestDto, session: AccountVerificationSession): PushRegistrationEnvelopeDto = error("Not used by this test")
                 override suspend fun unread(session: AccountVerificationSession): Response<UnreadNotificationsEnvelopeDto> = error("Unused GET in PUT fixture")
             override suspend fun markRead(notificationId: Long, session: AccountVerificationSession): Response<NotificationReadEnvelopeDto> = throw cancellation
         }) }
@@ -112,6 +114,7 @@ class RemoteLatestNotificationReadRepositoryTest {
 
     private fun repository(response: Response<NotificationReadEnvelopeDto>): RemoteLatestNotificationReadRepository {
         val provider = NotificationReadApiProvider().apply { replace(object : NotificationReadApi {
+            override suspend fun registerPushDevice(body: PushRegistrationRequestDto, session: AccountVerificationSession): PushRegistrationEnvelopeDto = error("Not used by this test")
                 override suspend fun unread(session: AccountVerificationSession): Response<UnreadNotificationsEnvelopeDto> = error("Unused GET in PUT fixture")
             override suspend fun markRead(notificationId: Long, session: AccountVerificationSession) = response
         }) }

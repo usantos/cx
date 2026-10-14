@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- CX Topaz collection permission, obsolete on Android 13 and later. -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
 
     <uses-feature android:name="android.hardware.camera.any" android:required="false" />
 
@@ -21,6 +23,15 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="false"
         android:theme="@style/Theme.Loterias">
+        <service android:name=".push.LoteriasMessagingService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/trevo" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="CanalLoteriasId" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -31,6 +42,50 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Keep other AndroidX initializers; skip only WorkManager in debug simulation. -->
+        <provider android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup" android:exported="false" tools:node="merge">
+            <meta-data android:name="androidx.work.WorkManagerInitializer"
+                android:value="${topazWorkInitializer}" tools:replace="android:value" />
+        </provider>
+        <!-- Disable delivery of persisted Topaz work while preserving real WorkManager defaults. -->
+        <service android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+            android:enabled="${topazWorkAlarmEnabled}" tools:replace="android:enabled" />
+        <service android:name="androidx.work.impl.background.systemjob.SystemJobService"
+            android:enabled="${topazWorkJobEnabled}" tools:replace="android:enabled" />
+        <service android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:enabled="${topazWorkForegroundEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+            android:enabled="${topazWorkReceiverEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+            android:enabled="${topazWorkInactiveReceiverEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+            android:enabled="${topazWorkInactiveReceiverEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+            android:enabled="${topazWorkInactiveReceiverEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+            android:enabled="${topazWorkInactiveReceiverEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+            android:enabled="${topazWorkInactiveReceiverEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+            android:enabled="${topazWorkAlarmEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+            android:enabled="${topazWorkReceiverEnabled}" tools:replace="android:enabled" />
+        <!-- Disable every autonomous Topaz entry point in mock debug variants. -->
+        <activity android:name="br.com.topaz.heartbeat.calleridwatchlist.CallActionActivity"
+            android:enabled="${topazComponentsEnabled}" tools:replace="android:enabled" />
+        <activity android:name="br.com.topaz.heartbeat.securecall.SecureCallActivity"
+            android:enabled="${topazComponentsEnabled}" tools:replace="android:enabled" />
+        <service android:name="br.com.topaz.heartbeat.notification.NotificationListener"
+            android:enabled="${topazComponentsEnabled}" tools:replace="android:enabled" />
+        <service android:name="br.com.topaz.heartbeat.sosus.ScreenSupervisorIntentService"
+            android:enabled="${topazComponentsEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="br.com.topaz.heartbeat.broadcast.OnBootScheduler"
+            android:enabled="${topazComponentsEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="br.com.topaz.heartbeat.broadcast.CronListener"
+            android:enabled="${topazComponentsEnabled}" tools:replace="android:enabled" />
+        <receiver android:name="br.com.topaz.heartbeat.broadcast.CallListener"
+            android:enabled="${topazComponentsEnabled}" tools:replace="android:enabled" />
         <!-- Remove Activity declarations brought by optional tooling/vendor manifests. -->
         <activity android:name="androidx.activity.ComponentActivity" tools:node="remove" />
         <activity android:name="androidx.compose.ui.tooling.PreviewActivity" tools:node="remove" />

@@ -21,6 +21,8 @@ buildscript {
 
 allprojects {
     repositories {
+        // SDK homologado CX, vendorizado sem depender de credenciais do repositório privado.
+        maven { url = uri("${rootDir}/third-party/maven"); content { includeGroup "br.com.topaz" } }
         mavenCentral()
         google()
         maven { url = uri("https://jitpack.io") }
@@ -52,7 +54,16 @@ tasks.register('verifyComposeMigration') {
         def requiredPlatformTheme = file('app/src/main/res/values/themes.xml').canonicalFile
         def adaptiveIcon = file('app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml').canonicalFile
         def adaptiveRoundIcon = file('app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml').canonicalFile
-        def allowedPlatformXml = [requiredManifest, requiredPlatformTheme, adaptiveIcon, adaptiveRoundIcon] as Set
+        def debugManifest = file('app/src/debug/AndroidManifest.xml').canonicalFile
+        if (debugManifest.isFile()) {
+            def debugRoot = new groovy.xml.XmlSlurper(false, false).parse(debugManifest)
+            def testHostOnly = debugRoot.depthFirst().every { it.name() in ['manifest', 'application', 'activity'] } &&
+                    debugRoot.application.activity.size() == 1 &&
+                    debugRoot.application.activity[0].attributes()['android:name'] == '.HomeDrawerTestActivity' &&
+                    debugRoot.application.activity[0].attributes()['android:exported'] == 'false'
+            if (!testHostOnly) throw new GradleException('Manifest debug pode declarar somente o host interno dos testes Compose.')
+        }
+        def allowedPlatformXml = [requiredManifest, requiredPlatformTheme, adaptiveIcon, adaptiveRoundIcon, debugManifest] as Set
         // Recursos de desenho preservam os vetores/LayerDrawables originais; não são telas XML.
         // A lista é explícita: qualquer novo XML requer auditoria e continua bloqueado por padrão.
         def legacyResourceInventory = file('docs/LEGACY_DRAWABLE_RESOURCES.txt')
@@ -143,22 +154,22 @@ tasks.register('verifyLegacyUiInventory') {
         if (!layoutBaseline.isFile()) throw new GradleException('Baseline completa dos layouts legados ausente.')
         if (!composeRouteCatalog.isFile()) throw new GradleException('Catálogo executável das rotas Compose ausente.')
         def legacyLayouts = layoutBaseline.readLines('UTF-8').findAll { !it.trim().isEmpty() }
-        if (legacyLayouts.size() != 396 || legacyLayouts.toSet().size() != 396 || legacyLayouts.any { !it.endsWith('.xml') }) {
-            throw new GradleException("A baseline deve preservar os 396 layouts XML legados; encontrados: ${legacyLayouts.size()}")
+        if (legacyLayouts.size() != 414 || legacyLayouts.toSet().size() != 414 || legacyLayouts.any { !it.endsWith('.xml') }) {
+            throw new GradleException("A baseline deve preservar os 414 layouts XML do CX; encontrados: ${legacyLayouts.size()}")
         }
         def composeRoutes = composeRouteCatalog.readLines('UTF-8').findAll { !it.trim().isEmpty() }
-        // 77 destinos/estados navegáveis + Home e filtro. Telas legadas absorvidas por
+        // 77 destinos/estados + Home, filtro e detalhe por modalidade da Home v2. Telas legadas absorvidas por
         // componentes internos são registradas após `#` no inventário, não como rotas.
-        if (composeRoutes.size() != 79 || composeRoutes.toSet().size() != 79) {
-            throw new GradleException("O catálogo deve conter os 79 destinos Compose únicos; encontrados: ${composeRoutes.size()}")
+        if (composeRoutes.size() != 80 || composeRoutes.toSet().size() != 80) {
+            throw new GradleException("O catálogo deve conter os 80 destinos Compose únicos; encontrados: ${composeRoutes.size()}")
         }
         def lines = inventory.readLines('UTF-8').findAll { !it.trim().isEmpty() }
         if (lines.first() != 'legacy_owner\tlegacy_layout\tcompose_target\tdisposition') {
             throw new GradleException('Cabeçalho inválido em LEGACY_UI_INVENTORY.tsv.')
         }
         def rows = lines.drop(1).collect { line -> line.split('\t', -1) }
-        if (rows.size() != 95 || rows.any { it.size() != 4 }) {
-            throw new GradleException("O inventário deve conter os 95 pontos legados com quatro colunas; encontrados: ${rows.size()}")
+        if (rows.size() != 102 || rows.any { it.size() != 4 }) {
+            throw new GradleException("O inventário deve conter os 102 pontos legados com quatro colunas; encontrados: ${rows.size()}")
         }
         def duplicateKeys = rows.groupBy { "${it[0]}|${it[1]}" }.findAll { key, values -> values.size() > 1 }.keySet()
         if (!duplicateKeys.isEmpty()) throw new GradleException("Entradas legadas duplicadas: ${duplicateKeys}")
@@ -220,6 +231,17 @@ tasks.register('verifyCleanArchitecture') {
             throw new GradleException("Repository deve acessar a API por DataSource: ${repositoriesUsingRetrofit}")
         }
 
+        def productionSources = [file('app'), file('core'), file('feature')].collectMany { root ->
+            fileTree(root).matching { include '**/src/main/**/*.kt' }.files
+        }
+        def misplacedPackages = productionSources.findAll { source ->
+            def matcher = source.text =~ /(?m)^package\s+([\w.]+)/
+            def relative = source.path.replace('\\', '/').split('/src/main/(java|kotlin)/', 2)
+            matcher.find() && relative.size() == 2 &&
+                    matcher.group(1) != relative[1].substring(0, relative[1].lastIndexOf('/')).replace('/', '.')
+        }
+        if (!misplacedPackages.isEmpty()) throw new GradleException("Package incompatível com o módulo/caminho de produção: ${misplacedPackages}")
+
         def hiltApplication = file('app/src/main/java/br/gov/caixa/loterias/apostas/LoteriasApplication.kt').text
         def host = file('app/src/main/java/br/gov/caixa/loterias/apostas/MainActivity.kt').text
         def module = file('app/src/main/java/br/gov/caixa/loterias/apostas/di/ApplicationModule.kt').text
@@ -234,7 +256,7 @@ tasks.register('verifyCleanArchitecture') {
 tasks.register('modernCheck') {
     group = 'verification'
     description = 'Runs build, lint, tests, coverage gates and Compose architecture checks.'
-    dependsOn 'verifyComposeMigration', 'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyCleanArchitecture', 'verifyCaixaDS', 'verifyFilaBraAar', 'verifyNetworkSecurity', 'verifyAppIdentityAndFlavors',
+    dependsOn 'verifyComposeMigration', 'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyCleanArchitecture', 'verifyCaixaDS', 'verifyFilaBraAar', 'verifyTopazHeartbeat', 'verifyNetworkSecurity', 'verifyAppIdentityAndFlavors',
             ':app:assembleDebug',
             ':app:testPrdDebugUnitTest', ':app:testTqsDebugUnitTest', ':app:testAutomacaoDebugUnitTest',
             ':app:lintPrdDebug', ':app:lintTqsDebug', ':app:lintAutomacaoDebug',
@@ -264,7 +286,7 @@ project(':app').tasks.configureEach { task ->
 tasks.register('releaseCheck') {
     group = 'verification'
     description = 'Builds every minified release flavor and validates legacy backend parity.'
-    dependsOn 'verifyLegacyBackendParity', 'verifyNetworkSecurity',
+    dependsOn 'verifyLegacyBackendParity', 'verifyNetworkSecurity', 'verifyTopazHeartbeat',
             ':app:assemblePrdRelease', ':app:assembleTqsRelease', ':app:assembleAutomacaoRelease'
 }
 
@@ -376,6 +398,106 @@ tasks.register('verifyCaixaDS') {
     }
 }
 
+tasks.register('verifyTopazHeartbeat') {
+    group = 'verification'
+    description = 'Checks the unchanged CX Topaz SDK in the local Maven repository.'
+    doLast {
+        def aar = file('third-party/maven/br/com/topaz/heartbeat/4.38.0.1658708/heartbeat-4.38.0.1658708.aar')
+        def expected = '82e586ee0417971b52decca1c23af6a933fd4c52a89ddc8b430d7433ccd01aad'
+        if (!aar.isFile()) throw new GradleException('AAR Topaz Heartbeat homologado ausente.')
+        def sdkManifest
+        new java.util.zip.ZipFile(aar).withCloseable { zip ->
+            zip.getInputStream(zip.getEntry('AndroidManifest.xml')).withCloseable { stream ->
+                sdkManifest = new groovy.xml.XmlSlurper(false, false).parse(stream)
+            }
+        }
+        def hostManifest = new groovy.xml.XmlSlurper(false, false).parse(file('app/src/main/AndroidManifest.xml'))
+        def componentTypes = ['activity', 'service', 'receiver', 'provider']
+        def sdkComponents = sdkManifest.application.children().findAll { componentTypes.contains(it.name()) }
+        sdkComponents.each { component ->
+            def name = component.'@android:name'.text()
+            def override = hostManifest.application.children().find {
+                it.name() == component.name() && it.'@android:name'.text() == name
+            }
+            if (override == null || override.'@android:enabled'.text() != '${topazComponentsEnabled}' ||
+                    !override.'@tools:replace'.text().split(',').collect { it.trim() }.contains('android:enabled')) {
+                throw new GradleException("Componente Topaz sem isolamento de simulação: ${name}")
+            }
+        }
+        // WorkManager 2.7.1 is the resolved SDK dependency; preserve each original enabled default.
+        def workComponents = [
+            'androidx.work.impl.background.systemalarm.SystemAlarmService': ['service', '${topazWorkAlarmEnabled}'],
+            'androidx.work.impl.background.systemjob.SystemJobService': ['service', '${topazWorkJobEnabled}'],
+            'androidx.work.impl.foreground.SystemForegroundService': ['service', '${topazWorkForegroundEnabled}'],
+            'androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver': ['receiver', '${topazWorkReceiverEnabled}'],
+            'androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy': ['receiver', '${topazWorkInactiveReceiverEnabled}'],
+            'androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy': ['receiver', '${topazWorkInactiveReceiverEnabled}'],
+            'androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy': ['receiver', '${topazWorkInactiveReceiverEnabled}'],
+            'androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy': ['receiver', '${topazWorkInactiveReceiverEnabled}'],
+            'androidx.work.impl.background.systemalarm.RescheduleReceiver': ['receiver', '${topazWorkInactiveReceiverEnabled}'],
+            'androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver': ['receiver', '${topazWorkAlarmEnabled}'],
+            'androidx.work.impl.diagnostics.DiagnosticsReceiver': ['receiver', '${topazWorkReceiverEnabled}'],
+        ]
+        workComponents.each { name, expectedComponent ->
+            def override = hostManifest.application.children().find {
+                it.name() == expectedComponent[0] && it.'@android:name'.text() == name
+            }
+            if (override.'@android:enabled'.text() != expectedComponent[1] ||
+                    !override.'@tools:replace'.text().contains('android:enabled')) {
+                throw new GradleException("Entrega de WorkManager sem isolamento de simulação: ${name}")
+            }
+        }
+        def isolationPolicy = file('app/src/main/java/br/gov/caixa/loterias/apostas/authentication/TopazMockComponentPolicy.kt').text.replace('\\$', '$')
+        def isolatedNames = sdkComponents.collect { it.'@android:name'.text() } + workComponents.keySet()
+        isolatedNames.each { name ->
+            if (!isolationPolicy.contains('"' + name + '"')) {
+                throw new GradleException("Bootstrap mock não cobre componente autônomo: ${name}")
+            }
+        }
+        def application = file('app/src/main/java/br/gov/caixa/loterias/apostas/LoteriasApplication.kt').text
+        def isolationIndex = application.indexOf('isolateTopazMockComponents(this, BuildConfig.ENABLE_MOCK_BACKEND)')
+        if (isolationIndex < 0 || isolationIndex > application.indexOf('super.onCreate()') ||
+                isolationIndex > application.indexOf('pushRuntime.start(this)')) {
+            throw new GradleException('Isolamento de componentes mock deve acontecer antes dos runtimes da aplicação.')
+        }
+        def startup = hostManifest.application.provider.find { it.'@android:name'.text() == 'androidx.startup.InitializationProvider' }
+        def workInitializer = startup.'meta-data'.find { it.'@android:name'.text() == 'androidx.work.WorkManagerInitializer' }
+        if (startup.'@android:enabled'.text() == 'false' || startup.'@tools:node'.text() == 'remove' ||
+                workInitializer.'@android:value'.text() != '${topazWorkInitializer}' ||
+                !workInitializer.'@tools:replace'.text().contains('android:value')) {
+            throw new GradleException('Simulação deve desabilitar apenas o initializer WorkManager, mantendo demais inicializadores AndroidX.')
+        }
+        def appBuild = file('app/build.gradle').text
+        def originalWorkDefaults = [
+            "topazWorkInitializer: 'androidx.startup'",
+            "topazWorkAlarmEnabled: '@bool/enable_system_alarm_service_default'",
+            "topazWorkJobEnabled: '@bool/enable_system_job_service_default'",
+            "topazWorkForegroundEnabled: '@bool/enable_system_foreground_service_default'",
+            "topazWorkReceiverEnabled: 'true'", "topazWorkInactiveReceiverEnabled: 'false'",
+        ]
+        if (originalWorkDefaults.any { !appBuild.contains(it) } ||
+                !appBuild.contains("[key, mockBackendEnabled ? (key == 'topazWorkInitializer' ? 'mock-disabled' : 'false') : value]") ||
+                !(appBuild =~ /release\s*\{[\s\S]*?manifestPlaceholders \+= topazWorkManagerDefaults/).find()) {
+            throw new GradleException('WorkManager deve ficar desativado só em mock debug e conservar defaults em release.')
+        }
+        if (!(appBuild =~ /debug\s*\{[\s\S]*?manifestPlaceholders.topazComponentsEnabled\s*=\s*\(!mockBackendEnabled\).toString\(\)/).find() ||
+                !(appBuild =~ /release\s*\{[\s\S]*?manifestPlaceholders.topazComponentsEnabled\s*=\s*'true'/).find()) {
+            throw new GradleException('Isolamento Topaz deve seguir mock apenas em debug e permanecer ativo em release.')
+        }
+
+        def digest = java.security.MessageDigest.getInstance('SHA-256')
+        aar.withInputStream { stream ->
+            byte[] buffer = new byte[8192]
+            for (int read = stream.read(buffer); read != -1; read = stream.read(buffer)) {
+                digest.update(buffer, 0, read)
+            }
+        }
+        if (digest.digest().encodeHex().toString() != expected) {
+            throw new GradleException('Checksum do SDK Topaz Heartbeat inválido.')
+        }
+    }
+}
+
 tasks.register('verifyFilaBraAar') {
     group = 'verification'
     description = 'Checks the pinned FilaBRA binary before packaging.'
@@ -392,5 +514,16 @@ tasks.register('verifyFilaBraAar') {
         }
         def actual = digest.digest().encodeHex().toString()
         if (actual != expected) throw new GradleException("Checksum FilaBRA inválido: ${actual}")
+    }
+}
+
+// Instrumented suites share one Android device: prevent a module from stealing
+// focus from another module while its Compose assertions are running.
+gradle.projectsEvaluated {
+    def deviceTests = allprojects.collectMany { project ->
+        project.tasks.matching { it.name.startsWith('connected') && it.name.endsWith('AndroidTest') && it.name != 'connectedAndroidTest' }.toList()
+    }.sort { it.path }
+    deviceTests.eachWithIndex { task, index ->
+        if (index > 0) task.mustRunAfter(deviceTests.take(index))
     }
 }

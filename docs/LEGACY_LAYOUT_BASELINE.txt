@@ -6,6 +6,7 @@ src/main/res/layout/activity_alterar_dados_login_caixa.xml
 src/main/res/layout/activity_aposta_confirmada_detalhes.xml
 src/main/res/layout/activity_apostas_confirmadas.xml
 src/main/res/layout/activity_app_indisponivel.xml
+src/main/res/layout/activity_app_indisponivel_novo.xml
 src/main/res/layout/activity_apresentar_cartao.xml
 src/main/res/layout/activity_atualizacao.xml
 src/main/res/layout/activity_autoavaliacao_form.xml
@@ -17,6 +18,7 @@ src/main/res/layout/activity_cadastrar.xml
 src/main/res/layout/activity_cadastrar_confirmacao.xml
 src/main/res/layout/activity_carrinho.xml
 src/main/res/layout/activity_carrinhos_favoritos.xml
+src/main/res/layout/activity_central_notificacao.xml
 src/main/res/layout/activity_combos.xml
 src/main/res/layout/activity_configuracao_rapidao.xml
 src/main/res/layout/activity_confirma_resgate_pix.xml
@@ -78,12 +80,14 @@ src/main/res/layout/activity_termos_aceite.xml
 src/main/res/layout/activity_termos_uso.xml
 src/main/res/layout/activity_token.xml
 src/main/res/layout/activity_tutorial.xml
+src/main/res/layout/activity_tutorial_aposta_shake.xml
 src/main/res/layout/activity_tutorial_mais_milionaria.xml
 src/main/res/layout/activity_tutorial_super_sete.xml
 src/main/res/layout/activity_ver_bolao.xml
 src/main/res/layout/activity_visualizar_resultados.xml
 src/main/res/layout/activity_web_view.xml
 src/main/res/layout/alerta_carregando.xml
+src/main/res/layout/aposta_shake_tooltip.xml
 src/main/res/layout/apostas_list_view_row.xml
 src/main/res/layout/app_bar_azul.xml
 src/main/res/layout/app_bar_custom.xml
@@ -114,6 +118,7 @@ src/main/res/layout/content_atualizacao_app.xml
 src/main/res/layout/content_cadastrar.xml
 src/main/res/layout/content_cadastrar_confirmacao.xml
 src/main/res/layout/content_cadastrar_old.xml
+src/main/res/layout/content_central_notificacao.xml
 src/main/res/layout/content_confirma_resgate_pix.xml
 src/main/res/layout/content_dados_pessoais.xml
 src/main/res/layout/content_dados_pessoais_confirmacao.xml
@@ -131,6 +136,8 @@ src/main/res/layout/content_lista_rapidao.xml
 src/main/res/layout/content_localizacao.xml
 src/main/res/layout/content_numeros_rapidao.xml
 src/main/res/layout/content_principal.xml
+src/main/res/layout/content_principal_menu_rapido.xml
+src/main/res/layout/content_principal_menu_rapido_outubro_rosa.xml
 src/main/res/layout/content_rapidao_aposta_favorita_selecao.xml
 src/main/res/layout/content_repasses_sociais.xml
 src/main/res/layout/content_restrito_dezoito_anos.xml
@@ -217,6 +224,7 @@ src/main/res/layout/fragment_resultado_generico.xml
 src/main/res/layout/fragment_resultado_loteca.xml
 src/main/res/layout/fragment_resultado_lotogol.xml
 src/main/res/layout/fragment_resultado_timemania.xml
+src/main/res/layout/fragment_rodape_detalhes_bolao.xml
 src/main/res/layout/fragment_rodape_simulacao_aposta.xml
 src/main/res/layout/fragment_somador_carrinho.xml
 src/main/res/layout/fragment_sub_barra_modalidade.xml
@@ -241,12 +249,15 @@ src/main/res/layout/fragment_tutorial_nova_modalidade.xml
 src/main/res/layout/fragment_tutorial_super_sete1.xml
 src/main/res/layout/fragment_tutorial_super_sete2.xml
 src/main/res/layout/fragment_tutorial_super_sete3.xml
+src/main/res/layout/item_aposta_carrinho.xml
 src/main/res/layout/item_apostas_confirmadas.xml
+src/main/res/layout/item_bolao_carrinho.xml
 src/main/res/layout/item_buscar_favoritas.xml
 src/main/res/layout/item_cartao_meio_pagamento.xml
 src/main/res/layout/item_cell.xml
 src/main/res/layout/item_chave.xml
 src/main/res/layout/item_chave_favorita.xml
+src/main/res/layout/item_combo_carrinho.xml
 src/main/res/layout/item_compras_dezenas_layout.xml
 src/main/res/layout/item_compras_generico_layout.xml
 src/main/res/layout/item_compras_loteca_layout.xml
@@ -266,6 +277,8 @@ src/main/res/layout/item_duvida_detalhe.xml
 src/main/res/layout/item_filtra_modalidade.xml
 src/main/res/layout/item_footer_boloes.xml
 src/main/res/layout/item_header_boloes.xml
+src/main/res/layout/item_header_carrinho.xml
+src/main/res/layout/item_header_carrinho_fixo.xml
 src/main/res/layout/item_jogo_bolao.xml
 src/main/res/layout/item_jogo_combo.xml
 src/main/res/layout/item_list_bolao.xml
@@ -283,6 +296,7 @@ src/main/res/layout/item_minhas_apostas_accordion.xml
 src/main/res/layout/item_msg_push_swipebuttons.xml
 src/main/res/layout/item_network_entry.xml
 src/main/res/layout/item_network_section.xml
+src/main/res/layout/item_notificacao.xml
 src/main/res/layout/item_numeros_grid_circulo.xml
 src/main/res/layout/item_numeros_grid_circulo_clone.xml
 src/main/res/layout/item_numeros_grid_noshape.xml
@@ -335,6 +349,7 @@ src/main/res/layout/linearlayout_resultado_time_loteca.xml
 src/main/res/layout/linearlayout_resultado_time_lotogol.xml
 src/main/res/layout/linearlayout_tipos_apostas.xml
 src/main/res/layout/linearlayout_tipos_apostas_arredondadas.xml
+src/main/res/layout/list_group_aposta_shake.xml
 src/main/res/layout/list_group_compras.xml
 src/main/res/layout/list_group_filtro.xml
 src/main/res/layout/list_group_side_menu.xml
@@ -346,11 +361,13 @@ src/main/res/layout/list_item_ordernar_por_filtro.xml
 src/main/res/layout/list_item_side_menu.xml
 src/main/res/layout/list_item_situacao_aposta.xml
 src/main/res/layout/list_item_situacao_compra.xml
+src/main/res/layout/loteca_toolbar.xml
 src/main/res/layout/menu_item_notificacao.xml
 src/main/res/layout/nav_bottom_principal.xml
 src/main/res/layout/nav_header_principal.xml
 src/main/res/layout/nova_popup_notificacao.xml
 src/main/res/layout/popup_notificacao.xml
+src/main/res/layout/rodape_detalhe_simula.xml
 src/main/res/layout/rodape_simula.xml
 src/main/res/layout/row_aposta_carrinho_favorito.xml
 src/main/res/layout/row_aposta_compras_equipe_lotogol.xml
@@ -382,6 +399,7 @@ src/main/res/layout/row_time_loteca_resultado.xml
 src/main/res/layout/row_tipo_aposta.xml
 src/main/res/layout/row_tipo_aposta_bold.xml
 src/main/res/layout/simula_toolbar.xml
+src/main/res/layout/sino_notificacao.xml
 src/main/res/layout/spinner_date.xml
 src/main/res/layout/spinner_dropdown_item.xml
 src/main/res/layout/spinner_item.xml

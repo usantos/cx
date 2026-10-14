@@ -52,7 +52,7 @@ class FavoriteCartsIntegrationTest {
     @Test fun detailPreservesNumbersAndLastBetRemovalDeletesCartAndReturns() {
         show(detail = true)
         compose.onNodeWithText("Favoritas").assertIsDisplayed()
-        compose.onNodeWithContentDescription("Termos de Uso").performClick()
+        compose.onNodeWithContentDescription("Ajuda").performClick()
         compose.onNodeWithText("01 - 02 - 03 - 04 - 05 - 06").assertIsDisplayed()
         compose.onNodeWithText("Adicionar ao carrinho").assertDoesNotExist()
         compose.onNodeWithContentDescription("Excluir aposta").performClick()

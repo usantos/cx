@@ -70,8 +70,35 @@ fun BetDetailDataRoute(
     onHelp: () -> Unit = {},
     onEdit: ((ConfirmedBet) -> Unit)? = null,
     onCart: () -> Unit = {},
+    onServiceRedirect: (br.gov.caixa.loterias.core.domain.service.ServiceRedirect) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val failure = state.serviceFailure
+    LaunchedEffect(failure) {
+        if (failure is br.gov.caixa.loterias.core.domain.service.ServiceFailure.RedirectRequired) {
+            viewModel.dismissServiceFailure()
+            onServiceRedirect(failure.destination)
+        }
+    }
+    if (failure != null && failure !is br.gov.caixa.loterias.core.domain.service.ServiceFailure.RedirectRequired) {
+        CaixaDSAlertDialog(title = "Atenção", message = when (failure) {
+            is br.gov.caixa.loterias.core.domain.service.ServiceFailure.NoticeRequired -> failure.notice.message ?: "Não foi possível consultar esta aposta."
+            is br.gov.caixa.loterias.core.domain.service.ServiceFailure.ConnectionFailed -> "Não foi possível acessar o serviço. Verifique sua conexão."
+            is br.gov.caixa.loterias.core.domain.service.ServiceFailure.RegistrationRequired -> failure.message
+            else -> "Não foi possível consultar esta aposta."
+        }, confirmText = "Tentar novamente", onConfirm = viewModel::loadDetails,
+            onDismiss = { viewModel.dismissServiceFailure(); onBack() })
+    }
+    if (!state.detailsReady && !state.loading) {
+        br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyScaffold(title = "Detalhes da aposta", onBack = onBack) { padding ->
+            br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyEmptyState(
+                title = "Não foi possível consultar esta aposta", message = state.errorMessage.orEmpty(),
+                actionLabel = "Tentar novamente", onAction = viewModel::loadDetails,
+                modifier = Modifier.padding(padding),
+            )
+        }
+        return
+    }
     val context = LocalContext.current
     var pendingReceipt by remember { mutableStateOf<BetReceipt?>(null) }
     var savedReceipt by remember { mutableStateOf<Uri?>(null) }
@@ -227,7 +254,7 @@ fun BetDetailRoute(
     ) { padding ->
         Column(
             Modifier.fillMaxSize().padding(padding).background(modalityColor)
-                .then(if (sportsBet) Modifier.verticalScroll(bodyScroll) else Modifier)
+                .then(if (sportsBet || bet.receipt?.netPrize != null) Modifier.verticalScroll(bodyScroll) else Modifier)
                 .padding(horizontal = 24.dp),
         ) {
             Text("Concurso", Modifier.padding(top = 8.dp), color = contentColor, fontSize = 20.sp, fontWeight = FontWeight.Bold)
@@ -247,6 +274,19 @@ fun BetDetailRoute(
                 )
             }
             ConfirmedBetSelection(bet, contentColor)
+            bet.receipt?.let { receipt ->
+                if (receipt.nsbi.isNotBlank()) Text("NSBI: ${receipt.nsbi}", color = contentColor, fontSize = 14.sp)
+                receipt.netPrize?.let { value ->
+                    Text("Prêmio líquido: R$ ${value.setScale(2).toPlainString().replace('.', ',')}",
+                        color = contentColor, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                }
+                if (receipt.paymentDate.isNotBlank()) Text("Pagamento: ${receipt.paymentDate} ${receipt.paymentTime}", color = contentColor, fontSize = 14.sp)
+                if (receipt.paymentLocation.isNotBlank()) Text(receipt.paymentLocation, color = contentColor, fontSize = 14.sp)
+                if (receipt.paymentNsu.isNotBlank()) Text("NSU: ${receipt.paymentNsu}", color = contentColor, fontSize = 14.sp)
+                receipt.awards.forEach { award ->
+                    Text("Concurso ${award.contest ?: bet.contest} • ${award.name} • ${award.status}", color = contentColor, fontSize = 14.sp)
+                }
+            }
             Row(Modifier.fillMaxWidth().padding(top = 27.dp), verticalAlignment = Alignment.Top) {
                 Icon(CaixaDSIcons.Time, contentDescription = null, Modifier.size(23.dp), tint = contentColor)
                 Column(Modifier.padding(start = 16.dp)) {
@@ -275,7 +315,7 @@ fun BetDetailRoute(
                     fontSize = 12.sp,
                 )
             }
-            if (sportsBet) Spacer(Modifier.height(190.dp)) else Spacer(Modifier.weight(1f))
+            if (sportsBet || bet.receipt?.netPrize != null) Spacer(Modifier.height(190.dp)) else Spacer(Modifier.weight(1f))
             if (!pending) {
                 LegacyGrayAction("Ver resultado", onViewResult, 56)
             }
@@ -385,8 +425,24 @@ private fun LegacyBottomAction(label: String, onClick: (() -> Unit)?, edit: Bool
 
 /** Shared list/detail repeat action dialogs; preserves the existing ViewModel decisions and callbacks. */
 @Composable
-fun BetRepeatActionsOverlay(viewModel: BetDetailViewModel, showLoading: Boolean = true) {
+fun BetRepeatActionsOverlay(viewModel: BetDetailViewModel, showLoading: Boolean = true,
+    onServiceRedirect: ((br.gov.caixa.loterias.core.domain.service.ServiceRedirect) -> Unit)? = null) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    if (onServiceRedirect != null) {
+        val failure = state.serviceFailure
+        LaunchedEffect(failure) {
+            if (failure is br.gov.caixa.loterias.core.domain.service.ServiceFailure.RedirectRequired) {
+                viewModel.dismissServiceFailure(); onServiceRedirect(failure.destination)
+            }
+        }
+        if (failure != null && failure !is br.gov.caixa.loterias.core.domain.service.ServiceFailure.RedirectRequired) {
+            CaixaDSAlertDialog("Atenção", when (failure) {
+                is br.gov.caixa.loterias.core.domain.service.ServiceFailure.NoticeRequired -> failure.notice.message ?: "Não foi possível consultar esta aposta."
+                is br.gov.caixa.loterias.core.domain.service.ServiceFailure.RegistrationRequired -> failure.message
+                else -> "Não foi possível acessar o serviço. Tente novamente."
+            }, "Entendi", viewModel::dismissServiceFailure)
+        }
+    }
     if (showLoading && state.loading) {
         Box(Modifier.fillMaxSize().background(CaixaDS.colors.surface.copy(alpha = 0.88f)), contentAlignment = Alignment.Center) {
             CaixaDSLoading("Carregando…")

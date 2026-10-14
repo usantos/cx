@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -72,7 +71,7 @@ private fun StartupUnavailableScreen(
     toolbarIcon: @Composable () -> Unit,
 ) {
     Box(Modifier.fillMaxSize().background(CaixaDSColorTokens.White)) {
-      BoxWithConstraints(
+      Box(
         Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
             .background(CaixaDSColorTokens.LegacyUnavailableBlue),
       ) {
@@ -122,7 +121,7 @@ private fun StartupUnavailableScreen(
                 kind.detailMessage?.let { detail ->
                     Box(
                         Modifier.padding(top = 16.dp).width(276.dp).height(1.dp)
-                            .background(Color.White.copy(alpha = 0.278f)),
+                            .background(CaixaDSColorTokens.White.copy(alpha = 0.278f)),
                     )
                     Text(
                         text = detail,

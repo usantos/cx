@@ -160,6 +160,13 @@ interface LegacyBackendApi {
     @GET("resultados")
     suspend fun resultsRange(@QueryMap filters: Map<String, String>): ApiEnvelope<JsonElement>
 
+    /** Repeated concursos keys are required by the installed results-range contract. */
+    @GET("resultados")
+    suspend fun resultsForContests(
+        @Query("modalidade") modality: String,
+        @Query("concursos") contests: List<Int>,
+    ): ApiEnvelope<List<DrawResultDto>>
+
     @POST("bilhetes/conferir-bilhete")
     suspend fun checkTicket(@Body body: JsonElement): ApiEnvelope<JsonElement>
 

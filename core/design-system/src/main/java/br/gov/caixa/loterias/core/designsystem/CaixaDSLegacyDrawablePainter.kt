@@ -8,14 +8,18 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 
 /** Preserva o desenho nativo de LayerDrawable/RotateDrawable dos recursos legados. */
 @Composable
 fun caixaDSLegacyDrawablePainter(@DrawableRes resource: Int): Painter {
     val context = LocalContext.current
-    return remember(context, resource) {
-        val drawable = requireNotNull(context.getDrawable(resource)).mutate()
+    val resources = LocalResources.current
+    val configuration = LocalConfiguration.current
+    return remember(resources, configuration, context.theme, resource) {
+        val drawable = requireNotNull(resources.getDrawable(resource, context.theme)).mutate()
         object : Painter() {
             override val intrinsicSize = Size.Unspecified
             override fun DrawScope.onDraw() {

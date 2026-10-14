@@ -1076,6 +1076,65 @@ class BettingGameViewModelTest {
         assertEquals(0 to 5, lotogol.state.value.lotogolScores[2])
     }
 
+    @Test fun `changing manual clover quantity clears clovers and warns only once without losing numbers`() = runTest {
+        parameterResult = successParameters(game(id = MAIS_MILIONARIA_ID).copy(
+            minimumClovers = 2, maximumClovers = 4, maximumCloverNumber = 6,
+            prices = listOf(BetPrice(6, 2, BigDecimal("6.00")), BetPrice(6, 3, BigDecimal("18.00")), BetPrice(6, 4, BigDecimal("36.00"))),
+        ))
+        val viewModel = viewModel(MAIS_MILIONARIA_ID)
+        advanceUntilIdle()
+        (1..6).forEach(viewModel::toggleNumber)
+        viewModel.primaryAction()
+        viewModel.toggleClover(1)
+        viewModel.toggleClover(2)
+        assertTrue(viewModel.state.value.canAddToCart)
+
+        viewModel.chooseCloverQuantity(3)
+        assertEquals(3, viewModel.state.value.manualCloverQuantity)
+        assertEquals((1..6).toSet(), viewModel.state.value.selectedNumbers)
+        assertTrue(viewModel.state.value.selectedClovers.isEmpty())
+        assertFalse(viewModel.state.value.canAddToCart)
+        assertEquals(BigDecimal("18.00"), viewModel.state.value.unitPrice)
+        assertTrue(viewModel.state.value.warningMessage?.contains("quantidade de trevos") == true)
+        viewModel.dismissMessage()
+        (1..3).forEach(viewModel::toggleClover)
+        viewModel.chooseCloverQuantity(3)
+        viewModel.chooseCloverQuantity(5)
+        assertEquals(setOf(1, 2, 3), viewModel.state.value.selectedClovers)
+        viewModel.chooseCloverQuantity(4)
+        assertNull(viewModel.state.value.warningMessage)
+        assertTrue(viewModel.state.value.selectedClovers.isEmpty())
+        (1..4).forEach(viewModel::toggleClover)
+        viewModel.addToCart()
+        advanceUntilIdle()
+        assertEquals(listOf(1, 2, 3, 4), submitted?.clovers)
+        assertEquals(4, submitted?.cloverQuantity)
+    }
+
+    @Test fun `clearing complete selection returns to numbers and keeps purchased quantity and recurrence`() = runTest {
+        val teams = sportsTeams()
+        parameterResult = successParameters(game(id = TIMEMANIA_ID).copy(teams = teams))
+        val viewModel = viewModel(TIMEMANIA_ID)
+        advanceUntilIdle()
+        viewModel.chooseRecurringDraws(4)
+        (1..6).forEach(viewModel::toggleNumber)
+        viewModel.primaryAction()
+        viewModel.selectTeam(teams.first())
+        assertTrue(viewModel.state.value.hasPendingEdits)
+        viewModel.clearSelection()
+        with(viewModel.state.value) {
+            assertEquals(BetSelectionStep.NUMBERS, selectionStep)
+            assertTrue(selectedNumbers.isEmpty())
+            assertNull(selectedTeam)
+            assertEquals("", teamQuery)
+            assertEquals(6, numberQuantity)
+            assertEquals(4, recurringDraws)
+            assertFalse(canAddToCart)
+            assertFalse(hasPendingEdits)
+        }
+        assertNull(submitted)
+    }
+
     private fun viewModel(modalityId: Int? = 2): BettingGameViewModel {
         val dispatcher = UnconfinedTestDispatcher()
         return BettingGameViewModel(
