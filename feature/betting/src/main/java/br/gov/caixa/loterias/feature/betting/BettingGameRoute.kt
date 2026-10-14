@@ -303,10 +303,11 @@ private fun BettingModeToolbar(
     val graphite = CaixaDSColorTokens.LegacySocialGraphite
     val modalityStyle = caixaDSLotteryStyle(state.game?.modality?.id ?: 0)
     val surprise = state.mode == BetEntryMode.SURPRISE
+    // SwitchMaterial measures 48dp; its native container adds 4dp on each side.
     Column(Modifier.fillMaxWidth()) {
-        Row(Modifier.fillMaxWidth().heightIn(min = 52.dp).background(if (surprise) modalityStyle.light.copy(alpha = 26f / 255f) else CaixaDSColorTokens.LegacySimulationToolbar).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("betting-mode-toolbar").background(if (surprise) modalityStyle.light.copy(alpha = 26f / 255f) else CaixaDSColorTokens.LegacySimulationToolbar).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
             Row(
-                Modifier.offset(y = 3.dp).padding(4.dp).toggleable(
+                Modifier.padding(4.dp).toggleable(
                     value = surprise,
                     role = Role.Switch,
                     onValueChange = { checked -> if (checked) onSurprise() else onManual() },
@@ -347,15 +348,16 @@ private fun BettingModeToolbar(
                         )
                     }
                 }
-                Text("Surpresinha", Modifier.padding(start = 8.dp), fontFamily = CaixaDSFontFamily, fontSize = 16.sp, color = graphite)
+                // The native switch occupies 48dp; the drawn track above occupies 45dp.
+                Text("Surpresinha", Modifier.padding(start = 11.dp), fontFamily = CaixaDSFontFamily, fontSize = 16.sp, color = graphite, style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)))
             }
             Spacer(Modifier.weight(1f))
-            Row(Modifier.offset(y = 3.dp).clickable(enabled = onTutorial != null) { onTutorial?.invoke() }.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text("Como jogar", Modifier.padding(end = 8.dp), fontFamily = CaixaDSFontFamily, fontSize = 16.sp, color = graphite)
+            Row(Modifier.clickable(enabled = onTutorial != null) { onTutorial?.invoke() }.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text("Como jogar", Modifier.padding(end = 8.dp), fontFamily = CaixaDSFontFamily, fontSize = 16.sp, color = graphite, style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)))
                 Icon(painterResource(R.drawable.ic_info), null, Modifier.size(24.dp), tint = graphite)
             }
         }
-        Row(Modifier.fillMaxWidth().padding(start = 16.dp, top = 21.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(Modifier.fillMaxWidth().padding(start = 16.dp, top = 16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             val style = caixaDSLotteryStyle(state.game?.modality?.id ?: 0)
             val cloverSelector = state.game?.modality?.id == MAIS_MILIONARIA_ID && state.selectionStep == BetSelectionStep.COMPLEMENT && state.mode == BetEntryMode.MANUAL
             BettingDSButton(if (cloverSelector) "${state.manualCloverQuantity} trevos" else "${state.numberQuantity} números", onNumberQuantity, Modifier.width(if (cloverSelector) 100.dp else 112.dp).height(45.dp),
@@ -406,8 +408,8 @@ private fun ManualBetContent(state: BettingGameUiState, viewModel: BettingGameVi
     ) {
         if (state.selectionStep == BetSelectionStep.COMPLEMENT) {
             // CX keeps textSelecionados visible even when TREVOS sets its text to empty.
-            // Its 16dp top margin includes the enclosing 1dp border already drawn here.
-            val complementPromptTop = if (game.modality.id == MAIS_MILIONARIA_ID) 15.dp else 11.dp
+            // textSelecionados has a 16dp margin below layoutFiltros, inside the border.
+            val complementPromptTop = 16.dp
             Text(when (game.modality.id) {
                 TIMEMANIA_ID -> "Escolha o time do coração:"
                 DIA_DE_SORTE_ID -> "Escolha o mês de sorte:"
@@ -421,7 +423,7 @@ private fun ManualBetContent(state: BettingGameUiState, viewModel: BettingGameVi
         } else if (game.modality.id == SUPER_SEVEN_ID) {
             SuperSevenMatrix(state, viewModel)
         } else {
-            Text(if (state.selectedNumbers.isEmpty()) "Selecione os números:" else "Selecionados: ${state.selectedNumbers.size}/${state.numberQuantity}", Modifier.padding(start = promptInset, top = 15.dp, bottom = 8.dp), fontFamily = CaixaDSFontFamily, fontSize = 16.sp, color = CaixaDSColorTokens.LegacySocialGraphite, style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)))
+            Text(if (state.selectedNumbers.isEmpty()) "Selecione os números:" else "Selecionados: ${state.selectedNumbers.size}/${state.numberQuantity}", Modifier.padding(start = promptInset, top = 16.dp, bottom = 8.dp), fontFamily = CaixaDSFontFamily, fontSize = 16.sp, color = CaixaDSColorTokens.LegacySocialGraphite, style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)))
             // The observed short Lotofácil and Dia de Sorte tickets retain cltGeral's native 16dp top margin.
             if (game.modality.id == 8 || game.modality.id == DIA_DE_SORTE_ID) Spacer(Modifier.height(16.dp))
             BettingLegacyNumberGrid(
@@ -548,6 +550,26 @@ private val LegacyGridHorizontalAlignment = object : Alignment.Horizontal {
         (space - size) / 2
 }
 
+/** LinearLayout gives each successive weight its share of the remaining pixels.
+ * Row.weight distributes leftover pixels from the first column, shifting the balls. */
+@Composable
+private fun NativeSuperSevenRow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+    Layout(modifier = modifier.fillMaxWidth(), content = content) { measurables, constraints ->
+        val margins = 2 * 1.dp.roundToPx()
+        var remaining = constraints.maxWidth - margins * measurables.size
+        val children = measurables.mapIndexed { index, measurable ->
+            val share = remaining / (measurables.size - index)
+            remaining -= share
+            val width = share + margins
+            measurable.measure(constraints.copy(minWidth = width, maxWidth = width, minHeight = 0))
+        }
+        layout(constraints.maxWidth, children.maxOfOrNull { it.height } ?: 0) {
+            var left = 0
+            children.forEach { child -> child.placeRelative(left, 0); left += child.width }
+        }
+    }
+}
+
 @Composable
 private fun SuperSevenMatrix(state: BettingGameUiState, viewModel: BettingGameViewModel) {
     val density=androidx.compose.ui.platform.LocalDensity.current
@@ -556,18 +578,19 @@ private fun SuperSevenMatrix(state: BettingGameUiState, viewModel: BettingGameVi
     val metrics=TextStyle(platformStyle=PlatformTextStyle(includeFontPadding=true))
     Column(Modifier.fillMaxWidth()) {
         val selectedCount = state.superSevenColumns.sumOf(Set<Int>::size)
-        Text(if (selectedCount == 0) "Selecione os números:" else "Selecionados: $selectedCount/${state.numberQuantity}",Modifier.padding(start=promptInset,top=15.dp,bottom=0.dp),fontFamily=CaixaDSFontFamily,fontSize=16.sp,color=CaixaDSColorTokens.LegacySocialGraphite,style=metrics)
-        Row(Modifier.fillMaxWidth()) {
+        Text(if (selectedCount == 0) "Selecione os números:" else "Selecionados: $selectedCount/${state.numberQuantity}",Modifier.padding(start=promptInset,top=16.dp,bottom=8.dp),fontFamily=CaixaDSFontFamily,fontSize=16.sp,color=CaixaDSColorTokens.LegacySocialGraphite,style=metrics)
+        NativeSuperSevenRow {
             repeat(7) { column ->
-                Box(Modifier.weight(1f).padding(1.dp).height(35.dp).background(CaixaDSColorTokens.LegacySuperSevenHeader,RoundedCornerShape(16.dp)),contentAlignment=Alignment.Center) {
+                Box(Modifier.padding(1.dp).height(35.dp).testTag("super-sete-header-$column").background(CaixaDSColorTokens.LegacySuperSevenHeader,RoundedCornerShape(16.dp)),contentAlignment=Alignment.Center) {
                     Text((column+1).toString(),fontFamily=CaixaDSFontFamily,fontWeight=FontWeight.Bold,fontSize=14.sp,color=CaixaDSColorTokens.White,style=metrics)
                 }
             }
         }
-        Spacer(Modifier.height(12.dp))
-        Row(Modifier.fillMaxWidth().padding(bottom=16.dp)) {
+        // fragment_cartela_novo cltGeral has its own 16dp top margin.
+        Spacer(Modifier.height(16.dp))
+        NativeSuperSevenRow(Modifier.padding(bottom=16.dp)) {
             repeat(7) { column ->
-                Column(Modifier.weight(1f).padding(1.dp).background(CaixaDSColorTokens.LegacySuperSevenColumn),verticalArrangement=Arrangement.spacedBy(15.dp),horizontalAlignment=LegacyGridHorizontalAlignment) {
+                Column(Modifier.padding(1.dp).background(CaixaDSColorTokens.LegacySuperSevenColumn),verticalArrangement=Arrangement.spacedBy(15.dp),horizontalAlignment=LegacyGridHorizontalAlignment) {
                     (0..9).forEach { digit ->
                         val checked=digit in state.superSevenColumns[column]
                         Box(
@@ -581,7 +604,7 @@ private fun SuperSevenMatrix(state: BettingGameUiState, viewModel: BettingGameVi
                                 )
                                 .then(
                                     if (checked) Modifier
-                                    else Modifier.border(.5.dp, CaixaDSColorTokens.LegacySuperSevenNumber, CircleShape),
+                                    else Modifier.border(with(density) { 3.toDp() }, CaixaDSColorTokens.LegacySuperSevenNumber, CircleShape),
                                 ),
                             contentAlignment = Alignment.Center,
                         ) {
@@ -590,7 +613,7 @@ private fun SuperSevenMatrix(state: BettingGameUiState, viewModel: BettingGameVi
                                 color = if (checked) CaixaDSColorTokens.LegacySuperSevenSelectedNumber else CaixaDSColorTokens.LegacySuperSevenNumber,
                                 fontFamily = CaixaDSLegacyFuturaFontFamily,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
+                                fontSize = 14.sp,
                                 textAlign = TextAlign.Center,
                                 style = metrics,
                             )

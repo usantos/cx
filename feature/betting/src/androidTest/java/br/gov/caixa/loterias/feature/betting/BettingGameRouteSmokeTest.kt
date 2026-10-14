@@ -1,6 +1,10 @@
 package br.gov.caixa.loterias.feature.betting
 
 import android.graphics.Bitmap
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.FrameLayout
+import android.widget.Space
 import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertWidthIsEqualTo
@@ -10,6 +14,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
@@ -188,7 +193,26 @@ class BettingGameRouteSmokeTest {
         compose.waitUntil(timeoutMillis = 10_000) { vm.state.value.game != null }
         compose.onNodeWithTag("betting-button-6 números", useUnmergedTree = true).assertWidthIsEqualTo(112.dp).assertHeightIsEqualTo(45.dp)
         compose.onNodeWithTag("betting-button-Teimosinha", useUnmergedTree = true).assertWidthIsEqualTo(112.dp).assertHeightIsEqualTo(45.dp)
-        compose.onNodeWithTag("betting-button-Aposta aleatória", useUnmergedTree = true).assertWidthIsEqualTo(197.dp).assertHeightIsEqualTo(52.dp)
+        // rodape_simula.xml is responsive: screen minus two24dp outer margins,
+        // then a weight1 FrameLayout,8dp Space and130dp Limpar. Measure Android's
+        // layout independently;197dp was valid only on the earlier device width.
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val density = context.resources.displayMetrics.density
+        val windowWidth = compose.onRoot().fetchSemanticsNode().boundsInRoot.width.toInt()
+        var nativeRandomWidth = 0
+        compose.runOnIdle {
+            fun pixels(dp: Int) = (dp * density + .5f).toInt()
+            val row = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
+            val random = FrameLayout(context)
+            row.addView(random, LinearLayout.LayoutParams(0, pixels(52), 1f))
+            row.addView(Space(context), LinearLayout.LayoutParams(pixels(8), 1))
+            row.addView(View(context), LinearLayout.LayoutParams(pixels(130), pixels(52)))
+            row.measure(View.MeasureSpec.makeMeasureSpec(windowWidth - 2 * pixels(24), View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+            nativeRandomWidth = random.measuredWidth
+        }
+        compose.onNodeWithTag("betting-button-Aposta aleatória", useUnmergedTree = true)
+            .assertWidthIsEqualTo((nativeRandomWidth / density).dp).assertHeightIsEqualTo(52.dp)
         compose.onNodeWithTag("betting-button-Limpar", useUnmergedTree = true).assertWidthIsEqualTo(130.dp).assertHeightIsEqualTo(52.dp)
         compose.onNodeWithTag("betting-button-Adicionar ao carrinho", useUnmergedTree = true).assertHeightIsEqualTo(52.dp)
     }
