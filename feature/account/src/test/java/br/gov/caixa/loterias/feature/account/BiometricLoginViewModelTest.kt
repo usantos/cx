@@ -42,14 +42,74 @@ class BiometricLoginViewModelTest {
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(0, checks)
         assertFalse(vm.state.value.authenticated)
-        assertNotNull(vm.state.value.errorMessage)
+        assertNull(vm.state.value.errorMessage)
+        assertTrue(vm.consumeBrowserFallback())
+        assertFalse(vm.consumeBrowserFallback())
+        assertTrue(vm.beginAuthorization())
     }
-    @Test fun `unavailable biometric preference fails closed and displays enrollment guidance`() {
-        val auth = FakeBiometricAuthentication().apply { biometricAvailable = false }
+    @Test fun `disable waits for confirmation and preserves credential until confirmed`() {
+        val auth = FakeBiometricAuthentication()
+        val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher), VerifyPostLoginAccessUseCase { PostLoginAccessResult.BlockedAccountCheckFailed })
+        vm.setBiometricEnabled(false)
+        assertTrue(vm.state.value.biometricEnabled)
+        assertTrue(auth.biometricEnabled)
+    }
+    @Test fun `unavailable biometric preference offers enrollment without an error`() {
+        val auth = FakeBiometricAuthentication().apply { setBiometricEnabled(false); biometricAvailable = false }
         val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher), VerifyPostLoginAccessUseCase { PostLoginAccessResult.BlockedAccountCheckFailed })
         vm.setBiometricEnabled(true)
         assertFalse(vm.state.value.biometricEnabled)
-        assertNotNull(vm.state.value.errorMessage)
+        assertNull(vm.state.value.errorMessage)
+    }
+    @Test fun `cancelled prompt emits exactly one SSO fallback without authentication`() {
+        val auth = FakeBiometricAuthentication()
+        val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher), VerifyPostLoginAccessUseCase { error("Must not verify") })
+        assertTrue(vm.beginAuthorization())
+        vm.biometricAuthorizationFailed()
+        assertFalse(vm.state.value.authorizationPending)
+        assertFalse(vm.state.value.authenticated)
+        assertTrue(vm.consumeBrowserFallback())
+        assertFalse(vm.consumeBrowserFallback())
+    }
+    @Test fun `confirmation No preserves biometric preference and Yes clears it once`() {
+        val auth = FakeBiometricAuthentication()
+        val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher), VerifyPostLoginAccessUseCase { error("Must not verify") })
+        vm.confirmBiometricDisable(true)
+        assertTrue(auth.biometricEnabled)
+        vm.setBiometricEnabled(false)
+        vm.confirmBiometricDisable(false)
+        assertTrue(auth.biometricEnabled)
+        vm.setBiometricEnabled(false)
+        vm.confirmBiometricDisable(true)
+        assertFalse(auth.biometricEnabled)
+        assertFalse(vm.state.value.biometricEnabled)
+        vm.confirmBiometricDisable(true)
+        assertFalse(vm.state.value.biometricDisablePending)
+    }
+    @Test fun `enrollment cancellation keeps disabled preference and then allows enabling`() {
+        val auth = FakeBiometricAuthentication().apply { setBiometricEnabled(false); biometricAvailable = false }
+        val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher), VerifyPostLoginAccessUseCase { error("Must not verify") })
+        vm.setBiometricEnabled(true)
+        assertTrue(vm.state.value.biometricEnrollmentPending)
+        vm.setBiometricEnabled(false)
+        assertTrue(vm.state.value.biometricEnrollmentPending)
+        vm.dismissBiometricEnrollment()
+        assertFalse(vm.state.value.biometricEnabled)
+        auth.biometricAvailable = true
+        vm.setBiometricEnabled(true)
+        assertTrue(vm.state.value.biometricEnabled)
+    }
+    @Test fun `requested enabling resumes only after Settings enrollment succeeds`() {
+        val auth = FakeBiometricAuthentication().apply { setBiometricEnabled(false); biometricAvailable = false }
+        val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher), VerifyPostLoginAccessUseCase { error("Must not verify") })
+        vm.setBiometricEnabled(true)
+        vm.startBiometricEnrollment()
+        vm.refreshBiometricAvailability()
+        assertFalse(vm.state.value.biometricEnabled)
+        auth.biometricAvailable = true
+        vm.refreshBiometricAvailability()
+        assertTrue(vm.state.value.biometricEnabled)
+        assertTrue(auth.biometricEnabled)
     }
     private class FakeBiometricAuthentication : AuthenticationGateway, BiometricAuthenticationGateway {
         private var enabled = true

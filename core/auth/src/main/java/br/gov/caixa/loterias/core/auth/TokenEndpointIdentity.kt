@@ -42,6 +42,18 @@ internal class TokenEndpointIdentity(private val decodeBase64Url: (String) -> By
         return owner
     }
 
+    /** Identity of a remembered refresh from the configured TLS endpoint. */
+    fun biometricRefreshOwnerKey(idToken: String?, accessToken: String?, configuration: OidcConfiguration,
+        originalNonce: String, expectedOwner: String, nowSeconds: Long): String {
+        check(!accessToken.isNullOrBlank()) { "Identidade da autenticação inválida" }
+        if (idToken != null) return refreshedOwnerKey(idToken, configuration, originalNonce, expectedOwner, nowSeconds)
+        // A persisted credential has no prior ID token. Require the fresh access JWT's owner/client
+        // binding, using the same TLS-endpoint policy as regular OAuth access refresh.
+        return regularRefreshOwnerKey(null, accessToken,
+            RegularSessionRefreshContext(configuration, originalNonce, RegularSessionIdentityMode.OAUTH_ACCESS),
+            null, expectedOwner, nowSeconds)
+    }
+
     /** Only for a regular refresh response directly from the configured TLS token endpoint. */
     fun regularRefreshOwnerKey(idToken: String?, accessToken: String?, context: RegularSessionRefreshContext,
         previousIdToken: String?, expectedOwner: String, nowSeconds: Long): String {

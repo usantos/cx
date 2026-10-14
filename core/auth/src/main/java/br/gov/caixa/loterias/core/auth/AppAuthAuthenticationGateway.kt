@@ -60,11 +60,30 @@ class AppAuthAuthenticationGateway(
         ) == android.hardware.biometrics.BiometricManager.BIOMETRIC_SUCCESS
         else keyguard.isDeviceSecure || manager.canAuthenticate() == android.hardware.biometrics.BiometricManager.BIOMETRIC_SUCCESS
     }
+    @get:android.annotation.SuppressLint("MissingPermission")
+    @Suppress("DEPRECATION")
+    override val biometricHardwareAvailable: Boolean get() {
+        val keyguard = appContext.getSystemService(android.app.KeyguardManager::class.java)
+        if (android.os.Build.VERSION.SDK_INT < 29) {
+            if (keyguard.isDeviceSecure) return true
+            return appContext.packageManager.hasSystemFeature(android.content.pm.PackageManager.FEATURE_FINGERPRINT)
+        }
+        if (appContext.checkSelfPermission(android.Manifest.permission.USE_BIOMETRIC) !=
+            android.content.pm.PackageManager.PERMISSION_GRANTED) return false
+        if (android.os.Build.VERSION.SDK_INT == 29 && keyguard.isDeviceSecure) return true
+        val manager = appContext.getSystemService(android.hardware.biometrics.BiometricManager::class.java)
+        val status = if (android.os.Build.VERSION.SDK_INT >= 30) manager.canAuthenticate(
+            android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_WEAK or
+                android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+            else manager.canAuthenticate()
+        return biometricHardwareAvailable(status)
+    }
+    private var biometricChallengeCredential: BiometricCredential? = null
     override val biometricCredentialAvailable: Boolean get() = synchronized(this) { biometricCredentials.read() != null }
 
     @Synchronized override fun setBiometricEnabled(enabled: Boolean) {
         if (enabled) check(biometricAvailable) { "Cadastre a biometria ou o bloqueio de tela nas configurações do aparelho." }
-        if (!enabled) biometricAttempts.cancel()
+        if (!enabled) { biometricAttempts.cancel(); biometricChallengeCredential = null }
         biometricCredentials.setEnabled(enabled)
     }
 
@@ -76,6 +95,7 @@ class AppAuthAuthenticationGateway(
         logoutIdToken = null
         val state = java.util.UUID.randomUUID().toString()
         biometricAttempts.begin(state, credential.ownerKey)
+        biometricChallengeCredential = credential
         @Suppress("DEPRECATION")
         val challenge = if (android.os.Build.VERSION.SDK_INT < 29) checkNotNull(
             appContext.getSystemService(android.app.KeyguardManager::class.java)
@@ -85,13 +105,18 @@ class AppAuthAuthenticationGateway(
     }
 
     override suspend fun completeBiometricAuthorization(result: Intent?) {
-        val pending = checkNotNull(biometricAttempts.consume(result?.getStringExtra(BIOMETRIC_STATE))) {
-            "Confirmação biométrica inválida ou encerrada"
+        val (pending, challengeCredential) = synchronized(this) {
+            val pending = checkNotNull(biometricAttempts.consume(result?.getStringExtra(BIOMETRIC_STATE))) {
+                "Confirmação biométrica inválida ou encerrada"
+            }
+            pending to checkNotNull(biometricChallengeCredential).also { biometricChallengeCredential = null }
         }
         try {
             val credential = synchronized(this) {
                 check(biometricEnabled)
-                checkNotNull(biometricCredentials.read()).also { check(it.ownerKey == pending.request) }
+                checkNotNull(biometricCredentials.read()).also {
+                    check(it.ownerKey == pending.request && sameBiometricCredential(challengeCredential, it))
+                }
             }
             val exchange = TokenRequest.Builder(AuthorizationServiceConfiguration(Uri.parse(configuration.authorizationEndpoint),
                 Uri.parse(configuration.tokenEndpoint)), configuration.clientId)
@@ -101,24 +126,26 @@ class AppAuthAuthenticationGateway(
                 service.performTokenRequest(exchange) { response, error ->
                     if (!continuation.isActive) return@performTokenRequest
                     if (error != null) continuation.resumeWithException(error)
-                    else if (response?.accessToken.isNullOrBlank()) continuation.resumeWithException(IllegalStateException("Token de acesso ausente"))
+                    else if (response?.accessToken.isNullOrBlank() || response?.refreshToken.isNullOrBlank())
+                        continuation.resumeWithException(IllegalStateException("Resposta de renovação inválida"))
                     else continuation.resume(response)
                 }
             }
             currentCoroutineContext().ensureActive()
-            val owner = endpointIdentity.refreshedOwnerKey(checkNotNull(tokens.idToken), configuration,
+            val owner = endpointIdentity.biometricRefreshOwnerKey(tokens.idToken, tokens.accessToken, configuration,
                 credential.nonce, credential.ownerKey, System.currentTimeMillis() / 1000)
             currentCoroutineContext().ensureActive()
             synchronized(this) {
                 commitBiometricTokens(tokens = tokens, pending = pending, owner = owner,
-                    refresh = tokens.refreshToken ?: credential.refreshToken, nonce = credential.nonce)
+                    refresh = checkNotNull(tokens.refreshToken), credential = credential)
             }
         } catch (failure: AuthorizationException) {
             if (failure.type == AuthorizationException.TokenRequestErrors.INVALID_GRANT.type &&
                 failure.code == AuthorizationException.TokenRequestErrors.INVALID_GRANT.code) {
                 synchronized(this) {
                     // A revoked/expired remembered credential must not trap the user in repeated refreshes.
-                    if (tokenStore.isAuthorizationCurrent(pending.ticket)) biometricCredentials.clearCredential()
+                    if (tokenStore.isAuthorizationCurrent(pending.ticket) &&
+                        sameBiometricCredential(challengeCredential, biometricCredentials.read())) biometricCredentials.clearCredential()
                 }
             }
             throw failure
@@ -126,10 +153,12 @@ class AppAuthAuthenticationGateway(
     }
 
     private fun commitBiometricTokens(tokens: TokenResponse, pending: PendingAuthorization<String>, owner: String,
-        refresh: String, nonce: String) {
-        check(biometricEnabled)
+        refresh: String, credential: BiometricCredential) {
+        check(biometricEnabled && sameBiometricCredential(credential, biometricCredentials.read()))
+        val nonce = credential.nonce
+        val mode = if (tokens.idToken != null) RegularSessionIdentityMode.OIDC else RegularSessionIdentityMode.OAUTH_ACCESS
         check(tokenStore.completeAuthorization(pending.ticket, tokens.accessToken!!, tokens.idToken, owner,
-            tokens.refreshToken ?: refresh, RegularSessionRefreshContext(configuration, nonce, RegularSessionIdentityMode.OIDC))) {
+            refresh, RegularSessionRefreshContext(configuration, nonce, mode))) {
             "Tentativa de autenticação encerrada"
         }
         try { biometricCredentials.write(BiometricCredential(refresh, owner, nonce)) }
@@ -189,6 +218,7 @@ class AppAuthAuthenticationGateway(
 
     @Synchronized override fun createAuthorizationIntent(): Intent {
         biometricAttempts.cancel()
+        biometricChallengeCredential = null
         logoutIdToken = null
         endSessions.clear()
         val options = requestPolicy.capture()
@@ -259,11 +289,13 @@ class AppAuthAuthenticationGateway(
 
     @Synchronized override fun cancelAuthorization() {
         biometricAttempts.cancel()
+        biometricChallengeCredential = null
         attempts.cancel()
     }
     @Synchronized override fun logout() {
         // A second local clear (e.g. blocked-account acknowledgment) must not lose the hint.
         biometricAttempts.cancel()
+        biometricChallengeCredential = null
         // A storage failure must leave the current identity available for an explicit retry.
         biometricCredentials.clearCredential()
         logoutIdToken = attempts.logout() ?: logoutIdToken

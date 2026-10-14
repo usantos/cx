@@ -68,8 +68,15 @@ fun LoginRoute(
     environmentSelector: @Composable (Boolean) -> Unit = {},
     biometricPrompt: (Activity, android.content.Intent, (android.content.Intent?) -> Unit) -> (() -> Unit) =
         ::showBiometricPrompt,
+    biometricEnrollment: (Activity) -> Unit = { activity ->
+        br.gov.caixa.loterias.core.auth.launchBiometricEnrollment(activity::startActivity)
+    },
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    androidx.lifecycle.compose.LifecycleResumeEffect(viewModel) {
+        viewModel.refreshBiometricAvailability()
+        onPauseOrDispose {}
+    }
     var automaticAuthorizationConsumed by rememberSaveable { mutableStateOf(false) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if ((result.resultCode == Activity.RESULT_CANCELED && result.data == null) ||
@@ -84,12 +91,10 @@ fun LoginRoute(
         biometricChallenge = null
         if (result.resultCode == Activity.RESULT_OK && challenge != null) viewModel.completeBiometric(challenge)
         else {
-            viewModel.authorizationCancelled()
-            onAuthorizationCancelled()
+            viewModel.biometricAuthorizationFailed()
         }
     }
     val promptHost = LocalView.current.context.findActivity()
-    val currentCancellation by androidx.compose.runtime.rememberUpdatedState(onAuthorizationCancelled)
     DisposableEffect(biometricChallenge, promptHost) {
         val challenge = biometricChallenge
         val cancelPrompt = if (android.os.Build.VERSION.SDK_INT >= 29 && challenge != null && promptHost != null) {
@@ -98,13 +103,12 @@ fun LoginRoute(
                     biometricChallenge = null
                     if (result != null) viewModel.completeBiometric(result)
                     else {
-                        viewModel.authorizationCancelled()
-                        currentCancellation()
+                        viewModel.biometricAuthorizationFailed()
                     }
                 }
             } catch (_: Exception) {
                 biometricChallenge = null
-                viewModel.authorizationLaunchFailed()
+                viewModel.biometricAuthorizationFailed()
                 null
             }
         } else null
@@ -120,7 +124,16 @@ fun LoginRoute(
                     biometricChallenge = challenge
                     if (android.os.Build.VERSION.SDK_INT < 29) credentialLauncher.launch(challenge)
                 } else launcher.launch(authentication.createAuthorizationIntent())
-            } catch (_: Exception) { viewModel.authorizationLaunchFailed() }
+            } catch (_: Exception) {
+                if (viewModel.canUseBiometricLogin()) viewModel.biometricAuthorizationFailed()
+                else viewModel.authorizationLaunchFailed()
+            }
+        }
+    }
+    LaunchedEffect(state.browserFallbackPending) {
+        if (viewModel.consumeBrowserFallback() && viewModel.beginAuthorization()) {
+            try { launcher.launch(authentication.createAuthorizationIntent()) }
+            catch (_: Exception) { viewModel.authorizationLaunchFailed() }
         }
     }
     LaunchedEffect(authorizeOnEnter) {
@@ -141,7 +154,24 @@ fun LoginRoute(
         environmentSelector = environmentSelector,
         environmentSelectorVisible = environmentSelectorVisible,
     )
-    if (state.blockedAccountCheckFailed) {
+    if (state.biometricEnrollmentPending) {
+        br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyDialog(
+            title = "Necessário habilitar biometria", message = "Deseja habilitar a biometria?",
+            positiveLabel = "Habilitar", negativeLabel = "Cancelar",
+            onPositive = {
+                viewModel.startBiometricEnrollment()
+                promptHost?.let(biometricEnrollment)
+            },
+            onNegative = viewModel::dismissBiometricEnrollment,
+        )
+    } else if (state.biometricDisablePending) {
+        br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyDialog(
+            title = "Desativar biometria", message = "Desaja desativar a biometria e acessar apenas com o Login Caixa?",
+            positiveLabel = "Sim", negativeLabel = "Não",
+            onPositive = { viewModel.confirmBiometricDisable(true) },
+            onNegative = { viewModel.confirmBiometricDisable(false) },
+        )
+    } else if (state.blockedAccountCheckFailed) {
         br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyDialog(
             title = "Atenção",
             message = "Não foi possível concluir esta operação. Por favor, tente novamente mais tarde.",
@@ -261,7 +291,7 @@ fun LoginScreen(
                 .padding(bottom = 26.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Row(
+            if (state.biometricRowVisible) Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp)

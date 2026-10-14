@@ -21,6 +21,10 @@ data class LoginUiState(
     val authenticated: Boolean = false,
     val biometricEnabled: Boolean = false,
     val errorMessage: String? = null,
+    val browserFallbackPending: Boolean = false,
+    val biometricRowVisible: Boolean = true,
+    val biometricEnrollmentPending: Boolean = false,
+    val biometricDisablePending: Boolean = false,
     val destination: String = "home",
     val blockedAccountCheckFailed: Boolean = false,
     val consultationOnlyNoticePending: Boolean = false,
@@ -32,7 +36,7 @@ class LoginViewModel(
     private val verifyAccess: VerifyPostLoginAccessUseCase,
 ) : ViewModel() {
     private val biometric get() = authentication as? br.gov.caixa.loterias.core.auth.BiometricAuthenticationGateway
-    private val mutableState = MutableStateFlow(LoginUiState(biometricEnabled = biometric?.biometricEnabled == true))
+    private val mutableState = MutableStateFlow(LoginUiState(biometricEnabled = biometric?.biometricEnabled == true, biometricRowVisible = biometric?.biometricHardwareAvailable != false))
     val state = mutableState.asStateFlow()
 
     fun beginAuthorization(): Boolean {
@@ -57,7 +61,22 @@ class LoginViewModel(
         it.biometricEnabled && it.biometricAvailable && it.biometricCredentialAvailable
     } == true
 
-    fun completeBiometric(resultData: android.content.Intent?) = completeLogin {
+    /** Prompt errors/cancellation and remembered-refresh failures continue through CX SSO. */
+    fun biometricAuthorizationFailed() {
+        authentication.cancelAuthorization()
+        mutableState.update { it.copy(isLoading = false, authorizationPending = false,
+            browserFallbackPending = true, errorMessage = null) }
+    }
+
+    fun consumeBrowserFallback(): Boolean {
+        while (true) {
+            val current = mutableState.value
+            if (!current.browserFallbackPending) return false
+            if (mutableState.compareAndSet(current, current.copy(browserFallbackPending = false))) return true
+        }
+    }
+
+    fun completeBiometric(resultData: android.content.Intent?) = completeLogin(biometricExchange = true) {
         checkNotNull(biometric).completeBiometricAuthorization(resultData)
     }
 
@@ -65,12 +84,9 @@ class LoginViewModel(
         authentication.completeAuthorization(resultData)
     }
 
-    private fun completeLogin(exchange: suspend () -> Unit) {
+    private fun completeLogin(biometricExchange: Boolean = false, exchange: suspend () -> Unit) {
         if (state.value.isLoading || state.value.authenticated || state.value.blockedAccountCheckFailed || state.value.consultationOnlyNoticePending) return
-        mutableState.value = LoginUiState(
-            isLoading = true,
-            biometricEnabled = state.value.biometricEnabled,
-        )
+        mutableState.update { it.copy(isLoading = true, authorizationPending = false, errorMessage = null) }
         viewModelScope.launch(dispatchers.io) {
             try {
                 exchange()
@@ -78,6 +94,10 @@ class LoginViewModel(
                 mutableState.update { it.copy(isLoading = false) }
                 throw cancelled
             } catch (_: Exception) {
+                if (biometricExchange) {
+                    biometricAuthorizationFailed()
+                    return@launch
+                }
                 mutableState.update { current ->
                     current.copy(isLoading = false, errorMessage = "Não foi possível entrar. Tente novamente.")
                 }
@@ -125,7 +145,7 @@ class LoginViewModel(
             mutableState.update { it.copy(errorMessage = "Não foi possível encerrar a sessão. Tente novamente.") }
             return false
         }
-        mutableState.update { LoginUiState(biometricEnabled = it.biometricEnabled) }
+        mutableState.update { LoginUiState(biometricEnabled = it.biometricEnabled, biometricRowVisible = it.biometricRowVisible) }
         return true
     }
 
@@ -134,7 +154,7 @@ class LoginViewModel(
         if (!state.value.blockedAccountCheckFailed) return false
         // If secure storage cannot clear credentials, retain the blocking decision for a retry.
         try { authentication.logout() } catch (_: Exception) { return false }
-        mutableState.update { LoginUiState(biometricEnabled = it.biometricEnabled) }
+        mutableState.update { LoginUiState(biometricEnabled = it.biometricEnabled, biometricRowVisible = it.biometricRowVisible) }
         return true
     }
 
@@ -146,13 +166,48 @@ class LoginViewModel(
     }
 
     fun setBiometricEnabled(enabled: Boolean) {
-        if (state.value.isLoading || state.value.authorizationPending) return
+        if (state.value.isLoading || state.value.authorizationPending || state.value.biometricEnrollmentPending ||
+            state.value.biometricDisablePending) return
+        if (!enabled && state.value.biometricEnabled) {
+            mutableState.update { it.copy(biometricDisablePending = true) }
+        } else if (enabled && biometric?.biometricAvailable == false) {
+            mutableState.update { it.copy(biometricEnrollmentPending = true, errorMessage = null) }
+        } else updateBiometricPreference(enabled)
+    }
+
+    private var enableAfterEnrollment = false
+
+    fun startBiometricEnrollment() {
+        if (!state.value.biometricEnrollmentPending) return
+        enableAfterEnrollment = true
+        mutableState.update { it.copy(biometricEnrollmentPending = false) }
+    }
+
+    fun refreshBiometricAvailability() {
+        mutableState.update { it.copy(biometricRowVisible = biometric?.biometricHardwareAvailable != false) }
+        if (enableAfterEnrollment && biometric?.biometricAvailable == true) {
+            enableAfterEnrollment = false
+            updateBiometricPreference(true)
+        }
+    }
+
+    fun dismissBiometricEnrollment() {
+        enableAfterEnrollment = false
+        mutableState.update { it.copy(biometricEnrollmentPending = false) }
+    }
+
+    fun confirmBiometricDisable(confirmed: Boolean) {
+        if (!state.value.biometricDisablePending) return
+        mutableState.update { it.copy(biometricDisablePending = false) }
+        if (confirmed) updateBiometricPreference(false)
+    }
+
+    private fun updateBiometricPreference(enabled: Boolean) {
         try {
             biometric?.setBiometricEnabled(enabled)
             mutableState.update { it.copy(biometricEnabled = enabled, errorMessage = null) }
         } catch (_: Exception) {
-            mutableState.update { it.copy(biometricEnabled = false,
-                errorMessage = "Cadastre a biometria ou o bloqueio de tela nas configurações do aparelho.") }
+            mutableState.update { it.copy(errorMessage = "Não foi possível atualizar a biometria. Tente novamente.") }
         }
     }
 

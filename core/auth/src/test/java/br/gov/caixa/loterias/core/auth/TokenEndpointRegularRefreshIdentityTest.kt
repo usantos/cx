@@ -30,6 +30,42 @@ class TokenEndpointRegularRefreshIdentityTest {
         assertNull(failure.cause)
     }
 
+    @Test fun `remembered biometric refresh verifies access when ID is absent`() {
+        assertEquals(owner, reader.biometricRefreshOwnerKey(null, token(), config, "nonce", owner, 2000))
+    }
+
+    @Test fun `remembered biometric refresh rejects owner context claims and present invalid ID`() {
+        for ((field, value) in listOf("sub" to "other", "azp" to "other", "iss" to "https://other.test", "nonce" to "other")) {
+            assertNotNull(runCatching { reader.biometricRefreshOwnerKey(null,
+                token(claims().apply { addProperty(field, value) }.toString()), config, "nonce", owner, 2000) }.exceptionOrNull())
+        }
+        for (access in listOf(null, "", "opaque", token(claims().apply { addProperty("exp", 2000) }.toString()),
+            token(claims().apply { addProperty("iat", 1000) }.toString()))) {
+            assertNotNull(runCatching { reader.biometricRefreshOwnerKey(null, access, config, "nonce", owner, 2000) }.exceptionOrNull())
+        }
+        for (invalidId in listOf("", "invalid", token(claims().apply { addProperty("aud", "client"); addProperty("sub", "other") }.toString()))) {
+            assertNotNull(runCatching { reader.biometricRefreshOwnerKey(invalidId, token(), config, "nonce", owner, 2000) }.exceptionOrNull())
+        }
+        assertNotNull(runCatching { reader.biometricRefreshOwnerKey(null, token(), config.copy(sessionNamespace = "https://other-api.test/"), "nonce", owner, 2000) }.exceptionOrNull())
+    }
+
+    @Test fun `remembered biometric access rejects unsupported algorithm future validity and malformed binding`() {
+        val unsupported = "${encode("""{"alg":"HS256"}""")}.${encode(claims().toString())}.AQID"
+        val invalid = listOf(unsupported,
+            token(claims().apply { addProperty("nbf", 2001) }.toString()),
+            token(claims().apply { addProperty("iat", 2601); addProperty("exp", 3000) }.toString()),
+            token(claims().apply { remove("azp") }.toString()),
+            token(claims().apply { addProperty("sub", "") }.toString()))
+        for (access in invalid) {
+            val failure = runCatching { reader.biometricRefreshOwnerKey(null, access, config, "nonce", owner, 2000) }.exceptionOrNull()
+            assertNotNull(failure)
+            assertEquals("Identidade da autenticação inválida", failure!!.message)
+            assertNull(failure.cause)
+        }
+        assertEquals(owner, reader.biometricRefreshOwnerKey(id(), token(), config, "nonce", owner, 2000))
+        assertNotNull(runCatching { reader.biometricRefreshOwnerKey(id(), "", config, "nonce", owner, 2000) }.exceptionOrNull())
+    }
+
     @Test fun `regular OAuth refresh validates new access owner with no ID token`() {
         assertEquals(owner, refreshed())
         assertEquals(owner, refreshed(access = token(claims().apply { addProperty("nonce", "nonce") }.toString())))

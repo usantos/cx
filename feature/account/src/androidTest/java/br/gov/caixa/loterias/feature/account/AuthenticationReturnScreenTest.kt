@@ -23,7 +23,7 @@ class AuthenticationReturnScreenTest {
     @get:Rule val composeRule = createComposeRule()
 
     @Test
-    fun cancelledAutomaticBiometricLoginNotifiesOriginAndClearsPendingAttempt() =
+    fun cancelledAutomaticBiometricLoginAttemptsBrowserBeforeReturningToOrigin() =
         verifyCancelledAutomaticLogin(biometric = true, cancellationIntent = null)
 
     @Test
@@ -31,7 +31,10 @@ class AuthenticationReturnScreenTest {
         verifyCancelledAutomaticLogin(biometric = false,
             cancellationIntent = net.openid.appauth.AuthorizationException.GeneralErrors.USER_CANCELED_AUTH_FLOW.toIntent())
 
-    private fun verifyCancelledAutomaticLogin(biometric: Boolean, cancellationIntent: Intent?) {
+    @Test fun revokedBiometricRefreshAttemptsBrowserBeforeReturningToOrigin() =
+        verifyCancelledAutomaticLogin(biometric = true, cancellationIntent = null, refreshFailure = true)
+
+    private fun verifyCancelledAutomaticLogin(biometric: Boolean, cancellationIntent: Intent?, refreshFailure: Boolean = false) {
         val cancellations = AtomicInteger()
         val returnsToOrigin = AtomicInteger()
         val refreshes = AtomicInteger()
@@ -42,8 +45,11 @@ class AuthenticationReturnScreenTest {
             override val biometricCredentialAvailable = true
             override fun setBiometricEnabled(enabled: Boolean) = Unit
             override fun createBiometricAuthorizationIntent(): Intent = Intent()
-            override suspend fun completeBiometricAuthorization(result: Intent?) { refreshes.incrementAndGet() }
-            override fun createAuthorizationIntent(): Intent { check(!biometric); return Intent() }
+            override suspend fun completeBiometricAuthorization(result: Intent?) {
+                refreshes.incrementAndGet()
+                check(!refreshFailure) { "synthetic revoked refresh" }
+            }
+            override fun createAuthorizationIntent(): Intent { return Intent() }
             override suspend fun completeAuthorization(result: Intent?) = error("Cancelled prompt must not authenticate")
             override fun cancelAuthorization() { cancellations.incrementAndGet() }
             override fun logout() = Unit
@@ -53,6 +59,7 @@ class AuthenticationReturnScreenTest {
                 override fun <I, O> onLaunch(requestCode: Int,
                     contract: androidx.activity.result.contract.ActivityResultContract<I, O>, input: I,
                     options: androidx.core.app.ActivityOptionsCompat?) {
+                    if (biometric) assertEquals(0, returnsToOrigin.get())
                     launches.incrementAndGet()
                     dispatchResult(requestCode, android.app.Activity.RESULT_CANCELED, cancellationIntent)
                 }
@@ -70,18 +77,87 @@ class AuthenticationReturnScreenTest {
                         authorizeOnEnter = true, onAuthorizationCancelled = { returnsToOrigin.incrementAndGet() },
                         biometricPrompt = { _, _, onResult ->
                             launches.incrementAndGet()
-                            onResult(null)
+                            onResult(if (refreshFailure) Intent() else null)
                             val cancel: () -> Unit = {}
                             cancel
                         })
                 }
             }
         }
-        composeRule.waitUntil { launches.get() == 1 && !viewModel.state.value.authorizationPending }
-        assertEquals(1, cancellations.get())
+        composeRule.waitUntil { launches.get() == (if (biometric) 2 else 1) && !viewModel.state.value.authorizationPending }
+        assertEquals(if (biometric) 2 else 1, cancellations.get())
         assertEquals(1, returnsToOrigin.get())
-        assertEquals(0, refreshes.get())
+        assertEquals(if (refreshFailure) 1 else 0, refreshes.get())
         assertEquals(false, viewModel.state.value.authenticated)
+    }
+
+    @Test fun disablingBiometricAsksConfirmationAndNoPreservesRememberedLogin() {
+        val authentication = PreferenceAuthentication(enabled = true, available = true)
+        val vm = preferenceRoute(authentication)
+        composeRule.onNodeWithText("Acessar com biometria").performClick()
+        composeRule.onNodeWithText("Desativar biometria").assertIsDisplayed()
+        assertEquals(true, authentication.biometricEnabled)
+        composeRule.onNodeWithText("Não").performClick()
+        assertEquals(true, authentication.biometricEnabled)
+        assertEquals(true, vm.state.value.biometricEnabled)
+        assertEquals(true, authentication.biometricCredentialAvailable)
+        composeRule.onNodeWithText("Acessar com biometria").performClick()
+        composeRule.onNodeWithText("Sim").performClick()
+        assertEquals(false, authentication.biometricEnabled)
+        assertEquals(false, authentication.biometricCredentialAvailable)
+        assertEquals(false, vm.state.value.biometricEnabled)
+    }
+
+    @Test fun enablingWithoutEnrollmentShowsDialogAndCancelPreservesDisabledPreference() {
+        val authentication = PreferenceAuthentication(enabled = false, available = false)
+        val vm = preferenceRoute(authentication)
+        composeRule.onNodeWithText("Acessar com biometria").performClick()
+        composeRule.onNodeWithText("Necessário habilitar biometria").assertIsDisplayed()
+        composeRule.onNodeWithText("Cancelar").performClick()
+        assertEquals(false, authentication.biometricEnabled)
+        assertEquals(false, vm.state.value.biometricEnabled)
+    }
+
+    @Test fun enrollmentPositiveActionLaunchesSettingsOnceAndWaitsForEnrollment() {
+        val launches = AtomicInteger()
+        val authentication = PreferenceAuthentication(enabled = false, available = false)
+        val vm = LoginViewModel(authentication, verifyAccess = VerifyPostLoginAccessUseCase { error("Must not verify") })
+        composeRule.setContent { CaixaDSTheme(darkTheme = false) {
+            LoginRoute(vm, authentication, "test", {}, {}, {}, biometricEnrollment = { launches.incrementAndGet() })
+        } }
+        composeRule.onNodeWithText("Acessar com biometria").performClick()
+        composeRule.onNodeWithText("Habilitar").performClick()
+        composeRule.onNodeWithText("Necessário habilitar biometria").assertDoesNotExist()
+        assertEquals(1, launches.get())
+        assertEquals(false, authentication.biometricEnabled)
+        assertEquals(false, vm.state.value.biometricEnabled)
+    }
+
+    private fun preferenceRoute(authentication: PreferenceAuthentication): LoginViewModel {
+        val vm = LoginViewModel(authentication, verifyAccess = VerifyPostLoginAccessUseCase { error("Preference must not log in") })
+        composeRule.setContent { CaixaDSTheme(darkTheme = false) { LoginRoute(vm, authentication, "test", {}, {}, {}) } }
+        return vm
+    }
+    @Test fun absentHardwareHidesBiometricRowWhileNoEnrollmentKeepsIt() {
+        preferenceRoute(PreferenceAuthentication(enabled = false, available = false, hardware = false))
+        composeRule.onNodeWithText("Acessar com biometria").assertDoesNotExist()
+        composeRule.onNodeWithText("Faça login/cadastre-se").assertIsDisplayed()
+    }
+
+    private class PreferenceAuthentication(private var enabled: Boolean, private val available: Boolean,
+        private val hardware: Boolean = true) :
+        AuthenticationGateway, br.gov.caixa.loterias.core.auth.BiometricAuthenticationGateway {
+        override val biometricEnabled get() = enabled
+        override val biometricAvailable get() = available
+        override val biometricHardwareAvailable get() = hardware
+        override val biometricCredentialAvailable get() = enabled
+        override fun setBiometricEnabled(enabled: Boolean) { check(!enabled || available); this.enabled = enabled }
+        override fun createBiometricAuthorizationIntent(): Intent = error("not used")
+        override suspend fun completeBiometricAuthorization(result: Intent?) = error("not used")
+        override fun createAuthorizationIntent(): Intent = error("not used")
+        override suspend fun completeAuthorization(result: Intent?) = error("not used")
+        override fun cancelAuthorization() = Unit
+        override fun logout() = Unit
     }
 
     @Test
