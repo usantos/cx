@@ -3,6 +3,8 @@ package br.gov.caixa.loterias.feature.cart
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.toArgb
@@ -76,7 +78,7 @@ class CurrentCartRuntimeParityTest {
         compose.onNodeWithText("Não").performClick()
         compose.runOnIdle { assertEquals(emptyList<String>(), calls) }
         compose.onNodeWithText("+milionária").performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("Trevos: 02 - 04").assertIsDisplayed()
+        compose.onNodeWithText("trevos: 02 - 04").assertIsDisplayed()
     }
 
     @Test fun emptyCartKeepsZeroSummaryAndDisablesPaymentBeforeAnyCheckoutService() {
@@ -134,7 +136,93 @@ class CurrentCartRuntimeParityTest {
         compose.onNodeWithText("Detalhe CUSTOM").performScrollTo().assertIsDisplayed()
     }
 
-    private fun show(items: List<CartItem>, total: BigDecimal = BigDecimal("39.00")) {
+    @Test fun sixNumbersRecurringIndicatorSharesNativePriceLine() {
+        show(listOf(mega.copy(badges = setOf(CartItemBadge.RECURRING))))
+        val badge = compose.onNodeWithText("Teimosinha").fetchSemanticsNode().boundsInRoot
+        val price = compose.onNodeWithText("R$ 6,00").fetchSemanticsNode().boundsInRoot
+        assertEquals("CX flow is centered on tvValor for six manual numbers", price.center.y, badge.center.y, 3f)
+        assertTrue("Indicator stays left of price", badge.right < price.left)
+    }
+
+    @Test fun cloversFollowNumbersAndSharePriceBaseline() {
+        show(listOf(mega.copy(modalityCode = "MAIS_MILIONARIA", selectedClovers = listOf(2, 4))))
+        val numbers = compose.onNodeWithText("32 - 10 - 43 - 51 - 27 - 18").fetchSemanticsNode()
+        val extra = compose.onNodeWithText("trevos: 02 - 04").fetchSemanticsNode()
+        val price = compose.onNodeWithText("R$ 6,00").fetchSemanticsNode()
+        assertEquals("Native extra starts immediately after numeric content", numbers.boundsInRoot.bottom, extra.boundsInRoot.top, 2f)
+        val extraLayout = mutableListOf<TextLayoutResult>()
+        val priceLayout = mutableListOf<TextLayoutResult>()
+        compose.onNodeWithText("trevos: 02 - 04").performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(extraLayout) }
+        compose.onNodeWithText("R$ 6,00").performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(priceLayout) }
+        assertEquals("tvValor baselineToBaseline tvExtra", extra.boundsInRoot.top + extraLayout.single().firstBaseline,
+            price.boundsInRoot.top + priceLayout.single().firstBaseline, 2f)
+    }
+
+    @Test fun guestToolbarDeleteUsesNativeEndInsetWithoutFavoriteSlot() {
+        show(listOf(mega), authenticated = false)
+        compose.onNodeWithContentDescription("Salvar carrinho favorito").assertDoesNotExist()
+        val action = compose.onNodeWithContentDescription("Excluir todas as apostas").fetchSemanticsNode().boundsInRoot
+        val root = compose.onRoot().fetchSemanticsNode().boundsInRoot
+        assertEquals("CX 44dp action center with 16dp end margin", 38f * compose.density.density, root.right - action.center.x, 2f)
+    }
+
+    @Test fun manualMultipleLinesPutIndicatorsImmediatelyAfterNumbers() {
+        show(listOf(lotofacil.copy(badges = setOf(CartItemBadge.MIRROR, CartItemBadge.RECURRING))))
+        val last = compose.onNodeWithText("19 - 05 - 13").fetchSemanticsNode().boundsInRoot
+        val indicator = compose.onNodeWithText("Espelho").fetchSemanticsNode().boundsInRoot
+        assertEquals("CX indicators topToBottom containerNumeros without margin", last.bottom, indicator.top, 2f)
+        assertEquals("Native 14dp Mirror drawable plus 6dp drawablePadding", 20f * compose.density.density, indicator.left - last.left, 2f)
+    }
+
+    @Test fun surpriseManyNumbersKeepsIndicatorsOnPriceLine() {
+        show(listOf(lotofacil.copy(badges = setOf(CartItemBadge.SURPRISE, CartItemBadge.RECURRING))))
+        val indicator = compose.onNodeWithText("Surpresinha").fetchSemanticsNode().boundsInRoot
+        val price = compose.onNodeWithText("R$ 3,50").fetchSemanticsNode().boundsInRoot
+        assertEquals("Surprise overrides manual quantity branch", price.center.y, indicator.center.y, 3f)
+    }
+
+    @Test fun extraIndicatorsAreBelowExtraAndSuperSevenIndicatorsBelowColumns() {
+        compose.setContent {
+            CaixaDSTheme(darkTheme = false) {
+                Column {
+                    CurrentCartRow(mega.copy(selectedClovers = listOf(1, 2), modalityCode = "MAIS_MILIONARIA",
+                        badges = setOf(CartItemBadge.MIRROR)), Instant.EPOCH, {}, null)
+                    CurrentCartRow(mega.copy(modalityCode = "SUPER_7", selectedNumbers = List(7) { listOf(9) },
+                        badges = setOf(CartItemBadge.RECURRING)), Instant.EPOCH, {}, null)
+                }
+            }
+        }
+        val extra = compose.onNodeWithText("trevos: 01 - 02").fetchSemanticsNode().boundsInRoot
+        val mirror = compose.onNodeWithText("Espelho").fetchSemanticsNode().boundsInRoot
+        assertEquals("CX indicators directly below extra", extra.bottom, mirror.top, 2f)
+        val lastNumber = compose.onAllNodesWithText("9").onLast().fetchSemanticsNode().boundsInRoot
+        val recurring = compose.onNodeWithText("Teimosinha").fetchSemanticsNode().boundsInRoot
+        assertEquals("CX Super Sete indicators directly below numeric columns", lastNumber.bottom, recurring.top, 2f)
+    }
+
+    @Test fun authenticatedToolbarKeepsTwoNativeActions() {
+        show(listOf(mega))
+        val delete = compose.onNodeWithContentDescription("Excluir todas as apostas").fetchSemanticsNode().boundsInRoot
+        val favorite = compose.onNodeWithContentDescription("Salvar carrinho favorito").fetchSemanticsNode().boundsInRoot
+        val root = compose.onRoot().fetchSemanticsNode().boundsInRoot
+        assertEquals(44f * compose.density.density, favorite.center.x - delete.center.x, 2f)
+        assertEquals(38f * compose.density.density, root.right - favorite.center.x, 2f)
+    }
+
+    @Test fun nativeExtraUsesGuidelineWidthWithoutNumericEndMargin() {
+        compose.setContent {
+            CaixaDSTheme(darkTheme = false) {
+                CurrentCartRow(mega.copy(modalityCode = "TIMEMANIA",
+                    complementaryLabel = "Time do coração: associação esportiva de um nome longo/mg"), Instant.EPOCH, {}, null)
+            }
+        }
+        val extra = compose.onNodeWithText("time do coração: associação esportiva de um nome longo/mg").fetchSemanticsNode().boundsInRoot
+        val root = compose.onRoot().fetchSemanticsNode().boundsInRoot
+        assertEquals("tvExtra ends at the 75 percent guideline; only containerNumeros has an 8dp end margin",
+            root.width * 0.75f, extra.width, 2f)
+    }
+
+    private fun show(items: List<CartItem>, total: BigDecimal = BigDecimal("39.00"), authenticated: Boolean = true) {
         compose.setContent {
             val model = remember {
                 CartViewModel(
@@ -151,7 +239,7 @@ class CurrentCartRuntimeParityTest {
                         BigDecimal("500"), BigDecimal("30.00"), 50,
                         listOf(LotteryGameParameters(LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
                             3070, "14/10/2026", 60, 6, 20, 15, emptyList(), emptyList())))) },
-                    authenticated = true,
+                    authenticated = authenticated,
                     dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate),
                 ).also { capturedModel = it }
             }

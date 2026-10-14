@@ -103,18 +103,16 @@ fun CurrentCartRoute(
         topBarTitleWeight = FontWeight.SemiBold,
         onBack = onBack,
         containerColor = CaixaDSColorTokens.White,
-        topBarActionWidth = 96.dp,
+        topBarActionWidth = ((if (canClearCart(cart)) 44 else 0) + (if (canFavoriteCart(cart, state.authenticated)) 44 else 0) + 16).dp,
         topBarAction = {
-            Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+            Row(Modifier.fillMaxSize().padding(end = 16.dp), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
                 if (canClearCart(cart)) {
-                    IconButton(onClick = viewModel::requestClear, modifier = Modifier.size(48.dp)) {
+                    IconButton(onClick = viewModel::requestClear, modifier = Modifier.size(44.dp)) {
                         Icon(CaixaDSCurrentCartDeleteIcon, "Excluir todas as apostas", Modifier.size(20.dp), tint = CaixaDSColorTokens.White)
                     }
-                } else {
-                    Spacer(Modifier.size(48.dp))
                 }
                 if (canFavoriteCart(cart, state.authenticated)) {
-                    IconButton(onClick = viewModel::requestFavorite, modifier = Modifier.size(48.dp)) {
+                    IconButton(onClick = viewModel::requestFavorite, modifier = Modifier.size(44.dp)) {
                         Icon(CaixaDSLegacyPurchaseFavoriteIcon, "Salvar carrinho favorito", Modifier.size(20.dp), tint = CaixaDSColorTokens.White)
                     }
                 }

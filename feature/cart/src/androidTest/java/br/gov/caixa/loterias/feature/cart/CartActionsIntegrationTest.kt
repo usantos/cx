@@ -25,7 +25,7 @@ class CartActionsIntegrationTest {
         show(listOf(individual))
         compose.onNodeWithText("Conc. 2800").assertIsDisplayed()
         compose.onNodeWithText("01 - 02 - 03 - 04 - 05 - 06").assertIsDisplayed()
-        compose.onNodeWithText("Trevos: 02 - 04").assertIsDisplayed()
+        compose.onNodeWithText("trevos: 02 - 04").assertIsDisplayed()
         compose.onNodeWithText("Complemento").assertIsDisplayed()
         compose.onNodeWithContentDescription("Excluir").performClick()
         compose.onNodeWithText("Não").performClick()

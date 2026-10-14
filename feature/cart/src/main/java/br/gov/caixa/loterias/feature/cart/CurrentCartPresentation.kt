@@ -8,6 +8,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.FirstBaseline
+import androidx.compose.ui.text.font.FontFamily
+import br.gov.caixa.loterias.core.designsystem.CaixaDSBetTypeIcons
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -92,9 +96,27 @@ internal fun CurrentCartRow(item: CartItem, now: Instant, onDelete: () -> Unit, 
                 Box(Modifier.align(Alignment.TopEnd)) { CurrentCartDelete(onDelete, 25) }
             }
         }
-        Row(Modifier.fillMaxWidth().padding(top = 8.dp), verticalAlignment = Alignment.Top) {
-            Column(Modifier.weight(0.75f).padding(end = 8.dp)) {
-                if (item.modalityCode.uppercase(Locale.ROOT) in setOf("SUPER_7", "SUPER_SETE", "SUPERSETE", "SUPER-SETE")) {
+        val superSeven = item.modalityCode.uppercase(Locale.ROOT) in setOf("SUPER_7", "SUPER_SETE", "SUPERSETE", "SUPER-SETE")
+        val cloverText = when {
+            item.modalityCode.uppercase(Locale.ROOT) in setOf("MAIS_MILIONARIA", "MAISMILIONARIA", "+MILIONARIA") && CartItemBadge.SURPRISE in item.badges -> "trevos: XX - XX"
+            item.selectedClovers.isNotEmpty() -> "trevos: ${item.selectedClovers.joinToString(" - ") { it.toString().padStart(2, '0') }}"
+            else -> null
+        }
+        val extras = buildList {
+            cloverText?.let(::add)
+            item.complementaryLabel
+                ?.takeIf { it.isNotBlank() && (cloverText == null || !it.startsWith("Trevos:", ignoreCase = true)) }
+                ?.let { label ->
+                    val nativeExtra = label.startsWith("Mês da sorte:", ignoreCase = true) ||
+                        label.startsWith("Time do coração:", ignoreCase = true)
+                    add(if (nativeExtra) label.lowercase(Locale.ROOT) else label)
+                }
+            addAll(item.gameRows)
+        }
+        val indicators = listOf(CartItemBadge.MIRROR, CartItemBadge.SURPRISE, CartItemBadge.RECURRING).filter { it in item.badges }
+        Layout(modifier = Modifier.fillMaxWidth().padding(top = 8.dp), content = {
+            Column {
+                if (superSeven) {
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         repeat(7) { column ->
                             Column(Modifier.width(22.dp), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -113,27 +135,56 @@ internal fun CurrentCartRow(item: CartItem, now: Instant, onDelete: () -> Unit, 
                     if (lines.isEmpty() && item.description.isNotBlank()) Text(item.description, style = cartText(), color = CurrentCartText)
                 }
             }
-            Column(Modifier.weight(0.25f), horizontalAlignment = Alignment.End) {
-                item.contestNumber?.let { Text("Conc. $it", style = cartText(), color = CurrentCartText, maxLines = 1) }
-                Text(formatCartAmount(item.amount), Modifier.padding(top = 12.dp), style = cartText().copy(platformStyle = PlatformTextStyle(includeFontPadding = false)), color = CurrentCartText)
+            Text(item.contestNumber?.let { "Conc. $it" }.orEmpty(), style = cartText(), color = CurrentCartText, maxLines = 1)
+            Text(formatCartAmount(item.amount), style = cartText().copy(platformStyle = PlatformTextStyle(includeFontPadding = false)), color = CurrentCartText)
+            Column {
+                extras.forEach { Text(it, style = cartText().copy(platformStyle = PlatformTextStyle(includeFontPadding = false)), color = CurrentCartText) }
             }
-        }
-        val cloverText = when {
-            item.modalityCode.uppercase(Locale.ROOT) in setOf("MAIS_MILIONARIA", "MAISMILIONARIA", "+MILIONARIA") && CartItemBadge.SURPRISE in item.badges -> "Trevos: XX - XX"
-            item.selectedClovers.isNotEmpty() -> "Trevos: ${item.selectedClovers.joinToString(" - ") { it.toString().padStart(2, '0') }}"
-            else -> null
-        }
-        cloverText?.let { Text(it, style = cartText(), color = CurrentCartText) }
-        item.complementaryLabel?.takeIf { it.isNotBlank() && (cloverText == null || !it.startsWith("Trevos:")) }
-            ?.let { Text(it, style = cartText(), color = CurrentCartText) }
-        item.gameRows.forEach { Text(it, style = cartText(), color = CurrentCartText) }
-        if (item.badges.isNotEmpty()) FlowRow(Modifier.padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            item.badges.forEach { Text(when (it) {
-                CartItemBadge.MIRROR -> "Espelho"
-                CartItemBadge.SURPRISE -> "Surpresinha"
-                CartItemBadge.RECURRING -> "Teimosinha"
-                else -> it.name
-            }, style = cartText(14, FontWeight.Bold), color = CurrentCartText) }
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                indicators.forEach { badge ->
+                    val icon = when (badge) {
+                        CartItemBadge.MIRROR -> CaixaDSBetTypeIcons.Mirror
+                        CartItemBadge.SURPRISE -> CaixaDSBetTypeIcons.Surprise
+                        else -> CaixaDSBetTypeIcons.Recurring
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(icon, null, Modifier.size(icon.defaultWidth, icon.defaultHeight), tint = CurrentCartText)
+                        Spacer(Modifier.width(6.dp))
+                        Text(when (badge) {
+                            CartItemBadge.MIRROR -> "Espelho"
+                            CartItemBadge.SURPRISE -> "Surpresinha"
+                            else -> "Teimosinha"
+                        }, style = cartText(14, FontWeight.Bold).copy(fontFamily = FontFamily.Default), color = CurrentCartText)
+                    }
+                }
+            }
+        }) { measurables, constraints ->
+            // Match CX's independent ConstraintLayout anchors; the price column cannot push extras or indicators down.
+            val split = (constraints.maxWidth * 0.75f).toInt()
+            val left = constraints.copy(minWidth = 0, minHeight = 0, maxWidth = split - 8.dp.roundToPx())
+            val right = constraints.copy(minWidth = 0, minHeight = 0, maxWidth = constraints.maxWidth - split)
+            val numbers = measurables[0].measure(left)
+            val contest = measurables[1].measure(right)
+            val price = measurables[2].measure(right)
+            val extra = measurables[3].measure(left.copy(maxWidth = split))
+            val badges = measurables[4].measure(left.copy(maxWidth = split))
+            val extraY = numbers.height
+            val priceY = if (extras.isNotEmpty()) extraY + extra[FirstBaseline] - price[FirstBaseline]
+                else contest.height + 12.dp.roundToPx()
+            val badgeY = when {
+                extras.isNotEmpty() -> extraY + extra.height
+                superSeven || (CartItemBadge.SURPRISE !in item.badges && item.selectedNumbers.flatten().size > 6) -> numbers.height
+                else -> priceY + (price.height - badges.height) / 2
+            }
+            val height = maxOf(numbers.height, contest.height, priceY + price.height,
+                extraY + extra.height, if (indicators.isNotEmpty()) badgeY + badges.height else 0)
+            layout(constraints.maxWidth, height) {
+                numbers.placeRelative(0, 0)
+                contest.placeRelative(constraints.maxWidth - contest.width, 0)
+                price.placeRelative(constraints.maxWidth - price.width, priceY)
+                extra.placeRelative(0, extraY)
+                badges.placeRelative(0, badgeY)
+            }
         }
         CurrentCartDivider()
     }
