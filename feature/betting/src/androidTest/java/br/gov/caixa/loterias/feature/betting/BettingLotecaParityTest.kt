@@ -29,6 +29,61 @@ class BettingLotecaParityTest {
     private var sends = 0
     private var backCalls = 0
 
+    @Test fun footerRandomCompletesFifteenAndSixteenLocallyAndWorksAgainAfterClear() {
+        launch(includeTriple = false)
+        compose.onNodeWithText("Aposta aleatória").assertIsEnabled().performClick()
+        assertCompleted(15,13,1,"R$ 4,00")
+        capture("random15-completed")
+        compose.onNodeWithText("Limpar").performClick()
+        compose.onNodeWithText("Aposta aleatória").assertIsEnabled()
+        compose.onNodeWithTag("loteca-2-AWAY").performClick()
+        compose.onNodeWithText("Completar jogo").assertIsEnabled().performClick()
+        assertCompleted(15,13,1,"R$ 4,00")
+        compose.runOnIdle { assertEquals(setOf(LotecaOutcome.AWAY),vm.state.value.lotecaOutcomes[2]) }
+        compose.onNodeWithText("Limpar").performClick()
+        compose.onNodeWithText("15 palpites").performClick()
+        compose.onNodeWithTag("betting-option-item-1").performClick()
+        compose.onNodeWithTag("betting-option-confirm").performClick()
+        compose.onNodeWithText("Entendi").performClick()
+        compose.onNodeWithText("Aposta aleatória").performClick()
+        assertCompleted(16,12,2,"R$ 8,00")
+        capture("random16-completed")
+    }
+
+    private fun assertCompleted(target:Int, singles:Int, doubles:Int, amount:String) {
+        compose.onNodeWithText("Selecionados: $target/$target").assertIsDisplayed()
+        compose.onNodeWithTag("loteca-count-partidas").assertTextEquals("14")
+        compose.onNodeWithTag("loteca-count-simples").assertTextEquals(singles.toString())
+        compose.onNodeWithTag("loteca-count-duplas").assertTextEquals(doubles.toString())
+        compose.onNodeWithTag("loteca-count-triplas").assertTextEquals("0")
+        compose.onNodeWithText("Completar jogo").assertIsNotEnabled()
+        compose.onNodeWithText("Adicionar ao carrinho").assertIsEnabled()
+        compose.onNodeWithText(amount).assertIsDisplayed()
+        compose.onNodeWithText("R$ 24,00").assertIsDisplayed()
+        compose.onNodeWithContentDescription("Carrinho de apostas, 2 itens").assertIsDisplayed()
+        compose.runOnIdle { assertEquals(0,sends); assertTrue(vm.state.value.canAddToCart) }
+    }
+
+    @Test fun counterAndSelectedTextMetricsMatchActualNativeTextViewsAndFlowCenter() {
+        launch()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        fun reference(textValue:String, bold:Boolean=false) = android.widget.TextView(context).apply {
+            text=textValue; textSize=14f
+            typeface=androidx.core.content.res.ResourcesCompat.getFont(context,
+                if(bold) br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_semi_bold else br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_regular)
+            measure(0,0)
+        }
+        val labels=listOf("Partidas: ","Simples: ","Duplas: ","Triplas: ")
+        val bounds=labels.map { compose.onNodeWithText(it,useUnmergedTree=true).fetchSemanticsNode().boundsInRoot }
+        labels.forEachIndexed { index,label -> assertEquals("Native $label TextView integer line metrics",reference(label).measuredHeight.toFloat(),bounds[index].height,0f) }
+        listOf("partidas","simples","duplas","triplas").forEach { tag ->
+            assertEquals("Native semibold counter TextView integer metrics",reference("0",true).measuredHeight.toFloat(),compose.onNodeWithTag("loteca-count-$tag").fetchSemanticsNode().boundsInRoot.height,0f)
+        }
+        assertEquals("Flow centers first group within separator height",bounds[1].top,bounds[0].top,0f)
+        assertEquals("Selected TextView glyph height inside native 40dp box",reference("Selecionados: 0/15").measuredHeight.toFloat(),compose.onNodeWithText("Selecionados: 0/15").fetchSemanticsNode().boundsInRoot.height,0f)
+        capture("counter-metrics")
+    }
+
     @Test fun quantityCancelConfirmCountersReductionClearAndContinueThroughRealTouches() {
         launch()
         compose.onNodeWithText("15 palpites").assertIsDisplayed().performClick()
@@ -207,7 +262,7 @@ class BettingLotecaParityTest {
         compose.runOnIdle { assertEquals(3 to null,vm.state.value.lotogolScores[1]); assertEquals(0,sends) }
     }
 
-    private fun launch(id:Int=LOTECA_ID, width:Int?=null, fontScale:Float=1f, solidShield:Boolean=false) {
+    private fun launch(id:Int=LOTECA_ID, width:Int?=null, fontScale:Float=1f, solidShield:Boolean=false, includeTriple:Boolean=true) {
         val badge = if (solidShield) java.io.ByteArrayOutputStream().use { stream ->
             solidBadge().compress(Bitmap.CompressFormat.PNG,100,stream)
             android.util.Base64.encodeToString(stream.toByteArray(),android.util.Base64.NO_WRAP)
@@ -215,7 +270,7 @@ class BettingLotecaParityTest {
         val home=SportsTeam(1,"BAHIA","BA",countryCode="BRA",shieldBase64=badge)
         val away=SportsTeam(2,"FLAMENGO","RJ",countryCode="BRA")
         val game=LotteryGameParameters(LotteryModality(id,if(id==LOTECA_ID)"Loteca" else "Lotogol","LOTECA"),1275,"18/10/2026",0,15,26,1,listOf(0),
-            (1..12).map { BetPrice(14+it,0,BigDecimal(4L*it),it,0) } + BetPrice(16,0,BigDecimal("12"),0,1),
+            (1..12).map { BetPrice(14+it,0,BigDecimal(4L*it),it,0) } + if (includeTriple) listOf(BetPrice(16,0,BigDecimal("12"),0,1)) else emptyList(),
             matches=(1..14).map { SportsMatch(it,home,away) })
         vm=BettingGameViewModel(id,GetBettingParametersUseCase { AppResult.Success(BettingParameters(BigDecimal.ZERO,BigDecimal.ZERO,50,listOf(game))) },
             AddBetToCartUseCase { sends++; AppResult.Success(ShoppingCart(1,BigDecimal.ZERO,emptyList())) })
@@ -237,7 +292,7 @@ class BettingLotecaParityTest {
         val instrumentation=InstrumentationRegistry.getInstrumentation()
         compose.waitForIdle(); instrumentation.waitForIdleSync(); android.os.SystemClock.sleep(300)
         val dir=File(requireNotNull(instrumentation.targetContext.externalCacheDir),"codex-parity").apply { mkdirs() }
-        val name="compose-task9-loteca-$state"
+        val name=if (state.startsWith("random") || state == "counter-metrics") "compose-task11-loteca-$state" else "compose-task9-loteca-$state"
         val bitmap=requireNotNull(instrumentation.uiAutomation.takeScreenshot())
         File(dir,"$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }; bitmap.recycle()
         // Copy the synchronous bitmap; wait for shell EOF before the next UI touch.

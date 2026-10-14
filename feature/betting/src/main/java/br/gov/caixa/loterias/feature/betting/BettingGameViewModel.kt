@@ -376,7 +376,14 @@ class BettingGameViewModel(
         AppError.Unexpected -> "Não foi possível salvar a aposta favorita. Tente novamente."
     }
 
-    fun fillShake(renew: Boolean) = updateState { it.withShake(renew) }
+    fun fillShake(renew: Boolean) = updateState { current ->
+        val completed = current.withShake(renew)
+        if (current.game?.modality?.id == LOTECA_ID && completed.numberQuantity > current.numberQuantity) {
+            val shouldWarn = !warnedAboutAdditionalNumbers
+            warnedAboutAdditionalNumbers = true
+            completed.copy(warningMessage = if (shouldWarn) completed.warningMessage else current.warningMessage)
+        } else completed
+    }
 
     fun selectMode(mode: BetEntryMode) = updateState {
         it.copy(

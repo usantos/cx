@@ -269,15 +269,15 @@ internal fun BettingLegacyLoteca(state: BettingGameUiState, viewModel: BettingGa
                     "Triplas: " to state.lotecaOutcomes.values.count { it.size == 3 },
                 )
                 counts.forEachIndexed { index, (label, count) ->
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(Modifier.align(Alignment.CenterVertically), verticalAlignment = Alignment.CenterVertically) {
                         if (index > 0) {
                             Box(
                                 Modifier.padding(end = 8.dp).width(1.dp).height(20.dp)
                                     .background(CaixaDSColorTokens.LegacySocialGraphite.copy(alpha = .3f)),
                             )
                         }
-                        Text(label, fontFamily = CaixaDSLegacyRegularFontFamily, fontSize = 14.sp, color = CaixaDSColorTokens.LegacySocialGraphite, style = metrics)
-                        Text(count.toString(), Modifier.testTag("loteca-count-${listOf("partidas", "simples", "duplas", "triplas")[index]}"), fontFamily = CaixaDSFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = CaixaDSColorTokens.LegacyLotecaCounter, style = metrics)
+                        Text(label, Modifier.then(lotecaNativeTextHeight(br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_regular, 14.sp)), fontFamily = CaixaDSLegacyRegularFontFamily, fontSize = 14.sp, color = CaixaDSColorTokens.LegacySocialGraphite, style = metrics)
+                        Text(count.toString(), Modifier.testTag("loteca-count-${listOf("partidas", "simples", "duplas", "triplas")[index]}").then(lotecaNativeTextHeight(br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_semi_bold, 14.sp)), fontFamily = CaixaDSFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = CaixaDSColorTokens.LegacyLotecaCounter, style = metrics)
                     }
                 }
             }
@@ -292,6 +292,7 @@ internal fun BettingLegacyLoteca(state: BettingGameUiState, viewModel: BettingGa
             }
             Box(Modifier.height(40.dp), contentAlignment = Alignment.Center) {
                 Text("Selecionados: ${state.lotecaOutcomes.values.sumOf(Set<LotecaOutcome>::size)}/${state.numberQuantity}",
+                    Modifier.then(lotecaNativeTextHeight(br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_regular, 14.sp)),
                     fontFamily = CaixaDSLegacyRegularFontFamily, fontSize = 14.sp,
                     color = CaixaDSColorTokens.LegacySocialGraphite, style = metrics)
             }

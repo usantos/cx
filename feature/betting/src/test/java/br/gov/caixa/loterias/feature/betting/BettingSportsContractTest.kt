@@ -16,6 +16,33 @@ class BettingSportsContractTest {
     @Before fun setup() = Dispatchers.setMain(UnconfinedTestDispatcher())
     @After fun teardown() = Dispatchers.resetMain()
 
+    @Test fun `sparse footer completion increases quantity locally with one session warning and no submit`() = runTest {
+        var sends = 0
+        val model = model(prices=listOf(BetPrice(18,0,BigDecimal("32"),4,0)), addBet=AddBetToCartUseCase {
+            sends++; AppResult.Success(ShoppingCart(1,BigDecimal.ZERO,emptyList()))
+        })
+        advanceUntilIdle()
+        model.fillShake(false)
+        assertEquals(18,model.state.value.numberQuantity)
+        assertEquals(18,model.state.value.lotecaOutcomes.values.sumOf { it.size })
+        assertEquals(BigDecimal("32"),model.state.value.unitPrice)
+        assertTrue(model.state.value.canAddToCart)
+        assertEquals("Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.",model.state.value.warningMessage)
+        val completed = model.state.value.lotecaOutcomes
+        model.fillShake(false)
+        assertEquals(completed,model.state.value.lotecaOutcomes)
+        model.dismissMessage()
+        model.clearCurrentStep()
+        model.chooseNumberQuantity(16)
+        model.toggleLotecaOutcome(2,LotecaOutcome.AWAY)
+        model.fillShake(false)
+        assertEquals(18,model.state.value.numberQuantity)
+        assertTrue(model.state.value.canAddToCart)
+        assertEquals(setOf(LotecaOutcome.AWAY),model.state.value.lotecaOutcomes[2])
+        assertNull(model.state.value.warningMessage)
+        assertEquals(0,sends)
+    }
+
     @Test fun `Loteca quantity is fifteen through twenty six independent of sparse prices`() = runTest {
         val model = model()
         advanceUntilIdle()
@@ -112,6 +139,7 @@ class BettingSportsContractTest {
     }
 
     private fun model(initialQuantity: Int = 0, lotogol: Boolean = false,
+        prices: List<BetPrice> = listOf(BetPrice(15,0,BigDecimal("4"),1,0), BetPrice(18,0,BigDecimal("32"),4,0)),
         addBet: AddBetToCartUseCase = AddBetToCartUseCase { AppResult.Success(ShoppingCart(1,BigDecimal.ZERO,emptyList())) },
     ): BettingGameViewModel {
         val id = if (lotogol) LOTOGOL_ID else LOTECA_ID
@@ -119,7 +147,7 @@ class BettingSportsContractTest {
         val matches = (1..14).map { SportsMatch(it, team, team.copy(number=2, name="FLAMENGO", state="RJ")) }
         val game = LotteryGameParameters(LotteryModality(id, "Loteca", "LOTECA"), contestNumber=1275, drawDate="18/10/2026", maximumSurprises=1, recurringOptions=listOf(0),
             maximumNumber=0, minimumSelection=15, maximumSelection=26, matches=matches,
-            prices=listOf(BetPrice(15,0,BigDecimal("4"),1,0), BetPrice(18,0,BigDecimal("32"),4,0)))
+            prices=prices)
         val seed = if (initialQuantity == 18) matches.mapIndexed { index, match ->
             LotecaMatchSelection(match, true, index < 4, false)
         } else emptyList()

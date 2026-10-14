@@ -1025,8 +1025,9 @@ private fun BettingLegacyFooter(state: BettingGameUiState, viewModel: BettingGam
         TIMEMANIA_ID -> state.selectedTeam != null
         else -> false
     } else state.selectedNumbers.isNotEmpty() || state.superSevenColumns.any { it.isNotEmpty() } || state.lotecaOutcomes.values.any { it.isNotEmpty() } || state.lotogolScores.isNotEmpty()
-    val randomEnabled = !state.loading && state.game?.modality?.id !in setOf(LOTECA_ID, LOTOGOL_ID) &&
-        if (state.selectionStep == BetSelectionStep.COMPLEMENT) when (state.game?.modality?.id) {
+    val randomEnabled = !state.loading && state.game?.modality?.id != LOTOGOL_ID &&
+        if (state.game?.modality?.id == LOTECA_ID) !state.canAddToCart
+        else if (state.selectionStep == BetSelectionStep.COMPLEMENT) when (state.game?.modality?.id) {
             MAIS_MILIONARIA_ID -> state.selectedClovers.size < state.manualCloverQuantity
             DIA_DE_SORTE_ID -> state.selectedLuckyMonth == null
             TIMEMANIA_ID -> state.selectedTeam == null

@@ -23,29 +23,7 @@ internal fun BettingGameUiState.withShake(renew: Boolean, random: Random = Rando
         }
         return result
     }
-    if (game.modality.id == LOTECA_ID) {
-        val old = game.matches.map { lotecaOutcomes[it.number].orEmpty() }
-        val doubles = old.count { it.size == 2 }; val triples = old.count { it.size == 3 }
-        val price = game.prices.firstOrNull { it.doubleQuantity == doubles && it.tripleQuantity == triples && doubles + triples > 0 }
-            ?: game.prices.firstOrNull { it.doubleQuantity >= doubles && it.tripleQuantity >= triples && it.doubleQuantity + it.tripleQuantity <= old.size }
-            ?: return this
-        val available = (List(price.tripleQuantity) { 3 } + List(price.doubleQuantity) { 2 } + List(old.size - price.tripleQuantity - price.doubleQuantity) { 1 }).toMutableList()
-        val counts = mutableMapOf<Int, Int>()
-        old.indices.shuffled(random).sortedByDescending { if (renew) 0 else old[it].size }.forEach { i ->
-            val viable = available.filter { it >= if (renew) 0 else old[i].size }
-            if (viable.isEmpty()) return this
-            val count = viable.random(random); counts[i] = count; available.remove(count)
-        }
-        val outcomes = game.matches.mapIndexed { i, match ->
-            val base = if (renew) emptySet() else old[i]
-            match.number to (base + LotecaOutcome.entries.filterNot { it in base }.shuffled(random).take(counts.getValue(i) - base.size))
-        }.toMap().toMutableMap()
-        if (renew && outcomes == lotecaOutcomes) {
-            val match = game.matches.firstOrNull { outcomes[it.number]!!.size < 3 }
-            match?.let { val set = outcomes[it.number]!!; outcomes[it.number] = set - set.first() + LotecaOutcome.entries.first { it !in set } }
-        }
-        return copy(lotecaOutcomes = outcomes, errorMessage = null)
-    }
+    if (game.modality.id == LOTECA_ID) return completeLoteca(random)
     var state = this
     if (selectionStep == BetSelectionStep.NUMBERS || renew) {
         state = if (game.modality.id == SUPER_SEVEN_ID) {
@@ -72,4 +50,48 @@ internal fun BettingGameUiState.withShake(renew: Boolean, random: Random = Rando
         else -> state
     }
     return state
+}
+
+/** CX LotecaFragment: try every preservation strategy at this target before increasing it.
+ * Renewal uses the same preserving completion in Loteca, unlike the numeric modalities.
+ */
+private fun BettingGameUiState.completeLoteca(random: Random): BettingGameUiState {
+    val game = game ?: return this
+    if (game.matches.isEmpty() || numberQuantity !in 15..26) return this
+    val old = game.matches.map { lotecaOutcomes[it.number].orEmpty() }
+    for (target in numberQuantity..26) {
+        for (strategy in 0..3) {
+            val preserved = old.indices.filter { old[it].size > strategy }
+            val singles = preserved.count { old[it].size == 1 }
+            val doubles = preserved.count { old[it].size == 2 }
+            val triples = preserved.count { old[it].size == 3 }
+            val candidates = game.prices.filter { price ->
+                val remainingSingles = old.size - price.doubleQuantity - price.tripleQuantity
+                price.doubleQuantity >= doubles && price.tripleQuantity >= triples &&
+                    remainingSingles >= singles &&
+                    old.size + price.doubleQuantity + 2 * price.tripleQuantity == target
+            }
+            val price = candidates.randomOrNull(random) ?: continue
+            val free = old.indices.filterNot { it in preserved }.shuffled(random)
+            val quantities = List(price.tripleQuantity - triples) { 3 } +
+                List(price.doubleQuantity - doubles) { 2 } +
+                List(old.size - price.tripleQuantity - price.doubleQuantity - singles) { 1 }
+            val assigned = free.zip(quantities).toMap()
+            val outcomes = game.matches.mapIndexed { index, match ->
+                val quantity = assigned[index]
+                val previous = old[index]
+                // Even a relaxed row retains existing choices when its new cardinality permits.
+                val selection = if (quantity == null) previous else {
+                    val base = if (previous.size <= quantity) previous else emptySet()
+                    base + LotecaOutcome.entries.filterNot { it in base }.shuffled(random).take(quantity - base.size)
+                }
+                match.number to selection
+            }.toMap()
+            return copy(lotecaOutcomes = outcomes, numberQuantity = target, errorMessage = null,
+                warningMessage = if (target > numberQuantity) {
+                    "Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta."
+                } else warningMessage)
+        }
+    }
+    return this
 }
