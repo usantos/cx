@@ -284,14 +284,13 @@ private fun BettingMessageDialog(
     onPositive: () -> Unit,
     negativeLabel: String? = null,
     onNegative: () -> Unit = {},
-) = CaixaDSLegacyHtmlDialog(
+) = CaixaDSLegacyDialog(
     title = title,
-    html = message,
+    message = message,
     positiveLabel = positiveLabel,
     onPositive = onPositive,
     negativeLabel = negativeLabel,
     onNegative = onNegative,
-    parseHtml = false,
 )
 
 @Composable

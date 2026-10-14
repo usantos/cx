@@ -16,11 +16,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyFuturaFontFamily
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -179,7 +185,7 @@ private fun TeamSelectionCard(
 }
 
 @Composable
-private fun TeamShield(team: SportsTeam, modifier: Modifier = Modifier) {
+private fun TeamShield(team: SportsTeam, modifier: Modifier = Modifier, bottomPadding: Dp = 8.dp) {
     val bitmap = remember(team.shieldBase64) {
         team.shieldBase64?.let { encoded ->
             runCatching {
@@ -189,10 +195,27 @@ private fun TeamShield(team: SportsTeam, modifier: Modifier = Modifier) {
         }
     }
     if (bitmap != null) {
-        Image(bitmap, contentDescription = null, modifier = modifier.padding(bottom = 8.dp))
+        Image(bitmap, contentDescription = null, modifier = modifier.padding(bottom = bottomPadding))
     } else {
-        Image(painterResource(R.drawable.installed_betting_time_padrao), null, modifier.padding(bottom = 8.dp))
+        Image(painterResource(R.drawable.installed_betting_time_padrao), null, modifier.padding(bottom = bottomPadding))
     }
+}
+
+/** Android line extents ceil ascent/descent separately, including the font's outer padding. */
+@Composable
+private fun lotecaNativeTextHeight(fontResource: Int, fontSize: TextUnit): Modifier {
+    val context = LocalContext.current
+    val density = LocalDensity.current
+    val height = remember(context, density, fontResource, fontSize) {
+        val paint = android.graphics.Paint().apply {
+            typeface = androidx.core.content.res.ResourcesCompat.getFont(context, fontResource)
+            textSize = with(density) { fontSize.toPx() }
+        }
+        val metrics = paint.fontMetrics
+        kotlin.math.ceil(maxOf(-metrics.top, -metrics.ascent)) +
+            kotlin.math.ceil(maxOf(metrics.bottom, metrics.descent))
+    }
+    return Modifier.heightIn(min = with(density) { height.toDp() })
 }
 
 /** Grade de partidas da Loteca em Compose, com bordas unidas e estados de seleção do legado. */
@@ -204,25 +227,34 @@ internal fun BettingLegacyLoteca(state: BettingGameUiState, viewModel: BettingGa
         Column(
             Modifier.fillMaxWidth().background(CaixaDSColorTokens.LegacySimulationToolbar).padding(horizontal = 16.dp),
         ) {
-            Box(Modifier.fillMaxWidth().padding(top = 14.dp)) {
-                Text(
-                    "Suas apostas",
-                    Modifier.padding(start = 8.dp, end = 8.dp),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    fontFamily = CaixaDSFontFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp,
-                    color = CaixaDSColorTokens.LegacySocialGraphite,
-                    style = metrics,
-                )
-                Row(Modifier.matchParentSize(), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
+            Layout(
+                modifier = Modifier.fillMaxWidth().padding(top = 14.dp),
+                content = {
+                    Text(
+                        "Suas apostas",
+                        Modifier.padding(start = 8.dp, end = 8.dp).then(lotecaNativeTextHeight(
+                            br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_semi_bold, 16.sp)),
+                        maxLines = 1, overflow = TextOverflow.Ellipsis,
+                        fontFamily = CaixaDSFontFamily, fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp, color = CaixaDSColorTokens.LegacySocialGraphite, style = metrics,
+                    )
                     Row(Modifier.clickable(onClick = onHelp), verticalAlignment = Alignment.CenterVertically) {
-                        Text("Como jogar", Modifier.padding(end = 8.dp), fontFamily = CaixaDSLegacyRegularFontFamily,
-                            fontSize = 16.sp, color = CaixaDSColorTokens.LegacySocialGraphite, style = metrics)
+                        Text("Como jogar", Modifier.padding(end = 8.dp).then(lotecaNativeTextHeight(
+                            br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_regular, 16.sp)),
+                            fontFamily = CaixaDSLegacyRegularFontFamily, fontSize = 16.sp,
+                            color = CaixaDSColorTokens.LegacySocialGraphite, style = metrics)
                         Image(painterResource(R.drawable.ic_info), null, Modifier.size(24.dp),
                             colorFilter = ColorFilter.tint(CaixaDSColorTokens.LegacySocialGraphite))
                     }
+                },
+            ) { measurables, constraints ->
+                val help = measurables[1].measure(constraints.copy(minWidth = 0, minHeight = 0))
+                val title = measurables[0].measure(constraints.copy(minWidth = 0, minHeight = 0,
+                    maxWidth = (constraints.maxWidth - help.width).coerceAtLeast(0)))
+                // Native Flow is anchored to the title bottom; its 24dp help icon may extend below it.
+                layout(constraints.maxWidth, title.height) {
+                    title.placeRelative(0, 0)
+                    help.placeRelative(constraints.maxWidth - help.width, 0)
                 }
             }
             FlowRow(
@@ -277,7 +309,8 @@ internal fun BettingLegacyLoteca(state: BettingGameUiState, viewModel: BettingGa
                 Column(Modifier.fillMaxWidth().padding(top = 16.dp)) {
                     Text(
                         "Jogo ${match.number.toString().padStart(2, '0')}$suffix",
-                        Modifier.padding(bottom = 8.dp),
+                        Modifier.padding(bottom = 8.dp).then(lotecaNativeTextHeight(
+                            br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_regular, 16.sp)),
                         fontFamily = CaixaDSLegacyRegularFontFamily,
                         fontSize = 16.sp,
                         color = CaixaDSColorTokens.LegacyCaixaBlue,
@@ -334,25 +367,25 @@ private fun LotecaOutcomeCard(
                 colorFilter = ColorFilter.tint(if (selected) CaixaDSColorTokens.Blue700 else CaixaDSColorTokens.LegacyBetAction),
             )
         } else {
-            TeamShield(team, Modifier.padding(top = 12.dp).size(35.dp))
+            TeamShield(team, Modifier.padding(top = 12.dp).size(35.dp), bottomPadding = 0.dp)
         }
         Text(
             label,
             Modifier.fillMaxWidth(),
-            fontFamily = CaixaDSLegacyFuturaFontFamily,
+            fontFamily = FontFamily.SansSerif,
             fontSize = 14.sp,
             color = if (selected) CaixaDSColorTokens.Blue700 else CaixaDSColorTokens.LegacyBetAction,
             textAlign = TextAlign.Center,
             style = TextStyle(lineHeight = 14.sp, platformStyle = PlatformTextStyle(includeFontPadding = true)),
         )
         if (team == null) Text("placeholder", Modifier.fillMaxWidth().clearAndSetSemantics {},
-            fontFamily = CaixaDSLegacyFuturaFontFamily, fontSize = 14.sp, color = Color.Transparent,
+            fontFamily = FontFamily.SansSerif, fontSize = 14.sp, color = Color.Transparent,
             style = TextStyle(lineHeight = 14.sp, platformStyle = PlatformTextStyle(includeFontPadding = true)))
         if (team != null && !selected && !team.selectionIndicator) {
             Text(
                 if (team.countryCode.isNotBlank() && (!team.countryCode.equals("BRA", true) || team.name.equals("BRASIL", true))) "/${team.countryCode}" else team.state.takeIf(String::isNotBlank)?.let { "/$it" }.orEmpty(),
                 Modifier.fillMaxWidth(),
-                fontFamily = CaixaDSLegacyFuturaFontFamily,
+                fontFamily = FontFamily.SansSerif,
                 fontSize = if (index == 0) 12.sp else 14.sp,
                 color = CaixaDSColorTokens.LegacyBetAction,
                 textAlign = TextAlign.Center,
