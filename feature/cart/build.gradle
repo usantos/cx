@@ -15,6 +15,7 @@ dependencies {
     testImplementation libs.kotlinx.coroutines.test
     androidTestImplementation platform(libs.androidx.compose.bom)
     androidTestImplementation libs.androidx.compose.ui.test.junit4
+    androidTestImplementation libs.androidx.constraintlayout
     debugImplementation libs.androidx.compose.ui.test.manifest
     androidTestImplementation 'androidx.test:runner:1.7.0'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0'

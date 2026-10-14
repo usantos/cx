@@ -256,6 +256,49 @@ class CurrentCartRuntimeParityTest {
         }
     }
 
+    @Test fun recurringIndicatorMatchesNativeConstraintLayoutCenterRounding() {
+        show(listOf(mega.copy(badges = setOf(CartItemBadge.RECURRING))))
+        val price = compose.onNodeWithText("R$ 6,00").fetchSemanticsNode().boundsInRoot
+        val badge = compose.onNodeWithText("Teimosinha").fetchSemanticsNode().boundsInRoot
+        var nativeOffset = 0
+        compose.runOnIdle {
+            val context = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().targetContext
+            val native = androidx.constraintlayout.widget.ConstraintLayout(context)
+            val priceView = android.widget.TextView(context).apply {
+                id = android.view.View.generateViewId()
+                text = "R$ 6,00"
+                typeface = androidx.core.content.res.ResourcesCompat.getFont(context,
+                    br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_regular)
+                setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 14f)
+                includeFontPadding = false
+            }
+            val badgeView = android.widget.TextView(context).apply {
+                text = "Teimosinha"
+                typeface = androidx.core.content.res.ResourcesCompat.getFont(context,
+                    br.gov.caixa.loterias.core.designsystem.R.font.futura_std_bold)
+                setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 14f)
+            }
+            native.addView(priceView, androidx.constraintlayout.widget.ConstraintLayout.LayoutParams(-2, -2).apply {
+                topToTop = 0
+                endToEnd = 0
+                topMargin = 100
+            })
+            native.addView(badgeView, androidx.constraintlayout.widget.ConstraintLayout.LayoutParams(-2, -2).apply {
+                startToStart = 0
+                topToTop = priceView.id
+                bottomToBottom = priceView.id
+            })
+            native.measure(android.view.View.MeasureSpec.makeMeasureSpec(1000, android.view.View.MeasureSpec.EXACTLY),
+                android.view.View.MeasureSpec.makeMeasureSpec(1000, android.view.View.MeasureSpec.EXACTLY))
+            native.layout(0, 0, 1000, 1000)
+            assertEquals("Price uses the same native font metrics", price.height, priceView.height.toFloat(), 0f)
+            assertEquals("Indicator uses the same native font metrics", badge.height, badgeView.height.toFloat(), 0f)
+            nativeOffset = badgeView.top - priceView.top
+        }
+        assertEquals("CX top/bottom constraints center the indicator with native pixel rounding",
+            nativeOffset.toFloat(), badge.top - price.top, 0f)
+    }
+
     private fun show(items: List<CartItem>, total: BigDecimal = BigDecimal("39.00"), authenticated: Boolean = true) {
         compose.setContent {
             val model = remember {

@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.core.domain.cart.*
 import java.math.BigDecimal
 import java.time.Instant
 import java.util.Locale
+import kotlin.math.roundToInt
 
 internal val CurrentCartBlue = CaixaDSCurrentCartColors.Primary
 private val CurrentCartText = CaixaDSCurrentCartColors.Text
@@ -174,7 +175,7 @@ internal fun CurrentCartRow(item: CartItem, now: Instant, onDelete: () -> Unit, 
             val badgeY = when {
                 extras.isNotEmpty() -> extraY + extra.height
                 superSeven || (CartItemBadge.SURPRISE !in item.badges && item.selectedNumbers.flatten().size > 6) -> numbers.height
-                else -> priceY + (price.height - badges.height) / 2
+                else -> priceY + ((price.height - badges.height) / 2f).roundToInt()
             }
             val height = maxOf(numbers.height, contest.height, priceY + price.height,
                 extraY + extra.height, if (indicators.isNotEmpty()) badgeY + badges.height else 0)
