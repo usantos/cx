@@ -404,7 +404,7 @@ private fun ManualBetContent(state: BettingGameUiState, viewModel: BettingGameVi
     val promptInset = legacyPromptInset()
     Column(
         Modifier.fillMaxSize().background(CaixaDS.colors.surface)
-            .padding(horizontal = 8.dp).verticalScroll(rememberScrollState()),
+            .padding(horizontal = 8.dp),
     ) {
         if (state.selectionStep == BetSelectionStep.COMPLEMENT) {
             // CX keeps textSelecionados visible even when TREVOS sets its text to empty.
@@ -415,26 +415,32 @@ private fun ManualBetContent(state: BettingGameUiState, viewModel: BettingGameVi
                 DIA_DE_SORTE_ID -> "Escolha o mês de sorte:"
                 else -> ""
             }, Modifier.padding(start = promptInset, top = complementPromptTop, bottom = 8.dp), fontFamily = CaixaDSFontFamily, fontSize = 16.sp, color = CaixaDSColorTokens.LegacySocialGraphite, style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)))
-            when (game.modality.id) {
-                TIMEMANIA_ID -> TeamOfTheHeartContent(state, viewModel)
-                DIA_DE_SORTE_ID -> LuckyMonthContent(state, viewModel)
-                MAIS_MILIONARIA_ID -> CloverSelectionContent(state, viewModel)
+            Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
+                when (game.modality.id) {
+                    TIMEMANIA_ID -> TeamOfTheHeartContent(state, viewModel)
+                    DIA_DE_SORTE_ID -> LuckyMonthContent(state, viewModel)
+                    MAIS_MILIONARIA_ID -> CloverSelectionContent(state, viewModel)
+                }
+                Spacer(Modifier.height(16.dp))
             }
         } else if (game.modality.id == SUPER_SEVEN_ID) {
             SuperSevenMatrix(state, viewModel)
         } else {
             Text(if (state.selectedNumbers.isEmpty()) "Selecione os números:" else "Selecionados: ${state.selectedNumbers.size}/${state.numberQuantity}", Modifier.padding(start = promptInset, top = 16.dp, bottom = 8.dp), fontFamily = CaixaDSFontFamily, fontSize = 16.sp, color = CaixaDSColorTokens.LegacySocialGraphite, style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)))
-            // The observed short Lotofácil and Dia de Sorte tickets retain cltGeral's native 16dp top margin.
-            if (game.modality.id == 8 || game.modality.id == DIA_DE_SORTE_ID) Spacer(Modifier.height(16.dp))
-            BettingLegacyNumberGrid(
-                numbers = (1..game.maximumNumber).toList(),
-                selected = state.selectedNumbers,
-                onNumberClick = viewModel::toggleNumber,
-                modifier = Modifier.fillMaxWidth(),
-                modalityId = game.modality.id,
-            )
+            // textSelecionados belongs to the activity; only the fragment body scrolls.
+            Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
+                // Short Lotofácil and Dia de Sorte tickets retain cltGeral's native margin.
+                if (game.modality.id == 8 || game.modality.id == DIA_DE_SORTE_ID) Spacer(Modifier.height(16.dp))
+                BettingLegacyNumberGrid(
+                    numbers = (1..game.maximumNumber).toList(),
+                    selected = state.selectedNumbers,
+                    onNumberClick = viewModel::toggleNumber,
+                    modifier = Modifier.fillMaxWidth(),
+                    modalityId = game.modality.id,
+                )
+                Spacer(Modifier.height(16.dp))
+            }
         }
-        Spacer(Modifier.height(16.dp))
     }
 }
 
@@ -576,7 +582,7 @@ private fun SuperSevenMatrix(state: BettingGameUiState, viewModel: BettingGameVi
     val promptInset=legacyPromptInset()
     val nativeBallSize=with(density) { (44.dp.toPx().toInt()).toDp() }
     val metrics=TextStyle(platformStyle=PlatformTextStyle(includeFontPadding=true))
-    Column(Modifier.fillMaxWidth()) {
+    Column(Modifier.fillMaxSize()) {
         val selectedCount = state.superSevenColumns.sumOf(Set<Int>::size)
         Text(if (selectedCount == 0) "Selecione os números:" else "Selecionados: $selectedCount/${state.numberQuantity}",Modifier.padding(start=promptInset,top=16.dp,bottom=8.dp),fontFamily=CaixaDSFontFamily,fontSize=16.sp,color=CaixaDSColorTokens.LegacySocialGraphite,style=metrics)
         NativeSuperSevenRow {
@@ -586,37 +592,40 @@ private fun SuperSevenMatrix(state: BettingGameUiState, viewModel: BettingGameVi
                 }
             }
         }
-        // fragment_cartela_novo cltGeral has its own 16dp top margin.
-        Spacer(Modifier.height(16.dp))
-        NativeSuperSevenRow(Modifier.padding(bottom=16.dp)) {
-            repeat(7) { column ->
-                Column(Modifier.padding(1.dp).background(CaixaDSColorTokens.LegacySuperSevenColumn),verticalArrangement=Arrangement.spacedBy(15.dp),horizontalAlignment=LegacyGridHorizontalAlignment) {
-                    (0..9).forEach { digit ->
-                        val checked=digit in state.superSevenColumns[column]
-                        Box(
-                            Modifier.size(nativeBallSize)
-                                .testTag("super-sete-$column-$digit")
-                                .semantics { contentDescription = "Coluna ${column + 1}, número $digit"; this.selected = checked }
-                                .toggleable(value = checked, role = Role.Checkbox) { viewModel.toggleSuperSevenDigit(column, digit) }
-                                .background(
-                                    if (checked) CaixaDSColorTokens.LegacySuperSevenSelection else CaixaDSColorTokens.White,
-                                    CircleShape,
+        // Native headers stay above the NestedScrollView. Its cltGeral margin scrolls
+        // with the digits; the activity prompt and all seven headers stay fixed.
+        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
+            Spacer(Modifier.height(16.dp))
+            NativeSuperSevenRow(Modifier.padding(bottom=16.dp)) {
+                repeat(7) { column ->
+                    Column(Modifier.padding(1.dp).background(CaixaDSColorTokens.LegacySuperSevenColumn),verticalArrangement=Arrangement.spacedBy(15.dp),horizontalAlignment=LegacyGridHorizontalAlignment) {
+                        (0..9).forEach { digit ->
+                            val checked=digit in state.superSevenColumns[column]
+                            Box(
+                                Modifier.size(nativeBallSize)
+                                    .testTag("super-sete-$column-$digit")
+                                    .semantics { contentDescription = "Coluna ${column + 1}, número $digit"; this.selected = checked }
+                                    .toggleable(value = checked, role = Role.Checkbox) { viewModel.toggleSuperSevenDigit(column, digit) }
+                                    .background(
+                                        if (checked) CaixaDSColorTokens.LegacySuperSevenSelection else CaixaDSColorTokens.White,
+                                        CircleShape,
+                                    )
+                                    .then(
+                                        if (checked) Modifier
+                                        else Modifier.border(with(density) { 3.toDp() }, CaixaDSColorTokens.LegacySuperSevenNumber, CircleShape),
+                                    ),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Text(
+                                    digit.toString(),
+                                    color = if (checked) CaixaDSColorTokens.LegacySuperSevenSelectedNumber else CaixaDSColorTokens.LegacySuperSevenNumber,
+                                    fontFamily = CaixaDSLegacyFuturaFontFamily,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    textAlign = TextAlign.Center,
+                                    style = metrics,
                                 )
-                                .then(
-                                    if (checked) Modifier
-                                    else Modifier.border(with(density) { 3.toDp() }, CaixaDSColorTokens.LegacySuperSevenNumber, CircleShape),
-                                ),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(
-                                digit.toString(),
-                                color = if (checked) CaixaDSColorTokens.LegacySuperSevenSelectedNumber else CaixaDSColorTokens.LegacySuperSevenNumber,
-                                fontFamily = CaixaDSLegacyFuturaFontFamily,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 14.sp,
-                                textAlign = TextAlign.Center,
-                                style = metrics,
-                            )
+                            }
                         }
                     }
                 }

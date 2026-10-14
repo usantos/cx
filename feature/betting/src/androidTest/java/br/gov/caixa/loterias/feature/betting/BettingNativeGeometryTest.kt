@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import com.google.android.material.switchmaterial.SwitchMaterial
 import androidx.core.content.res.ResourcesCompat
 import androidx.compose.ui.test.*
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.CaixaDSTheme
@@ -26,9 +27,9 @@ class BettingNativeGeometryTest {
     private val density get() = context.resources.displayMetrics.density
     private fun px(dp: Float) = dp * density
     private fun model(id: Int): BettingGameViewModel {
-        val game = LotteryGameParameters(LotteryModality(id, if (id == 7) "Super Sete" else if(id==20) "Timemania" else "Dia de Sorte", "PUBLIC"),
-            1000,"06/10/2026",if(id==7) 9 else if(id==20)80 else 31,if(id==20)10 else 7,if(id==7)21 else if(id==20)10 else 15,100,listOf(0),
-            if(id==20) listOf(BetPrice(10,0,BigDecimal("3.50"))) else if(id==7) listOf(BetPrice(7,0,BigDecimal("3.00")),BetPrice(8,0,BigDecimal("6.00"))) else listOf(BetPrice(7,0,BigDecimal("2.50")),BetPrice(8,0,BigDecimal("20.00"))),
+        val game = LotteryGameParameters(LotteryModality(id, if (id == 7) "Super Sete" else if(id==20) "Timemania" else if(id==2) "Mega-Sena" else "Dia de Sorte", "PUBLIC"),
+            1000,"06/10/2026",if(id==7) 9 else if(id==20)80 else if(id==2)60 else 31,if(id==20)10 else if(id==2)6 else 7,if(id==7)21 else if(id==20)10 else if(id==2)7 else 15,100,listOf(0),
+            if(id==20) listOf(BetPrice(10,0,BigDecimal("3.50"))) else if(id==2) listOf(BetPrice(6,0,BigDecimal("6.00")),BetPrice(7,0,BigDecimal("42.00"))) else if(id==7) listOf(BetPrice(7,0,BigDecimal("3.00")),BetPrice(8,0,BigDecimal("6.00"))) else listOf(BetPrice(7,0,BigDecimal("2.50")),BetPrice(8,0,BigDecimal("20.00"))),
             teams=listOf(SportsTeam(1,"Flamengo","RJ"),SportsTeam(2,"Corinthians","SP")),
             luckyMonths=listOf(LuckyMonth(1,"Janeiro","JAN"),LuckyMonth(2,"Fevereiro","FEV")))
         return BettingGameViewModel(id,GetBettingParametersUseCase { error("Prepared public snapshot") },
@@ -165,6 +166,42 @@ class BettingNativeGeometryTest {
         compose.onNodeWithContentDescription("Flamengo").performClick().assertIsSelected()
         assertEquals(1,vm.state.value.selectedTeam?.number)
         capture("team")
+    }
+    @Test fun realSwipeScrollsOnlySuperSevenDigitsAndKeepsPromptAndHeadersFixed() {
+        val vm=model(7)
+        render(vm)
+        val prompt=compose.onNodeWithText("Selecione os números:")
+        val beforePrompt=prompt.fetchSemanticsNode().boundsInRoot
+        val beforeHeaders=(0..6).map { compose.onNodeWithTag("super-sete-header-$it").fetchSemanticsNode().boundsInRoot }
+        val first=compose.onNodeWithTag("super-sete-0-0").fetchSemanticsNode().boundsInRoot
+        compose.onRoot().performTouchInput {
+            swipe(Offset(center.x,first.top+px(250f)),Offset(center.x,first.top+px(10f)),500)
+        }
+        (0..6).forEach { column ->
+            val header=compose.onNodeWithTag("super-sete-header-$column")
+            assertEquals("fragment_cartela_novo header $column above NestedScrollView",beforeHeaders[column],header.fetchSemanticsNode().boundsInRoot)
+            header.assertIsDisplayed()
+        }
+        assertEquals("activity_simula_aposta textSelecionados remains outside scroll",beforePrompt,prompt.fetchSemanticsNode().boundsInRoot)
+        prompt.assertIsDisplayed()
+        compose.onNodeWithTag("super-sete-6-9").assertIsDisplayed().performClick().assertIsSelected()
+        assertEquals(setOf(9),vm.state.value.superSevenColumns[6])
+        capture("super7-scrolled")
+    }
+    @Test fun realSwipeKeepsTheCommonManualPromptFixedWhileNumbersScroll() {
+        val vm=model(2)
+        render(vm)
+        val prompt=compose.onNodeWithText("Selecione os números:")
+        val before=prompt.fetchSemanticsNode().boundsInRoot
+        val first=compose.onNodeWithTag("betting-number-01").fetchSemanticsNode().boundsInRoot
+        compose.onRoot().performTouchInput {
+            swipe(Offset(center.x,first.top+px(250f)),Offset(center.x,first.top+px(10f)),500)
+        }
+        assertEquals("Common activity prompt stays above fragment scroll",before,prompt.fetchSemanticsNode().boundsInRoot)
+        prompt.assertIsDisplayed()
+        compose.onNodeWithTag("betting-number-60").assertIsDisplayed().performClick().assertIsSelected()
+        assertEquals(setOf(60),vm.state.value.selectedNumbers)
+        capture("manual-scrolled")
     }
     @Test fun sevenColumnsRemainSelectableAndDigitNineCanBeScrolledIntoView() {
         val vm=model(7)
