@@ -150,7 +150,7 @@ fun BettingGameRoute(
                 val game = requireNotNull(state.game)
                 Column(Modifier.fillMaxSize().padding(padding).padding(16.dp).clip(RoundedCornerShape(8.dp)).border(1.dp, CaixaDSColorTokens.LegacySimulationToolbar, RoundedCornerShape(8.dp)).padding(1.dp)) {
                     if (game.modality.id == LOTECA_ID) {
-                        BettingLegacyLoteca(state, viewModel) { showHelp = true }
+                        BettingLegacyLoteca(state, viewModel, onQuantity = { showNumberQuantity = true }, onHelp = { showHelp = true })
                     } else if (game.modality.id == LOTOGOL_ID) {
                         LotogolBetContent(state, viewModel)
                     } else {
@@ -212,19 +212,22 @@ fun BettingGameRoute(
     )
     if (showNumberQuantity) {
         BettingOptionDialog(
-            title = "Quantidade de números",
+            title = if (state.game?.modality?.id == LOTECA_ID) "Quantidade de Palpites" else "Quantidade de números",
             options = state.numberQuantityOptions,
+            description = if (state.game?.modality?.id == LOTECA_ID) "Escolha em quantos palpites você quer jogar:" else null,
             selected = state.numberQuantity,
             subtitle = if (state.game?.modality?.id == MAIS_MILIONARIA_ID) "* Valores para apostas com 2 trevos" else null,
             label = { quantity ->
-                val price = state.game?.let {
-                    resolveBetPrice(
-                        it,
-                        quantity,
-                        if (state.mode == BetEntryMode.SURPRISE) state.surpriseCloverQuantity else state.selectedClovers.size,
-                    )
+                if (state.game?.modality?.id == LOTECA_ID) "$quantity palpites" else {
+                    val price = state.game?.let {
+                        resolveBetPrice(
+                            it,
+                            quantity,
+                            if (state.mode == BetEntryMode.SURPRISE) state.surpriseCloverQuantity else state.selectedClovers.size,
+                        )
+                    }
+                    "$quantity números por ${formatBetAmount(price)}"
                 }
-                "$quantity números por ${formatBetAmount(price)}"
             },
             onSelect = viewModel::chooseNumberQuantity,
             onDismiss = { showNumberQuantity = false },
@@ -966,7 +969,7 @@ private fun BettingLegacyNumberGrid(numbers: List<Int>, selected: Set<Int>, onNu
 }
 
 @Composable
-private fun BettingDSButton(text: String, onClick: () -> Unit, modifier: Modifier, color: Color,
+internal fun BettingDSButton(text: String, onClick: () -> Unit, modifier: Modifier, color: Color,
     content: Color, stroke: Color = color, enabled: Boolean = true, textSize: Float = 13f, corner: Float = 4f,
     icon: Int? = null, semiBold: Boolean = false, textSizeInDp: Boolean = false, iconAtStart: Boolean = false, retainNativeAnimator: Boolean = false) {
     val density = androidx.compose.ui.platform.LocalDensity.current

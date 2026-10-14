@@ -613,16 +613,17 @@ class BettingGameViewModelTest {
     }
 
     @Test fun `loteca requires every match and sends simple double and triple outcomes`() = runTest {
-        val matches = sportsMatches()
+        val teams = sportsTeams()
+        val matches = (1..14).map { SportsMatch(it, teams[0], teams[1]) }
         parameterResult = successParameters(
             game(id = LOTECA_ID, name = "Loteca").copy(
-                minimumSelection = 0,
-                maximumSelection = 0,
+                minimumSelection = 15,
+                maximumSelection = 26,
                 maximumNumber = 0,
                 matches = matches,
                 prices = listOf(
-                    BetPrice(0, 0, BigDecimal("3.00"), 0, 0),
-                    BetPrice(0, 0, BigDecimal("6.00"), 1, 0),
+                    BetPrice(14, 0, BigDecimal("3.00"), 0, 0),
+                    BetPrice(15, 0, BigDecimal("6.00"), 1, 0),
                 ),
             ),
         )
@@ -639,8 +640,8 @@ class BettingGameViewModelTest {
         assertTrue(viewModel.state.value.canAddToCart)
         assertEquals(BigDecimal("6.00"), viewModel.state.value.unitPrice)
         viewModel.toggleLotecaOutcome(matches.first().number, LotecaOutcome.DRAW)
-        assertEquals(3, viewModel.state.value.numberQuantity)
-        assertEquals(2, viewModel.state.value.lotecaOutcomes.values.sumOf(Set<LotecaOutcome>::size))
+        assertEquals(15, viewModel.state.value.numberQuantity)
+        assertEquals(14, viewModel.state.value.lotecaOutcomes.values.sumOf(Set<LotecaOutcome>::size))
         assertFalse(viewModel.state.value.canAddToCart)
         viewModel.toggleLotecaOutcome(matches.first().number, LotecaOutcome.DRAW)
         assertTrue(viewModel.state.value.canAddToCart)
@@ -653,7 +654,7 @@ class BettingGameViewModelTest {
         viewModel.dismissMessage()
         viewModel.addToCart()
         advanceUntilIdle()
-        assertEquals(2, submitted?.lotecaSelections?.size)
+        assertEquals(14, submitted?.lotecaSelections?.size)
         assertTrue(requireNotNull(submitted).lotecaSelections.first().draw)
         assertTrue(requireNotNull(submitted).numbers.isEmpty())
     }
@@ -1104,18 +1105,17 @@ class BettingGameViewModelTest {
 
     @Test fun `edit seed restores Loteca and Lotogol match selections by match number`() = runTest {
         val teams = sportsTeams()
-        val matches = listOf(SportsMatch(1, teams[0], teams[1]), SportsMatch(2, teams[2], teams[0]))
+        val matches = (1..14).map { SportsMatch(it, teams[0], teams[1]) }
         val lotecaGame = game(id = LOTECA_ID, name = "Loteca").copy(
-            minimumSelection = 2,
+            minimumSelection = 15,
             maximumSelection = 26,
             matches = matches,
-            prices = listOf(BetPrice(3, 0, BigDecimal("12.00"), 1, 0)),
+            prices = listOf(BetPrice(15, 0, BigDecimal("12.00"), 1, 0)),
         )
         parameterResult = successParameters(lotecaGame)
-        val lotecaSeed = listOf(
-            LotecaMatchSelection(matches[0], homeWin = true, draw = true, awayWin = false),
-            LotecaMatchSelection(matches[1], homeWin = false, draw = false, awayWin = true),
-        )
+        val lotecaSeed = matches.mapIndexed { index, match ->
+            LotecaMatchSelection(match, homeWin = index != 1, draw = index == 0, awayWin = index == 1)
+        }
         val loteca = BettingGameViewModel(
             modalityId = LOTECA_ID,
             getParameters = GetBettingParametersUseCase { parameterResult },
@@ -1126,16 +1126,16 @@ class BettingGameViewModelTest {
         advanceUntilIdle()
         assertEquals(setOf(LotecaOutcome.HOME, LotecaOutcome.DRAW), loteca.state.value.lotecaOutcomes[1])
         assertEquals(setOf(LotecaOutcome.AWAY), loteca.state.value.lotecaOutcomes[2])
-        assertEquals(3, loteca.state.value.numberQuantity)
+        assertEquals(15, loteca.state.value.numberQuantity)
         assertTrue(loteca.state.value.canAddToCart)
         loteca.addToCart()
         advanceUntilIdle()
-        assertEquals(3, submitted?.numberQuantity)
-        assertEquals(3, submitted?.lotecaSelections?.sumOf { selection ->
+        assertEquals(15, submitted?.numberQuantity)
+        assertEquals(15, submitted?.lotecaSelections?.sumOf { selection ->
             listOf(selection.homeWin, selection.draw, selection.awayWin).count { it }
         })
 
-        val lotogolGame = game(id = LOTOGOL_ID, name = "Lotogol").copy(matches = matches)
+        val lotogolGame = game(id = LOTOGOL_ID, name = "Lotogol").copy(matches = matches.take(2))
         parameterResult = successParameters(lotogolGame)
         val lotogol = BettingGameViewModel(
             modalityId = LOTOGOL_ID,

@@ -587,6 +587,18 @@ class BettingGameViewModel(
 
     fun chooseNumberQuantity(quantity: Int) = updateState { current ->
         if (quantity !in current.numberQuantityOptions) return@updateState current
+        if (current.game?.modality?.id == LOTECA_ID) {
+            val increased = quantity > current.numberQuantity && !warnedAboutAdditionalNumbers
+            if (increased) warnedAboutAdditionalNumbers = true
+            return@updateState current.copy(
+                numberQuantity = quantity,
+                lotecaOutcomes = if (quantity < current.numberQuantity) emptyMap() else current.lotecaOutcomes,
+                warningMessage = if (increased) {
+                    "Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta."
+                } else current.warningMessage,
+                errorMessage = null,
+            )
+        }
         val shouldWarn = quantity > current.numberQuantityOptions.firstOrNull().orZero() && !warnedAboutAdditionalNumbers
         if (shouldWarn) warnedAboutAdditionalNumbers = true
         val selectedQuantity = if (current.game?.modality?.id == SUPER_SEVEN_ID) {
@@ -659,6 +671,8 @@ class BettingGameViewModel(
             return@updateState current.copy(
                 selectedNumbers = emptySet(),
                 superSevenColumns = List(SUPER_SEVEN_COLUMNS) { emptySet() },
+                lotecaOutcomes = emptyMap(),
+                lotogolScores = emptyMap(),
                 generateMirror = false,
                 errorMessage = null,
             )

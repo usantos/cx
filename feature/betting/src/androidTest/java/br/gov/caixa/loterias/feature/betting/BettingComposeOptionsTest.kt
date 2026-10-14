@@ -30,6 +30,8 @@ class BettingComposeOptionsTest {
         compose.waitForIdle()
         compose.onNodeWithTag("betting-option-list").assertExists()
         compose.onNodeWithTag("betting-option-confirm").assertIsNotEnabled()
+        compose.onNodeWithTag("betting-option-confirm").assertNativeDisabledConfirmPixels()
+        compose.onNodeWithTag("betting-option-item-1").assertNativeUnchosenRowPixels()
         (0..2).forEach { compose.onNodeWithTag("betting-option-item-$it").assertIsNotSelected() }
         val picker = compose.onNodeWithTag("betting-option-list").fetchSemanticsNode().boundsInRoot
         assertEquals(with(compose.density) { 170.dp.toPx() }, picker.height, 1f)

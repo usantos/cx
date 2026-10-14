@@ -26,7 +26,7 @@ internal fun formatBetAmount(amount: BigDecimal?): String = NumberFormat
     .replace('\u202F', ' ')
 
 internal fun availableNumberQuantities(game: br.gov.caixa.loterias.core.domain.betting.LotteryGameParameters): List<Int> =
-    game.prices.map { it.numberQuantity }
+    if (game.modality.id == LOTECA_ID) (15..26).toList() else game.prices.map { it.numberQuantity }
         .filter { it in game.minimumSelection..game.maximumSelection }
         .distinct()
         .sorted()
