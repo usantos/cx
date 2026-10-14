@@ -367,7 +367,58 @@ class TicketsViewModelTest {
         assertNull(viewModel.state.value.damMessage)
     }
 
+    @Test fun `expired lease between configuration and history prevents old query and new owner loads once`() = runTest(dispatcher) {
+        var current = true
+        var reads = 0
+        val pending = kotlinx.coroutines.CompletableDeferred<AppResult<ConfirmedBetsConfiguration>>()
+        val history = GetConfirmedBetsUseCase { reads++; betsResult }
+        val old = viewModel(isSessionCurrent = { current }, configurationLoader = { pending.await() }, history = history)
+        old.loadBets()
+        advanceUntilIdle()
+        current = false
+        pending.complete(configurationResult)
+        advanceUntilIdle()
+        assertEquals(0, reads)
+        assertTrue(old.state.value.bets.isEmpty())
+        val fresh = viewModel(history = history)
+        fresh.loadBets()
+        advanceUntilIdle()
+        assertEquals(1, reads)
+        assertEquals(listOf(bet), fresh.state.value.bets)
+    }
+
+    @Test fun `expired lease ignores pending private history response`() = runTest(dispatcher) {
+        var current = true
+        val pending = kotlinx.coroutines.CompletableDeferred<AppResult<List<ConfirmedBet>>>()
+        val old = viewModel(isSessionCurrent = { current }, history = GetConfirmedBetsUseCase { pending.await() })
+        old.loadBets()
+        advanceUntilIdle()
+        current = false
+        pending.complete(betsResult)
+        advanceUntilIdle()
+        assertTrue(old.state.value.bets.isEmpty())
+        assertFalse(old.state.value.loaded)
+    }
+
+    @Test fun `expired lease between purchase months and list prevents private query`() = runTest(dispatcher) {
+        var current = true
+        var reads = 0
+        val pending = kotlinx.coroutines.CompletableDeferred<AppResult<List<PurchaseMonth>>>()
+        val old = viewModel(isSessionCurrent = { current }, monthsLoader = { pending.await() }, purchasesLoader = { reads++; purchasesResult })
+        old.loadPurchases()
+        advanceUntilIdle()
+        current = false
+        pending.complete(monthsResult)
+        advanceUntilIdle()
+        assertEquals(0, reads)
+        assertTrue(old.state.value.purchases.isEmpty())
+    }
+
     private fun viewModel(
+        isSessionCurrent: () -> Boolean = { true },
+        configurationLoader: suspend () -> AppResult<ConfirmedBetsConfiguration> = { configurationResult },
+        monthsLoader: suspend () -> AppResult<List<PurchaseMonth>> = { monthsResult },
+        purchasesLoader: suspend (Map<String, String>) -> AppResult<List<Purchase>> = { purchasesResult },
         getDetails: GetPurchaseDetailsUseCase? = null,
         validateName: ValidateFavoriteCartNameUseCase? = null,
         saveFavorite: SavePurchaseAsFavoriteUseCase? = null,
@@ -375,18 +426,19 @@ class TicketsViewModelTest {
         history: GetConfirmedBetsUseCase = GetConfirmedBetsUseCase { betFilters = it; betsResult },
     ) = TicketsViewModel(
         getConfirmedBets = history,
-        getPurchases = GetPurchasesUseCase { purchaseFilters = it; purchasesResult },
+        getPurchases = GetPurchasesUseCase { purchaseFilters = it; purchasesLoader(it) },
         getPurchaseBets = GetPurchaseBetsUseCase { purchaseBetsResult },
         checkTicket = CheckTicketUseCase { ticketQuery = it; ticketResult },
         dispatchers = FixedCoroutineDispatchers(dispatcher),
-        getBetsConfiguration = GetConfirmedBetsConfigurationUseCase { configurationResult },
+        getBetsConfiguration = GetConfirmedBetsConfigurationUseCase { configurationLoader() },
         getModalities = GetLotteryModalitiesUseCase { modalitiesResult },
-        getPurchaseMonths = GetPurchaseMonthsUseCase { monthsResult },
+        getPurchaseMonths = GetPurchaseMonthsUseCase { monthsLoader() },
         getPaymentMethods = GetPurchasePaymentMethodsUseCase { methodsResult },
         getPurchaseStatuses = GetPurchaseStatusesUseCase { statusMethod = it; statusesResult },
         getPurchaseDetails = getDetails,
         validateFavoriteName = validateName,
         savePurchaseAsFavorite = saveFavorite,
         validateDam = dam,
+        isSessionCurrent = isSessionCurrent,
     )
 }

@@ -86,9 +86,10 @@ import kotlinx.coroutines.delay
 fun ConfirmedBetsDataRoute(viewModel: TicketsViewModel, onBack: () -> Unit, onOpen: (ConfirmedBet) -> Unit,
     onAddToCart: ((ConfirmedBet) -> Unit)? = null, onBetNow: (() -> Unit)? = null,
     onHelp: (() -> Unit)? = null,
-    cartTotal: BigDecimal = BigDecimal.ZERO, cartBetCount: Int = 0, onCart: (() -> Unit)? = null) {
+    cartTotal: BigDecimal = BigDecimal.ZERO, cartBetCount: Int = 0, onCart: (() -> Unit)? = null,
+    privateDataEnabled: Boolean = true) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    LaunchedEffect(Unit) { if (!state.loaded) viewModel.loadBets() }
+    LaunchedEffect(viewModel, privateDataEnabled) { if (privateDataEnabled && !state.loaded) viewModel.loadBets() }
     CaixaDSLegacyScaffold(title = "Minhas apostas", onBack = onBack,
         topBarTitleWeight = FontWeight.Normal,
         topBarAnnotatedTitle = buildAnnotatedString {
@@ -107,7 +108,7 @@ fun ConfirmedBetsDataRoute(viewModel: TicketsViewModel, onBack: () -> Unit, onOp
             item { LegacyConfirmedBetsIntro(state.historyBackend) }
             item { LegacyTicketPeriodSelector(
                 "Selecione o período",
-                state.betFilters.period?.description.orEmpty(),
+                state.betFilters.period?.description ?: if (!privateDataEnabled) "Últimos 7 dias" else "",
                 state.betConfiguration?.periods.orEmpty().map { it.description },
                 Modifier.padding(start = 16.dp, end = 16.dp, top = 20.dp),
             ) { index -> state.betConfiguration?.periods?.getOrNull(index)?.let { viewModel.selectBetPeriod(it); viewModel.applyBetFilters() } } }
@@ -128,9 +129,10 @@ fun ConfirmedBetsDataRoute(viewModel: TicketsViewModel, onBack: () -> Unit, onOp
 }
 
 @Composable
-fun PurchasesDataRoute(viewModel: TicketsViewModel, onBack: () -> Unit, onOpen: (Purchase) -> Unit) {
+fun PurchasesDataRoute(viewModel: TicketsViewModel, onBack: () -> Unit, onOpen: (Purchase) -> Unit,
+    privateDataEnabled: Boolean = true) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    LaunchedEffect(Unit) { if (!state.loaded) viewModel.loadPurchases() }
+    LaunchedEffect(viewModel, privateDataEnabled) { if (privateDataEnabled && !state.loaded) viewModel.loadPurchases() }
     CaixaDSLegacyScaffold(title = "Minhas Compras", onBack = onBack,
         topBarAction = { LegacyTicketsFilterAction(state.purchaseFilters.activeCount, viewModel::openPurchaseFilters) },
         containerColor = CaixaDSColorTokens.White) { padding ->

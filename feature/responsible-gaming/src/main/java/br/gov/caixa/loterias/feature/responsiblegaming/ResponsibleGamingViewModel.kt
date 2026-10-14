@@ -72,6 +72,8 @@ class ResponsibleGamingViewModel(
     private val suspendAccount: SuspendAccountUseCase,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
     assessmentRequired: Boolean = false,
+    autoLoad: Boolean = true,
+    private val isSessionCurrent: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = MutableStateFlow(ResponsibleGamingUiState(assessmentRequired = assessmentRequired))
     val state = mutableState.asStateFlow()
@@ -80,7 +82,7 @@ class ResponsibleGamingViewModel(
     val effects = mutableEffects.asSharedFlow()
 
     init {
-        loadRouteData()
+        if (autoLoad) loadRouteData()
     }
 
     fun onAction(action: ResponsibleGamingAction) {
@@ -107,7 +109,7 @@ class ResponsibleGamingViewModel(
         }
     }
 
-    private fun loadRouteData() {
+    fun loadRouteData() {
         when (route) {
             "responsible/form" -> loadQuestions()
             "responsible/social" -> loadSocialTransfers()
@@ -115,8 +117,11 @@ class ResponsibleGamingViewModel(
     }
 
     private fun loadQuestions() = viewModelScope.launch(dispatchers.io) {
+        if (!isSessionCurrent()) return@launch
         mutableState.update { it.copy(loading = true, errorMessage = null) }
-        when (val result = getQuestions()) {
+        val result = getQuestions()
+        if (!isSessionCurrent()) return@launch
+        when (result) {
             is AppResult.Success -> mutableState.update {
                 it.copy(loading = false, questions = result.value, currentQuestionIndex = 0, answers = emptyMap())
             }

@@ -18,25 +18,87 @@ class VisitorLoginNavigationUiTest {
     private lateinit var nav: NavHostController
     private var request: String? = "account/personal-data"
     private var continuation: String? = null
+    private var protectedRoute = "account/personal-data"
 
     private fun show(openPersonal: Boolean) {
         compose.setContent {
             nav = rememberNavController()
             NavHost(nav, startDestination = "home") {
                 composable("home") { Text("Home") }
-                composable("account/personal-data") { Text("Dados pessoais") }
+                composable("responsible/start") { Text("Welcome") }
+                listOf("account/personal-data", "tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form").forEach { route -> composable(route) { Text(route) } }
                 composable("account/login?authorize={authorize}") { Text("Login") }
             }
         }
-        compose.runOnIdle { if (openPersonal) nav.navigate("account/personal-data") }
+        compose.runOnIdle { if (openPersonal) nav.navigate(protectedRoute) }
         compose.waitForIdle()
     }
 
     private fun callbacks() = VisitorLoginCallbacks(
-        route = "account/personal-data", navController = nav,
+        route = protectedRoute, navController = nav,
         pendingRequest = { request }, clearRequest = { request = null },
         continueAfterLogin = { continuation = it },
     )
+
+    @Test fun allPrivateDrawerEntriesOpenUnderPromptAndDeclineOnceToHome() {
+        show(false)
+        listOf("tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form").forEach { route ->
+            compose.runOnIdle {
+                protectedRoute = route
+                openVisitorDrawerDestination(route, nav) { request = it }
+            }
+            compose.waitForIdle()
+            compose.runOnIdle {
+                assertEquals(route, nav.currentDestination?.route)
+                val callback = callbacks()
+                callback.onNegative()
+                assertEquals("home", nav.currentDestination?.route)
+                callback.onNegative()
+                assertEquals("home", nav.currentDestination?.route)
+            }
+        }
+    }
+
+    @Test fun allPrivateDrawerAcceptsRetainContinuationAndDuplicateCallbacksCannotNavigateTwice() {
+        show(false)
+        listOf("tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form").forEach { route ->
+            compose.runOnIdle {
+                protectedRoute = route
+                openVisitorDrawerDestination(route, nav) { request = it }
+            }
+            compose.waitForIdle()
+            compose.runOnIdle {
+                val callback = callbacks()
+                callback.onPositive()
+                assertEquals(route, continuation)
+                assertEquals(route, nav.previousBackStackEntry?.destination?.route)
+                val login = nav.currentBackStackEntry
+                callback.onPositive(); callback.onNegative()
+                assertSame(login, nav.currentBackStackEntry)
+                nav.popBackStack("home", false)
+            }
+            compose.waitForIdle()
+        }
+    }
+
+    @Test fun welcomeIsPublicAndSeguirFinishesWelcomeBeforeFormPromptThenDeclineReturnsHome() {
+        show(false)
+        compose.runOnIdle { nav.navigate("responsible/start") }
+        compose.waitForIdle()
+        compose.runOnIdle {
+            assertEquals("responsible/start", nav.currentDestination?.route)
+            openResponsibleAssessment(nav)
+            protectedRoute = "responsible/form"
+            request = protectedRoute
+        }
+        compose.waitForIdle()
+        compose.runOnIdle {
+            assertEquals("responsible/form", nav.currentDestination?.route)
+            assertEquals("home", nav.previousBackStackEntry?.destination?.route)
+            callbacks().onNegative()
+            assertEquals("home", nav.currentDestination?.route)
+        }
+    }
 
     @Test fun declineClosesOpenPersonalDestinationAndCannotPopTwice() {
         show(true)

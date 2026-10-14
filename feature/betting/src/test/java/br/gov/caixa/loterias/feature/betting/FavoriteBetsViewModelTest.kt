@@ -197,14 +197,66 @@ class FavoriteBetsViewModelTest {
         assertNull(viewModel.state.value.errorMessage)
     }
 
-    private fun viewModel(): FavoriteBetsViewModel {
+    @Test fun `deferred visitor favorites keep initial controls without reading private favorites`() = runTest {
+        var reads = 0
+        val vm = viewModel(autoLoad = false, onRead = { reads++ })
+        advanceUntilIdle()
+        assertEquals(0, reads)
+        assertFalse(vm.state.value.loading)
+        assertTrue(vm.state.value.favorites.isEmpty())
+        vm.loadInitial()
+        advanceUntilIdle()
+        assertEquals(1, reads)
+        assertEquals(listOf(favorite), vm.state.value.favorites)
+    }
+
+    @Test fun `expired lease between parameters and favorites prevents old query and new owner loads once`() = runTest {
+        var current = true
+        var reads = 0
+        val pending = kotlinx.coroutines.CompletableDeferred<AppResult<BettingParameters>>()
+        val old = viewModel(isSessionCurrent = { current }, parameters = { pending.await() }, onRead = { reads++ })
+        advanceUntilIdle()
+        current = false
+        pending.complete(parameterResult)
+        advanceUntilIdle()
+        assertEquals(0, reads)
+        assertTrue(old.state.value.favorites.isEmpty())
+        val fresh = viewModel(onRead = { reads++ })
+        advanceUntilIdle()
+        assertEquals(1, reads)
+        assertEquals(listOf(favorite), fresh.state.value.favorites)
+    }
+
+    @Test fun `expired lease ignores pending favorites response and any further read`() = runTest {
+        var current = true
+        var reads = 0
+        val pending = kotlinx.coroutines.CompletableDeferred<AppResult<List<FavoriteBet>>>()
+        val old = viewModel(isSessionCurrent = { current }, favorites = { pending.await() }, onRead = { reads++ })
+        advanceUntilIdle()
+        assertEquals(1, reads)
+        current = false
+        pending.complete(favoriteResult)
+        advanceUntilIdle()
+        assertTrue(old.state.value.favorites.isEmpty())
+        old.selectModality(2)
+        advanceUntilIdle()
+        assertEquals(1, reads)
+    }
+
+    private fun viewModel(autoLoad: Boolean = true, onRead: () -> Unit = {},
+        isSessionCurrent: () -> Boolean = { true },
+        parameters: suspend () -> AppResult<BettingParameters> = { parameterResult },
+        favorites: suspend () -> AppResult<List<FavoriteBet>> = { favoriteResult },
+    ): FavoriteBetsViewModel {
         val dispatcher = UnconfinedTestDispatcher()
         return FavoriteBetsViewModel(
-            GetFavoriteBetsUseCase { modality -> filter = modality; favoriteResult },
-            GetBettingParametersUseCase { parameterResult },
+            GetFavoriteBetsUseCase { modality -> onRead(); filter = modality; favorites() },
+            GetBettingParametersUseCase { parameters() },
             DeleteFavoriteBetUseCase { id -> deleted = id; deleteResult },
             AddFavoriteBetToCartUseCase { id, options -> added = id to options; addResult },
             FixedCoroutineDispatchers(dispatcher),
+            autoLoad = autoLoad,
+            isSessionCurrent = isSessionCurrent,
         )
     }
 

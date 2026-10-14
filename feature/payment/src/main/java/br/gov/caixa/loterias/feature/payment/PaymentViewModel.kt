@@ -65,15 +65,18 @@ class PaymentViewModel(
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
     private val ownerKey: String? = null,
     private val savedStateHandle: SavedStateHandle? = null,
+    autoLoad: Boolean = true,
+    private val isSessionCurrent: () -> Boolean = { true },
 ) : ViewModel() {
     private val pixRestoration = if (mode == PaymentMode.PIX) savedStateHandle?.let { SavedPixRestoration(it, ownerKey) } else null
-    private val mutableState = MutableStateFlow(pixRestoration?.restore() ?: PaymentUiState())
+    private val mutableState = MutableStateFlow(pixRestoration?.restore() ?: PaymentUiState(loading = autoLoad))
     val state = mutableState.asStateFlow()
     private val generatingPix = AtomicBoolean(false)
 
-    init { load() }
+    init { if (autoLoad) load() }
 
     fun load() = viewModelScope.launch(dispatchers.io) {
+        if (!isSessionCurrent()) return@launch
         if (state.value.redirect != null || state.value.redirectPaused || state.value.registrationPending || state.value.notice != null) return@launch
         // A restored charge is reused; a persisted ambiguous POST requires purchase recovery.
         // Calls without a saved-state host retain the existing explicit retry behavior.
@@ -202,7 +205,10 @@ class PaymentViewModel(
     }
 
     private suspend fun loadCards() {
-        when (val methods = getMethods()) {
+        if (!isSessionCurrent()) return
+        val methods = getMethods()
+        if (!isSessionCurrent()) return
+        when (methods) {
             is AppResult.Failure -> applyFailure(methods.error)
             is AppResult.Success -> {
                 val cardMethods = methods.value.filter { method ->
@@ -213,7 +219,10 @@ class PaymentViewModel(
                 }
                 val loaded = linkedMapOf<Long, List<SavedPaymentCard>>()
                 for (method in cardMethods) {
-                    when (val result = getCards(method.id)) {
+                    if (!isSessionCurrent()) return
+                    val result = getCards(method.id)
+                    if (!isSessionCurrent()) return
+                    when (result) {
                         is AppResult.Failure -> applyFailure(result.error)
                         is AppResult.Success -> loaded[method.id] = result.value
                     }

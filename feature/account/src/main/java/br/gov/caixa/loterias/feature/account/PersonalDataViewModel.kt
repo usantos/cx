@@ -51,6 +51,7 @@ class PersonalDataViewModel(
         AppResult.Success(BigDecimal.ZERO)
     },
     private val deferInitialLoad: Boolean = false,
+    private val isSessionCurrent: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = MutableStateFlow(PersonalDataUiState(loading = !deferInitialLoad))
     val state = mutableState.asStateFlow()
@@ -61,8 +62,11 @@ class PersonalDataViewModel(
     }
 
     fun load() = viewModelScope.launch(dispatchers.io) {
+        if (!isSessionCurrent()) return@launch
         mutableState.update { it.copy(loading = true, errorMessage = null, saved = false) }
-        when (val result = getProfile()) {
+        val result = getProfile()
+        if (!isSessionCurrent()) return@launch
+        when (result) {
             is AppResult.Success -> showProfile(result.value)
             is AppResult.Failure -> mutableState.update {
                 it.copy(loading = false, errorMessage = result.error.userMessage())

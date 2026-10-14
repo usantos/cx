@@ -49,26 +49,31 @@ class FavoriteCartsViewModel(
     private val wasFavoriteCartAdded: WasFavoriteCartAddedUseCase = WasFavoriteCartAddedUseCase { false },
     private val markFavoriteCartAdded: MarkFavoriteCartAddedUseCase = MarkFavoriteCartAddedUseCase { },
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
+    autoLoad: Boolean = true,
+    private val isSessionCurrent: () -> Boolean = { true },
 ) : ViewModel() {
-    private val mutableState = MutableStateFlow(FavoriteCartsUiState())
+    private val mutableState = MutableStateFlow(FavoriteCartsUiState(loading = autoLoad))
     val state = mutableState.asStateFlow()
     private val betsCache = mutableMapOf<Long, List<FavoriteCartBet>>()
     private val importedFavoriteCartIds = mutableSetOf<Long>()
 
-    init { load() }
+    init { if (autoLoad) load() }
 
     fun load() = viewModelScope.launch(dispatchers.io) {
+        if (!isSessionCurrent()) return@launch
         mutableState.update { it.copy(loading = true, errorMessage = null) }
         if (cartId == null) applyCarts(getFavoriteCarts()) else applyBets(getFavoriteCartBets(cartId))
     }
 
     fun refreshAfterDetail() {
+        if (!isSessionCurrent()) return
         betsCache.clear()
         mutableState.update { it.copy(expandedCartId = null, expandedBets = emptyList()) }
         load()
     }
 
     fun toggleCart(id: Long) {
+        if (!isSessionCurrent()) return
         if (state.value.expandedCartId == id) {
             mutableState.update { it.copy(expandedCartId = null, expandedBets = emptyList()) }
             return
@@ -79,7 +84,10 @@ class FavoriteCartsViewModel(
         }
         viewModelScope.launch(dispatchers.io) {
             mutableState.update { it.copy(loadingCartId = id, errorMessage = null) }
-            when (val result = getFavoriteCartBets(id)) {
+            if (!isSessionCurrent()) return@launch
+            val result = getFavoriteCartBets(id)
+            if (!isSessionCurrent()) return@launch
+            when (result) {
                 is AppResult.Success -> {
                     betsCache[id] = result.value
                     mutableState.update {
@@ -166,11 +174,15 @@ class FavoriteCartsViewModel(
     }
 
     private fun prepareImport(favoriteId: Long) {
+        if (!isSessionCurrent()) return
         val loadedBets = if (favoriteId == cartId) state.value.bets else betsCache[favoriteId]
         if (loadedBets == null) {
             viewModelScope.launch(dispatchers.io) {
                 mutableState.update { it.copy(loadingCartId = favoriteId, errorMessage = null) }
-                when (val result = getFavoriteCartBets(favoriteId)) {
+                if (!isSessionCurrent()) return@launch
+                val result = getFavoriteCartBets(favoriteId)
+                if (!isSessionCurrent()) return@launch
+                when (result) {
                     is AppResult.Success -> {
                         betsCache[favoriteId] = result.value
                         mutableState.update { it.copy(loadingCartId = null) }
@@ -233,14 +245,14 @@ class FavoriteCartsViewModel(
 
     fun consumeImported() = mutableState.update { it.copy(imported = false) }
 
-    private fun applyCarts(result: AppResult<List<FavoriteCart>>) = when (result) {
+    private fun applyCarts(result: AppResult<List<FavoriteCart>>) = if (!isSessionCurrent()) Unit else when (result) {
         is AppResult.Success -> mutableState.update {
             it.copy(loading = false, carts = result.value, errorMessage = null)
         }
         is AppResult.Failure -> applyFailure(result.error)
     }
 
-    private fun applyBets(result: AppResult<List<FavoriteCartBet>>) = when (result) {
+    private fun applyBets(result: AppResult<List<FavoriteCartBet>>) = if (!isSessionCurrent()) Unit else when (result) {
         is AppResult.Success -> mutableState.update {
             it.copy(loading = false, bets = result.value, errorMessage = null)
         }

@@ -1,13 +1,39 @@
 package br.gov.caixa.loterias.apostas
 
+/** Retain a loaded screen across restoration, while a different validated lease gets fresh private state. */
+@androidx.compose.runtime.Composable
+internal fun rememberPrivateEntryKey(identity: br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity?): String =
+    androidx.compose.runtime.saveable.rememberSaveable(identity) { java.util.UUID.randomUUID().toString() }
+
+internal fun openVisitorDrawerDestination(
+    route: String,
+    navController: androidx.navigation.NavHostController,
+    requestLogin: (String) -> Unit,
+) {
+    if (opensVisitorDestinationBeforeLogin(route)) {
+        navController.navigate(route) {
+            launchSingleTop = true
+            popUpTo("home") { inclusive = false }
+        }
+    }
+    requestLogin(route)
+}
+
+internal fun openResponsibleAssessment(navController: androidx.navigation.NavHostController) {
+    navController.navigate("responsible/form") {
+        popUpTo("responsible/start") { inclusive = true }
+        launchSingleTop = true
+    }
+}
+
 internal fun requiresVisitorLogin(route: String): Boolean = route.substringBefore('?') in setOf(
     "account/personal-data", "tickets/my-bets", "tickets/purchases", "betting/favorites",
     "cart/favorite-carts", "payment/cards", "responsible/form",
 )
 
-/** The legacy Personal Data activity shows its form underneath the login prompt. */
+/** Legacy private activities open their initial public controls underneath the login prompt. */
 internal fun opensVisitorDestinationBeforeLogin(route: String): Boolean =
-    route.substringBefore('?') == "account/personal-data"
+    requiresVisitorLogin(route)
 
 /** Suspension information is public, but submitting a suspension changes the signed-in account. */
 internal fun requiresVisitorLoginOnSubmit(route: String): Boolean =
@@ -32,7 +58,7 @@ internal class VisitorLoginCallbacks(
         if (pendingRequest() != route) return
         clearRequest()
         if (opensVisitorDestinationBeforeLogin(route) &&
-            navController.currentDestination?.route == route.substringBefore('?')) {
+            navController.currentDestination?.route?.substringBefore('?') == route.substringBefore('?')) {
             navController.popBackStack()
         }
     }

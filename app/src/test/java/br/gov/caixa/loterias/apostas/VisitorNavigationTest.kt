@@ -19,6 +19,6 @@ class VisitorNavigationTest {
     @Test fun `personal data keeps its destination visible behind the visitor login prompt`() {
         assertTrue(opensVisitorDestinationBeforeLogin("account/personal-data"))
         assertTrue(opensVisitorDestinationBeforeLogin("account/personal-data?source=drawer"))
-        assertFalse(opensVisitorDestinationBeforeLogin("tickets/my-bets"))
+        listOf("tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards?methodId=1", "responsible/form").forEach { assertTrue(it, opensVisitorDestinationBeforeLogin(it)) }
     }
 }

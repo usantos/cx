@@ -58,15 +58,20 @@ class FavoriteBetsViewModel(
     private val deleteFavorite: DeleteFavoriteBetUseCase,
     private val addFavoriteToCart: AddFavoriteBetToCartUseCase,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
+    autoLoad: Boolean = true,
+    private val isSessionCurrent: () -> Boolean = { true },
 ) : ViewModel() {
-    private val mutableState = MutableStateFlow(FavoriteBetsUiState())
+    private val mutableState = MutableStateFlow(FavoriteBetsUiState(loading = autoLoad))
     val state = mutableState.asStateFlow()
 
-    init { loadInitial() }
+    init { if (autoLoad) loadInitial() }
 
     fun loadInitial() = viewModelScope.launch(dispatchers.io) {
+        if (!isSessionCurrent()) return@launch
         mutableState.update { it.copy(loading = true, errorMessage = null) }
-        when (val parameters = getParameters()) {
+        val parameters = getParameters()
+        if (!isSessionCurrent()) return@launch
+        when (parameters) {
             is AppResult.Failure -> applyFailure(parameters.error)
             is AppResult.Success -> {
                 mutableState.update {
@@ -136,8 +141,11 @@ class FavoriteBetsViewModel(
     fun dismissError() = mutableState.update { it.copy(errorMessage = null) }
 
     private suspend fun loadFavorites(modalityId: Int?) {
+        if (!isSessionCurrent()) return
         mutableState.update { it.copy(loading = true, errorMessage = null) }
-        when (val result = getFavorites(modalityId)) {
+        val result = getFavorites(modalityId)
+        if (!isSessionCurrent()) return
+        when (result) {
             is AppResult.Failure -> applyFailure(result.error)
             is AppResult.Success -> mutableState.update {
                 it.copy(loading = false, favorites = result.value.filter { favorite -> favorite.id > 0 })

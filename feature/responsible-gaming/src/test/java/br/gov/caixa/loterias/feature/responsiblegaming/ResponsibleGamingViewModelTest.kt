@@ -197,6 +197,39 @@ class ResponsibleGamingViewModelTest {
         assertEquals(2, calls)
     }
 
+    @Test fun `deferred assessment form reads no questions before login`() {
+        var reads = 0
+        val vm = viewModel("responsible/form", autoLoad = false,
+            getQuestions = { reads++; AppResult.Success(listOf(question(1))) })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, reads)
+        assertFalse(vm.state.value.loading)
+        assertTrue(vm.state.value.questions.isEmpty())
+        vm.loadRouteData()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, reads)
+        assertEquals(question(1), vm.state.value.currentQuestion)
+    }
+
+    @Test fun `expired lease prevents queued assessment reads`() {
+        var reads = 0
+        val vm = viewModel("responsible/form", isSessionCurrent = { false }, getQuestions = { reads++; AppResult.Success(listOf(question(1))) })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, reads)
+        assertTrue(vm.state.value.questions.isEmpty())
+    }
+
+    @Test fun `expired lease ignores pending assessment response`() {
+        var current = true
+        val pending = kotlinx.coroutines.CompletableDeferred<AppResult<List<SelfAssessmentQuestion>>>()
+        val vm = viewModel("responsible/form", isSessionCurrent = { current }, getQuestions = { pending.await() })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        current = false
+        pending.complete(AppResult.Success(listOf(question(1))))
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertTrue(vm.state.value.questions.isEmpty())
+    }
+
     private fun viewModel(
         route: String,
         questions: AppResult<List<SelfAssessmentQuestion>> = AppResult.Success(emptyList()),
@@ -207,6 +240,8 @@ class ResponsibleGamingViewModelTest {
             AppResult.Success(AccountSuspension(true, when (it) { 24 -> "24 horas"; else -> "$it horas" }))
         },
         assessmentRequired: Boolean = false,
+        autoLoad: Boolean = true,
+        isSessionCurrent: () -> Boolean = { true },
     ) = ResponsibleGamingViewModel(
         route = route,
         getQuestions = GetSelfAssessmentQuestionsUseCase { getQuestions() },
@@ -215,6 +250,8 @@ class ResponsibleGamingViewModelTest {
         suspendAccount = SuspendAccountUseCase { suspend(it) },
         dispatchers = FixedCoroutineDispatchers(dispatcherRule.dispatcher),
         assessmentRequired = assessmentRequired,
+        autoLoad = autoLoad,
+        isSessionCurrent = isSessionCurrent,
     )
 
     private fun question(id: Int) = SelfAssessmentQuestion(id, "Pergunta $id", id)

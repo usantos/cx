@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -315,6 +316,12 @@ fun CaixaDSLegacyScaffold(
     )
 }
 
+// LayoutDialogPadrao sets CAIXA faces explicitly and lets TextView use its natural font metrics.
+private val nativeDialogTextStyle = TextStyle(
+    fontFamily = CaixaDSFontFamily, fontWeight = FontWeight.Normal, fontSize = 16.sp,
+    platformStyle = PlatformTextStyle(includeFontPadding = true),
+)
+
 /** Dialog de 85% da largura com a mesma hierarquia e medidas de `layout_dialog_padrao`. */
 @Composable
 fun CaixaDSLegacyDialog(
@@ -328,6 +335,7 @@ fun CaixaDSLegacyDialog(
     onNeutral: () -> Unit = {},
     onDismiss: () -> Unit = onNegative,
     extraContent: (@Composable () -> Unit)? = null,
+    visitorPrompt: Boolean = false,
 ) = CaixaDSLegacyDialog(
     title = title,
     message = AnnotatedString(message),
@@ -339,6 +347,7 @@ fun CaixaDSLegacyDialog(
     onNeutral = onNeutral,
     onDismiss = onDismiss,
     extraContent = extraContent,
+    visitorPrompt = visitorPrompt,
 )
 
 /** Versão anotada para preservar ênfases de mensagens HTML/textuais do legado. */
@@ -354,6 +363,7 @@ fun CaixaDSLegacyDialog(
     onNeutral: () -> Unit = {},
     onDismiss: () -> Unit = onNegative,
     extraContent: (@Composable () -> Unit)? = null,
+    visitorPrompt: Boolean = false,
 ) {
     Dialog(
         onDismissRequest = onDismiss,
@@ -378,6 +388,7 @@ fun CaixaDSLegacyDialog(
                         color = CaixaDS.colors.brand,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
+                        style = nativeDialogTextStyle,
                     )
                     HorizontalDivider(
                         modifier = Modifier.fillMaxWidth().padding(top = 17.dp),
@@ -392,6 +403,7 @@ fun CaixaDSLegacyDialog(
                         .then(if (title.isNotBlank()) Modifier.padding(top = 16.dp) else Modifier),
                     color = CaixaDSColorTokens.LegacySocialGraphite,
                     fontSize = 16.sp,
+                    style = nativeDialogTextStyle,
                 )
                 extraContent?.invoke()
                 if (neutralLabel != null) {
@@ -401,11 +413,12 @@ fun CaixaDSLegacyDialog(
                             onClick = onPositive,
                             emphasized = true,
                             modifier = Modifier.fillMaxWidth(),
+                            visitorPrompt = visitorPrompt,
                         )
                         negativeLabel?.let { label ->
-                            LegacyDialogAction(label, onNegative, false, Modifier.fillMaxWidth())
+                            LegacyDialogAction(label, onNegative, false, Modifier.fillMaxWidth(), visitorPrompt)
                         }
-                        LegacyDialogAction(neutralLabel, onNeutral, false, Modifier.fillMaxWidth())
+                        LegacyDialogAction(neutralLabel, onNeutral, false, Modifier.fillMaxWidth(), visitorPrompt)
                     }
                 } else {
                     Row(
@@ -414,9 +427,9 @@ fun CaixaDSLegacyDialog(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         negativeLabel?.let { label ->
-                            LegacyDialogAction(label, onNegative, false)
+                            LegacyDialogAction(label, onNegative, false, visitorPrompt = visitorPrompt)
                         }
-                        LegacyDialogAction(positiveLabel, onPositive, true)
+                        LegacyDialogAction(positiveLabel, onPositive, true, visitorPrompt = visitorPrompt)
                     }
                 }
             }
@@ -481,15 +494,22 @@ private fun LegacyDialogAction(
     onClick: () -> Unit,
     emphasized: Boolean,
     modifier: Modifier = Modifier,
+    visitorPrompt: Boolean = false,
 ) {
-    Text(
-        label,
-        modifier = modifier.clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = 12.dp),
-        color = if (emphasized) CaixaDS.colors.brand else CaixaDSColorTokens.LegacySocialGraphite,
-        fontSize = 16.sp,
-        fontWeight = if (emphasized) FontWeight.SemiBold else FontWeight.Normal,
-        textAlign = TextAlign.Center,
-    )
+    // AppCompat private activities use 54dp/64dp; Theme.SimulaMaterial uses 48dp/88dp.
+    Box(
+        modifier.widthIn(min = if (visitorPrompt) 64.dp else 88.dp)
+            .height(if (visitorPrompt) 54.dp else 48.dp).clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            label,
+            modifier = Modifier.padding(horizontal = 8.dp),
+            color = if (emphasized) CaixaDS.colors.brand else CaixaDSColorTokens.LegacySocialGraphite,
+            style = nativeDialogTextStyle.copy(fontWeight = if (emphasized) FontWeight.SemiBold else FontWeight.Normal),
+            textAlign = TextAlign.Center,
+        )
+    }
 }
 
 @Composable

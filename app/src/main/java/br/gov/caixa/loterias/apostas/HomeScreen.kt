@@ -198,6 +198,7 @@ fun HomeScreen(
     shakeSettings: br.gov.caixa.loterias.core.domain.betting.ShakeSettingsRepository? = null,
     onBetEntry: (br.gov.caixa.loterias.core.domain.betting.BetEntryDecision) -> Unit,
     onOtherBetting: (br.gov.caixa.loterias.core.domain.betting.HomeBettingDecision) -> Unit,
+    onDrawerOpen: (String) -> Unit = onOpen,
 ) {
     val uriHandler = LocalUriHandler.current
     val window = LocalContext.current.findActivity()?.window
@@ -328,7 +329,7 @@ fun HomeScreen(
                 onOpen = { route ->
                     scope.launch { drawerState.close() }
                     val action = homeBettingAction(route)
-                    if (action != null && onProtectedAction != null) onProtectedAction("home/rapid") else if (action != null) viewModel.startOtherBetting(action) else onOpen(route)
+                    if (action != null && onProtectedAction != null) onProtectedAction("home/rapid") else if (action != null) viewModel.startOtherBetting(action) else onDrawerOpen(route)
                 },
                 onLogout = onLogout,
             )

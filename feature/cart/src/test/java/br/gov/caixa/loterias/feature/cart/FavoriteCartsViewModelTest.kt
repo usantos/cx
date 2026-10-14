@@ -326,7 +326,47 @@ class FavoriteCartsViewModelTest {
         assertFalse(lastViewModel.state.value.cartDeleted)
     }
 
+    @Test fun `deferred visitor carts do not read private lists or details`() {
+        var reads = 0
+        val vm = viewModel(cartId = null, autoLoad = false,
+            loadCarts = { reads++; AppResult.Success(carts()) },
+            loadBets = { error("Visitor must not load details") })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, reads)
+        assertFalse(vm.state.value.loading)
+        assertTrue(vm.state.value.carts.isEmpty())
+        vm.load()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, reads)
+        assertEquals(carts(), vm.state.value.carts)
+    }
+
+    @Test fun `expired lease prevents queued cart reads`() {
+        var reads = 0
+        val vm = viewModel(cartId = null, isSessionCurrent = { false }, loadCarts = { reads++; AppResult.Success(carts()) })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, reads)
+        assertTrue(vm.state.value.carts.isEmpty())
+    }
+
+    @Test fun `expired lease ignores pending carts response and resume refresh`() {
+        var current = true
+        var reads = 0
+        val pending = kotlinx.coroutines.CompletableDeferred<AppResult<List<FavoriteCart>>>()
+        val vm = viewModel(cartId = null, isSessionCurrent = { current }, loadCarts = { reads++; pending.await() })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        current = false
+        pending.complete(AppResult.Success(carts()))
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertTrue(vm.state.value.carts.isEmpty())
+        vm.refreshAfterDetail()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, reads)
+    }
+
     private fun viewModel(
+        autoLoad: Boolean = true,
+        isSessionCurrent: () -> Boolean = { true },
         cartId: Long? = 1,
         loadCarts: suspend () -> AppResult<List<FavoriteCart>> = { AppResult.Success(carts()) },
         loadBets: suspend (Long) -> AppResult<List<FavoriteCartBet>> = { AppResult.Success(bets()) },
@@ -345,6 +385,8 @@ class FavoriteCartsViewModelTest {
         WasFavoriteCartAddedUseCase(wasAdded),
         MarkFavoriteCartAddedUseCase(markAdded),
         dispatchers = FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+        autoLoad = autoLoad,
+        isSessionCurrent = isSessionCurrent,
     )
 
     companion object {

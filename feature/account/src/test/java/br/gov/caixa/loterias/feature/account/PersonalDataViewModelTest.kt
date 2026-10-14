@@ -219,12 +219,32 @@ class PersonalDataViewModelTest {
         assertNull(dailyLimitValidationMessage(ready.copy(dailyLimit = "inválido")))
     }
 
+    @Test fun `expired lease prevents queued profile read`() {
+        var reads = 0
+        val vm = viewModel(isSessionCurrent = { false }, profileResult = { reads++; AppResult.Success(profile()) })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, reads)
+        assertEquals("", vm.state.value.name)
+    }
+
+    @Test fun `expired lease ignores pending private profile response`() {
+        var current = true
+        val pending = kotlinx.coroutines.CompletableDeferred<AppResult<AccountProfile>>()
+        val vm = viewModel(isSessionCurrent = { current }, profileResult = { pending.await() })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        current = false
+        pending.complete(AppResult.Success(profile()))
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals("", vm.state.value.name)
+    }
+
     private fun viewModel(
         profileResult: suspend () -> AppResult<AccountProfile> = { AppResult.Success(profile()) },
         resolve: suspend (String) -> AppResult<ZipCodeLocation> = { AppResult.Success(location()) },
         update: suspend (PersonalDataUpdate, AccountProfile) -> AppResult<Unit> = { _, _ -> AppResult.Success(Unit) },
         recalculate: suspend () -> AppResult<BigDecimal> = { AppResult.Success(BigDecimal("200")) },
         deferInitialLoad: Boolean = false,
+        isSessionCurrent: () -> Boolean = { true },
     ) = PersonalDataViewModel(
         GetAccountProfileUseCase { profileResult() },
         ResolveZipCodeUseCase { resolve(it) },
@@ -232,6 +252,7 @@ class PersonalDataViewModelTest {
         FixedCoroutineDispatchers(dispatcherRule.dispatcher),
         RecalculateAuthorizedLimitUseCase { recalculate() },
         deferInitialLoad,
+        isSessionCurrent,
     )
 
     companion object {

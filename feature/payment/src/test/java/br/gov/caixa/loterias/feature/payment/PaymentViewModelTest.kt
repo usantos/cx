@@ -411,7 +411,52 @@ class PaymentViewModelTest {
 
     private var recordResult: AppResult<Unit> = AppResult.Success(Unit)
 
-    private fun viewModel(mode: PaymentMode, selectedPaymentMethodId: Long? = null): PaymentViewModel {
+    @Test fun `deferred visitor cards show no previous cards and query only after login`() = runTest {
+        val vm = viewModel(PaymentMode.CARDS, autoLoad = false)
+        advanceUntilIdle()
+        assertTrue(requestedMethods.isEmpty())
+        assertTrue(vm.state.value.cards.isEmpty())
+        assertFalse(vm.state.value.loading)
+        vm.load()
+        advanceUntilIdle()
+        assertEquals(listOf(1L, 5L), requestedMethods)
+        assertEquals(listOf(card), vm.state.value.cards[1L])
+    }
+
+    @Test fun `expired lease between methods and cards prevents old query and new owner loads once`() = runTest {
+        var current = true
+        val pending = kotlinx.coroutines.CompletableDeferred<AppResult<List<PaymentMethod>>>()
+        val old = viewModel(PaymentMode.CARDS, isSessionCurrent = { current }, methods = { pending.await() })
+        advanceUntilIdle()
+        current = false
+        pending.complete(methodResult)
+        advanceUntilIdle()
+        assertTrue(requestedMethods.isEmpty())
+        assertTrue(old.state.value.cards.isEmpty())
+        val fresh = viewModel(PaymentMode.CARDS)
+        advanceUntilIdle()
+        assertEquals(listOf(1L, 5L), requestedMethods)
+        assertEquals(listOf(card), fresh.state.value.cards[1L])
+    }
+
+    @Test fun `expired lease ignores pending cards response and stops the next provider read`() = runTest {
+        var current = true
+        val pending = kotlinx.coroutines.CompletableDeferred<AppResult<List<SavedPaymentCard>>>()
+        val old = viewModel(PaymentMode.CARDS, isSessionCurrent = { current }, cards = { pending.await() })
+        advanceUntilIdle()
+        assertEquals(listOf(1L), requestedMethods)
+        current = false
+        pending.complete(cardResult)
+        advanceUntilIdle()
+        assertTrue(old.state.value.cards.isEmpty())
+        assertEquals(listOf(1L), requestedMethods)
+    }
+
+    private fun viewModel(mode: PaymentMode, selectedPaymentMethodId: Long? = null, autoLoad: Boolean = true,
+        isSessionCurrent: () -> Boolean = { true },
+        methods: suspend () -> AppResult<List<PaymentMethod>> = { methodResult },
+        cards: suspend (Long) -> AppResult<List<SavedPaymentCard>> = { cardResult },
+    ): PaymentViewModel {
         val dispatcher = UnconfinedTestDispatcher()
         return PaymentViewModel(
             clock = java.time.Clock.fixed(java.time.Instant.parse("2026-09-07T15:00:00Z"), java.time.ZoneId.of("America/Sao_Paulo")),
@@ -421,14 +466,16 @@ class PaymentViewModelTest {
             },
             mode = mode,
             selectedPaymentMethodId = selectedPaymentMethodId,
-            getMethods = GetPaymentMethodsUseCase { methodResult },
-            getCards = GetSavedCardsUseCase { id -> requestedMethods += id; cardResult },
+            getMethods = GetPaymentMethodsUseCase { methods() },
+            getCards = GetSavedCardsUseCase { id -> requestedMethods += id; cards(id) },
             deleteCard = DeleteSavedCardUseCase { id, method -> deleted = id to method; deleteResult },
             generatePixCharge = GeneratePixChargeUseCase { generatedPixCount++; generationOverride?.invoke() ?: pixResult },
             getPurchaseProgress = GetPurchaseProgressUseCase { queriedPixCount++; progressResult },
             validateDam = ValidateDamUseCase { damResult },
             getCurrentCart = GetCurrentCartUseCase { cartResult },
             dispatchers = FixedCoroutineDispatchers(dispatcher),
+            autoLoad = autoLoad,
+            isSessionCurrent = isSessionCurrent,
         )
     }
 }

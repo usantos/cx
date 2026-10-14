@@ -77,6 +77,7 @@ fun FavoriteCartsRoute(
     onOpen: (Long) -> Unit,
     onCartReady: () -> Unit,
     onHelp: (() -> Unit)? = null,
+    privateDataEnabled: Boolean = true,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(state.imported) {
@@ -93,7 +94,14 @@ fun FavoriteCartsRoute(
         containerColor = CaixaDSColorTokens.White,
     ) { padding ->
         FavoriteContentState(state.loading, state.errorMessage, padding, viewModel::load) {
-            if (state.carts.isEmpty()) {
+            if (!privateDataEnabled) {
+                Column(Modifier.fillMaxSize().padding(padding)) {
+                    FavoriteRouteHeading(
+                        "Aqui estão todos os seus carrinhos favoritos.",
+                        "Você pode excluir, detalhar e transformar no seu carrinho atual.",
+                    )
+                }
+            } else if (state.carts.isEmpty()) {
                 Box(Modifier.fillMaxSize().padding(padding)) {
                     Column(Modifier.fillMaxWidth()) {
                         FavoriteRouteHeading(

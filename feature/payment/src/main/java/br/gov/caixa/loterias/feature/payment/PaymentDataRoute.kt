@@ -110,6 +110,7 @@ fun PaymentDataRoute(
     onPurchases: () -> Unit,
     onRedirect: (br.gov.caixa.loterias.core.domain.payment.PurchaseRedirect) -> Unit,
     onRegistration: () -> Unit,
+    privateDataEnabled: Boolean = true,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     PurchaseRedirectResumeEffect(viewModel::resumeAfterRedirect)
@@ -166,7 +167,7 @@ fun PaymentDataRoute(
                 onOpenCard,
                 viewModel,
             )
-            mode == PaymentMode.CARDS -> SavedCardsContent(state, Modifier.padding(padding), viewModel, onOpenCard)
+            mode == PaymentMode.CARDS -> SavedCardsContent(state, Modifier.padding(padding), viewModel, onOpenCard, privateDataEnabled)
             else -> PixContent(state.pix, state.checkingPix, Modifier.padding(padding), viewModel, onPurchases)
         }
     }
@@ -448,9 +449,10 @@ private fun SavedCardsContent(
     modifier: Modifier,
     viewModel: PaymentViewModel,
     onOpenCard: (SavedPaymentCard) -> Unit,
+    privateDataEnabled: Boolean = true,
 ) {
     val total = state.cards.values.sumOf { it.size }
-    if (total == 0) {
+    if (privateDataEnabled && total == 0) {
         Box(modifier.fillMaxSize().background(CaixaDSColorTokens.White), contentAlignment = Alignment.Center) {
             Text(
                 "Você ainda não possui um cartão de crédito cadastrado. A inclusão de um ou mais cartões de crédito deve ser feita ao realizar uma compra.",

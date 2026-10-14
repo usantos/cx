@@ -178,19 +178,26 @@ class TicketsViewModel(
     private val pixNoticeClock: java.time.Clock = java.time.Clock.systemDefaultZone(),
     private val elapsedMillis: () -> Long = { android.os.SystemClock.elapsedRealtime() },
 
+    private val isSessionCurrent: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = MutableStateFlow(TicketsUiState())
     val state = mutableState.asStateFlow()
 
     fun loadBets() {
+        if (!isSessionCurrent()) return
         if (mutableState.value.isLoading) return
         mutableState.value = mutableState.value.copy(isLoading = true, errorMessage = null)
         viewModelScope.launch(dispatchers.io) {
-            val configuration = when (val result = getBetsConfiguration()) {
+            if (!isSessionCurrent()) return@launch
+            val configurationResult = getBetsConfiguration()
+            if (!isSessionCurrent()) return@launch
+            val configuration = when (val result = configurationResult) {
                 is AppResult.Success -> result.value
                 is AppResult.Failure -> return@launch fail("Não foi possível carregar os filtros de apostas.")
             }
-            val modalities = when (val result = getModalities()) {
+            val modalitiesResult = getModalities()
+            if (!isSessionCurrent()) return@launch
+            val modalities = when (val result = modalitiesResult) {
                 is AppResult.Success -> result.value
                 is AppResult.Failure -> return@launch fail("Não foi possível carregar as modalidades.")
             }
@@ -267,10 +274,14 @@ class TicketsViewModel(
     }
 
     fun loadPurchases() {
+        if (!isSessionCurrent()) return
         if (mutableState.value.isLoading) return
         mutableState.value = mutableState.value.copy(isLoading = true, errorMessage = null)
         viewModelScope.launch(dispatchers.io) {
-            val months = when (val result = getPurchaseMonths()) {
+            if (!isSessionCurrent()) return@launch
+            val monthsResult = getPurchaseMonths()
+            if (!isSessionCurrent()) return@launch
+            val months = when (val result = monthsResult) {
                 is AppResult.Success -> result.value
                 is AppResult.Failure -> return@launch fail("Não foi possível carregar os meses das compras.")
             }
@@ -648,7 +659,10 @@ class TicketsViewModel(
     }
 
     private suspend fun loadBetsWith(filters: BetFilters) {
-        when (val result = getConfirmedBets.page(filters.query())) {
+        if (!isSessionCurrent()) return
+        val result = getConfirmedBets.page(filters.query())
+        if (!isSessionCurrent()) return
+        when (result) {
             is AppResult.Success -> mutableState.value = mutableState.value.copy(
                 bets = result.value.bets,
                 historyBackend = result.value.backend,
@@ -668,8 +682,11 @@ class TicketsViewModel(
     }
 
     private suspend fun loadPurchasesWith(filters: PurchaseFilters, append: Boolean) {
+        if (!isSessionCurrent()) return
         val offset = if (append) mutableState.value.purchases.size else 0
-        when (val result = getPurchases(filters.query(offset))) {
+        val result = getPurchases(filters.query(offset))
+        if (!isSessionCurrent()) return
+        when (result) {
             is AppResult.Success -> mutableState.value = mutableState.value.copy(
                 purchases = if (append) {
                     (mutableState.value.purchases + result.value).distinctBy(Purchase::id)

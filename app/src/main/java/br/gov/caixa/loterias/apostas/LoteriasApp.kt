@@ -130,6 +130,11 @@ fun LoteriasApp(
     val navController = rememberNavController()
     val externalUriHandler = androidx.compose.ui.platform.LocalUriHandler.current
     val sessionIdentity by appContainer.sessionIdentityChanges.collectAsStateWithLifecycle(initialValue = appContainer.authenticatedSessionIdentity.captureIdentity())
+    val privateEntryKey = rememberPrivateEntryKey(sessionIdentity)
+    val isPrivateSessionCurrent = remember(sessionIdentity) {
+        val lease = sessionIdentity
+        { lease != null && appContainer.authenticatedSessionIdentity.isCurrent(lease) }
+    }
     val loggedDetailContext = rememberLoggedDetailContext(sessionIdentity?.ownerKey)
     var preparedBettingParameters by remember(sessionIdentity?.ownerKey) {
         mutableStateOf<br.gov.caixa.loterias.core.domain.betting.BettingParameters?>(null)
@@ -303,6 +308,7 @@ fun LoteriasApp(
             title = "Atenção",
             message = "Para continuar utilizando a funcionalidade, você precisa efetuar o login no app Loterias Caixa. Deseja efetuar o login?",
             positiveLabel = "Sim", negativeLabel = "Não",
+            visitorPrompt = true,
             onPositive = callbacks::onPositive,
             onNegative = callbacks::onNegative,
         )
@@ -445,14 +451,12 @@ fun LoteriasApp(
                 userName = appContainer.currentUserIdentity.currentUser()?.name,
                 environmentLabel = homeEnvironmentLabel(BuildConfig.FLAVOR, appContainer.environment.apiBaseUrl),
                 onOpen = { route ->
+                    if (requiresVisitorLogin(route) && appContainer.currentUserIdentity.currentUser() == null) requestVisitorLogin(route)
+                    else navController.navigate(route)
+                },
+                onDrawerOpen = { route ->
                     if (requiresVisitorLogin(route) && appContainer.currentUserIdentity.currentUser() == null) {
-                        if (opensVisitorDestinationBeforeLogin(route)) {
-                            navController.navigate(route) {
-                                launchSingleTop = true
-                                popUpTo("home") { inclusive = false }
-                            }
-                        }
-                        requestVisitorLogin(route)
+                        openVisitorDrawerDestination(route, navController, requestVisitorLogin)
                     } else navController.navigate(route)
                 },
                 onProtectedAction = { route ->
@@ -656,41 +660,48 @@ fun LoteriasApp(
         }
         responsibleGamingScreens.forEach { spec ->
             composable(spec.route) {
-                val responsibleGamingViewModel = viewModel(key = "responsible-${spec.route}") {
-                    ResponsibleGamingViewModel(
+                androidx.compose.runtime.key(privateEntryKey) {
+                    val responsibleGamingViewModel = viewModel(key = "responsible-${spec.route}-$privateEntryKey") {
+                        ResponsibleGamingViewModel(
+                            route = spec.route,
+                            getQuestions = appContainer.selfAssessmentQuestions,
+                            submitAssessment = appContainer.submitSelfAssessment,
+                            getSocialTransfers = appContainer.socialTransfers,
+                            suspendAccount = appContainer.suspendAccount,
+                            dispatchers = appContainer.dispatchers,
+                            autoLoad = spec.route != "responsible/form" || sessionIdentity != null,
+                            isSessionCurrent = if (spec.route == "responsible/form") isPrivateSessionCurrent else { { true } },
+                        )
+                    }
+                    ResponsibleGamingRoute(
+                        privateDataEnabled = spec.route != "responsible/form" || sessionIdentity != null,
                         route = spec.route,
-                        getQuestions = appContainer.selfAssessmentQuestions,
-                        submitAssessment = appContainer.submitSelfAssessment,
-                        getSocialTransfers = appContainer.socialTransfers,
-                        suspendAccount = appContainer.suspendAccount,
-                        dispatchers = appContainer.dispatchers,
+                        viewModel = responsibleGamingViewModel,
+                        onBack = navController::popBackStack,
+                        onOpenTerms = { navController.navigate("support/terms") },
+                        onSubmitSuspension = {
+                            if (requiresVisitorLoginOnSubmit(spec.route) && appContainer.currentUserIdentity.currentUser() == null) {
+                                requestVisitorLogin(spec.route)
+                            } else {
+                                responsibleGamingViewModel.onAction(ResponsibleGamingAction.SubmitSuspension)
+                            }
+                        },
+                        onComplete = {
+                            if (spec.route == "responsible/suspension") {
+                                onLogout()
+                            } else if (spec.route == "responsible/form" && (accountCompletionRequired || visitorReturnRoute != null)) {
+                                recheckAccountCompletion()
+                            } else {
+                                nextDestination(spec.route)?.let { route ->
+                                    if (spec.route == "responsible/start" && route == "responsible/form") {
+                                        openResponsibleAssessment(navController)
+                                        if (sessionIdentity == null) requestVisitorLogin(route)
+                                    } else navController.navigate(route)
+                                } ?: navController.popBackStack()
+                            }
+                        },
                     )
                 }
-                ResponsibleGamingRoute(
-                    route = spec.route,
-                    viewModel = responsibleGamingViewModel,
-                    onBack = navController::popBackStack,
-                    onOpenTerms = { navController.navigate("support/terms") },
-                    onSubmitSuspension = {
-                        if (requiresVisitorLoginOnSubmit(spec.route) && appContainer.currentUserIdentity.currentUser() == null) {
-                            requestVisitorLogin(spec.route)
-                        } else {
-                            responsibleGamingViewModel.onAction(ResponsibleGamingAction.SubmitSuspension)
-                        }
-                    },
-                    onComplete = {
-                        if (spec.route == "responsible/suspension") {
-                            onLogout()
-                        } else if (spec.route == "responsible/form" && (accountCompletionRequired || visitorReturnRoute != null)) {
-                            recheckAccountCompletion()
-                        } else {
-                            nextDestination(spec.route)?.let { route ->
-                                if (requiresVisitorLogin(route) && appContainer.currentUserIdentity.currentUser() == null) requestVisitorLogin(route)
-                                else navController.navigate(route)
-                            } ?: navController.popBackStack()
-                        }
-                    },
-                )
             }
         }
         composable("responsible/start/required") {
@@ -800,21 +811,26 @@ fun LoteriasApp(
             )
         }
         composable("betting/favorites") {
-            val favoriteBetsViewModel = viewModel(key = "favorite-bets") {
-                FavoriteBetsViewModel(
-                    getFavorites = appContainer.favoriteBets,
-                    getParameters = appContainer.bettingParameters,
-                    deleteFavorite = appContainer.deleteFavoriteBet,
-                    addFavoriteToCart = appContainer.addFavoriteBetToCart,
-                    dispatchers = appContainer.dispatchers,
+            androidx.compose.runtime.key(privateEntryKey) {
+                val favoriteBetsViewModel = viewModel(key = "favorite-bets-$privateEntryKey") {
+                    FavoriteBetsViewModel(
+                        getFavorites = appContainer.favoriteBets,
+                        getParameters = appContainer.bettingParameters,
+                        deleteFavorite = appContainer.deleteFavoriteBet,
+                        addFavoriteToCart = appContainer.addFavoriteBetToCart,
+                        dispatchers = appContainer.dispatchers,
+                        autoLoad = sessionIdentity != null,
+                        isSessionCurrent = isPrivateSessionCurrent,
+                    )
+                }
+                FavoriteBetsRoute(
+                    viewModel = favoriteBetsViewModel,
+                    privateDataEnabled = sessionIdentity != null,
+                    onBack = navController::popBackStack,
+                    onTerms = { navController.navigate("support/terms") },
+                    onCreateFavorite = { navController.navigate("betting/simulation/$it") },
                 )
             }
-            FavoriteBetsRoute(
-                viewModel = favoriteBetsViewModel,
-                onBack = navController::popBackStack,
-                onTerms = { navController.navigate("support/terms") },
-                onCreateFavorite = { navController.navigate("betting/simulation/$it") },
-            )
         }
         listOf(
             "payment/method" to PaymentMode.METHODS,
@@ -870,40 +886,45 @@ fun LoteriasApp(
             route = "payment/cards?methodId={methodId}",
             arguments = listOf(navArgument("methodId") { type = NavType.LongType; defaultValue = 0L }),
         ) { entry ->
-            val methodId = requireNotNull(entry.arguments).getLong("methodId").takeIf { it > 0 }
-            val paymentViewModel = viewModel(key = "payment-cards-${methodId ?: 0}") {
-                PaymentViewModel(
-                    clock = appContainer.localClock,
-                    recordRecentPurchase = appContainer.recordRecentPurchase,
+            androidx.compose.runtime.key(privateEntryKey) {
+                val methodId = requireNotNull(entry.arguments).getLong("methodId").takeIf { it > 0 }
+                val paymentViewModel = viewModel(key = "payment-cards-${methodId ?: 0}-$privateEntryKey") {
+                    PaymentViewModel(
+                        clock = appContainer.localClock,
+                        recordRecentPurchase = appContainer.recordRecentPurchase,
+                        mode = PaymentMode.CARDS,
+                        selectedPaymentMethodId = methodId,
+                        getMethods = appContainer.paymentMethods,
+                        getCards = appContainer.savedCards,
+                        deleteCard = appContainer.deleteSavedCard,
+                        generatePixCharge = appContainer.generatePixCharge,
+                        getPurchaseProgress = appContainer.purchaseProgress,
+                        validateDam = appContainer.validateDam,
+                        getCurrentCart = appContainer.currentCart,
+                        dispatchers = appContainer.dispatchers,
+                        autoLoad = sessionIdentity != null,
+                        isSessionCurrent = isPrivateSessionCurrent,
+                    )
+                }
+                val registrationViewModel = paymentRegistrationViewModel(appContainer)
+                PaymentDataRoute(
+                    privateDataEnabled = sessionIdentity != null,
+                    onRegistration = { registrationViewModel.start() },
+                    onRedirect = onPaymentRedirect,
                     mode = PaymentMode.CARDS,
-                    selectedPaymentMethodId = methodId,
-                    getMethods = appContainer.paymentMethods,
-                    getCards = appContainer.savedCards,
-                    deleteCard = appContainer.deleteSavedCard,
-                    generatePixCharge = appContainer.generatePixCharge,
-                    getPurchaseProgress = appContainer.purchaseProgress,
-                    validateDam = appContainer.validateDam,
-                    getCurrentCart = appContainer.currentCart,
-                    dispatchers = appContainer.dispatchers,
+                    viewModel = paymentViewModel,
+                    visualAssets = PaymentVisualAssets(recargaPayLogoResourceId = R.drawable.recargapay),
+                    onBack = navController::popBackStack,
+                    onHelp = { navController.navigate("support/terms?tab=FAQ") },
+                    onPix = { navController.navigate("payment/pix-guidance") },
+                    onAddCard = { selected -> navController.navigate("payment/card-flow/$selected") },
+                    onOpenCard = { card -> navController.navigate("payment/card-flow/${card.paymentMethodId}?cardId=${Uri.encode(card.id)}") },
+                    onApproved = { navController.navigate("payment/success") },
+                    onHome = onPaymentMoreBets,
+                    onPurchases = { navController.navigate("tickets/purchases") },
                 )
+                PaymentRegistrationHost(registrationViewModel, paymentViewModel::registrationFinished, onPrizeRedirect)
             }
-            val registrationViewModel = paymentRegistrationViewModel(appContainer)
-            PaymentDataRoute(
-                onRegistration = { registrationViewModel.start() },
-                onRedirect = onPaymentRedirect,
-                mode = PaymentMode.CARDS,
-                viewModel = paymentViewModel,
-                visualAssets = PaymentVisualAssets(recargaPayLogoResourceId = R.drawable.recargapay),
-                onBack = navController::popBackStack,
-                onHelp = { navController.navigate("support/terms?tab=FAQ") },
-                onPix = { navController.navigate("payment/pix-guidance") },
-                onAddCard = { selected -> navController.navigate("payment/card-flow/$selected") },
-                onOpenCard = { card -> navController.navigate("payment/card-flow/${card.paymentMethodId}?cardId=${Uri.encode(card.id)}") },
-                onApproved = { navController.navigate("payment/success") },
-                onHome = onPaymentMoreBets,
-                onPurchases = { navController.navigate("tickets/purchases") },
-            )
-            PaymentRegistrationHost(registrationViewModel, paymentViewModel::registrationFinished, onPrizeRedirect)
         }
         composable(
             route = "payment/card-flow/{methodId}?cardId={cardId}",
@@ -1105,24 +1126,24 @@ fun LoteriasApp(
             )
         }
         composable("account/personal-data") {
-            val personalDataViewModel = viewModel {
-                PersonalDataViewModel(
-                    getProfile = appContainer.accountProfile,
-                    resolveZipCode = appContainer.resolveZipCode,
-                    updatePersonalData = appContainer.updatePersonalData,
-                    dispatchers = appContainer.dispatchers,
-                    recalculateAuthorizedLimit = appContainer.recalculateAuthorizedLimit,
-                    deferInitialLoad = true,
+            androidx.compose.runtime.key(privateEntryKey) {
+                val personalDataViewModel = viewModel(key = "personal-data-$privateEntryKey") {
+                    PersonalDataViewModel(
+                        getProfile = appContainer.accountProfile,
+                        resolveZipCode = appContainer.resolveZipCode,
+                        updatePersonalData = appContainer.updatePersonalData,
+                        dispatchers = appContainer.dispatchers,
+                        recalculateAuthorizedLimit = appContainer.recalculateAuthorizedLimit,
+                        deferInitialLoad = sessionIdentity == null,
+                        isSessionCurrent = isPrivateSessionCurrent,
+                    )
+                }
+                PersonalDataRoute(
+                    viewModel = personalDataViewModel,
+                    onBack = navController::popBackStack,
+                    onComplete = { navController.navigate("account/personal-data-confirmation") },
                 )
             }
-            LaunchedEffect(sessionIdentity, personalDataViewModel) {
-                if (sessionIdentity != null) personalDataViewModel.load()
-            }
-            PersonalDataRoute(
-                viewModel = personalDataViewModel,
-                onBack = navController::popBackStack,
-                onComplete = { navController.navigate("account/personal-data-confirmation") },
-            )
         }
         composable("account/register") {
             val registrationViewModel = viewModel {
@@ -1324,34 +1345,39 @@ fun LoteriasApp(
             )
         }
         composable("cart/favorite-carts") { entry ->
-            val favoriteCartsViewModel = viewModel {
-                FavoriteCartsViewModel(
-                    cartId = null,
-                    getFavoriteCarts = appContainer.favoriteCarts,
-                    getFavoriteCartBets = appContainer.favoriteCartBets,
-                    deleteFavoriteCart = appContainer.deleteFavoriteCart,
-                    deleteFavoriteCartBet = appContainer.deleteFavoriteCartBet,
-                    addFavoriteCartToCurrent = appContainer.addFavoriteCartToCurrent,
-                    wasFavoriteCartAdded = appContainer.wasFavoriteCartAdded,
-                    markFavoriteCartAdded = appContainer.markFavoriteCartAdded,
-                    dispatchers = appContainer.dispatchers,
+            androidx.compose.runtime.key(privateEntryKey) {
+                val favoriteCartsViewModel = viewModel(key = "favorite-carts-$privateEntryKey") {
+                    FavoriteCartsViewModel(
+                        cartId = null,
+                        getFavoriteCarts = appContainer.favoriteCarts,
+                        getFavoriteCartBets = appContainer.favoriteCartBets,
+                        deleteFavoriteCart = appContainer.deleteFavoriteCart,
+                        deleteFavoriteCartBet = appContainer.deleteFavoriteCartBet,
+                        addFavoriteCartToCurrent = appContainer.addFavoriteCartToCurrent,
+                        wasFavoriteCartAdded = appContainer.wasFavoriteCartAdded,
+                        markFavoriteCartAdded = appContainer.markFavoriteCartAdded,
+                        dispatchers = appContainer.dispatchers,
+                        autoLoad = sessionIdentity != null,
+                        isSessionCurrent = isPrivateSessionCurrent,
+                    )
+                }
+                val detailReturned by entry.savedStateHandle.getStateFlow("favoriteDetailReturned", false)
+                    .collectAsStateWithLifecycle()
+                LaunchedEffect(detailReturned) {
+                    if (detailReturned) {
+                        entry.savedStateHandle["favoriteDetailReturned"] = false
+                        favoriteCartsViewModel.refreshAfterDetail()
+                    }
+                }
+                FavoriteCartsRoute(
+                    viewModel = favoriteCartsViewModel,
+                    privateDataEnabled = sessionIdentity != null,
+                    onHelp = { navController.navigate("support/terms?tab=FAQ") },
+                    onBack = navController::popBackStack,
+                    onOpen = { navController.navigate("cart/favorite-detail/$it") },
+                    onCartReady = { navController.navigate("cart/current") },
                 )
             }
-            val detailReturned by entry.savedStateHandle.getStateFlow("favoriteDetailReturned", false)
-                .collectAsStateWithLifecycle()
-            LaunchedEffect(detailReturned) {
-                if (detailReturned) {
-                    entry.savedStateHandle["favoriteDetailReturned"] = false
-                    favoriteCartsViewModel.refreshAfterDetail()
-                }
-            }
-            FavoriteCartsRoute(
-                viewModel = favoriteCartsViewModel,
-                onHelp = { navController.navigate("support/terms?tab=FAQ") },
-                onBack = navController::popBackStack,
-                onOpen = { navController.navigate("cart/favorite-detail/$it") },
-                onCartReady = { navController.navigate("cart/current") },
-            )
         }
         composable(
             route = "cart/favorite-detail/{cartId}",
@@ -1578,61 +1604,65 @@ fun LoteriasApp(
             }
         }
         composable("tickets/my-bets") {
-            var repeatBet by remember { mutableStateOf<ConfirmedBet?>(null) }
-            var repeatRequest by remember { mutableStateOf(0) }
-            val ticketsViewModel = viewModel {
-                TicketsViewModel(
-                    appContainer.confirmedBets,
-                    appContainer.purchases,
-                    appContainer.purchaseBets,
-                    appContainer.checkTicket,
-                    appContainer.dispatchers,
-                    appContainer.confirmedBetsConfiguration,
-                    appContainer.lotteryModalities,
-                    appContainer.purchaseMonths,
-                    appContainer.purchasePaymentMethods,
-                    appContainer.purchaseStatuses,
-                )
-            }
-            val repeatViewModel = repeatBet?.let { bet ->
-                val repeatViewModel = viewModel(key = "list-repeat-${bet.id}-$repeatRequest") {
-                    BetDetailViewModel(
-                        bet, appContainer.recoverConfirmedBet, appContainer.downloadBetReceipt,
-                        appContainer.validateFavoriteBet, appContainer.saveFavoriteBet,
-                        appContainer.addBetToCart, appContainer.dispatchers,
-                        getBettingParameters = appContainer.bettingParameters,
-                    loadConfirmedBet = appContainer.loadConfirmedBet,
-                    downloadPrizeReceipt = appContainer.downloadPrizeReceipt,
+            androidx.compose.runtime.key(privateEntryKey) {
+                var repeatBet by remember { mutableStateOf<ConfirmedBet?>(null) }
+                var repeatRequest by remember { mutableStateOf(0) }
+                val ticketsViewModel = viewModel(key = "my-bets-$privateEntryKey") {
+                    TicketsViewModel(
+                        appContainer.confirmedBets,
+                        appContainer.purchases,
+                        appContainer.purchaseBets,
+                        appContainer.checkTicket,
+                        appContainer.dispatchers,
+                        appContainer.confirmedBetsConfiguration,
+                        appContainer.lotteryModalities,
+                        appContainer.purchaseMonths,
+                        appContainer.purchasePaymentMethods,
+                        appContainer.purchaseStatuses,
+                        isSessionCurrent = isPrivateSessionCurrent,
                     )
                 }
-                LaunchedEffect(repeatViewModel) {
-                    // A recuperação deve terminar antes da repetição para não apagar seus diálogos.
-                    repeatViewModel.state.first { !it.loading }
-                    if (repeatViewModel.state.value.detailsReady) repeatViewModel.addCurrentBetToCart().join()
+                val repeatViewModel = repeatBet?.let { bet ->
+                    val repeatViewModel = viewModel(key = "list-repeat-${bet.id}-$repeatRequest") {
+                        BetDetailViewModel(
+                            bet, appContainer.recoverConfirmedBet, appContainer.downloadBetReceipt,
+                            appContainer.validateFavoriteBet, appContainer.saveFavoriteBet,
+                            appContainer.addBetToCart, appContainer.dispatchers,
+                            getBettingParameters = appContainer.bettingParameters,
+                        loadConfirmedBet = appContainer.loadConfirmedBet,
+                        downloadPrizeReceipt = appContainer.downloadPrizeReceipt,
+                        )
+                    }
+                    LaunchedEffect(repeatViewModel) {
+                        // A recuperação deve terminar antes da repetição para não apagar seus diálogos.
+                        repeatViewModel.state.first { !it.loading }
+                        if (repeatViewModel.state.value.detailsReady) repeatViewModel.addCurrentBetToCart().join()
+                    }
+                    repeatViewModel
                 }
-                repeatViewModel
-            }
-            androidx.compose.foundation.layout.Box {
-            var cartRevision by remember { androidx.compose.runtime.mutableIntStateOf(0) }
-            val cartSummary = activeCartSummary(appContainer.currentCart, cartRevision)
-            ConfirmedBetsDataRoute(
-                viewModel = ticketsViewModel,
-                cartTotal = cartSummary?.total ?: java.math.BigDecimal.ZERO,
-                cartBetCount = cartSummary?.betCount ?: 0,
-                onCart = { navController.navigate("cart/current") },
-                onHelp = { navController.navigate("support/terms?tab=FAQ") },
-                onAddToCart = { bet -> repeatRequest += 1; repeatBet = bet },
-                onBetNow = { navController.navigate("home") { popUpTo("home"); launchSingleTop = true } },
-                onBack = navController::popBackStack,
-                onOpen = { bet ->
-                    selectedBet = bet
-                    navController.navigate(
-                        "tickets/bet-detail?original=${bet.originalRecurringBet}&resgate=${bet.redeemedPrize}",
+                androidx.compose.foundation.layout.Box {
+                    var cartRevision by remember { androidx.compose.runtime.mutableIntStateOf(0) }
+                    val cartSummary = activeCartSummary(appContainer.currentCart, cartRevision)
+                    ConfirmedBetsDataRoute(
+                        privateDataEnabled = sessionIdentity != null,
+                        viewModel = ticketsViewModel,
+                        cartTotal = cartSummary?.total ?: java.math.BigDecimal.ZERO,
+                        cartBetCount = cartSummary?.betCount ?: 0,
+                        onCart = { navController.navigate("cart/current") },
+                        onHelp = { navController.navigate("support/terms?tab=FAQ") },
+                        onAddToCart = { bet -> repeatRequest += 1; repeatBet = bet },
+                        onBetNow = { navController.navigate("home") { popUpTo("home"); launchSingleTop = true } },
+                        onBack = navController::popBackStack,
+                        onOpen = { bet ->
+                            selectedBet = bet
+                            navController.navigate(
+                                "tickets/bet-detail?original=${bet.originalRecurringBet}&resgate=${bet.redeemedPrize}",
+                            )
+                        },
                     )
-                },
-            )
-            repeatViewModel?.let { BetRepeatActionsOverlay(it, onServiceRedirect = onTicketServiceRedirect,
-                onCartChanged = { cartRevision++ }) }
+                    repeatViewModel?.let { BetRepeatActionsOverlay(it, onServiceRedirect = onTicketServiceRedirect,
+                        onCartChanged = { cartRevision++ }) }
+                }
             }
         }
         composable("results/confirmed-bet") {
@@ -1663,28 +1693,32 @@ fun LoteriasApp(
             }
         }
         composable("tickets/purchases") {
-            val ticketsViewModel = viewModel {
-                TicketsViewModel(
-                    appContainer.confirmedBets,
-                    appContainer.purchases,
-                    appContainer.purchaseBets,
-                    appContainer.checkTicket,
-                    appContainer.dispatchers,
-                    appContainer.confirmedBetsConfiguration,
-                    appContainer.lotteryModalities,
-                    appContainer.purchaseMonths,
-                    appContainer.purchasePaymentMethods,
-                    appContainer.purchaseStatuses,
+            androidx.compose.runtime.key(privateEntryKey) {
+                val ticketsViewModel = viewModel(key = "purchases-$privateEntryKey") {
+                    TicketsViewModel(
+                        appContainer.confirmedBets,
+                        appContainer.purchases,
+                        appContainer.purchaseBets,
+                        appContainer.checkTicket,
+                        appContainer.dispatchers,
+                        appContainer.confirmedBetsConfiguration,
+                        appContainer.lotteryModalities,
+                        appContainer.purchaseMonths,
+                        appContainer.purchasePaymentMethods,
+                        appContainer.purchaseStatuses,
+                        isSessionCurrent = isPrivateSessionCurrent,
+                    )
+                }
+                PurchasesDataRoute(
+                    privateDataEnabled = sessionIdentity != null,
+                    viewModel = ticketsViewModel,
+                    onBack = navController::popBackStack,
+                    onOpen = { purchase ->
+                        selectedPurchase = purchase
+                        navController.navigate("tickets/purchase-detail")
+                    },
                 )
             }
-            PurchasesDataRoute(
-                viewModel = ticketsViewModel,
-                onBack = navController::popBackStack,
-                onOpen = { purchase ->
-                    selectedPurchase = purchase
-                    navController.navigate("tickets/purchase-detail")
-                },
-            )
         }
         composable("tickets/purchase-detail") {
             val purchase = selectedPurchase ?: visualTestPurchase(BuildConfig.ENABLE_MOCK_BACKEND)

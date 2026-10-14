@@ -74,6 +74,7 @@ fun ResponsibleGamingRoute(
     onComplete: () -> Unit,
     onOpenTerms: () -> Unit,
     onSubmitSuspension: (() -> Unit)? = null,
+    privateDataEnabled: Boolean = true,
 ) {
     val state by viewModel.state.collectAsState()
     LaunchedEffect(viewModel) {
@@ -88,7 +89,7 @@ fun ResponsibleGamingRoute(
         platformStyle = PlatformTextStyle(includeFontPadding = true))) {
     when (route) {
         "responsible/start" -> AssessmentStartScreen(state, viewModel::onAction)
-        "responsible/form" -> AssessmentFormScreen(state, viewModel::onAction)
+        "responsible/form" -> AssessmentFormScreen(state, viewModel::onAction, privateDataEnabled)
         "responsible/suspension" -> SuspensionScreen(
             state,
             viewModel::onAction,
@@ -170,6 +171,7 @@ private fun AssessmentStartScreen(
 private fun AssessmentFormScreen(
     state: ResponsibleGamingUiState,
     onAction: (ResponsibleGamingAction) -> Unit,
+    privateDataEnabled: Boolean = true,
 ) {
     CaixaDSLegacyScaffold(
         title = "Autoavaliação para o Apostador",
@@ -180,7 +182,7 @@ private fun AssessmentFormScreen(
                 state.loading -> LoadingState()
                 state.errorMessage != null -> ErrorState(state.errorMessage) { onAction(ResponsibleGamingAction.Retry) }
                 state.assessmentSubmitted -> AssessmentResultState(state, onAction)
-                state.currentQuestion == null -> ErrorState("Autoavaliação sem perguntas.") { onAction(ResponsibleGamingAction.Retry) }
+                privateDataEnabled && state.currentQuestion == null -> ErrorState("Autoavaliação sem perguntas.") { onAction(ResponsibleGamingAction.Retry) }
                 else -> AssessmentQuestionState(state, onAction)
             }
         }
@@ -246,7 +248,7 @@ private fun AssessmentQuestionState(
                         color = CaixaDS.colors.legacyPrimaryButton,
                         fontSize = 16.sp,
                     )
-                    Row(
+                    if (state.currentQuestion != null) Row(
                         Modifier.align(Alignment.CenterHorizontally).padding(top = 40.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {

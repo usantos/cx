@@ -78,6 +78,7 @@ fun FavoriteBetsRoute(
     onBack: () -> Unit,
     onTerms: () -> Unit,
     onCreateFavorite: (Int) -> Unit,
+    privateDataEnabled: Boolean = true,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val showFilter = androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
@@ -93,6 +94,9 @@ fun FavoriteBetsRoute(
         },
     ) { padding ->
         when {
+            !privateDataEnabled -> Column(Modifier.fillMaxSize().padding(padding).background(CaixaDSColorTokens.White)) {
+                FavoriteListHeader(state.selectedModalityName) {}
+            }
             state.loading -> Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = CaixaDS.colors.brand)
             }
