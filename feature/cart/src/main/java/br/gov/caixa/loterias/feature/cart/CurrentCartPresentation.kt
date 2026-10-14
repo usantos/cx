@@ -10,7 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.FirstBaseline
-import androidx.compose.ui.text.font.FontFamily
+import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyFuturaFontFamily
 import br.gov.caixa.loterias.core.designsystem.CaixaDSBetTypeIcons
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -154,7 +154,7 @@ internal fun CurrentCartRow(item: CartItem, now: Instant, onDelete: () -> Unit, 
                             CartItemBadge.MIRROR -> "Espelho"
                             CartItemBadge.SURPRISE -> "Surpresinha"
                             else -> "Teimosinha"
-                        }, style = cartText(14, FontWeight.Bold).copy(fontFamily = FontFamily.Default), color = CurrentCartText)
+                        }, style = cartText(14, FontWeight.Bold).copy(fontFamily = CaixaDSLegacyFuturaFontFamily), color = CurrentCartText)
                     }
                 }
             }

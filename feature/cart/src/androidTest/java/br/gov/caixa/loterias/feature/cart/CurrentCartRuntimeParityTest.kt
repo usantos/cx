@@ -222,6 +222,40 @@ class CurrentCartRuntimeParityTest {
             root.width * 0.75f, extra.width, 2f)
     }
 
+    @Test fun indicatorsUseNativeActivityFuturaBoldTextMetrics() {
+        val labels = listOf("Espelho", "Surpresinha", "Teimosinha")
+        val badges = listOf(CartItemBadge.MIRROR, CartItemBadge.SURPRISE, CartItemBadge.RECURRING)
+        compose.setContent {
+            CaixaDSTheme(darkTheme = false) {
+                Column {
+                    badges.forEach { badge -> CurrentCartRow(mega.copy(badges = setOf(badge)), Instant.EPOCH, {}, null) }
+                }
+            }
+        }
+        val context = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().targetContext
+        val fontResource = br.gov.caixa.loterias.core.designsystem.R.font.futura_std_bold
+        val fontHash = context.resources.openRawResource(fontResource).use { stream ->
+            java.security.MessageDigest.getInstance("SHA-256").digest(stream.readBytes()).joinToString("") { "%02x".format(it) }
+        }
+        // Independent CX asset hash, checked against its read-only AppTheme/font_family_futura source.
+        assertEquals("215c175ce595d0f42bc1f703ef94ecbf6f45dc875cdbfd7ea59d9d8b28467cf9", fontHash)
+        labels.forEach { label ->
+            var nativeWidth = 0
+            compose.runOnIdle {
+                val native = android.widget.TextView(context).apply {
+                    text = label
+                    typeface = androidx.core.content.res.ResourcesCompat.getFont(context, fontResource)
+                    setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 14f)
+                    setPadding(0, 0, 0, 0)
+                    measure(android.view.View.MeasureSpec.UNSPECIFIED, android.view.View.MeasureSpec.UNSPECIFIED)
+                }
+                nativeWidth = native.measuredWidth
+            }
+            val rendered = compose.onNodeWithText(label).fetchSemanticsNode().boundsInRoot
+            assertEquals("$label must inherit CX AppTheme's 700-weight Futura font metrics", nativeWidth.toFloat(), rendered.width, 1f)
+        }
+    }
+
     private fun show(items: List<CartItem>, total: BigDecimal = BigDecimal("39.00"), authenticated: Boolean = true) {
         compose.setContent {
             val model = remember {
