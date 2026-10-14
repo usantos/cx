@@ -8,6 +8,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.interaction.DragInteraction
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,9 +53,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import br.gov.caixa.loterias.core.designsystem.CaixaDS
 import br.gov.caixa.loterias.core.designsystem.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.CaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacySemiboldFontFamily
 import br.gov.caixa.loterias.core.designsystem.CaixaDSLegacyRegularFontFamily
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -66,29 +73,50 @@ internal fun BettingOptionDialog(
 ) {
     val latestSelect by rememberUpdatedState(onSelect)
     val latestDismiss by rememberUpdatedState(onDismiss)
-    val initialPending = if (description == null) options.indexOf(selected).coerceAtLeast(0) else 0
-    var pending by remember(options, selected, description) { mutableIntStateOf(initialPending) }
+    var pending by remember(options, selected, description) { mutableIntStateOf(-1) }
+    var userDragging by remember { androidx.compose.runtime.mutableStateOf(false) }
     val wheelState = rememberLazyListState(initialFirstVisibleItemIndex = 0)
     val focusRequester = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(title) { focusRequester.requestFocus() }
 
-    if (description != null) {
-        LaunchedEffect(wheelState, options) {
-            snapshotFlow {
+    // Layout and automatic settling never constitute a choice. Native WheelController
+    // only publishes the snap after a real drag, or the exact item that was tapped.
+    LaunchedEffect(wheelState) {
+        wheelState.interactionSource.interactions.collect { interaction ->
+            if (interaction is DragInteraction.Start) userDragging = true
+        }
+    }
+    LaunchedEffect(wheelState, options) {
+        snapshotFlow { wheelState.isScrollInProgress }.distinctUntilChanged().collect { scrolling ->
+            if (!scrolling && userDragging) {
                 val layout = wheelState.layoutInfo
                 val center = (layout.viewportStartOffset + layout.viewportEndOffset) / 2
-                val centeredIndex = layout.visibleItemsInfo.minByOrNull { item ->
-                    kotlin.math.abs((item.offset + item.size / 2) - center)
-                }?.index
-                centeredIndex to wheelState.isScrollInProgress
-            }.distinctUntilChanged().collect { (centeredIndex, scrolling) ->
-                if (!scrolling && centeredIndex != null && centeredIndex in options.indices) {
-                    pending = centeredIndex
-                }
+                layout.visibleItemsInfo.minByOrNull { kotlin.math.abs(it.offset + it.size / 2 - center) }
+                    ?.index?.takeIf { it in options.indices }?.let { pending = it }
+                userDragging = false
             }
         }
+    }
+    val context = LocalContext.current
+    val density = LocalDensity.current
+    val boldFamily = remember { FontFamily(Font(br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_bold)) }
+    val nativeMetrics = remember(context, density, title) {
+        val themed = android.view.ContextThemeWrapper(context, androidx.appcompat.R.style.Theme_AppCompat_Light_Dialog_Alert)
+        fun measureText(font: Int): Int = android.widget.TextView(themed).apply {
+            text = title; textSize = 16f
+            typeface = androidx.core.content.res.ResourcesCompat.getFont(context, font)
+            measure(0, 0)
+        }.measuredHeight
+        fun measureButton(label: String, font: Int): Pair<Int, Int> = android.widget.Button(themed, null, android.R.attr.buttonBarButtonStyle).apply {
+            text = label; textSize = 16f; isAllCaps = false
+            typeface = androidx.core.content.res.ResourcesCompat.getFont(context, font)
+            measure(0, 0)
+        }.let { it.measuredWidth to it.measuredHeight }
+        Triple(measureText(br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_bold),
+            measureButton("Cancelar", br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_regular),
+            measureButton("Confirmar", br.gov.caixa.loterias.core.designsystem.R.font.caixa_std_semi_bold))
     }
 
     Dialog(
@@ -111,14 +139,14 @@ internal fun BettingOptionDialog(
                 Text(
                     text = title,
                     modifier = Modifier.fillMaxWidth()
+                        .heightIn(min = with(density) { nativeMetrics.first.toDp() })
                         .focusRequester(focusRequester)
                         .focusable()
                         .semantics { heading() },
                     color = CaixaDSColorTokens.LegacyComboDark,
                     style = TextStyle(
-                        fontFamily = CaixaDSLegacyRegularFontFamily,
+                        fontFamily = boldFamily,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
                         platformStyle = PlatformTextStyle(includeFontPadding = true),
                     ),
                 )
@@ -141,7 +169,7 @@ internal fun BettingOptionDialog(
                 subtitle?.let {
                     Text(
                         text = it,
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                         color = CaixaDSColorTokens.LegacySocialGraphite,
                         style = TextStyle(
                             fontFamily = CaixaDSLegacyRegularFontFamily,
@@ -151,42 +179,24 @@ internal fun BettingOptionDialog(
                     )
                 }
 
-                if (description == null) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxWidth().height(300.dp)
-                            .testTag("betting-option-list"),
-                        contentPadding = PaddingValues(vertical = 0.dp),
-                    ) {
-                        itemsIndexed(options, key = { index, _ -> index }) { index, option ->
-                            BettingOptionRow(
-                                label = label(option),
-                                selected = index == pending,
-                                tag = "betting-option-item-$index",
-                                onClick = { pending = index },
-                            )
-                        }
-                    }
-                } else {
-                    val verticalCenterPadding = (170.dp - 52.dp) / 2
-                    LazyColumn(
-                        state = wheelState,
-                        modifier = Modifier.fillMaxWidth().height(170.dp)
-                            .testTag("betting-option-wheel"),
-                        contentPadding = PaddingValues(vertical = verticalCenterPadding),
-                        flingBehavior = rememberSnapFlingBehavior(lazyListState = wheelState),
-                    ) {
-                        itemsIndexed(options, key = { index, _ -> index }) { index, option ->
-                            BettingOptionRow(
-                                label = label(option),
-                                selected = index == pending,
-                                tag = "betting-option-item-$index",
-                                wheel = true,
-                                onClick = {
-                                    pending = index
-                                    // A tap on a wheel item centers it just as the native snap wheel did.
-                                    coroutineScope.launch { wheelState.animateScrollToItem(index) }
-                                },
-                            )
+                LazyColumn(
+                    state = wheelState,
+                    modifier = Modifier.fillMaxWidth().height(170.dp)
+                        .testTag(if (description == null) "betting-option-list" else "betting-option-wheel"),
+                    contentPadding = PaddingValues(0.dp),
+                    flingBehavior = rememberSnapFlingBehavior(lazyListState = wheelState),
+                ) {
+                    itemsIndexed(options, key = { index, _ -> index }) { index, option ->
+                        BettingOptionRow(label(option), index == pending, "betting-option-item-$index") {
+                            pending = index
+                            coroutineScope.launch {
+                                val layout = wheelState.layoutInfo
+                                val item = layout.visibleItemsInfo.firstOrNull { it.index == index }
+                                if (item != null) {
+                                    wheelState.animateScrollBy((item.offset + item.size / 2 -
+                                        (layout.viewportStartOffset + layout.viewportEndOffset) / 2).toFloat())
+                                }
+                            }
                         }
                     }
                 }
@@ -198,15 +208,17 @@ internal fun BettingOptionDialog(
                 ) {
                     TextButton(
                         onClick = { latestDismiss() },
-                        modifier = Modifier.testTag("betting-option-cancel"),
+                        modifier = Modifier.width(with(density) { nativeMetrics.second.first.toDp() })
+                            .height(with(density) { nativeMetrics.second.second.toDp() }).testTag("betting-option-cancel"),
                     ) {
                         Text(
                             "Cancelar",
                             color = CaixaDSColorTokens.LegacySocialGraphite,
-                            style = CaixaDS.typography.labelLarge.copy(
+                            style = TextStyle(
                                 fontFamily = CaixaDSLegacyRegularFontFamily,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Normal,
+                                platformStyle = PlatformTextStyle(includeFontPadding = true),
                             ),
                         )
                     }
@@ -215,15 +227,18 @@ internal fun BettingOptionDialog(
                             options.getOrNull(pending)?.let(latestSelect)
                             latestDismiss()
                         },
-                        modifier = Modifier.testTag("betting-option-confirm"),
+                        enabled = pending in options.indices,
+                        modifier = Modifier.width(with(density) { nativeMetrics.third.first.toDp() })
+                            .height(with(density) { nativeMetrics.third.second.toDp() }).testTag("betting-option-confirm"),
                     ) {
                         Text(
                             "Confirmar",
-                            color = CaixaDSColorTokens.LegacyComboDark,
-                            style = CaixaDS.typography.labelLarge.copy(
-                                fontFamily = CaixaDSFontFamily,
+                            color = if (pending in options.indices) CaixaDSColorTokens.LegacyComboDark else androidx.compose.ui.graphics.Color(0xFFA5AAB6).copy(alpha = .6f),
+                            style = TextStyle(
+                                fontFamily = CaixaDSLegacySemiboldFontFamily,
                                 fontSize = 16.sp,
-                                fontWeight = FontWeight.SemiBold,
+                                fontWeight = FontWeight.Normal,
+                                platformStyle = PlatformTextStyle(includeFontPadding = true),
                             ),
                         )
                     }
@@ -238,12 +253,10 @@ private fun BettingOptionRow(
     label: String,
     selected: Boolean,
     tag: String,
-    wheel: Boolean = false,
     onClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxWidth().height(52.dp)
-            .padding(horizontal = if (wheel) 15.dp else 0.dp)
             .background(
                 color = if (selected) CaixaDSColorTokens.LegacySocialCanvas else androidx.compose.ui.graphics.Color.Transparent,
                 shape = RoundedCornerShape(31.dp),
@@ -258,7 +271,7 @@ private fun BettingOptionRow(
     ) {
         Text(
             text = label,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp),
             color = if (selected) CaixaDSColorTokens.LegacyRetailSearchText else CaixaDSColorTokens.LegacyTicketChoiceMuted,
             textAlign = TextAlign.Center,
             style = TextStyle(
