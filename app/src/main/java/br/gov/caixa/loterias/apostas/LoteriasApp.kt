@@ -1013,49 +1013,41 @@ fun LoteriasApp(
             val modalityId = requireNotNull(entry.arguments).getInt("modalityId")
             val requestedContestTypeId = requireNotNull(entry.arguments).getLong("contestTypeId")
             val requestedContestNumber = requireNotNull(entry.arguments).getInt("contestNumber").takeUnless { it == 0 }
-            val editSeed = betToEdit?.takeIf { it.modalityId == modalityId }
-            val preparedParameters = preparedBettingParameters.takeIf { editSeed == null }
             LaunchedEffect(entry) { preparedBettingParameters = null }
-            val bettingGameViewModel = viewModel(key = "betting-game-$modalityId-$requestedContestTypeId-$requestedContestNumber-${editSeed?.id ?: "new"}") {
-                BettingGameViewModel(
-                    modalityId = modalityId,
-                    getParameters = appContainer.bettingParameters,
-                    initialParameters = preparedParameters,
-                    addBet = appContainer.addBetToCart,
-                    validateFavoriteBet = appContainer.validateFavoriteBet,
-                    saveFavoriteBet = appContainer.saveFavoriteBet,
-                    initialNumbers = editSeed?.numbers.orEmpty(),
-                    initialContestTypeId = editSeed?.contestTypeId ?: requestedContestTypeId,
-                    expectedContestNumber = requestedContestNumber.takeIf { editSeed == null },
-                    initialClovers = editSeed?.clovers.orEmpty(),
-                    initialTeam = editSeed?.favoriteTeam,
-                    initialLuckyMonth = editSeed?.luckyMonth,
-                    initialLotecaSelections = editSeed?.lotecaSelections.orEmpty(),
-                    initialLotogolSelections = editSeed?.lotogolSelections.orEmpty(),
-                    initialSuperSevenColumns = editSeed?.numberColumns?.takeIf { it.size > 1 }.orEmpty(),
-                    initialRecurringDraws = editSeed?.recurringDraws ?: 0,
-                    initialMirror = editSeed?.mirror == true,
-                    dispatchers = appContainer.dispatchers,
-                )
-            }
-            var gameCartRevision by remember { androidx.compose.runtime.mutableIntStateOf(0) }
-            val gameCartSummary = activeResumingCartSummary(appContainer.currentCart, gameCartRevision)
-            BettingGameRoute(
+            BettingSimulationDestination(
+                destinationIdentity = entry,
+                modalityId = modalityId,
+                viewModelKey = "betting-game-$modalityId-$requestedContestTypeId-$requestedContestNumber",
+                pendingEdit = betToEdit,
+                createViewModel = { editSeed ->
+                    val preparedParameters = preparedBettingParameters.takeIf { editSeed == null }
+                    BettingGameViewModel(
+                        modalityId = modalityId,
+                        getParameters = appContainer.bettingParameters,
+                        initialParameters = preparedParameters,
+                        addBet = appContainer.addBetToCart,
+                        validateFavoriteBet = appContainer.validateFavoriteBet,
+                        saveFavoriteBet = appContainer.saveFavoriteBet,
+                        initialNumbers = editSeed?.numbers.orEmpty(),
+                        initialContestTypeId = editSeed?.contestTypeId ?: requestedContestTypeId,
+                        expectedContestNumber = requestedContestNumber.takeIf { editSeed == null },
+                        initialClovers = editSeed?.clovers.orEmpty(),
+                        initialTeam = editSeed?.favoriteTeam,
+                        initialLuckyMonth = editSeed?.luckyMonth,
+                        initialLotecaSelections = editSeed?.lotecaSelections.orEmpty(),
+                        initialLotogolSelections = editSeed?.lotogolSelections.orEmpty(),
+                        initialSuperSevenColumns = editSeed?.numberColumns?.takeIf { it.size > 1 }.orEmpty(),
+                        initialRecurringDraws = editSeed?.recurringDraws ?: 0,
+                        initialMirror = editSeed?.mirror == true,
+                        dispatchers = appContainer.dispatchers,
+                    )
+                },
+                getCurrentCart = appContainer.currentCart,
+                clearPendingEdit = { betToEdit = null },
+                onBack = { navController.popBackStack() },
                 onHelp = { navController.navigate("support/terms?tab=FAQ") },
-                fallbackModalityId = modalityId,
-                cartTotal = gameCartSummary?.total ?: java.math.BigDecimal.ZERO,
-                cartBetCount = gameCartSummary?.betCount ?: 0,
                 onCart = { navController.navigate("cart/current") },
                 shakeEnabled = appContainer.shakeSettings.enabled(),
-                viewModel = bettingGameViewModel,
-                onBack = {
-                    betToEdit = null
-                    navController.popBackStack()
-                },
-                onAdded = {
-                    betToEdit = null
-                    gameCartRevision++
-                },
             )
         }
         composable("betting/combos") {
