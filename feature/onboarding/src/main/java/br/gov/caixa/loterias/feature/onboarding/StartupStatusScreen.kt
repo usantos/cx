@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -73,7 +74,7 @@ private fun StartupUnavailableScreen(
     Box(Modifier.fillMaxSize().background(CaixaDSColorTokens.White)) {
       Box(
         Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
-            .background(CaixaDSColorTokens.LegacyUnavailableBlue),
+            .background(CaixaDSColorTokens.LegacyUnavailableBlue).testTag("startupUnavailableContent"),
       ) {
         Column(Modifier.fillMaxSize()) {
             Box(
@@ -156,33 +157,35 @@ private fun StartupUnavailableScreen(
                     Image(
                         painter = painterResource(R.drawable.ic_refresh),
                         contentDescription = null,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(20.dp).testTag("startupRetryIcon"),
                     )
                     Text(
                         text = kind.actionLabel,
                         color = CaixaDSColorTokens.White,
-                        fontFamily = CaixaDSFontFamily,
-                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = CaixaDSLegacySemiboldFontFamily,
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center,
+                        // XML TextView has natural CAIXA metrics, including font padding.
+                        // A fresh style avoids inheriting Material's 24sp line height.
+                        style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)),
                     )
                 }
                 Text(
                     text = startupStatusVersion(versionName),
                     modifier = Modifier.padding(top = 36.dp),
                     color = CaixaDSColorTokens.White,
-                    fontFamily = CaixaDSLegacyFuturaFontFamily,
+                    fontFamily = CaixaDSFontFamily,
                     fontSize = 14.sp,
-                    lineHeight = 17.sp,
                     textAlign = TextAlign.Center,
+                    style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)),
                 )
                 Text(
                     text = "Código do erro: LTR-503",
                     color = CaixaDSColorTokens.White,
                     fontFamily = CaixaDSFontFamily,
                     fontSize = 14.sp,
-                    lineHeight = 17.sp,
                     textAlign = TextAlign.Center,
+                    style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)),
                 )
             }
         }

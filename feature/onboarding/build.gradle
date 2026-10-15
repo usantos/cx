@@ -1,6 +1,9 @@
 apply from: rootProject.file('gradle/compose-feature.gradle')
 apply plugin: 'jacoco'
-android { namespace = 'br.gov.caixa.loterias.feature.onboarding' }
+android {
+    namespace = 'br.gov.caixa.loterias.feature.onboarding'
+    defaultConfig { testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
+}
 
 dependencies {
     implementation project(':core:domain')
