@@ -41,7 +41,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -52,7 +51,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.apostas.R
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum
 import kotlinx.coroutines.launch
@@ -95,8 +93,8 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
         }, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
     }
 
-    private val navy = Color(0xFF081970)
-    private val blue = Color(0xFF0752CA)
+    private val navy = Color(0xFF003B71)
+    private val blue = Color(0xFF005CA9)
     private val regular = FontFamily(Font(R.font.caixa_std_regular))
     private val bold = FontFamily(Font(R.font.caixa_std_bold))
     private val order = listOf(ModalidadeEnum.MEGA_SENA, ModalidadeEnum.MAIS_MILIONARIA,
@@ -138,7 +136,7 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
                     val heroCards = cards.take(4)
                     if (heroCards.isNotEmpty()) {
                         val pager = rememberPagerState(pageCount = { heroCards.size })
-                        Box(Modifier.background(Brush.verticalGradient(listOf(blue, Color(0xFFF5F7FC)))).padding(top = 12.dp)) {
+                        Box(Modifier.padding(top = 12.dp)) {
                             HorizontalPager(pager, contentPadding = PaddingValues(horizontal = 12.dp),
                                 pageSpacing = 10.dp) { Hero(heroCards[it]) }
                         }
@@ -150,26 +148,27 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
                             Spacer(Modifier.height(6.dp))
                             PoolBanner(poolCard)
                         }
-                        Box(Modifier.padding(top = if (poolCard != null) 8.dp else 0.dp)) {
+                        Column(Modifier.padding(top = if (poolCard != null) 8.dp else 0.dp)) {
                             Section("Escolha sua modalidade") { showAll = !showAll }
+                            Text("Segure e arraste para organizar", fontFamily = regular,
+                                fontSize = 11.sp, color = Color(0xFF647C94), modifier = Modifier.padding(top = 3.dp))
                         }
                         val arrangedCards = cards.sortedBy { cardOrder.indexOf(it.tipoModalidade.name) }
                         ReorderableModalities(if (showAll) arrangedCards else arrangedCards.take(8), scroll, viewport) { showAll = true }
                         Spacer(Modifier.height(5.dp))
                         Section("Últimos resultados", actions::results)
-                        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+                        Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min).horizontalScroll(rememberScrollState()),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             cards.filter { it.tipoModalidade in listOf(ModalidadeEnum.MEGA_SENA,
                                 ModalidadeEnum.MAIS_MILIONARIA, ModalidadeEnum.QUINA) }.forEach { ResultCard(it, it.resultadoConcursoDTO) }
                         }
                         Spacer(Modifier.height(4.dp))
-                        Title("Mais para você", 16)
-                        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
-                            horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                            Shortcut("Meus jogos", "Acompanhe suas apostas", R.drawable.ic_menu_minha_area, actions::games)
-                            Shortcut("Resultados", "Consulte históricos", R.drawable.ic_menu_resultados, actions::results)
-                            Shortcut("Estatísticas", "Veja números e probabilidades", R.drawable.ic_menu_resultados, actions::results)
-                            Shortcut("Promoções", "Fique por dentro das novidades", R.drawable.menu8_notificacao, actions::notifications)
+                        Title("Mais para você", 18)
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Shortcut("Meus jogos", "Acompanhe suas apostas", R.drawable.ic_home_v2_bilhete, Modifier.weight(1f), actions::games)
+                            Shortcut("Resultados", "Consulte históricos", R.drawable.ic_home_v2_resultados, Modifier.weight(1f), actions::results)
+                            Shortcut("Estatísticas", "Veja números e probabilidades", R.drawable.ic_home_v2_estatisticas, Modifier.weight(1f), actions::results)
+                            Shortcut("Promoções", "Fique por dentro das novidades", R.drawable.ic_home_v2_presente, Modifier.weight(1f), actions::notifications)
                         }
                         Spacer(Modifier.height(12.dp))
                     }
@@ -179,14 +178,14 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
                 .onGloballyPositioned { navigationHeight = with(density) { it.size.height.toDp() } }
                 .shadow(6.dp)
                 .background(Brush.verticalGradient(listOf(
-                    Color.White.copy(alpha = .94f), Color.White.copy(alpha = .90f))))
+                    Color.White.copy(alpha = .98f), Color.White.copy(alpha = .96f))))
                 .border(1.dp, Color.White.copy(alpha = .65f))
                 .padding(vertical = 9.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly) {
-                Nav("Início", R.drawable.ic_loterias_caixa, true, Modifier.weight(1f)) { scope.launchScroll(scroll, 0) }
-                Nav("Minhas\nApostas", R.drawable.ic_menu_conferir_bilhete, false, Modifier.weight(1f), action = actions::games)
+                Nav("Início", R.drawable.trevo_megasena_fundo_branco, true, Modifier.weight(1f)) { scope.launchScroll(scroll, 0) }
+                Nav("Minhas\nApostas", R.drawable.ic_home_v2_bilhete, false, Modifier.weight(1f), action = actions::games)
                 Nav("Carrinho", R.drawable.ic_carrinho2, false, Modifier.weight(1f), emphasized = true, action = actions::cart)
-                Nav("Resultados", R.drawable.ic_menu_resultados, false, Modifier.weight(1f), action = actions::results)
+                Nav("Resultados", R.drawable.ic_home_v2_resultados, false, Modifier.weight(1f), action = actions::results)
                 Nav("Apostas\nFavoritas", R.drawable.ic_favoritar2, false, Modifier.weight(1f), action = actions::favorites)
             }
         }
@@ -200,8 +199,8 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
             label = "shimmerProgress"
         )
         Column(Modifier.fillMaxWidth().semantics { contentDescription = "Carregando a home" }) {
-            Box(Modifier.background(Brush.verticalGradient(listOf(blue, Color(0xFFF5F7FC)))).padding(12.dp)) {
-                ShimmerBlock(Modifier.fillMaxWidth().height(275.dp), progress, 14)
+            Box(Modifier.padding(12.dp)) {
+                ShimmerBlock(Modifier.fillMaxWidth().height(220.dp), progress, 12)
             }
             Column(Modifier.padding(horizontal = 13.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 ShimmerBlock(Modifier.fillMaxWidth().height(64.dp), progress, 13)
@@ -232,11 +231,11 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
     }
 
     @Composable private fun Header() {
-        Row(Modifier.fillMaxWidth().background(Brush.horizontalGradient(listOf(Color(0xFF06429E), blue)))
+        Row(Modifier.fillMaxWidth().background(Brush.horizontalGradient(listOf(blue, Color(0xFF006BB4))))
             .padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
             Text("☰", color = Color.White, fontSize = 25.sp,
                 modifier = Modifier.size(40.dp).clickable(onClickLabel = "Abrir menu", onClick = actions::menu))
-            Text("Loterias CAIXA", color = Color.White, fontFamily = bold, fontSize = 18.sp,
+            Text("Loterias CAIXA", color = Color.White, fontFamily = bold, fontSize = 20.sp,
                 modifier = Modifier.weight(1f).padding(start = 6.dp))
             IconButton(onClick = actions::notifications) {
                 Icon(painterResource(R.drawable.menu8_notificacao), "Notificações", tint = Color.White)
@@ -246,39 +245,52 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
 
     @Composable private fun Hero(item: Modalidade) {
         val type = item.tipoModalidade
-        Box(Modifier.fillMaxWidth().heightIn(min = 275.dp).clip(RoundedCornerShape(14.dp))
+        Box(Modifier.fillMaxWidth().heightIn(min = 220.dp).clip(RoundedCornerShape(12.dp))
             .background(Brush.horizontalGradient(colors(type)))) {
-            if (type == ModalidadeEnum.MEGA_SENA) Image(painterResource(R.drawable.home_v2_mega), null,
-                Modifier.matchParentSize(), contentScale = ContentScale.Crop)
-            Column(Modifier.fillMaxWidth().padding(17.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (type == ModalidadeEnum.MEGA_SENA) {
+                Image(painterResource(R.drawable.home_v2_mega_corporativo), null,
+                    Modifier.matchParentSize(), contentScale = ContentScale.Crop, alignment = Alignment.CenterEnd)
+                Box(Modifier.matchParentSize().background(Brush.horizontalGradient(
+                    0f to Color(0xFF006B43).copy(alpha = .97f),
+                    .45f to Color(0xFF006B43).copy(alpha = .85f),
+                    .75f to Color.Transparent, 1f to Color.Transparent)))
+            }
+            Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text("PRÓXIMO SORTEIO", fontFamily = bold, fontSize = 10.sp, color = Color.White,
-                        modifier = Modifier.clip(CircleShape).background(Color(0xAA008E45)).padding(8.dp, 4.dp))
+                        modifier = Modifier.padding(vertical = 6.dp))
                     Text("Último resultado ›", color = Color.White, fontSize = 11.sp,
-                        modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(Color(0xAA003522))
+                        modifier = Modifier.clip(CircleShape).background(Color(0x44003322)).border(1.dp, Color.White.copy(alpha = .45f), CircleShape)
                             .clickable { actions.modalityResults(type) }.padding(8.dp))
                 }
-                Column(Modifier.fillMaxWidth(.78f)) {
+                Column(Modifier.fillMaxWidth()) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Image(painterResource(icon(type)), null, Modifier.size(26.dp))
                         Spacer(Modifier.width(7.dp))
-                        Text(name(type), fontFamily = bold, fontSize = 23.sp, color = Color.White)
+                        Text(name(type), fontFamily = bold, fontSize = 24.sp, color = Color.White)
                     }
                     Text("Prêmio estimado", fontFamily = bold, fontSize = 13.sp, color = Color.White)
                     Text(prize(item), fontFamily = bold, fontSize = 25.sp, color = Color.White, maxLines = 1,
                         overflow = TextOverflow.Ellipsis)
-                    Text("${date(item)}\nConcurso ${item.concurso?.numero ?: "—"}", color = Color.White,
-                        fontFamily = regular, fontSize = 12.sp)
+                    Row(Modifier.padding(top = 6.dp), verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Icon(painterResource(R.drawable.ic_calendario), null, Modifier.size(17.dp), tint = Color.White)
+                        Text(date(item), color = Color.White, fontFamily = regular, fontSize = 11.sp)
+                        Text("Concurso ${item.concurso?.numero ?: "—"}", color = Color.White,
+                            fontFamily = regular, fontSize = 11.sp)
+                    }
                 }
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     if (actions.canPool(type)) Button(onClick = { actions.pool(item) },
                         modifier = Modifier.weight(1f).heightIn(min = 44.dp),
+                        shape = RoundedCornerShape(7.dp),
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = navy)) {
                         Text("Compre seu bolão", fontFamily = bold, fontSize = 12.sp)
                     }
                     Button(onClick = { actions.bet(item) },
                         modifier = Modifier.weight(1f).heightIn(min = 44.dp),
+                        shape = RoundedCornerShape(7.dp),
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = navy)) {
                         Text("Aposte", fontFamily = bold, fontSize = 13.sp)
@@ -391,21 +403,23 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
     }
 
     @Composable private fun ModalityCard(item: Modalidade, modifier: Modifier) {
-        val style = remember(item.tipoModalidade) { EstiloModalidadeMKP(item.tipoModalidade) }
         val isDiaDeSorte = item.tipoModalidade == ModalidadeEnum.DIA_DE_SORTE
-        val ink = if (isDiaDeSorte) Color.White else colorResource(style.corFonteFundoClaro)
-        val background = if (isDiaDeSorte) Color(0xFFEACB3D) else colorResource(style.corClara)
-        Row(modifier.heightIn(min = 67.dp).clip(RoundedCornerShape(11.dp))
-            .background(background)
+        val ink = if (isDiaDeSorte) navy else Color.White
+        Row(modifier.heightIn(min = 78.dp).clip(RoundedCornerShape(8.dp))
+            .background(Brush.horizontalGradient(colors(item.tipoModalidade)))
             .clickable(onClickLabel = "Apostar em ${name(item.tipoModalidade)}") { actions.bet(item) }
             .padding(9.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painterResource(icon(item.tipoModalidade)), null, Modifier.size(29.dp))
             Spacer(Modifier.width(8.dp))
             Column(Modifier.weight(1f)) {
-                Text(name(item.tipoModalidade), fontFamily = bold, fontSize = 12.sp, color = ink)
-                Text(prize(item), fontFamily = bold, fontSize = 12.sp, color = ink, maxLines = 1,
+                Text(name(item.tipoModalidade), fontFamily = bold, fontSize = 13.sp, color = ink)
+                Text(prize(item), fontFamily = bold, fontSize = 13.sp, color = ink, maxLines = 1,
                     overflow = TextOverflow.Ellipsis)
-                Text(date(item), fontFamily = regular, fontSize = 10.sp, color = ink, maxLines = 1)
+                Row(Modifier.padding(top = 3.dp), verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Icon(painterResource(R.drawable.ic_calendario), null, Modifier.size(12.dp), tint = ink)
+                    Text(date(item), fontFamily = regular, fontSize = 10.sp, color = ink, maxLines = 1)
+                }
             }
             Text("›", fontSize = 24.sp, color = ink)
         }
@@ -414,7 +428,7 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
     @Composable private fun ResultCard(item: Modalidade,
         result: br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO<*>?) {
         val ink = colors(item.tipoModalidade).first()
-        Column(Modifier.width(190.dp).heightIn(min = 95.dp).clip(RoundedCornerShape(11.dp))
+        Column(Modifier.width(190.dp).heightIn(min = 128.dp).fillMaxHeight().shadow(2.dp, RoundedCornerShape(9.dp)).clip(RoundedCornerShape(9.dp))
             .background(Color.White).clickable { actions.modalityResults(item.tipoModalidade) }.padding(10.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(painterResource(icon(item.tipoModalidade)), null, Modifier.size(22.dp))
@@ -422,7 +436,7 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
                 Text(name(item.tipoModalidade), color = ink, fontFamily = bold, fontSize = 12.sp)
             }
             if (result == null) {
-                Text("Consultar último resultado ›", fontSize = 11.sp, color = navy, modifier = Modifier.padding(top = 12.dp))
+                Text("Consultar último resultado", fontSize = 11.sp, color = navy, modifier = Modifier.padding(top = 12.dp))
             } else {
                 Text("Concurso ${result.concurso?.numero ?: "—"}", fontSize = 10.sp, color = navy)
                 Row(Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(3.dp)) {
@@ -438,21 +452,22 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
                     Text("Trevos: ${it.joinToString(" • ")}", fontSize = 10.sp, color = ink)
                 }
             }
+            Spacer(Modifier.weight(1f))
+            HorizontalDivider(Modifier.padding(top = 12.dp, bottom = 7.dp), color = Color(0xFFE1E8EF))
+            Text("Ver resultado ›", color = blue, fontFamily = bold, fontSize = 11.sp,
+                textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
         }
     }
 
     @Composable private fun PoolBanner(item: Modalidade?) {
         if (item == null) return
-        Box(Modifier.fillMaxWidth().heightIn(min = 64.dp).clip(RoundedCornerShape(13.dp))
+        Box(Modifier.fillMaxWidth().heightIn(min = 64.dp).clip(RoundedCornerShape(9.dp))
             .clickable(onClickLabel = "Compre seu bolão") { actions.pool(item) }) {
-            Image(painterResource(R.drawable.home_v2_bolao), null,
-                Modifier.matchParentSize(), contentScale = ContentScale.Crop)
+            Image(painterResource(R.drawable.home_v2_bolao_corporativo), null,
+                Modifier.matchParentSize(), contentScale = ContentScale.Crop, alignment = Alignment.CenterEnd)
             Box(Modifier.matchParentSize().background(Brush.horizontalGradient(listOf(
-                Color(0xFF031C55).copy(alpha = .88f),
-                Color(0xFF031C55).copy(alpha = .68f),
-                Color(0xFF031C55).copy(alpha = .30f)
-            ))))
-            Column(Modifier.align(Alignment.CenterStart).fillMaxWidth().padding(horizontal = 14.dp, vertical = 14.dp)) {
+                Color(0xFF003B71).copy(alpha = .50f), Color(0xFF003B71).copy(alpha = .12f)))))
+            Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(.78f).padding(horizontal = 14.dp, vertical = 14.dp)) {
                 Text("Compre seu bolão", color = Color.White, fontFamily = bold,
                     fontSize = 16.sp, lineHeight = 20.sp)
                 Text("Jogue com amigos e aumente suas chances de ganhar.", color = Color.White,
@@ -461,15 +476,14 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
         }
     }
 
-    @Composable private fun Shortcut(title: String, detail: String, icon: Int, action: () -> Unit) {
-        Row(Modifier.width(150.dp).heightIn(min = 80.dp).clip(RoundedCornerShape(9.dp))
-            .background(Color.White).clickable(onClick = action).padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(painterResource(icon), null, tint = blue, modifier = Modifier.size(26.dp))
-            Spacer(Modifier.width(8.dp))
-            Column(Modifier.weight(1f)) {
-                Text(title, color = navy, fontFamily = bold, fontSize = 11.sp, lineHeight = 16.sp)
-                Text(detail, color = navy, fontFamily = regular, fontSize = 10.sp, lineHeight = 14.sp)
-            }
+    @Composable private fun Shortcut(title: String, detail: String, icon: Int, modifier: Modifier, action: () -> Unit) {
+        Column(modifier.heightIn(min = 72.dp).shadow(1.dp, RoundedCornerShape(8.dp)).clip(RoundedCornerShape(8.dp))
+            .background(Color.White).semantics { contentDescription = "$title. $detail" }
+            .clickable(onClick = action).padding(horizontal = 3.dp, vertical = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Icon(painterResource(icon), null, tint = navy, modifier = Modifier.size(26.dp))
+            Text(title, color = navy, fontFamily = bold, fontSize = 10.sp, lineHeight = 14.sp,
+                textAlign = TextAlign.Center)
         }
     }
     @Composable private fun Section(title: String, action: () -> Unit) {
@@ -514,13 +528,15 @@ class HomeV2View(context: Context, private val actions: Actions) : FrameLayout(c
         else -> type.name.lowercase().replaceFirstChar { it.titlecase() }
     }
     private fun colors(type: ModalidadeEnum): List<Color> = when (type) {
-        ModalidadeEnum.MEGA_SENA -> listOf(Color(0xFF008B48), Color(0xFF11C99A))
-        ModalidadeEnum.MAIS_MILIONARIA -> listOf(Color(0xFF5D0CCD), Color(0xFFAA41FE))
-        ModalidadeEnum.LOTECA, ModalidadeEnum.DUPLA_SENA -> listOf(Color(0xFFEF3560), Color(0xFFFF6595))
-        ModalidadeEnum.DIA_DE_SORTE -> listOf(Color(0xFFFFCD24), Color(0xFFFFE66B))
-        ModalidadeEnum.LOTOMANIA -> listOf(Color(0xFFFF6420), Color(0xFFFFA160))
-        ModalidadeEnum.QUINA -> listOf(Color(0xFF0054CD), Color(0xFF198FFA))
-        else -> listOf(Color(0xFF7622D7), Color(0xFFBC6CEF))
+        ModalidadeEnum.MEGA_SENA -> listOf(Color(0xFF008852), Color(0xFF006B43))
+        ModalidadeEnum.MAIS_MILIONARIA -> listOf(Color(0xFF6533C7), Color(0xFF4A28A3))
+        ModalidadeEnum.LOTECA -> listOf(Color(0xFFD32E49), Color(0xFFBF2943))
+        ModalidadeEnum.DUPLA_SENA -> listOf(Color(0xFFAF2255), Color(0xFF94214C))
+        ModalidadeEnum.DIA_DE_SORTE -> listOf(Color(0xFFFFC52B), Color(0xFFF5B816))
+        ModalidadeEnum.LOTOMANIA -> listOf(Color(0xFFFF852A), Color(0xFFF06C12))
+        ModalidadeEnum.QUINA -> listOf(Color(0xFF075AC0), Color(0xFF06489D))
+        ModalidadeEnum.LOTOFACIL -> listOf(Color(0xFF8B2387), Color(0xFF731B70))
+        else -> listOf(Color(0xFF6A35C7), Color(0xFF49279F))
     }
     private fun icon(type: ModalidadeEnum): Int = when (type) {
         ModalidadeEnum.MEGA_SENA -> R.drawable.trevo_megasena_fundo_branco
