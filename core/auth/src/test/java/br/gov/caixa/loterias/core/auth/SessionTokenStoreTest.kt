@@ -5,8 +5,30 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 
 class SessionTokenStoreTest {
+    @Test fun `guest persistence lease never revives after login and logout`() {
+        val store = SessionTokenStore()
+        val guest = store.captureLocalPersistenceLease()
+        assertTrue(guest())
+        val attempt = store.beginAuthorization()
+        assertFalse(guest())
+        store.completeAuthorization(attempt, "controlled-token")
+        store.clear()
+        assertFalse(guest())
+        assertTrue(store.captureLocalPersistenceLease()())
+    }
+
+    @Test fun `pending authorization cannot acquire a persistence lease`() {
+        val store = SessionTokenStore()
+        store.beginAuthorization()
+        val pending = store.captureLocalPersistenceLease()
+        assertFalse(pending())
+        store.clear()
+        assertFalse(pending())
+    }
+
     @Test fun `ID token is retained only for the committed session and extracted once at logout`() {
         val store = SessionTokenStore()
         val old = store.beginAuthorization()
@@ -45,7 +67,10 @@ class SessionTokenStoreTest {
         repeat(100) {
             val ticket = store.beginAuthorization()
             val start = java.util.concurrent.CountDownLatch(1)
-            val worker = Thread { start.await(); store.completeAuthorization(ticket, "access", "id") }
+            val worker = Thread {
+                start.await()
+                store.completeAuthorization(ticket, "access", "id")
+            }
             worker.start()
             start.countDown()
             val hint = store.clearForEndSession()
@@ -90,7 +115,10 @@ class SessionTokenStoreTest {
             val store = SessionTokenStore()
             val attempt = store.beginAuthorization()
             val start = java.util.concurrent.CountDownLatch(1)
-            val worker = Thread { start.await(); store.completeAuthorization(attempt, "late") }
+            val worker = Thread {
+                start.await()
+                store.completeAuthorization(attempt, "late")
+            }
             worker.start()
             start.countDown()
             store.clear()

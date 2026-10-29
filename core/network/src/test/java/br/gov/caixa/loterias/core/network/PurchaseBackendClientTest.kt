@@ -1,7 +1,24 @@
 package br.gov.caixa.loterias.core.network
 
-import br.gov.caixa.loterias.core.keymanagement.HostPublicKeyPins
-import br.gov.caixa.loterias.core.keymanagement.PublicKeySet
+import br.gov.caixa.loterias.core.keymanagement.model.HostPublicKeyPins
+import br.gov.caixa.loterias.core.keymanagement.model.PublicKeySet
+import br.gov.caixa.loterias.core.network.adapter.ServerTimeAdapterFactory
+import br.gov.caixa.loterias.core.network.api.PurchaseBackendApi
+import br.gov.caixa.loterias.core.network.api.PurchaseBackendApiProvider
+import br.gov.caixa.loterias.core.network.api.PurchaseBackendClient
+import br.gov.caixa.loterias.core.network.api.PurchaseHttpException
+import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
+import br.gov.caixa.loterias.core.network.interceptor.BearerTokenInterceptor
+import br.gov.caixa.loterias.core.network.interceptor.CurlLoggingInterceptor
+import br.gov.caixa.loterias.core.network.interceptor.MockBackendInterceptor
+import br.gov.caixa.loterias.core.network.interceptor.NetworkDebugOptions
+import br.gov.caixa.loterias.core.network.interceptor.PinnedHostInterceptor
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseEnvelopeDto
+import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseErrorEnvelopeDto
+import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseProcessingDto
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
@@ -16,16 +33,24 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.buffer
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
+import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.Response
 
-/** No sockets, real credentials or payment provider calls are used by this suite. */
+/** Esta suíte não usa sockets, credenciais reais ou chamadas a provedores de pagamento. */
 class PurchaseBackendClientTest {
     @Test fun `lost response mock fails only the submission and keeps purchase review available`() = runTest {
         val client = NetworkClientFactory.createPurchaseBackend(
-            "https://mock.caixa.gov.br/rest/v1/", AuthTokenProvider { null },
-            mockOptions = MockBackendOptions(true, MockBackendScenario.PURCHASE_RESPONSE_LOST),
+            "https://mock.caixa.gov.br/rest/v1/",
+            AuthTokenProvider { null },
+            mockOptions = MockBackendOptions(true, MockBackendScenario.PURCHASE_RESPONSE_LOST)
         )
         assertTrue(failure { client.submit(JsonParser.parseString("{}")) } is java.net.SocketTimeoutException)
         val progress = client.progress(91)
@@ -33,17 +58,20 @@ class PurchaseBackendClientTest {
         assertEquals(8, progress.envelope.payload?.status)
         assertEquals(MockBackendScenario.PURCHASE_RESPONSE_LOST, MockBackendScenario.from("purchase_response_lost"))
     }
+
     @Test fun `200 and 303 preserve payload code redirect message and server clock`() = runTest {
         for (status in listOf(200, 303)) {
             val times = mutableListOf<String>()
             val gson = GsonBuilder().registerTypeAdapterFactory(ServerTimeAdapterFactory { times += it }).create()
             val requests = mutableListOf<Request>()
             val client = NetworkClientFactory.createPurchaseBackend(
-                "https://example.invalid/rest/v1/", AuthTokenProvider { null },
+                "https://example.invalid/rest/v1/",
+                AuthTokenProvider { null },
                 clientBuilder = OkHttpClient.Builder().addInterceptor { chain ->
                     requests += chain.request()
                     rawResponse(status, envelope, chain.request())
-                }, gson = gson,
+                },
+                gson = gson
             )
             val response = client.submit(JsonParser.parseString("{}"))
             val progress = client.progress(91)
@@ -71,8 +99,8 @@ class PurchaseBackendClientTest {
         val client = NetworkClientFactory.createPurchaseBackend("https://example.invalid/", AuthTokenProvider { null }, builder)
         assertEquals(91L, client.submit(JsonParser.parseString("{}")).envelope.payload?.id)
         assertEquals(1, calls)
-        // Intercepted responses alone cannot exercise OkHttp's network follow-up machinery.
-        // Verify the actual client builder policy as well; real TLS remains an Android test.
+        // Respostas interceptadas isoladamente não exercitam as continuações de rede do OkHttp.
+        // Também verifica a política real do builder; TLS real continua sendo testado no Android.
         with(builder.build()) {
             assertFalse(followRedirects)
             assertFalse(followSslRedirects)
@@ -90,10 +118,21 @@ class PurchaseBackendClientTest {
 
     @Test fun `dedicated builder preserves bearer logging and both pin guards`() {
         val builder = OkHttpClient.Builder()
-        val keys = PublicKeySet(1, 1, Long.MAX_VALUE, listOf(
-            HostPublicKeyPins("example.invalid", listOf("sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")),
-        ))
-        NetworkClientFactory.createPurchaseBackend("https://example.invalid/", AuthTokenProvider { null }, builder, publicKeySet = keys)
+        val keys = PublicKeySet(
+            1,
+            1,
+            Long.MAX_VALUE,
+            listOf(
+                HostPublicKeyPins("example.invalid", listOf("sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="))
+            )
+        )
+        NetworkClientFactory.createPurchaseBackend(
+            "https://example.invalid/",
+            AuthTokenProvider { null },
+            builder,
+            publicKeySet = keys,
+            debugOptions = NetworkDebugOptions(enabled = true)
+        )
         with(builder.build()) {
             assertTrue(interceptors.any { it is BearerTokenInterceptor })
             assertTrue(interceptors.any { it is CurlLoggingInterceptor })
@@ -119,7 +158,9 @@ class PurchaseBackendClientTest {
     }
 
     @Test fun `HTTP errors read metadata independently from payload and never expose it in exception text`() = runTest {
-        val json = """{"payload":["arbitrary"],"statusCode":200,"codigo":"011010","redirect":"carrinho","mensagem":"private response","tipo":"1"}"""
+        val json =
+            """{"payload":["arbitrary"],"statusCode":200,"codigo":"011010","redirect":"carrinho",""" +
+                """"mensagem":"private response","tipo":"1"}"""
         val result = failure { PurchaseBackendClient(FakeApi(error(400, json)), Gson()).submit(JsonParser.parseString("{}")) }
         assertTrue(result is PurchaseHttpException)
         result as PurchaseHttpException
@@ -147,7 +188,7 @@ class PurchaseBackendClientTest {
         val host = HostPublicKeyPins("example.invalid", listOf("sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="))
         for ((url, keys) in listOf(
             "https://unknown.invalid/" to PublicKeySet(1, 1, Long.MAX_VALUE, listOf(host)),
-            "https://example.invalid/" to PublicKeySet(1, 1, 2, listOf(host)),
+            "https://example.invalid/" to PublicKeySet(1, 1, 2, listOf(host))
         )) {
             val client = NetworkClientFactory.createPurchaseBackend(url, AuthTokenProvider { null }, publicKeySet = keys)
             assertTrue(failure { client.progress(1) } is SSLPeerUnverifiedException)
@@ -156,26 +197,29 @@ class PurchaseBackendClientTest {
 
     @Test fun `303 and HTTP error bodies close after successful malformed or failed decoding`() = runTest {
         for (status in listOf(303, 400, 401, 500)) {
-        for ((text, readFailure) in listOf("{}" to false, "{" to false, "{}" to true, " ".repeat(65_537) to false)) {
-            var closed = false
-            val source = object : okio.ForwardingSource(okio.Buffer().writeUtf8(text)) {
-                override fun read(sink: okio.Buffer, byteCount: Long): Long {
-                    if (readFailure) throw IOException("read failed")
-                    return super.read(sink, byteCount)
+            for ((text, readFailure) in listOf("{}" to false, "{" to false, "{}" to true, " ".repeat(65_537) to false)) {
+                var closed = false
+                val source = object : okio.ForwardingSource(okio.Buffer().writeUtf8(text)) {
+                    override fun read(sink: okio.Buffer, byteCount: Long): Long {
+                        if (readFailure) throw IOException("read failed")
+                        return super.read(sink, byteCount)
+                    }
+                    override fun close() {
+                        closed = true
+                        super.close()
+                    }
                 }
-                override fun close() { closed = true; super.close() }
+                val buffered = source.buffer()
+                val body = object : okhttp3.ResponseBody() {
+                    override fun contentType() = "application/json".toMediaType()
+                    override fun contentLength() = -1L
+                    override fun source() = buffered
+                }
+                val response = Response.error<PurchaseEnvelopeDto>(body, rawResponse(status, ""))
+                val client = PurchaseBackendClient(FakeApi(response), Gson())
+                if (status == 303 && text == "{}" && !readFailure) client.progress(1) else failure { client.progress(1) }
+                assertTrue(closed)
             }
-            val buffered = source.buffer()
-            val body = object : okhttp3.ResponseBody() {
-                override fun contentType() = "application/json".toMediaType()
-                override fun contentLength() = -1L
-                override fun source() = buffered
-            }
-            val response = Response.error<PurchaseEnvelopeDto>(body, rawResponse(status, ""))
-            val client = PurchaseBackendClient(FakeApi(response), Gson())
-            if (status == 303 && text == "{}" && !readFailure) client.progress(1) else failure { client.progress(1) }
-            assertTrue(closed)
-        }
         }
     }
 
@@ -214,9 +258,7 @@ class PurchaseBackendClientTest {
         }
     }
 
-    private class FakeApi(
-        val response: Response<PurchaseEnvelopeDto>, val throwable: Exception? = null,
-    ) : PurchaseBackendApi {
+    private class FakeApi(val response: Response<PurchaseEnvelopeDto>, val throwable: Exception? = null) : PurchaseBackendApi {
         var calls = 0
         private fun answer(): Response<PurchaseEnvelopeDto> {
             calls++
@@ -228,7 +270,11 @@ class PurchaseBackendClientTest {
     }
 
     private suspend fun failure(block: suspend () -> Unit): Throwable {
-        try { block() } catch (failure: Exception) { return failure }
+        try {
+            block()
+        } catch (failure: Exception) {
+            return failure
+        }
         throw AssertionError("Expected a failure")
     }
 
@@ -239,5 +285,8 @@ class PurchaseBackendClientTest {
         okhttp3.Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(code).message("Test")
             .body(body.toResponseBody("application/json".toMediaType())).build()
 
-    private val envelope = """{"payload":{"id":91,"periodicidade":2345,"repeticoes":7,"idSituacaoCompra":2},"codigo":"E1","redirect":"/carrinhos/verifica-compra-processamento","mensagem":"Mensagem","dataHoraServidor":"2026-09-07T12:00:00"}"""
+    private val envelope =
+        """{"payload":{"id":91,"periodicidade":2345,"repeticoes":7,"idSituacaoCompra":2},"codigo":"E1",""" +
+            """"redirect":"/carrinhos/verifica-compra-processamento","mensagem":"Mensagem",""" +
+            """"dataHoraServidor":"2026-09-07T12:00:00"}"""
 }

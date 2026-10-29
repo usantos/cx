@@ -1,0 +1,57 @@
+{
+  "installed": true,
+  "fullGateExitCode": 1,
+  "failedTasks": [
+    ":ktlintCheck"
+  ],
+  "verifiedTasks": [
+    "ktlintCheck",
+    "detekt",
+    "lintQualityCheck",
+    "allUnitTests",
+    "verifyCoverage",
+    "verifyKotlinFormatting",
+    "verifyCleanArchitecture",
+    "verifyComposeMigration",
+    "verifyLegacyUiInventory",
+    "verifyLegacyBackendParity",
+    "verifyCaixaDS",
+    "verifyFilaBraAar",
+    "verifyTopazHeartbeat",
+    "verifyNetworkSecurity",
+    "verifyAppIdentityAndFlavors",
+    "verifyComposePlatformResourcePolicy",
+    "verifyToolingPolicyTests",
+    "verifyGitHooksPolicy",
+    "aggregateTestReport",
+    "app:assemblePrdDebug"
+  ],
+  "junit": {
+    "tests": 3510,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "pythonToolingTests": 190,
+  "gitHookTests": 21,
+  "platformXmlChecks": 33,
+  "coverageLine": "95.11",
+  "globalKtlint": {
+    "errors": 6897,
+    "files": 363
+  },
+  "protectedConfigurationsUnchanged": 37,
+  "protectedHeadersUnchanged": 2,
+  "actualInstalledHookBlockedPendingStaging": true,
+  "command": "JAVA_HOME=AndroidStudioJBR ./gradlew preCommitCheck --continue --console=plain -PnetworkLogging=false",
+  "duration": "47m 33s",
+  "independentReview": "No Critical/Important findings; 21 hook tests passed independently.",
+  "scope": "Local implementation and validation. No commit/stage/push in the actual repository; no remote CI or branch protection change.",
+  "edition": "2026-10-28",
+  "evidenceRoot": "build/verification/pre-commit-20261028",
+  "recordType": "Evidência da execução anterior; documentação atualizada sem repetir os testes.",
+  "installer": "scripts/install-git-hooks.sh",
+  "runner": "scripts/validate-pre-commit.py",
+  "hook": "scripts/git-hooks/pre-commit",
+  "documentation": "docs/quality/hooks-and-ci.md"
+}

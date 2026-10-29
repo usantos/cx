@@ -13,8 +13,10 @@ import org.junit.runner.RunWith
 import java.security.KeyStore
 import java.security.MessageDigest
 import java.util.UUID
+import br.gov.caixa.loterias.core.auth.biometric.BiometricCredential
+import br.gov.caixa.loterias.core.auth.biometric.EncryptedBiometricCredentialStore
 
-/** Exercises real Android Keystore/GCM and disk preferences with synthetic credentials only. */
+/** Exercita Keystore/GCM reais do Android e preferências em disco apenas com credenciais sintéticas. */
 @RunWith(AndroidJUnit4::class)
 class EncryptedBiometricCredentialStoreTest {
     private val context get() = InstrumentationRegistry.getInstrumentation().targetContext
@@ -88,7 +90,7 @@ class EncryptedBiometricCredentialStoreTest {
 
     @Test fun copiedCiphertextFromAnotherNamespaceFailsClosedWithoutClearingOriginal() {
         val first = populatedNamespace()
-        val second = populatedNamespace() // Has its own valid Keystore key.
+        val second = populatedNamespace() // Possui sua própria chave válida do Keystore.
         val firstEnvelope = preferences(first).getString("credential", null)
         check(preferences(second).edit().putString("credential", firstEnvelope).putString("unrelated", "keep").commit())
         assertInvalidCredentialCleared(second)

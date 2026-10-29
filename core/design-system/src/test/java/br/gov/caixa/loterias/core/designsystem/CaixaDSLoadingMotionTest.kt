@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.core.designsystem
 
 import androidx.compose.animation.core.TargetBasedAnimation
 import androidx.compose.animation.core.VectorConverter
+import br.gov.caixa.loterias.core.designsystem.components.CaixaDSLoadingMotion
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

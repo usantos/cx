@@ -1,9 +1,19 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.core.domain.betting.*
-import br.gov.caixa.loterias.core.domain.marketplace.MarketplaceFilter
-import br.gov.caixa.loterias.core.domain.retail.Retailer
-import br.gov.caixa.loterias.core.domain.tickets.*
+import br.gov.caixa.loterias.core.navigation.state.DetailRestorationOutcome
+import br.gov.caixa.loterias.core.navigation.state.LoggedDetailContext
+import br.gov.caixa.loterias.core.navigation.state.LoggedDetailContextCodec
+import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
+import br.gov.caixa.loterias.feature.betting.domain.model.LotogolMatchSelection
+import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
+import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
+import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.feature.home.presentation.mapper.date
+import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
+import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
+import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import java.math.BigDecimal
 import org.junit.Assert.*
 import org.junit.Test
@@ -43,6 +53,8 @@ class LoggedDetailContextTest {
             marketplaceFilter = baseline.withLottery("123")
             lastAppliedFilterRetailer = retailer
             retailerMarketplaceFilter = MarketplaceFilter.empty().withLottery("123")
+            marketplaceFilterApplied = true
+            retailerMarketplaceFilterApplied = true
         }
         val bytes = LoggedDetailContextCodec.save(original)!!
         val pending = LoggedDetailContextCodec.defer(bytes)!!
@@ -51,10 +63,14 @@ class LoggedDetailContextTest {
         assertEquals(retailer, pending.lastAppliedFilterRetailer)
         assertEquals("123", pending.retailerMarketplaceFilter.lottery)
         assertNull(pending.retailerMarketplaceFilter.modalityId)
+        assertTrue(pending.marketplaceFilterApplied)
+        assertTrue(pending.retailerMarketplaceFilterApplied)
         pending.clear()
         assertEquals(MarketplaceFilter.empty(), pending.marketplaceClearFilter)
         assertNull(pending.lastAppliedFilterRetailer)
         assertEquals(MarketplaceFilter.empty(), pending.retailerMarketplaceFilter)
+        assertFalse(pending.marketplaceFilterApplied)
+        assertFalse(pending.retailerMarketplaceFilterApplied)
         assertNull(LoggedDetailContextCodec.restore(bytes, "other"))
     }
 

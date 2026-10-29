@@ -1,5 +1,8 @@
 package br.gov.caixa.loterias.apostas
 
+import br.gov.caixa.loterias.core.navigation.state.authenticatedContinuation
+import br.gov.caixa.loterias.core.navigation.state.ticketQueryContinuation
+import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
 import org.junit.Assert.*
 import org.junit.Test
 

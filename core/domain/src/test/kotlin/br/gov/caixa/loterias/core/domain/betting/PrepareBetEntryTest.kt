@@ -1,18 +1,26 @@
 package br.gov.caixa.loterias.core.domain.betting
 
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
-import br.gov.caixa.loterias.core.common.ServerTimeSource
-import br.gov.caixa.loterias.core.domain.configuration.GetHomeFeatureConfigurationUseCase
-import br.gov.caixa.loterias.core.domain.configuration.HomeFeatureConfiguration
+import org.junit.Assert.*
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.common.time.ServerTimeSource
+import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
+import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import java.time.Instant
-import br.gov.caixa.loterias.core.domain.account.AccountAccess
-import br.gov.caixa.loterias.core.domain.account.PostLoginDestination
-import br.gov.caixa.loterias.core.domain.account.VerifyAccountAccessUseCase
+import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
+import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
+import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
+import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryRequest
+import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareBetEntry
 
 class PrepareBetEntryTest {
     @Test fun `ready carries verified parameters without a second simulation request`() = runTest {
@@ -77,11 +85,29 @@ class PrepareBetEntryTest {
         assertEquals(parameters, useCase(2))
     }
 
-    @Test fun `missing or closed modality never substitutes another available game`() = runTest {
+    @Test fun `missing modality never substitutes another available game`() = runTest {
         assertTrue(useCase(3) is AppResult.Failure)
-        parameters = AppResult.Success(BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0, listOf(game.copy(open = false))))
-        val error = (useCase(2) as AppResult.Failure).error as AppError.Validation
-        assertTrue(error.reason.contains("concurso 3000"))
+    }
+
+    @Test fun `closed contest still opens its simulation outside the pool-only window like legacy`() = runTest {
+        val loteca = game.copy(
+            modality = LotteryModality(LOTECA_MODALITY_ID, "Loteca", "LOTECA"),
+            contestNumber = LOTECA_CONTEST_NUMBER,
+            open = false,
+            closingDateTime = "05/09/2026 18:00:00"
+        )
+        val snapshot = BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0, listOf(game, loteca))
+        parameters = AppResult.Success(snapshot)
+        val request = BetEntryRequest(LOTECA_MODALITY_ID, loteca.contestType, LOTECA_CONTEST_NUMBER)
+        assertEquals(AppResult.Success(BetEntryDecision.Ready(loteca, snapshot)), useCase(request))
+        val visitor = PrepareBetEntry(
+            VerifyAccountAccessUseCase { error("Visitor must not request account") },
+            GetBettingParametersUseCase { parameters },
+            GetHomeFeatureConfigurationUseCase { features },
+            ServerTimeSource { now },
+            isAuthenticated = { false }
+        )
+        assertEquals(AppResult.Success(BetEntryDecision.Ready(loteca, snapshot)), visitor(request))
     }
 
     @Test fun `invalid modality does not invoke backend`() = runTest {
@@ -98,11 +124,17 @@ class PrepareBetEntryTest {
     @Test fun `explicit carousel identity never selects another contest`() = runTest {
         val special = game.copy(contestType = "ESPECIAL", contestNumber = 3001)
         parameters = AppResult.Success(BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0, listOf(game, special)))
-        assertEquals(AppResult.Success(BetEntryDecision.Ready(special, (parameters as AppResult.Success).value)), useCase(BetEntryRequest(2, "especial", 3001)))
+        assertEquals(
+            AppResult.Success(BetEntryDecision.Ready(special, (parameters as AppResult.Success).value)),
+            useCase(BetEntryRequest(2, "especial", 3001))
+        )
         assertTrue(useCase(BetEntryRequest(2, "ESPECIAL", 3000)) is AppResult.Failure)
         assertTrue(useCase(BetEntryRequest(2, "NORMAL", 2999)) is AppResult.Failure)
         assertTrue(useCase(BetEntryRequest(2, "OUTRO")) is AppResult.Failure)
-        assertEquals(AppResult.Success(BetEntryDecision.Ready(special, (parameters as AppResult.Success).value)), useCase(BetEntryRequest(2, contestNumber = 3001)))
+        assertEquals(
+            AppResult.Success(BetEntryDecision.Ready(special, (parameters as AppResult.Success).value)),
+            useCase(BetEntryRequest(2, contestNumber = 3001))
+        )
     }
 
     @Test fun `invalid explicit contest fails before backend`() = runTest {
@@ -112,20 +144,75 @@ class PrepareBetEntryTest {
         assertTrue(calls.isEmpty())
     }
 
-    @Test fun `resale window directs customer to pools before normal closed message`() = runTest {
-        parameters = AppResult.Success(BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0,
-            listOf(game.copy(open = false, closingDateTime = "06/09/2026 18:00:00")),
-            availablePoolModalities = listOf(PoolModalityAvailability(
-                modalityId = 2, modalityCode = "MEGA_SENA", contestType = game.contestType, contestNumber = 3000,
-                resaleClosingDate = "06/09/2026", resaleClosingTime = "19:00:00",
-            )),
-        ))
+    @Test fun `resale window blocks entry only while pool sales are enabled like legacy`() = runTest {
+        parameters = AppResult.Success(
+            BettingParameters(
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                0,
+                listOf(game.copy(open = false, closingDateTime = "06/09/2026 18:00:00")),
+                availablePoolModalities = listOf(
+                    PoolModalityAvailability(
+                        modalityId = 2,
+                        modalityCode = "MEGA_SENA",
+                        contestType = game.contestType,
+                        contestNumber = 3000,
+                        resaleClosingDate = "06/09/2026",
+                        resaleClosingTime = "19:00:00"
+                    )
+                )
+            )
+        )
         val error = (useCase(2) as AppResult.Failure).error as AppError.Validation
-        assertEquals("O registro de apostas individuais para o concurso 3000 foi encerrado. " +
-            "Mas ainda dá tempo de comprar seu bolão e concorrer a esse sorteio.\n" +
-            "Acesse \"Compre seu bolão\" e participe!", error.reason)
+        assertEquals(
+            "O registro de apostas individuais para o concurso 3000 foi encerrado. " +
+                "Mas ainda dá tempo de comprar seu bolão e concorrer a esse sorteio.\n" +
+                "Acesse \"Compre seu bolão\" e participe!",
+            error.reason
+        )
         features = AppResult.Success(HomeFeatureConfiguration(poolSalesEnabled = false))
-        val disabled = (useCase(2) as AppResult.Failure).error as AppError.Validation
+        val snapshot = (parameters as AppResult.Success).value
+        assertEquals(AppResult.Success(BetEntryDecision.Ready(snapshot.games.single(), snapshot)), useCase(2))
+    }
+
+    @Test fun `temporary resale-only card keeps closed-sales explanation without changing contest`() = runTest {
+        val pool = PoolModalityAvailability(
+            2,
+            "MEGA_SENA",
+            "NORMAL",
+            2999,
+            "06/09/2026",
+            "19:00:00"
+        )
+        parameters = AppResult.Success(
+            BettingParameters(
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                0,
+                listOf(game),
+                availablePoolModalities = listOf(pool)
+            )
+        )
+        val error = (useCase(BetEntryRequest(2, "NORMAL", 2999)) as AppResult.Failure).error as AppError.Validation
+        assertTrue(error.reason.contains("concurso 2999"))
+        assertTrue(error.reason.contains("Compre seu bolão"))
+        features = AppResult.Success(HomeFeatureConfiguration(poolSalesEnabled = false))
+        val disabled = (useCase(BetEntryRequest(2, "NORMAL", 2999)) as AppResult.Failure).error as AppError.Validation
         assertFalse(disabled.reason.contains("Compre seu bolão"))
+        features = AppResult.Success(HomeFeatureConfiguration(poolSalesEnabled = true))
+        parameters = AppResult.Success(
+            BettingParameters(
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                0,
+                emptyList(),
+                availablePoolModalities = listOf(pool.copy(resaleClosingTime = "17:00:00"))
+            )
+        )
+        val expired = (useCase(BetEntryRequest(2, "NORMAL", 2999)) as AppResult.Failure).error as AppError.Validation
+        assertFalse(expired.reason.contains("Compre seu bolão"))
     }
 }
+
+private const val LOTECA_MODALITY_ID = 8
+private const val LOTECA_CONTEST_NUMBER = 1278

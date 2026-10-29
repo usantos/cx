@@ -1,0 +1,137 @@
+apply plugin: 'com.google.devtools.ksp'
+apply plugin: 'com.google.dagger.hilt.android'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
+
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+android { buildFeatures { compose = true } }
+
+android { defaultConfig { minSdk 24 } }
+dependencies {
+    implementation project(':core:common')
+    implementation project(':core:persistence')
+    implementation project(':core:design-system')
+    api project(':core:presentation')
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.ui.tooling.preview
+    implementation libs.androidx.compose.material3
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    testImplementation libs.junit4
+}
+apply plugin: 'jacoco'
+android {
+    namespace = 'br.gov.caixa.loterias.feature.betting'
+    defaultConfig {
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        manifestPlaceholders = [appAuthRedirectScheme: 'br.gov.caixa.caixaloterias']
+    }
+}
+
+dependencies {
+    implementation project(':core:navigation')
+    implementation libs.hilt.android
+    ksp libs.hilt.compiler
+    implementation project(':core:auth')
+    implementation project(':core:network')
+    implementation project(':feature:betting:data')
+    implementation project(':feature:onboarding:domain')
+    implementation project(':feature:cart:domain')
+    implementation project(':feature:account:domain')
+    api project(':feature:betting:domain')
+    implementation libs.androidx.appcompat
+    implementation libs.google.material.views
+    implementation libs.androidx.activity.compose
+    implementation project(':core:domain')
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.lottie.compose
+    implementation libs.coil.compose
+    implementation libs.coil.gif
+    testImplementation libs.kotlinx.coroutines.test
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    debugImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation libs.androidx.test.runner
+}
+
+jacoco { toolVersion = '0.8.13' }
+// O AGP escolhe o destino dos testes unitários; nunca mescle um arquivo exec obsoleto com caminho fixo.
+def bettingCoverageData = files({
+    tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+}).filter { it.isFile() }
+def bettingCoverageClasses = files(fileTree(dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'), includes: [
+                '**/SuperSevenSelectionLimitKt*.class',
+                '**/BettingGameParametersCoordinator*.class',
+                '**/BettingGameStepsCoordinator*.class',
+                '**/BettingGameCartCoordinator*.class',
+                '**/BettingGameNoticeMapper*.class',
+                '**/RapidConfigurationLoading*.class',
+                '**/RapidConfigurationAmounts*.class',
+                '**/RapidConfigurationFavorites*.class',
+                '**/RapidConfigurationNumbers*.class',
+                '**/RapidConfigurationSubmission*.class',
+                '**/RapidConfigurationFormattingKt*.class',
+
+                '**/BettingGameSelection*.class',
+                '**/BettingNumberSelection*.class',
+                '**/BettingSuperSevenSelection*.class',
+                '**/BettingSportsSelection*.class',
+                '**/BettingSelectionQuantities*.class',
+                '**/BettingSelectionWarnings*.class',
+                '**/BettingSelectionReset*.class',
+                '**/BettingGameFavorites*.class',
+                '**/BettingGameDraftMapper*.class',
+                '**/BettingGameUiState*.class',
+                '**/BetEntryMode*.class',
+                '**/BetSelectionStep*.class',
+                '**/LotecaOutcome*.class',
+
+        '**/BettingRulesKt.class',
+        '**/BettingCatalogViewModel.class',
+        '**/BettingGameViewModel*.class',
+        '**/BettingGameUiState*.class',
+        '**/RapidConfigurationViewModel.class',
+        '**/RapidConfigurationUiState.class',
+        '**/RapidListViewModel.class',
+        '**/FavoriteBetsViewModel.class',
+        '**/FavoriteBetsUiState.class',
+        '**/BettingFlowViewModel.class',
+        '**/BettingFlowUiState.class'
+]))
+tasks.register('verifyBettingCoverageInputs') {
+    dependsOn tasks.named('testDebugUnitTest')
+    doLast {
+        if (bettingCoverageClasses.asFileTree.isEmpty() || bettingCoverageData.isEmpty()) {
+            throw new GradleException('Cobertura de betting sem classes ou execução de testes.')
+        }
+    }
+}
+tasks.register('jacocoDebugCoverageReport', JacocoReport) {
+    dependsOn tasks.named('verifyBettingCoverageInputs')
+    executionData.from(bettingCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(bettingCoverageClasses)
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoDebugCoverageReport')
+    executionData.from(bettingCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(bettingCoverageClasses)
+    violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.9501 } } }
+}
+tasks.named('check').configure { dependsOn tasks.named('jacocoDebugCoverageVerification') }

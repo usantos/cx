@@ -9,7 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <!-- CX Topaz collection permission, obsolete on Android 13 and later. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Permissão de coleta do CX Topaz, obsoleta no Android 13 e posteriores. -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
 
     <uses-feature android:name="android.hardware.camera.any" android:required="false" />
@@ -23,6 +24,13 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="false"
         android:theme="@style/Theme.Loterias">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/receipt_file_paths" />
+        </provider>
         <service android:name=".push.LoteriasMessagingService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -34,21 +42,88 @@
             android:value="CanalLoteriasId" />
         <activity
             android:name=".MainActivity"
+            android:enabled="true"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Loterias.Starting">
+        </activity>
+        <activity-alias
+            android:name=".launcher.DefaultLauncher"
+            android:enabled="true"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- Keep other AndroidX initializers; skip only WorkManager in debug simulation. -->
+        </activity-alias>
+        <activity-alias
+            android:name=".launcher.OutubroRosaLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_outubro_rosa"
+            android:roundIcon="@mipmap/ic_launcher_outubro_rosa_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".launcher.SetembroAmareloLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_setembro_amarelo"
+            android:roundIcon="@mipmap/ic_launcher_setembro_amarelo_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".launcher.NovembroAzulLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_novembro_azul"
+            android:roundIcon="@mipmap/ic_launcher_novembro_azul_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".launcher.AgostoLilasLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_agosto_lilas"
+            android:roundIcon="@mipmap/ic_launcher_agosto_lilas_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity android:name=".QueueActivity" android:exported="false"
+            android:screenOrientation="portrait" android:theme="@style/Theme.Loterias" />
+        <!-- Mantém os demais inicializadores AndroidX; ignora apenas o WorkManager na simulação de depuração. -->
         <provider android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup" android:exported="false" tools:node="merge">
             <meta-data android:name="androidx.work.WorkManagerInitializer"
                 android:value="${topazWorkInitializer}" tools:replace="android:value" />
         </provider>
-        <!-- Disable delivery of persisted Topaz work while preserving real WorkManager defaults. -->
+        <receiver android:name=".runtime.launcher.LauncherIconScheduleReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+        <!-- Desativa a execução de tarefas persistidas do Topaz, preservando os padrões reais do WorkManager. -->
         <service android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
             android:enabled="${topazWorkAlarmEnabled}" tools:replace="android:enabled" />
         <service android:name="androidx.work.impl.background.systemjob.SystemJobService"
@@ -71,7 +146,7 @@
             android:enabled="${topazWorkAlarmEnabled}" tools:replace="android:enabled" />
         <receiver android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
             android:enabled="${topazWorkReceiverEnabled}" tools:replace="android:enabled" />
-        <!-- Disable every autonomous Topaz entry point in mock debug variants. -->
+        <!-- Desativa todos os pontos de entrada autônomos do Topaz nas variantes de depuração simuladas. -->
         <activity android:name="br.com.topaz.heartbeat.calleridwatchlist.CallActionActivity"
             android:enabled="${topazComponentsEnabled}" tools:replace="android:enabled" />
         <activity android:name="br.com.topaz.heartbeat.securecall.SecureCallActivity"
@@ -86,8 +161,7 @@
             android:enabled="${topazComponentsEnabled}" tools:replace="android:enabled" />
         <receiver android:name="br.com.topaz.heartbeat.broadcast.CallListener"
             android:enabled="${topazComponentsEnabled}" tools:replace="android:enabled" />
-        <!-- Remove Activity declarations brought by optional tooling/vendor manifests. -->
+        <!-- Remove declarações de Activity trazidas pelos manifestos de ferramentas opcionais ou fornecedores. -->
         <activity android:name="androidx.activity.ComponentActivity" tools:node="remove" />
-        <activity android:name="androidx.compose.ui.tooling.PreviewActivity" tools:node="remove" />
     </application>
 </manifest>

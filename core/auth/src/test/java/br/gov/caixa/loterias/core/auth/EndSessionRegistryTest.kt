@@ -1,7 +1,10 @@
 package br.gov.caixa.loterias.core.auth
 
+import br.gov.caixa.loterias.feature.account.domain.model.EndSessionLaunch
+import br.gov.caixa.loterias.feature.account.domain.model.EndSessionOutcome
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.authorization.EndSessionRegistry
 
 class EndSessionRegistryTest {
     @Test fun `only exact handle launches original request once and exact state returns once`() {

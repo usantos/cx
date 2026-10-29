@@ -1,14 +1,16 @@
 package br.gov.caixa.loterias.core.domain.cart
 
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
-import br.gov.caixa.loterias.core.domain.account.AccountAccess
-import br.gov.caixa.loterias.core.domain.account.PostLoginDestination
-import br.gov.caixa.loterias.core.domain.account.VerifyAccountAccessUseCase
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
+import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
+import br.gov.caixa.loterias.feature.cart.domain.usecase.VerifyCartPaymentAccount
 
 class VerifyCartPaymentAccountTest {
     @Test fun `guest requires login without calling protected account service`() = runTest {

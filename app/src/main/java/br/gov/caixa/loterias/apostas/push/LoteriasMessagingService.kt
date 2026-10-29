@@ -4,6 +4,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import br.gov.caixa.loterias.feature.notifications.di.PushRuntime
 
 @AndroidEntryPoint
 class LoteriasMessagingService : FirebaseMessagingService() {
@@ -12,10 +13,6 @@ class LoteriasMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) { runtime.onNewToken(token) }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        // CX notifications are system banners. Popup/read state belongs to account verification/inbox.
-        val notification = message.notification
-        if (notification != null) {
-            if (notification.body != null) PushNotifications.show(this, notification.title, notification.body)
-        } else PushNotifications.show(this, message.data["title"], message.data["message"])
+        runtime.showRemoteMessage(message, br.gov.caixa.loterias.apostas.MainActivity::class.java, br.gov.caixa.loterias.apostas.R.drawable.trevo)
     }
 }

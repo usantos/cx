@@ -7,14 +7,38 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 kotlin { jvmToolchain(17) }
+jacoco { toolVersion = '0.8.13' }
+dependencies {
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+}
+
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
 dependencies {
+    api project(':feature:account:api')
+    api project(':feature:marketplace:api')
+    testImplementation project(':feature:account:api')
+    testImplementation project(':feature:account:domain')
+    testImplementation project(':feature:betting:domain')
+    testImplementation project(':feature:cart:api')
+    testImplementation project(':feature:cart:domain')
+    testImplementation project(':feature:home:domain')
+    testImplementation project(':feature:marketplace:domain')
+    testImplementation project(':feature:notifications:domain')
+    testImplementation project(':feature:onboarding:domain')
+    testImplementation project(':feature:payment:domain')
+    testImplementation project(':feature:responsible-gaming:domain')
+    testImplementation project(':feature:results:domain')
+    testImplementation project(':feature:retail:domain')
+    testImplementation project(':feature:support:domain')
+    testImplementation project(':feature:tickets:domain')
+
     api project(':core:common')
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation libs.junit4
     testImplementation libs.kotlinx.coroutines.test
 }
 
@@ -22,19 +46,48 @@ jacoco {
     toolVersion = '0.8.13'
 }
 
-// Domain models are also exercised by the real DTO/SQLite migration contract tests.
-// Merge their execution data against these same Domain classes rather than duplicating tests.
+// Os modelos de domínio também são exercitados pelos testes reais de contrato de migração DTO/SQLite.
+// Mescla seus dados de execução com estas mesmas classes de domínio para evitar duplicar testes.
+def featureDataProjects = [
+        project(':feature:account:data'),
+        project(':feature:betting:data'),
+        project(':feature:cart:data'),
+        project(':feature:home:data'),
+        project(':feature:marketplace:data'),
+        project(':feature:notifications:data'),
+        project(':feature:onboarding:data'),
+        project(':feature:payment:data'),
+        project(':feature:responsible-gaming:data'),
+        project(':feature:results:data'),
+        project(':feature:retail:data'),
+        project(':feature:support:data'),
+        project(':feature:tickets:data'),
+]
+def domainModules = [project(':feature:marketplace:api'), project(':feature:account:domain'), project(':feature:betting:domain'), project(':feature:cart:domain'), project(':feature:home:domain'), project(':feature:marketplace:domain'), project(':feature:notifications:domain'), project(':feature:onboarding:domain'), project(':feature:payment:domain'), project(':feature:responsible-gaming:domain'), project(':feature:results:domain'), project(':feature:retail:domain'), project(':feature:support:domain'), project(':feature:tickets:domain'), project(':feature:cart:api'), project(':feature:account:api')]
 def domainCoverageExecution = files(
+        featureDataProjects.collect { owner ->
+            files({
+                owner.tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+            }, fileTree(owner.layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
+        },
+        files({
+            project(':app').tasks.named('testPrdDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+        }).filter { it.isFile() },
         fileTree(layout.buildDirectory).include('jacoco/test.exec'),
-        fileTree(project(':core:data').layout.buildDirectory).include('jacoco/test.exec'),
-        fileTree(project(':core:preferences').layout.buildDirectory).include('jacoco/testDebugUnitTest.exec')
+        domainModules.collect { owner -> fileTree(owner.layout.buildDirectory).include('jacoco/test.exec') },
+        fileTree(project(':core:data').layout.buildDirectory).include('jacoco/test.exec')
 )
-def domainCoverageClasses = files(sourceSets.main.output)
-def domainCoverageSources = files('src/main/java', 'src/main/kotlin')
+def domainCoverageClasses = files({ [sourceSets.main.output] + domainModules.collect { it.sourceSets.main.output } })
+def domainCoverageSources = files({ [sourceSets.main.allSource.srcDirs] + domainModules.collect { it.sourceSets.main.allSource.srcDirs } })
 
 tasks.register('verifyDomainCoverageInputs') {
+    // Estas suítes nativas reais também produzem dados de execução consumidos por este relatório.
+    dependsOn ':feature:account:data:connectedDebugAndroidTest', ':feature:cart:data:connectedDebugAndroidTest', ':feature:notifications:data:connectedDebugAndroidTest'
     dependsOn tasks.named('test')
-    dependsOn ':core:data:test', ':core:preferences:testDebugUnitTest'
+    dependsOn domainModules.collect { it.path + ':test' }
+    dependsOn ':core:data:test'
+    dependsOn featureDataProjects.collect { it.path + ':testDebugUnitTest' }
+    dependsOn ':app:testPrdDebugUnitTest'
     doLast {
         if (domainCoverageExecution.isEmpty() || domainCoverageClasses.asFileTree.matching { include '**/*.class' }.isEmpty()) {
             throw new GradleException('Cobertura de domain sem classes ou execução de testes.')

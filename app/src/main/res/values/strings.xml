@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="force_update_title">Atualização necessária</string>
+    <string name="force_update_message">Atualize o aplicativo Loterias CAIXA para continuar.</string>
+    <string name="force_update_action">Atualizar aplicativo</string>
+    <string name="force_update_store_unavailable">Não foi possível abrir a loja. Tente novamente.</string>
+</resources>

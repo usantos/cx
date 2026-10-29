@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas
 
+import br.gov.caixa.loterias.core.navigation.destination.openAppStore
+import br.gov.caixa.loterias.core.navigation.workflow.nextDestination
 import org.junit.Assert.*
 import org.junit.Test
 

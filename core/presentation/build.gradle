@@ -1,5 +1,17 @@
 apply plugin: 'com.android.library'
+
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
 apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+android { buildFeatures { compose = true } }
 apply plugin: 'jacoco'
 
 android {
@@ -20,6 +32,10 @@ android {
 }
 
 dependencies {
+    api(libs.redux.kotlin.threadsafe) {
+        exclude group: 'org.reduxkotlin', module: 'redux-kotlin'
+    }
+    api libs.redux.kotlin.core
     api project(':core:domain')
     coreLibraryDesugaring libs.desugar.jdk.libs
     implementation project(':core:design-system')
@@ -35,15 +51,18 @@ dependencies {
     androidTestImplementation platform(libs.androidx.compose.bom)
     androidTestImplementation libs.androidx.compose.ui.test.junit4
     debugImplementation libs.androidx.compose.ui.test.manifest
-    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestImplementation libs.androidx.test.runner
 }
 
-// The shared service-notice rules retain their own gate after extraction from retail.
+// As regras compartilhadas de avisos de serviço mantêm sua própria verificação após a extração de retail.
 jacoco { toolVersion = '0.8.13' }
-def noticeCoverageData = fileTree(layout.buildDirectory).include('jacoco/testDebugUnitTest.exec', 'outputs/code_coverage/**/*.ec')
+// O AGP escolhe o destino dos testes unitários; nunca mescle um arquivo exec fixo obsoleto.
+def noticeCoverageData = files({
+    tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+}, fileTree(layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
 def noticeCoverageClasses = files(fileTree(
         dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
-        includes: ['**/LegacyNoticeFormatting*.class', '**/ServiceNoticeRules*.class', '**/ServiceNoticeUiState*.class', '**/ServiceConnectionRules*.class', '**/ServiceFailure*.class', '**/ServiceRedirectEvent*.class']
+        includes: ['**/BrazilianCurrencyFormattingKt*.class', '**/NoticeFormatting*.class', '**/ServiceNoticeRules*.class', '**/ServiceNoticeUiState*.class', '**/ServiceConnectionRules*.class', '**/ServiceFailure*.class', '**/ServiceRedirectEvent*.class']
 ))
 tasks.register('verifyNoticeCoverageInputs') {
     dependsOn tasks.named('testDebugUnitTest'), 'connectedDebugAndroidTest'

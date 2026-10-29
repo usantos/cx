@@ -7,11 +7,22 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 kotlin { jvmToolchain(17) }
+jacoco { toolVersion = '0.8.13' }
+dependencies {
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+}
+apply plugin: 'com.google.devtools.ksp'
+
 
 dependencies {
+    implementation project(':feature:account:api')
+
     implementation project(':core:domain')
     implementation project(':core:network')
+    implementation libs.dagger
     implementation libs.kotlinx.coroutines.core
+    ksp libs.dagger.compiler
 
     testImplementation libs.junit4
     testImplementation libs.kotlinx.coroutines.core
@@ -20,13 +31,84 @@ dependencies {
 
 jacoco { toolVersion = '0.8.13' }
 
-def dataCoverageExecution = fileTree(layout.buildDirectory).include('jacoco/test.exec')
-// Include coroutine bodies and nested mappers; dropping '$' classes hides repository behavior.
-def dataCoverageClasses = files(fileTree(layout.buildDirectory.dir('classes/kotlin/main')).include('**/*.class'))
-def dataCoverageSources = files('src/main/java', 'src/main/kotlin')
+def featureDataProjects = [
+        project(':feature:account:data'),
+        project(':feature:betting:data'),
+        project(':feature:cart:data'),
+        project(':feature:home:data'),
+        project(':feature:marketplace:data'),
+        project(':feature:notifications:data'),
+        project(':feature:onboarding:data'),
+        project(':feature:payment:data'),
+        project(':feature:responsible-gaming:data'),
+        project(':feature:results:data'),
+        project(':feature:retail:data'),
+        project(':feature:support:data'),
+        project(':feature:tickets:data'),
+]
+def dataCoverageExecution = files(
+        fileTree(layout.buildDirectory).include('jacoco/test.exec'),
+        featureDataProjects.collect { owner ->
+            files({
+                owner.tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+            }, fileTree(owner.layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
+        },
+        files({
+            project(':app').tasks.named('testPrdDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+        }).filter { it.isFile() }
+)
+// Inclui corpos de coroutines e mapeadores aninhados; excluir classes '$' oculta o comportamento dos repositórios.
+def dataCoverageClasses = files({ [fileTree(layout.buildDirectory.dir('classes/kotlin/main')).include('**/*.class')] + featureDataProjects.collect { p ->
+    fileTree(p.layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes')).matching {
+        include '**/*.class'
+        // Preserva as classes de persistência local já excluídas após a mudança de pacote.
+        exclude '**/br/gov/caixa/loterias/feature/account/data/datasource/local/SessionLocalDataSource.class', '**/br/gov/caixa/loterias/feature/account/data/datasource/local/SessionLocalDataSource$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/account/data/datasource/local/SessionLocalDataSourceImpl.class', '**/br/gov/caixa/loterias/feature/account/data/datasource/local/SessionLocalDataSourceImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/account/data/repository/LocalSessionDataRepositoryImpl.class', '**/br/gov/caixa/loterias/feature/account/data/repository/LocalSessionDataRepositoryImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/betting/data/repository/ShakeSettingsRepositoryImpl.class', '**/br/gov/caixa/loterias/feature/betting/data/repository/ShakeSettingsRepositoryImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/AbsentCartTransaction.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/AbsentCartTransaction$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartReceipt.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartReceipt$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartReceiptPhase.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartReceiptPhase$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartSnapshotKt.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartSnapshotKt$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartSnapshotLocalDataSource.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartSnapshotLocalDataSource$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartSnapshotLocalDataSourceImpl.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartSnapshotLocalDataSourceImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTableDataSource.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTableDataSource$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTableDataSourceImpl.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTableDataSourceImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTransferLocalDataSource.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTransferLocalDataSource$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTransferLocalDataSourceImpl.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTransferLocalDataSourceImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTransferLocalDataSourceImplKt.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTransferLocalDataSourceImplKt$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTransferTransaction.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/CartTransferTransaction$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/FavoriteCartUsageLocalDataSource.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/FavoriteCartUsageLocalDataSource$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/FavoriteCartUsageLocalDataSourceImpl.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/FavoriteCartUsageLocalDataSourceImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/RecentPurchaseLocalDataSource.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/RecentPurchaseLocalDataSource$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/RecentPurchaseLocalDataSourceImpl.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/RecentPurchaseLocalDataSourceImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/SQLiteCartTransferTransaction.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/SQLiteCartTransferTransaction$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/VisitorCartGraph.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/VisitorCartGraph$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/VisitorCartGraphStorage.class', '**/br/gov/caixa/loterias/feature/cart/data/datasource/local/VisitorCartGraphStorage$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/mapper/CartFingerprintKt.class', '**/br/gov/caixa/loterias/feature/cart/data/mapper/CartFingerprintKt$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/mapper/GuestCartRowsKt.class', '**/br/gov/caixa/loterias/feature/cart/data/mapper/GuestCartRowsKt$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/mapper/LocalCartMapperKt.class', '**/br/gov/caixa/loterias/feature/cart/data/mapper/LocalCartMapperKt$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/mapper/VisitorCartMapperKt.class', '**/br/gov/caixa/loterias/feature/cart/data/mapper/VisitorCartMapperKt$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/repository/CartTransferRepositoryImpl.class', '**/br/gov/caixa/loterias/feature/cart/data/repository/CartTransferRepositoryImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/repository/FavoriteCartUsageRepositoryImpl.class', '**/br/gov/caixa/loterias/feature/cart/data/repository/FavoriteCartUsageRepositoryImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/repository/LocalCartRepositoryImpl.class', '**/br/gov/caixa/loterias/feature/cart/data/repository/LocalCartRepositoryImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/repository/RecentPurchaseRepositoryImpl.class', '**/br/gov/caixa/loterias/feature/cart/data/repository/RecentPurchaseRepositoryImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/cart/data/repository/VisitorCartRepositoryImpl.class', '**/br/gov/caixa/loterias/feature/cart/data/repository/VisitorCartRepositoryImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/home/data/repository/HomeLayoutRepositoryImpl.class', '**/br/gov/caixa/loterias/feature/home/data/repository/HomeLayoutRepositoryImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/onboarding/data/datasource/local/OnboardingLocalDataSource.class', '**/br/gov/caixa/loterias/feature/onboarding/data/datasource/local/OnboardingLocalDataSource$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/onboarding/data/datasource/local/OnboardingLocalDataSourceImpl.class', '**/br/gov/caixa/loterias/feature/onboarding/data/datasource/local/OnboardingLocalDataSourceImpl$*.class'
+        exclude '**/br/gov/caixa/loterias/feature/onboarding/data/repository/OnboardingRepositoryImpl.class', '**/br/gov/caixa/loterias/feature/onboarding/data/repository/OnboardingRepositoryImpl$*.class'
+        exclude '**/feature/cart/data/datasource/local/CartSnapshotLocalDataSourceKt*.class'
+    }
+} })
+def dataCoverageSources = files({ [sourceSets.main.allSource.srcDirs] + featureDataProjects.collect { it.projectDir.toPath().resolve('src/main/kotlin').toFile() } })
 
 tasks.register('verifyDataCoverageInputs') {
+    // Estas suítes nativas reais também produzem dados de execução consumidos por este relatório.
+    dependsOn ':feature:account:data:connectedDebugAndroidTest', ':feature:cart:data:connectedDebugAndroidTest', ':feature:notifications:data:connectedDebugAndroidTest'
     dependsOn tasks.named('test')
+    dependsOn featureDataProjects.collect { it.path + ':testDebugUnitTest' }
+    dependsOn ':app:testPrdDebugUnitTest'
     doLast {
         if (dataCoverageClasses.asFileTree.isEmpty() || dataCoverageExecution.isEmpty()) {
             throw new GradleException('Cobertura de data sem classes ou execução de testes.')

@@ -3,6 +3,16 @@ package br.gov.caixa.loterias.core.network
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertThrows
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.api.BackendApi
+import br.gov.caixa.loterias.core.network.api.BetsHistoryApi
+import br.gov.caixa.loterias.core.network.api.MercadoPagoApi
+import br.gov.caixa.loterias.core.network.api.RecargaPayApi
+import br.gov.caixa.loterias.core.network.api.LoteriasApi
+import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
+import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
+import br.gov.caixa.loterias.core.network.provider.BetsHistoryApiProvider
+import br.gov.caixa.loterias.core.network.provider.PaymentApis
+import br.gov.caixa.loterias.core.network.provider.PaymentApiProvider
 
 class LoteriasApiProviderTest {
     @Test
@@ -19,7 +29,7 @@ class LoteriasApiProviderTest {
 
     @Test
     fun `legacy provider requires initialization and returns latest api`() {
-        val provider = LegacyBackendApiProvider()
+        val provider = BackendApiProvider()
         assertThrows(IllegalStateException::class.java, provider::current)
         val first = fakeLegacyApi()
         val second = fakeLegacyApi()
@@ -49,10 +59,10 @@ class LoteriasApiProviderTest {
         arrayOf(LoteriasApi::class.java),
     ) { _, _, _ -> error("not called") } as LoteriasApi
 
-    private fun fakeLegacyApi(): LegacyBackendApi = java.lang.reflect.Proxy.newProxyInstance(
-        LegacyBackendApi::class.java.classLoader,
-        arrayOf(LegacyBackendApi::class.java),
-    ) { _, _, _ -> error("not called") } as LegacyBackendApi
+    private fun fakeLegacyApi(): BackendApi = java.lang.reflect.Proxy.newProxyInstance(
+        BackendApi::class.java.classLoader,
+        arrayOf(BackendApi::class.java),
+    ) { _, _, _ -> error("not called") } as BackendApi
 
     @Suppress("UNCHECKED_CAST")
     private fun <T> fake(type: Class<T>): T = java.lang.reflect.Proxy.newProxyInstance(

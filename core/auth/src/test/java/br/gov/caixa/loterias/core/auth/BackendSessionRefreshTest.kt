@@ -1,8 +1,15 @@
 package br.gov.caixa.loterias.core.auth
 
-import br.gov.caixa.loterias.core.auth.*
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.gateway.OidcConfiguration
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.auth.refresh.BackendSessionRefresh
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionIdentityMode
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshContext
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResponse
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshExecutor
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshCoordinator
 
 class BackendSessionRefreshTest {
     private val context = RegularSessionRefreshContext(OidcConfiguration("https://s/auth", "https://s/token",

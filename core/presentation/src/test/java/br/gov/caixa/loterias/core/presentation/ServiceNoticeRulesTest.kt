@@ -1,9 +1,15 @@
 package br.gov.caixa.loterias.core.presentation
 
-import br.gov.caixa.loterias.core.domain.service.*
+import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
+import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
+import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import java.time.LocalDateTime
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.presentation.rule.serviceNoticeUi
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OPERATION_FAILED
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_REQUEST_FAILED
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_INVALID_IDENTIFICATION
 
 class ServiceNoticeRulesTest {
     private val now = LocalDateTime.of(2026, 9, 7, 12, 30)

@@ -3,8 +3,10 @@ package br.gov.caixa.loterias.core.auth
 import java.util.Base64
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.auth.session.ForegroundSessionStatus
 
-/** Unsigned synthetic strings exercise expiry only; they never authenticate or contact a provider. */
+/** Textos sintéticos sem assinatura exercitam apenas a expiração; nunca autenticam nem contatam um provedor. */
 class ForegroundSessionCheckTest {
     @Test fun missingExpiredMalformedAndFutureTokensAreClassifiedWithoutClearing() {
         val store = SessionTokenStore()

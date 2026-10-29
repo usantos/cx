@@ -1,0 +1,14 @@
+{
+  "target": "farm",
+  "environment": "tqs",
+  "remoteUrl": "https://labmobilecaixa-hml.keeggo.com:443/wd/hub",
+  "udid": "<udid_reservado_na_farm>",
+  "timeout": 60,
+  "authentication": {
+    "mode": "oauth_client_credentials",
+    "tokenUrl": "https://SUBSTITUIR_PELO_HOST_FORNECIDO/token",
+    "clientAuthentication": "basic",
+    "scope": ""
+  },
+  "extraCapabilities": {}
+}

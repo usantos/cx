@@ -1,16 +1,18 @@
 package br.gov.caixa.loterias.apostas
 
-import androidx.compose.ui.unit.dp
+import br.gov.caixa.loterias.core.domain.environment.model.TestEnvironment
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.StateRestorationTester
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.unit.dp
+import br.gov.caixa.loterias.feature.account.presentation.route.LoginEnvironmentPicker
+import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.feature.account.presentation.screen.LoginScreen
+import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
 import kotlinx.coroutines.awaitCancellation
 import org.junit.Assert.assertEquals
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.test.junit4.StateRestorationTester
-import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import br.gov.caixa.loterias.core.designsystem.CaixaDSTheme
-import br.gov.caixa.loterias.feature.account.LoginScreen
-import br.gov.caixa.loterias.feature.account.LoginUiState
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +25,7 @@ class LoginEnvironmentPickerUiTest {
         compose.setContent {
             CaixaDSTheme {
                 LoginScreen(LoginUiState(), "test", {}, {}, { biometricChanged = it }, environmentSelectorVisible = true, environmentSelector = { enabled ->
-                    LoginEnvironmentPicker(LegacyTestEnvironment.EXTERNO_ESTEIRA, enabled, { true }, {})
+                    LoginEnvironmentPicker(TestEnvironment.EXTERNO_ESTEIRA, enabled, { true }, {})
                 })
             }
         }
@@ -40,20 +42,20 @@ class LoginEnvironmentPickerUiTest {
         compose.onNodeWithText("PILOTO").assertIsDisplayed()
     }
     @Test fun restoredCommittedChoiceDoesNotLeaveSelectorDisabled() {
-        val active = mutableStateOf(LegacyTestEnvironment.EXTERNO_ESTEIRA)
+        val active = mutableStateOf(TestEnvironment.EXTERNO_ESTEIRA)
         val restoration = StateRestorationTester(compose)
         var changes = 0
         var restoreCommittedSelection = false
         restoration.setContent {
             DisposableEffect(Unit) {
                 onDispose {
-                    if (restoreCommittedSelection) active.value = LegacyTestEnvironment.PILOTO
+                    if (restoreCommittedSelection) active.value = TestEnvironment.PILOTO
                 }
             }
             CaixaDSTheme {
                 LoginEnvironmentPicker(active.value, true, { requested ->
                     changes++
-                    // Durable commit happened, but process died before its completion flag was saved.
+                    // A gravação persistente ocorreu, mas o processo terminou antes de salvar o indicador de conclusão.
                     if (requested == active.value) false else awaitCancellation()
                 }, {})
             }

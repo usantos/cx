@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workflow_responsible_gaming_autoavaliacao">Autoavaliação</string>
+    <string name="workflow_responsible_gaming_responda_algumas_perguntas_sobre_seus_habitos_de_jogo">Responda algumas perguntas sobre seus hábitos de jogo.</string>
+    <string name="workflow_responsible_gaming_iniciar">Iniciar</string>
+    <string name="workflow_responsible_gaming_selecione_as_respostas_que_melhor_representam_sua_experiencia">Selecione as respostas que melhor representam sua experiência.</string>
+    <string name="workflow_responsible_gaming_li_e_responderei_com_sinceridade">Li e responderei com sinceridade</string>
+    <string name="workflow_responsible_gaming_ver_resultado">Ver resultado</string>
+    <string name="workflow_responsible_gaming_autoexclusao">Autoexclusão</string>
+    <string name="workflow_responsible_gaming_defina_um_periodo_de_suspensao_para_apostas_digitais">Defina um período de suspensão para apostas digitais.</string>
+    <string name="workflow_responsible_gaming_periodo_de_suspensao">Período de suspensão</string>
+    <string name="workflow_responsible_gaming_estou_ciente_de_que_a_suspensao_nao_pode_ser_desfeita">Estou ciente de que a suspensão não pode ser desfeita</string>
+    <string name="workflow_responsible_gaming_confirmar_suspensao">Confirmar suspensão</string>
+    <string name="workflow_responsible_gaming_repasses_sociais">Repasses sociais</string>
+    <string name="workflow_responsible_gaming_conheca_a_destinacao_social_dos_recursos_arrecadados_pelas_loteri">Conheça a destinação social dos recursos arrecadados pelas Loterias CAIXA.</string>
+    <string name="workflow_responsible_gaming_entendi">Entendi</string>
+</resources>

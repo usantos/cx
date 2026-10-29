@@ -1,0 +1,18 @@
+{
+  "edition": "2026-10-27",
+  "scope": "redux-support-pilot-only",
+  "passed": true,
+  "stages": {
+    "Detekt": "PASSED",
+    "Android Lint": "PASSED",
+    "Architecture Gates": "PASSED",
+    "Pilot Code Review": "PASSED",
+    "Changed Kotlin Formatting": "PASSED",
+    "Support and App Tests": "403 PASSED",
+    "Global Ktlint": "NOT RERUN (prior FAILED)",
+    "Coverage": "NOT RUN",
+    "Global qualityGate": "NOT RUN",
+    "Existing Architecture Debt": "2 P2 OPEN",
+    "Samsung FAQ": "6 PASSED"
+  }
+}

@@ -1,7 +1,8 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.core.domain.marketplace.MarketplaceFilter
-import br.gov.caixa.loterias.core.domain.retail.Retailer
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
+import br.gov.caixa.loterias.feature.marketplace.navigation.marketplaceFilterEntry
+import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import org.junit.Assert.*
 import org.junit.Test
 

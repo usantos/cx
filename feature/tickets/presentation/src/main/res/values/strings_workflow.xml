@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workflow_tickets_minhas_apostas">Minhas apostas</string>
+    <string name="workflow_tickets_acompanhe_apostas_ativas_premiadas_e_encerradas">Acompanhe apostas ativas, premiadas e encerradas.</string>
+    <string name="workflow_tickets_ver_detalhes">Ver detalhes</string>
+    <string name="workflow_tickets_detalhes_da_aposta">Detalhes da aposta</string>
+    <string name="workflow_tickets_confira_concurso_numeros_jogados_situacao_e_premiacao">Confira concurso, números jogados, situação e premiação.</string>
+    <string name="workflow_tickets_ver_resultado">Ver resultado</string>
+    <string name="workflow_tickets_apostas_com_teimosinha_podem_gerar_uma_aposta_de_troca_apos_o_res">Apostas com Teimosinha podem gerar uma aposta de troca após o resgate.</string>
+    <string name="workflow_tickets_minhas_compras">Minhas compras</string>
+    <string name="workflow_tickets_consulte_pagamentos_e_comprovantes_por_periodo">Consulte pagamentos e comprovantes por período.</string>
+    <string name="workflow_tickets_ver_compra">Ver compra</string>
+    <string name="workflow_tickets_detalhes_da_compra">Detalhes da compra</string>
+    <string name="workflow_tickets_confira_itens_pagamento_data_e_comprovante">Confira itens, pagamento, data e comprovante.</string>
+    <string name="workflow_tickets_ver_comprovante">Ver comprovante</string>
+    <string name="workflow_tickets_ler_bilhete">Ler bilhete</string>
+    <string name="workflow_tickets_aponte_a_camera_para_o_codigo_do_recibo_ou_faca_a_digitacao_manua">Aponte a câmera para o código do recibo ou faça a digitação manual.</string>
+    <string name="workflow_tickets_abrir_camera">Abrir câmera</string>
+    <string name="workflow_tickets_digitar_codigo">Digitar código</string>
+    <string name="workflow_tickets_conferir_aposta">Conferir aposta</string>
+    <string name="workflow_tickets_selecione_a_aposta_realizada">Selecione a aposta realizada.</string>
+    <string name="workflow_tickets_salvar">Salvar</string>
+    <string name="workflow_tickets_digitar_codigo_de_barras">Digitar código de barras</string>
+    <string name="workflow_tickets_informe_os_dados_impressos_no_recibo_loterico">Informe os dados impressos no recibo lotérico.</string>
+    <string name="workflow_tickets_nsb">NSB</string>
+    <string name="workflow_tickets_loterico">Lotérico</string>
+    <string name="workflow_tickets_continuar">Continuar</string>
+    <string name="workflow_tickets_resultado_do_bilhete">Resultado do bilhete</string>
+    <string name="workflow_tickets_confira_os_jogos_identificados_e_a_situacao_de_cada_concurso">Confira os jogos identificados e a situação de cada concurso.</string>
+</resources>

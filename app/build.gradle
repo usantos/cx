@@ -1,20 +1,28 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
 apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.google.dagger.hilt.android'
+apply from: rootProject.file('gradle/harden-filabra.gradle')
+apply from: rootProject.file('gradle/harden-topaz.gradle')
 
-def homeV2Enabled = providers.gradleProperty('homeV2').orElse('true').get()
+
+def homeV2Enabled = providers.gradleProperty('homeV2').orElse('false').get()
 if (!(homeV2Enabled in ['true', 'false'])) throw new GradleException('homeV2 deve ser true ou false.')
 
-def networkLoggingEnabled = providers.gradleProperty('networkLogging').orElse('false').get().toBoolean()
+def networkLoggingEnabled = providers.gradleProperty('networkLogging').orElse('true').get().toBoolean()
 def mockBackendEnabled = providers.gradleProperty('mockBackend').orElse('false').get().toBoolean()
 def mockBackendScenario = providers.gradleProperty('mockScenario').orElse('HAPPY_PATH').get().toUpperCase()
 def desVersionCode = providers.gradleProperty('DES_VERSION_CODE').orElse('230102400').get().toInteger()
 def desVersionName = providers.gradleProperty('DES_VERSION_NAME').orElse('1.24.0').get()
 def prdVersionCode = providers.gradleProperty('PRD_VERSION_CODE').orElse('230102400').get().toInteger()
 def prdVersionName = providers.gradleProperty('PRD_VERSION_NAME').orElse('1.24.0').get()
-def keySetTrustedSigners = providers.gradleProperty('keySetTrustedSigners').orElse('').get()
-def keySetSignatureThreshold = providers.gradleProperty('keySetSignatureThreshold').orElse('2').get().toInteger()
+apply from: rootProject.file('gradle/security-build-config.gradle')
+
+def keySetTrustedSigners = securityBuildValue('SIMLO_KEYSET_TRUSTED_SIGNERS',
+    providers.gradleProperty('keySetTrustedSigners').orElse('').get())
+def keySetSignatureThreshold = securityBuildValue('SIMLO_KEYSET_SIGNATURE_THRESHOLD',
+    providers.gradleProperty('keySetSignatureThreshold').orElse('2').get()).toInteger()
 if (keySetSignatureThreshold < 1) {
     throw new GradleException('keySetSignatureThreshold deve ser maior que zero.')
 }
@@ -38,7 +46,7 @@ def hasReleaseSigning = releaseKeyStoreFile.isFile() &&
         releaseSigningProperties['KEY_ALIAS'] &&
         releaseSigningProperties['KEY_PASSWORD']
 
-// Preserve WorkManager 2.7.1 manifest values, including API-specific resource defaults.
+// Preserva os valores do manifesto do WorkManager 2.7.1, incluindo os recursos padrão específicos de cada API.
 def topazWorkManagerDefaults = [
     topazWorkInitializer: 'androidx.startup',
     topazWorkAlarmEnabled: '@bool/enable_system_alarm_service_default',
@@ -55,7 +63,7 @@ android {
     defaultConfig {
         applicationId 'br.gov.caixa.loterias.apostas'
         buildConfigField 'boolean', 'HOME_V2', homeV2Enabled
-        minSdk 24
+        minSdk 29
         targetSdk 37
         versionCode prdVersionCode
         versionName prdVersionName
@@ -65,6 +73,7 @@ android {
         buildConfigField 'String', 'SSO_ACCOUNT_REFERRER_URI', '"http://df7390sr029.corp.caixa.gov.br:8280/silce-web/?redirect_fragment=%2Fhome"'
         buildConfigField 'String', 'KEYSET_TRUSTED_SIGNERS', '"' + escapedKeySetTrustedSigners + '"'
         buildConfigField 'int', 'KEYSET_SIGNATURE_THRESHOLD', keySetSignatureThreshold.toString()
+        buildConfigField 'String', 'TLS_DEFAULT_PINS', securityBuildString('SIMLO_TLS_DEFAULT_PINS')
         resValue 'string', 'app_name', 'Loterias'
         resValue 'string', 'status_toolbar_title', 'Loterias'
         resValue 'color', 'launcher_background', '#0077C8'
@@ -88,13 +97,14 @@ android {
             buildConfigField 'String', 'RECARGA_PAY_BASE_URL', '"https://secure.recarga.com/"'
             buildConfigField 'String', 'FILABRA_ACCOUNT_SYSTEM_NAME', '"caixa"'
             buildConfigField 'String', 'FILABRA_QUEUE_SYSTEM_NAME', '"loteriasprd"'
-            buildConfigField 'String', 'FIREBASE_APP_ID', '"1:1090799638737:android:3679e746f7fb072b82cdf0"'
-            buildConfigField 'String', 'FIREBASE_API_KEY', '"AIzaSyAvr1vamDWCxnT3Cgn0N0iU5Sh1-VpeyPs"'
-            buildConfigField 'String', 'FIREBASE_PROJECT_ID', '"app-loterias-simlo-prd"'
-            buildConfigField 'String', 'FIREBASE_SENDER_ID', '"1090799638737"'
+            buildConfigField 'String', 'FIREBASE_APP_ID', securityBuildString('SIMLO_PRD_FIREBASE_APP_ID')
+            buildConfigField 'String', 'FIREBASE_API_KEY', securityBuildString('SIMLO_PRD_FIREBASE_API_KEY')
+            buildConfigField 'String', 'FIREBASE_PROJECT_ID', securityBuildString('SIMLO_PRD_FIREBASE_PROJECT_ID')
+            buildConfigField 'String', 'FIREBASE_SENDER_ID', securityBuildString('SIMLO_PRD_FIREBASE_SENDER_ID')
             buildConfigField 'boolean', 'ENABLE_NETWORK_INSPECTOR', 'false'
         }
         tqs {
+            isDefault = true
             dimension 'environment'
             applicationIdSuffix '.hmp'
             versionCode desVersionCode
@@ -110,10 +120,10 @@ android {
             buildConfigField 'String', 'RECARGA_PAY_BASE_URL', '"https://secure-sandbox.recargapay.com/"'
             buildConfigField 'String', 'FILABRA_ACCOUNT_SYSTEM_NAME', '"caixaloteriasdev"'
             buildConfigField 'String', 'FILABRA_QUEUE_SYSTEM_NAME', '"loteriasdes"'
-            buildConfigField 'String', 'FIREBASE_APP_ID', '"1:75059847302:android:c963732446d94e71faf107"'
-            buildConfigField 'String', 'FIREBASE_API_KEY', '"AIzaSyBBPJ1uYLiNoyMIrwjyBbcqsokvZ48gr78"'
-            buildConfigField 'String', 'FIREBASE_PROJECT_ID', '"app-loterias-simlo-nprd"'
-            buildConfigField 'String', 'FIREBASE_SENDER_ID', '"75059847302"'
+            buildConfigField 'String', 'FIREBASE_APP_ID', securityBuildString('SIMLO_TQS_FIREBASE_APP_ID')
+            buildConfigField 'String', 'FIREBASE_API_KEY', securityBuildString('SIMLO_TQS_FIREBASE_API_KEY')
+            buildConfigField 'String', 'FIREBASE_PROJECT_ID', securityBuildString('SIMLO_TQS_FIREBASE_PROJECT_ID')
+            buildConfigField 'String', 'FIREBASE_SENDER_ID', securityBuildString('SIMLO_TQS_FIREBASE_SENDER_ID')
             buildConfigField 'boolean', 'ENABLE_NETWORK_INSPECTOR', 'true'
         }
         automacao {
@@ -132,10 +142,10 @@ android {
             buildConfigField 'String', 'RECARGA_PAY_BASE_URL', '"https://secure-sandbox.recargapay.com/"'
             buildConfigField 'String', 'FILABRA_ACCOUNT_SYSTEM_NAME', '"caixaloteriasdev"'
             buildConfigField 'String', 'FILABRA_QUEUE_SYSTEM_NAME', '"loteriasdes"'
-            buildConfigField 'String', 'FIREBASE_APP_ID', '"1:75059847302:android:c963732446d94e71faf107"'
-            buildConfigField 'String', 'FIREBASE_API_KEY', '"AIzaSyBBPJ1uYLiNoyMIrwjyBbcqsokvZ48gr78"'
-            buildConfigField 'String', 'FIREBASE_PROJECT_ID', '"app-loterias-simlo-nprd"'
-            buildConfigField 'String', 'FIREBASE_SENDER_ID', '"75059847302"'
+            buildConfigField 'String', 'FIREBASE_APP_ID', securityBuildString('SIMLO_AUTOMACAO_FIREBASE_APP_ID')
+            buildConfigField 'String', 'FIREBASE_API_KEY', securityBuildString('SIMLO_AUTOMACAO_FIREBASE_API_KEY')
+            buildConfigField 'String', 'FIREBASE_PROJECT_ID', securityBuildString('SIMLO_AUTOMACAO_FIREBASE_PROJECT_ID')
+            buildConfigField 'String', 'FIREBASE_SENDER_ID', securityBuildString('SIMLO_AUTOMACAO_FIREBASE_SENDER_ID')
             buildConfigField 'boolean', 'ENABLE_NETWORK_INSPECTOR', 'false'
         }
     }
@@ -156,6 +166,7 @@ android {
 
     buildTypes {
         debug {
+            isDefault = true
             manifestPlaceholders.topazComponentsEnabled = (!mockBackendEnabled).toString()
             manifestPlaceholders += topazWorkManagerDefaults.collectEntries { key, value ->
                 [key, mockBackendEnabled ? (key == 'topazWorkInitializer' ? 'mock-disabled' : 'false') : value]
@@ -193,6 +204,24 @@ android {
 }
 
 dependencies {
+    implementation project(':core:security')
+    implementation project(':core:presentation')
+
+    testImplementation project(':core:testing')
+    testImplementation project(':feature:tickets:data')
+    testImplementation project(':feature:support:data')
+    testImplementation project(':feature:retail:data')
+    testImplementation project(':feature:results:data')
+    testImplementation project(':feature:responsible-gaming:data')
+    testImplementation project(':feature:payment:data')
+    testImplementation project(':feature:onboarding:data')
+    testImplementation project(':feature:notifications:data')
+    testImplementation project(':feature:marketplace:data')
+    testImplementation project(':feature:home:data')
+    testImplementation project(':feature:cart:data')
+    testImplementation project(':feature:betting:data')
+    testImplementation project(':feature:account:data')
+    testImplementation libs.okhttp.mockwebserver
     coreLibraryDesugaring libs.desugar.jdk.libs
     implementation project(':core:design-system')
     implementation project(':core:domain')
@@ -202,24 +231,23 @@ dependencies {
     implementation project(':core:network')
     implementation project(':core:key-management')
     implementation project(':core:queue')
-    implementation project(':core:preferences')
-    implementation files('../third-party/FilaBRAAdapter-2.6.5.1.aar')
-    implementation 'br.com.topaz:heartbeat:4.38.0.1658708'
-    implementation 'androidx.biometric:biometric:1.1.0'
-    implementation project(':feature:marketplace-filter')
-    implementation project(':feature:marketplace')
-    implementation project(':feature:support')
-    implementation project(':feature:onboarding')
-    implementation project(':feature:account')
-    implementation project(':feature:betting')
-    implementation project(':feature:cart')
-    implementation project(':feature:payment')
-    implementation project(':feature:tickets')
-    implementation project(':feature:results')
-    implementation project(':feature:responsible-gaming')
-    implementation project(':feature:notifications')
-    implementation project(':feature:retail')
-    implementation project(':feature:home')
+    implementation hardenedFilaBra
+    implementation hardenedTopazHeartbeat
+    implementation libs.androidx.biometric
+    implementation project(':feature:marketplace-filter:presentation')
+    implementation project(':feature:marketplace:presentation')
+    implementation project(':feature:support:presentation')
+    implementation project(':feature:onboarding:presentation')
+    implementation project(':feature:account:presentation')
+    implementation project(':feature:betting:presentation')
+    implementation project(':feature:cart:presentation')
+    implementation project(':feature:payment:presentation')
+    implementation project(':feature:tickets:presentation')
+    implementation project(':feature:results:presentation')
+    implementation project(':feature:responsible-gaming:presentation')
+    implementation project(':feature:notifications:presentation')
+    implementation project(':feature:retail:presentation')
+    implementation project(':feature:home:presentation')
 
     implementation platform(libs.androidx.compose.bom)
     implementation libs.androidx.activity.compose
@@ -242,9 +270,17 @@ dependencies {
     debugImplementation platform(libs.androidx.compose.bom)
     debugImplementation libs.androidx.compose.ui.tooling
     debugImplementation libs.androidx.compose.ui.test.manifest
+    debugImplementation libs.chucker
 
     testImplementation libs.junit4
     testImplementation libs.kotlinx.coroutines.test
     androidTestImplementation platform(libs.androidx.compose.bom)
     androidTestImplementation libs.androidx.compose.ui.test.junit4
+}
+
+// Os testes de integração exercitam os repositórios nos módulos de suas respectivas funcionalidades.
+jacoco { toolVersion = '0.8.13' }
+tasks.withType(Test).configureEach {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
 }

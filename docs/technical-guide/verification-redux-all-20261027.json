@@ -1,0 +1,19 @@
+{
+  "Status": "REDUXKOTLIN NAS 14 FEATURES VALIDADO LOCALMENTE; DOIS P2 ANTERIORES ABERTOS",
+  "Edição": "27/10/2026 - America/Sao_Paulo",
+  "Arquitetura": "42 ViewModels, 41 com estado Redux; AccountStatusViewModel somente efeitos. Ponte em Core Presentation, stores locais, actions tipadas e reducers puros por feature. Domain/Data sem Redux.",
+  "Análise atual": "Detekt, Android Lint, gates verifyCleanArchitecture/verifyFeatureModules/verifyAppArchitecturePolicy e build PRD aprovados. Compilação AndroidTest de Retail aprovada. Não houve expansão de baseline ou supressões novas.",
+  "Testes": "2145 testes de Core Presentation, 14 features Presentation e App PRD aprovados; zero falhas, erros ou ignorados. Suítes Domain/Data e cobertura global não foram reexecutadas nesta seleção.",
+  "Política Python": "173 testes da descoberta padrão e 11 testes específicos de hooks aprovados; não somar com a suíte Android como se fossem a mesma matriz.",
+  "Formatação": "Ktlint aprovado nos 240 arquivos Kotlin alterados. Dívida global anterior: 10.946 ocorrências/488 arquivos; verificação global não repetida. Sem formatação global ou baseline ampliada.",
+  "Revisão": "Revisão independente sem achados adicionais concretos. Regressões de ordenação de favorito e cancelamento da Home reproduzidas e corrigidas mantendo assertivas. ARQ-01 ForceUpdate no App e ARQ-02 PrizeReceiptDelivery em Retail permanecem abertos.",
+  "Compatibilidade": "ReduxKotlin 0.6.2, artefatos oficiais core-jvm/threadsafe-jvm compartilhados via Core Presentation; exclusão direcionada do core multiplataforma. JVM17 preservado.",
+  "Durabilidade": "Betting mantém stores de trabalho/confirmado e publicação depois da persistência. Replay de ações locais não reexecuta operações remotas. Identidades, gerações e consumo único preservados.",
+  "Inventário": "111 operações HTTP; 99 contratos do baseline presentes; 110 DTOs. Extração local, sem chamadas ao backend.",
+  "Proteções": "Hashes de 37 baselines/configurações e dois arquivos de header preservados.",
+  "Rastreabilidade": "SHA-256 dos 4261 arquivos finais: ec75a507bfc6d0a76946a878f5128747c4f23227daec155cb6f9fc96e302f4c4. Logs, XML consolidados, inventário e hashes em build/verification/redux-all-20261027/.",
+  "Samsung": "26 verificações aprovadas, 0 falhas, zero ignorados; duas rodadas de Home, FAQ, carrinho e Mega-Sena no SM-G556B. Carrinho original preservado: 4 apostas/R$19. Sem login, compra, pagamento ou reserva real.",
+  "Samsung preliminar": "Duas tentativas anteriores do roteiro tiveram 24 verificações aprovadas e duas expectativas falhas de retorno à Home. O roteiro final fecha o drawer pelo botão visível. Nenhum código do app mudou para esse ajuste; tentativas e explicação preservadas em samsung-harness-note.md.",
+  "Limites": "Sem nova cobertura global, release/R8 ou CI remoto. Os testes no Samsung cobrem navegação pública representativa; não homologam todos os fluxos autenticados. Redux não resolve cancelamento/concorrência de efeitos automaticamente. Limitação anterior de respostas obsoletas em troca rápida de seção Support permanece registrada.",
+  "Cobertura histórica": "95,04% (44.454/46.775 linhas), medida em 22/10/2026. Não representa cobertura da migração atual."
+}

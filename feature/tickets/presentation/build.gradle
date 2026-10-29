@@ -1,0 +1,180 @@
+apply plugin: 'com.google.devtools.ksp'
+apply plugin: 'com.google.dagger.hilt.android'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
+
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+android { buildFeatures { compose = true } }
+
+android { defaultConfig { minSdk 24 } }
+dependencies {
+    implementation project(':core:common')
+    implementation project(':core:design-system')
+    api project(':core:presentation')
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.ui.tooling.preview
+    implementation libs.androidx.compose.material3
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    testImplementation libs.junit4
+}
+apply plugin: 'jacoco'
+
+// Visibilidade só para instrumentação de consultas de fonte/tema da referência instalada, somente para leitura.
+// Gerado em build para não introduzir XML de plataforma na árvore de fontes da funcionalidade.
+def referenceVisibilityManifest = layout.buildDirectory.file('generated/reference-visibility/AndroidManifest.xml')
+def generateReferenceVisibilityManifest = tasks.register('generateReferenceVisibilityManifest') {
+    inputs.property('referencePackage', 'br.gov.caixa.loterias.apostas.cxv2validation')
+    outputs.file(referenceVisibilityManifest)
+    doLast {
+        def manifestFile = referenceVisibilityManifest.get().asFile
+        manifestFile.parentFile.mkdirs()
+        manifestFile.text = '''<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries><package android:name="br.gov.caixa.loterias.apostas.cxv2validation" /></queries>
+</manifest>
+'''
+    }
+}
+
+android {
+    namespace = 'br.gov.caixa.loterias.feature.tickets'
+    buildTypes { debug { enableAndroidTestCoverage = true } }
+    testCoverage { jacocoVersion = '0.8.13' }
+    defaultConfig {
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        manifestPlaceholders = [appAuthRedirectScheme: 'br.gov.caixa.caixaloterias']
+    }
+    sourceSets.androidTest.manifest.srcFile(referenceVisibilityManifest.get().asFile)
+}
+
+tasks.matching { it.name == 'preDebugAndroidTestBuild' }.configureEach {
+    dependsOn generateReferenceVisibilityManifest
+}
+
+dependencies {
+    implementation project(':feature:payment:presentation')
+    implementation project(':core:navigation')
+    implementation libs.hilt.android
+    ksp libs.hilt.compiler
+    implementation project(':feature:tickets:data')
+    implementation project(':core:auth')
+    implementation project(':feature:retail:domain')
+    implementation project(':feature:results:domain')
+    implementation project(':feature:payment:domain')
+    implementation project(':feature:cart:domain')
+    implementation project(':feature:betting:domain')
+    api project(':feature:tickets:domain')
+    implementation project(':core:domain')
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.androidx.activity.compose
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.androidx.camera.core
+    implementation libs.androidx.camera.camera2
+    implementation libs.androidx.camera.lifecycle
+    implementation libs.androidx.camera.view
+    implementation libs.androidx.camera.compose
+    implementation libs.mlkit.barcode.scanning
+    testImplementation libs.kotlinx.coroutines.test
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    debugImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation libs.androidx.test.runner
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+// O AGP escolhe o destino dos testes unitários; nunca mescle um arquivo exec fixo obsoleto.
+def coverageExecutionData = files({
+    tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+}, fileTree(layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
+def coverageSourceDirectories = files('src/main/java')
+def coverageClassDirectories = files(fileTree(
+        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        includes: [
+                '**/PurchaseStatusDialogMapperKt*.class',
+                '**/TicketsManualQueryCoordinator*.class',
+                '**/TicketModalitiesCoordinator*.class',
+                '**/TicketsHistoryCoordinator*.class',
+                '**/TicketsHistoryBets*.class',
+                '**/TicketsHistoryPurchases*.class',
+                '**/TicketsHistoryPagination*.class',
+                '**/TicketsHistoryBetFilters*.class',
+                '**/TicketsHistoryPurchaseFilters*.class',
+                '**/TicketsHistoryRecovery*.class',
+                '**/TicketsPurchaseCoordinator*.class',
+                '**/TicketsPixCoordinator*.class',
+                '**/TicketsPixDeadlineTracker*.class',
+                '**/TicketsUiState*.class',
+                '**/BetFilters*.class',
+                '**/PurchaseFilters*.class',
+                '**/PurchaseBetFilters*.class',
+                '**/PurchaseDialogAction*.class',
+                '**/PurchaseStatusDialog*.class',
+
+                '**/BetReceiptDeliveryKt*.class',
+                '**/BetDetailRulesKt.class',
+                '**/BetDetailViewModel*.class',
+                '**/BetDetailDetailsCoordinator*.class',
+                '**/BetDetailReceiptCoordinator*.class',
+                '**/BetDetailFavoriteCoordinator*.class',
+                '**/BetDetailRepeatCoordinator*.class',
+                '**/BetDetailMappersKt*.class',
+                '**/BetDetailUiState*.class',
+                '**/RepeatContestOption.class', '**/RepeatContestOption$*.class',
+                '**/BetReceipt.class', '**/BetReceipt$*.class',
+                '**/TicketsViewModel.class',
+                '**/TicketsUiState.class',
+                '**/BetFilters.class',
+                '**/PurchaseFilters.class'
+        ]
+))
+
+tasks.register('verifyTicketsCoverageInputs') {
+    dependsOn tasks.named('testDebugUnitTest'), 'connectedDebugAndroidTest'
+    doLast {
+        def deviceCoverage = fileTree(layout.buildDirectory).include('outputs/code_coverage/**/*.ec')
+        if (coverageClassDirectories.asFileTree.isEmpty() ||
+                !tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile.isFile() ||
+                deviceCoverage.isEmpty()) {
+            throw new GradleException('Cobertura de Tickets exige classes, testes JVM e execução Android real.')
+        }
+    }
+}
+
+tasks.register('jacocoDebugCoverageReport', JacocoReport) {
+    dependsOn tasks.named('verifyTicketsCoverageInputs')
+    executionData.from(coverageExecutionData)
+    sourceDirectories.from(coverageSourceDirectories)
+    classDirectories.from(coverageClassDirectories)
+    reports { xml.required = true; html.required = true }
+}
+
+tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoDebugCoverageReport')
+    executionData.from(coverageExecutionData)
+    sourceDirectories.from(coverageSourceDirectories)
+    classDirectories.from(coverageClassDirectories)
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.95
+            }
+        }
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn tasks.named('jacocoDebugCoverageVerification')
+}

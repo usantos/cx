@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.push
 
 import android.Manifest.permission.*
+import br.gov.caixa.loterias.feature.account.presentation.permission.loginRuntimePermissions
 import org.junit.Assert.*
 import org.junit.Test
 

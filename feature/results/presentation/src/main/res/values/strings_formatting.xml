@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="format_first_draw_no_hits">"0 acertos no primeiro sorteio • %1$s"</string>
+    <string name="format_clover_description">"Trevo %1$d"</string>
+    <plurals name="format_first_draw_hits">
+        <item quantity="one">"%1$d acerto no primeiro sorteio • %2$s"</item>
+        <item quantity="other">"%1$d acertos no primeiro sorteio • %2$s"</item>
+    </plurals>
+</resources>

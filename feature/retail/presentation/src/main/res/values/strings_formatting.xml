@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="format_add_favorite_retailer">"Deseja incluir %1$s na sua lista de favoritas?"</string>
+    <string name="format_remove_favorite_retailer">"Deseja excluir %1$s da sua lista de favoritas?"</string>
+</resources>

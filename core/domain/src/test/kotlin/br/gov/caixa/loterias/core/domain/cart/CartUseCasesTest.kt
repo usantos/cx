@@ -1,11 +1,22 @@
 package br.gov.caixa.loterias.core.domain.cart
 
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.core.common.result.AppResult
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
+import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
+import br.gov.caixa.loterias.feature.cart.domain.repository.CartRepository
+import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
+import br.gov.caixa.loterias.feature.cart.domain.usecase.ClearCart
+import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCart
+import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItem
+import br.gov.caixa.loterias.feature.cart.domain.usecase.SaveCurrentCartFavorite
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCart
+import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateFavoriteCartName
 
 class CartUseCasesTest {
     @Test

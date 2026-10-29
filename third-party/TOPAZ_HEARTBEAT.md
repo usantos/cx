@@ -30,7 +30,27 @@ O AAR não traz consumer ProGuard rules. A regra de preservação
 contrato JNI/reflection no build minificado.
 
 A resolução Gradle pode selecionar versões superiores de dependências já
-usadas pelo aplicativo. O binário Topaz permanece fixo no checksum acima.
+usadas pelo aplicativo. O AAR de entrada permanece fixo no checksum acima.
+
+## Geração das chaves AES
+
+O SDK original usa `java.util.Random` em `br.com.topaz.n.c.a(int)` para gerar
+a chave de sessão AES. Esse gerador tem estado previsível de 48 bits e não
+deve gerar material criptográfico. `gradle/harden-topaz.gradle` produz uma
+cópia de build com essa referência trocada por `java.security.SecureRandom`.
+O original vendorizado permanece intacto. O script recusa outro checksum.
+
+App empacota o AAR corrigido; core/security compila contra seu `classes.jar`
+via `compileOnly`, usando também esse JAR nos testes. Isso evita incluir o SDK
+original em paralelo e respeita a restrição do AGP a AAR local em bibliotecas.
+As dependências transitivas vêm do POM original. O patch preserva
+os algoritmos AES/RSA, o comprimento/alfabeto das chaves, as assinaturas,
+recursos e bibliotecas nativas. Não representa nova homologação do fornecedor.
+
+`verifyTopazKeyRandom`, incluído em `verifyTopazHeartbeat`, verifica o gerador
+efetivo via bytecode, executa 640 controles de formato na JVM e exige que
+somente essa classe tenha mudado. A validação de integração depende também
+de gerar e analisar novamente o APK release ofuscado.
 
 ## Contrato de autorização
 

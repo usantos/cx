@@ -1,0 +1,15 @@
+{
+  "Status": "AUDITORIA CONCLUÍDA; DESVIOS CORRIGIDOS; KTLINT GLOBAL COM DÍVIDA PREEXISTENTE",
+  "Edição": "28/10/2026 — America/Sao_Paulo",
+  "Arquitetura": "App/Core/14 features; 68 módulos + 17 agrupadores; 46 ViewModels, 45 bindings Redux e 72 arquivos de reducers. Dez grupos de achados descritos em FULL_AUDIT_20261028.md.",
+  "Testes unitários": "3510 aprovados, zero falhas/erros/ignorados; 68 módulos selecionados. Uma execução nova de allUnitTests em final-quality-verified.log; tarefas NO-SOURCE discriminadas no manifesto.",
+  "Cobertura": "JaCoCo LINE 95.11% (54340/57135 linhas), estritamente maior que 95%; sem alterar exclusões ou limiar.",
+  "Android instrumentado": "Não executado nesta auditoria. Novos cenários Compose de retry/navegação foram executados em JVM/Robolectric.",
+  "Samsung": "Nenhuma instalação ou validação física nova nesta auditoria; histórico de 27/10 preservado em verification-samsung-20261027.json.",
+  "TalkBack": "Sem nova homologação humana nesta rodada. Confirmações e pendências históricas mantêm suas datas.",
+  "Qualidade": "Detekt, Android Lint, testes e cobertura em final-quality-verified.log; arquitetura, Compose/CaixaDS/contratos de plataforma e APK PRD Debug aprovados em final-architecture-and-build.log após corrigir o verificador Compose. Os 33 casos positivos/negativos de contratos XML passaram em compose-policy-fixtures.log. qualityGate sai com falha somente por Ktlint global: 6897 ocorrências/363 arquivos. Conjunto de 117 arquivos Kotlin alterados sem violações.",
+  "Proteções": "37 configurações/baselines e dois headers com SHA-256 inalterado. Sem ampliar baseline, supressão, exclusão de código ou reduzir cobertura.",
+  "Rastreabilidade": "4467 arquivos; SHA-256 de fontes 80979333f921b0c71fe84b9b24b8e2bf8b8a988b17fbd8851e82321a4ecdb013; APK compilado b8fe7aae43dc59bc18889f2de840b3c459dbbb5bac15442753b8dc5f2086c645, não instalado nesta auditoria.",
+  "Limites": "Ktlint global conserva dívida preexistente, inclusive 26 ocorrências no header CurrentCartScaffold protegido. Lint usa os baselines históricos intactos. Gates lexicais complementam revisão manual e testes; release/R8, CI remoto, backend real e validação física não executados.",
+  "Histórico": "verification-samsung-20261027.json e quality-samsung-20261027.json preservam a rodada Samsung; coverage-summary-20261022.json e unit-tests-by-module-before-architecture-20261028.json preservam os resultados anteriores. Não foram somados como testes novos."
+}

@@ -13,8 +13,26 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.interceptor.SingleAttemptTransactionInterceptor
+import br.gov.caixa.loterias.core.network.interceptor.SilceTransportInterceptor
 
 class SilceTransportInterceptorTest {
+    @Test fun `receipt downloads with Disable Crypto retain ordinary paths for bet and prize`() = withServer { server, client ->
+        for (kind in listOf("aposta", "premio")) {
+            val path = BASE + "apostas/7/comprovante-$kind-app-pdf"
+            client.newCall(Request.Builder().url(server.url(path))
+                .header("Disable-Crypto", "true").header("Authorization", "Bearer receipt-test").build())
+                .execute().close()
+            val sent = server.takeRequest()
+            assertEquals(path, sent.path)
+            assertEquals("true", sent.getHeader("Disable-Crypto"))
+            assertEquals("security=false", sent.getHeader("Cookie"))
+            assertEquals("3", sent.getHeader("Subcanal"))
+            assertEquals("application/json", sent.getHeader("Content-Type"))
+            assertEquals("Bearer receipt-test", sent.getHeader("Authorization"))
+        }
+    }
+
     @Test
     fun `startup uses legacy base64 path and channel headers`() = withServer { server, client ->
         client.newCall(Request.Builder().url(server.url(BASE + "app/valida-versao/1.24.0")).build()).execute().close()

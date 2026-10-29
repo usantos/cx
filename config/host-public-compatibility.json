@@ -1,0 +1,14 @@
+{
+  "app/src/main/java/br/gov/caixa/loterias/apostas/navigation/startup/StartupDestination.kt": {
+    "package": "br.gov.caixa.loterias.apostas.navigation.startup",
+    "reason": "Move the existing public binary type to its actual compiled owner without renaming JVM contracts."
+  },
+  "app/src/main/java/br/gov/caixa/loterias/apostas/navigation/startup/MockStartDestination.kt": {
+    "package": "br.gov.caixa.loterias.apostas.navigation.startup",
+    "reason": "Move the existing public binary type to its actual compiled owner without renaming JVM contracts."
+  },
+  "app/src/main/java/br/gov/caixa/loterias/apostas/composition/startup/AppStartupStatusPanel.kt": {
+    "package": "br.gov.caixa.loterias.apostas.composition.startup",
+    "reason": "Move the existing public binary type to its actual compiled owner without renaming JVM contracts."
+  }
+}

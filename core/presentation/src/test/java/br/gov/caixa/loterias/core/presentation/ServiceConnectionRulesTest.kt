@@ -1,11 +1,17 @@
 package br.gov.caixa.loterias.core.presentation
 
-import br.gov.caixa.loterias.core.common.ConnectionAvailability
-import br.gov.caixa.loterias.core.common.NetworkAvailability
-import br.gov.caixa.loterias.core.domain.service.ServiceConnectionFailure
-import br.gov.caixa.loterias.core.domain.service.ServiceRedirect
+import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
+import br.gov.caixa.loterias.core.common.network.NetworkAvailability
+import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
+import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.presentation.rule.connectionFailureNotice
+import br.gov.caixa.loterias.core.presentation.rule.loginConnectivityNotice
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OFFLINE
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_CONNECTION_FAILED
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_RESPONSE_TIMEOUT
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_INVALID_RESPONSE
 
 class ServiceConnectionRulesTest {
     @Test fun `offline takes priority and unknown connectivity does not impersonate an offline device`() {

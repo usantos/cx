@@ -2,6 +2,8 @@ package br.gov.caixa.loterias.core.common
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
+import br.gov.caixa.loterias.core.common.network.ReadNetworkAvailability
 
 class NetworkAvailabilityTest {
     @Test fun `available missing and unobservable connection stay distinct`() {

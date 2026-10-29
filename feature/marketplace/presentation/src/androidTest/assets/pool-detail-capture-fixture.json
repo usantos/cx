@@ -1,0 +1,1323 @@
+{
+  "MEGA_SENA": {
+    "qtdCotaDigital": 50,
+    "qtdCotaTotal": 50,
+    "qtdCotaDisponivel": 20,
+    "qtdCotaFisica": 0,
+    "qtdCotaVendidas": 30,
+    "qtdCotaReservada": 0,
+    "loterica": 10,
+    "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+    "nomeRazaoSocial": "FIXTURE DE AUDITORIA",
+    "uf": {
+      "id": 35,
+      "sigla": "SP",
+      "nome": "São Paulo"
+    },
+    "municipioCota": {
+      "id": {
+        "numero": 3550308,
+        "idUF": 35,
+        "digitoVerificador": 0
+      },
+      "nome": "SÃO PAULO",
+      "uf": {
+        "id": 35,
+        "sigla": "SP",
+        "nome": "São Paulo"
+      }
+    },
+    "concurso": 3070,
+    "dataSorteio": "21/10/2026",
+    "diaSorteio": "QUARTA-FEIRA",
+    "horaSorteio": "20:00",
+    "vrPremioEstimado": 150000000,
+    "tipoConcurso": 1,
+    "qtdApostas": 1,
+    "qtdNumeros": 6,
+    "vrCotaSemTarifa": 10,
+    "vrCotaComTarifa": 10.5,
+    "vrUltimaCotaComTarifa": 10.5,
+    "vrUltimaCotaSemTarifa": 10,
+    "vrTarifaServicoCota": 0.5,
+    "vrTarifaServicoUltimaCota": 0.5,
+    "vrTarifaBolao": 25,
+    "vrTotalBolaoComTarifa": 525,
+    "vrTotalBolaoSemTarifa": 500,
+    "lotericaFormatada": {
+      "id": 10,
+      "codigo": "1",
+      "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+      "numeroFormatado": "01.234567-8"
+    },
+    "modalidade": "MEGA_SENA",
+    "apostas": [
+      {
+        "indicadorSurpresinha": false,
+        "operacaoExecutadaComSucesso": true,
+        "dezenas": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "trevos": []
+      }
+    ]
+  },
+  "QUINA": {
+    "qtdCotaDigital": 50,
+    "qtdCotaTotal": 50,
+    "qtdCotaDisponivel": 20,
+    "qtdCotaFisica": 0,
+    "qtdCotaVendidas": 30,
+    "qtdCotaReservada": 0,
+    "loterica": 10,
+    "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+    "nomeRazaoSocial": "FIXTURE DE AUDITORIA",
+    "uf": {
+      "id": 35,
+      "sigla": "SP",
+      "nome": "São Paulo"
+    },
+    "municipioCota": {
+      "id": {
+        "numero": 3550308,
+        "idUF": 35,
+        "digitoVerificador": 0
+      },
+      "nome": "SÃO PAULO",
+      "uf": {
+        "id": 35,
+        "sigla": "SP",
+        "nome": "São Paulo"
+      }
+    },
+    "concurso": 3070,
+    "dataSorteio": "21/10/2026",
+    "diaSorteio": "QUARTA-FEIRA",
+    "horaSorteio": "20:00",
+    "vrPremioEstimado": 150000000,
+    "tipoConcurso": 1,
+    "qtdApostas": 1,
+    "qtdNumeros": 5,
+    "vrCotaSemTarifa": 10,
+    "vrCotaComTarifa": 10.5,
+    "vrUltimaCotaComTarifa": 10.5,
+    "vrUltimaCotaSemTarifa": 10,
+    "vrTarifaServicoCota": 0.5,
+    "vrTarifaServicoUltimaCota": 0.5,
+    "vrTarifaBolao": 25,
+    "vrTotalBolaoComTarifa": 525,
+    "vrTotalBolaoSemTarifa": 500,
+    "lotericaFormatada": {
+      "id": 10,
+      "codigo": "1",
+      "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+      "numeroFormatado": "01.234567-8"
+    },
+    "modalidade": "QUINA",
+    "apostas": [
+      {
+        "indicadorSurpresinha": false,
+        "operacaoExecutadaComSucesso": true,
+        "dezenas": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "trevos": []
+      }
+    ]
+  },
+  "LOTOFACIL": {
+    "qtdCotaDigital": 50,
+    "qtdCotaTotal": 50,
+    "qtdCotaDisponivel": 20,
+    "qtdCotaFisica": 0,
+    "qtdCotaVendidas": 30,
+    "qtdCotaReservada": 0,
+    "loterica": 10,
+    "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+    "nomeRazaoSocial": "FIXTURE DE AUDITORIA",
+    "uf": {
+      "id": 35,
+      "sigla": "SP",
+      "nome": "São Paulo"
+    },
+    "municipioCota": {
+      "id": {
+        "numero": 3550308,
+        "idUF": 35,
+        "digitoVerificador": 0
+      },
+      "nome": "SÃO PAULO",
+      "uf": {
+        "id": 35,
+        "sigla": "SP",
+        "nome": "São Paulo"
+      }
+    },
+    "concurso": 3070,
+    "dataSorteio": "21/10/2026",
+    "diaSorteio": "QUARTA-FEIRA",
+    "horaSorteio": "20:00",
+    "vrPremioEstimado": 150000000,
+    "tipoConcurso": 1,
+    "qtdApostas": 1,
+    "qtdNumeros": 15,
+    "vrCotaSemTarifa": 10,
+    "vrCotaComTarifa": 10.5,
+    "vrUltimaCotaComTarifa": 10.5,
+    "vrUltimaCotaSemTarifa": 10,
+    "vrTarifaServicoCota": 0.5,
+    "vrTarifaServicoUltimaCota": 0.5,
+    "vrTarifaBolao": 25,
+    "vrTotalBolaoComTarifa": 525,
+    "vrTotalBolaoSemTarifa": 500,
+    "lotericaFormatada": {
+      "id": 10,
+      "codigo": "1",
+      "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+      "numeroFormatado": "01.234567-8"
+    },
+    "modalidade": "LOTOFACIL",
+    "apostas": [
+      {
+        "indicadorSurpresinha": false,
+        "operacaoExecutadaComSucesso": true,
+        "dezenas": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "trevos": []
+      }
+    ]
+  },
+  "LOTOMANIA": {
+    "qtdCotaDigital": 50,
+    "qtdCotaTotal": 50,
+    "qtdCotaDisponivel": 20,
+    "qtdCotaFisica": 0,
+    "qtdCotaVendidas": 30,
+    "qtdCotaReservada": 0,
+    "loterica": 10,
+    "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+    "nomeRazaoSocial": "FIXTURE DE AUDITORIA",
+    "uf": {
+      "id": 35,
+      "sigla": "SP",
+      "nome": "São Paulo"
+    },
+    "municipioCota": {
+      "id": {
+        "numero": 3550308,
+        "idUF": 35,
+        "digitoVerificador": 0
+      },
+      "nome": "SÃO PAULO",
+      "uf": {
+        "id": 35,
+        "sigla": "SP",
+        "nome": "São Paulo"
+      }
+    },
+    "concurso": 3070,
+    "dataSorteio": "21/10/2026",
+    "diaSorteio": "QUARTA-FEIRA",
+    "horaSorteio": "20:00",
+    "vrPremioEstimado": 150000000,
+    "tipoConcurso": 1,
+    "qtdApostas": 1,
+    "qtdNumeros": 50,
+    "vrCotaSemTarifa": 10,
+    "vrCotaComTarifa": 10.5,
+    "vrUltimaCotaComTarifa": 10.5,
+    "vrUltimaCotaSemTarifa": 10,
+    "vrTarifaServicoCota": 0.5,
+    "vrTarifaServicoUltimaCota": 0.5,
+    "vrTarifaBolao": 25,
+    "vrTotalBolaoComTarifa": 525,
+    "vrTotalBolaoSemTarifa": 500,
+    "lotericaFormatada": {
+      "id": 10,
+      "codigo": "1",
+      "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+      "numeroFormatado": "01.234567-8"
+    },
+    "modalidade": "LOTOMANIA",
+    "apostas": [
+      {
+        "indicadorSurpresinha": false,
+        "operacaoExecutadaComSucesso": true,
+        "dezenas": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "trevos": []
+      }
+    ]
+  },
+  "DUPLA_SENA": {
+    "qtdCotaDigital": 50,
+    "qtdCotaTotal": 50,
+    "qtdCotaDisponivel": 20,
+    "qtdCotaFisica": 0,
+    "qtdCotaVendidas": 30,
+    "qtdCotaReservada": 0,
+    "loterica": 10,
+    "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+    "nomeRazaoSocial": "FIXTURE DE AUDITORIA",
+    "uf": {
+      "id": 35,
+      "sigla": "SP",
+      "nome": "São Paulo"
+    },
+    "municipioCota": {
+      "id": {
+        "numero": 3550308,
+        "idUF": 35,
+        "digitoVerificador": 0
+      },
+      "nome": "SÃO PAULO",
+      "uf": {
+        "id": 35,
+        "sigla": "SP",
+        "nome": "São Paulo"
+      }
+    },
+    "concurso": 3070,
+    "dataSorteio": "21/10/2026",
+    "diaSorteio": "QUARTA-FEIRA",
+    "horaSorteio": "20:00",
+    "vrPremioEstimado": 150000000,
+    "tipoConcurso": 1,
+    "qtdApostas": 1,
+    "qtdNumeros": 6,
+    "vrCotaSemTarifa": 10,
+    "vrCotaComTarifa": 10.5,
+    "vrUltimaCotaComTarifa": 10.5,
+    "vrUltimaCotaSemTarifa": 10,
+    "vrTarifaServicoCota": 0.5,
+    "vrTarifaServicoUltimaCota": 0.5,
+    "vrTarifaBolao": 25,
+    "vrTotalBolaoComTarifa": 525,
+    "vrTotalBolaoSemTarifa": 500,
+    "lotericaFormatada": {
+      "id": 10,
+      "codigo": "1",
+      "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+      "numeroFormatado": "01.234567-8"
+    },
+    "modalidade": "DUPLA_SENA",
+    "apostas": [
+      {
+        "indicadorSurpresinha": false,
+        "operacaoExecutadaComSucesso": true,
+        "dezenas": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "trevos": []
+      }
+    ]
+  },
+  "MAIS_MILIONARIA": {
+    "qtdCotaDigital": 50,
+    "qtdCotaTotal": 50,
+    "qtdCotaDisponivel": 20,
+    "qtdCotaFisica": 0,
+    "qtdCotaVendidas": 30,
+    "qtdCotaReservada": 0,
+    "loterica": 10,
+    "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+    "nomeRazaoSocial": "FIXTURE DE AUDITORIA",
+    "uf": {
+      "id": 35,
+      "sigla": "SP",
+      "nome": "São Paulo"
+    },
+    "municipioCota": {
+      "id": {
+        "numero": 3550308,
+        "idUF": 35,
+        "digitoVerificador": 0
+      },
+      "nome": "SÃO PAULO",
+      "uf": {
+        "id": 35,
+        "sigla": "SP",
+        "nome": "São Paulo"
+      }
+    },
+    "concurso": 3070,
+    "dataSorteio": "21/10/2026",
+    "diaSorteio": "QUARTA-FEIRA",
+    "horaSorteio": "20:00",
+    "vrPremioEstimado": 150000000,
+    "tipoConcurso": 1,
+    "qtdApostas": 1,
+    "qtdNumeros": 6,
+    "vrCotaSemTarifa": 10,
+    "vrCotaComTarifa": 10.5,
+    "vrUltimaCotaComTarifa": 10.5,
+    "vrUltimaCotaSemTarifa": 10,
+    "vrTarifaServicoCota": 0.5,
+    "vrTarifaServicoUltimaCota": 0.5,
+    "vrTarifaBolao": 25,
+    "vrTotalBolaoComTarifa": 525,
+    "vrTotalBolaoSemTarifa": 500,
+    "lotericaFormatada": {
+      "id": 10,
+      "codigo": "1",
+      "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+      "numeroFormatado": "01.234567-8"
+    },
+    "modalidade": "MAIS_MILIONARIA",
+    "apostas": [
+      {
+        "indicadorSurpresinha": false,
+        "operacaoExecutadaComSucesso": true,
+        "dezenas": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "trevos": [
+          1,
+          2
+        ]
+      }
+    ]
+  },
+  "TIMEMANIA": {
+    "qtdCotaDigital": 50,
+    "qtdCotaTotal": 50,
+    "qtdCotaDisponivel": 20,
+    "qtdCotaFisica": 0,
+    "qtdCotaVendidas": 30,
+    "qtdCotaReservada": 0,
+    "loterica": 10,
+    "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+    "nomeRazaoSocial": "FIXTURE DE AUDITORIA",
+    "uf": {
+      "id": 35,
+      "sigla": "SP",
+      "nome": "São Paulo"
+    },
+    "municipioCota": {
+      "id": {
+        "numero": 3550308,
+        "idUF": 35,
+        "digitoVerificador": 0
+      },
+      "nome": "SÃO PAULO",
+      "uf": {
+        "id": 35,
+        "sigla": "SP",
+        "nome": "São Paulo"
+      }
+    },
+    "concurso": 3070,
+    "dataSorteio": "21/10/2026",
+    "diaSorteio": "QUARTA-FEIRA",
+    "horaSorteio": "20:00",
+    "vrPremioEstimado": 150000000,
+    "tipoConcurso": 1,
+    "qtdApostas": 1,
+    "qtdNumeros": 10,
+    "vrCotaSemTarifa": 10,
+    "vrCotaComTarifa": 10.5,
+    "vrUltimaCotaComTarifa": 10.5,
+    "vrUltimaCotaSemTarifa": 10,
+    "vrTarifaServicoCota": 0.5,
+    "vrTarifaServicoUltimaCota": 0.5,
+    "vrTarifaBolao": 25,
+    "vrTotalBolaoComTarifa": 525,
+    "vrTotalBolaoSemTarifa": 500,
+    "lotericaFormatada": {
+      "id": 10,
+      "codigo": "1",
+      "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+      "numeroFormatado": "01.234567-8"
+    },
+    "modalidade": "TIMEMANIA",
+    "apostas": [
+      {
+        "indicadorSurpresinha": false,
+        "operacaoExecutadaComSucesso": true,
+        "dezenas": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "trevos": [],
+        "timeDoCoracao": {
+          "numero": 1,
+          "nome": "SANTOS",
+          "uf": "SP",
+          "indicadorSelecao": false
+        }
+      }
+    ]
+  },
+  "DIA_DE_SORTE": {
+    "qtdCotaDigital": 50,
+    "qtdCotaTotal": 50,
+    "qtdCotaDisponivel": 20,
+    "qtdCotaFisica": 0,
+    "qtdCotaVendidas": 30,
+    "qtdCotaReservada": 0,
+    "loterica": 10,
+    "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+    "nomeRazaoSocial": "FIXTURE DE AUDITORIA",
+    "uf": {
+      "id": 35,
+      "sigla": "SP",
+      "nome": "São Paulo"
+    },
+    "municipioCota": {
+      "id": {
+        "numero": 3550308,
+        "idUF": 35,
+        "digitoVerificador": 0
+      },
+      "nome": "SÃO PAULO",
+      "uf": {
+        "id": 35,
+        "sigla": "SP",
+        "nome": "São Paulo"
+      }
+    },
+    "concurso": 3070,
+    "dataSorteio": "21/10/2026",
+    "diaSorteio": "QUARTA-FEIRA",
+    "horaSorteio": "20:00",
+    "vrPremioEstimado": 150000000,
+    "tipoConcurso": 1,
+    "qtdApostas": 1,
+    "qtdNumeros": 7,
+    "vrCotaSemTarifa": 10,
+    "vrCotaComTarifa": 10.5,
+    "vrUltimaCotaComTarifa": 10.5,
+    "vrUltimaCotaSemTarifa": 10,
+    "vrTarifaServicoCota": 0.5,
+    "vrTarifaServicoUltimaCota": 0.5,
+    "vrTarifaBolao": 25,
+    "vrTotalBolaoComTarifa": 525,
+    "vrTotalBolaoSemTarifa": 500,
+    "lotericaFormatada": {
+      "id": 10,
+      "codigo": "1",
+      "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+      "numeroFormatado": "01.234567-8"
+    },
+    "modalidade": "DIA_DE_SORTE",
+    "apostas": [
+      {
+        "indicadorSurpresinha": false,
+        "operacaoExecutadaComSucesso": true,
+        "dezenas": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "trevos": [],
+        "mesDeSorte": {
+          "numero": 10,
+          "nome": "Outubro",
+          "abreviacao": "OUT"
+        }
+      }
+    ]
+  },
+  "SUPER_7": {
+    "qtdCotaDigital": 50,
+    "qtdCotaTotal": 50,
+    "qtdCotaDisponivel": 20,
+    "qtdCotaFisica": 0,
+    "qtdCotaVendidas": 30,
+    "qtdCotaReservada": 0,
+    "loterica": 10,
+    "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+    "nomeRazaoSocial": "FIXTURE DE AUDITORIA",
+    "uf": {
+      "id": 35,
+      "sigla": "SP",
+      "nome": "São Paulo"
+    },
+    "municipioCota": {
+      "id": {
+        "numero": 3550308,
+        "idUF": 35,
+        "digitoVerificador": 0
+      },
+      "nome": "SÃO PAULO",
+      "uf": {
+        "id": 35,
+        "sigla": "SP",
+        "nome": "São Paulo"
+      }
+    },
+    "concurso": 3070,
+    "dataSorteio": "21/10/2026",
+    "diaSorteio": "QUARTA-FEIRA",
+    "horaSorteio": "20:00",
+    "vrPremioEstimado": 150000000,
+    "tipoConcurso": 1,
+    "qtdApostas": 1,
+    "qtdNumeros": 7,
+    "vrCotaSemTarifa": 10,
+    "vrCotaComTarifa": 10.5,
+    "vrUltimaCotaComTarifa": 10.5,
+    "vrUltimaCotaSemTarifa": 10,
+    "vrTarifaServicoCota": 0.5,
+    "vrTarifaServicoUltimaCota": 0.5,
+    "vrTarifaBolao": 25,
+    "vrTotalBolaoComTarifa": 525,
+    "vrTotalBolaoSemTarifa": 500,
+    "lotericaFormatada": {
+      "id": 10,
+      "codigo": "1",
+      "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+      "numeroFormatado": "01.234567-8"
+    },
+    "modalidade": "SUPER_7",
+    "apostas": [
+      {
+        "indicadorSurpresinha": false,
+        "operacaoExecutadaComSucesso": true,
+        "dezenas": [
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ],
+          [
+            7
+          ]
+        ],
+        "trevos": []
+      }
+    ]
+  },
+  "LOTECA": {
+    "qtdCotaDigital": 50,
+    "qtdCotaTotal": 50,
+    "qtdCotaDisponivel": 20,
+    "qtdCotaFisica": 0,
+    "qtdCotaVendidas": 30,
+    "qtdCotaReservada": 0,
+    "loterica": 10,
+    "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+    "nomeRazaoSocial": "FIXTURE DE AUDITORIA",
+    "uf": {
+      "id": 35,
+      "sigla": "SP",
+      "nome": "São Paulo"
+    },
+    "municipioCota": {
+      "id": {
+        "numero": 3550308,
+        "idUF": 35,
+        "digitoVerificador": 0
+      },
+      "nome": "SÃO PAULO",
+      "uf": {
+        "id": 35,
+        "sigla": "SP",
+        "nome": "São Paulo"
+      }
+    },
+    "concurso": 3070,
+    "dataSorteio": "21/10/2026",
+    "diaSorteio": "QUARTA-FEIRA",
+    "horaSorteio": "20:00",
+    "vrPremioEstimado": 150000000,
+    "tipoConcurso": 1,
+    "qtdApostas": 1,
+    "qtdNumeros": 14,
+    "vrCotaSemTarifa": 10,
+    "vrCotaComTarifa": 10.5,
+    "vrUltimaCotaComTarifa": 10.5,
+    "vrUltimaCotaSemTarifa": 10,
+    "vrTarifaServicoCota": 0.5,
+    "vrTarifaServicoUltimaCota": 0.5,
+    "vrTarifaBolao": 25,
+    "vrTotalBolaoComTarifa": 525,
+    "vrTotalBolaoSemTarifa": 500,
+    "lotericaFormatada": {
+      "id": 10,
+      "codigo": "1",
+      "nomeFantasia": "LOTERICA VISUAL OFFLINE",
+      "numeroFormatado": "01.234567-8"
+    },
+    "modalidade": "LOTECA",
+    "apostas": [
+      {
+        "indicadorSurpresinha": false,
+        "operacaoExecutadaComSucesso": true,
+        "dezenas": [],
+        "trevos": [],
+        "partidasLoteca": [
+          {
+            "numero": 1,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 2,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 3,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 4,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 5,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 6,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 7,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 8,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 9,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 10,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 11,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 12,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 13,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          },
+          {
+            "numero": 14,
+            "equipe1": {
+              "numero": 1,
+              "nome": "SANTOS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": true,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 1,
+                "nome": "SANTOS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "equipe2": {
+              "numero": 2,
+              "nome": "PALMEIRAS",
+              "uf": "SP",
+              "pais": "BRASIL",
+              "siglaPais": "BRA",
+              "vitoria": false,
+              "indicadorSelecao": false,
+              "parametroEquipe": {
+                "numero": 2,
+                "nome": "PALMEIRAS",
+                "uf": "SP",
+                "pais": "BRASIL",
+                "siglaPais": "BRA",
+                "indicadorSelecao": false
+              }
+            },
+            "empate": false,
+            "descricaoLegenda": "ABC PRINCIPAL",
+            "letraLegenda": "A"
+          }
+        ]
+      }
+    ]
+  }
+}

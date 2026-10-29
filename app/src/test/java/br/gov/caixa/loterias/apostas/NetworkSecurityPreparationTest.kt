@@ -1,7 +1,8 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.core.network.config.NetworkSecurityPreparation
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
 import java.io.IOException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred

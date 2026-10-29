@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.core.domain.cart
 
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
 import java.math.BigDecimal
 import java.time.Clock
 import java.time.Instant
@@ -10,6 +10,9 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.cart.domain.usecase.HasRecentPurchase
+import br.gov.caixa.loterias.feature.cart.domain.repository.RecentPurchaseRepository
+import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchase
 
 class RecentPurchaseTest {
     private val now = Instant.parse("2026-09-07T12:00:00Z")

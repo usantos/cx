@@ -11,6 +11,15 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.keymanagement.model.HostPublicKeyPins
+import br.gov.caixa.loterias.core.keymanagement.model.PublicKeySet
+import br.gov.caixa.loterias.core.keymanagement.model.KeySetSignature
+import br.gov.caixa.loterias.core.keymanagement.model.SignedKeySetEnvelope
+import br.gov.caixa.loterias.core.keymanagement.model.TrustedConfigurationSigners
+import br.gov.caixa.loterias.core.keymanagement.model.KeySetSource
+import br.gov.caixa.loterias.core.keymanagement.model.SignedKeySetStore
+import br.gov.caixa.loterias.core.keymanagement.repository.PublicKeySetRepository
+import br.gov.caixa.loterias.core.keymanagement.verification.SignedKeySetVerifier
 
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class PublicKeySetRepositoryTest {

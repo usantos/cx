@@ -1,11 +1,16 @@
 package br.gov.caixa.loterias.core.domain.account
 
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
+import org.junit.Assert.*
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.feature.account.domain.model.LatestNotificationSession
+import br.gov.caixa.loterias.feature.account.domain.model.NotificationReadResult
+import br.gov.caixa.loterias.feature.account.domain.usecase.ReadLatestNotification
 
 class ReadLatestNotificationTest {
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))
@@ -42,7 +47,7 @@ class ReadLatestNotificationTest {
     }
 
     @Test fun `business or redirect rejection is returned without clearing the notification`() = runTest {
-        val rejection = NotificationReadResult.Rejected(br.gov.caixa.loterias.core.domain.service.ServiceFailure.Unchanged)
+        val rejection = NotificationReadResult.Rejected(br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.Unchanged)
         val useCase = ReadLatestNotification(session({ identity }, { _, _ -> error("Must retain notification") })) { _, _ -> rejection }
         assertEquals(AppResult.Success(rejection), useCase(notification))
     }

@@ -1,11 +1,15 @@
 package br.gov.caixa.loterias.core.domain.push
 
-import br.gov.caixa.loterias.core.domain.account.*
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationRepository
+import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationLocalRepository
+import br.gov.caixa.loterias.core.domain.push.usecase.RegisterPushDevice
 
 class RegisterPushDeviceTest {
     private var identity: AuthenticatedSessionIdentity? = AuthenticatedSessionIdentity("a".repeat(64))
@@ -14,18 +18,26 @@ class RegisterPushDeviceTest {
         override fun isCurrent(identity: AuthenticatedSessionIdentity) = this@RegisterPushDeviceTest.identity === identity
     }
     private val markers = mutableSetOf<String>()
-    private val store = object : PushRegistrationStore {
-        override fun contains(marker: String) = marker in markers
-        override fun remember(marker: String) { markers += marker }
+    private val store = object : PushRegistrationLocalRepository {
+        override suspend fun contains(identity: AuthenticatedSessionIdentity, marker: String) = marker in markers
+        override suspend fun remember(identity: AuthenticatedSessionIdentity, marker: String) {
+            markers += marker
+        }
     }
 
     @Test fun `failed registration retries and only successful CPF token pairs are remembered`() = runTest {
         var accepted = false
         val requests = mutableListOf<Pair<Long, String>>()
         var cpf = "01234567890"
-        val register = RegisterPushDevice(sessions, { cpf }, PushRegistrationRepository { _, number, token ->
-            requests += number to token; accepted
-        }, store)
+        val register = RegisterPushDevice(
+            sessions,
+            { cpf },
+            PushRegistrationRepository { _, number, token ->
+                requests += number to token
+                accepted
+            },
+            store
+        )
         assertFalse(register("fcm-one"))
         assertTrue(markers.isEmpty())
         accepted = true
@@ -45,9 +57,15 @@ class RegisterPushDeviceTest {
             identity = AuthenticatedSessionIdentity("a".repeat(64))
             val entered = CompletableDeferred<Unit>()
             val response = CompletableDeferred<Boolean>()
-            val register = RegisterPushDevice(sessions, { "01234567890" }, PushRegistrationRepository { _, _, _ ->
-                entered.complete(Unit); response.await()
-            }, store)
+            val register = RegisterPushDevice(
+                sessions,
+                { "01234567890" },
+                PushRegistrationRepository { _, _, _ ->
+                    entered.complete(Unit)
+                    response.await()
+                },
+                store
+            )
             val pending = async { register("fcm-one") }
             entered.await()
             identity = replacement
@@ -60,7 +78,15 @@ class RegisterPushDeviceTest {
     @Test fun `guest invalid CPF and empty token never reach backend`() = runTest {
         var requests = 0
         var cpf: String? = null
-        val register = RegisterPushDevice(sessions, { cpf }, PushRegistrationRepository { _, _, _ -> requests++; true }, store)
+        val register = RegisterPushDevice(
+            sessions,
+            { cpf },
+            PushRegistrationRepository { _, _, _ ->
+                requests++
+                true
+            },
+            store
+        )
         assertFalse(register("fcm"))
         cpf = "invalid"
         assertFalse(register("fcm"))
@@ -72,18 +98,28 @@ class RegisterPushDeviceTest {
     }
 
     @Test fun `transport exceptions keep registration retryable`() = runTest {
-        val register = RegisterPushDevice(sessions, { "01234567890" }, PushRegistrationRepository { _, _, _ ->
-            throw java.io.IOException("unavailable")
-        }, store)
+        val register = RegisterPushDevice(
+            sessions,
+            { "01234567890" },
+            PushRegistrationRepository { _, _, _ ->
+                throw java.io.IOException("unavailable")
+            },
+            store
+        )
         assertFalse(register("fcm"))
         assertTrue(markers.isEmpty())
     }
 
     @Test fun `cancellation never becomes an acknowledged registration`() = runTest {
         val cancelled = kotlinx.coroutines.CancellationException("cancelled")
-        val register = RegisterPushDevice(sessions, { "01234567890" }, PushRegistrationRepository { _, _, _ ->
-            throw cancelled
-        }, store)
+        val register = RegisterPushDevice(
+            sessions,
+            { "01234567890" },
+            PushRegistrationRepository { _, _, _ ->
+                throw cancelled
+            },
+            store
+        )
         assertSame(cancelled, runCatching { register("fcm") }.exceptionOrNull())
         assertTrue(markers.isEmpty())
     }

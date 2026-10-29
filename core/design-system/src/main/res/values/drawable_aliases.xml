@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Mantém os nomes públicos com as mesmas imagens e variantes de densidade. -->
+    <item name="drawer_header_clover" type="drawable">@drawable/caixads_home_clover</item>
+    <item name="icon_duvida2" type="drawable">@drawable/caixads_modality_help</item>
+    <item name="legacy_icon_duvida2" type="drawable">@drawable/caixads_modality_help</item>
+</resources>

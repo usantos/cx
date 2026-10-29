@@ -2,9 +2,10 @@ package br.gov.caixa.loterias.apostas
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
-import br.gov.caixa.loterias.core.domain.configuration.PrepareNetworkSecurityUseCase
+import br.gov.caixa.loterias.core.security.lifecycle.NetworkSecurityLifecycleObserver
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.configuration.usecase.PrepareNetworkSecurityUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel

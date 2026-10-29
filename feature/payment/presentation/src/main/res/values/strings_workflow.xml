@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workflow_payment_forma_de_pagamento">Forma de pagamento</string>
+    <string name="workflow_payment_escolha_pix_ou_um_processador_de_cartao_de_credito">Escolha Pix ou um processador de cartão de crédito.</string>
+    <string name="workflow_payment_meus_cartoes">Meus cartões</string>
+    <string name="workflow_payment_cartoes_cadastrados">Cartões cadastrados.</string>
+    <string name="workflow_payment_preencha_os_dados_de_cartao_de_credito_de_sua_titularidade">Preencha os dados de cartão de crédito de sua titularidade</string>
+    <string name="workflow_payment_numero_do_cartao">Número do cartão</string>
+    <string name="workflow_payment_nome_igual_ao_cartao">Nome igual ao cartão</string>
+    <string name="workflow_payment_mes_de_validade">Mês de validade</string>
+    <string name="workflow_payment_ano_de_validade">Ano de validade</string>
+    <string name="workflow_payment_salvar_cartao">Salvar cartão</string>
+    <string name="workflow_payment_continuar">Continuar</string>
+    <string name="workflow_payment_confirme_os_dados_do_cartao_escolhido">Confirme os dados do cartão escolhido</string>
+    <string name="workflow_payment_incluir_codigo_de_verificacao">Incluir Código de Verificação</string>
+    <string name="workflow_payment_confirme_os_dados_digitados">Confirme os dados digitados</string>
+    <string name="workflow_payment_apostar">Apostar</string>
+    <string name="workflow_payment_insira_o_codigo_de_seguranca_do_seu_cartao_de_credito">Insira o código de segurança do seu cartão de crédito</string>
+    <string name="workflow_payment_cvv">CVV</string>
+    <string name="workflow_payment_confirmar">Confirmar</string>
+    <string name="workflow_payment_confirmacao">Confirmação</string>
+    <string name="workflow_payment_estamos_processando_sua_compra">Estamos processando sua compra.</string>
+    <string name="workflow_payment_acompanhe_suas_compras">Acompanhe suas compras</string>
+    <string name="workflow_payment_voltar_ao_inicio">Voltar ao início</string>
+    <string name="workflow_payment_pagamento_nao_aprovado">Pagamento não aprovado</string>
+    <string name="workflow_payment_nao_foi_possivel_concluir_sua_compra">Não foi possível concluir sua compra.</string>
+    <string name="workflow_payment_tentar_novamente">Tentar novamente</string>
+    <string name="workflow_payment_copie_o_codigo_abaixo_e_utilize_o_pix_copia_e_cola_no_aplicativo">Copie o código abaixo e utilize o Pix Copia e Cola no aplicativo que você fará o pagamento.</string>
+    <string name="workflow_payment_verificar_pagamento">Verificar Pagamento</string>
+    <string name="workflow_payment_o_prazo_para_pagamento_deste_codigo_pix_terminou">O prazo para pagamento deste código Pix terminou.</string>
+    <string name="workflow_payment_gerar_novo_codigo">Gerar novo código</string>
+    <string name="workflow_payment_antes_de_prosseguir_leia_atentamente_as_instrucoes_abaixo">Antes de prosseguir, leia atentamente as instruções abaixo.</string>
+    <string name="workflow_payment_ciencia">Ciência</string>
+    <string name="workflow_payment_pagar_agora">Pagar agora!</string>
+</resources>

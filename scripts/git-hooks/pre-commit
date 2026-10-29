@@ -1,0 +1,11 @@
+#!/bin/sh
+# O runner valida o index e delega todas as verificações aos gates reais do projeto.
+set -eu
+
+repository_root=$(git rev-parse --show-toplevel) || exit $?
+cd "$repository_root" || exit $?
+if ! command -v python3 >/dev/null 2>&1; then
+    printf '%s\n' 'COMMIT BLOCKED: Python 3 é obrigatório para executar as validações.' >&2
+    exit 1
+fi
+exec python3 "$repository_root/scripts/validate-pre-commit.py" "$@"

@@ -1,9 +1,10 @@
 package br.gov.caixa.loterias.core.auth
 
-import br.gov.caixa.loterias.core.domain.account.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import org.junit.Assert.*
 import kotlinx.coroutines.flow.first
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 
 class SessionIdentityTest {
     @Test fun `observed owner disappears during authorization and after logout`() = kotlinx.coroutines.runBlocking {

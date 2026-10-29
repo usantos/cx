@@ -1,12 +1,19 @@
 package br.gov.caixa.loterias.core.domain.betting
 
-import br.gov.caixa.loterias.core.common.AppResult
-import br.gov.caixa.loterias.core.domain.cart.ShoppingCart
+import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GenerateRapidBets
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetRapidBetConfiguration
+import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
+import br.gov.caixa.loterias.feature.betting.domain.repository.RapidBettingRepository
+import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveRapidBetConfiguration
 
 class RapidBettingUseCasesTest {
     private val modality = LotteryModality(2, "Mega-Sena", "MEGA_SENA")
@@ -17,9 +24,9 @@ class RapidBettingUseCasesTest {
 
     @Test fun `valid operations delegate to repository including server default quantity zero`() = runTest {
         val repository = FakeRepository(valid)
-        assertEquals(valid, (GetRapidBetConfiguration(repository)() as AppResult.Success).value)
-        assertEquals(valid, (SaveRapidBetConfiguration(repository)(valid) as AppResult.Success).value)
-        assertTrue(GenerateRapidBets(repository)(0) is AppResult.Success)
+        assertEquals(valid, (GetRapidBetConfiguration(repository)() as ServiceResult.Success).value)
+        assertEquals(valid, (SaveRapidBetConfiguration(repository)(valid) as ServiceResult.Success).value)
+        assertTrue(GenerateRapidBets(repository)(0) is ServiceResult.Success)
         assertEquals(valid, repository.saved)
         assertEquals(0, repository.quantity)
     }
@@ -41,14 +48,14 @@ class RapidBettingUseCasesTest {
         assertFailure(GenerateRapidBets(repository)(1))
     }
 
-    private fun assertFailure(result: AppResult<*>) = assertTrue(result is AppResult.Failure)
+    private fun assertFailure(result: ServiceResult<*>) = assertTrue(result is ServiceResult.Failed)
 
     private class FakeRepository(private val value: RapidBetConfiguration, private val fail: Boolean = false) : RapidBettingRepository {
         var saved: RapidBetConfiguration? = null
         var quantity: Int? = null
-        private fun check() { if (fail) error("failure") }
-        override suspend fun configuration() = value.also { check() }
-        override suspend fun save(configuration: RapidBetConfiguration) = configuration.also { check(); saved = it }
-        override suspend fun generate(quantity: Int) = ShoppingCart(1, BigDecimal.ZERO, emptyList()).also { check(); this.quantity = quantity }
+        private fun <T> result(value: T): ServiceResult<T> = if (fail) ServiceResult.Failed(AppError.Unexpected) else ServiceResult.Success(value)
+        override suspend fun configuration() = result(value)
+        override suspend fun save(configuration: RapidBetConfiguration) = result(configuration.also { saved = it })
+        override suspend fun generate(quantity: Int) = result(ShoppingCart(1, BigDecimal.ZERO, emptyList()).also { this.quantity = quantity })
     }
 }

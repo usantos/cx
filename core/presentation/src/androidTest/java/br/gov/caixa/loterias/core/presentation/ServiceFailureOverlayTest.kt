@@ -4,13 +4,19 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.core.common.ConnectionAvailability
-import br.gov.caixa.loterias.core.common.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.CaixaDSTheme
-import br.gov.caixa.loterias.core.domain.service.ServiceRedirect
+import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
+import br.gov.caixa.loterias.core.common.network.NetworkAvailability
+import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation
+import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_LOGIN_REQUIRED
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_UPDATED_TERMS
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OFFLINE
+import br.gov.caixa.loterias.core.presentation.components.ServiceFailureOverlay
 
 class ServiceFailureOverlayTest {
     @get:Rule val compose = createComposeRule()

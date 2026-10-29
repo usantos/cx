@@ -1,8 +1,11 @@
 package br.gov.caixa.loterias.apostas
 
+import br.gov.caixa.loterias.feature.home.presentation.mapper.HomeV2Formatting
+import br.gov.caixa.loterias.feature.home.presentation.mapper.date
+import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
+import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.math.BigDecimal
 
 class HomeV2FormattingTest {
     @Test fun prizesUseBrazilianUnitsWithoutRoundingAwayFraction() {

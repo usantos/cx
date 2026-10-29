@@ -1,13 +1,22 @@
 package br.gov.caixa.loterias.core.domain.betting
 
-import br.gov.caixa.loterias.core.common.AppResult
-import br.gov.caixa.loterias.core.domain.cart.ShoppingCart
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddFavoriteBetToCart
+import br.gov.caixa.loterias.feature.betting.domain.usecase.DeleteFavoriteBet
+import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
+import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetCartOptions
+import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetDraft
+import br.gov.caixa.loterias.feature.betting.domain.repository.FavoriteBetRepository
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetFavoriteBets
+import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveFavoriteBet
+import br.gov.caixa.loterias.feature.betting.domain.usecase.ValidateFavoriteBet
 
 class FavoriteBettingUseCasesTest {
     private val favorite = FavoriteBet(4, 2, "Mega-Sena", "Minha Mega", listOf(listOf(1, 2, 3, 4, 5, 6)))

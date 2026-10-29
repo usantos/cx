@@ -11,6 +11,10 @@ import okhttp3.mockwebserver.MockWebServer
 import okio.BufferedSink
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.interceptor.SingleAttemptTransactionInterceptor
+import br.gov.caixa.loterias.core.network.interceptor.SessionRefreshHandler
+import br.gov.caixa.loterias.core.network.interceptor.SessionRefreshLease
+import br.gov.caixa.loterias.core.network.interceptor.SessionRefreshInterceptor
 
 class SessionRefreshInterceptorTest {
     private class Lease(var prepared: String? = "Bearer refreshed", var renewed: String? = "Bearer rotated") : SessionRefreshLease {

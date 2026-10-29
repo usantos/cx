@@ -1,4 +1,17 @@
 apply plugin: 'com.android.library'
+
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+android { buildFeatures { compose = true } }
 apply plugin: 'jacoco'
 
 android {
@@ -6,6 +19,7 @@ android {
     compileSdk 37
     defaultConfig { minSdk 24 }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -18,15 +32,26 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring libs.desugar.jdk.libs
+    implementation project(':core:design-system')
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.activity.compose
+    implementation libs.androidx.compose.material3
+    implementation libs.androidx.compose.ui
+
     compileOnly files('../../third-party/FilaBRAAdapter-2.6.5.1.aar')
     implementation libs.androidx.appcompat
     implementation libs.gson
     testImplementation libs.junit4
+    testImplementation files('../../third-party/FilaBRAAdapter-2.6.5.1.aar')
 }
 
 jacoco { toolVersion = '0.8.13' }
 
-def coverageExecutionData = fileTree(layout.buildDirectory).include('jacoco/testDebugUnitTest.exec')
+// O AGP escolhe o destino dos testes unitários; nunca mescle um arquivo exec fixo obsoleto.
+def coverageExecutionData = files({
+    tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+}).filter { it.isFile() }
 def coverageSourceDirectories = files('src/main/java')
 def coverageClassDirectories = files(fileTree(
         dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),

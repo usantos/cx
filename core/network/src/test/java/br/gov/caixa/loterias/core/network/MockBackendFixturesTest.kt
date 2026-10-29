@@ -10,11 +10,18 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import br.gov.caixa.loterias.core.network.api.BackendApi
+import br.gov.caixa.loterias.core.network.api.BetsHistoryApi
+import br.gov.caixa.loterias.core.network.api.MercadoPagoApi
+import br.gov.caixa.loterias.core.network.api.RecargaPayApi
+import br.gov.caixa.loterias.core.network.api.LoteriasApi
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.core.network.mock.fixture.MockBackendFixtures
 
-/** Fixture contracts are independent of the socket-backed interceptor delegation test. */
+/** Contratos das fixtures são independentes do teste de delegação do interceptor com sockets. */
 class MockBackendFixturesTest {
     @Test fun `all migrated operations retain JSON or the explicitly declared transport failure`() {
-        val operations = listOf(LoteriasApi::class.java, LegacyBackendApi::class.java, BetsHistoryApi::class.java,
+        val operations = listOf(LoteriasApi::class.java, BackendApi::class.java, BetsHistoryApi::class.java,
             MercadoPagoApi::class.java, RecargaPayApi::class.java)
             .flatMap { type -> type.declaredMethods.mapNotNull(::operation) }.toSet()
         assertEquals(106, operations.size)
@@ -43,6 +50,20 @@ class MockBackendFixturesTest {
                     }
                 }
             }
+    }
+
+    @Test fun `campaign fixtures expose legacy and optional contracts through configuration endpoint`() {
+        val october = JsonParser.parseString(MockBackendFixtures.resolve(
+            "parametros/configuraveis-app", MockBackendScenario.CAMPAIGN_OCTOBER_ROSE).body)
+            .asJsonObject.getAsJsonObject("payload").getAsJsonObject("mapa")
+        assertTrue(october.get("vigenciaMesOutubroRosa").asBoolean)
+        assertTrue(october.get("vigenciaOutubroRosaMegaSena").asBoolean)
+        val september = JsonParser.parseString(MockBackendFixtures.resolve(
+            "parametros/configuraveis-app", MockBackendScenario.CAMPAIGN_SEPTEMBER_BLUE).body)
+            .asJsonObject.getAsJsonObject("payload").getAsJsonObject("mapa")
+            .getAsJsonArray("campanhasComemorativas")[0].asJsonObject
+        assertEquals("SETEMBRO_AZUL", september.get("codigo").asString)
+        assertTrue(september.get("ativa").asBoolean)
     }
 
     private fun operation(method: java.lang.reflect.Method): Pair<String, String>? {

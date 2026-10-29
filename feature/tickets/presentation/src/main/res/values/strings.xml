@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tickets_favorite_overwrite_confirmation">Já existe uma aposta favorita com estes dados. Deseja salvar mesmo assim?</string>
+    <string name="tickets_attention">Atenção</string>
+    <string name="tickets_yes">Sim</string>
+    <string name="tickets_no">Não</string>
+    <string name="tickets_bet_filters_title">Filtrar apostas</string>
+    <string name="tickets_filter_bet_type">Tipo de aposta</string>
+    <string name="tickets_filter_modalities">Modalidades</string>
+    <string name="tickets_filter_contest_type">Tipo de concurso</string>
+    <string name="tickets_filter_bet_status">Situação da aposta</string>
+    <string name="tickets_filter_ordering">Ordenar por</string>
+    <string name="tickets_filter_all">Todas</string>
+    <string name="tickets_filter_surprise">Surpresinha</string>
+    <string name="tickets_filter_recurring">Teimosinha</string>
+    <string name="tickets_filter_combos">Combos</string>
+    <string name="tickets_filter_apply">OK</string>
+    <string name="tickets_filter_clear">Limpar</string>
+    <string name="tickets_filter_cancel">Cancelar</string>
+    <string name="tickets_filter_expanded">Expandido</string>
+    <string name="tickets_filter_collapsed">Recolhido</string>
+    <string name="tickets_scanner_title">Resultado</string>
+    <string name="tickets_scanner_close">Fechar</string>
+    <string name="tickets_scanner_permission_message">Permita o acesso à câmera para ler o código do bilhete.</string>
+    <string name="tickets_scanner_permission_action">Permitir câmera</string>
+    <string name="tickets_scanner_qr_instruction">Posicione a câmera sobre o QR Code e aguarde. A leitura é automática.</string>
+    <string name="tickets_scanner_qr_action">QR Code</string>
+</resources>

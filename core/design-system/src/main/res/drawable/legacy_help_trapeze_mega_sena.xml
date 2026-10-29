@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <!-- Colored rectangle-->
+    <!-- Retângulo colorido -->
     <item>
         <shape android:shape="rectangle">
             <size
@@ -11,8 +11,8 @@
         </shape>
     </item>
 
-    <!-- This rectangle for the right side -->
-    <!-- Their color should be the same as layout's background -->
+    <!-- Este retângulo corresponde ao lado direito -->
+    <!-- Sua cor deve ser a mesma do fundo do layout -->
     <item
         android:right="-250dp"
         android:left="81dp"

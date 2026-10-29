@@ -322,3 +322,14 @@ gradle-app.setting
 # Python caches produced by migration verification scripts
 __pycache__/
 *.py[cod]
+
+# Local build/bootstrap configuration and signing material
+.local/
+*.jks
+*.keystore
+*.p12
+*.pfx
+
+# Exportações e pacotes gerados localmente
+/output/
+*.aab

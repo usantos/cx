@@ -6,8 +6,15 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
+import br.gov.caixa.loterias.core.network.api.LoteriasApi
+import br.gov.caixa.loterias.core.network.interceptor.SessionRefreshHandler
+import br.gov.caixa.loterias.core.network.interceptor.SessionRefreshLease
+import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
 
-/** Synthetic local HTTP only; no real account or backend mutation. */
+/** Somente HTTP local sintético; sem conta real ou alterações no backend. */
 class BoundCartRemovalTransportTest {
     @Test fun `ended login tag prevents DELETE despite replacement generic bearer`() = runTest {
         MockWebServer().use { server ->
@@ -99,8 +106,9 @@ class BoundCartRemovalTransportTest {
     }
 
     private fun api(server: MockWebServer, generic: String, builder: OkHttpClient.Builder = OkHttpClient.Builder(),
-        refresh: SessionRefreshHandler? = null): LoteriasApi {
-        // The factory still enforces HTTPS. Only this fixture rewrites its local wire to MockWebServer.
+        refresh: SessionRefreshHandler? = null,
+    ): LoteriasApi {
+        // A fábrica continua exigindo HTTPS. Somente esta fixture redireciona o transporte local para MockWebServer.
         val base = server.url("/rest/v1/").newBuilder().scheme("https").build().toString()
         builder.addInterceptor { chain ->
             val request = chain.request()

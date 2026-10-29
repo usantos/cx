@@ -1,0 +1,9 @@
+# Extração de MarketplaceViewModel
+
+Pedido: separar coordenação, carregamento, paginação, lotéricas favoritas, favoritos de bolões, cotas e carrinho mantendo interface pública, StateFlow e comportamento. SPEC.md permanece aplicável.
+
+A fachada MarketplaceViewModel mantém construtor/defaults, MutableStateFlow/StateFlow, revisão dos filhos, roteamento de ações, abas/expansão e init. Seis arquivos internos no mesmo package: MarketplaceLoadingCoordinator (busca/cabeçalho), MarketplaceSearchPagination (filtro/área/próxima página), MarketplaceFavoriteRetailersCoordinator (lista/remoção), MarketplacePoolFavoriteCoordinator (favoritar pela lista de bolões), MarketplaceSharesCoordinator (quantidades), MarketplaceCartCoordinator (pedido/reserva/confirmação). Os colaboradores recebem as mesmas referências de estado, viewModelScope, dispatchers e use cases; nenhum cria estado/escopo paralelo.
+
+Preservar ordem search→favoritas→cabeçalho, retry sem recarregar favoritas, revisão de filhos, carregamento automático de áreas vazias, reset do filtro apenas em search, leitura do filtro dentro da coroutine, append sem deduplicar, paginação sem token/cancelamento novo e sem filtrar respostas atrasadas. Preservar travas compartilhadas de lotérica e carrinho, quantidades/preços/reserva/códigos/mensagens e instantes das mutações. Não sincronizar automaticamente a aba favorita ao favoritar um bolão: manter o efeito existente. Não alterar UI/DI/rede/persistência/contratos/dependências.
+
+Caracterizar original e comparar extração; executar JVM, UI existente do módulo, lint, compilação PrdDebug e gates. Cobertura inclui fachada/colaboradores/coroutines com todos os includes existentes preservados e mínimo 0.95. Revisão independente somente leitura. Sem commits/pushes; continuar checkout atual com refatorações anteriores. Resultados globais e pendências de homologação anteriores não representam verificações repetidas nesta rodada.

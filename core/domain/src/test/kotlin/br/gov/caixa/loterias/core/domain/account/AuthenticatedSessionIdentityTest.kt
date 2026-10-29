@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.core.domain.account
 
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 
 class AuthenticatedSessionIdentityTest {
     @Test fun `identity is a redacted lease not an equality match on owner hash`() {

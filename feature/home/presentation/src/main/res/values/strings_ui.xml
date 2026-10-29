@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pt">
+    <string name="ui_02d_b2dd46" formatted="false">"%02d"</string>
+    <string name="ui_1_s_4c75be">"(%1$s)"</string>
+    <string name="ui_1_s_8d1db6">"%1$s  ›"</string>
+    <string name="ui_1_s_d020a2">"%1$s"</string>
+    <string name="ui_1_s_de_2_s_ec1761">"%1$s de %2$s"</string>
+    <string name="ui_4_ou_mais_4bb81b" formatted="false">"4 ou mais"</string>
+    <string name="ui_abrir_link_9b8abd" formatted="false">"Abrir Link"</string>
+    <string name="ui_abrir_menu_7db0b2" formatted="false">"Abrir menu"</string>
+    <string name="ui_abrir_ultimo_resultado_4bb93c" formatted="false">"Abrir último resultado"</string>
+    <string name="ui_acesse_e_jogue_no_portal_da_511a08" formatted="false">"Acesse e jogue\nno Portal da "</string>
+    <string name="ui_acompanhe_suas_apostas_7c205a" formatted="false">"Acompanhe suas apostas"</string>
+    <string name="ui_acompanhe_suas_compras_014250" formatted="false">"Acompanhe suas compras"</string>
+    <string name="ui_agite_o_celular_para_preencher_sua_a_1bfa20" formatted="false">"Agite o celular para preencher\nsua aposta com números aleatórios"</string>
+    <string name="ui_aguardando_estimativa_de_premio_efd8b1" formatted="false">"\n\nAguardando estimativa de prêmio"</string>
+    <string name="ui_aposta_shake_317269" formatted="false">"Aposta Shake"</string>
+    <string name="ui_apostar_em_1_s_74e1cb">"Apostar em %1$s"</string>
+    <string name="ui_apostas_e73ece" formatted="false">"Apostas"</string>
+    <string name="ui_apostas_se_encerram_em_d9ca00" formatted="false">"Apostas se encerram em"</string>
+    <string name="ui_aposte_0db5db" formatted="false">"Aposte"</string>
+    <string name="ui_arrecadacao_total_968b74" formatted="false">"Arrecadação total"</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_ativar_aposta_shake_4cd4b9" formatted="false">"Ativar Aposta Shake"</string>
+    <string name="ui_bilhetes_da_instantanea_a14b7f" formatted="false">"Bilhetes da Instantânea"</string>
+    <string name="ui_cancelar_bb9dbb" formatted="false">"Cancelar"</string>
+    <string name="ui_carregando_125857" formatted="false">"Carregando…"</string>
+    <string name="ui_central_de_atendimento_a_mulher_24d146" formatted="false">"Central de Atendimento à Mulher"</string>
+    <string name="ui_cnpj_24_038_490_0001_83_ed_jose_alen_ade8ce" formatted="false">"CNPJ 24.038.490.0001‑83\nED. José Alencar – SEPN 512, Conjunto C, Lote 12, Asa Norte, Brasília – DF\nCEP 70760‑500 BRASÍLIA – DF"</string>
+    <string name="ui_combos_de_apostas_5dd87d" formatted="false">"Combos de apostas"</string>
+    <string name="ui_compre_seu_bolao_97d03e" formatted="false">"Compre seu bolão"</string>
+    <string name="ui_concurso_1_s_32ee4c">"Concurso %1$s"</string>
+    <string name="ui_conferir_apostas_f4de2d" formatted="false">"Conferir apostas"</string>
+    <string name="ui_conferir_bilhetes_1465ae" formatted="false">"Conferir bilhetes"</string>
+    <string name="ui_confirmar_717bed" formatted="false">"Confirmar"</string>
+    <string name="ui_consultando_ultimo_resultado_ff60d8" formatted="false">"Consultando último resultado…"</string>
+    <string name="ui_consultar_ultimo_resultado_a43072" formatted="false">"Consultar último resultado"</string>
+    <string name="ui_consulte_aqui_o_restante_da_lista_de_62bf78" formatted="false">"Consulte aqui o restante da lista de municípios com ganhadores."</string>
+    <string name="ui_consulte_historicos_661e76" formatted="false">"Consulte históricos"</string>
+    <string name="ui_dados_indisponiveis_decf8d" formatted="false">"Dados indisponíveis"</string>
+    <string name="ui_depois_b8db71" formatted="false">"Depois"</string>
+    <string name="ui_desativar_aposta_shake_a8e7d9" formatted="false">"Desativar Aposta Shake"</string>
+    <string name="ui_deseja_ativar_a_aposta_shake_nas_mod_b76591" formatted="false">"Deseja ativar a Aposta Shake nas modalidades de loterias?"</string>
+    <string name="ui_deseja_desativar_a_aposta_shake_nas_b0bc75" formatted="false">"Deseja desativar a Aposta Shake nas modalidades de loterias?"</string>
+    <string name="ui_diversao_e_premios_na_hora_d9b789" formatted="false">"Diversão e prêmios na hora"</string>
+    <string name="ui_domingo_424e93" formatted="false">"Domingo"</string>
+    <string name="ui_duplasena_8bb473" formatted="false">"duplasena"</string>
+    <string name="ui_empate_0b5021" formatted="false">"Empate"</string>
+    <string name="ui_encerramento_f0dcba" formatted="false">"Encerramento"</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_escolha_sua_modalidade_e5181a" formatted="false">"Escolha sua modalidade"</string>
+    <string name="ui_estatisticas_003851" formatted="false">"Estatísticas"</string>
+    <string name="ui_fechar_resultado_3062bc" formatted="false">"Fechar resultado"</string>
+    <string name="ui_fique_por_dentro_das_novidades_bdfd42" formatted="false">"Fique por dentro das novidades"</string>
+    <string name="ui_ganhadores_por_regiao_1o_sorteio_7ad564" formatted="false">"Ganhadores por região – 1º sorteio"</string>
+    <string name="ui_ganhadores_por_regiao_2o_sorteio_659964" formatted="false">"Ganhadores por região – 2º sorteio"</string>
+    <string name="ui_ganhadores_por_regiao_dcf6c4" formatted="false">"Ganhadores por região"</string>
+    <string name="ui_ha_apostas_locais_sem_confirmacao_de_e4755e" formatted="false">"Há apostas locais sem confirmação de envio. Elas foram preservadas e não serão enviadas novamente. Confira o carrinho da sua conta antes de decidir o que fazer com essas apostas."</string>
+    <string name="ui_home_campaign_rotation_a55a88" formatted="false">"home-campaign-rotation"</string>
+    <string name="ui_home_carousel_offset_324d54" formatted="false">"home-carousel-offset"</string>
+    <string name="ui_home_clover_rotation_604b21" formatted="false">"home-clover-rotation"</string>
+    <string name="ui_home_footer_scrim_5de357" formatted="false">"home-footer-scrim"</string>
+    <string name="ui_home_result_reveal_398a5f" formatted="false">"home-result-reveal"</string>
+    <string name="ui_homeloading_d4d822" formatted="false">"homeLoading"</string>
+    <string name="ui_informacoes_sobre_aposta_shake_c2fa3c" formatted="false">"Informações sobre Aposta Shake"</string>
+    <string name="ui_inicio_325dfc" formatted="false">"Início"</string>
+    <string name="ui_jogo_responsavel_01eb13" formatted="false">"Jogo responsável"</string>
+    <string name="ui_jogue_com_amigos_e_aumente_suas_chan_264701" formatted="false">"Jogue com amigos e aumente suas chances de ganhar."</string>
+    <string name="ui_loterias_caixa_267b9d" formatted="false">"Loterias CAIXA"</string>
+    <string name="ui_mais_para_voce_eabc1d" formatted="false">"Mais para você"</string>
+    <string name="ui_mais_que_apostas_combos_criados_para_9c4a06" formatted="false">"Mais que apostas: combos criados\npara aumentar suas chances\nde realizar o que você deseja."</string>
+    <string name="ui_mes_de_sorte_4fd420" formatted="false">"Mês de sorte"</string>
+    <string name="ui_meus_jogos_08fc53" formatted="false">"Meus jogos"</string>
+    <string name="ui_mover_para_posicao_anterior_0ea756" formatted="false">"Mover para posição anterior"</string>
+    <string name="ui_mover_para_proxima_posicao_92b1b5" formatted="false">"Mover para próxima posição"</string>
+    <string name="ui_nao_9bc947" formatted="false">"Não"</string>
+    <string name="ui_nao_exibir_o_aviso_novamente_56667d" formatted="false">"Não exibir o aviso novamente"</string>
+    <string name="ui_nao_foi_possivel_abrir_o_whatsapp_do_dbe6b0" formatted="false">"Não foi possível abrir o WhatsApp do canal 180. Tente novamente."</string>
+    <string name="ui_nenhuma_modalidade_disponivel_no_mom_8d67af" formatted="false">"Nenhuma modalidade disponível no momento."</string>
+    <string name="ui_notificacoes_6b8e9e" formatted="false">"Notificações"</string>
+    <string name="ui_ok_565339" formatted="false">"OK"</string>
+    <string name="ui_ola_1_s_9c8eeb">"Olá, %1$s!"</string>
+    <string name="ui_ola_seja_bem_vindo_ao_app_loterias_6cb198" formatted="false">"Olá, seja bem-vindo ao App Loterias."</string>
+    <string name="ui_para_boas_causas_570deb" formatted="false">" para boas causas"</string>
+    <string name="ui_para_comprar_o_seu_bolao_58bb1a" formatted="false">"para comprar o seu bolão"</string>
+    <string name="ui_por_favor_conceda_a_permissao_da_cam_3df297" formatted="false">"Por favor conceda a permissão da câmera para usar o leitor de bilhetes."</string>
+    <string name="ui_premiacao_1o_sorteio_e21086" formatted="false">"Premiação – 1º sorteio"</string>
+    <string name="ui_premiacao_2o_sorteio_e50c1d" formatted="false">"Premiação – 2º sorteio"</string>
+    <string name="ui_premiacao_b81f73" formatted="false">"Premiação"</string>
+    <string name="ui_premio_1_s_eb3e48">"Prêmio: %1$s"</string>
+    <string name="ui_premio_estimado_699ac4" formatted="false">"Prêmio estimado"</string>
+    <string name="ui_premio_estimado_do_concurso_4dddfc" formatted="false">"Prêmio estimado do concurso "</string>
+    <string name="ui_premio_estimado_do_concurso_b1224f" formatted="false">"Prêmio estimado do concurso"</string>
+    <string name="ui_promocoes_2a838e" formatted="false">"Promoções"</string>
+    <string name="ui_proximo_concurso_749d77" formatted="false">"Próximo Concurso\n\n"</string>
+    <string name="ui_proximo_sorteio_f25cee" formatted="false">"PRÓXIMO SORTEIO"</string>
+    <string name="ui_sair_2d023d" formatted="false">"Sair"</string>
+    <string name="ui_segure_e_arraste_para_organizar_ffb77b" formatted="false">"Segure e arraste para organizar"</string>
+    <string name="ui_shimmerprogress_350cb6" formatted="false">"shimmerProgress"</string>
+    <string name="ui_sim_931345" formatted="false">"Sim"</string>
+    <string name="ui_sorteio_a49bf4" formatted="false">"Sorteio"</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_texto_67cfd5" formatted="false">"☰"</string>
+    <string name="ui_texto_7bb37d" formatted="false">"›"</string>
+    <string name="ui_texto_a03b22" formatted="false">"???"</string>
+    <string name="ui_time_do_coracao_918360" formatted="false">"Time do coração"</string>
+    <string name="ui_timemania_9b0b6c" formatted="false">"timemania"</string>
+    <string name="ui_trevos_1_s_946f5c">"Trevos: %1$s"</string>
+    <string name="ui_ultimo_resultado_68e65f" formatted="false">"Último resultado ›"</string>
+    <string name="ui_ultimo_resultado_d527ea" formatted="false">"Último resultado"</string>
+    <string name="ui_ultimos_resultados_efecc0" formatted="false">"Últimos resultados"</string>
+    <string name="ui_valor_minimo_da_compra_r_0_00_b65ede" formatted="false">"valor mínimo da compra: R$0,00"</string>
+    <string name="ui_veja_numeros_e_probabilidades_04757e" formatted="false">"Veja números e probabilidades"</string>
+    <string name="ui_ver_menos_8e3816" formatted="false">"Ver menos"</string>
+    <string name="ui_ver_resultado_209476" formatted="false">"Ver resultado ›"</string>
+    <string name="ui_ver_todas_6240cd" formatted="false">"Ver todas"</string>
+    <string name="ui_voce_possui_compra_s_cancelada_s_por_c4885e" formatted="false">"Você possui compra(s) cancelada(s) por falta de identificação do pagamento dentro do tempo limite para efetivação das apostas. As apostas contidas na compra não concorrem a qualquer concurso. Não se preocupe, caso tenha realizado o pagamento realizaremos o estorno do valor para a conta pagadora."</string>
+    <string name="ui_voce_tem_1d937c" formatted="false">"Você tem"</string>
+</resources>

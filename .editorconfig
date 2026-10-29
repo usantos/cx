@@ -1,0 +1,22 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+[*.{kt,kts,gradle}]
+indent_style = space
+indent_size = 4
+ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL
+
+[*.{md,toml,yml,yaml}]
+indent_style = space
+indent_size = 2
+
+[*.{kt,kts}]
+ktlint_code_style = android_studio
+ij_kotlin_allow_trailing_comma = true
+max_line_length = 140
+# Compose functions may use the name of the UI element they return.
+ktlint_function_naming_ignore_when_annotated_with = Composable

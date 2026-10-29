@@ -1,0 +1,12 @@
+{
+  "Status": "APROVADO - qualityGate e verificadores de arquitetura/backend",
+  "Data e fuso": "2026-10-22T21:00:26-03:00",
+  "Cobertura LINE global": "95,04% = 44.454 / 46.775 linhas; 2.321 não cobertas. Condição estrita: >95%.",
+  "Testes unitários": "3.059 testes em 610 suítes; zero falhas, erros ou ignorados; 67 módulos contabilizados.",
+  "Análise estática": "Ktlint PASSED; Detekt PASSED; Android Lint PASSED. Baselines e exclusões de cobertura preservados. Supressões declarativas locais documentadas.",
+  "Arquitetura e backend": "verifyFeatureModules, verifyAppArchitecturePolicy e verifyLegacyBackendParity aprovados na mesma execução.",
+  "Execução": "./gradlew qualityGate verifyFeatureModules verifyAppArchitecturePolicy verifyLegacyBackendParity --continue --console=plain -PhomeV2=false -PmockBackend=false -PnetworkLogging=false",
+  "Dispositivo controlado": "AndroidSecureStoresTest passou no SM-G556B e emulador Android 16 em execução separada, com DataStore 1.3.0. Não integra a cobertura global unitária.",
+  "Rastreabilidade": "SHA-256 dos fontes/configurações antes e depois da execução: e17d1d548829b3abb26c73ced655653e203fa2df4d4652bab96dc6a4e2d6f58a. 3.923 arquivos sem alterações durante o gate.",
+  "Limites": "CI remoto e release/R8 não foram executados nesta rodada. Testes de reopen/recriação não demonstram restauração de todas as telas por morte real de processo. Migrações e resolução de incerteza ainda pendentes são discriminadas no documento."
+}

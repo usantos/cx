@@ -1,13 +1,19 @@
 package br.gov.caixa.loterias.core.network
 
+import br.gov.caixa.loterias.feature.retail.data.dto.MercadoPagoRegistrationEnvelopeDto
+
 import com.google.gson.JsonParser
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.core.network.interceptor.MockBackendInterceptor
+import br.gov.caixa.loterias.core.network.mock.fixture.MockBackendFixtures
 
-/** Entirely intercepted responses: no HTTP server, socket or actual payment. */
+/** Respostas totalmente interceptadas: sem servidor HTTP, socket ou pagamento real. */
 class MockPurchaseStatusTest {
     @Test fun `registration fixtures keep profile available and token envelope never exposes secrets in text`() {
         val gson = com.google.gson.Gson()

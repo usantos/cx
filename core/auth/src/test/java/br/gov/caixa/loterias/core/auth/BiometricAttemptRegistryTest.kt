@@ -2,6 +2,8 @@ package br.gov.caixa.loterias.core.auth
 
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.auth.gateway.BiometricAttemptRegistry
 
 class BiometricAttemptRegistryTest {
     @Test fun `cancelled prompt cannot complete a later login`() {

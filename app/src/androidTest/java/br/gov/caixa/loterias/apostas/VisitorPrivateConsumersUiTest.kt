@@ -2,24 +2,45 @@ package br.gov.caixa.loterias.apostas
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import br.gov.caixa.loterias.core.common.AppResult
-import br.gov.caixa.loterias.core.designsystem.CaixaDSTheme
-import br.gov.caixa.loterias.core.domain.betting.*
-import br.gov.caixa.loterias.core.domain.cart.*
-import br.gov.caixa.loterias.core.domain.payment.*
-import br.gov.caixa.loterias.core.domain.responsiblegaming.*
-import br.gov.caixa.loterias.feature.betting.*
-import br.gov.caixa.loterias.feature.cart.*
-import br.gov.caixa.loterias.feature.payment.*
-import br.gov.caixa.loterias.feature.responsiblegaming.*
 import org.junit.Assert.*
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddFavoriteBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.DeleteFavoriteBetUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetFavoriteBetsUseCase
+import br.gov.caixa.loterias.feature.betting.presentation.route.FavoriteBetsRoute
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.FavoriteBetsViewModel
+import br.gov.caixa.loterias.feature.cart.domain.usecase.AddFavoriteCartToCurrentUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartBetUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartBetsUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartsUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
+import br.gov.caixa.loterias.feature.cart.presentation.route.FavoriteCartsRoute
+import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.FavoriteCartsViewModel
+import br.gov.caixa.loterias.feature.payment.domain.usecase.DeleteSavedCardUseCase
+import br.gov.caixa.loterias.feature.payment.domain.usecase.GeneratePixChargeUseCase
+import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUseCase
+import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
+import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
+import br.gov.caixa.loterias.feature.payment.domain.usecase.ValidateDamUseCase
+import br.gov.caixa.loterias.feature.payment.presentation.route.PaymentDataRoute
+import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentMode
+import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.PaymentViewModel
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSelfAssessmentQuestionsUseCase
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSocialTransfersUseCase
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.SubmitSelfAssessmentUseCase
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.SuspendAccountUseCase
+import br.gov.caixa.loterias.feature.responsiblegaming.presentation.route.ResponsibleGamingRoute
+import br.gov.caixa.loterias.feature.responsiblegaming.presentation.viewmodel.ResponsibleGamingViewModel
+import java.util.concurrent.atomic.AtomicInteger
 import org.junit.Rule
 import org.junit.Test
-import java.math.BigDecimal
-import java.util.concurrent.atomic.AtomicInteger
 
-/** Real private route consumers: the visitor sees native initial public content and calls no private dependency. */
+/** Consumidores reais de rotas privadas: o visitante vê o conteúdo público inicial nativo sem chamar dependências privadas. */
 class VisitorPrivateConsumersUiTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
 

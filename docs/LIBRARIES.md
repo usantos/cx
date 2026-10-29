@@ -20,7 +20,7 @@
 | Concorrência | Coroutines | 1.11.0 |
 | HTTP | Retrofit | 3.0.0 |
 | HTTP | OkHttp / MockWebServer | 5.5.0 |
-| JSON | Gson | 2.14.0 |
+| JSON | Gson | 2.15.0 |
 | Configuração remota | Firebase Remote Config BOM | 34.18.0 |
 | OAuth | AppAuth | 0.11.1 |
 | Compatibilidade do fornecedor | AppCompat / ConstraintLayout | 1.7.1 / 2.2.2 |

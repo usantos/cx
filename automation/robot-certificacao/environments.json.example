@@ -1,0 +1,9 @@
+{
+  "target": "local",
+  "environment": "tqs",
+  "remoteUrl": "http://127.0.0.1:4723/",
+  "udid": "<udid_do_dispositivo>",
+  "deviceName": "Android SIMLO",
+  "timeout": 40,
+  "extraCapabilities": {}
+}

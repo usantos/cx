@@ -1,11 +1,28 @@
 package br.gov.caixa.loterias.core.domain.tickets
 
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.core.common.result.AppResult
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.tickets.domain.usecase.CheckTicket
+import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
+import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetConfirmedBets
+import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetConfirmedBetsConfiguration
+import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetPurchaseBets
+import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetPurchaseDetails
+import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetPurchaseMonths
+import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetPurchasePaymentMethods
+import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetPurchaseStatuses
+import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetPurchases
+import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
+import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth
+import br.gov.caixa.loterias.feature.tickets.domain.usecase.SavePurchaseAsFavorite
+import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
+import br.gov.caixa.loterias.feature.tickets.domain.model.TicketQuery
+import br.gov.caixa.loterias.feature.tickets.domain.repository.TicketsRepository
 
 class TicketsUseCasesTest {
     private val bet = ConfirmedBet(

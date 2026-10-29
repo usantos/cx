@@ -10,6 +10,10 @@ import okio.Buffer
 import okio.BufferedSink
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.interceptor.singleAttempt
+import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
 
 class SingleAttemptTransactionInterceptorTest {
     @Test fun `body is one shot without altering payload metadata headers or request identity tag`() {

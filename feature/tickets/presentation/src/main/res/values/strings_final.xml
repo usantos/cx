@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_load_failure">"Não foi possível carregar"</string>
+    <string name="final_retry">"Tentar novamente"</string>
+    <string name="final_bet">"Aposta"</string>
+    <string name="final_purchase_month_year">"Selecione o mês e ano"</string>
+</resources>

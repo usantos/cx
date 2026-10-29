@@ -1,0 +1,26 @@
+{
+  "edition": "2026-10-27",
+  "scope": "samsung-a11y-complementary-validation-and-grouped-readouts",
+  "passed": false,
+  "state": "DEVICE_VALIDATION_PARTIAL",
+  "codeGatesPassed": true,
+  "stages": {
+    "JVM/Robolectric": "3385 PASSED / 0 FAILED / 0 ERRORS / 0 SKIPPED, 68 modules with per-log provenance",
+    "New native characterization": "1 PASSED on emulator; previous 19 historical",
+    "Lint / Detekt / PRD Build / App integration": "PASSED",
+    "Architecture / CaixaDS": "PASSED",
+    "Ktlint": "77 changed Kotlin files PASSED",
+    "Protected configurations and headers": "37 + 2 unchanged",
+    "Samsung human scenario responses": "Scenario-specific counts and literal answers in manual-confirmations.json; partial findings tracked separately",
+    "Samsung matrix": {
+      "PARTIAL": 29,
+      "PASSED": 13,
+      "FAILED": 7,
+      "NOT_EXECUTED": 6,
+      "BLOCKED": 1
+    },
+    "Grouped readout auditory verification": "Cart and Results confirmed by user: Leitura completa e correta",
+    "Global Coverage / Release / Remote CI": "NOT_RUN"
+  },
+  "evidenceRoot": "build/verification/samsung-a11y-14features-20261027"
+}

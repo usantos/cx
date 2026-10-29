@@ -1,12 +1,27 @@
 package br.gov.caixa.loterias.core.domain.account
 
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
+import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
+import br.gov.caixa.loterias.feature.account.domain.model.AccountRegistration
+import br.gov.caixa.loterias.feature.account.domain.repository.AccountRepository
+import br.gov.caixa.loterias.feature.account.domain.model.Gender
+import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfile
+import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
+import br.gov.caixa.loterias.feature.account.domain.model.PersonalDataUpdate
+import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.feature.account.domain.usecase.RecalculateAuthorizedLimit
+import br.gov.caixa.loterias.feature.account.domain.usecase.RegisterAccount
+import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCode
+import br.gov.caixa.loterias.feature.account.domain.usecase.UpdatePersonalData
+import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccess
+import br.gov.caixa.loterias.feature.account.domain.model.ZipCodeLocation
 
 class AccountUseCasesTest {
     @Test

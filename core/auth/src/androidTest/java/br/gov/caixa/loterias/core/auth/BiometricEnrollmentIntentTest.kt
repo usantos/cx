@@ -5,6 +5,7 @@ import android.hardware.biometrics.BiometricManager
 import android.provider.Settings
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.gateway.launchBiometricEnrollment
 
 class BiometricEnrollmentIntentTest {
     @Test fun enrollmentOffersWeakBiometricAndDeviceCredential() {

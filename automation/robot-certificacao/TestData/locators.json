@@ -1,0 +1,13 @@
+{
+  "login.experimente": "id=simlo.account.login.experimente",
+  "login.entrar": "id=simlo.account.login.entrar",
+  "login.biometria": "id=simlo.account.login.biometria",
+  "login.trocar_usuario": "id=simlo.account.login.trocar_usuario",
+  "home.menu": "id=simlo.home.menu",
+  "home.carrinho": "id=simlo.home.carrinho",
+  "home.resultados": "id=simlo.home.resultados",
+  "home.apostar": "id=simlo.home.apostar",
+  "menu.sair": "id=simlo.home.sair",
+  "dialogo.positivo": "id=simlo.dialog.positivo",
+  "resultados.modalidades": "id=simlo.results.modalidades"
+}

@@ -1,0 +1,82 @@
+// Política específica do Android. Módulos apenas JVM são cobertos por Detekt/Ktlint.
+// Mantém os detectores padrão do AGP e as verificações de lint das dependências AndroidX/Compose.
+def updateBaselines = providers.gradleProperty('updateLintBaseline').map { it.toBoolean() }.getOrElse(false)
+// Rejeita grafos que misturam validação/atualização antes que uma tarefa do AGP possa criar uma baseline.
+gradle.taskGraph.whenReady { graph ->
+    if (updateBaselines && [':lintQualityCheck', ':quickQualityCheck', ':qualityGate'].any { graph.hasTask(it) }) {
+        throw new GradleException('Baseline updates cannot run inside validation. Use only -PupdateLintBaseline=true lintQualityBaseline.')
+    }
+}
+def expectedLintTasks = []
+def lintQuality = tasks.register('lintQualityCheck') {
+    group = 'verification'
+    description = 'Checks every Android module once (product app PRD Debug, other Android modules Debug).'
+    doFirst {
+        if (updateBaselines) {
+            throw new GradleException('Baseline updates are separate from validation. Run lintQualityBaseline, then lintQualityCheck without -PupdateLintBaseline.')
+        }
+    }
+}
+def baselineQuality = tasks.register('lintQualityBaseline') {
+    group = 'verification'
+    description = 'Explicitly updates reviewed legacy lint baselines; requires -PupdateLintBaseline=true.'
+    doFirst {
+        if (!updateBaselines) {
+            throw new GradleException('Use ./gradlew -PupdateLintBaseline=true lintQualityBaseline to explicitly update baselines.')
+        }
+    }
+}
+
+subprojects { owner ->
+    ['com.android.application', 'com.android.library'].each { pluginId ->
+        owner.pluginManager.withPlugin(pluginId) {
+            def variant = owner.path == ':app' ? 'PrdDebug' : 'Debug'
+            def baselineFile = rootProject.file("config/lint/baselines/${owner.path.substring(1).replace(':', '/')}.xml")
+            owner.extensions.getByName('android').lint {
+                abortOnError = true
+                warningsAsErrors = true
+                checkReleaseBuilds = true
+                // Cada módulo Android possui sua tarefa canônica de lint. Não repete a análise/geração de relatórios de
+                // dependências para cada consumidor; os detectores de lint das dependências continuam sendo carregados.
+                checkDependencies = false
+                checkGeneratedSources = false
+                // Mantém os detectores padrão específicos de testes, sem aplicar verificações Android exclusivas
+                // de produção às fixtures e simulações dos testes.
+                ignoreTestSources = false
+                htmlReport = true
+                xmlReport = true
+                sarifReport = true
+                // Mantém os caminhos build/reports/lint-results-<variant>.* do AGP específicos por variante.
+                // Um arquivo de saída personalizado compartilhado causaria colisões entre debug/release/flavors.
+                enable += [
+                        'NewApi', 'InlinedApi', 'StaticFieldLeak', 'Recycle',
+                        'MissingPermission', 'UnsafeProtectedBroadcastReceiver',
+                        'ContentDescription', 'ClickableViewAccessibility',
+                        'HardcodedText', 'SetTextI18n', 'ResourceAsColor', 'UseSparseArrays',
+                ]
+                // Arquivos ausentes não devem ser criados por uma execução normal de validação.
+                if (baselineFile.isFile() || updateBaselines) {
+                    baseline = baselineFile
+                }
+            }
+            expectedLintTasks += "${owner.path}:lint${variant}"
+            lintQuality.configure { dependsOn "${owner.path}:lint${variant}" }
+            if (updateBaselines) {
+                owner.tasks.matching { it.name == "updateLintBaseline${variant}" }.configureEach {
+                    doFirst { baselineFile.parentFile.mkdirs() }
+                }
+                baselineQuality.configure { dependsOn "${owner.path}:updateLintBaseline${variant}" }
+            }
+        }
+    }
+}
+
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(':lintQualityCheck')) {
+        if (!gradle.startParameter.excludedTaskNames.isEmpty()) {
+            throw new GradleException("Mandatory quality stages excluded: task exclusions (-x) are not permitted in lintQualityCheck: ${gradle.startParameter.excludedTaskNames}")
+        }
+        def omitted = expectedLintTasks.findAll { !graph.hasTask(it) }
+        if (!omitted.isEmpty()) throw new GradleException("Required Android Lint tasks excluded: ${omitted}")
+    }
+}

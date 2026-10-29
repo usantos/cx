@@ -1,0 +1,8 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="0dp"
+    android:paddingTop="0dp"
+    android:paddingRight="0dp"
+    android:paddingBottom="0dp">
+    <item android:drawable="@android:color/white" />
+    <item android:drawable="@drawable/catalog_splash_logo" android:gravity="center" />
+</layer-list>

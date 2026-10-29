@@ -1,11 +1,15 @@
 # Migração integral Kotlin / Compose — acompanhamento ativo
 
+Atualização visual de 15/10: tutorial de Bolão conferido com captura nativa, insets das ações/seletores de modalidades restaurados e largura dos modais flutuantes centralizada no DS. Evidências e limites: [relatório](VISUAL_ADJUSTMENTS_TUTORIAL_MODALITIES_MODALS_20261015.md).
+
 Objetivo: substituir integralmente a implementação legada por Kotlin e Jetpack Compose,
 com MVVM, casos de uso, repositories, DataSources e Hilt, mantendo layout e comportamento
 da referência em `/Users/ubiracysantos/Projects/legado/simlo-app-android`.
-A nova mensagem de sessão expirada solicitada pelo produto permanece como exceção deliberada.
+A nova mensagem de sessão expirada solicitada pelo produto permanece como exceção deliberada. Também são deliberados os ajustes solicitados na Home v2: exibir concurso no card com registro encerrado e textos brancos em Dia de Sorte.
 
-Atualização da execução: [correções e evidências de 09/09/2026](COMPOSE_MIGRATION_20260909.md).
+> Atualização pareada de 15/10/2026: [Bolão e Filtros frente ao CX](MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md). São 20 pares no mesmo AVD/dados, com Outubro Rosa ligada/desligada, e correções centralizadas no DS. `modernCheck releaseCheck` passou na árvore integrada: 1.699 testes JVM, 146 testes Android nos escopos executados e três Releases minificados. O bloqueio de captura das Activities internas foi resolvido pelo runner de instrumentação. A equivalência global de 100% continua pendente nos fluxos e casos históricos indicados abaixo.
+
+Atualização da execução: [CaixaDS, gates e validação integrada de 14/10/2026](DS_CONSOLIDATION_20261014.md). A tabela de capturas abaixo é histórica; os dois testes raster preexistentes e as demais pendências visuais/de serviços continuam abertos.
 
 ## Critérios de conclusão
 
@@ -15,12 +19,12 @@ Atualização da execução: [correções e evidências de 09/09/2026](COMPOSE_M
 - [ ] Ausência de formulários provisórios, ações vazias e sucesso fictício nas rotas de produção.
 - [ ] Fluxos de cadastro, autenticação, biometria, sessão, carrinho, compra e resgate integrados.
 - [ ] Upgrade dos dados locais e transferência do carrinho validados sem perda/duplicação.
-- [x] Build, lint, testes, cobertura e gates de arquitetura aprovados (`modernCheck --max-workers=1`, 09/09/2026).
+- [x] Build, lint, testes e cobertura dos escopos exigidos, gates de arquitetura e três Releases aprovados (`modernCheck releaseCheck --offline --continue`, revalidado em 15/10/2026). A suíte Android adicional registra separadamente dois testes raster pendentes.
 - [ ] Flavors debug/release e integrações externas homologados com evidência.
 
 ## Inventário de evidências visuais existentes
 
-As referências abaixo são históricas: não homologam a árvore atual. SSIM é apenas uma
+A tabela preserva o histórico, com atualização pareada de Bolão/Filtros nesta rodada. As demais referências não homologam a árvore atual. SSIM é apenas uma
 medida auxiliar; não comprova equivalência funcional ou visual integral.
 
 | Destino | Última captura encontrada | Situação | SSIM histórico |
@@ -37,7 +41,7 @@ medida auxiliar; não comprova equivalência funcional ou visual integral.
 | `betting/favorites` | `build/visual-audit/legacy-compose-current-v1/report.tsv` | compared | 0.663002 |
 | `betting/pool-detail` | `build/visual-audit/legacy-compose-fixtures-v4/report.tsv` | compared | 0.802603 |
 | `betting/pool-view` | `build/visual-audit/legacy-compose-current-v1/report.tsv` | compared | 0.917001 |
-| `betting/pools` | `build/visual-audit/legacy-compose-current-v2/report.tsv` | compared | 0.965408 |
+| `betting/pools` | `build/verification/marketplace-paired-20261015/paired-metrics.json` | 10 pares / 2 campanhas; carrossel, lista, expansão, favoritas e concurso | 0,970–0,993 |
 | `betting/rapid` | `build/visual-audit/legacy-compose-current-v2/report.tsv` | compared | 0.996693 |
 | `betting/rapid-list` | `build/visual-audit/legacy-compose-current-v1/report.tsv` | compared | 0.919255 |
 | `betting/simulation` | `build/visual-audit/legacy-compose-fixtures-v2/report.tsv` | compared | 0.762002 |
@@ -50,7 +54,7 @@ medida auxiliar; não comprova equivalência funcional ou visual integral.
 | `cart/included` | `build/visual-audit/legacy-compose-fixtures-v2/report.tsv` | compared | 0.809409 |
 | `cart/pool-included` | `build/visual-audit/legacy-compose-pool-pix-v4/report.tsv` | compared | 0.905378 |
 | `home` | `build/visual-audit/legacy-compose-current-v1/report.tsv` | compared | 0.777599 |
-| `marketplace/filter` | `build/visual-audit/legacy-compose-deterministic-v1/report.tsv` | legacy-network-error |  |
+| `marketplace/filter` | `build/verification/marketplace-paired-20261015/paired-metrics.json` | 10 pares / 2 campanhas; inicial, rodapé, diálogo e seleção | 0,985–0,989 |
 | `notifications/messages` | `build/visual-audit/legacy-compose-notifications-v4/report.tsv` | compared | 0.886868 |
 | `notifications/preferences` | `build/visual-audit/legacy-compose-notification-preferences-v6/report.tsv` | compared | 0.816112 |
 | `onboarding/age` | `build/visual-audit/legacy-compose-audit-account-support-v1/report.tsv` | compared | 0.942634 |

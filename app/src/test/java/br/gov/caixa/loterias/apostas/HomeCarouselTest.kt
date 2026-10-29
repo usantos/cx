@@ -1,10 +1,18 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.core.domain.betting.BettingParameters
-import br.gov.caixa.loterias.core.domain.betting.LotteryGameParameters
-import br.gov.caixa.loterias.core.domain.betting.LotteryModality
-import br.gov.caixa.loterias.core.domain.betting.PoolModalityAvailability
-import br.gov.caixa.loterias.core.designsystem.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
+import br.gov.caixa.loterias.feature.home.presentation.components.carouselCardScale
+import br.gov.caixa.loterias.feature.home.presentation.components.infiniteCarouselInitialPage
+import br.gov.caixa.loterias.feature.home.presentation.components.loopedCarouselIndex
+import br.gov.caixa.loterias.feature.home.presentation.mapper.name
+import br.gov.caixa.loterias.feature.home.presentation.mapper.shouldShowPoolButton
+import br.gov.caixa.loterias.feature.home.presentation.mapper.toHomeLotteries
+import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
+import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
@@ -49,7 +57,7 @@ class HomeCarouselTest {
 
         val withoutCombos = parameters.toHomeLotteries(hasCombos = false)
         assertEquals(listOf(HomeLotteryKind.LOTTERY, HomeLotteryKind.INSTANT), withoutCombos.map(HomeLottery::kind))
-        assertEquals(CaixaDSColorTokens.LegacyMegaSenaLight, withoutCombos.first().color)
+        assertEquals(CaixaDSColorTokens.MegaSenaLight, withoutCombos.first().color)
         assertEquals(false, withoutCombos.first().octoberRoseTheme)
 
         val withCombos = parameters.toHomeLotteries(hasCombos = true)
@@ -74,7 +82,7 @@ class HomeCarouselTest {
     }
 
     @Test
-    fun `pool button follows backend flag modality availability and card state`() {
+    fun `pool button follows backend flag and modality availability even for closed contests`() {
         val available = parametersWithPoolAvailability()
         val mega = available.toHomeLotteries(hasCombos = false).single()
 
@@ -84,8 +92,10 @@ class HomeCarouselTest {
             false,
             shouldShowPoolButton(true, available.copy(availablePoolModalities = emptyList()), mega),
         )
-        assertEquals(false, shouldShowPoolButton(true, available, mega.copy(open = false)))
+        // PrincipalActivity do legado mantém a venda de bolões independente do estado do concurso selecionado.
+        assertEquals(true, shouldShowPoolButton(true, available, mega.copy(open = false)))
         assertEquals(false, shouldShowPoolButton(true, available, mega.copy(kind = HomeLotteryKind.INSTANT)))
+        assertEquals(false, shouldShowPoolButton(true, available, mega.copy(kind = HomeLotteryKind.COMBO)))
     }
 
     @Test

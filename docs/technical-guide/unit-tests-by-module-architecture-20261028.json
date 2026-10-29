@@ -1,0 +1,693 @@
+{
+  "edition": "2026-10-28",
+  "scope": "Uma execução nova de allUnitTests: JVM, Android Debug e App PRD Debug; XML posterior ao início do log. Módulos NO-SOURCE conservam contagem zero. Sem dados de instrumentação física.",
+  "fresh_since": "2026-10-28T14:32:35.323055+00:00",
+  "totals": {
+    "tests": 3510,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "modules": [
+    {
+      "module": ":app",
+      "task": "testPrdDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 392,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:auth",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 119,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:common",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:data",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:design-system",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 187,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:domain",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 199,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:key-management",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:navigation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:network",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 130,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:persistence",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:queue",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:security",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":core:testing",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:account:api",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:account:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 50,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:account:domain",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:account:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 180,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:account:transport",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:betting:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 47,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:betting:domain",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:betting:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 389,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:betting:transport",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:cart:api",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:cart:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 99,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:cart:domain",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:cart:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 216,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:cart:transport",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:home:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:home:domain",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:home:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 153,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:marketplace-filter:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 65,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:marketplace:api",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:marketplace:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:marketplace:domain",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:marketplace:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 164,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:marketplace:transport",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:notifications:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:notifications:domain",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:notifications:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 59,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:notifications:transport",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:onboarding:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:onboarding:domain",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:onboarding:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 57,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:payment:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:payment:domain",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:payment:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 152,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:payment:transport",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:responsible-gaming:data",
+      "task": "testDebugUnitTest",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:responsible-gaming:domain",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:responsible-gaming:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:responsible-gaming:transport",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:results:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:results:domain",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:results:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 58,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:results:transport",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:retail:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:retail:domain",
+      "task": "test",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:retail:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 139,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:retail:transport",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:support:data",
+      "task": "testDebugUnitTest",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:support:domain",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:support:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:support:transport",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:tickets:data",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:tickets:domain",
+      "task": "test",
+      "status": "NO-SOURCE",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":feature:tickets:presentation",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 199,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": ":sample:design-system",
+      "task": "testDebugUnitTest",
+      "status": "EXECUTED",
+      "evidenceLog": "build/verification/architecture-audit-20261028/final-quality-verified.log",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ]
+}

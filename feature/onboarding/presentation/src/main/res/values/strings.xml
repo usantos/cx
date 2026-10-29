@@ -1,0 +1,20 @@
+<resources>
+    <string name="splash_loterias_logo">Logo Loterias CAIXA</string>
+    <string name="startup_unavailable_message">O aplicativo está\ntemporariamente indisponível</string>
+    <string name="startup_unavailable_detail">Pedimos desculpas pelo transtorno.\nTente novamente em breve</string>
+    <string name="startup_offline_message">Não foi possível conectar\nà internet</string>
+    <string name="startup_offline_detail">Verifique sua conexão\ne tente novamente</string>
+    <string name="startup_retry">Tentar novamente</string>
+    <string name="startup_retrying">Tentando novamente…</string>
+    <string name="startup_update_message">O seu aplicativo está desatualizado. Para continuar será necessário efetuar a atualização.</string>
+    <string name="startup_update">Atualizar</string>
+    <string name="startup_error_code">Código do erro: %1$s</string>
+    <string name="startup_version">v%1$s</string>
+    <string name="startup_attention">Atenção</string>
+    <string name="startup_store_error">Não foi possível abrir a loja de aplicativos.</string>
+    <string name="startup_understood">Entendi</string>
+    <string name="startup_exit_message">Deseja sair do aplicativo?</string>
+    <string name="startup_exit_confirm">Sair</string>
+    <string name="startup_exit_cancel">Cancelar</string>
+    <string name="onboarding_storage_failure">Não foi possível salvar suas preferências. Tente novamente.</string>
+</resources>

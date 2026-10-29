@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workflow_retail_casas_lotericas">Casas lotéricas</string>
+    <string name="workflow_retail_encontre_a_unidade_mais_proxima_para_atendimento_e_resgate">Encontre a unidade mais próxima para atendimento e resgate.</string>
+    <string name="workflow_retail_cidade_bairro_ou_cep">Cidade, bairro ou CEP</string>
+    <string name="workflow_retail_buscar">Buscar</string>
+    <string name="workflow_retail_localizacao">Localização</string>
+    <string name="workflow_retail_permita_o_acesso_a_localizacao_para_mostrar_unidades_proximas">Permita o acesso à localização para mostrar unidades próximas.</string>
+    <string name="workflow_retail_permitir_localizacao">Permitir localização</string>
+    <string name="workflow_retail_continuar">Continuar</string>
+    <string name="workflow_retail_resgatar_premio">Resgatar prêmio</string>
+    <string name="workflow_retail_consulte_orientacoes_e_escolha_a_forma_disponivel_para_o_resgate">Consulte orientações e escolha a forma disponível para o resgate.</string>
+    <string name="workflow_retail_loterica">Lotérica</string>
+    <string name="workflow_retail_consulte_as_etapas_para_resgatar_o_premio_em_uma_unidade_loterica">Consulte as etapas para resgatar o prêmio em uma unidade lotérica.</string>
+    <string name="workflow_retail_gerar_qr_code">Gerar QR Code</string>
+    <string name="workflow_retail_resgate_na_loterica">Resgate na lotérica</string>
+    <string name="workflow_retail_apresente_o_qr_code_valido_ao_atendente_da_loterica">Apresente o QR Code válido ao atendente da lotérica.</string>
+    <string name="workflow_retail_voltar">Voltar</string>
+    <string name="workflow_retail_resgate_em_agencia">Resgate em agência</string>
+    <string name="workflow_retail_consulte_documentos_e_dados_necessarios_para_receber_em_uma_agenc">Consulte documentos e dados necessários para receber em uma agência CAIXA.</string>
+    <string name="workflow_retail_localizar_agencia">Localizar agência</string>
+    <string name="workflow_retail_resgate_via_pix">Resgate via Pix</string>
+    <string name="workflow_retail_escolha_e_confirme_a_chave_pix_para_receber_o_premio_elegivel">Escolha e confirme a chave Pix para receber o prêmio elegível.</string>
+    <string name="workflow_retail_chave_pix">Chave Pix</string>
+    <string name="workflow_retail_confirmo_que_a_chave_pertence_ao_titular">Confirmo que a chave pertence ao titular</string>
+    <string name="workflow_retail_confirmar_chave">Confirmar chave</string>
+    <string name="workflow_retail_resgate_solicitado">Resgate solicitado</string>
+    <string name="workflow_retail_a_solicitacao_foi_registrada_acompanhe_o_credito_pelo_aplicativo">A solicitação foi registrada. Acompanhe o crédito pelo aplicativo.</string>
+    <string name="workflow_retail_concluir">Concluir</string>
+    <string name="workflow_retail_resgate_mercado_pago">Resgate Mercado Pago</string>
+    <string name="workflow_retail_confirme_seu_e_mail_para_receber_o_premio_pelo_mercado_pago">Confirme seu e-mail para receber o prêmio pelo Mercado Pago.</string>
+    <string name="workflow_retail_e_mail">E-mail</string>
+    <string name="workflow_retail_a_solicitacao_do_premio_foi_efetuada_com_sucesso">A solicitação do prêmio foi efetuada com sucesso.</string>
+    <string name="workflow_retail_voltar_ao_inicio">Voltar ao início</string>
+</resources>

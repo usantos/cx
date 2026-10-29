@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_conta_temporariamente_suspensa_e2ea25" formatted="false">"Conta temporariamente suspensa"</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_nao_9bc947" formatted="false">"Não"</string>
+    <string name="ui_para_continuar_utilizando_a_funciona_a5583f" formatted="false">"Para continuar utilizando a funcionalidade, você precisa efetuar o login no app Loterias Caixa. Deseja efetuar o login?"</string>
+    <string name="ui_sim_931345" formatted="false">"Sim"</string>
+    <string name="ui_sua_conta_esta_temporariamente_suspe_decbd5" formatted="false">"Sua conta está temporariamente suspensa para compras de apostas digitais."</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+</resources>

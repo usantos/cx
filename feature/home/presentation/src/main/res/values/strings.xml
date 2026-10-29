@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_exit_title">Atenção</string>
+    <string name="home_exit_message">Deseja sair do aplicativo?</string>
+    <string name="home_exit_confirm">Sair</string>
+    <string name="home_exit_cancel">Cancelar</string>
+</resources>

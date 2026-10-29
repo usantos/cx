@@ -106,3 +106,20 @@ switches independentes e ajuda. **Compilar os testes não equivale a executá-lo
 `./gradlew :core:data:test :feature:notifications:check --offline` falhou antes das tarefas pelo
 lock `gradle-9.4.1-bin.zip.lck (Operation not permitted)`. A restrição não foi contornada;
 compilação isolada não valida recursos, Hilt/KSP, D8/R8, APK nem Release.
+
+## Recomparação com o legado e extração — 19/10/2026
+
+Este adendo atualiza o escopo estrutural; os números e bloqueios de setembro acima são históricos. O usuário confirmou: “É pra comparar com o Legado mesmo.” Referência consultada: `/Users/ubiracysantos/Projects/simlo-app-android-legacy-app-backup-20260903/src/main/java/br/gov/caixa/loterias/apostas/`.
+
+| Fonte verificada | Comportamento real |
+|---|---|
+| model/model/MensagemPushModel.java | getAllMensagensMock cria cinco amostras; leitura e exclusão operam em memória |
+| controllers/MensagensPushActivity.java | onCreate usa essa lista; pesquisa/filtros/ações em lote e preferências são locais |
+| model/bo/silce/dto/NotificacaoDTO.java | título/conteúdo/imagem/link/dataExclusao/dataVisualizacao/id; não define categoria, data de envio ou preferências da central |
+| model/bo/DadosUsuarioBO.java e ServerMethods.java | leitura do popup e registro do dispositivo; não estabelecem histórico completo/exclusão/preferências da central |
+| NotificationReadApi e RemoteUnreadNotificationCountRepository atuais | GET não visualizadas conta itens; PUT visualiza usa ID real e sessão; POST registra push |
+| LoteriasMessagingService e PushNotifications atuais | banners Android; sem armazenamento na central |
+
+LocalNotificationRepository agora coordena mensagens e preferências internas sob o monitor original. O catálogo foi movido literalmente, sem corrigir textos/datas nem reintroduzir o ID duplicado do Java. O teste da factory usa o provider real e conserva a verificação de instâncias e reset por destino. Hilt divide caixa, contador e popup; os métodos públicos antigos continuam delegando e os escopos permanecem iguais.
+
+Não foram alteradas interfaces Domain, StateFlows, UI, tratamento de erros, protocolos, serialização, preferências persistentes ou políticas de segurança. Não se sincronizam IDs de amostra com o PUT. Nenhuma nova API foi inventada. Esta preservação autorizada não resolve a origem demonstrativa diante de SPEC3.3; uma central real exigiria um contrato comprovado e outra mudança de escopo. Resultados atuais em MIGRATION_VALIDATION.md, evidências em build/verification/notification-origin-20261019/.

@@ -1,0 +1,490 @@
+{
+  "passed": true,
+  "percentage": "95.11",
+  "minimum": "95",
+  "covered": 54340,
+  "missed": 2795,
+  "eligible": 57135,
+  "modules": [
+    {
+      "module": ":app",
+      "missed": 369,
+      "covered": 1000,
+      "eligible": 1369,
+      "percentage": "73.04601899196493791088385683"
+    },
+    {
+      "module": ":core:auth",
+      "missed": 27,
+      "covered": 897,
+      "eligible": 924,
+      "percentage": "97.07792207792207792207792208"
+    },
+    {
+      "module": ":core:common",
+      "missed": 0,
+      "covered": 66,
+      "eligible": 66,
+      "percentage": "100"
+    },
+    {
+      "module": ":core:data",
+      "missed": 0,
+      "covered": 142,
+      "eligible": 142,
+      "percentage": "100"
+    },
+    {
+      "module": ":core:design-system",
+      "missed": 123,
+      "covered": 6080,
+      "eligible": 6203,
+      "percentage": "98.01708850556182492342414961"
+    },
+    {
+      "module": ":core:domain",
+      "missed": 4,
+      "covered": 157,
+      "eligible": 161,
+      "percentage": "97.51552795031055900621118012"
+    },
+    {
+      "module": ":core:key-management",
+      "missed": 1,
+      "covered": 154,
+      "eligible": 155,
+      "percentage": "99.35483870967741935483870968"
+    },
+    {
+      "module": ":core:navigation",
+      "missed": 1,
+      "covered": 519,
+      "eligible": 520,
+      "percentage": "99.80769230769230769230769231"
+    },
+    {
+      "module": ":core:network",
+      "missed": 35,
+      "covered": 1282,
+      "eligible": 1317,
+      "percentage": "97.34244495064540622627182992"
+    },
+    {
+      "module": ":core:persistence",
+      "missed": 27,
+      "covered": 146,
+      "eligible": 173,
+      "percentage": "84.39306358381502890173410405"
+    },
+    {
+      "module": ":core:presentation",
+      "missed": 8,
+      "covered": 297,
+      "eligible": 305,
+      "percentage": "97.37704918032786885245901639"
+    },
+    {
+      "module": ":core:queue",
+      "missed": 0,
+      "covered": 136,
+      "eligible": 136,
+      "percentage": "100"
+    },
+    {
+      "module": ":core:security",
+      "missed": 1,
+      "covered": 123,
+      "eligible": 124,
+      "percentage": "99.19354838709677419354838710"
+    },
+    {
+      "module": ":core:testing",
+      "missed": 1,
+      "covered": 14,
+      "eligible": 15,
+      "percentage": "93.33333333333333333333333333"
+    },
+    {
+      "module": ":sample:design-system",
+      "missed": 6,
+      "covered": 2198,
+      "eligible": 2204,
+      "percentage": "99.72776769509981851179673321"
+    },
+    {
+      "module": ":feature:account:api",
+      "missed": 0,
+      "covered": 3,
+      "eligible": 3,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:account:data",
+      "missed": 27,
+      "covered": 269,
+      "eligible": 296,
+      "percentage": "90.87837837837837837837837838"
+    },
+    {
+      "module": ":feature:account:domain",
+      "missed": 0,
+      "covered": 171,
+      "eligible": 171,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:account:presentation",
+      "missed": 110,
+      "covered": 2323,
+      "eligible": 2433,
+      "percentage": "95.47883271681052198931360460"
+    },
+    {
+      "module": ":feature:account:transport",
+      "missed": 4,
+      "covered": 107,
+      "eligible": 111,
+      "percentage": "96.39639639639639639639639640"
+    },
+    {
+      "module": ":feature:betting:data",
+      "missed": 9,
+      "covered": 564,
+      "eligible": 573,
+      "percentage": "98.42931937172774869109947644"
+    },
+    {
+      "module": ":feature:betting:domain",
+      "missed": 18,
+      "covered": 544,
+      "eligible": 562,
+      "percentage": "96.79715302491103202846975089"
+    },
+    {
+      "module": ":feature:betting:presentation",
+      "missed": 482,
+      "covered": 7631,
+      "eligible": 8113,
+      "percentage": "94.05891778626895106619006533"
+    },
+    {
+      "module": ":feature:betting:transport",
+      "missed": 4,
+      "covered": 238,
+      "eligible": 242,
+      "percentage": "98.34710743801652892561983471"
+    },
+    {
+      "module": ":feature:cart:api",
+      "missed": 0,
+      "covered": 61,
+      "eligible": 61,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:cart:data",
+      "missed": 65,
+      "covered": 1186,
+      "eligible": 1251,
+      "percentage": "94.80415667466027178257394085"
+    },
+    {
+      "module": ":feature:cart:domain",
+      "missed": 3,
+      "covered": 260,
+      "eligible": 263,
+      "percentage": "98.85931558935361216730038023"
+    },
+    {
+      "module": ":feature:cart:presentation",
+      "missed": 127,
+      "covered": 3237,
+      "eligible": 3364,
+      "percentage": "96.22473246135552913198573127"
+    },
+    {
+      "module": ":feature:cart:transport",
+      "missed": 1,
+      "covered": 147,
+      "eligible": 148,
+      "percentage": "99.32432432432432432432432432"
+    },
+    {
+      "module": ":feature:home:data",
+      "missed": 1,
+      "covered": 16,
+      "eligible": 17,
+      "percentage": "94.11764705882352941176470588"
+    },
+    {
+      "module": ":feature:home:domain",
+      "missed": 0,
+      "covered": 29,
+      "eligible": 29,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:home:presentation",
+      "missed": 286,
+      "covered": 3797,
+      "eligible": 4083,
+      "percentage": "92.99534655890276757286309086"
+    },
+    {
+      "module": ":feature:marketplace:api",
+      "missed": 0,
+      "covered": 130,
+      "eligible": 130,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:marketplace:data",
+      "missed": 0,
+      "covered": 134,
+      "eligible": 134,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:marketplace:domain",
+      "missed": 0,
+      "covered": 121,
+      "eligible": 121,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:marketplace:presentation",
+      "missed": 117,
+      "covered": 2331,
+      "eligible": 2448,
+      "percentage": "95.22058823529411764705882353"
+    },
+    {
+      "module": ":feature:marketplace:transport",
+      "missed": 1,
+      "covered": 68,
+      "eligible": 69,
+      "percentage": "98.55072463768115942028985507"
+    },
+    {
+      "module": ":feature:marketplace-filter:presentation",
+      "missed": 40,
+      "covered": 967,
+      "eligible": 1007,
+      "percentage": "96.02780536246276067527308838"
+    },
+    {
+      "module": ":feature:notifications:data",
+      "missed": 4,
+      "covered": 223,
+      "eligible": 227,
+      "percentage": "98.23788546255506607929515419"
+    },
+    {
+      "module": ":feature:notifications:domain",
+      "missed": 0,
+      "covered": 48,
+      "eligible": 48,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:notifications:presentation",
+      "missed": 96,
+      "covered": 1035,
+      "eligible": 1131,
+      "percentage": "91.51193633952254641909814324"
+    },
+    {
+      "module": ":feature:notifications:transport",
+      "missed": 0,
+      "covered": 7,
+      "eligible": 7,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:onboarding:data",
+      "missed": 4,
+      "covered": 106,
+      "eligible": 110,
+      "percentage": "96.36363636363636363636363636"
+    },
+    {
+      "module": ":feature:onboarding:domain",
+      "missed": 2,
+      "covered": 45,
+      "eligible": 47,
+      "percentage": "95.74468085106382978723404255"
+    },
+    {
+      "module": ":feature:onboarding:presentation",
+      "missed": 41,
+      "covered": 1093,
+      "eligible": 1134,
+      "percentage": "96.38447971781305114638447972"
+    },
+    {
+      "module": ":feature:payment:data",
+      "missed": 5,
+      "covered": 283,
+      "eligible": 288,
+      "percentage": "98.26388888888888888888888889"
+    },
+    {
+      "module": ":feature:payment:domain",
+      "missed": 1,
+      "covered": 193,
+      "eligible": 194,
+      "percentage": "99.48453608247422680412371134"
+    },
+    {
+      "module": ":feature:payment:presentation",
+      "missed": 125,
+      "covered": 2428,
+      "eligible": 2553,
+      "percentage": "95.10379945162553858206032119"
+    },
+    {
+      "module": ":feature:payment:transport",
+      "missed": 0,
+      "covered": 19,
+      "eligible": 19,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:responsible-gaming:data",
+      "missed": 2,
+      "covered": 59,
+      "eligible": 61,
+      "percentage": "96.72131147540983606557377049"
+    },
+    {
+      "module": ":feature:responsible-gaming:domain",
+      "missed": 0,
+      "covered": 52,
+      "eligible": 52,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:responsible-gaming:presentation",
+      "missed": 64,
+      "covered": 1111,
+      "eligible": 1175,
+      "percentage": "94.55319148936170212765957447"
+    },
+    {
+      "module": ":feature:responsible-gaming:transport",
+      "missed": 2,
+      "covered": 30,
+      "eligible": 32,
+      "percentage": "93.75"
+    },
+    {
+      "module": ":feature:results:data",
+      "missed": 5,
+      "covered": 112,
+      "eligible": 117,
+      "percentage": "95.72649572649572649572649573"
+    },
+    {
+      "module": ":feature:results:domain",
+      "missed": 4,
+      "covered": 53,
+      "eligible": 57,
+      "percentage": "92.98245614035087719298245614"
+    },
+    {
+      "module": ":feature:results:presentation",
+      "missed": 72,
+      "covered": 1400,
+      "eligible": 1472,
+      "percentage": "95.10869565217391304347826087"
+    },
+    {
+      "module": ":feature:results:transport",
+      "missed": 0,
+      "covered": 68,
+      "eligible": 68,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:retail:data",
+      "missed": 12,
+      "covered": 261,
+      "eligible": 273,
+      "percentage": "95.60439560439560439560439560"
+    },
+    {
+      "module": ":feature:retail:domain",
+      "missed": 0,
+      "covered": 134,
+      "eligible": 134,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:retail:presentation",
+      "missed": 58,
+      "covered": 2487,
+      "eligible": 2545,
+      "percentage": "97.72102161100196463654223969"
+    },
+    {
+      "module": ":feature:retail:transport",
+      "missed": 0,
+      "covered": 13,
+      "eligible": 13,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:support:data",
+      "missed": 0,
+      "covered": 32,
+      "eligible": 32,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:support:domain",
+      "missed": 0,
+      "covered": 20,
+      "eligible": 20,
+      "percentage": "100"
+    },
+    {
+      "module": ":feature:support:presentation",
+      "missed": 31,
+      "covered": 727,
+      "eligible": 758,
+      "percentage": "95.91029023746701846965699208"
+    },
+    {
+      "module": ":feature:support:transport",
+      "missed": 2,
+      "covered": 11,
+      "eligible": 13,
+      "percentage": "84.61538461538461538461538462"
+    },
+    {
+      "module": ":feature:tickets:data",
+      "missed": 31,
+      "covered": 550,
+      "eligible": 581,
+      "percentage": "94.66437177280550774526678141"
+    },
+    {
+      "module": ":feature:tickets:domain",
+      "missed": 22,
+      "covered": 147,
+      "eligible": 169,
+      "percentage": "86.98224852071005917159763314"
+    },
+    {
+      "module": ":feature:tickets:presentation",
+      "missed": 314,
+      "covered": 4048,
+      "eligible": 4362,
+      "percentage": "92.80146721687299403943145346"
+    }
+  ],
+  "current": true,
+  "edition": "28/10/2026",
+  "scope": "JaCoCo LINE ponderado da execução completa preCommitCheck; fontes manuais permanecem elegíveis, sem instrumentação histórica.",
+  "evidenceLog": "build/verification/pre-commit-20261028/full-gate.log"
+}

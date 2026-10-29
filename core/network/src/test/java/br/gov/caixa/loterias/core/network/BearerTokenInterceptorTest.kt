@@ -7,6 +7,7 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.interceptor.BearerTokenInterceptor
 
 class BearerTokenInterceptorTest {
     @Test

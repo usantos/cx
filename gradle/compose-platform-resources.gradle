@@ -1,0 +1,239 @@
+// Contratos explícitos para XMLs de plataforma e dados gráficos; não permite Views legadas.
+ext.verifyComposePlatformResources = { File resourceRoot = rootDir ->
+    def resourceFile = { String path -> new File(resourceRoot, path).canonicalFile }
+    def allowedPlatformXml = [] as Set
+    def debugManifest = resourceFile('app/src/debug/AndroidManifest.xml').canonicalFile
+    if (debugManifest.isFile()) {
+        def debugRoot = new groovy.xml.XmlSlurper(false, false).parse(debugManifest)
+        // O único hospedeiro próprio de depuração é interno e não possui filtros.
+        def debugActivitiesOnly = debugRoot.name() == 'manifest' &&
+                debugRoot.attributes() == ['xmlns:android': 'http://schemas.android.com/apk/res/android',
+                                           'xmlns:tools': 'http://schemas.android.com/tools'] &&
+                debugRoot.text().trim().isEmpty() &&
+                debugRoot.children().size() == 1 && debugRoot.application.size() == 1 &&
+                debugRoot.application[0].attributes().isEmpty() &&
+                debugRoot.application[0].children().size() == 2 &&
+                debugRoot.application.activity.size() == 2 &&
+                debugRoot.application.activity[0].attributes() == [
+                        'android:name': '.HomeDrawerTestActivity', 'android:exported': 'false',
+                ] && debugRoot.application.activity[0].children().isEmpty() &&
+                debugRoot.application.activity[1].attributes() == [
+                        'android:name': 'androidx.compose.ui.tooling.PreviewActivity', 'tools:node': 'remove',
+                ] && debugRoot.application.activity[1].children().isEmpty()
+        if (!debugActivitiesOnly) {
+            throw new GradleException('Manifest debug deve conter somente HomeDrawerTestActivity interna e a remoção de PreviewActivity, sem filtros ou componentes adicionais.')
+        }
+    }
+    allowedPlatformXml.add(debugManifest)
+    // Artes vetoriais extraídas para o DS após o inventário legado; nomes explícitos e sem Views.
+    def comboVectorNames = [
+            'legacy_combo_trevo_loteca_detalhe_combo', 'legacy_combo_trevo_dupla_sena_detalhe_combo',
+            'legacy_combo_tarja_trevo_lotofacil_especial_combos', 'legacy_combo_trevo_mais_milionaria_detalhe_combo',
+            'legacy_combo_trevo_super_sete_detalhe_combo', 'legacy_combo_tarja_trevo_quina_especial_combos',
+            'legacy_combo_trevo_timemania_detalhe_combo', 'legacy_combo_trevo_lotofacil_detalhe_combo',
+            'legacy_combo_trevo_lotomania_detalhe_combo', 'legacy_combo_tarja_trevo_mega_especial_combos',
+            'legacy_combo_tarja_trevo_dupla_especial_combos', 'legacy_combo_trevo_dia_de_sorte_detalhe_combo',
+            'legacy_combo_trevo_quina_detalhe_combo', 'legacy_combo_trevo_mega_sena_detalhe_combo',
+    ]
+    comboVectorNames.each { name ->
+        def vector = resourceFile("core/design-system/src/main/res/drawable/${name}.xml").canonicalFile
+        def root = new groovy.xml.XmlSlurper(false, false).parse(vector)
+        if (root.name() != 'vector' || !root.text().trim().isEmpty() ||
+                !root.depthFirst().every { it.name() in ['vector', 'path', 'group', 'clip-path'] }) {
+            throw new GradleException("Arte Combo deve permanecer vetorial, sem layout XML: ${vector}")
+        }
+        allowedPlatformXml.add(vector)
+    }
+    def drawableAliases = [
+            'core/design-system/src/main/res/values/drawable_aliases.xml': [
+                    drawer_header_clover: '@drawable/caixads_home_clover',
+                    icon_duvida2: '@drawable/caixads_modality_help', legacy_icon_duvida2: '@drawable/caixads_modality_help',
+            ],
+            'core/design-system/src/main/res/values-nodpi/drawable_aliases.xml': [ic_volantes: '@drawable/ic_volantes_pixels'],
+            'feature/payment/presentation/src/main/res/values/drawable_aliases.xml': [legacy_card_provider_recarga: '@drawable/recargapay'],
+    ]
+    drawableAliases.each { path, expected ->
+        def aliases = resourceFile(path).canonicalFile
+        def root = new groovy.xml.XmlSlurper(false, false).parse(aliases)
+        if (root.name() != 'resources' || !root.attributes().isEmpty() ||
+                root.children().size() != expected.size() ||
+                !root.children().every { item ->
+                    item.name() == 'item' && item.children().isEmpty() &&
+                            item.attributes() == [name: item.@name.text(), type: 'drawable'] &&
+                            expected[item.@name.text()] == item.text().trim()
+                } || root.children().collect { it.@name.text() }.toSet() != expected.keySet()) {
+            throw new GradleException("Aliases devem preservar somente as referências drawable aprovadas: ${aliases}")
+        }
+        allowedPlatformXml.add(aliases)
+    }
+    def volantLayer = resourceFile('core/design-system/src/main/res/drawable-mdpi/ic_volantes.xml').canonicalFile
+    def volant = new groovy.xml.XmlSlurper(false, false).parse(volantLayer)
+    if (volant.name() != 'layer-list' ||
+            volant.attributes() != ['xmlns:android': 'http://schemas.android.com/apk/res/android'] ||
+            !volant.text().trim().isEmpty() || volant.children().size() != 1 || volant.item.size() != 1 ||
+            !volant.item[0].children().isEmpty() || volant.item[0].attributes() != [
+                    'android:drawable': '@drawable/ic_volantes_pixels', 'android:width': '180dp',
+                    'android:height': '109dp', 'android:gravity': 'fill',
+            ]) {
+        throw new GradleException('Recurso ic_volantes deve conter somente a camada gráfica de paridade aprovada.')
+    }
+    allowedPlatformXml.add(volantLayer)
+    // Ícones adaptativos e seus fundos são recursos gráficos, sem Views XML.
+    def campaignIcons = ['agosto_lilas', 'setembro_amarelo', 'outubro_rosa', 'novembro_azul']
+    (['default'] + campaignIcons).each { campaign ->
+        def suffix = campaign == 'default' ? '' : '_' + campaign
+        ['', '_round'].each { shape ->
+            def icon = resourceFile("app/src/main/res/mipmap-anydpi/ic_launcher${suffix}${shape}.xml").canonicalFile
+            if (!icon.isFile()) throw new GradleException("Ícone adaptativo obrigatório ausente: ${icon}")
+            def root = new groovy.xml.XmlSlurper(false, false).parse(icon)
+            def background = campaign == 'default' ? '@color/launcher_background' : "@drawable/ic_launcher${suffix}_background".toString()
+            def foreground = "@mipmap/ic_launcher${suffix}_foreground".toString()
+            if (root.name() != 'adaptive-icon' ||
+                    root.attributes() != ['xmlns:android': 'http://schemas.android.com/apk/res/android'] ||
+                    !root.text().trim().isEmpty() || root.children().size() != 3 ||
+                    root.background.size() != 1 || root.foreground.size() != 1 || root.monochrome.size() != 1 ||
+                    root.background[0].attributes() != ['android:drawable': background] ||
+                    root.foreground[0].attributes() != ['android:drawable': foreground] ||
+                    root.monochrome[0].attributes() != ['android:drawable': foreground] ||
+                    !root.children().every { it.children().isEmpty() }) {
+                throw new GradleException("Ícone adaptativo deve conter somente fundo, foreground e camada monocromática do preset: ${icon}")
+            }
+            allowedPlatformXml.add(icon)
+        }
+    }
+    campaignIcons.each { campaign ->
+        def background = resourceFile("app/src/main/res/drawable/ic_launcher_${campaign}_background.xml").canonicalFile
+        if (!background.isFile()) throw new GradleException("Fundo vetorial obrigatório ausente: ${background}")
+        def root = new groovy.xml.XmlSlurper(false, false).parse(background)
+        if (root.name() != 'vector' || !root.text().trim().isEmpty() ||
+                !root.depthFirst().every { it.name() in ['vector', 'path', 'group', 'clip-path'] }) {
+            throw new GradleException("Fundo da campanha deve permanecer vetorial, sem layout XML: ${background}")
+        }
+        allowedPlatformXml.add(background)
+    }
+    def remoteDefaults = resourceFile('app/src/main/res/xml/remote_config_defaults.xml').canonicalFile
+    if (remoteDefaults.isFile()) {
+        def defaults = new groovy.xml.XmlSlurper(false, false).parse(remoteDefaults)
+        def expectedCampaigns = [
+                [icon: 'agosto_lilas', start: '08-01', end: '08-31'],
+                [icon: 'setembro_amarelo', start: '09-01', end: '09-30'],
+                [icon: 'outubro_rosa', start: '10-01', end: '10-31'],
+                [icon: 'novembro_azul', start: '11-01', end: '11-30'],
+        ]
+        def validDefaults = defaults.name() == 'defaultsMap' && defaults.children().size() == 2 &&
+                defaults.entry.size() == 2 &&
+                defaults.entry.every { entry ->
+                    entry.children().size() == 2 && entry.key.size() == 1 && entry.value.size() == 1 &&
+                            entry.key[0].children().isEmpty() && entry.value[0].children().isEmpty()
+                } && defaults.depthFirst().every {
+                    it.name() in ['defaultsMap', 'entry', 'key', 'value'] && it.attributes().isEmpty()
+                } && defaults.entry.collect { it.key.text() }.toSet() == ['force_update', 'app_launcher_icon'].toSet()
+        if (validDefaults) {
+            def entries = defaults.entry.collectEntries { [(it.key.text()): it.value.text()] }
+            try {
+                validDefaults = entries.force_update == 'false' &&
+                        new groovy.json.JsonSlurper().parseText(entries.app_launcher_icon) == [
+                                default_icon: 'default', timezone: 'America/Sao_Paulo', campaigns: expectedCampaigns,
+                        ]
+            } catch (groovy.json.JsonException ignored) {
+                validDefaults = false
+            }
+        }
+        if (!validDefaults) {
+            throw new GradleException('Remote Config defaults devem conter somente force_update=false e o calendário anual dos quatro presets, com fallback padrão.')
+        }
+        allowedPlatformXml.add(remoteDefaults)
+    }
+    return allowedPlatformXml
+}
+
+// As fixtures usam cópias temporárias, sem disputar fontes com compilação ou testes.
+tasks.register('verifyComposePlatformResourcePolicy') {
+    group = 'verification'
+    description = 'Exercises positive and negative platform XML contracts without reconfiguring Gradle per fixture.'
+    doLast {
+        def results = []
+        def originals = verifyComposePlatformResources().collectEntries { [(it): it.bytes] }
+        def fixtureRoot = java.nio.file.Files.createTempDirectory('compose-platform-policy-').toFile()
+        try {
+            originals.each { source, bytes ->
+                assert source.toPath().startsWith(rootDir.canonicalFile.toPath()): "Recurso fora do projeto: ${source}"
+                def copy = new File(fixtureRoot, rootDir.canonicalFile.toPath().relativize(source.toPath()).toString())
+                copy.parentFile.mkdirs()
+                copy.bytes = bytes
+            }
+            verifyComposePlatformResources(fixtureRoot)
+            results.add([fixture: 'current-resources', expectedRejection: false, passed: true])
+            def debug = 'app/src/debug/AndroidManifest.xml'
+            def icon = 'app/src/main/res/mipmap-anydpi/ic_launcher_outubro_rosa.xml'
+            def background = 'app/src/main/res/drawable/ic_launcher_outubro_rosa_background.xml'
+            def combo = 'core/design-system/src/main/res/drawable/legacy_combo_trevo_loteca_detalhe_combo.xml'
+            def aliases = 'core/design-system/src/main/res/values/drawable_aliases.xml'
+            def volantes = 'core/design-system/src/main/res/drawable-mdpi/ic_volantes.xml'
+            def defaults = 'app/src/main/res/xml/remote_config_defaults.xml'
+            def fixtures = [
+                    [name: 'debug-permission', path: debug, error: 'Manifest debug', change: { it.replace('</manifest>', '<uses-permission android:name="android.permission.CAMERA" /></manifest>') }],
+                    [name: 'debug-root-attribute', path: debug, error: 'Manifest debug', change: { it.replace('<manifest ', '<manifest package="other" ') }],
+                    [name: 'debug-extra-namespace', path: debug, error: 'Manifest debug', change: { it.replace('<manifest ', '<manifest xmlns:other="https://invalid.example" ') }],
+                    [name: 'debug-application-attribute', path: debug, error: 'Manifest debug', change: { it.replace('<application>', '<application android:debuggable="true">') }],
+                    [name: 'debug-extra-application', path: debug, error: 'Manifest debug', change: { it.replace('</manifest>', '<application /></manifest>') }],
+                    [name: 'debug-missing-host', path: debug, error: 'Manifest debug', change: { it.replaceAll(/(?s)<activity\s.*?\/>/, '') }],
+                    [name: 'debug-exported-host', path: debug, error: 'Manifest debug', change: { it.replace('android:exported="false"', 'android:exported="true"') }],
+                    [name: 'debug-renamed-host', path: debug, error: 'Manifest debug', change: { it.replace('.HomeDrawerTestActivity', '.ForbiddenActivity') }],
+                    [name: 'debug-host-attribute', path: debug, error: 'Manifest debug', change: { it.replace('android:exported="false"', 'android:exported="false" android:theme="@style/Other"') }],
+                    [name: 'debug-host-filter', path: debug, error: 'Manifest debug', change: { it.replace('android:exported="false" />', 'android:exported="false"><intent-filter /></activity>') }],
+                    [name: 'debug-text', path: debug, error: 'Manifest debug', change: { it.replace('</application>', 'unexpected</application>') }],
+                    [name: 'icon-layout', path: icon, error: 'Ícone adaptativo', change: { it.replace('adaptive-icon', 'LinearLayout') }],
+                    [name: 'icon-foreign-reference', path: icon, error: 'Ícone adaptativo', change: { it.replace('@mipmap/ic_launcher_outubro_rosa_foreground', '@mipmap/foreign') }],
+                    [name: 'icon-missing-monochrome', path: icon, error: 'Ícone adaptativo', change: { it.replaceAll(/(?s)\s*<monochrome[^>]*\/>/, '') }],
+                    [name: 'icon-foreign-monochrome', path: icon, error: 'Ícone adaptativo', change: { it.replace('<monochrome android:drawable="@mipmap/ic_launcher_outubro_rosa_foreground"', '<monochrome android:drawable="@mipmap/ic_launcher_foreground"') }],
+                    [name: 'icon-duplicate-monochrome', path: icon, error: 'Ícone adaptativo', change: { it.replace('</adaptive-icon>', '<monochrome android:drawable="@mipmap/ic_launcher_outubro_rosa_foreground" /></adaptive-icon>') }],
+                    [name: 'debug-preview-not-removed', path: debug, error: 'Manifest debug', change: { it.replace('tools:node="remove"', 'tools:node="merge"') }],
+                    [name: 'icon-extra-attribute', path: icon, error: 'Ícone adaptativo', change: { it.replace('<background ', '<background android:width="2dp" ') }],
+                    [name: 'icon-nested-view', path: icon, error: 'Ícone adaptativo', change: { it.replace('</adaptive-icon>', '<TextView /></adaptive-icon>') }],
+                    [name: 'vector-layout', path: background, error: 'Fundo da campanha', change: { it.replace('</vector>', '<TextView /></vector>') }],
+                    [name: 'combo-layout', path: combo, error: 'Arte Combo', change: { it.replace('</vector>', '<TextView /></vector>') }],
+                    [name: 'aliases-layout', path: aliases, error: 'Aliases devem preservar', change: { it.replace('</resources>', '<TextView /></resources>') }],
+                    [name: 'aliases-reference', path: aliases, error: 'Aliases devem preservar', change: { it.replace('@drawable/caixads_home_clover', '@drawable/foreign') }],
+                    [name: 'volantes-layout', path: volantes, error: 'Recurso ic_volantes', change: { it.replace('</layer-list>', '<TextView /></layer-list>') }],
+                    [name: 'defaults-force-update', path: defaults, error: 'Remote Config defaults', change: { it.replace('<value>false</value>', '<value>true</value>') }],
+                    [name: 'defaults-extra-key', path: defaults, error: 'Remote Config defaults', change: { it.replace('</defaultsMap>', '<entry><key>other</key><value>false</value></entry></defaultsMap>') }],
+                    [name: 'defaults-duplicate-key', path: defaults, error: 'Remote Config defaults', change: { it.replace('<key>app_launcher_icon</key>', '<key>force_update</key>') }],
+                    [name: 'defaults-invalid-date', path: defaults, error: 'Remote Config defaults', change: { it.replace('"10-31"', '"10-32"') }],
+                    [name: 'defaults-invalid-json', path: defaults, error: 'Remote Config defaults', change: { it.replace('"campaigns": [', '"campaigns": invalid [') }],
+                    [name: 'defaults-extra-view', path: defaults, error: 'Remote Config defaults', change: { it.replace('</defaultsMap>', '<TextView /></defaultsMap>') }],
+            ]
+            ['activity', 'service', 'provider', 'receiver', 'activity-alias'].each { component ->
+                fixtures.add([name: "debug-extra-${component}", path: debug, error: 'Manifest debug',
+                              change: { it.replace('</application>', "<${component} android:name=\".Forbidden\" /></application>") }])
+            }
+            fixtures.each { fixture ->
+                def source = new File(fixtureRoot, fixture.path)
+                def original = source.bytes
+                try {
+                    def changed = fixture.change(new String(original, 'UTF-8'))
+                    assert changed != new String(original, 'UTF-8'): "Fixture sem mutação: ${fixture.name}"
+                    source.setText(changed, 'UTF-8')
+                    try {
+                        verifyComposePlatformResources(fixtureRoot)
+                        throw new GradleException("Fixture aceita indevidamente: ${fixture.name}")
+                    } catch (GradleException failure) {
+                        assert failure.message.contains(fixture.error): "Falha inesperada em ${fixture.name}: ${failure.message}"
+                    }
+                    results.add([fixture: fixture.name, expectedRejection: true, passed: true])
+                } finally {
+                    source.bytes = original
+                }
+            }
+            verifyComposePlatformResources(fixtureRoot)
+            results.add([fixture: 'restored-resources', expectedRejection: false, passed: true])
+        } finally {
+            fixtureRoot.deleteDir()
+            assert originals.every { source, bytes -> java.util.Arrays.equals(source.bytes, bytes) }: 'As fontes reais foram alteradas pelas fixtures.'
+        }
+        def report = layout.buildDirectory.file('reports/architecture/compose-platform-policy.json').get().asFile
+        report.parentFile.mkdirs()
+        report.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(results)) + '\n'
+        logger.lifecycle("Compose platform XML policy: ${results.size()} checks passed; fixtures isolated and sources unchanged.")
+    }
+}

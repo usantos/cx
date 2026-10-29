@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workflow_section_onboarding">Início</string>
+    <string name="workflow_section_account">Conta</string>
+    <string name="workflow_section_betting">Apostas</string>
+    <string name="workflow_section_cart">Carrinho</string>
+    <string name="workflow_section_payment">Pagamentos</string>
+    <string name="workflow_section_ticket">Bilhetes e compras</string>
+    <string name="workflow_section_result">Resultados</string>
+    <string name="workflow_section_responsiblegaming">Jogo responsável</string>
+    <string name="workflow_section_notification">Notificações</string>
+    <string name="workflow_section_retail">Lotéricas e resgate</string>
+    <string name="workflow_section_support">Ajuda</string>
+</resources>

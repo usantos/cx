@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workflow_results_resultados">Resultados</string>
+    <string name="workflow_results_escolha_uma_modalidade_para_consultar_os_ultimos_sorteios">Escolha uma modalidade para consultar os últimos sorteios.</string>
+    <string name="workflow_results_consultar">Consultar</string>
+    <string name="workflow_results_resultado_do_concurso">Resultado do concurso</string>
+    <string name="workflow_results_veja_dezenas_sorteadas_data_arrecadacao_e_faixas_de_premiacao">Veja dezenas sorteadas, data, arrecadação e faixas de premiação.</string>
+    <string name="workflow_results_concurso">Concurso</string>
+    <string name="workflow_results_buscar_concurso">Buscar concurso</string>
+    <string name="workflow_results_resultado_da_aposta">Resultado da aposta</string>
+    <string name="workflow_results_compare_os_numeros_apostados_com_o_resultado_oficial">Compare os números apostados com o resultado oficial.</string>
+    <string name="workflow_results_voltar_as_apostas">Voltar às apostas</string>
+</resources>

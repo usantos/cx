@@ -1,0 +1,268 @@
+{
+  "edition": "2026-10-27",
+  "historical": true,
+  "source": "build/verification/samsung-a11y-14features-20261027",
+  "totals": {
+    "PARTIAL": 33,
+    "PASSED": 13,
+    "FAILED": 7,
+    "NOT_EXECUTED": 2,
+    "BLOCKED": 1
+  },
+  "checks": [
+    {
+      "feature": "Account",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Biometria e variantes de erro do SSO não provocadas; Dados pessoais conferidos pelo usuário sem captura ou salvamento."
+    },
+    {
+      "feature": "Betting",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "FAILED"
+        },
+        {
+          "status": "FAILED"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Bolões: instruções, Anterior/Próximo e font100 legado confirmados. +Milionária: frase introdutória ausente no texto equivalente foi reproduzida e corrigida; atualização/reteste pendentes. Outras modalidades/rodas e header truncado têm escopo próprio."
+    },
+    {
+      "feature": "Cart",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "FAILED"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Resumo/contador corrigidos conferidos visualmente no Samsung; usuário solicitou leitura integral em português por extenso. Leitura agrupada no APK final confirmada pelo usuário; outras variantes e operações não foram presumidas. Header preservado ainda trunca o título."
+    },
+    {
+      "feature": "Home",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Home clássica/menu e retorno: usuário confirmou que Voltar fecha o menu, confirmação de saída e Cancelar mantêm Home/foco. V2 desativada na configuração PRD atual."
+    },
+    {
+      "feature": "Marketplace",
+      "checks": [
+        {
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "status": "FAILED"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Lista real aberta, mas sem bolões retornados para os filtros atuais; leitura de cartões reais ainda não aprovada. Retestes de controles e detalhe dependem de conteúdo disponível."
+    },
+    {
+      "feature": "Marketplace Filter",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "FAILED"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Reteste de dígitos e seções corrigidos pendente; toolbar preservada ainda limita texto."
+    },
+    {
+      "feature": "Notifications",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "FAILED"
+        },
+        {
+          "status": "BLOCKED"
+        }
+      ],
+      "remaining": "Usuário conferiu abas e ações desabilitadas; nomes completos após correção. Serviço falhou ao carregar, portanto conteúdo de mensagens e expansão continuam indisponíveis. Header preservado trunca título."
+    },
+    {
+      "feature": "Onboarding",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PASSED"
+        },
+        {
+          "status": "PARTIAL"
+        }
+      ],
+      "remaining": "Três páginas, corpo/ações em200 e descrições Celular/Estrela/Lista com lupa conferidos pelo usuário no APK atualizado, em entrada controlada. Primeira instalação completa e variantes de inicialização não reproduzidas."
+    },
+    {
+      "feature": "Payment",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Métodos de pagamento conferidos pelo usuário; nova regressão de ações passou, reteste físico pendente. Sem gerar código, cadastrar cartão ou pagar."
+    },
+    {
+      "feature": "Responsible Gaming",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Formulário conferido sem envio; reteste da introdução e fechamento corrigidos pendente."
+    },
+    {
+      "feature": "Results",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "FAILED"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Leitura numérica/valor em blocos confirmada. Loteca em200 revelou nomes estreitos e contador cortado; correção pendente. Super Sete disponível para conferência. Variantes de modalidade/concurso têm escopo próprio."
+    },
+    {
+      "feature": "Retail",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        }
+      ],
+      "remaining": "Busca, nome do campo preenchido, IME e conteúdo/estado disponível conferidos pelo usuário em entrada local controlada. Resgate real Pix/Mercado Pago exige prêmio elegível; não foi executado."
+    },
+    {
+      "feature": "Support",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PASSED"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Categorias longas corrigidas conferidas visualmente/TalkBack com retorno e rolagem; perguntas, expansão e links já conferidos pelo usuário. Variantes de conteúdo HTML remoto têm limites próprios; caracterização sem alteração de CSS."
+    },
+    {
+      "feature": "Tickets",
+      "checks": [
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PARTIAL"
+        },
+        {
+          "status": "PASSED"
+        }
+      ],
+      "remaining": "Entrada Home→scanner sem câmera, Digitar código e campos vazios com teclado/rolagem conferidos pelo usuário. Período de Minhas apostas e variantes de comprovante pago ainda não conferidos nesta passagem."
+    }
+  ],
+  "positiveResponses": 16,
+  "partialResponses": 2
+}

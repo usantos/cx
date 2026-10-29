@@ -3,6 +3,10 @@ package br.gov.caixa.loterias.core.domain.betting
 import java.time.Instant
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
+import br.gov.caixa.loterias.feature.betting.domain.model.isPoolOnlyWindow
 
 class PoolResaleWindowTest {
     private val game = LotteryGameParameters(LotteryModality(2, "Mega-Sena", "MEGA_SENA"),

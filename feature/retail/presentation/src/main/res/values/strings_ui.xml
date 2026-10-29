@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_acesse_minhas_apostas_85c594" formatted="false">"Acesse \nMinhas apostas"</string>
+    <string name="ui_adicionar_aos_favoritos_5eb5af" formatted="false">"Adicionar aos favoritos"</string>
+    <string name="ui_agencia_62aa47" formatted="false">"Agência"</string>
+    <string name="ui_ajuda_fe0add" formatted="false">"Ajuda"</string>
+    <string name="ui_apresente_seus_documentos_pessoais_r_83357e" formatted="false">"Apresente seus documentos pessoais (RG, CPF, Comprovante de Endereço)"</string>
+    <string name="ui_aproveite_seu_premio_8adb07" formatted="false">"Aproveite seu prêmio!"</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_buscar_lotericas_c8f302" formatted="false">"Buscar lotéricas"</string>
+    <string name="ui_cancelar_bb9dbb" formatted="false">"Cancelar"</string>
+    <string name="ui_celular_e_mail_chave_aleatoria_4f5955" formatted="false">"Celular / e-mail / Chave aleatória"</string>
+    <string name="ui_chave_01966c" formatted="false">"Chave"</string>
+    <string name="ui_chave_1_s_14ef7a">"Chave: %1$s"</string>
+    <string name="ui_chave_invalida_22ed25" formatted="false">"Chave inválida!"</string>
+    <string name="ui_concurso_1997f5" formatted="false">"Concurso"</string>
+    <string name="ui_concurso_1_s_39491d">"Concurso: %1$s"</string>
+    <string name="ui_concursos_80935e" formatted="false">"Concursos"</string>
+    <string name="ui_confirmar_717bed" formatted="false">"Confirmar"</string>
+    <string name="ui_confirmar_a_chave_pix_para_o_resgate_52b273" formatted="false">"Confirmar a chave Pix para o resgate."</string>
+    <string name="ui_continuar_63e2bb" formatted="false">"Continuar"</string>
+    <string name="ui_dados_do_titular_da_chave_724785" formatted="false">"Dados do titular da chave:"</string>
+    <string name="ui_dirija_se_a_uma_agencia_de_sua_prefe_93e205" formatted="false">"Dirija-se a uma agência de sua preferência"</string>
+    <string name="ui_duvidas_10e026" formatted="false">"Dúvidas"</string>
+    <string name="ui_e_mail_2550d9" formatted="false">"E-mail"</string>
+    <string name="ui_em_breve_seu_premio_estara_disponive_735f6c" formatted="false">"Em breve seu prêmio estará disponível  em sua conta no mercado pago"</string>
+    <string name="ui_emita_o_seu_comprovante_da_aposta_3638fb" formatted="false">"Emita o seu comprovante da aposta"</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_escolha_a_chave_pix_que_deseja_receb_ad328d" formatted="false">"Escolha a chave Pix que deseja receber o resgate do prêmio."</string>
+    <string name="ui_escolha_como_resgatar_seu_premio_15382c" formatted="false">"Escolha como resgatar seu prêmio"</string>
+    <string name="ui_escolha_uma_loterica_mais_proxima_503a55" formatted="false">"Escolha uma Lotérica mais próxima"</string>
+    <string name="ui_estou_ciente_que_o_resgate_de_premio_7aa71e" formatted="false">"Estou ciente que o resgate de prêmio só poderá ser realizado para uma conta de titularidade do apostador."</string>
+    <string name="ui_favoritar_loterica_9b9006" formatted="false">"Favoritar lotérica"</string>
+    <string name="ui_gerar_novamente_b608ab" formatted="false">"Gerar\nnovamente"</string>
+    <string name="ui_gerar_pdf_9cdd93" formatted="false">"Gerar PDF"</string>
+    <string name="ui_insira_o_nome_da_loterica_ou_o_codig_9bea3e" formatted="false">"Insira o nome da lotérica ou o código somente com os números do segundo campo, com 6 dígitos, Exemplo: E.Lotérico 10.000004‑01, digite 000004."</string>
+    <string name="ui_loterias_caixa_267b9d" formatted="false">"Loterias CAIXA"</string>
+    <string name="ui_loterica_6552e8" formatted="false">"Lotérica"</string>
+    <string name="ui_lotericas_8c948f" formatted="false">"Lotéricas"</string>
+    <string name="ui_mostre_o_qr_code_ao_atendente_a23f79" formatted="false">"Mostre o QR Code ao atendente"</string>
+    <string name="ui_nao_9bc947" formatted="false">"Não"</string>
+    <string name="ui_nao_foi_possivel_abrir_o_comprovante_8b45b2" formatted="false">"Não foi possível abrir o comprovante. Tente novamente."</string>
+    <string name="ui_nao_foi_possivel_recuperar_o_comprov_f02c59" formatted="false">"Não foi possível recuperar o comprovante. Tente novamente."</string>
+    <string name="ui_nao_foi_possivel_salvar_o_comprovant_e315d0" formatted="false">"Não foi possível salvar o comprovante. Tente novamente."</string>
+    <string name="ui_nenhuma_loterica_encontrada_8bfcf1" formatted="false">"Nenhuma Lotérica encontrada"</string>
+    <string name="ui_nome_ou_codigo_47d071" formatted="false">"Nome ou código"</string>
+    <string name="ui_o_qr_code_e_valido_por_1_s_minutos_a_679f76">"O QR Code é válido por %1$s minutos\nacompanhe o contador:"</string>
+    <string name="ui_o_qr_code_expirou_e58bcc" formatted="false">"O QR Code expirou"</string>
+    <string name="ui_outra_chave_8d9935" formatted="false">"Outra Chave"</string>
+    <string name="ui_para_receber_seu_premio_por_favor_co_95e3f1" formatted="false">"Para receber seu prêmio,\npor favor confirme seu e-mail:"</string>
+    <string name="ui_premio_449164" formatted="false">"prêmio"</string>
+    <string name="ui_qr_code_de_resgate_81b8fb" formatted="false">"QR Code de resgate"</string>
+    <string name="ui_qr_expiration_pulse_f3d2b8" formatted="false">"qr-expiration-pulse"</string>
+    <string name="ui_qr_expiration_scale_c3fb77" formatted="false">"qr-expiration-scale"</string>
+    <string name="ui_remover_dos_favoritos_903370" formatted="false">"Remover dos favoritos"</string>
+    <string name="ui_remover_loterica_favorita_27587c" formatted="false">"Remover lotérica favorita"</string>
+    <string name="ui_resgatar_bf428f" formatted="false">"Resgatar"</string>
+    <string name="ui_resgatar_novo_premio_4ed587" formatted="false">"Resgatar novo prêmio"</string>
+    <string name="ui_resgatar_premio_e68bcd" formatted="false">"Resgatar prêmio"</string>
+    <string name="ui_resgate_de_premio_via_mercado_pago_a5b5dc" formatted="false">"Resgate de Prêmio via Mercado Pago"</string>
+    <string name="ui_resgate_de_premio_via_pix_42150a" formatted="false">"Resgate de Prêmio via Pix"</string>
+    <string name="ui_resgate_processado_via_336deb" formatted="false">"Resgate processado via"</string>
+    <string name="ui_resultado_da_aposta_4e6334" formatted="false">"Resultado da aposta"</string>
+    <string name="ui_seu_resgate_foi_solicitado_com_suces_7f6a39" formatted="false">"Seu resgate foi solicitado com sucesso!"</string>
+    <string name="ui_sim_931345" formatted="false">"Sim"</string>
+    <string name="ui_solicitacao_efetuada_com_sucesso_621a55" formatted="false">"Solicitação efetuada com sucesso!"</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_um_e_mail_foi_enviado_para_1_s_com_o_91929e">"Um e-mail foi enviado para %1$s com os dados de recebimento do seu prêmio."</string>
+    <string name="ui_v_1_s_7ec02d">"v%1$s"</string>
+    <string name="ui_valor_do_credito_ceefea" formatted="false">"Valor do Crédito"</string>
+    <string name="ui_verifique_o_nome_ou_codigo_digitado_4d0aaa" formatted="false">"Verifique o nome ou código digitado e tente novamente."</string>
+    <string name="ui_visualizar_comprovante_de_premio_3a10c0" formatted="false">"Visualizar comprovante de prêmio"</string>
+    <string name="ui_voce_foi_premiado_9441db" formatted="false">"você foi premiado!"</string>
+    <string name="ui_voce_foi_premiado_com_total_de_1_s_f8d6ec">"você foi premiado com total de \n%1$s"</string>
+    <string name="ui_voce_pode_acompanhar_a_situacao_do_r_ef1451" formatted="false">"Você pode acompanhar a situação do resgate pelo menu Minhas apostas enquanto ele é processado."</string>
+    <string name="ui_voltar_ao_inicio_372787" formatted="false">"Voltar ao início"</string>
+</resources>

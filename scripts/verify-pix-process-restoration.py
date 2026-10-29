@@ -42,12 +42,12 @@ class Driver:
     def adb(self, *args, binary=False, timeout=45):
         result = subprocess.run(self.command + list(args), stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, timeout=timeout)
-        # Do not leak remote output on errors (including logs or XML).
+        # Não vaza saída remota em erros (incluindo logs ou XML).
         require(result.returncode == 0, "ADB operation failed: " + args[0])
         return result.stdout if binary else result.stdout.decode("utf-8", errors="replace")
 
     def pid(self):
-        # pidof may return exit 1 for a stopped process; avoid adb status ambiguity.
+        # pidof pode retornar código de saída 1 para um processo parado; evita ambiguidade de estado do adb.
         output = self.adb("shell", "sh", "-c", "'pidof " + PACKAGE + " || true'").strip()
         require(not output or re.fullmatch(r"\d+(?:\s+\d+)*", output), "Unexpected PID response")
         pids = [int(value) for value in output.split()]
@@ -55,19 +55,19 @@ class Driver:
         return pids[0] if pids else None
 
     def own_focus(self):
-        # Android 16's `window windows` omits global mCurrentFocus; the full
-        # window dump retains it. Do not infer focus merely from an app window.
+        # `window windows` do Android 16 omite mCurrentFocus global; o dump completo
+        # das janelas o mantém. Não infere foco apenas a partir de uma janela do aplicativo.
         windows = self.adb("shell", "dumpsys", "window")
         focus = [line for line in windows.splitlines() if "mCurrentFocus=" in line]
         return any(PACKAGE + "/" in line for line in focus)
 
     def task_id(self):
-        # Persist only the task number for the candidate ActivityRecord, never
-        # the activity dump (which can contain other apps or Intent extras).
+        # Persiste somente o número da tarefa do ActivityRecord candidato, nunca
+        # o dump da Activity (que pode conter outros aplicativos ou extras do Intent).
         activities = self.adb("shell", "dumpsys", "activity", "activities")
         record = r"ActivityRecord\{[^}\n]*\s" + re.escape(PACKAGE) + r"/[^\s}]+\s+t(\d+)\b"
-        # Samsung retains obsolete ActivityRecords in orientation/window-color
-        # diagnostics. Only actual task history entries authorize this assertion.
+        # A Samsung mantém ActivityRecords obsoletos nos diagnósticos de orientação/cor
+        # da janela. Somente entradas reais do histórico de tarefas autorizam esta asserção.
         history = r"^\s*\*?\s*Hist\s+#\d+:\s*" + record
         tasks = {int(value) for value in re.findall(history, activities, re.MULTILINE)}
         require(len(tasks) == 1, "Expected exactly one retained candidate Android task")
@@ -81,8 +81,8 @@ class Driver:
         if not self.own_focus():
             self.evidence["last_ui_probe"] = {"candidate_focused": False}
             return None
-        # Android 16 may report /dev/tty without emitting the XML. Keep the dump
-        # transient on-device, parse in host memory, and remove it even on failure.
+        # O Android 16 pode informar /dev/tty sem emitir o XML. Mantém o dump
+        # temporário no dispositivo, analisa na memória do hospedeiro e remove mesmo em caso de falha.
         remote_xml = "/data/local/tmp/codex-pix-probe-" + uuid.uuid4().hex + ".xml"
         try:
             self.adb("shell", "uiautomator", "dump", remote_xml, timeout=15)
@@ -134,7 +134,7 @@ class Driver:
         (self.args.output / name).write_bytes(data)
 
     def posts(self, pid, since):
-        # Query only the candidate PID and one tag; never save logcat contents.
+        # Consulta somente o PID candidato e uma tag; nunca salva o conteúdo do logcat.
         raw = self.adb("logcat", "-d", "--pid", str(pid), "-v", "epoch", "LoteriasHTTP:D", "*:S")
         count = 0
         for line in raw.splitlines():
@@ -182,7 +182,7 @@ class Driver:
         require(self.evidence["initial_posts"] == 1, "Expected exactly one initial Pix generation POST; verify logging and fixture")
         self.evidence["last_stage"] = "background-kill"
         self.adb("shell", "input", "keyevent", "KEYCODE_HOME")
-        time.sleep(2)  # Activity must reach stopped state and save its task state.
+        time.sleep(2)  # A Activity deve atingir o estado parado e salvar o estado de sua tarefa.
         require(not self.own_focus(), "Candidate remained focused after HOME; process kill refused")
         require(self.pid() == initial_pid, "Candidate process changed before the background kill")
         background_task = self.task_id()
@@ -197,9 +197,9 @@ class Driver:
         retained_task = self.task_id()
         self.evidence["retained_task_id_after_kill"] = retained_task
         require(retained_task == initial_task, "Candidate Android task was lost after process death")
-        # NEW_TASK | RESET_TASK_IF_NEEDED, launcher-equivalent existing-task reentry.
-        # The synthetic session is memory-only. Recreate the identical mock owner
-        # before composition while retaining the existing Android task/SavedState.
+        # NEW_TASK | RESET_TASK_IF_NEEDED, reentrada em tarefa existente equivalente ao inicializador.
+        # A sessão sintética existe só na memória. Recria o mesmo titular simulado
+        # antes da composição, mantendo a tarefa Android/SavedState existente.
         self.evidence["last_stage"] = "restore-launch"
         self.evidence["restore_identity_setup"] = "same guarded synthetic fixture extras"
         self.adb("shell", "am", "start", "-W", "-n", ACTIVITY,
@@ -244,10 +244,10 @@ def main():
     try:
         driver.run()
     except (ProbeFailure, OSError, ValueError, subprocess.TimeoutExpired) as error:
-        # Exception text from ADB/JSON may contain arbitrary content; retain only controlled reasons.
+        # O texto de exceções de ADB/JSON pode ter conteúdo arbitrário; mantém apenas motivos controlados.
         reason = str(error) if isinstance(error, ProbeFailure) else type(error).__name__
         driver.evidence["failure_reason"] = reason
-        # A host/route restore failure still reports any observed generation requests.
+        # Uma falha de restauração do hospedeiro/rota ainda informa as requisições de geração observadas.
         if hasattr(driver, "since"):
             for phase in ("initial", "restored"):
                 if driver.evidence.get(phase + "_pid"):

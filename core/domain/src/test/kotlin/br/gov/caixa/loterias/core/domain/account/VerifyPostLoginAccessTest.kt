@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.core.domain.account
 
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.core.common.result.AppError
 import java.io.IOException
 import java.math.BigDecimal
 import kotlinx.coroutines.CancellationException
@@ -9,6 +8,13 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Test
+import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
+import br.gov.caixa.loterias.feature.account.domain.model.AccountStatus
+import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
+import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccess
 
 class VerifyPostLoginAccessTest {
     @Test fun `blocked account verification precedes registration for every destination`() = runTest {

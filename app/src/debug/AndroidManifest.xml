@@ -1,7 +1,10 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <application>
         <activity
             android:name=".HomeDrawerTestActivity"
             android:exported="false" />
+        <!-- A ferramenta de preview existe somente nas dependências de depuração. -->
+        <activity android:name="androidx.compose.ui.tooling.PreviewActivity" tools:node="remove" />
     </application>
 </manifest>

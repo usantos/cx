@@ -8,6 +8,10 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.api.NotificationReadApi
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionInterceptor
 
 class UnreadNotificationApiTest {
     @Test fun `unread GET carries bound bearer no query and no body`() = runTest {

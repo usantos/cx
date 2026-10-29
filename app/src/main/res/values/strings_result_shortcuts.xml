@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_result_megasena">Resultado Mega-Sena</string>
+    <string name="shortcut_result_lotofacil">Resultado Lotofácil</string>
+    <string name="shortcut_result_loteca">Resultado Loteca</string>
+    <string name="shortcut_result_all">Todos os resultados</string>
+</resources>

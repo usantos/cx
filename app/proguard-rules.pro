@@ -3,14 +3,14 @@
 -keepattributes RuntimeVisibleAnnotations,RuntimeInvisibleAnnotations,AnnotationDefault,Exceptions
 
 # Retrofit creates implementations of these interfaces with java.lang.reflect.Proxy.
--keep interface br.gov.caixa.loterias.core.network.LoteriasApi { *; }
--keep interface br.gov.caixa.loterias.core.network.LegacyBackendApi { *; }
--keep interface br.gov.caixa.loterias.core.network.BetsHistoryApi { *; }
--keep interface br.gov.caixa.loterias.core.network.MercadoPagoApi { *; }
--keep interface br.gov.caixa.loterias.core.network.RecargaPayApi { *; }
--keep interface br.gov.caixa.loterias.core.network.PurchaseBackendApi { *; }
--keep interface br.gov.caixa.loterias.core.network.AccountVerificationBackendApi { *; }
--keep interface br.gov.caixa.loterias.core.network.NotificationReadApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.api.LoteriasApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.api.BackendApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.api.BetsHistoryApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.api.MercadoPagoApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.api.RecargaPayApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.api.PurchaseBackendApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.api.AccountVerificationBackendApi { *; }
+-keep interface br.gov.caixa.loterias.core.network.api.NotificationReadApi { *; }
 -keepclasseswithmembers,allowshrinking,allowoptimization,allowobfuscation interface * {
     @retrofit2.http.* <methods>;
 }
@@ -20,10 +20,11 @@
 -keepclassmembers,allowobfuscation class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }
--keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.network.ApiEnvelope { *; }
+-keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.network.model.ApiEnvelope { *; }
 -keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.network.**Dto { *; }
+-keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.feature.*.data.dto.*Dto { *; }
 # Shared HTTP error metadata is also read reflectively and intentionally is not a UI/domain model.
--keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.network.BackendErrorMetadata { *; }
+-keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.network.error.BackendErrorMetadata { *; }
 
 # Hilt/KSP normally ships consumer rules; retain DI entry points and generated components as a
 # defensive rule for release builds that use R8 full mode.
@@ -61,3 +62,27 @@
 
 # Topaz OFD: mesmo contrato de preservação do CX para JNI/reflection do SDK.
 -keep class br.com.topaz.** { *; }
+
+# Room 2.2.5 supplied by Topaz constructs generated databases reflectively.
+# Its old consumer rule retains the class, but R8 full mode removed this constructor.
+-keepclassmembers class * extends androidx.room.RoomDatabase {
+    public <init>();
+}
+
+# Signed Remote Config wire models are verified/deserialized reflectively.
+# Keep constructors/fields reachable while allowing R8 to rename classes and annotated fields.
+-keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.keymanagement.model.HostPublicKeyPins { *; }
+-keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.keymanagement.model.PublicKeySet { *; }
+-keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.keymanagement.model.KeySetSignature { *; }
+-keep,allowoptimization,allowobfuscation class br.gov.caixa.loterias.core.keymanagement.model.SignedKeySetEnvelope { *; }
+
+# Release builds emit no Android request logs, including dependency HTTP diagnostics.
+-assumenosideeffects class android.util.Log {
+    public static *** v(...);
+    public static *** d(...);
+    public static *** i(...);
+    public static *** w(...);
+    public static *** e(...);
+    public static *** wtf(...);
+    public static *** println(...);
+}

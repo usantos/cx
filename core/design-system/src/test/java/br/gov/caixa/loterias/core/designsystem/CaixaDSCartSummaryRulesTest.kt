@@ -1,8 +1,13 @@
 package br.gov.caixa.loterias.core.designsystem
 
+import br.gov.caixa.loterias.core.designsystem.components.cart.cartSummaryAmount
+import br.gov.caixa.loterias.core.designsystem.components.cart.cartSummaryCountLabel
+import br.gov.caixa.loterias.core.designsystem.components.cart.isCartSummaryVisible
 import java.math.BigDecimal
 import java.util.Locale
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class CaixaDSCartSummaryRulesTest {

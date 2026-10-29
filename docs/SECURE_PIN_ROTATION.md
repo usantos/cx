@@ -28,17 +28,22 @@ O mecanismo é inspirado nas propriedades de metadados assinados, expiração, v
 
 ## Configuração do build
 
-As chaves públicas são SPKI DER codificadas em Base64URL sem padding. Configure somente material público:
+O Gradle lê o material público de bootstrap nesta ordem: variáveis de ambiente, propriedades Gradle e `.local/build-security.properties` (ignorado pelo Git). O exemplo sem valores reais está em `gradle/build-security.properties.example`. No CI, forneça a configuração pelo gerenciador de variáveis do pipeline. Não grave valores em `gradle.properties` versionado, código Kotlin ou logs.
 
-```bash
-./gradlew :app:assembleDebug \
-  -PkeySetTrustedSigners='root-a=<SPKI_BASE64URL>,root-b=<SPKI_BASE64URL>,root-c=<SPKI_BASE64URL>' \
-  -PkeySetSignatureThreshold=2
-```
+- `SIMLO_{PRD,TQS,AUTOMACAO}_FIREBASE_{APP_ID,API_KEY,PROJECT_ID,SENDER_ID}`: configuração do cliente Firebase por ambiente.
+- `SIMLO_TLS_DEFAULT_PINS`: array JSON de hosts e pins de fallback homologados. É obrigatório e validado no build, sem imprimir valores em erros.
+- `SIMLO_KEYSET_TRUSTED_SIGNERS`: pares `root-a=<SPKI_BASE64URL>,root-b=<SPKI_BASE64URL>,root-c=<SPKI_BASE64URL>`.
+- `SIMLO_KEYSET_SIGNATURE_THRESHOLD`: limiar de assinaturas, padrão 2.
 
-Sem signatários configurados, o aplicativo desabilita a atualização remota e só permite chamadas reais dos clientes Retrofit para hosts presentes no fallback local. O pipeline de produção deve fornecer os três signatários públicos e o limiar 2.
+Os parâmetros Gradle antigos `keySetTrustedSigners` e `keySetSignatureThreshold` continuam aceitos para compatibilidade com pipelines existentes. São apenas chaves públicas; prefira a configuração local/CI para evitar valores em histórico de comandos.
 
-**Pendência operacional identificada em 07/09:** o fallback atual de `AppContainer` contém somente `mobileloterias.caixa.gov.br`. Ele não permite homologar TQS, automação, Mercado Pago ou RecargaPay sem material adicional de pinagem. Esses hosts devem constar de um manifesto assinado aprovado ou de um fallback homologado; não copie o pin de produção para eles nem adicione trust-all para liberar testes. Nenhum novo pin foi inventado nesta revisão.
+Os valores Firebase e os pins que já existiam foram preservados no arquivo local deste checkout. O fallback contém `mobileloterias.caixa.gov.br` e `silce.carrinho.caixa.gov.br`. Nenhum certificado foi trocado ou pin novo inventado. Outros checkouts precisam receber esse material autorizado antes de compilar.
+
+O build gera `BuildConfig.TLS_DEFAULT_PINS`; a aplicação não mantém pins literais no Kotlin. Pins e identificadores Firebase continuam recuperáveis do APK, pois são dados públicos necessários em runtime. O R8 renomeia código, mas não é um cofre de segredos.
+
+Sem signatários configurados, a atualização remota fica desabilitada e os clientes usam exclusivamente o fallback. Para habilitar rotação, a operação deve fornecer as chaves públicas reais e publicar manifestos assinados com as respectivas chaves privadas mantidas fora do app/CI. A configuração de signatários exige uma publicação inicial; as próximas rotações de certificados TLS não exigem novo APK enquanto as âncoras e o protocolo continuarem válidos.
+
+Release mantém `minifyEnabled true`, `shrinkResources true` e regras específicas para o contrato JSON assinado. Os nomes dos campos de rede usam `@SerializedName`, permitindo ofuscação de campos/classes sem alterar o JSON. SDKs que exigem JNI/reflexão mantêm suas regras de preservação.
 
 Para exportar uma chave pública de configuração já criada em ambiente controlado:
 
@@ -51,7 +56,7 @@ Esse comando é apenas para a cerimônia controlada. Não copie a chave privada 
 
 ## Formato do Remote Config
 
-Parâmetro: `tls_pinning_keyset_v1`.
+Parâmetro: `tls_pinning_keyset`.
 
 O valor é um envelope JSON. `payload` contém o JSON compacto do conjunto de pins em Base64URL sem padding. Cada assinatura é calculada sobre os bytes decodificados de `payload`, usando `SHA256withECDSA`:
 
@@ -192,3 +197,25 @@ O padrão é `false`, e builds `release` forçam `ENABLE_NETWORK_LOGGING=false` 
 - testes unitários e gate Jacoco superior a 95% nos componentes de segurança.
 
 Referências: [OWASP MASVS-NETWORK](https://mas.owasp.org/MASVS/08-MASVS-NETWORK/), [Android Network Security Configuration](https://developer.android.com/privacy-and-security/security-config), [Android SSL security](https://developer.android.com/privacy-and-security/security-ssl), [Firebase Remote Config](https://firebase.google.com/docs/remote-config/) e [TUF — survivable key compromise](https://theupdateframework.io/papers/survivable-key-compromise-ccs2010.pdf).
+
+## Conferência com o Legado em 22/10/2026
+
+Foram lidos os checkouts `Projects/cx` e `Projects/legado/simlo-app-android`, sem alterações neles.
+
+- `CertificadoSilceSingleton.initCertificados()` usa `R.raw.certificado_atual` e `R.raw.novo_certificado`.
+- O SPKI desses dois arquivos foi extraído localmente com OpenSSL e comparado sem registrar os valores. Ambos correspondem aos dois pins já preservados para `mobileloterias.caixa.gov.br` no fallback local.
+- `certificado_apim_nuvem.cer` não corresponde ao fallback atual. Não foi adicionado automaticamente nem usado como signatário.
+- Não foi encontrado o contrato de manifesto assinado/ECDSA ou signatários de rotação nesses checkouts. O `RemoteConfigManager` do checkout em `legado` contém `force_update` e `min_version_code`, sem distribuição de certificados assinados.
+- As referências a `publicKey` em Mercado Pago são chaves da integração de pagamento; não são âncoras para autorizar alteração do pinning.
+- `SSLPinningUtil.pinagemTQS()` do Legado contém validação permissiva de cadeia e hostname. Esse comportamento não foi reaproveitado.
+- `SplashScreenActivity.trataSucesso()` limpa `LoginSP`, e `redirectApp()` abre introdução ou login. A abertura direta da Home com sessão ativa é a regra solicitada para o Compose, não uma regra copiada desse fluxo do Legado. Sessão ausente/expirada vai para `account/login`; credenciais biométricas e cookies não concedem acesso automaticamente. Tokens continuam voláteis; esta alteração não implementa persistência de sessão após encerramento do processo.
+
+Validação da alteração: 212 testes unitários do app e 21 de key-management passaram; o gate de cobertura de key-management e os gates Compose/DS/formatação passaram. `assemblePrdRelease` concluiu com R8 e shrink de recursos, gerando APK sem assinatura de publicação. O mapping confirma renomeação dos quatro modelos JSON e do verificador. Um teste local adicional executou o contrato JSON assinado após ofuscação com R8, preservando os pins e rejeitando rollback. O build também foi testado com array de pins vazio e recusou a configuração.
+
+Permanece necessária a configuração operacional das chaves públicas autorizadas em `SIMLO_KEYSET_TRUSTED_SIGNERS` para habilitar a rotação remota assinada. Nenhuma chave privada foi gerada, importada ou publicada; o Firebase não foi alterado.
+
+## Ferramenta de assinatura
+
+Use `scripts/sign-remote-config-pins.py` para gerar o envelope a partir dos pins atuais, com chaves privadas externas. Veja [instruções e primeira configuração de confiança](REMOTE_CONFIG_PIN_SIGNING.md). O script não gera chaves nem publica parâmetros no Firebase.
+
+Para incluir o pin de um novo certificado e incrementar automaticamente a versão preservando o manifesto anterior autenticado, use [a ferramenta de rotação por certificado](REMOTE_CONFIG_PIN_ROTATION_SCRIPT.md).

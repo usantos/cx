@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pt">
+    <string name="ui_00_f15343" formatted="false">"00"</string>
+    <string name="ui_1_s_4c75be">"(%1$s)"</string>
+    <string name="ui_999_d78178" formatted="false">"+999"</string>
+    <string name="ui_adicionando_6ae81e" formatted="false">"Adicionando…"</string>
+    <string name="ui_adicionar_ao_carrinho_bf86b8" formatted="false">"Adicionar ao carrinho"</string>
+    <string name="ui_ajuda_fe0add" formatted="false">"Ajuda"</string>
+    <string name="ui_ao_carrinho_de_apostas_ef1eb2" formatted="false">"\nao carrinho de apostas"</string>
+    <string name="ui_aposta_de_9a14cf" formatted="false">" aposta de "</string>
+    <string name="ui_apostas_de_11b8ee" formatted="false">" apostas de "</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_aumentar_cotas_203e21" formatted="false">"Aumentar cotas"</string>
+    <string name="ui_bolao_1_s_de_2_s_214183">"Bolão %1$s de %2$s"</string>
+    <string name="ui_bolao_99927e" formatted="false">"Bolão"</string>
+    <string name="ui_bolao_caixa_4efca1" formatted="false">"Bolão CAIXA"</string>
+    <string name="ui_boloes_f052c3" formatted="false">"Bolões"</string>
+    <string name="ui_cancelar_bb9dbb" formatted="false">"Cancelar"</string>
+    <string name="ui_carrinho_de_apostas_23d953" formatted="false">"Carrinho de apostas"</string>
+    <string name="ui_codigo_1_s_772825">"Código: %1$s"</string>
+    <string name="ui_coluna_1_s_numero_2_s_4e3a5f">"Coluna %1$s, número %2$s"</string>
+    <string name="ui_colunas_dbcb93" formatted="false">"Colunas"</string>
+    <string name="ui_concurso_1997f5" formatted="false">"Concurso"</string>
+    <string name="ui_confirmar_717bed" formatted="false">"Confirmar"</string>
+    <string name="ui_cota_disponivel_de_fae690" formatted="false">" cota disponível de "</string>
+    <string name="ui_cotas_disponiveis_de_010d84" formatted="false">" cotas disponíveis de "</string>
+    <string name="ui_deseja_excluir_1_s_da_sua_lista_de_f_a0d867">"Deseja excluir %1$s da sua lista de favoritas?"</string>
+    <string name="ui_deseja_incluir_1_s_na_sua_lista_de_f_5f60aa">"Deseja incluir %1$s na sua lista de favoritas?"</string>
+    <string name="ui_detalhes_62c950" formatted="false">"Detalhes"</string>
+    <string name="ui_devido_a_regras_de_arredondamento_o_a7f150" formatted="false">"*Devido a regras de arredondamento, o valor cobrado pela cota deste bolão poderá ser menor que o exibido."</string>
+    <string name="ui_diminuir_cotas_74fb74" formatted="false">"Diminuir cotas"</string>
+    <string name="ui_dupla_de_pascoa_68c9b0" formatted="false">"dupla de páscoa"</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_esta_loterica_nao_possui_boloes_disp_dd5e5c" formatted="false">"Esta lotérica não possui bolões disponíveis no momento."</string>
+    <string name="ui_excluir_loterica_favorita_1ab99f" formatted="false">"Excluir lotérica favorita"</string>
+    <string name="ui_favoritar_loterica_91a291" formatted="false">"Favoritar\nLotérica"</string>
+    <string name="ui_favoritar_loterica_9b9006" formatted="false">"Favoritar lotérica"</string>
+    <string name="ui_filtrar_boloes_bd6f30" formatted="false">"Filtrar bolões"</string>
+    <string name="ui_jogo_1_s_aa1e61">"Jogo %1$s"</string>
+    <string name="ui_loteca_especial_29c766" formatted="false">"loteca especial"</string>
+    <string name="ui_loterica_favorita_3fe384" formatted="false">"Lotérica\nFavorita"</string>
+    <string name="ui_loterica_favorita_6ab38b" formatted="false">"Lotérica favorita"</string>
+    <string name="ui_lotericas_favoritas_8a5e86" formatted="false">"Lotéricas Favoritas"</string>
+    <string name="ui_lotofacil_da_independencia_5a2372" formatted="false">"lotofácil da \nindependência"</string>
+    <string name="ui_mega_da_virada_4113fa" formatted="false">"mega da virada"</string>
+    <string name="ui_mes_de_sorte_1_s_42ca39">"Mês de sorte: %1$s"</string>
+    <string name="ui_nao_foi_possivel_carregar_o_bolao_41c8f3" formatted="false">"Não foi possível carregar o bolão"</string>
+    <string name="ui_nao_foram_encontrados_boloes_disponi_ecef7d" formatted="false">"Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente."</string>
+    <string name="ui_numeros_186859" formatted="false">"Números"</string>
+    <string name="ui_ops_aaf6b8" formatted="false">"Ops!"</string>
+    <string name="ui_pesquisar_loterica_742000" formatted="false">"Pesquisar lotérica"</string>
+    <string name="ui_premio_estimado_63dd56" formatted="false">"Prêmio Estimado"</string>
+    <string name="ui_premio_estimado_699ac4" formatted="false">"Prêmio estimado"</string>
+    <string name="ui_premio_estimado_do_concurso_1_s_f15d0b">"Prêmio estimado do concurso %1$s"</string>
+    <string name="ui_quantidade_de_cotas_ddb3fd" formatted="false">"Quantidade de Cotas"</string>
+    <string name="ui_quina_de_sao_joao_a3337a" formatted="false">"quina de são joão"</string>
+    <string name="ui_restam_1_s_de_2_s_cotas_3_s_apostas_f1a609">"Restam %1$s de %2$s cotas\n%3$s apostas de %4$s %5$s"</string>
+    <string name="ui_sorteio_a49bf4" formatted="false">"Sorteio"</string>
+    <string name="ui_tarifa_de_servico_1_s_1a2f5a">"Tarifa de Serviço: %1$s"</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_time_do_coracao_1_s_7e407c">"Time do coração: %1$s"</string>
+    <string name="ui_total_1_s_038bb5">"Total: %1$s"</string>
+    <string name="ui_total_do_carrinho_b01305" formatted="false">"Total do carrinho"</string>
+    <string name="ui_trevos_0f4867" formatted="false">"Trevos"</string>
+    <string name="ui_valor_da_cota_1_s_89868c">"Valor da Cota: %1$s"</string>
+    <string name="ui_valor_dessa_aposta_4e1785" formatted="false">"Valor dessa aposta"</string>
+    <string name="ui_voce_ainda_nao_possui_nenhuma_loteri_4047bc" formatted="false">"Você ainda não possui nenhuma lotérica favorita."</string>
+    <string name="ui_voltar_59dc92" formatted="false">"Voltar"</string>
+</resources>

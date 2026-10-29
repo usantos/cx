@@ -5,6 +5,8 @@ import java.time.Instant
 import java.time.ZoneOffset
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.common.time.LotteryDateTimes
+import br.gov.caixa.loterias.core.common.time.MonotonicServerClock
 
 class ServerTimeSourceTest {
     private val initial = Instant.parse("2026-09-06T21:00:00Z")

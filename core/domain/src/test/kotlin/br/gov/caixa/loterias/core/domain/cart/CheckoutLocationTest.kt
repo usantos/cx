@@ -1,11 +1,16 @@
 package br.gov.caixa.loterias.core.domain.cart
 
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
+import org.junit.Assert.*
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.cart.domain.usecase.CheckCheckoutLocation
+import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationAccess
+import br.gov.caixa.loterias.feature.cart.domain.port.CheckoutLocationSource
+import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
+import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordCheckoutLocationRequest
 
 class CheckoutLocationTest {
     @Test fun `disabled provider precedes permissions and permission history controls settings`() = runTest {
@@ -58,13 +63,13 @@ class CheckoutLocationTest {
         var countryCalls = 0
         var recorded = 0
         var failure: Exception? = null
-        override fun access() = access
+        override suspend fun access() = access
         override suspend fun countryCode(): String? {
             failure?.let { throw it }
             countryCalls++
             return country
         }
-        override fun recordPermissionRequest() {
+        override suspend fun recordPermissionRequest() {
             failure?.let { throw it }
             recorded++
         }

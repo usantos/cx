@@ -1,10 +1,13 @@
 package br.gov.caixa.loterias.core.auth
 
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedUser
 import java.nio.charset.StandardCharsets
 import java.util.Base64
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.session.JwtCurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 
 class JwtCurrentUserIdentityProviderTest {
     @Test

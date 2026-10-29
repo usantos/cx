@@ -1,10 +1,24 @@
 package br.gov.caixa.loterias.core.presentation
 
-import br.gov.caixa.loterias.core.common.*
-import br.gov.caixa.loterias.core.domain.service.*
+import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
+import br.gov.caixa.loterias.core.common.network.NetworkAvailability
+import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
+import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
+import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
+import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
+import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import java.time.LocalDateTime
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.presentation.rule.connectionFailureNotice
+import br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation
+import br.gov.caixa.loterias.core.presentation.state.serviceFailurePresentation
+import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
+import br.gov.caixa.loterias.core.presentation.rule.serviceNoticeUi
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OPERATION_FAILED
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_LOGIN_REQUIRED
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_UPDATED_TERMS
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OFFLINE
 
 class ServiceFailurePresentationTest {
     private val now = LocalDateTime.of(2026, 9, 7, 12, 0)

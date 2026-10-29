@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.core.network
 
-import br.gov.caixa.loterias.core.keymanagement.HostPublicKeyPins
-import br.gov.caixa.loterias.core.keymanagement.PublicKeySet
+import br.gov.caixa.loterias.core.keymanagement.model.HostPublicKeyPins
+import br.gov.caixa.loterias.core.keymanagement.model.PublicKeySet
 import java.lang.reflect.Proxy
 import javax.net.ssl.SSLPeerUnverifiedException
 import okhttp3.Interceptor
@@ -12,6 +12,10 @@ import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.interceptor.PinnedHostInterceptor
 
 class PinnedHostInterceptorTest {
     private val keySet = PublicKeySet(1, 1, Long.MAX_VALUE, listOf(
@@ -86,7 +90,7 @@ class PinnedHostInterceptorTest {
     @Test fun `covered host still requires a matching peer certificate`() {
         val pinner = NetworkClientFactory.certificatePinner(keySet)
         assertThrows(SSLPeerUnverifiedException::class.java) { pinner.check("api.caixa.gov.br", emptyList()) }
-        // This is precisely why installing CertificatePinner without the host guard was insufficient.
+        // Por isso, instalar CertificatePinner sem a proteção de hosts era insuficiente.
         pinner.check("unpinned.caixa.gov.br", emptyList())
     }
 

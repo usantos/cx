@@ -5,6 +5,10 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
 
 class SessionLogoutApiTest {
     @Test fun `logout uses captured bearer bodyless POST without retries redirects or replacement token`() = runTest {

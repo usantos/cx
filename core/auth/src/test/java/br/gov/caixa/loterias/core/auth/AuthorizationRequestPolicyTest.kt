@@ -2,6 +2,9 @@ package br.gov.caixa.loterias.core.auth
 
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.authorization.AuthorizationDeviceInfoProvider
+import br.gov.caixa.loterias.core.auth.authorization.WeakBiometricAvailability
+import br.gov.caixa.loterias.core.auth.authorization.AuthorizationRequestPolicy
 
 class AuthorizationRequestPolicyTest {
     @Test fun `device digest replaces every pipe and sends exact CX parameter names`() {

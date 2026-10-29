@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_1_s_2fc810">"**** %1$s"</string>
+    <string name="ui_1_s_65e020">"%1$s. "</string>
+    <string name="ui_1_s_dca085">"**** **** ****  %1$s"</string>
+    <string name="ui_abertura_do_cadastro_mercado_pago_si_164ef3" formatted="false">"Abertura do cadastro Mercado Pago simulada. Nenhum navegador ou cadastro real foi iniciado."</string>
+    <string name="ui_acompanhamento_da_compra_feea00" formatted="false">"Acompanhamento da compra"</string>
+    <string name="ui_adicionar_cartao_dd9fbe" formatted="false">"Adicionar Cartão"</string>
+    <string name="ui_ajuda_fe0add" formatted="false">"Ajuda"</string>
+    <string name="ui_alterar_ded212" formatted="false">"Alterar"</string>
+    <string name="ui_american_express_066b5b" formatted="false">"american express"</string>
+    <string name="ui_ano_de_validade_954be8" formatted="false">"Ano de validade"</string>
+    <string name="ui_apostar_mais_a6282e" formatted="false">"Apostar mais"</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_bandeiras_aceitas_bf739a" formatted="false">"Bandeiras aceitas"</string>
+    <string name="ui_cancelar_bb9dbb" formatted="false">"Cancelar"</string>
+    <string name="ui_cartao_de_credito_60d5db" formatted="false">"Cartão de Crédito"</string>
+    <string name="ui_cartao_final_1_s_3647b7">"cartão final •••• %1$s"</string>
+    <string name="ui_cartoes_cadastrados_b7e87f" formatted="false">"Cartões cadastrados"</string>
+    <string name="ui_como_pagar_com_pix_47fd8f" formatted="false">"Como pagar com pix"</string>
+    <string name="ui_confira_aqui_sua_lista_de_cartoes_sa_62877f" formatted="false">"Confira aqui sua lista de cartões salvos no Mercado Pago"</string>
+    <string name="ui_confira_aqui_sua_lista_de_cartoes_sa_736bcc" formatted="false">"Confira aqui sua lista de cartões salvos no RecargaPay"</string>
+    <string name="ui_confirmacao_3ae809" formatted="false">"Confirmação"</string>
+    <string name="ui_confirmar_717bed" formatted="false">"Confirmar"</string>
+    <string name="ui_confirme_os_dados_digitados_90c25b" formatted="false">"Confirme os dados digitados"</string>
+    <string name="ui_confirme_os_dados_do_cartao_escolhid_890bbf" formatted="false">"Confirme os dados do cartão escolhido"</string>
+    <string name="ui_digite_seu_codigo_de_seguranca_9e6237" formatted="false">"Digite seu código de segurança"</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_estamos_processando_sua_compra_952655" formatted="false">"Estamos processando sua compra."</string>
+    <string name="ui_estou_ciente_que_somente_sera_aceito_3c9f45" formatted="false">"Estou ciente que somente será aceito o pagamento realizado em conta de titularidade do apostador."</string>
+    <string name="ui_excluir_cartao_84b14c" formatted="false">"Excluir cartão?"</string>
+    <string name="ui_excluir_cartao_final_1_s_228aca">"Excluir cartão final %1$s"</string>
+    <string name="ui_forma_de_pagamento_faf708" formatted="false">"Forma de pagamento"</string>
+    <string name="ui_gerar_codigo_pix_copia_e_cola_1ee337" formatted="false">"Gerar código Pix Copia e cola"</string>
+    <string name="ui_gere_um_codigo_pix_copia_e_cola_para_0f0e33" formatted="false">"Gere um código Pix Copia e Cola para pagar suas apostas."</string>
+    <string name="ui_incluir_codigo_de_verificacao_89a5fe" formatted="false">"Incluir Código de Verificação"</string>
+    <string name="ui_insira_o_codigo_de_seguranca_do_seu_37c0d3" formatted="false">"Insira o código de segurança do seu cartão de crédito"</string>
+    <string name="ui_listar_mais_99b0d5" formatted="false">"Listar Mais"</string>
+    <string name="ui_listar_menos_cff0a0" formatted="false">"Listar Menos"</string>
+    <string name="ui_mercado_pago_fe6402" formatted="false">"Mercado Pago"</string>
+    <string name="ui_mes_de_validade_7e3813" formatted="false">"Mês de validade"</string>
+    <string name="ui_meus_cartoes_8f78b1" formatted="false">"Meus Cartões"</string>
+    <string name="ui_minhas_compras_c1e245" formatted="false">"Minhas Compras"</string>
+    <string name="ui_nao_9bc947" formatted="false">"Não"</string>
+    <string name="ui_nao_foi_possivel_concluir_sua_compra_f96541" formatted="false">"Não foi possível concluir sua compra."</string>
+    <string name="ui_nao_foi_possivel_confirmar_o_pagamen_baf7ad" formatted="false">"Não foi possível confirmar o pagamento."</string>
+    <string name="ui_nao_foi_possivel_recuperar_o_codigo_2d2b23" formatted="false">"Não foi possível recuperar o código Pix. Confira suas compras antes de gerar outro código."</string>
+    <string name="ui_nome_508690" formatted="false">"Nome"</string>
+    <string name="ui_nome_igual_ao_cartao_27ae7e" formatted="false">"Nome igual ao cartão"</string>
+    <string name="ui_normalmente_localizado_no_verso_do_s_cf883d" formatted="false">"Normalmente localizado no verso do seu cartão"</string>
+    <string name="ui_novo_cartao_de_credito_b4cf66" formatted="false">"Novo Cartão de Crédito"</string>
+    <string name="ui_numero_67e494" formatted="false">"Número"</string>
+    <string name="ui_numero_do_cartao_0c235a" formatted="false">"Número do cartão"</string>
+    <string name="ui_o_cartao_de_credito_adicionado_deve_3f3833" formatted="false">"O cartão de crédito adicionado deve ser de sua titularidade"</string>
+    <string name="ui_pagamento_nao_aprovado_b8c8b6" formatted="false">"Pagamento não aprovado"</string>
+    <string name="ui_pagar_agora_80942b" formatted="false">"Pagar agora!"</string>
+    <string name="ui_pagar_via_191e93" formatted="false">"Pagar via:"</string>
+    <string name="ui_preencha_os_dados_de_cartao_de_credi_bf1aad" formatted="false">"Preencha os dados de cartão de crédito de sua titularidade"</string>
+    <string name="ui_recargapay_354540" formatted="false">"RecargaPay"</string>
+    <string name="ui_remover_cartao_310d97" formatted="false">"Remover cartão"</string>
+    <string name="ui_revise_os_dados_do_pagamento_ou_esco_b71aea" formatted="false">"Revise os dados do pagamento ou escolha outra forma para tentar novamente."</string>
+    <string name="ui_rota_terminal_de_pagamento_desconhec_7c872b">"Rota terminal de pagamento desconhecida: %1$s"</string>
+    <string name="ui_salvar_cartao_c1afff" formatted="false">"Salvar cartão"</string>
+    <string name="ui_selecionar_1_s_f97e7d">"Selecionar %1$s"</string>
+    <string name="ui_sim_931345" formatted="false">"Sim"</string>
+    <string name="ui_simulacao_5d2570" formatted="false">"Simulação"</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_texto_4f8865" formatted="false">"•"</string>
+    <string name="ui_validade_5f7aec" formatted="false">"Validade"</string>
+    <string name="ui_venc_1_s_2_s_ab2a97">"Venc.:%1$s/%2$s"</string>
+    <string name="ui_voce_ainda_nao_possui_cartao_salvo_n_9cd97e" formatted="false">"Você ainda não possui cartão salvo no processador Recarga Pay"</string>
+    <string name="ui_voce_ainda_nao_possui_cartao_salvo_n_d906dc" formatted="false">"Você ainda não possui cartão salvo no processador Mercado Pago"</string>
+    <string name="ui_voce_ainda_nao_possui_um_cartao_de_c_c57539" formatted="false">"Você ainda não possui um cartão de crédito cadastrado. A inclusão de um ou mais cartões de crédito deve ser feita ao realizar uma compra."</string>
+    <string name="ui_voce_tem_certeza_de_que_deseja_exclu_693a88">"Você tem certeza de que deseja excluir o cartão %1$s final %2$s dos cartões salvos?"</string>
+    <string name="ui_voltar_59dc92" formatted="false">"Voltar"</string>
+    <string name="ui_voltar_ao_inicio_372787" formatted="false">"Voltar ao início"</string>
+    <string name="ui_xxx_9b38b8" formatted="false">"XXX"</string>
+</resources>

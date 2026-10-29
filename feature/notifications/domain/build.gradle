@@ -1,0 +1,20 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'jacoco'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+kotlin { jvmToolchain(17) }
+jacoco { toolVersion = '0.8.13' }
+dependencies {
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+}
+
+dependencies {
+    api project(':feature:account:api')
+
+    api project(':core:common')
+}

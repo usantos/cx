@@ -1,11 +1,20 @@
 package br.gov.caixa.loterias.core.domain.responsiblegaming
 
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.core.common.result.AppResult
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.AccountSuspension
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSelfAssessmentQuestions
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSocialTransfers
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.repository.ResponsibleGamingRepository
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentAnswer
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentQuestion
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SocialTransfers
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.SubmitSelfAssessment
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.SuspendAccount
 
 class ResponsibleGamingUseCasesTest {
     @Test

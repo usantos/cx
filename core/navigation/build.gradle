@@ -1,13 +1,46 @@
-apply plugin: 'java-library'
-apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'com.android.library'
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+android { buildFeatures { compose = true } }
+
+android {
+    namespace = 'br.gov.caixa.loterias.core.navigation'
+    compileSdk 37
+    defaultConfig { minSdk 24 }
+    buildFeatures { compose = true }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
 
-kotlin { jvmToolchain(17) }
+dependencies {
+    coreLibraryDesugaring libs.desugar.jdk.libs
+    implementation project(':core:presentation')
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    api project(':core:domain')
+    api libs.androidx.navigation.compose
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.kotlinx.coroutines.core
+    testImplementation libs.junit4
+    api project(':feature:account:domain')
+    api project(':feature:betting:domain')
+    api project(':feature:cart:domain')
+    api project(':feature:marketplace:domain')
+    api project(':feature:payment:domain')
+    api project(':feature:retail:domain')
+    api project(':feature:tickets:domain')
+}

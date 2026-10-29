@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_aplicar_3a0489" formatted="false">"Aplicar"</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_e_loterico_10_000004_01_digite_00000_fbe38b" formatted="false">"E.Lotérico 10.000004‑01, digite 000004."</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_excluir_numeros_4115c4" formatted="false">"Excluir números"</string>
+    <string name="ui_excluir_quantidade_a75886" formatted="false">"Excluir Quantidade"</string>
+    <string name="ui_fechar_0f2bd8" formatted="false">"Fechar"</string>
+    <string name="ui_filtrar_06b52c" formatted="false">"Filtrar"</string>
+    <string name="ui_filtros_57ac13" formatted="false">"Filtros"</string>
+    <string name="ui_insira_o_nome_da_loterica_ou_o_codig_9a4d4f" formatted="false">"Insira o nome da lotérica ou o código somente com os\n"</string>
+    <string name="ui_limpar_filtros_60a791" formatted="false">"Limpar Filtros"</string>
+    <string name="ui_lotericas_8c948f" formatted="false">"Lotéricas"</string>
+    <string name="ui_nao_e_possivel_selecionar_um_numero_628dac" formatted="false">"Não é possível selecionar um número já escolhido no outro filtro."</string>
+    <string name="ui_nome_ou_codigo_47d071" formatted="false">"Nome ou código"</string>
+    <string name="ui_numeros_do_segundo_campo_com_6_digit_08a1a7" formatted="false">"números do segundo campo, com 6 dígitos. Exemplo:\n"</string>
+    <string name="ui_numeros_que_nao_quero_417744" formatted="false">"Números que não quero"</string>
+    <string name="ui_numeros_que_quero_b83043" formatted="false">"Números que quero"</string>
+    <string name="ui_quant_de_cotas_maxima_31401a" formatted="false">"Quant. de Cotas Máxima"</string>
+    <string name="ui_quant_de_cotas_minima_c081e3" formatted="false">"Quant. de Cotas Mínima"</string>
+    <string name="ui_quantidade_de_apostas_43c4d2" formatted="false">"Quantidade de Apostas"</string>
+    <string name="ui_quantidade_de_dezenas_daa269" formatted="false">"Quantidade de Dezenas"</string>
+    <string name="ui_quantidade_de_palpites_ef7895" formatted="false">"Quantidade de Palpites"</string>
+    <string name="ui_selecionada_7c6391" formatted="false">"Selecionada"</string>
+    <string name="ui_todas_as_modalidades_d0b87a" formatted="false">"Todas as\nmodalidades"</string>
+    <string name="ui_valor_maximo_cota_9a12ae" formatted="false">"Valor Máximo Cota"</string>
+    <string name="ui_valor_minimo_cota_ff3499" formatted="false">"Valor Mínimo Cota"</string>
+</resources>

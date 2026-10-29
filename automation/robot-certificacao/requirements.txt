@@ -1,0 +1,6 @@
+robotframework==7.1.1
+robotframework-appiumlibrary==2.1.0
+Appium-Python-Client==3.2.1
+selenium==4.16.0
+robotframework-jsonlibrary==0.5
+fpdf2==2.8.2

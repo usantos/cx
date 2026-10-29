@@ -1,7 +1,8 @@
 package br.gov.caixa.loterias.apostas.authentication
 
-import br.gov.caixa.loterias.core.auth.AuthorizationDeviceInfoProvider
-import br.gov.caixa.loterias.core.auth.WeakBiometricAvailability
+import br.gov.caixa.loterias.core.security.authentication.loginAuthorizationRequestPolicy
+import br.gov.caixa.loterias.core.auth.authorization.AuthorizationDeviceInfoProvider
+import br.gov.caixa.loterias.core.auth.authorization.WeakBiometricAvailability
 import org.junit.Assert.*
 import org.junit.Test
 

@@ -7,6 +7,12 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 kotlin { jvmToolchain(17) }
+jacoco { toolVersion = '0.8.13' }
+dependencies {
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+}
+
 
 dependencies {
     api libs.kotlinx.coroutines.core

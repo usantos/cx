@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.core.network
 
+import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
+
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -7,13 +9,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.api.BackendApi
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.core.network.mock.fixture.MockBackendFixtures
 
 class ConfirmedBetRangeApiTest {
     @Test fun `both PDF endpoints disable legacy crypto`() = runTest {
         MockWebServer().use { server ->
             repeat(2) { server.enqueue(MockResponse().setBody("JVBERi0xLjcK")) }
             val api = Retrofit.Builder().baseUrl(server.url("/rest/v1/"))
-                .addConverterFactory(GsonConverterFactory.create()).build().create(LegacyBackendApi::class.java)
+                .addConverterFactory(GsonConverterFactory.create()).build().create(BackendApi::class.java)
             api.betReceiptPdf(7).close()
             api.prizeReceiptPdf(7).close()
             for (path in listOf("comprovante-aposta-app-pdf", "comprovante-premio-app-pdf")) {
@@ -28,7 +33,7 @@ class ConfirmedBetRangeApiTest {
         MockWebServer().use { server ->
             server.enqueue(MockResponse().setHeader("Content-Type", "application/json").setBody("""{"payload":[]}"""))
             val api = Retrofit.Builder().baseUrl(server.url("/rest/v1/"))
-                .addConverterFactory(GsonConverterFactory.create()).build().create(LegacyBackendApi::class.java)
+                .addConverterFactory(GsonConverterFactory.create()).build().create(BackendApi::class.java)
             api.resultsForContests("megasena", listOf(2800,2801,2802))
             val request = server.takeRequest()
             assertEquals(listOf("2800", "2801", "2802"), request.requestUrl!!.queryParameterValues("concursos"))

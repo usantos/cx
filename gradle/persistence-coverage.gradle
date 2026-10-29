@@ -1,0 +1,59 @@
+// O comportamento de persistência pertence a Data das features; esta verificação agrega suas suítes existentes.
+apply plugin: 'jacoco'
+
+jacoco { toolVersion = '0.8.13' }
+
+def featureDataProjects = [
+        project(':feature:account:data'),
+        project(':feature:betting:data'),
+        project(':feature:cart:data'),
+        project(':feature:home:data'),
+        project(':feature:marketplace:data'),
+        project(':feature:notifications:data'),
+        project(':feature:onboarding:data'),
+        project(':feature:payment:data'),
+        project(':feature:responsible-gaming:data'),
+        project(':feature:results:data'),
+        project(':feature:retail:data'),
+        project(':feature:support:data'),
+        project(':feature:tickets:data'),
+]
+def preferencesCoverageData = files(
+        featureDataProjects.collect { owner ->
+            files({
+                owner.tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+            }, fileTree(owner.layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
+        },
+        files({
+            project(':app').tasks.named('testPrdDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+        }).filter { it.isFile() }
+)
+def platformProjects = [project(':feature:account:data'), project(':feature:cart:data'), project(':feature:onboarding:data')]
+def preferencesCoverageClasses = files({ platformProjects.collect { p ->
+    fileTree(p.layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes')).matching {
+        include '**/OnboardingRepositoryImpl.class', '**/FavoriteCartUsageRepositoryImpl.class', '**/*RecentPurchase*.class', '**/*LocalSessionDataRepositoryImpl*.class', '**/SessionLocalDataSourceImpl*.class', '**/LocalCartRepositoryImpl*.class', '**/LocalCartMapperKt*.class', '**/AbsentCartTransaction*.class', '**/AndroidCart*.class', '**/CartFingerprintKt*.class', '**/CartReceipt*.class', '**/CartSnapshot*.class', '**/CartTableDataSource*.class', '**/CartTransfer*.class', '**/CartUploadMapperKt*.class', '**/SQLiteCart*.class', '**/VisitorCartRepositoryImpl*.class', '**/VisitorCartGraph*.class', '**/VisitorCartMapperKt*.class'
+    }
+} })
+
+tasks.register('jacocoPersistenceCoverageReport', JacocoReport) {
+    dependsOn featureDataProjects.collect { it.path + ':testDebugUnitTest' }
+    dependsOn ':app:testPrdDebugUnitTest'
+
+    dependsOn ':feature:account:data:connectedDebugAndroidTest', ':feature:cart:data:connectedDebugAndroidTest', ':feature:notifications:data:connectedDebugAndroidTest', ':feature:onboarding:data:testDebugUnitTest'
+    doFirst {
+        if (preferencesCoverageClasses.asFileTree.isEmpty() || preferencesCoverageData.isEmpty()) {
+            throw new GradleException('Preferences coverage requires compiled classes and test execution data.')
+        }
+    }
+    executionData.from(preferencesCoverageData)
+    sourceDirectories.from(files({ platformProjects.collect { it.projectDir.toPath().resolve('src/main/kotlin').toFile() } }))
+    classDirectories.from(preferencesCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+tasks.register('verifyPersistenceCoverage', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoPersistenceCoverageReport')
+    executionData.from(preferencesCoverageData)
+    sourceDirectories.from(files({ platformProjects.collect { it.projectDir.toPath().resolve('src/main/kotlin').toFile() } }))
+    classDirectories.from(preferencesCoverageClasses)
+    violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.9501 } } }
+}

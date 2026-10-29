@@ -1,12 +1,24 @@
 package br.gov.caixa.loterias.core.domain.cart
 
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.core.common.result.AppResult
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.cart.domain.usecase.AddFavoriteCartToCurrent
+import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCart
+import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartBet
+import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
+import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
+import br.gov.caixa.loterias.feature.cart.domain.repository.FavoriteCartRepository
+import br.gov.caixa.loterias.feature.cart.domain.repository.FavoriteCartUsageRepository
+import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartBets
+import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCarts
+import br.gov.caixa.loterias.feature.cart.domain.usecase.MarkFavoriteCartAdded
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.feature.cart.domain.usecase.WasFavoriteCartAdded
 
 class FavoriteCartUseCasesTest {
     @Test
@@ -34,7 +46,7 @@ class FavoriteCartUseCasesTest {
     }
 
     @Test
-    fun `favorite cart usage use cases preserve the local legacy rule`() {
+    fun `favorite cart usage use cases preserve the local legacy rule`() = runTest {
         val repository = FakeFavoriteCartUsageRepository()
         val wasAdded = WasFavoriteCartAdded(repository)
         val markAdded = MarkFavoriteCartAdded(repository)
@@ -68,7 +80,12 @@ class FavoriteCartUseCasesTest {
 
     private class FakeFavoriteCartUsageRepository : FavoriteCartUsageRepository {
         val ids = mutableSetOf<Long>()
-        override fun wasAddedToCurrentCart(cartId: Long): Boolean = cartId in ids
-        override fun markAsAddedToCurrentCart(cartId: Long) { ids += cartId }
+        override suspend fun wasAddedToCurrentCart(cartId: Long): Boolean = cartId in ids
+        override suspend fun markAsAddedToCurrentCart(cartId: Long) {
+            ids += cartId
+        }
+        override suspend fun clear() {
+            ids.clear()
+        }
     }
 }

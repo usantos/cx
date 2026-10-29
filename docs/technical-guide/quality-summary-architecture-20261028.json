@@ -1,0 +1,30 @@
+{
+  "kind": "full",
+  "passed": false,
+  "stages": {
+    "Ktlint": "FAILED",
+    "Detekt": "PASSED",
+    "Android Lint": "PASSED",
+    "Unit Tests": "PASSED",
+    "Coverage": "PASSED",
+    "JaCoCo Line Coverage": "95.11%",
+    "Architecture / Compose / CaixaDS / platform contracts": "PASSED in final-architecture-and-build.log after correction of obsolete Compose policy",
+    "PRD Debug APK": "ASSEMBLED; NOT INSTALLED IN THIS AUDIT",
+    "Python regression tests": "190 PASSED",
+    "Platform XML policy fixtures": "33 PASSED; resources restored",
+    "Changed Kotlin formatting": "117 files, zero violations in global report",
+    "Protected configurations and headers": "37 + 2 unchanged",
+    "Device / release / remote CI": "NOT_RUN"
+  },
+  "edition": "2026-10-28",
+  "scope": "full-architecture-audit",
+  "state": "ARCHITECTURE_FIXED_GLOBAL_KTLINT_DEBT",
+  "evidenceRoot": "build/verification/architecture-audit-20261028",
+  "globalKtlint": {
+    "errors": 6897,
+    "files": 363,
+    "baselineErrors": 7017,
+    "baselineFiles": 368,
+    "protectedHeaderErrors": 26
+  }
+}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_1_s_2_s_13326c">"%1$s: %2$s"</string>
+    <string name="ui_1_s_2_s_3_s_4_s_2295e5">"%1$s %2$s × %3$s %4$s"</string>
+    <string name="ui_1_s_2_s_3_s_4_s_65b6b0">"%1$s. %2$s × %3$s: %4$s"</string>
+    <string name="ui_1_s_concurso_2_s_9f3926">"%1$s • Concurso %2$s"</string>
+    <string name="ui_1_s_de_2_s_ec1761">"%1$s de %2$s"</string>
+    <string name="ui_1_sa_coluna_bdc185">"%1$sª coluna"</string>
+    <string name="ui_2o_sorteio_b21ce2" formatted="false">"2º sorteio"</string>
+    <string name="ui_4_ou_mais_4bb81b" formatted="false">"4 ou mais"</string>
+    <string name="ui_acumulado_para_o_proximo_concurso_1_942144">"Acumulado para o próximo concurso: %1$s"</string>
+    <string name="ui_acumulou_d5cf3d" formatted="false">"Acumulou"</string>
+    <string name="ui_arrecadacao_total_968b74" formatted="false">"Arrecadação total"</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_concurso_especial_f9b7c4" formatted="false">"Concurso especial"</string>
+    <string name="ui_data_do_resultado_1ae295" formatted="false">"Data do resultado: "</string>
+    <string name="ui_data_do_sorteio_088973" formatted="false">"Data do sorteio: "</string>
+    <string name="ui_domingo_424e93" formatted="false">"Domingo"</string>
+    <string name="ui_empate_0b5021" formatted="false">"Empate"</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_estimativa_de_premio_1_s_aa5411">"Estimativa de prêmio: %1$s"</string>
+    <string name="ui_fechar_pesquisa_13432a" formatted="false">"Fechar pesquisa"</string>
+    <string name="ui_ganhadores_por_regiao_dcf6c4" formatted="false">"Ganhadores por região"</string>
+    <string name="ui_ganhadores_por_regiao_do_2o_sorteio_d8beb0" formatted="false">"Ganhadores por região do 2º sorteio"</string>
+    <string name="ui_local_do_sorteio_1_s_101c6d">"Local do sorteio: %1$s"</string>
+    <string name="ui_mes_de_sorte_1_s_42ca39">"Mês de sorte: %1$s"</string>
+    <string name="ui_mes_de_sorte_4fd420" formatted="false">"Mês de sorte"</string>
+    <string name="ui_modalidades_6b4baa" formatted="false">"Modalidades"</string>
+    <string name="ui_nao_foi_possivel_acessar_o_servico_v_856170" formatted="false">"Não foi possível acessar o serviço. Verifique sua conexão."</string>
+    <string name="ui_nao_foi_possivel_consultar_o_resulta_2b3533" formatted="false">"Não foi possível consultar o resultado."</string>
+    <string name="ui_nao_foi_possivel_consultar_o_resulta_e18575" formatted="false">"Não foi possível consultar o resultado"</string>
+    <string name="ui_nenhum_resultado_disponivel_para_est_cec209" formatted="false">"Nenhum resultado disponível para esta modalidade."</string>
+    <string name="ui_numero_do_concurso_eb635d" formatted="false">"Número do concurso"</string>
+    <string name="ui_numeros_sorteados_513d0e" formatted="false">"Números sorteados"</string>
+    <string name="ui_numeros_sorteados_5e6cc1" formatted="false">"Números sorteados:"</string>
+    <string name="ui_os_concursos_desta_aposta_ainda_nao_71da09" formatted="false">"Os concursos desta aposta ainda não possuem resultados disponíveis."</string>
+    <string name="ui_pesquisar_concurso_b0b4bb" formatted="false">"Pesquisar concurso"</string>
+    <string name="ui_premiacao_b81f73" formatted="false">"Premiação"</string>
+    <string name="ui_premiacao_do_1o_sorteio_7b478e" formatted="false">"Premiação do 1º sorteio"</string>
+    <string name="ui_premiacao_do_2o_sorteio_c067ce" formatted="false">"Premiação do 2º sorteio"</string>
+    <string name="ui_premio_1_s_eb3e48">"Prêmio: %1$s"</string>
+    <string name="ui_proximo_concurso_aab095" formatted="false">"Próximo concurso"</string>
+    <string name="ui_proximo_concurso_especial_3276ac" formatted="false">"Próximo concurso especial"</string>
+    <string name="ui_proximo_concurso_final_cinco_be1e62" formatted="false">"Próximo concurso final cinco"</string>
+    <string name="ui_proximo_concurso_final_zero_7ffe7d" formatted="false">"Próximo concurso final zero"</string>
+    <string name="ui_resgatar_premio_e68bcd" formatted="false">"Resgatar prêmio"</string>
+    <string name="ui_resultado_ainda_nao_disponivel_1f07c7" formatted="false">"Resultado ainda não disponível"</string>
+    <string name="ui_resultado_da_aposta_4e6334" formatted="false">"Resultado da aposta"</string>
+    <string name="ui_resultados_310561" formatted="false">"Resultados"</string>
+    <string name="ui_segundo_sorteio_5c48d6" formatted="false">"Segundo sorteio"</string>
+    <string name="ui_selecione_a_modalidade_para_ver_os_s_c1f884" formatted="false">"Selecione a modalidade para\n ver os seus resultados"</string>
+    <string name="ui_seus_trevos_1_s_e266c5">"Seus trevos: %1$s"</string>
+    <string name="ui_sorteio_realizado_em_1_s_d632f3">"Sorteio realizado em %1$s"</string>
+    <string name="ui_sua_aposta_3bcfc2" formatted="false">"Sua aposta"</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_time_do_coracao_1_s_7e407c">"Time do coração: %1$s"</string>
+    <string name="ui_time_do_coracao_918360" formatted="false">"Time do coração"</string>
+    <string name="ui_trevos_sorteados_2645f8" formatted="false">"Trevos sorteados"</string>
+    <string name="ui_voltar_59dc92" formatted="false">"Voltar"</string>
+</resources>

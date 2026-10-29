@@ -1,0 +1,142 @@
+[
+  {
+    "screen": "Home clássica",
+    "route": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/route/HomeRoute.kt",
+    "viewmodel": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/viewmodel/HomeViewModel.kt",
+    "data": "feature/home/data/src/main/kotlin/br/gov/caixa/loterias/feature/home/data/repository/HomeLayoutRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/PrincipalActivity.java"
+  },
+  {
+    "screen": "Entrada / Login",
+    "route": "feature/account/presentation/src/main/java/br/gov/caixa/loterias/feature/account/presentation/route/LoginRoute.kt",
+    "viewmodel": "feature/account/presentation/src/main/java/br/gov/caixa/loterias/feature/account/presentation/viewmodel/LoginViewModel.kt",
+    "data": "feature/account/data/src/main/kotlin/br/gov/caixa/loterias/feature/account/data/repository/AccountRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/LoginActivity.java"
+  },
+  {
+    "screen": "Resultados: modalidades",
+    "route": "feature/results/presentation/src/main/java/br/gov/caixa/loterias/feature/results/presentation/route/ResultsRoute.kt",
+    "viewmodel": "feature/results/presentation/src/main/java/br/gov/caixa/loterias/feature/results/presentation/viewmodel/ResultsViewModel.kt",
+    "data": "feature/results/data/src/main/kotlin/br/gov/caixa/loterias/feature/results/data/repository/ResultsRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/SelecaoModalidadesResultados.java"
+  },
+  {
+    "screen": "Resultados: detalhe",
+    "route": "feature/results/presentation/src/main/java/br/gov/caixa/loterias/feature/results/presentation/route/ResultsRoute.kt",
+    "viewmodel": "feature/results/presentation/src/main/java/br/gov/caixa/loterias/feature/results/presentation/viewmodel/ResultsViewModel.kt",
+    "data": "feature/results/data/src/main/kotlin/br/gov/caixa/loterias/feature/results/data/repository/ResultsRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/VisualizarResultadosActivity.java"
+  },
+  {
+    "screen": "Dúvidas / FAQ",
+    "route": "feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/route/SupportRoute.kt",
+    "viewmodel": "feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/viewmodel/SupportViewModel.kt",
+    "data": "feature/support/data/src/main/kotlin/br/gov/caixa/loterias/feature/support/data/repository/SupportRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/DuvidasActivity.java"
+  },
+  {
+    "screen": "Termos de uso",
+    "route": "feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/route/SupportRoute.kt",
+    "viewmodel": "feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/viewmodel/SupportViewModel.kt",
+    "data": "feature/support/data/src/main/kotlin/br/gov/caixa/loterias/feature/support/data/repository/SupportRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/TermosUsoActivity.java"
+  },
+  {
+    "screen": "Bolões: catálogo e lista",
+    "route": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/route/MarketplaceRoute.kt",
+    "viewmodel": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/viewmodel/MarketplaceViewModel.kt",
+    "data": "feature/marketplace/data/src/main/kotlin/br/gov/caixa/loterias/feature/marketplace/data/repository/MarketplaceRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/view/activity/BolaoActivity.java"
+  },
+  {
+    "screen": "Bolões: detalhe",
+    "route": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/route/MarketplaceDetailRoute.kt",
+    "viewmodel": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/viewmodel/MarketplaceDetailViewModel.kt",
+    "data": "feature/marketplace/data/src/main/kotlin/br/gov/caixa/loterias/feature/marketplace/data/repository/MarketplaceRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/view/activity/DetalhesBolaoActivity.java"
+  },
+  {
+    "screen": "Filtros dos bolões",
+    "route": "feature/marketplace-filter/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplacefilter/presentation/route/MarketplaceFilterRoute.kt",
+    "viewmodel": "feature/marketplace-filter/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplacefilter/presentation/viewmodel/MarketplaceFilterViewModel.kt",
+    "data": "feature/marketplace/data/src/main/kotlin/br/gov/caixa/loterias/feature/marketplace/data/repository/MarketplaceRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/FiltraMarketplaceActivity.java"
+  },
+  {
+    "screen": "Simulação: dezenas / trevos / esportes",
+    "route": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/route/BettingGameRoute.kt",
+    "viewmodel": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/viewmodel/BettingGameViewModel.kt",
+    "data": "feature/betting/data/src/main/kotlin/br/gov/caixa/loterias/feature/betting/data/repository/BettingRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/view/activity/SimulaActivity.java"
+  },
+  {
+    "screen": "Apostas favoritas",
+    "route": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/route/FavoriteBetsRoute.kt",
+    "viewmodel": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/viewmodel/FavoriteBetsViewModel.kt",
+    "data": "feature/betting/data/src/main/kotlin/br/gov/caixa/loterias/feature/betting/data/repository/FavoriteBetRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/FavoritasActivity.java"
+  },
+  {
+    "screen": "Rapidão: configuração",
+    "route": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/route/RapidConfigurationRoute.kt",
+    "viewmodel": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/viewmodel/RapidConfigurationViewModel.kt",
+    "data": "feature/betting/data/src/main/kotlin/br/gov/caixa/loterias/feature/betting/data/repository/RapidBettingRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/ConfiguracaoRapidaoActivity.java"
+  },
+  {
+    "screen": "Rapidão: lista",
+    "route": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/route/RapidListRoute.kt",
+    "viewmodel": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/viewmodel/RapidListViewModel.kt",
+    "data": "feature/betting/data/src/main/kotlin/br/gov/caixa/loterias/feature/betting/data/repository/RapidBettingRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/ListaRapidaoActivity.java"
+  },
+  {
+    "screen": "Carrinho atual",
+    "route": "feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/route/CurrentCartRoute.kt",
+    "viewmodel": "feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/viewmodel/CartViewModel.kt",
+    "data": "feature/cart/data/src/main/kotlin/br/gov/caixa/loterias/feature/cart/data/repository/CartRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/CarrinhoActivity.java"
+  },
+  {
+    "screen": "Carrinhos favoritos",
+    "route": "feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/route/FavoriteCartsRoute.kt",
+    "viewmodel": "feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/viewmodel/FavoriteCartsViewModel.kt",
+    "data": "feature/cart/data/src/main/kotlin/br/gov/caixa/loterias/feature/cart/data/repository/FavoriteCartRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/CarrinhosFavoritosActivity.java"
+  },
+  {
+    "screen": "Leitor de bilhetes",
+    "route": "feature/tickets/presentation/src/main/java/br/gov/caixa/loterias/feature/tickets/presentation/route/TicketScannerRoute.kt",
+    "viewmodel": "feature/tickets/presentation/src/main/java/br/gov/caixa/loterias/feature/tickets/presentation/viewmodel/TicketsViewModel.kt",
+    "data": "feature/tickets/data/src/main/kotlin/br/gov/caixa/loterias/feature/tickets/data/repository/TicketsRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/LerBilhetesActivity.java"
+  },
+  {
+    "screen": "Escolha de jogo do bilhete",
+    "route": "feature/tickets/presentation/src/main/java/br/gov/caixa/loterias/feature/tickets/presentation/route/TicketGameChoiceRoute.kt",
+    "viewmodel": "feature/tickets/presentation/src/main/java/br/gov/caixa/loterias/feature/tickets/presentation/viewmodel/TicketsViewModel.kt",
+    "data": "feature/tickets/data/src/main/kotlin/br/gov/caixa/loterias/feature/tickets/data/repository/TicketsRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/LerBilhetesEscolhaJogoActivity.java"
+  },
+  {
+    "screen": "Notificações: mensagens",
+    "route": "feature/notifications/presentation/src/main/java/br/gov/caixa/loterias/feature/notifications/presentation/route/NotificationsRoute.kt",
+    "viewmodel": "feature/notifications/presentation/src/main/java/br/gov/caixa/loterias/feature/notifications/presentation/viewmodel/NotificationsViewModel.kt",
+    "data": "feature/notifications/data/src/main/kotlin/br/gov/caixa/loterias/feature/notifications/data/repository/NotificationRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/MensagensPushActivity.java"
+  },
+  {
+    "screen": "Notificações: preferências",
+    "route": "feature/notifications/presentation/src/main/java/br/gov/caixa/loterias/feature/notifications/presentation/route/NotificationsRoute.kt",
+    "viewmodel": "feature/notifications/presentation/src/main/java/br/gov/caixa/loterias/feature/notifications/presentation/viewmodel/NotificationsViewModel.kt",
+    "data": "feature/notifications/data/src/main/kotlin/br/gov/caixa/loterias/feature/notifications/data/repository/NotificationRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/NotificacoesPrefActivity.java"
+  },
+  {
+    "screen": "Jogo responsável: autoavaliação",
+    "route": "feature/responsible-gaming/presentation/src/main/java/br/gov/caixa/loterias/feature/responsiblegaming/presentation/route/ResponsibleGamingRoute.kt",
+    "viewmodel": "feature/responsible-gaming/presentation/src/main/java/br/gov/caixa/loterias/feature/responsiblegaming/presentation/viewmodel/ResponsibleGamingViewModel.kt",
+    "data": "feature/responsible-gaming/data/src/main/kotlin/br/gov/caixa/loterias/feature/responsiblegaming/data/repository/ResponsibleGamingRepositoryImpl.kt",
+    "legacy": "Legado/app/src/main/java/br/gov/caixa/loterias/apostas/controllers/AutoavaliacaoStartActivity.java"
+  }
+]

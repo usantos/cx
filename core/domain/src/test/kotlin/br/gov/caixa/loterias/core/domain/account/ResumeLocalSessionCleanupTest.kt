@@ -1,9 +1,11 @@
 package br.gov.caixa.loterias.core.domain.account
 
+import org.junit.Assert.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.account.domain.model.LocalSessionRecovery
+import br.gov.caixa.loterias.feature.account.domain.usecase.ResumeLocalSessionCleanup
 
 class ResumeLocalSessionCleanupTest {
     @Test fun `maps absent and completed pending cleanup without caching results`() = runTest {

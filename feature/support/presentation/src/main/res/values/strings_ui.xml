@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_abrir_1_s_638c29">"Abrir %1$s"</string>
+    <string name="ui_aceitar_termos_de_uso_eeb4ca" formatted="false">"Aceitar Termos de Uso"</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_cancelar_bb9dbb" formatted="false">"Cancelar"</string>
+    <string name="ui_confirmar_717bed" formatted="false">"Confirmar"</string>
+    <string name="ui_continuar_63e2bb" formatted="false">"Continuar"</string>
+    <string name="ui_declaro_ter_lido_e_concordado_com_os_44f77b" formatted="false">"Declaro ter lido e concordado com os\ntermos de uso"</string>
+    <string name="ui_duvidas_10e026" formatted="false">"Dúvidas"</string>
+    <string name="ui_expandir_resposta_930d08" formatted="false">"Expandir resposta"</string>
+    <string name="ui_fechar_0f2bd8" formatted="false">"Fechar"</string>
+    <string name="ui_loterias_caixa_02d076" formatted="false">"Loterias Caixa"</string>
+    <string name="ui_nao_informada_c6f460" formatted="false">"Não informada"</string>
+    <string name="ui_nao_informado_01af1e" formatted="false">"Não informado"</string>
+    <string name="ui_proximo_sorteio_a5035e" formatted="false">"Próximo sorteio"</string>
+    <string name="ui_recolher_resposta_dea24c" formatted="false">"Recolher resposta"</string>
+    <string name="ui_regras_do_jogo_e96ce2" formatted="false">"Regras do jogo"</string>
+    <string name="ui_termo_de_uso_d57d7b" formatted="false">"Termo de uso"</string>
+    <string name="ui_voce_sera_direcionado_para_a_web_des_022470" formatted="false">"Você será direcionado para a WEB. Deseja continuar?"</string>
+</resources>

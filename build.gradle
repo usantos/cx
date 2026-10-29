@@ -1,4 +1,4 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Arquivo raiz de compilação para configurações comuns a todos os subprojetos e módulos.
 buildscript {
     ext {
         kotlin_version = '2.4.10'
@@ -19,9 +19,19 @@ buildscript {
     }
 }
 
+
+apply from: rootProject.file('gradle/android-lint.gradle')
+apply from: rootProject.file('gradle/verify-feature-modules.gradle')
+apply from: rootProject.file('gradle/persistence-coverage.gradle')
+apply from: rootProject.file('gradle/local-ui-tests.gradle')
+apply from: rootProject.file('gradle/aggregate-test-reports.gradle')
+apply from: rootProject.file('gradle/static-analysis.gradle')
+apply from: rootProject.file('gradle/quality-gate.gradle')
+apply from: rootProject.file('gradle/compose-platform-resources.gradle')
+
 allprojects {
     repositories {
-        // SDK homologado CX, vendorizado sem depender de credenciais do repositório privado.
+        // SDK CX homologado, incluído localmente sem exigir credenciais de repositório privado.
         maven { url = uri("${rootDir}/third-party/maven"); content { includeGroup "br.com.topaz" } }
         mavenCentral()
         google()
@@ -39,7 +49,7 @@ tasks.register('verifyComposeMigration') {
     doLast {
         def roots = [file('app'), file('core'), file('feature')]
         def javaProductionSources = roots.collectMany { root ->
-            fileTree(root).matching { include '**/src/main/**/*.java' }.files
+            fileTree(root).matching { include '**/src/main/**/*.java', '**/src/domain/**/*.java', '**/src/data/**/*.java', '**/src/platform/**/*.java', '**/src/host/**/*.java' }.files
         }
         if (!javaProductionSources.isEmpty()) {
             throw new GradleException("O aplicativo migrado deve usar Kotlin: ${javaProductionSources}")
@@ -49,23 +59,69 @@ tasks.register('verifyComposeMigration') {
         }
 
         def requiredManifest = file('app/src/main/AndroidManifest.xml').canonicalFile
-        // Android desenha a pré-splash antes do runtime Compose; este style é configuração
-        // obrigatória da plataforma e não contém hierarquia de View/layout.
+        // O Android desenha a tela de abertura antes do Compose; este estilo é uma
+        // configuração obrigatória da plataforma, sem hierarquia de View ou layout.
         def requiredPlatformTheme = file('app/src/main/res/values/themes.xml').canonicalFile
-        def adaptiveIcon = file('app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml').canonicalFile
-        def adaptiveRoundIcon = file('app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml').canonicalFile
+        def adaptiveIcon = file('app/src/main/res/mipmap-anydpi/ic_launcher.xml').canonicalFile
+        def adaptiveRoundIcon = file('app/src/main/res/mipmap-anydpi/ic_launcher_round.xml').canonicalFile
         def debugManifest = file('app/src/debug/AndroidManifest.xml').canonicalFile
-        if (debugManifest.isFile()) {
-            def debugRoot = new groovy.xml.XmlSlurper(false, false).parse(debugManifest)
-            def testHostOnly = debugRoot.depthFirst().every { it.name() in ['manifest', 'application', 'activity'] } &&
-                    debugRoot.application.activity.size() == 1 &&
-                    debugRoot.application.activity[0].attributes()['android:name'] == '.HomeDrawerTestActivity' &&
-                    debugRoot.application.activity[0].attributes()['android:exported'] == 'false'
-            if (!testHostOnly) throw new GradleException('Manifest debug pode declarar somente o host interno dos testes Compose.')
-        }
         def allowedPlatformXml = [requiredManifest, requiredPlatformTheme, adaptiveIcon, adaptiveRoundIcon, debugManifest] as Set
-        // Recursos de desenho preservam os vetores/LayerDrawables originais; não são telas XML.
-        // A lista é explícita: qualquer novo XML requer auditoria e continua bloqueado por padrão.
+        allowedPlatformXml.addAll(verifyComposePlatformResources())
+        // Account observa a conectividade; declara a permissão normal na biblioteca responsável.
+        // Este manifesto contém apenas configuração, sem componentes ou permissões adicionais.
+        def accountNetworkManifest = file('feature/account/presentation/src/main/AndroidManifest.xml').canonicalFile
+        if (accountNetworkManifest.isFile()) {
+            def root = new groovy.xml.XmlSlurper(false, false).parse(accountNetworkManifest)
+            def networkPermissionOnly = root.name() == 'manifest' &&
+                    root.attributes() == ['xmlns:android': 'http://schemas.android.com/apk/res/android'] &&
+                    root.text().trim().isEmpty() && root.children().size() == 1 &&
+                    root.'uses-permission'.size() == 1 &&
+                    root.'uses-permission'[0].children().isEmpty() &&
+                    root.'uses-permission'[0].attributes() == ['android:name': 'android.permission.ACCESS_NETWORK_STATE']
+            if (!networkPermissionOnly) {
+                throw new GradleException('Manifest Account deve conter somente ACCESS_NETWORK_STATE, sem componentes ou permissões adicionais.')
+            }
+            allowedPlatformXml.add(accountNetworkManifest)
+        }
+        // Configuração existente do FileProvider, sem hierarquia de interface ou acesso amplo ao cache.
+        def receiptPaths = file('app/src/main/res/xml/receipt_file_paths.xml').canonicalFile
+        if (receiptPaths.isFile()) {
+            def root = new groovy.xml.XmlSlurper(false, false).parse(receiptPaths)
+            def receiptCacheOnly = root.name() == 'paths' &&
+                    root.attributes() == ['xmlns:android': 'http://schemas.android.com/apk/res/android'] &&
+                    root.text().trim().isEmpty() &&
+                    root.children().size() == 1 && root.'cache-path'.size() == 1 &&
+                    root.'cache-path'[0].children().isEmpty() &&
+                    root.'cache-path'[0].attributes() == ['name': 'comprovantes', 'path': 'receipts/']
+            if (!receiptCacheOnly) {
+                throw new GradleException('FileProvider de comprovantes deve conter somente cache-path comprovantes em receipts/.')
+            }
+            allowedPlatformXml.add(receiptPaths)
+        }
+        // Referências independentes dos testes de geometria: somente visibilidade do APK CX.
+        // Não permite elementos application, permissões ou pacotes adicionais nesses manifestos.
+        [
+                'feature/betting/presentation/src/androidTest/AndroidManifest.xml',
+                'feature/onboarding/presentation/src/androidTest/AndroidManifest.xml',
+                'feature/cart/presentation/src/androidTest/AndroidManifest.xml',
+        ].each { path ->
+            def manifest = file(path).canonicalFile
+            if (manifest.isFile()) {
+                def root = new groovy.xml.XmlSlurper(false, false).parse(manifest)
+                def queryOnly = root.name() == 'manifest' &&
+                        root.attributes() == ['xmlns:android': 'http://schemas.android.com/apk/res/android'] &&
+                        root.text().trim().isEmpty() &&
+                        root.children().size() == 1 && root.queries.size() == 1 &&
+                        root.queries[0].attributes().isEmpty() && root.queries[0].children().size() == 1 &&
+                        root.queries.'package'.size() == 1 &&
+                        root.queries.'package'[0].children().isEmpty() &&
+                        root.queries.'package'[0].attributes() == ['android:name': 'br.gov.caixa.loterias.apostas.cxv2validation']
+                if (!queryOnly) throw new GradleException("Manifest do oráculo deve conter somente a query CX: ${manifest}")
+                allowedPlatformXml.add(manifest)
+            }
+        }
+        // Os recursos gráficos preservam os vetores e LayerDrawables originais; não são telas XML.
+        // A lista é explícita: novos XMLs exigem revisão e permanecem bloqueados por padrão.
         def legacyResourceInventory = file('docs/LEGACY_DRAWABLE_RESOURCES.txt')
         def allowedLegacyResourceXml = legacyResourceInventory.readLines('UTF-8')
                 .findAll { it.trim() && !it.startsWith('#') }.collect { file(it).canonicalFile } as Set
@@ -82,15 +138,37 @@ tasks.register('verifyComposeMigration') {
                                         it.@name.text() in ['android:fillColor', 'android:strokeColor'])
                     }
             def nativeParityThemes = [
-                    file('feature/betting/src/main/res/values/rapid_picker_styles.xml').canonicalFile,
-                    file('feature/betting/src/main/res/values/betting_favorite_dialog_styles.xml').canonicalFile,
-                    file('feature/betting/src/main/res/values/betting_simulation_styles.xml').canonicalFile,
+                    file('feature/betting/presentation/src/main/res/values/rapid_picker_styles.xml').canonicalFile,
+                    file('feature/betting/presentation/src/main/res/values/betting_favorite_dialog_styles.xml').canonicalFile,
+                    file('feature/betting/presentation/src/main/res/values/betting_simulation_styles.xml').canonicalFile,
             ] as Set
             def isPickerTheme = nativeParityThemes.contains(source) &&
                     root.name() == 'resources' && root.children().every { it.name() == 'style' } &&
                     root.depthFirst().every { it.name() in ['resources', 'style', 'item'] }
-            if (!isDrawing && !isPickerTheme) {
-                throw new GradleException("Somente desenhos/tema nativo de paridade podem ser registrados; layout XML continua proibido: ${source}")
+            // Apenas os dois rótulos de campanha existentes com várias linhas estão aprovados;
+            // layouts e recursos de valores arbitrários continuam proibidos, inclusive neste arquivo.
+            def campaignLabels = file('feature/home/presentation/src/main/res/values/home_special_contests.xml').canonicalFile
+            def expectedCampaignLabels = ['home_mega_sena_30_anos_duas_linhas', 'home_loteca_pais_duas_linhas'] as Set
+            def isCampaignLabels = source == campaignLabels && root.name() == 'resources' &&
+                    root.attributes().isEmpty() && root.children().size() == expectedCampaignLabels.size() &&
+                    root.children().every { label ->
+                        label.name() == 'string' && label.children().isEmpty() &&
+                                label.attributes() == [name: label.@name.text()] && !label.text().trim().isEmpty()
+                    } && (root.children().collect { it.@name.text() } as Set) == expectedCampaignLabels
+            if (!isDrawing && !isPickerTheme && !isCampaignLabels) {
+                throw new GradleException("Somente desenhos/recursos nativos de paridade podem ser registrados; layout XML continua proibido: ${source}")
+            }
+        }
+        // Recursos de texto são dados, não Views XML. Permite recursos de tradução com vocabulário restrito.
+        roots.collectMany { owner -> fileTree(owner).matching { include '**/src/main/res/values*/*.xml' }.files }
+                .each { source ->
+            def textRoot = new groovy.xml.XmlSlurper(false, false).parse(source)
+            def textTypes = ['string', 'plurals', 'string-array'] as Set
+            def textNodes = ['resources', 'string', 'plurals', 'string-array', 'item', 'b', 'i', 'u', 'annotation', 'xliff:g'] as Set
+            if (textRoot.name() == 'resources' && !textRoot.children().isEmpty() &&
+                    textRoot.children().every { it.name() in textTypes && !it.@name.text().isEmpty() } &&
+                    textRoot.depthFirst().every { it.name() in textNodes }) {
+                allowedPlatformXml.add(source.canonicalFile)
             }
         }
         def unexpectedXml = roots.collectMany { root ->
@@ -113,10 +191,10 @@ tasks.register('verifyComposeMigration') {
 
         def forbiddenControllers = roots.collectMany { root ->
             fileTree(root).matching {
-                include '**/src/main/**/*.kt', '**/src/main/**/*.java'
+                include '**/src/main/**/*.kt', '**/src/domain/**/*.kt', '**/src/data/**/*.kt', '**/src/platform/**/*.kt', '**/src/host/**/*.kt', '**/src/main/**/*.java', '**/src/domain/**/*.java', '**/src/data/**/*.java', '**/src/platform/**/*.java', '**/src/host/**/*.java'
             }.files
         }.findAll { source ->
-            source.name != 'MainActivity.kt' &&
+            source.name != 'MainActivity.kt' && source != file('app/src/main/java/br/gov/caixa/loterias/apostas/QueueActivity.kt') &&
                     (source.text =~ /\b(class|object)\s+\w*(Activity|Fragment)\b/).find()
         }
         if (!forbiddenControllers.isEmpty()) {
@@ -128,12 +206,16 @@ tasks.register('verifyComposeMigration') {
         }.files.findAll { source ->
             (source.text =~ /\bclass\s+\w*Activity\b/).find()
         }
-        if (hosts.size() != 1 || hosts.first().name != 'MainActivity.kt') {
-            throw new GradleException("O app deve ter exatamente uma Activity host; encontradas: ${hosts}")
+        def allowedHosts = ['MainActivity.kt', 'QueueActivity.kt'] as Set
+        if (hosts.collect { it.name }.toSet() != allowedHosts || hosts.size() != 2) {
+            throw new GradleException("O app deve ter apenas MainActivity e a entrada interna QueueActivity; encontradas: ${hosts}")
+        }
+        if (!requiredManifest.text.contains('android:name=".QueueActivity" android:exported="false"')) {
+            throw new GradleException('QueueActivity deve permanecer não exportada.')
         }
 
         def fragmentUsage = roots.collectMany { root ->
-            fileTree(root).matching { include '**/src/main/**/*.kt', '**/src/main/**/*.java' }.files
+            fileTree(root).matching { include '**/src/main/**/*.kt', '**/src/domain/**/*.kt', '**/src/data/**/*.kt', '**/src/platform/**/*.kt', '**/src/host/**/*.kt', '**/src/main/**/*.java', '**/src/domain/**/*.java', '**/src/data/**/*.java', '**/src/platform/**/*.java', '**/src/host/**/*.java' }.files
         }.findAll { source ->
             (source.text =~ /androidx\.fragment|\bclass\s+\w+\s*:\s*\w*Fragment\b/).find()
         }
@@ -158,8 +240,8 @@ tasks.register('verifyLegacyUiInventory') {
             throw new GradleException("A baseline deve preservar os 414 layouts XML do CX; encontrados: ${legacyLayouts.size()}")
         }
         def composeRoutes = composeRouteCatalog.readLines('UTF-8').findAll { !it.trim().isEmpty() }
-        // 77 destinos/estados + Home, filtro e detalhe por modalidade da Home v2. Telas legadas absorvidas por
-        // componentes internos são registradas após `#` no inventário, não como rotas.
+        // 77 destinos e estados, além da Home, filtro e detalhes de modalidades da Home v2. Telas originais absorvidas por
+        // componentes internos são registradas após `#` no inventário, em vez de como rotas.
         if (composeRoutes.size() != 80 || composeRoutes.toSet().size() != 80) {
             throw new GradleException("O catálogo deve conter os 80 destinos Compose únicos; encontrados: ${composeRoutes.size()}")
         }
@@ -189,15 +271,21 @@ tasks.register('verifyLegacyUiInventory') {
     }
 }
 
+tasks.register('verifyAppArchitecturePolicy', Exec) {
+    group = 'verification'
+    description = 'Exercises host architecture rules against isolated positive and negative fixtures.'
+    commandLine 'python3', rootProject.file('scripts/test_app_architecture.py')
+}
+
 tasks.register('verifyCleanArchitecture') {
+    dependsOn 'verifyFeatureModules', 'verifyAppArchitecturePolicy'
     group = 'verification'
     description = 'Enforces inward dependencies for Domain, Data and feature presentation.'
     doLast {
-        def domainSources = fileTree(file('core/domain/src/main')).matching {
-            include '**/*.kt', '**/*.java'
-        }.files
+        def domainSources = project(':core:domain').sourceSets.main.allSource.matching { include '**/*.kt', '**/*.java' }.files +
+                fileTree(file('feature')).matching { include '**/domain/src/main/**/*.kt', '**/domain/src/main/**/*.java', '**/api/src/main/**/*.kt', '**/api/src/main/**/*.java' }.files
         def invalidDomain = domainSources.findAll { source ->
-            (source.text =~ /import\s+(android|androidx|retrofit2|okhttp3|br\.gov\.caixa\.loterias\.core\.(data|network|auth|queue))/).find()
+            (source.text =~ /import\s+(android|androidx|retrofit2|okhttp3|br\.gov\.caixa\.loterias\.core\.(data|network|auth|queue|database|datastore))/).find()
         }
         if (!invalidDomain.isEmpty()) {
             throw new GradleException("Domain depende de camada externa: ${invalidDomain}")
@@ -205,9 +293,10 @@ tasks.register('verifyCleanArchitecture') {
 
         def featureSources = fileTree(file('feature')).matching {
             include '**/src/main/**/*.kt', '**/src/main/**/*.java'
-        }.files
+            include '**/src/host/**/*.kt', '**/src/host/**/*.java'
+        }.files.findAll { source -> source.text =~ /(?m)^package\s+br\.gov\.caixa\.loterias\.feature\.\w+\.presentation(?:\.|$)/ }
         def featureInfrastructureImports = featureSources.findAll { source ->
-            (source.text =~ /import\s+br\.gov\.caixa\.loterias\.core\.(data|network)\b/).find()
+            (source.text =~ /import\s+br\.gov\.caixa\.loterias\.core\.(data|network|database|datastore)\b/).find()
         }
         if (!featureInfrastructureImports.isEmpty()) {
             throw new GradleException("Feature acessa Data/Network diretamente: ${featureInfrastructureImports}")
@@ -221,9 +310,8 @@ tasks.register('verifyCleanArchitecture') {
             throw new GradleException("ViewModel deve depender de UseCase, não Repository: ${viewModelsUsingRepositories}")
         }
 
-        def repositoryImplementations = fileTree(file('core/data/src/main')).matching {
-            include '**/*Repository*.kt', '**/*Repository*.java'
-        }.files
+        def repositoryImplementations = project(':core:data').sourceSets.main.allSource.matching { include '**/*Repository*.kt', '**/*Repository*.java' }.files +
+                fileTree(file('feature')).matching { include '**/data/src/main/**/*Repository*.kt', '**/data/src/main/**/*Repository*.java' }.files
         def repositoriesUsingRetrofit = repositoryImplementations.findAll { source ->
             (source.text =~ /\bLoteriasApi\b|retrofit2\./).find()
         }
@@ -232,7 +320,7 @@ tasks.register('verifyCleanArchitecture') {
         }
 
         def productionSources = [file('app'), file('core'), file('feature')].collectMany { root ->
-            fileTree(root).matching { include '**/src/main/**/*.kt' }.files
+            fileTree(root).matching { include '**/src/main/**/*.kt', '**/src/domain/**/*.kt', '**/src/data/**/*.kt', '**/src/platform/**/*.kt', '**/src/host/**/*.kt' }.files
         }
         def misplacedPackages = productionSources.findAll { source ->
             def matcher = source.text =~ /(?m)^package\s+([\w.]+)/
@@ -242,35 +330,64 @@ tasks.register('verifyCleanArchitecture') {
         }
         if (!misplacedPackages.isEmpty()) throw new GradleException("Package incompatível com o módulo/caminho de produção: ${misplacedPackages}")
 
+        def architecture = providers.exec {
+            commandLine 'python3', rootProject.file('scripts/check-feature-architecture.py')
+            ignoreExitValue = true
+        }
+        if (architecture.result.get().exitValue != 0) {
+            throw new GradleException(architecture.standardError.asText.get())
+        }
+        logger.lifecycle(architecture.standardOutput.asText.get().trim())
+        def hostArchitecture = providers.exec {
+            commandLine 'python3', rootProject.file('scripts/check-app-architecture.py')
+            ignoreExitValue = true
+        }
+        if (hostArchitecture.result.get().exitValue != 0) {
+            throw new GradleException(hostArchitecture.standardError.asText.get())
+        }
+        logger.lifecycle(hostArchitecture.standardOutput.asText.get().trim())
+
+
         def hiltApplication = file('app/src/main/java/br/gov/caixa/loterias/apostas/LoteriasApplication.kt').text
         def host = file('app/src/main/java/br/gov/caixa/loterias/apostas/MainActivity.kt').text
-        def module = file('app/src/main/java/br/gov/caixa/loterias/apostas/di/ApplicationModule.kt').text
+        def module = file('app/src/main/java/br/gov/caixa/loterias/apostas/di/AppInitializationBindings.kt').text
         if (!hiltApplication.contains('@HiltAndroidApp') ||
                 !host.contains('@AndroidEntryPoint') ||
+                !module.contains('@Module') ||
                 !module.contains('@InstallIn(SingletonComponent::class)')) {
             throw new GradleException('O composition root deve usar Hilt no Application, host e módulo Singleton.')
         }
     }
 }
 
+tasks.register('verifyKotlinFormatting', Exec) {
+    group = 'verification'
+    description = 'Checks UTF-8/LF/newlines and whitespace from .editorconfig without rewriting sources.'
+    commandLine 'python3', file('scripts/check-kotlin-format.py').absolutePath
+}
+
 tasks.register('modernCheck') {
+    dependsOn ':core:security:check', ':core:navigation:check', ':core:testing:check'
+    dependsOn([':feature:account:transport:check', ':feature:betting:transport:check', ':feature:cart:transport:check', ':feature:marketplace:transport:check', ':feature:retail:transport:check', ':feature:responsible-gaming:transport:check', ':feature:results:transport:check', ':feature:support:transport:check', ':feature:payment:transport:check'])
+
+    dependsOn([':feature:account:domain:check', ':feature:betting:domain:check', ':feature:cart:domain:check', ':feature:home:domain:check', ':feature:marketplace:domain:check', ':feature:notifications:domain:check', ':feature:onboarding:domain:check', ':feature:payment:domain:check', ':feature:responsible-gaming:domain:check', ':feature:results:domain:check', ':feature:retail:domain:check', ':feature:support:domain:check', ':feature:tickets:domain:check', ':feature:cart:api:check', ':feature:account:api:check', ':feature:marketplace:api:check', ':feature:account:data:check', ':feature:betting:data:check', ':feature:cart:data:check', ':feature:home:data:check', ':feature:marketplace:data:check', ':feature:notifications:data:check', ':feature:onboarding:data:check', ':feature:payment:data:check', ':feature:responsible-gaming:data:check', ':feature:results:data:check', ':feature:retail:data:check', ':feature:support:data:check', ':feature:tickets:data:check'])
     group = 'verification'
     description = 'Runs build, lint, tests, coverage gates and Compose architecture checks.'
-    dependsOn 'verifyComposeMigration', 'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyCleanArchitecture', 'verifyCaixaDS', 'verifyFilaBraAar', 'verifyTopazHeartbeat', 'verifyNetworkSecurity', 'verifyAppIdentityAndFlavors',
+    dependsOn 'verifyKotlinFormatting', 'verifyComposeMigration', 'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyCleanArchitecture', 'verifyCaixaDS', 'verifyFilaBraAar', 'verifyTopazHeartbeat', 'verifyNetworkSecurity', 'verifyAppIdentityAndFlavors',
             ':app:assembleDebug',
             ':app:testPrdDebugUnitTest', ':app:testTqsDebugUnitTest', ':app:testAutomacaoDebugUnitTest',
             ':app:lintPrdDebug', ':app:lintTqsDebug', ':app:lintAutomacaoDebug',
-            ':core:common:check', ':core:domain:check', ':core:data:check', ':core:auth:check', ':core:design-system:check', ':core:key-management:check', ':core:network:check', ':core:queue:check', ':core:presentation:check', ':core:preferences:check',
-            ':feature:marketplace-filter:check', ':feature:marketplace:check',
-            ':feature:onboarding:check', ':feature:account:check',
-            ':feature:betting:check', ':feature:cart:check', ':feature:payment:check',
-            ':feature:support:check', ':feature:tickets:check', ':feature:results:check',
-            ':feature:responsible-gaming:check', ':feature:notifications:check', ':feature:retail:check', ':feature:home:check'
+            ':core:common:check', ':core:domain:check', ':core:data:check', ':core:auth:check', ':core:design-system:check', ':core:key-management:check', ':core:network:check', ':core:queue:check', ':core:presentation:check', 'verifyPersistenceCoverage',
+            ':feature:marketplace-filter:presentation:check', ':feature:marketplace:presentation:check',
+            ':feature:onboarding:presentation:check', ':feature:account:presentation:check',
+            ':feature:betting:presentation:check', ':feature:cart:presentation:check', ':feature:payment:presentation:check',
+            ':feature:support:presentation:check', ':feature:tickets:presentation:check', ':feature:results:presentation:check',
+            ':feature:responsible-gaming:presentation:check', ':feature:notifications:presentation:check', ':feature:retail:presentation:check', ':feature:home:presentation:check'
 }
 
-// AGP 9.2 lint consulta as fontes Java geradas pelo Hilt de outros variants. Executar
-// os três analyzers simultaneamente pode remover/recriar esses diretórios no meio da
-// análise. A matriz continua completa, mas é deliberadamente serializada por flavor.
+// O Lint do AGP 9.2 lê fontes Java gerados pelo Hilt em outras variantes. Executar
+// os três analisadores simultaneamente pode remover ou recriar esses diretórios durante
+// a análise. A matriz permanece completa, mas é serializada deliberadamente por variante.
 project(':app').tasks.configureEach { task ->
     if (task.name in ['testPrdDebugUnitTest', 'testTqsDebugUnitTest', 'testAutomacaoDebugUnitTest']) {
         task.mustRunAfter ':app:assembleDebug'
@@ -376,9 +493,9 @@ tasks.register('verifyCaixaDS') {
     group = 'verification'
     description = 'Enforces CaixaDS as the visual contract of Compose features.'
     doLast {
-        def consumerRoots = [file('app'), file('core/presentation'), file('feature')]
+        def consumerRoots = [file('app'), file('core/presentation'), file('core/navigation'), file('core/queue'), file('feature'), file('sample')]
         def sources = consumerRoots.collectMany { root ->
-            fileTree(root).matching { include '**/src/main/**/*.kt' }.files
+            fileTree(root).matching { include '**/src/main/**/*.kt', '**/src/domain/**/*.kt', '**/src/data/**/*.kt', '**/src/platform/**/*.kt', '**/src/host/**/*.kt' }.files
         }
         def literalColors = sources.findAll { source ->
             (source.text =~ /Color\s*\(\s*0[xX][0-9A-Fa-f]+/).find() ||
@@ -388,9 +505,48 @@ tasks.register('verifyCaixaDS') {
             throw new GradleException("Cores literais fora do CaixaDS: ${literalColors}")
         }
 
-        def appHost = file('app/src/main/java/br/gov/caixa/loterias/apostas/MainActivity.kt')
+        def directControls = sources.findAll { source ->
+            (source.text =~ /import\s+androidx\.compose\.material3\.(Text|TextField|OutlinedTextField|Icon|Button|OutlinedButton|TextButton|IconButton|Checkbox|RadioButton|Card|Surface|Scaffold|AlertDialog|DropdownMenu|DropdownMenuItem|HorizontalDivider|CircularProgressIndicator|ModalBottomSheet|ModalNavigationDrawer|ProvideTextStyle|pulltorefresh\.PullToRefreshBox|\*)\s*(?:as\s+\w+)?(?:\r?\n|$)/).find()
+        }
+        directControls.addAll(sources.findAll { source ->
+            (source.text =~ /\bandroidx\.compose\.material3\.(?:pulltorefresh\.)?(Text|TextField|OutlinedTextField|Icon|Button|OutlinedButton|TextButton|IconButton|Checkbox|RadioButton|Card|Surface|Scaffold|AlertDialog|DropdownMenu|DropdownMenuItem|HorizontalDivider|CircularProgressIndicator|ModalBottomSheet|ModalNavigationDrawer|ProvideTextStyle|PullToRefreshBox)\s*\(/).find()
+        })
+        directControls.addAll(sources.findAll { source ->
+            (source.text =~ /import\s+androidx\.compose\.foundation\.text\.(BasicTextField|\*)\s*(?:as\s+\w+)?(?:\r?\n|$)/).find() ||
+                    (source.text =~ /\bandroidx\.compose\.foundation\.text\.BasicTextField\s*\(/).find()
+        })
+        if (!directControls.isEmpty()) {
+            throw new GradleException("Controles básicos devem ser consumidos pelo CaixaDS: ${directControls}")
+        }
+
+        def unownedVisualContracts = sources.findAll { source ->
+            (source.text =~ /\bfun\s+(?:<[\s\S]*?>\s+)?CaixaDS\w*\s*\(/).find() ||
+                    (source.text =~ /\bTypography\s*\(/).find() ||
+                    (source.text =~ /import\s+androidx\.compose\.material\.icons\./).find() ||
+                    (source.text =~ /\bfun\s+(BettingDSButton|BettingOptionDialog|LegacyAccountUnderlineField|LegacyAccountSaveFooter)\s*\(/).find()
+        }
+        if (!unownedVisualContracts.isEmpty()) {
+            throw new GradleException("Componentes/tema/ícones compartilhados devem pertencer ao CaixaDS: ${unownedVisualContracts}")
+        }
+
+        def webConsumers = [file('app'), file('core'), file('feature')].collectMany { root ->
+            fileTree(root).matching { include '**/src/main/**/*.kt'; exclude 'design-system/**' }.files
+        }
+        def unownedWebViews = webConsumers.findAll { source ->
+            (source.text =~ /import\s+com\.kevinnzou\.web\./).find() ||
+                    (source.text =~ /\bandroid\.webkit\.(WebView|WebChromeClient|WebViewClient|ConsoleMessage)\b/).find() ||
+                    (source.text =~ /\bcom\.kevinnzou\.web\./).find() ||
+                    (source.text =~ /import\s+androidx\.compose\.ui\.viewinterop\.AndroidView\b/).find() ||
+                    (source.text =~ /\bandroidx\.compose\.ui\.viewinterop\.AndroidView\s*\(/).find() ||
+                    (source.text =~ /\bandroid\.widget\.(Toast|TextView|Button|EditText|ImageView)\b/).find()
+        }
+        if (!unownedWebViews.isEmpty()) {
+            throw new GradleException("WebViews, AndroidView e widgets nativos devem pertencer ao CaixaDS: ${unownedWebViews}")
+        }
+
+        def appHost = file('app/src/main/java/br/gov/caixa/loterias/apostas/composition/AppContent.kt')
         if (!appHost.text.contains('CaixaDSTheme')) {
-            throw new GradleException('MainActivity deve aplicar CaixaDSTheme no conteúdo Compose.')
+            throw new GradleException('A composição raiz do app deve aplicar CaixaDSTheme ao conteúdo Compose.')
         }
         if (!file('docs/CAIXA_DS.md').isFile()) {
             throw new GradleException('Documentação do CaixaDS ausente.')
@@ -447,7 +603,7 @@ tasks.register('verifyTopazHeartbeat') {
                 throw new GradleException("Entrega de WorkManager sem isolamento de simulação: ${name}")
             }
         }
-        def isolationPolicy = file('app/src/main/java/br/gov/caixa/loterias/apostas/authentication/TopazMockComponentPolicy.kt').text.replace('\\$', '$')
+        def isolationPolicy = file('core/security/src/main/java/br/gov/caixa/loterias/core/security/topaz/TopazMockComponentPolicy.kt').text.replace('\\$', '$')
         def isolatedNames = sdkComponents.collect { it.'@android:name'.text() } + workComponents.keySet()
         isolatedNames.each { name ->
             if (!isolationPolicy.contains('"' + name + '"')) {
@@ -499,6 +655,7 @@ tasks.register('verifyTopazHeartbeat') {
 }
 
 tasks.register('verifyFilaBraAar') {
+    dependsOn ':app:verifyFilaBraTls'
     group = 'verification'
     description = 'Checks the pinned FilaBRA binary before packaging.'
     doLast {

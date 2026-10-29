@@ -5,6 +5,8 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.adapter.ServerTimeAdapterFactory
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 
 class ServerTimeAdapterFactoryTest {
     private val observed = mutableListOf<String>()

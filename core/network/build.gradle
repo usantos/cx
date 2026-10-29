@@ -7,12 +7,34 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 kotlin { jvmToolchain(17) }
+jacoco { toolVersion = '0.8.13' }
+dependencies {
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+}
+apply plugin: 'com.google.devtools.ksp'
+
 
 dependencies {
+    api project(':core:domain')
+
+    api project(':feature:account:transport')
+    api project(':feature:betting:transport')
+    api project(':feature:cart:transport')
+    api project(':feature:marketplace:transport')
+    api project(':feature:retail:transport')
+    api project(':feature:responsible-gaming:transport')
+    api project(':feature:results:transport')
+    api project(':feature:support:transport')
+    api project(':feature:payment:transport')
+    api project(':feature:notifications:transport')
+
     implementation project(':core:key-management')
     api libs.retrofit
     api libs.gson
     implementation libs.kotlinx.coroutines.core
+    api libs.dagger
+    ksp libs.dagger.compiler
     implementation libs.okhttp
     implementation libs.retrofit.converter.gson
 
@@ -23,49 +45,96 @@ dependencies {
 
 jacoco { toolVersion = '0.8.13' }
 
-// Repository contract tests exercise the actual HTTP clients, providers and envelopes.
+// Testes de contrato dos repositories exercitam clientes HTTP, providers e envelopes reais.
+def featureDataProjects = [
+        project(':feature:account:data'),
+        project(':feature:betting:data'),
+        project(':feature:cart:data'),
+        project(':feature:home:data'),
+        project(':feature:marketplace:data'),
+        project(':feature:notifications:data'),
+        project(':feature:onboarding:data'),
+        project(':feature:payment:data'),
+        project(':feature:responsible-gaming:data'),
+        project(':feature:results:data'),
+        project(':feature:retail:data'),
+        project(':feature:support:data'),
+        project(':feature:tickets:data'),
+]
 def networkCoverageData = files(
+        featureDataProjects.collect { owner ->
+            files({
+                owner.tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+            }, fileTree(owner.layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
+        },
+        files({
+            project(':app').tasks.named('testPrdDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+        }).filter { it.isFile() },
         fileTree(layout.buildDirectory).include('jacoco/test.exec'),
         fileTree(project(':core:data').layout.buildDirectory).include('jacoco/test.exec')
 )
-def networkCoverageSources = files('src/main/java')
-def networkCoverageClasses = files(fileTree(
-        dir: layout.buildDirectory.dir('classes/kotlin/main'),
-        includes: [
-                '**/BearerTokenInterceptor.class',
-                '**/SessionRefreshInterceptor*.class',
-                '**/BoundDeletionSingleAttemptInterceptor*.class',
-                '**/SilceTransportInterceptor*.class',
-                '**/CloudBackendRouting*.class',
-                '**/NetworkClientFactory.class',
-                '**/PinnedHostInterceptor*.class',
-                '**/CurlLoggingInterceptor.class',
-                '**/MockBackendInterceptor.class',
-                '**/ServerTimeAdapterFactory*.class',
-                '**/PurchaseBackendClient*.class',
-                '**/PurchaseBackendResponse*.class',
-                '**/PurchaseBackendApiProvider*.class',
-                '**/PurchaseProcessingDto*.class',
-                '**/PurchaseEnvelopeDto*.class',
-                '**/PurchaseErrorEnvelopeDto*.class',
-                '**/MercadoPagoRegistrationEnvelopeDto*.class',
-                '**/PrizeRedemptionEnvelopeDto*.class',
-                '**/PrizeBackendApiProvider*.class',
-                '**/SingleAttemptTransactionInterceptor*.class',
-                '**/BackendHttpFailure*.class',
-                '**/BackendErrorMetadata*.class',
-                '**/PurchaseHttpException*.class',
-                '**/LegacyCart*Dto*.class',
-                '**/AccountVerificationRequestDto*.class',
-                '**/AccountVerification*.class',
-                '**/AccountSessionDto*.class',
-                '**/AccountNotificationDto*.class',
-                '**/NotificationRead*.class',
-        ]
-))
+def networkCoverageTransportProjects = [
+        project(':feature:account:transport'),
+        project(':feature:betting:transport'),
+        project(':feature:cart:transport'),
+        project(':feature:marketplace:transport'),
+        project(':feature:retail:transport'),
+        project(':feature:responsible-gaming:transport'),
+        project(':feature:results:transport'),
+        project(':feature:support:transport'),
+        project(':feature:payment:transport'),
+        project(':feature:notifications:transport'),
+]
+def networkCoverageSources = files('src/main/java', networkCoverageTransportProjects.collect { it.file('src/main/kotlin') })
+def networkCoverageIncludes = [
+        '**/SessionNetworkClients*.class',
+        '**/TransactionNetworkClients*.class',
+        '**/AuthenticatedNetworkClients*.class',
+        '**/PaymentProviderNetworkClients*.class',
+        '**/NetworkRetrofitBuilderKt*.class',
+        '**/BearerTokenInterceptor.class',
+        '**/SessionRefreshInterceptor*.class',
+        '**/BoundDeletionSingleAttemptInterceptor*.class',
+        '**/SilceTransportInterceptor*.class',
+        '**/CloudBackendRouting*.class',
+        '**/NetworkClientFactory.class',
+        '**/PinnedHostInterceptor*.class',
+        '**/CurlLoggingInterceptor.class',
+        '**/MockBackendInterceptor.class',
+        '**/ServerTimeAdapterFactory*.class',
+        '**/JsonNumberFlatteningKt*.class',
+        '**/PurchaseBackendClient*.class',
+        '**/PurchaseBackendResponse*.class',
+        '**/PurchaseBackendApiProvider*.class',
+        '**/PurchaseProcessingDto*.class',
+        '**/PurchaseEnvelopeDto*.class',
+        '**/PurchaseErrorEnvelopeDto*.class',
+        '**/MercadoPagoRegistrationEnvelopeDto*.class',
+        '**/PrizeRedemptionEnvelopeDto*.class',
+        '**/PrizeBackendApiProvider*.class',
+        '**/SingleAttemptTransactionInterceptor*.class',
+        '**/BackendHttpFailure*.class',
+        '**/BackendErrorMetadata*.class',
+        '**/PurchaseHttpException*.class',
+        '**/Cart*Dto*.class',
+        '**/AccountVerificationRequestDto*.class',
+        '**/AccountVerification*.class',
+        '**/AccountSessionDto*.class',
+        '**/AccountNotificationDto*.class',
+        '**/NotificationRead*.class',
+]
+def networkCoverageClasses = files(
+    ([project] + networkCoverageTransportProjects).collect { owner ->
+        fileTree(dir: owner.layout.buildDirectory.dir('classes/kotlin/main'), includes: networkCoverageIncludes)
+    }
+)
 
 tasks.register('verifyNetworkCoverageInputs') {
+    // Estas suítes nativas também produzem dados de execução consumidos por este relatório.
+    dependsOn ':feature:account:data:connectedDebugAndroidTest', ':feature:cart:data:connectedDebugAndroidTest', ':feature:notifications:data:connectedDebugAndroidTest'
     dependsOn tasks.named('test'), ':core:data:test'
+    dependsOn featureDataProjects.collect { it.path + ':testDebugUnitTest' }
+    dependsOn ':app:testPrdDebugUnitTest'
     doLast {
         if (networkCoverageClasses.asFileTree.isEmpty() || networkCoverageData.isEmpty()) {
             throw new GradleException('Cobertura de rede sem classes ou execução de testes.')

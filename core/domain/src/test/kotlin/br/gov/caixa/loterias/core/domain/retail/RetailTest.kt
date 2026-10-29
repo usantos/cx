@@ -1,11 +1,29 @@
 package br.gov.caixa.loterias.core.domain.retail
 
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.core.common.result.AppResult
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.retail.domain.usecase.CancelPixRedemption
+import br.gov.caixa.loterias.feature.retail.domain.usecase.ConsultPixRedemptionKey
+import br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadBetReceipt
+import br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadPrizeReceipt
+import br.gov.caixa.loterias.feature.retail.domain.usecase.GenerateLotteryRedemptionCode
+import br.gov.caixa.loterias.feature.retail.domain.usecase.GetFavoriteRetailers
+import br.gov.caixa.loterias.feature.retail.domain.usecase.GetPrizeDetails
+import br.gov.caixa.loterias.feature.retail.domain.model.LotteryRedemptionCode
+import br.gov.caixa.loterias.feature.retail.domain.model.PixBeneficiary
+import br.gov.caixa.loterias.feature.retail.domain.model.PrizeDetails
+import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel
+import br.gov.caixa.loterias.feature.retail.domain.repository.PrizeRedemptionRepository
+import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionResult
+import br.gov.caixa.loterias.feature.retail.domain.usecase.RedeemPrize
+import br.gov.caixa.loterias.feature.retail.domain.repository.RetailRepository
+import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
+import br.gov.caixa.loterias.feature.retail.domain.usecase.SearchRetailers
+import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavorite
 
 class RetailTest {
     @Test fun `search trims validates and delegates`() = runTest {

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pt">
+    <string name="ui_1_s_d020a2">"%1$s"</string>
+    <string name="ui_1_s_db4c40">"/%1$s"</string>
+    <string name="ui_1_s_jogos_090154">"%1$s jogos"</string>
+    <string name="ui_1_s_numeros_f145a3">"%1$s números"</string>
+    <string name="ui_1_s_numeros_por_2_s_daf587">"%1$s números por %2$s"</string>
+    <string name="ui_1_s_palpites_b6b418">"%1$s palpites"</string>
+    <string name="ui_1_s_trevos_por_2_s_427198">"%1$s trevos por %2$s"</string>
+    <string name="format_selection_step">"%1$d/%2$d"</string>
+    <string name="ui_5_fa676d" formatted="false">"5+"</string>
+    <string name="ui_abra_o_volante_de_apostas_f199e2" formatted="false">"Abra o volante de apostas"</string>
+    <string name="ui_acoes_da_aposta_134037" formatted="false">"Ações da aposta"</string>
+    <string name="ui_adicionar_aposta_86ec9a" formatted="false">"Adicionar aposta"</string>
+    <string name="ui_adicionar_apostas_3a6adb" formatted="false">"Adicionar apostas"</string>
+    <string name="ui_agite_o_celular_para_completar_fc362b" formatted="false">"Agite o celular\npara completar"</string>
+    <string name="ui_agora_e_so_ativar_a_funcionalidade_a_df881f" formatted="false">"Agora é só ativar a funcionalidade, abrir um volante e agitar o celular para completar sua aposta automaticamente!"</string>
+    <string name="ui_ajuda_fe0add" formatted="false">"Ajuda"</string>
+    <string name="ui_ao_carrinho_de_apostas_ef1eb2" formatted="false">"\nao carrinho de apostas"</string>
+    <string name="ui_ao_valor_selecionado_006200" formatted="false">" ao valor selecionado."</string>
+    <string name="ui_ao_voltar_para_a_pagina_inicial_sua_128dc3" formatted="false">"Ao voltar para a página inicial, sua aposta em edição será descartada. Deseja continuar?"</string>
+    <string name="ui_aposta_adicionada_ao_carrinho_com_su_d9668a" formatted="false">"Aposta adicionada ao carrinho com sucesso!"</string>
+    <string name="ui_aposta_aleatoria_9dc3db" formatted="false">"Aposta aleatória"</string>
+    <string name="ui_aposta_completada_automaticamente_32ab90" formatted="false">"Aposta completada\nautomaticamente!"</string>
+    <string name="ui_aposta_completada_cc22e0" formatted="false">"Aposta completada"</string>
+    <string name="ui_aposta_espelho_b7c1f4" formatted="false">"Aposta espelho"</string>
+    <string name="ui_aposta_favorita_inserida_com_sucesso_eb5056" formatted="false">"Aposta favorita inserida com sucesso"</string>
+    <string name="ui_aposta_favoritada_1a9222" formatted="false">"Aposta Favoritada"</string>
+    <string name="ui_aposta_indisponivel_8fce95" formatted="false">"Aposta indisponível."</string>
+    <string name="ui_aposta_shake_b51943" formatted="false">"Aposta Shake!"</string>
+    <string name="ui_apostas_favoritas_f81885" formatted="false">"Apostas favoritas"</string>
+    <string name="ui_aqui_ficam_seus_numeros_favoritos_pr_8b2b23" formatted="false">"Aqui ficam seus números favoritos, prontos pra você jogar sempre que precisar."</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_ative_ou_desative_no_menu_lateral_9558e3" formatted="false">"Ative ou desative\nno menu lateral"</string>
+    <string name="ui_avancar_para_a_forma_de_pagamento_64482f" formatted="false">"Avançar\npara a forma de pagamento"</string>
+    <string name="ui_bem_vindo_ao_78ba61" formatted="false">"Bem-vindo ao"</string>
+    <string name="ui_cancelar_bb9dbb" formatted="false">"Cancelar"</string>
+    <string name="ui_carrinho_de_apostas_1_s_itens_e4b649">"Carrinho de apostas, %1$s itens"</string>
+    <string name="ui_coluna_1_s_numero_2_s_4e3a5f">"Coluna %1$s, número %2$s"</string>
+    <string name="ui_com_esse_pacote_voce_garante_apostas_e05958" formatted="false">"Com esse pacote você garante apostas para todas as modalidades, "</string>
+    <string name="ui_combos_11212c" formatted="false">"Combos"</string>
+    <string name="ui_como_jogar_ceb452" formatted="false">"Como jogar"</string>
+    <string name="ui_completar_jogo_fbd7bf" formatted="false">"Completar jogo"</string>
+    <string name="ui_completar_trevos_7c6818" formatted="false">"Completar trevos"</string>
+    <string name="ui_conc_1_s_f4692e">"Conc. %1$s"</string>
+    <string name="ui_concurso_1_s_2_s_144dfc">"Concurso %1$s • %2$s"</string>
+    <string name="ui_concurso_1_s_36bb8b">"concurso %1$s"</string>
+    <string name="ui_configuracao_8d60e1" formatted="false">"Configuração"</string>
+    <string name="ui_confira_nossos_combos_e_escolha_o_se_9bbe75" formatted="false">"Confira nossos combos e escolha o seu favorito!\nAproveite para aumentar suas chances de ganhar."</string>
+    <string name="ui_confirmar_717bed" formatted="false">"Confirmar"</string>
+    <string name="ui_conheca_a_aposta_shake_e9534b" formatted="false">"Conheça a Aposta Shake!"</string>
+    <string name="ui_consulte_a_disponibilidade_0149a3" formatted="false">"Consulte a disponibilidade"</string>
+    <string name="ui_consulte_o_proximo_concurso_e_faca_s_348c0a" formatted="false">"Consulte o próximo concurso e faça sua aposta."</string>
+    <string name="ui_demonstracao_animada_1_s_cb7005">"Demonstração animada: %1$s"</string>
+    <string name="ui_deseja_excluir_a_aposta_favorita_1_s_beff85">"Deseja excluir a aposta favorita: %1$s?"</string>
+    <string name="ui_deseja_prosseguir_com_a_inclusao_da_3e386b" formatted="false">"Deseja prosseguir com a inclusão da aposta?"</string>
+    <string name="ui_detalhes_da_aposta_82fbc3" formatted="false">"Detalhes da aposta"</string>
+    <string name="ui_detalhes_do_combo_f28997" formatted="false">"Detalhes do combo"</string>
+    <string name="ui_digite_o_valor_maximo_e1efe1" formatted="false">"Digite o valor máximo"</string>
+    <string name="ui_digite_o_valor_minimo_25e16d" formatted="false">"Digite o valor mínimo"</string>
+    <string name="ui_editar_1_s_04ce4e">"Editar %1$s"</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_escolha_a_quantidade_de_numeros_f01f9e" formatted="false">"Escolha a quantidade de números"</string>
+    <string name="ui_escolha_a_quantidade_de_trevos_ff6a2c" formatted="false">"Escolha a quantidade de trevos"</string>
+    <string name="ui_escolha_de_2_a_6_trevos_para_marcar_74f1fb" formatted="false">"Escolha de 2 a 6 trevos \npara marcar nesta aposta"</string>
+    <string name="ui_escolha_em_quantos_concursos_voce_qu_3736e6" formatted="false">"Escolha em quantos concursos você quer participar com este mesmo jogo:"</string>
+    <string name="ui_escolha_em_quantos_palpites_voce_que_4d2dce" formatted="false">"Escolha em quantos palpites você quer jogar:"</string>
+    <string name="ui_escolha_o_mes_de_sorte_73d774" formatted="false">"Escolha o mês de sorte:"</string>
+    <string name="ui_escolha_o_time_do_coracao_d62c54" formatted="false">"Escolha o time do coração:"</string>
+    <string name="ui_escolha_o_valor_maximo_em_reais_da_s_c1e5d7" formatted="false">"Escolha  o valor máximo em reais da sua aposta"</string>
+    <string name="ui_escolha_o_valor_minimo_em_reais_da_s_e2ba31" formatted="false">"Escolha  o valor mínimo em reais da sua aposta"</string>
+    <string name="ui_escolha_uma_modalidade_3ef3c2" formatted="false">"Escolha uma modalidade"</string>
+    <string name="ui_escudo_1_s_661b15">"Escudo %1$s"</string>
+    <string name="ui_etapa_anterior_14ca7e" formatted="false">"Etapa anterior"</string>
+    <string name="ui_ex_aposta_do_joao_9f84d5" formatted="false">"Ex: Aposta do João"</string>
+    <string name="ui_excluir_aposta_86e1ac" formatted="false">"Excluir aposta"</string>
+    <string name="ui_existe_uma_aposta_identica_em_seu_ca_18a78d" formatted="false">"Existe uma aposta idêntica em seu carrinho. Deseja prosseguir com a inclusão?"</string>
+    <string name="ui_favoritar_aposta_a34b1e" formatted="false">"Favoritar aposta"</string>
+    <string name="ui_fazer_nova_aposta_7c7b2f" formatted="false">"Fazer nova aposta"</string>
+    <string name="ui_fechar_0f2bd8" formatted="false">"Fechar"</string>
+    <string name="ui_fechar_detalhes_91bd3b" formatted="false">"Fechar detalhes"</string>
+    <string name="ui_fechar_tutorial_e8e309" formatted="false">"Fechar tutorial"</string>
+    <string name="ui_ilustracao_de_um_celular_sendo_agita_56d513" formatted="false">"Ilustração de um celular sendo agitado para completar a aposta."</string>
+    <string name="ui_incluindo_teimosinhas_para_a_semana_dbc3bd" formatted="false">"incluindo teimosinhas para a semana inteira. Já pensou?"</string>
+    <string name="ui_incluir_aposta_favorita_417e30" formatted="false">"Incluir aposta favorita"</string>
+    <string name="ui_informe_o_placar_de_cada_jogo_4cf784" formatted="false">"Informe o placar de cada jogo"</string>
+    <string name="ui_informe_um_nome_para_salvar_sua_apos_2c27af" formatted="false">"Informe um nome para salvar sua aposta favorita:"</string>
+    <string name="ui_ira_escolher_apenas_concursos_com_pr_4b4fff" formatted="false">" irá escolher apenas concursos com premiação "</string>
+    <string name="ui_jogo_1_s_2_s_120644">"Jogo %1$s%2$s"</string>
+    <string name="ui_jogo_1_s_aa1e61">"Jogo %1$s"</string>
+    <string name="ui_limpar_aposta_aa71b7" formatted="false">"Limpar aposta"</string>
+    <string name="ui_limpar_selecao_33a042" formatted="false">"Limpar seleção"</string>
+    <string name="ui_mas_antes_de_efetuar_o_pagamento_e_p_b8fb7a" formatted="false">"Mas antes de efetuar o pagamento é possível visualizar os números selecionados."</string>
+    <string name="ui_maximo_e7013b" formatted="false">"máximo"</string>
+    <string name="ui_menu_lateral_com_a_opcao_aposta_shak_a3fa2a" formatted="false">"Menu lateral com a opção Aposta Shake e o switch para ativar ou desativar."</string>
+    <string name="ui_menu_lateral_d42910" formatted="false">"menu lateral"</string>
+    <string name="ui_mes_aleatorio_a7ecfc" formatted="false">"Mês aleatório"</string>
+    <string name="ui_mes_de_sorte_1_s_42ca39">"Mês de sorte: %1$s"</string>
+    <string name="ui_meses_indisponiveis_para_este_concur_d5f08f" formatted="false">"Meses indisponíveis para este concurso."</string>
+    <string name="ui_meu_bolao_c690d7" formatted="false">" \nmeu bolão"</string>
+    <string name="ui_milionaria_c791e4" formatted="false">"+milionária"</string>
+    <string name="ui_minimo_5aeed3" formatted="false">"mínimo"</string>
+    <string name="ui_minimo_de_1_s_e_maximo_de_2_s_6f07c8">"Mínimo de %1$s e máximo de %2$s."</string>
+    <string name="ui_modalidades_6b4baa" formatted="false">"Modalidades"</string>
+    <string name="ui_mostrar_detalhes_ce119f" formatted="false">"Mostrar detalhes"</string>
+    <string name="ui_na_surpresinha_os_numeros_ficam_masc_e7ef11" formatted="false">"Na Surpresinha os números ficam\nmascarados até a efetivação da compra."</string>
+    <string name="ui_nao_9bc947" formatted="false">"Não"</string>
+    <string name="ui_nao_exibir_novamente_f8abb0" formatted="false">"Não exibir novamente"</string>
+    <string name="ui_nao_foi_possivel_abrir_o_rapidao_523eef" formatted="false">"Não foi possível abrir o Rapidão."</string>
+    <string name="ui_nao_foi_possivel_carregar_o_rapidao_0e0802" formatted="false">"Não foi possível carregar o Rapidão. Verifique sua internet."</string>
+    <string name="ui_nao_foi_possivel_carregar_os_limites_08d889" formatted="false">"Não foi possível carregar os limites da aposta. Tente novamente."</string>
+    <string name="ui_nenhum_combo_disponivel_no_momento_d7e649" formatted="false">"Nenhum combo disponível no momento."</string>
+    <string name="ui_nenhuma_aposta_foi_gerada_1e46c4" formatted="false">"Nenhuma aposta foi gerada."</string>
+    <string name="ui_nome_do_time_c897b8" formatted="false">"Nome do time"</string>
+    <string name="ui_nossas_sugestoes_e9fc54" formatted="false">"Nossas sugestões:"</string>
+    <string name="ui_nova_funcionalidade_aposta_shake_com_2bdadc" formatted="false">"Nova funcionalidade: Aposta Shake. Complete apostas automaticamente chacoalhando seu celular!"</string>
+    <string name="ui_numeros_obrigatorios_621e09" formatted="false">"Números obrigatórios"</string>
+    <string name="ui_numeros_proibidos_09cf4d" formatted="false">"Números proibidos"</string>
+    <string name="ui_o_jeito_mais_facil_para_apostar_1a2d05" formatted="false">"O jeito mais fácil para apostar"</string>
+    <string name="ui_o_limite_e_de_1_s_82167e">"O limite é de %1$s."</string>
+    <string name="ui_o_seu_pacote_de_apostas_prontas_para_30c098" formatted="false">"O seu pacote de apostas prontas para serem adquiridas em um toque"</string>
+    <string name="ui_o_valor_maximo_de_apostas_permitida_0e6c55" formatted="false">"O valor máximo de apostas permitida diariamente será excedido com a inclusão dessa aposta. "</string>
+    <string name="ui_o_valor_selecionado_tem_que_estar_en_423454">"O valor selecionado tem que estar entre %1$s e %2$s"</string>
+    <string name="ui_ocorreu_um_erro_inesperado_no_rapida_2ee739" formatted="false">"Ocorreu um erro inesperado no Rapidão."</string>
+    <string name="ui_os_numeros_dos_jogos_dos_combos_sao_57f5d3" formatted="false">"Os números dos jogos dos combos são escolhidos aleatoriamente pelo sistema. "</string>
+    <string name="ui_para_237b14" formatted="false">"Para"</string>
+    <string name="ui_para_aposta_com_1_s_numeros_aa05ed">"Para aposta com %1$s números"</string>
+    <string name="ui_placeholder_409788" formatted="false">"placeholder"</string>
+    <string name="ui_premio_minimo_4a3c9c" formatted="false">"Prêmio mínimo"</string>
+    <string name="ui_proxima_etapa_e801e4" formatted="false">"Próxima etapa"</string>
+    <string name="ui_pular_d2ad99" formatted="false">"Pular"</string>
+    <string name="ui_pular_tutorial_4ba00f" formatted="false">"Pular tutorial"</string>
+    <string name="ui_qualquer_valor_c92127" formatted="false">"Qualquer valor"</string>
+    <string name="ui_quantidade_de_apostas_63bf7d" formatted="false">"Quantidade de apostas"</string>
+    <string name="ui_quantidade_de_numeros_ca55cf" formatted="false">"Quantidade de números"</string>
+    <string name="ui_quantidade_de_palpites_ef7895" formatted="false">"Quantidade de Palpites"</string>
+    <string name="ui_quantidade_de_trevos_5dc723" formatted="false">"Quantidade de trevos"</string>
+    <string name="ui_quero_ver_os_numeros_escolhidos_ante_376901" formatted="false">"Quero ver os números escolhidos antes de pagar."</string>
+    <string name="ui_rapidao_658c41" formatted="false">"Rapidão"</string>
+    <string name="ui_remover_apostas_9bdaac" formatted="false">"Remover apostas"</string>
+    <string name="ui_resultado_a71bc3" formatted="false">"Resultado"</string>
+    <string name="ui_salvar_aef7cd" formatted="false">"Salvar"</string>
+    <string name="ui_selecionados_1_s_2_s_0a48ce">"Selecionados: %1$s/%2$s"</string>
+    <string name="ui_selecionar_modalidade_60a513" formatted="false">"Selecionar modalidade"</string>
+    <string name="ui_selecione_a_modalidade_1927fb" formatted="false">"Selecione a modalidade"</string>
+    <string name="ui_selecione_as_opcoes_que_voce_quer_co_09796c" formatted="false">"Selecione as opções que você quer contemplar no Rapidão."</string>
+    <string name="ui_selecione_os_limites_da_sua_compra_e_acc7f2" formatted="false">"Selecione os limites da sua compra e suas modalidades favoritas."</string>
+    <string name="ui_selecione_os_numeros_44f9f7" formatted="false">"Selecione os números:"</string>
+    <string name="ui_selecione_os_numeros_que_deverao_apa_0c4419" formatted="false">"Selecione os números que deverão aparecer em suas apostas."</string>
+    <string name="ui_selecione_os_numeros_que_nao_deverao_30dc1d" formatted="false">"Selecione os números que não deverão aparecer em suas apostas."</string>
+    <string name="ui_seu_carrinho_esta_vazio_6e7dbb" formatted="false">"Seu carrinho está vazio."</string>
+    <string name="ui_sim_931345" formatted="false">"Sim"</string>
+    <string name="ui_simular_aposta_507413" formatted="false">"Simular aposta"</string>
+    <string name="ui_sorteio_a49bf4" formatted="false">"Sorteio"</string>
+    <string name="ui_suas_apostas_15b272" formatted="false">"Suas apostas"</string>
+    <string name="ui_surpresinha_34302e" formatted="false">"Surpresinha"</string>
+    <string name="ui_teimosinhas_7217a4" formatted="false">"Teimosinhas"</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_time_aleatorio_972644" formatted="false">"Time aleatório"</string>
+    <string name="ui_time_do_coracao_1_s_7e407c">"Time do coração: %1$s"</string>
+    <string name="ui_times_indisponiveis_para_este_concur_e0d3b5" formatted="false">"Times indisponíveis para este concurso."</string>
+    <string name="ui_total_c9b3c3" formatted="false">"Total"</string>
+    <string name="ui_total_do_carrinho_b01305" formatted="false">"Total do carrinho"</string>
+    <string name="ui_trevos_aleatorios_56359f" formatted="false">"Trevos aleatórios"</string>
+    <string name="ui_valor_dessa_aposta_4e1785" formatted="false">"Valor dessa aposta"</string>
+    <string name="ui_valor_maximo_da_aposta_349559" formatted="false">"Valor máximo da aposta"</string>
+    <string name="ui_valor_minimo_da_aposta_bcf5d5" formatted="false">"Valor mínimo da aposta"</string>
+    <string name="ui_valor_selecionado_8db7ec" formatted="false">"Valor selecionado"</string>
+    <string name="ui_valores_para_apostas_com_2_trevos_d4655c" formatted="false">"* Valores para apostas com 2 trevos"</string>
+    <string name="ui_vamos_comecar_b9007b" formatted="false">"Vamos começar?"</string>
+    <string name="ui_vamos_testar_364c25" formatted="false">"Vamos testar?"</string>
+    <string name="ui_veja_como_apostar_8b34ac" formatted="false">"Veja como Apostar"</string>
+    <string name="ui_verifique_e_confirme_suas_opcoes_de_8815ef" formatted="false">"Verifique e confirme suas opções de Rapidão."</string>
+    <string name="ui_voce_ainda_nao_tem_apostas_favoritas_2dd5d5" formatted="false">"Você ainda não tem apostas favoritas desta modalidade. Que tal adicionar uma agora?"</string>
+    <string name="ui_voce_ainda_nao_tem_apostas_favoritas_f2bacd" formatted="false">"Você ainda não tem apostas favoritas. Que tal adicionar uma agora?"</string>
+    <string name="ui_voce_ainda_pode_escolher_quantos_jog_b63430" formatted="false">"Você ainda pode escolher quantos jogos Surpresinha quer apostar neste concurso:"</string>
+    <string name="ui_voce_apostou_773116" formatted="false">"Você apostou"</string>
+    <string name="ui_voce_perdera_a_aposta_atual_deseja_r_4bcc43" formatted="false">"Você perderá a aposta atual, deseja realmente realizar outra aposta?"</string>
+    <string name="ui_volante_da_mega_sena_aberto_ainda_se_19046e" formatted="false">"Volante da Mega-Sena aberto, ainda sem números selecionados."</string>
+    <string name="ui_volante_da_mega_sena_com_seis_numero_0d92f4" formatted="false">"Volante da Mega-Sena com seis números preenchidos automaticamente."</string>
+    <string name="ui_x_4b68ab" formatted="false">"X"</string>
+    <string name="ui_xx_ecc76c" formatted="false">"XX"</string>
+    <string name="combo_screen_title">Combos de Apostas</string>
+    <string name="combo_one_game">1 jogo</string>
+    <string name="combo_contest_range">concurso %1$s a %2$s</string>
+    <string name="combo_quantity_label">Quantidade de Apostas</string>
+    <string name="animated_tutorial_previous">Anterior</string>
+    <string name="animated_tutorial_next">Próximo</string>
+</resources>

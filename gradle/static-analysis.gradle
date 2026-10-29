@@ -1,0 +1,98 @@
+// Executa analisadores estáveis em JVMs isoladas: sem substituir o classpath do compilador Kotlin/AGP.
+// Usa a integração oficial JavaExec do Detekt porque o plugin Gradle da versão 1.23.8
+// é anterior ao Gradle 9 / AGP 9. Não garante resolução de tipos com Kotlin 2.4.
+configurations {
+    detektTool { canBeConsumed = false }
+    ktlintTool {
+        canBeConsumed = false
+        attributes.attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling, Bundling.SHADOWED))
+        attributes.attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+    }
+}
+dependencies {
+    detektTool libs.detekt.cli
+    ktlintTool libs.ktlint.cli
+}
+
+def kotlinSources = files({ subprojects.collect { new File(it.projectDir, 'src') }.findAll { it.isDirectory() } })
+def sourceFiles = files({ kotlinSources.collect { dir -> fileTree(dir) {
+    include '**/*.kt', '**/*.kts'
+    exclude '**/build/**', '**/generated/**', '**/ksp/**', '**/kapt/**'
+} } })
+def reportsDir = layout.buildDirectory.dir('reports')
+def detektBaselineFile = file('config/detekt/baseline.xml')
+def registerDetekt = { String taskName, boolean baseline ->
+    tasks.register(taskName, JavaExec) {
+        group = 'verification'
+        description = baseline ? 'Explicitly replaces the reviewed legacy Detekt baseline.' : 'Analyzes all module Kotlin sources and tests against the legacy baseline.'
+        classpath = configurations.detektTool
+        mainClass = 'io.gitlab.arturbosch.detekt.cli.Main'
+        maxHeapSize = '2g'
+        inputs.files(sourceFiles).withPathSensitivity(PathSensitivity.RELATIVE)
+        inputs.file('config/detekt/detekt.yml')
+        if (!baseline) inputs.file(detektBaselineFile).optional()
+        // Executa sempre: relatórios devem descrever a invocação atual, incluindo verificações que falharam.
+        outputs.upToDateWhen { false }
+        doFirst {
+            if (!baseline && !detektBaselineFile.isFile()) {
+                throw new GradleException('Missing reviewed Detekt baseline. Generate explicitly with detektBaseline.')
+            }
+            def output = reportsDir.get().dir('detekt').asFile
+            output.mkdirs()
+            args = ['--input', kotlinSources.files.join(','), '--includes', '**/*.kt,**/*.kts',
+                    '--excludes', '**/build/**,**/generated/**,**/ksp/**,**/kapt/**',
+                    '--config', file('config/detekt/detekt.yml').absolutePath,
+                    '--base-path', rootDir.absolutePath,
+                    '--baseline', detektBaselineFile.absolutePath,
+                    '--report', "html:${output}/detekt.html", '--report', "xml:${output}/detekt.xml",
+                    '--report', "sarif:${output}/detekt.sarif"]
+            if (baseline) args '--create-baseline'
+        }
+    }
+}
+registerDetekt('detekt', false)
+registerDetekt('detektBaseline', true)
+
+def registerKtlint = { String taskName, boolean format, boolean baseline ->
+    tasks.register(taskName, JavaExec) {
+        group = 'verification'
+        description = format ? 'Explicit opt-in formatting; never called by checks or hooks.' :
+                baseline ? 'Explicitly replaces the reviewed legacy Ktlint baseline.' : 'Checks Kotlin formatting without editing sources.'
+        classpath = configurations.ktlintTool
+        mainClass = 'com.pinterest.ktlint.Main'
+        maxHeapSize = '2g'
+        ignoreExitValue = baseline
+        inputs.files(sourceFiles).withPathSensitivity(PathSensitivity.RELATIVE)
+        inputs.file('.editorconfig')
+        if (!baseline) inputs.file('config/ktlint/baseline.xml').optional()
+        outputs.upToDateWhen { false }
+        doFirst {
+            if (!baseline && !file('config/ktlint/baseline.xml').isFile()) {
+                throw new GradleException('Missing reviewed Ktlint baseline. Generate explicitly with ktlintBaseline.')
+            }
+            if (baseline) delete file('config/ktlint/baseline.xml')
+            def output = reportsDir.get().dir('ktlint').asFile
+            output.mkdirs()
+            args = ['--relative', '--baseline=config/ktlint/baseline.xml',
+                    "--reporter=checkstyle,output=${output}/ktlint.xml",
+                    "--reporter=html,output=${output}/ktlint.html",
+                    "--reporter=sarif,output=${output}/ktlint.sarif"]
+            if (format) args '--format'
+            kotlinSources.files.each { dir -> args "${rootDir.toPath().relativize(dir.toPath())}/**/*.{kt,kts}" }
+            args '!**/build/**', '!**/generated/**', '!**/ksp/**', '!**/kapt/**'
+        }
+        if (baseline) {
+            doLast {
+                def generated = file('config/ktlint/baseline.xml')
+                if (!generated.isFile() || generated.length() == 0 || executionResult.get().exitValue > 1) {
+                    throw new GradleException('Ktlint failed to generate a baseline; inspect its report.')
+                }
+                new groovy.xml.XmlSlurper(false, false).parse(generated)
+            }
+            finalizedBy 'ktlintCheck'
+        }
+    }
+}
+registerKtlint('ktlintCheck', false, false)
+registerKtlint('ktlintFormat', true, false)
+registerKtlint('ktlintBaseline', false, true)

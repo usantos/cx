@@ -1,0 +1,14 @@
+<resources>
+    <!-- Atributos exatos de AppTheme.PickerCaixa legado, styles.xml:452-457. -->
+    <style name="LegacyRapidPickerCaixa" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">#51B7AB</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
+    </style>
+    <style name="LegacyRapidControls" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#EFF5F6</item>
+        <item name="colorPrimaryDark">#005CA9</item>
+        <item name="colorAccent">#005CA9</item>
+    </style>
+</resources>

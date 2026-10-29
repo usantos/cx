@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Compartilha a marca sem alterar os nomes usados nas telas de pagamento. -->
+    <item name="legacy_card_provider_recarga" type="drawable">@drawable/recargapay</item>
+</resources>

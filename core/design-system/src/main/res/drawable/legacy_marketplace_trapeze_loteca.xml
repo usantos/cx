@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Retângulo colorido -->
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="85dp"
+                android:height="71dp" />
+            <solid android:color="#C61017" />
+        </shape>
+    </item>
+
+    <!-- Este retângulo corresponde ao lado direito -->
+    <!-- Sua cor deve ser a mesma do fundo do layout -->
+    <item
+        android:right="-200dp"
+        android:left="90dp"
+        android:top="-113dp"
+        android:bottom="-50dp">
+        <rotate
+            android:fromDegrees="20">
+            <shape android:shape="rectangle">
+                <solid android:color="#ED1C24" />
+            </shape>
+        </rotate>
+    </item>
+
+</layer-list>

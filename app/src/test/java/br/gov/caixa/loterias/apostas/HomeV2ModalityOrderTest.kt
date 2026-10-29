@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas
 
+import br.gov.caixa.loterias.feature.home.presentation.mapper.HomeV2ModalityOrder
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

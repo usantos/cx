@@ -1,13 +1,16 @@
 package br.gov.caixa.loterias.core.domain.marketplace
 
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
-import br.gov.caixa.loterias.core.domain.cart.ShoppingCart
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolOrder
+import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplacePurchaseRepository
+import br.gov.caixa.loterias.feature.marketplace.domain.usecase.AddMarketplacePoolToCart
 
 class MarketplacePurchaseUseCaseTest {
     @Test

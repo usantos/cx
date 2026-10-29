@@ -1,12 +1,30 @@
 package br.gov.caixa.loterias.core.domain.betting
 
-import br.gov.caixa.loterias.core.common.AppResult
-import br.gov.caixa.loterias.core.domain.cart.ShoppingCart
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCart
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddComboToCart
+import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
+import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
+import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
+import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
+import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
+import br.gov.caixa.loterias.feature.betting.domain.repository.BettingRepository
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBetCombos
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParameters
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalities
+import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
+import br.gov.caixa.loterias.feature.betting.domain.model.LotogolMatchSelection
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
+import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
+import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
 
 class BettingUseCasesTest {
     private val modality = LotteryModality(1, "Mega-Sena", "megasena", "Especial", "CAIXA")

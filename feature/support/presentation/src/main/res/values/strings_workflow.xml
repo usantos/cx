@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workflow_support_duvidas">Dúvidas</string>
+    <string name="workflow_support_consulte_as_perguntas_e_respostas_das_loterias_caixa">Consulte as perguntas e respostas das Loterias CAIXA.</string>
+    <string name="workflow_support_termo_de_uso">Termo de uso</string>
+    <string name="workflow_support_leia_o_termo_de_uso_das_loterias_caixa">Leia o Termo de uso das Loterias CAIXA.</string>
+    <string name="workflow_support_termos_de_uso">Termos de Uso</string>
+    <string name="workflow_support_consulte_os_termos_de_uso_das_loterias_caixa">Consulte os Termos de Uso das Loterias CAIXA.</string>
+    <string name="workflow_support_leia_e_aceite_os_termos_de_uso_para_continuar">Leia e aceite os Termos de Uso para continuar.</string>
+    <string name="workflow_support_ajuda">Ajuda</string>
+    <string name="workflow_support_consulte_concurso_datas_e_regras_da_modalidade">Consulte concurso, datas e regras da modalidade.</string>
+    <string name="workflow_support_continuar">Continuar</string>
+</resources>

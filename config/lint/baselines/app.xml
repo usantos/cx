@@ -1,0 +1,2626 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.1)" variant="all" version="9.2.1">
+
+    <issue
+        id="UnspecifiedRegisterReceiverFlag"
+        message="`receiver` is missing `RECEIVER_EXPORTED` or `RECEIVER_NOT_EXPORTED` flag for unprotected broadcasts registered for an IntentFilter that cannot be inspected by lint"
+        errorLine1="        else super.registerReceiver(receiver, filter)"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/apostas/MainActivity.kt"
+            line="32"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of Gradle than 9.4.1 is available: 9.8.2"
+        errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-9.4.1-bin.zip"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/wrapper/gradle-wrapper.properties"
+            line="3"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core than 1.18.0 is available: 1.19.1"
+        errorLine1="androidx-core = &quot;1.18.0&quot;"
+        errorLine2="                ~~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="4"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.compose:compose-bom than 2026.08.00 is available: 2026.09.00"
+        errorLine1="compose-bom = &quot;2026.08.00&quot;"
+        errorLine2="              ~~~~~~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="6"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation:navigation-compose than 2.10.0 is available: 2.10.2"
+        errorLine1="navigation = &quot;2.10.0&quot;"
+        errorLine2="             ~~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="9"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.firebase:firebase-bom than 34.18.0 is available: 35.1.0"
+        errorLine1="firebase-bom = &quot;34.18.0&quot;"
+        errorLine2="               ~~~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="12"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.appcompat:appcompat than 1.7.1 is available: 1.8.0"
+        errorLine1="appcompat = &quot;1.7.1&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="16"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.android.tools:desugar_jdk_libs than 2.0.4 is available: 2.1.5"
+        errorLine1="desugar-jdk-libs = &quot;2.0.4&quot;"
+        errorLine2="                   ~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="27"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.test:runner than 1.6.2 is available: 1.7.0"
+        errorLine1="test-auth-runner = &quot;1.6.2&quot;"
+        errorLine2="                   ~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="30"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.test.ext:junit than 1.2.1 is available: 1.3.0"
+        errorLine1="test-ext-junit = &quot;1.2.1&quot;"
+        errorLine2="                 ~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="31"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.test.uiautomator:uiautomator than 2.3.0 is available: 2.4.0"
+        errorLine1="uiautomator = &quot;2.3.0&quot;"
+        errorLine2="              ~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="32"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="LockedOrientationActivity"
+        message="Expecting `android:screenOrientation=&quot;unspecified&quot;` or `&quot;fullSensor&quot;` for this activity so the user can use the application in any orientation and provide a great experience on Chrome OS devices"
+        errorLine1="            android:screenOrientation=&quot;portrait&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="45"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="LockedOrientationActivity"
+        message="Expecting `android:screenOrientation=&quot;unspecified&quot;` or `&quot;fullSensor&quot;` for this activity so the user can use the application in any orientation and provide a great experience on Chrome OS devices"
+        errorLine1="            android:screenOrientation=&quot;portrait&quot; android:theme=&quot;@style/Theme.Loterias&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="53"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.squareup.okhttp3:mockwebserver than 5.5.0 is available: 5.5.1"
+        errorLine1="okhttp = &quot;5.5.0&quot;"
+        errorLine2="         ~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="13"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.squareup.okhttp3:okhttp than 5.5.0 is available: 5.5.1"
+        errorLine1="okhttp = &quot;5.5.0&quot;"
+        errorLine2="         ~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="13"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of io.coil-kt.coil3:coil-compose than 3.6.1 is available: 3.6.3"
+        errorLine1="coil = &quot;3.6.1&quot;"
+        errorLine2="       ~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="22"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of io.coil-kt.coil3:coil-gif than 3.6.1 is available: 3.6.3"
+        errorLine1="coil = &quot;3.6.1&quot;"
+        errorLine2="       ~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="22"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="SimilarGradleDependency"
+        message="There are multiple dependencies androidx.test:runner but with different version"
+        errorLine1="androidx-test-runner = { module = &quot;androidx.test:runner&quot;, version.ref = &quot;test-runner&quot; }"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="88"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="SimilarGradleDependency"
+        message="There are multiple dependencies androidx.test:runner but with different version"
+        errorLine1="androidx-test-auth-runner = { module = &quot;androidx.test:runner&quot;, version.ref = &quot;test-auth-runner&quot; }"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="$HOME/Projects/simlo-app-android/gradle/libs.versions.toml"
+            line="89"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="DiscouragedApi"
+        message="Fixed screen orientations will be ignored in most cases, starting from Android 16. Android is moving toward a model where apps are expected to adapt to various orientations, display sizes, and aspect ratios."
+        errorLine1="            android:screenOrientation=&quot;portrait&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="45"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DiscouragedApi"
+        message="Fixed screen orientations will be ignored in most cases, starting from Android 16. Android is moving toward a model where apps are expected to adapt to various orientations, display sizes, and aspect ratios."
+        errorLine1="            android:screenOrientation=&quot;portrait&quot; android:theme=&quot;@style/Theme.Loterias&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="53"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DataExtractionRules"
+        message="The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
+        errorLine1="        android:allowBackup=&quot;false&quot;"
+        errorLine2="                             ~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="19"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.agrupar_1` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/agrupar_1.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.btn_fechar` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/btn_fechar.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.bullet_branco` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/bullet_branco.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.bullet_vermelho` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/bullet_vermelho.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_dupla_pascoa_carrossel` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_dupla_pascoa_carrossel.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_loteca_pais_carrossel` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_loteca_pais_carrossel.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_loteca_pais_carrossel_alta` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_loteca_pais_carrossel_alta.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_loteca_pais_detalhe_simples` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_loteca_pais_detalhe_simples.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_lotofacil_da_independencia` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/cabecalho_lotofacil_da_independencia.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_lotofacil_independencia_carrossel` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_lotofacil_independencia_carrossel.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_mega_trinta_anos_carrossel` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_mega_trinta_anos_carrossel.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_mega_trinta_anos_detalhe` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_mega_trinta_anos_detalhe.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_mega_virada_carrossel` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_mega_virada_carrossel.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_mega_virada_detalhes_aposta` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_mega_virada_detalhes_aposta.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_quina_de_sao_joao_detalhe_aposta` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_quina_de_sao_joao_detalhe_aposta.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_quina_sao_joao_caurossel` appears to be unused">
+        <location
+            file="src/main/res/drawable/cabecalho_quina_sao_joao_caurossel.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_sao_joao` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/cabecalho_sao_joao.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cabecalho_superior_dupla_de_pascoa` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/cabecalho_superior_dupla_de_pascoa.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cartao_american` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/cartao_american.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cartao_cvc` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/cartao_cvc.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cartao_dinner` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/cartao_dinner.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cartao_elo` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/cartao_elo.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cartao_master` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/cartao_master.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.cartao_visa` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/cartao_visa.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.check1` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/check1.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.check2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/check2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.close` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/close.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.combo` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/combo.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.combo2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/combo2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.digital` appears to be unused">
+        <location
+            file="src/main/res/drawable/digital.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.dupla_pascoa` appears to be unused">
+        <location
+            file="src/main/res/drawable/dupla_pascoa.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.dupla_pascoa_background` appears to be unused">
+        <location
+            file="src/main/res/drawable/dupla_pascoa_background.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.dupla_pascoa_dupla` appears to be unused">
+        <location
+            file="src/main/res/drawable/dupla_pascoa_dupla.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.dupla_pascoa_quadrado` appears to be unused">
+        <location
+            file="src/main/res/drawable/dupla_pascoa_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.dupla_pascoa_simples` appears to be unused">
+        <location
+            file="src/main/res/drawable/dupla_pascoa_simples.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.fechar_verde` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/fechar_verde.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.fundo_especial_dupla_sena_de_pascoa` appears to be unused">
+        <location
+            file="src/main/res/drawable/fundo_especial_dupla_sena_de_pascoa.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.fundo_especial_lotofacil_da_independencia` appears to be unused">
+        <location
+            file="src/main/res/drawable/fundo_especial_lotofacil_da_independencia.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.fundo_especial_mega_da_virada` appears to be unused">
+        <location
+            file="src/main/res/drawable/fundo_especial_mega_da_virada.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.fundo_especial_quina_de_sao_joao` appears to be unused">
+        <location
+            file="src/main/res/drawable/fundo_especial_quina_de_sao_joao.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.fundo_splash` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/fundo_splash.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.header_interno_milionaria` appears to be unused">
+        <location
+            file="src/main/res/drawable/header_interno_milionaria.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_barcode` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_barcode.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_barcode_branco` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_barcode_branco.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_edit` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_edit.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.ic_header_mais_milionaria` appears to be unused">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_header_mais_milionaria.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.ic_header_mais_milionaria_foreground` appears to be unused">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_header_mais_milionaria_foreground.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.ic_header_mais_milionaria_round` appears to be unused">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_header_mais_milionaria_round.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_info` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_info.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.ic_launcher_especial` appears to be unused">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_launcher_especial.webp"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.ic_launcher_especial_background` appears to be unused">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_launcher_especial_background.webp"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.ic_launcher_especial_foreground` appears to be unused">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_launcher_especial_foreground.webp"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.ic_launcher_especial_round` appears to be unused">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_launcher_especial_round.webp"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_lupa` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/ic_lupa.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_lupa_carrinho_fav` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/ic_lupa_carrinho_fav.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_mercadopago` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_mercadopago.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_orange_heart` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_orange_heart.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_orange_heart_filled` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_orange_heart_filled.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_qrcode` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_qrcode.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_timecoracao` appears to be unused">
+        <location
+            file="src/main/res/drawable-xhdpi/ic_timecoracao.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_volantes` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_volantes.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_x` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/ic_x.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icgrouprepassadosumxx` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/icgrouprepassadosumxx.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_18_anos` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_18_anos.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_add_carrinho` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_add_carrinho.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_alerta` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_alerta.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_apostas` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_apostas.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_bilhete_codigo` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_bilhete_codigo.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_bilhete_data` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_bilhete_data.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_bilhete_loterica` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_bilhete_loterica.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_carrinho` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_carrinho.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_config_mais` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_config_mais.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_config_mais2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_config_mais2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_configuracao` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_configuracao.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_data_federal` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_data_federal.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_duvida` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_duvida.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_editar_aposta` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_editar_aposta.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_excluir` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_excluir.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_favoritado` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_favoritado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_favoritar` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_favoritar.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_favoritas` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_favoritas.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_favoritas2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_favoritas2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_fechar` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_fechar.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_horario_federal` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_horario_federal.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_input_ok` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_input_ok.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_maisnumeros` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_maisnumeros.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_menosnumeros` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_menosnumeros.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_pdf` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_pdf.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_rapidao` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_rapidao.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_reload` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_reload.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_sair` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_sair.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_sair_novo` appears to be unused">
+        <location
+            file="src/main/res/drawable/icon_sair_novo.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_seleciona` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_seleciona.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_seleciona2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_seleciona2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_sorteio` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_sorteio.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_surpresinha` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_surpresinha.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_surpresinha2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/icon_surpresinha2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_trevo_rosa` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:height=&quot;64dp&quot; android:viewportHeight=&quot;39&quot; android:viewportWidth=&quot;39&quot; android:width=&quot;64dp&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/icon_trevo_rosa.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.iconfavedit` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/iconfavedit.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ilustra_cadastro` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/ilustra_cadastro.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ilustra_funcionalidades` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/ilustra_funcionalidades.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ilustra_mobile` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/ilustra_mobile.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ilustra_praticidade` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/ilustra_praticidade.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ilustra_repasses` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/ilustra_repasses.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.img` appears to be unused">
+        <location
+            file="src/main/res/drawable/img.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.jogo_responsavel` appears to be unused">
+        <location
+            file="src/main/res/drawable/jogo_responsavel.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.legacy_home_marca_dagua_outubro_rosa` appears to be unused">
+        <location
+            file="src/main/res/drawable/legacy_home_marca_dagua_outubro_rosa.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.legacy_home_outubro_rosa` appears to be unused">
+        <location
+            file="src/main/res/drawable/legacy_home_outubro_rosa.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.local_azul` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/local_azul.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.logo` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/logo.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.logo_caixa_pdf_copy` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/logo_caixa_pdf_copy.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.logo_mercado_pago` appears to be unused">
+        <location
+            file="src/main/res/drawable/logo_mercado_pago.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.loteca_copa` appears to be unused">
+        <location
+            file="src/main/res/drawable/loteca_copa.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.loteca_copa_dupla` appears to be unused">
+        <location
+            file="src/main/res/drawable/loteca_copa_dupla.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.loteca_copa_quadrado` appears to be unused">
+        <location
+            file="src/main/res/drawable/loteca_copa_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.loteca_copa_simples` appears to be unused">
+        <location
+            file="src/main/res/drawable/loteca_copa_simples.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.loteca_pais_dupla` appears to be unused">
+        <location
+            file="src/main/res/drawable/loteca_pais_dupla.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.loteca_pais_quadrado` appears to be unused">
+        <location
+            file="src/main/res/drawable/loteca_pais_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.loteca_pais_quadrado_alta` appears to be unused">
+        <location
+            file="src/main/res/drawable/loteca_pais_quadrado_alta.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotofacil_indep_backgound` appears to be unused">
+        <location
+            file="src/main/res/drawable/lotofacil_indep_backgound.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotofacil_indepedencia_dupla` appears to be unused">
+        <location
+            file="src/main/res/drawable/lotofacil_indepedencia_dupla.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotofacil_indepedencia_simples` appears to be unused">
+        <location
+            file="src/main/res/drawable/lotofacil_indepedencia_simples.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.lotofacil_independencia` appears to be unused">
+        <location
+            file="src/main/res/raw/lotofacil_independencia.lottie"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotofacil_independencia` appears to be unused">
+        <location
+            file="src/main/res/drawable/lotofacil_independencia.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotofacil_independencia_quadrado` appears to be unused">
+        <location
+            file="src/main/res/drawable/lotofacil_independencia_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotogol` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/lotogol.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotogol_0` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/lotogol_0.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotogol_1` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/lotogol_1.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotogol_2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/lotogol_2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotogol_3` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/lotogol_3.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotogol_selecionado` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/lotogol_selecionado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotogol_selecionado_0` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/lotogol_selecionado_0.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotogol_selecionado_1` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/lotogol_selecionado_1.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotogol_selecionado_2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/lotogol_selecionado_2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.lotogol_selecionado_3` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/lotogol_selecionado_3.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.mais_milionaria` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/mais_milionaria.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.master_card` appears to be unused">
+        <location
+            file="src/main/res/drawable/master_card.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.mega_30_quadrado` appears to be unused">
+        <location
+            file="src/main/res/drawable/mega_30_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.mega_virada` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/mega_virada.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.mega_virada_background` appears to be unused">
+        <location
+            file="src/main/res/drawable/mega_virada_background.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.mega_virada_dupla` appears to be unused">
+        <location
+            file="src/main/res/drawable/mega_virada_dupla.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.mega_virada_novo` appears to be unused">
+        <location
+            file="src/main/res/drawable/mega_virada_novo.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.mega_virada_quadrado` appears to be unused">
+        <location
+            file="src/main/res/drawable/mega_virada_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.mega_virada_simples` appears to be unused">
+        <location
+            file="src/main/res/drawable/mega_virada_simples.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.menu1_area` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/menu1_area.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.menu2_apostar` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/menu2_apostar.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.menu3_resultados` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/menu3_resultados.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.menu5_bilhetes` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/menu5_bilhetes.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.menu7_repasses` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/menu7_repasses.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.menu_options` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/menu_options.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.navega_o_vazio` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/navega_o_vazio.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.navegacao_branco` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/navegacao_branco.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.paginacao1` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/paginacao1.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.paginacao2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/paginacao2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.paginacao3` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/paginacao3.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.passo1` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/passo1.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.passo2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/passo2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.pipe` appears to be unused">
+        <location
+            file="src/main/res/drawable/pipe.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.quina_sao_joao` appears to be unused">
+        <location
+            file="src/main/res/drawable/quina_sao_joao.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.quina_sao_joao_background` appears to be unused">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_background.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.quina_sao_joao_dupla` appears to be unused">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_dupla.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.quina_sao_joao_novo` appears to be unused">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_novo.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.quina_sao_joao_quadrado` appears to be unused">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.quina_sao_joao_simples` appears to be unused">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_simples.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.radio1` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/radio1.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.radio2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/radio2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.rectangle_5_copy` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/rectangle_5_copy.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.rectangle_5_copy_2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/rectangle_5_copy_2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.rectangle_6_copy_5` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/rectangle_6_copy_5.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.rodape_dupla_de_pascoa_inferior` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/rodape_dupla_de_pascoa_inferior.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.rodape_lotofacil_da_independencia_inferior` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/rodape_lotofacil_da_independencia_inferior.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.rodape_mega_da_virada_inferior` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/rodape_mega_da_virada_inferior.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.rodape_mega_trinta_anos_inferior` appears to be unused">
+        <location
+            file="src/main/res/drawable/rodape_mega_trinta_anos_inferior.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.rodape_sao_joao_inferior` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/rodape_sao_joao_inferior.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.search_24` appears to be unused">
+        <location
+            file="src/main/res/drawable/search_24.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.seta_apontando_apostas` appears to be unused">
+        <location
+            file="src/main/res/drawable-xxxhdpi/seta_apontando_apostas.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.seta_apontando_carrinho` appears to be unused">
+        <location
+            file="src/main/res/drawable-xxxhdpi/seta_apontando_carrinho.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.seta_direita` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/seta_direita.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.seta_direita_cinza` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/seta_direita_cinza.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.seta_direita_preta` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/seta_direita_preta.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.seta_esquerda` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/seta_esquerda.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.seta_verde` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/seta_verde.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.seta_voltar` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/seta_voltar.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.seta_voltar2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/seta_voltar2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.shape_23_copy_2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/shape_23_copy_2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.shape_23_copy_3` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/shape_23_copy_3.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.shape_3` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/shape_3.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.shape_4` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/shape_4.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.slider_desligado` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/slider_desligado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.slider_ligado` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/slider_ligado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.slider_linha` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/slider_linha.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.splashscreen_triangulo` appears to be unused">
+        <location
+            file="src/main/res/drawable-xxxhdpi/splashscreen_triangulo.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.splashscreen_triangulo_new` appears to be unused">
+        <location
+            file="src/main/res/drawable/splashscreen_triangulo_new.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.status` appears to be unused">
+        <location
+            file="src/main/res/drawable-xxxhdpi/status.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.status_white` appears to be unused">
+        <location
+            file="src/main/res/drawable-xxxhdpi/status_white.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.super7_passo1` appears to be unused">
+        <location
+            file="src/main/res/drawable/super7_passo1.gif"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.super7_passo2` appears to be unused">
+        <location
+            file="src/main/res/drawable/super7_passo2.gif"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.super7_passo3` appears to be unused">
+        <location
+            file="src/main/res/drawable/super7_passo3.gif"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.tab_seta` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/tab_seta.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.tab_seta2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/tab_seta2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.time` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/time.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.time_acf` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/time_acf.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.time_flamengo` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/time_flamengo.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.time_marcacao` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/time_marcacao.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.time_padrao` appears to be unused">
+        <location
+            file="src/main/res/drawable/time_padrao.jpg"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.time_selecionado` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/time_selecionado.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.time_surpresa` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/time_surpresa.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.time_versus` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/time_versus.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.time_versus_azul` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/time_versus_azul.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.time_versus_white` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/time_versus_white.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_10` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_10.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_2` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_3` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_3.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_4` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_4.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_7` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_7.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_8` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_8.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_9` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_9.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_duplasena` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_duplasena.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_federal` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_federal.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_loteca` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_loteca.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_lotofacil` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_lotofacil.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_megasena` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_megasena.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_quina` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_quina.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.trevo_timemania` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/trevo_timemania.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.triangulo` appears to be unused">
+        <location
+            file="src/main/res/drawable-xhdpi/triangulo.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.vector_fav_empty` appears to be unused">
+        <location
+            file="src/main/res/drawable/vector_fav_empty.png"/>
+    </issue>
+
+    <issue
+        id="GifUsage"
+        message="Using the `.gif` format for bitmaps is discouraged">
+        <location
+            file="src/main/res/drawable/super7_passo1.gif"/>
+    </issue>
+
+    <issue
+        id="GifUsage"
+        message="Using the `.gif` format for bitmaps is discouraged">
+        <location
+            file="src/main/res/drawable/super7_passo2.gif"/>
+    </issue>
+
+    <issue
+        id="GifUsage"
+        message="Using the `.gif` format for bitmaps is discouraged">
+        <location
+            file="src/main/res/drawable/super7_passo3.gif"/>
+    </issue>
+
+    <issue
+        id="IconDipSize"
+        message="The image `cabecalho_sao_joao.png` varies significantly in its density-independent (dip) size across the various density versions: drawable-hdpi/cabecalho_sao_joao.png: 831x213 dp (1247x319 px), drawable-ldpi/cabecalho_sao_joao.png: 831x212 dp (623x159 px), drawable-mdpi/cabecalho_sao_joao.png: 831x213 dp (831x213 px), drawable-xhdpi/cabecalho_sao_joao.png: 831x213 dp (1662x426 px), drawable-xxhdpi/cabecalho_sao_joao.png: 1108x277 dp (3324x831 px), drawable-xxxhdpi/cabecalho_sao_joao.png: 831x213 dp (3324x852 px)">
+        <location
+            file="src/main/res/drawable-ldpi/cabecalho_sao_joao.png"/>
+        <location
+            file="src/main/res/drawable-xxxhdpi/cabecalho_sao_joao.png"/>
+        <location
+            file="src/main/res/drawable-xhdpi/cabecalho_sao_joao.png"/>
+        <location
+            file="src/main/res/drawable-mdpi/cabecalho_sao_joao.png"/>
+        <location
+            file="src/main/res/drawable-hdpi/cabecalho_sao_joao.png"/>
+        <location
+            file="src/main/res/drawable-xxhdpi/cabecalho_sao_joao.png"/>
+    </issue>
+
+    <issue
+        id="IconDipSize"
+        message="The image `close.png` varies significantly in its density-independent (dip) size across the various density versions: drawable-hdpi/close.png: 20x20 dp (30x30 px), drawable-mdpi/close.png: 30x30 dp (30x30 px), drawable-xhdpi/close.png: 45x45 dp (90x90 px), drawable-xxhdpi/close.png: 40x40 dp (120x120 px), drawable-xxxhdpi/close.png: 15x15 dp (60x60 px)">
+        <location
+            file="src/main/res/drawable-xxxhdpi/close.png"/>
+        <location
+            file="src/main/res/drawable-hdpi/close.png"/>
+        <location
+            file="src/main/res/drawable-mdpi/close.png"/>
+        <location
+            file="src/main/res/drawable-xxhdpi/close.png"/>
+        <location
+            file="src/main/res/drawable-xhdpi/close.png"/>
+    </issue>
+
+    <issue
+        id="IconDipSize"
+        message="The image `icon_add_carrinho.png` varies significantly in its density-independent (dip) size across the various density versions: drawable-hdpi/icon_add_carrinho.png: 14x15 dp (21x22 px), drawable-xxhdpi/icon_add_carrinho.png: 14x15 dp (42x44 px), drawable-xxxhdpi/icon_add_carrinho.png: 16x17 dp (63x66 px)">
+        <location
+            file="src/main/res/drawable-xxhdpi/icon_add_carrinho.png"/>
+        <location
+            file="src/main/res/drawable-hdpi/icon_add_carrinho.png"/>
+        <location
+            file="src/main/res/drawable-xxxhdpi/icon_add_carrinho.png"/>
+    </issue>
+
+    <issue
+        id="IconDipSize"
+        message="The image `iconfavedit.png` varies significantly in its density-independent (dip) size across the various density versions: drawable-hdpi/iconfavedit.png: 14x14 dp (21x21 px), drawable-mdpi/iconfavedit.png: 40x40 dp (40x40 px), drawable-xhdpi/iconfavedit.png: 30x31 dp (60x61 px), drawable-xxxhdpi/iconfavedit.png: 20x20 dp (80x80 px)">
+        <location
+            file="src/main/res/drawable-hdpi/iconfavedit.png"/>
+        <location
+            file="src/main/res/drawable-xxxhdpi/iconfavedit.png"/>
+        <location
+            file="src/main/res/drawable-xhdpi/iconfavedit.png"/>
+        <location
+            file="src/main/res/drawable-mdpi/iconfavedit.png"/>
+    </issue>
+
+    <issue
+        id="IconDipSize"
+        message="The image `mais_milionaria.png` varies significantly in its density-independent (dip) size across the various density versions: drawable-hdpi/mais_milionaria.png: 554x154 dp (831x231 px), drawable-ldpi/mais_milionaria.png: 1477x411 dp (1108x308 px), drawable-mdpi/mais_milionaria.png: 1662x462 dp (1662x462 px), drawable-xhdpi/mais_milionaria.png: 1108x308 dp (2216x616 px), drawable-xxhdpi/mais_milionaria.png: 1108x308 dp (3324x924 px), drawable-xxxhdpi/mais_milionaria.png: 1108x308 dp (4432x1233 px)">
+        <location
+            file="src/main/res/drawable-hdpi/mais_milionaria.png"/>
+        <location
+            file="src/main/res/drawable-xxxhdpi/mais_milionaria.png"/>
+        <location
+            file="src/main/res/drawable-xxhdpi/mais_milionaria.png"/>
+        <location
+            file="src/main/res/drawable-xhdpi/mais_milionaria.png"/>
+        <location
+            file="src/main/res/drawable-ldpi/mais_milionaria.png"/>
+        <location
+            file="src/main/res/drawable-mdpi/mais_milionaria.png"/>
+    </issue>
+
+    <issue
+        id="IconDipSize"
+        message="The image `menu_options.png` varies significantly in its density-independent (dip) size across the various density versions: drawable-hdpi/menu_options.png: 5x22 dp (7x33 px), drawable-mdpi/menu_options.png: 4x22 dp (4x22 px), drawable-xhdpi/menu_options.png: 5x23 dp (9x45 px), drawable-xxhdpi/menu_options.png: 4x22 dp (13x67 px), drawable-xxxhdpi/menu_options.png: 5x23 dp (18x90 px)">
+        <location
+            file="src/main/res/drawable-xxhdpi/menu_options.png"/>
+        <location
+            file="src/main/res/drawable-mdpi/menu_options.png"/>
+        <location
+            file="src/main/res/drawable-hdpi/menu_options.png"/>
+        <location
+            file="src/main/res/drawable-xxxhdpi/menu_options.png"/>
+        <location
+            file="src/main/res/drawable-xhdpi/menu_options.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicatesConfig"
+        message="The `close.png` icon has identical contents in the following configuration folders: drawable-hdpi, drawable-mdpi">
+        <location
+            file="src/main/res/drawable-mdpi/close.png"/>
+        <location
+            file="src/main/res/drawable-hdpi/close.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_dupla_pascoa_carrossel.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_dupla_pascoa_carrossel.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_loteca_pais_carrossel.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_loteca_pais_carrossel.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_loteca_pais_carrossel_alta.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_loteca_pais_carrossel_alta.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_loteca_pais_detalhe_simples.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_loteca_pais_detalhe_simples.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_lotofacil_independencia_carrossel.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_lotofacil_independencia_carrossel.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_mega_trinta_anos_carrossel.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_mega_trinta_anos_carrossel.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_mega_trinta_anos_detalhe.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_mega_trinta_anos_detalhe.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_mega_virada_carrossel.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_mega_virada_carrossel.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_mega_virada_detalhes_aposta.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_mega_virada_detalhes_aposta.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_quina_de_sao_joao_detalhe_aposta.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_quina_de_sao_joao_detalhe_aposta.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/cabecalho_quina_sao_joao_caurossel.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/cabecalho_quina_sao_joao_caurossel.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/digital.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/digital.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/dupla_pascoa.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/dupla_pascoa.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/dupla_pascoa_background.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/dupla_pascoa_background.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/dupla_pascoa_dupla.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/dupla_pascoa_dupla.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/dupla_pascoa_quadrado.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/dupla_pascoa_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/dupla_pascoa_simples.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/dupla_pascoa_simples.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/fundo_especial_dupla_sena_de_pascoa.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/fundo_especial_dupla_sena_de_pascoa.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/fundo_especial_lotofacil_da_independencia.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/fundo_especial_lotofacil_da_independencia.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/fundo_especial_mega_da_virada.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/fundo_especial_mega_da_virada.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/fundo_especial_quina_de_sao_joao.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/fundo_especial_quina_de_sao_joao.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/header_interno_milionaria.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/header_interno_milionaria.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_barcode.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_barcode.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_barcode_branco.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_barcode_branco.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_edit.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_edit.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_mercadopago.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_mercadopago.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_orange_heart.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_orange_heart.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_orange_heart_filled.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_orange_heart_filled.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_qrcode.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_qrcode.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_volantes.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_volantes.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/icon_sair_novo.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/icon_sair_novo.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/img.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/img.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/jogo_responsavel.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/jogo_responsavel.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/legacy_home_marca_dagua_outubro_rosa.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/legacy_home_marca_dagua_outubro_rosa.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/legacy_home_outubro_rosa.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/legacy_home_outubro_rosa.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/logo_mercado_pago.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/logo_mercado_pago.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/loteca_copa.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/loteca_copa.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/loteca_copa_dupla.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/loteca_copa_dupla.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/loteca_copa_quadrado.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/loteca_copa_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/loteca_copa_simples.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/loteca_copa_simples.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/loteca_pais_dupla.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/loteca_pais_dupla.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/loteca_pais_quadrado.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/loteca_pais_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/loteca_pais_quadrado_alta.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/loteca_pais_quadrado_alta.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/lotofacil_indep_backgound.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/lotofacil_indep_backgound.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/lotofacil_indepedencia_dupla.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/lotofacil_indepedencia_dupla.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/lotofacil_indepedencia_simples.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/lotofacil_indepedencia_simples.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/lotofacil_independencia.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/lotofacil_independencia.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/lotofacil_independencia_quadrado.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/lotofacil_independencia_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/master_card.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/master_card.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/mega_30_quadrado.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/mega_30_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/mega_virada_background.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/mega_virada_background.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/mega_virada_dupla.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/mega_virada_dupla.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/mega_virada_novo.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/mega_virada_novo.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/mega_virada_quadrado.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/mega_virada_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/mega_virada_simples.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/mega_virada_simples.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/pipe.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/pipe.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/quina_sao_joao.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/quina_sao_joao.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/quina_sao_joao_background.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_background.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/quina_sao_joao_dupla.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_dupla.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/quina_sao_joao_novo.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_novo.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/quina_sao_joao_quadrado.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_quadrado.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/quina_sao_joao_simples.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_simples.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/rodape_mega_trinta_anos_inferior.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/rodape_mega_trinta_anos_inferior.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/search_24.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/search_24.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/splashscreen_triangulo_new.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/splashscreen_triangulo_new.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/super7_passo1.gif` in densityless folder">
+        <location
+            file="src/main/res/drawable/super7_passo1.gif"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/super7_passo2.gif` in densityless folder">
+        <location
+            file="src/main/res/drawable/super7_passo2.gif"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/super7_passo3.gif` in densityless folder">
+        <location
+            file="src/main/res/drawable/super7_passo3.gif"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/time_padrao.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/time_padrao.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/trevo.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/trevo.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/vector_fav_empty.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/vector_fav_empty.png"/>
+    </issue>
+
+    <issue
+        id="IconDensities"
+        message="Missing the following drawables in `drawable-hdpi`: ic_timecoracao.png, icgrouprepassadosumxx.png, seta_apontando_apostas.png, seta_apontando_carrinho.png, splashscreen_triangulo.png... (3 more)">
+        <location
+            file="src/main/res/drawable-hdpi"/>
+    </issue>
+
+    <issue
+        id="IconDensities"
+        message="Missing the following drawables in `drawable-mdpi`: ic_timecoracao.png, icon_add_carrinho.png, seta_apontando_apostas.png, seta_apontando_carrinho.png, splashscreen_triangulo.png... (3 more)">
+        <location
+            file="src/main/res/drawable-mdpi"/>
+    </issue>
+
+    <issue
+        id="IconDensities"
+        message="Missing the following drawables in `drawable-xhdpi`: icgrouprepassadosumxx.png, icon_add_carrinho.png, seta_apontando_apostas.png, seta_apontando_carrinho.png, splashscreen_triangulo.png... (2 more)">
+        <location
+            file="src/main/res/drawable-xhdpi"/>
+    </issue>
+
+    <issue
+        id="IconDensities"
+        message="Missing the following drawables in `drawable-xxhdpi`: icgrouprepassadosumxx.png, iconfavedit.png, local_azul.png, seta_apontando_apostas.png, seta_apontando_carrinho.png... (4 more)">
+        <location
+            file="src/main/res/drawable-xxhdpi"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: icon.png, ic_launcher.png">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_launcher.png"/>
+        <location
+            file="src/main/res/drawable-hdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: icon.png, ic_launcher.png">
+        <location
+            file="src/main/res/mipmap-mdpi/ic_launcher.png"/>
+        <location
+            file="src/main/res/drawable-mdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: icon.png, ic_launcher.png">
+        <location
+            file="src/main/res/mipmap-xhdpi/ic_launcher.png"/>
+        <location
+            file="src/main/res/drawable-xhdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: icon.png, ic_launcher.png">
+        <location
+            file="src/main/res/mipmap-xxhdpi/ic_launcher.png"/>
+        <location
+            file="src/main/res/drawable-xxhdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: icon.png, ic_launcher.png">
+        <location
+            file="src/main/res/mipmap-xxxhdpi/ic_launcher.png"/>
+        <location
+            file="src/main/res/drawable-xxxhdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: ic_mercadopago.png, logo_mercado_pago.png">
+        <location
+            file="src/main/res/drawable/logo_mercado_pago.png"/>
+        <location
+            file="src/main/res/drawable/ic_mercadopago.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: quina_sao_joao.png, quina_sao_joao_background.png">
+        <location
+            file="src/main/res/drawable/quina_sao_joao_background.png"/>
+        <location
+            file="src/main/res/drawable/quina_sao_joao.png"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                    requireNotNull(Uri.parse(environment.apiBaseUrl).host),"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/apostas/di/AppNetworkBindings.kt"
+            line="150"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                    requireNotNull(Uri.parse(environment.mercadoPagoBaseUrl).host),"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/apostas/di/AppNetworkBindings.kt"
+            line="151"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                    requireNotNull(Uri.parse(environment.recargaPayBaseUrl).host),"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/apostas/di/AppNetworkBindings.kt"
+            line="152"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                try { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))); true }"
+        errorLine2="                                                                       ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/apostas/composition/startup/AppStartupStatusPanel.kt"
+            line="39"
+            column="72"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        check(preferences.edit().putString(ENVIRONMENT_SELECTION_KEY, value).commit()) {"
+        errorLine2="              ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/apostas/environment/persistence/EnvironmentPreferences.kt"
+            line="14"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(&quot;market://details?id=$id&quot;))"
+        errorLine2="                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/apostas/composition/startup/ForceUpdateGate.kt"
+            line="33"
+            column="63"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(&quot;https://play.google.com/store/apps/details?id=$id&quot;)))"
+        errorLine2="                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/apostas/composition/startup/ForceUpdateGate.kt"
+            line="37"
+            column="67"/>
+    </issue>
+
+</issues>

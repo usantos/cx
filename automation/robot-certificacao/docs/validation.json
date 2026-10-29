@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-29",
+  "declaredIds": 1792,
+  "distinctIds": 1791,
+  "preservedLegacyDeclarations": 88,
+  "featurePresentationModules": 14,
+  "androidJvmTests": 2118,
+  "androidFailed": 0,
+  "androidSkipped": 0,
+  "uiAutomatorExportContract": "PASSED",
+  "architecture": "PASSED",
+  "detekt": "PASSED",
+  "lintPrdDebug": "PASSED",
+  "protectedFilesUnchanged": 39,
+  "pythonTests": 28,
+  "idPolicyTests": 6,
+  "robotDryRunCases": 3,
+  "robotDeviceExecution": "NOT_EXECUTED",
+  "deviceExecutionLimitation": "Emulador: INSTALL_FAILED_INSUFFICIENT_STORAGE; Samsung inalterado.",
+  "farmConnection": "NOT_VALIDATED",
+  "rqmIntegration": "LOCAL_ATTACHMENTS_ONLY",
+  "fullPreCommit": "NOT_EXECUTED",
+  "apk": {
+    "variant": "tqsDebug",
+    "sha256": "6fc116b0a3865183e120c7b458d470194c75d7335bbc8e687412496d56e2c791"
+  }
+}

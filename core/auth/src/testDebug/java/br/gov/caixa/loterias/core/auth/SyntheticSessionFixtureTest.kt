@@ -2,6 +2,9 @@ package br.gov.caixa.loterias.core.auth
 
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.fixture.SyntheticSessionFixture
+import br.gov.caixa.loterias.core.auth.session.JwtCurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 
 class SyntheticSessionFixtureTest {
     @Test fun `fixed synthetic fixture seeds only an empty debug session`() {

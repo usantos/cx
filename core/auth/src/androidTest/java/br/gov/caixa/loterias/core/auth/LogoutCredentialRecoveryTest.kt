@@ -10,6 +10,12 @@ import java.util.UUID
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
+import br.gov.caixa.loterias.core.auth.gateway.OidcConfiguration
+import br.gov.caixa.loterias.core.auth.authorization.AuthorizationDeviceInfoProvider
+import br.gov.caixa.loterias.core.auth.authorization.WeakBiometricAvailability
+import br.gov.caixa.loterias.core.auth.authorization.AuthorizationRequestPolicy
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.auth.gateway.AppAuthAuthenticationGateway
 
 @RunWith(AndroidJUnit4::class)
 class LogoutCredentialRecoveryTest {
@@ -49,7 +55,7 @@ class LogoutCredentialRecoveryTest {
         gateway.logout()
         assertNull(tokens.captureIdentity())
         assertNull(tokens.token())
-        gateway.logout() // Local recovery is safe to repeat after the confirmed transaction.
+        gateway.logout() // A recuperação local pode ser repetida com segurança após a confirmação da transação.
         assertNull(tokens.token())
     }
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workflow_betting_aposte">Aposte</string>
+    <string name="workflow_betting_escolha_uma_modalidade_para_criar_sua_aposta">Escolha uma modalidade para criar sua aposta.</string>
+    <string name="workflow_betting_escolher_modalidade">Escolher modalidade</string>
+    <string name="workflow_betting_modalidades">Modalidades</string>
+    <string name="workflow_betting_mega_sena_lotofacil_quina_lotomania_timemania_dupla_sena_dia_de_s">Mega-Sena, Lotofácil, Quina, Lotomania, Timemania, Dupla Sena, Dia de Sorte, Super Sete, +Milionária, Loteca e Federal.</string>
+    <string name="workflow_betting_selecionar">Selecionar</string>
+    <string name="workflow_betting_simular_aposta">Simular aposta</string>
+    <string name="workflow_betting_marque_as_dezenas_use_surpresinha_ou_configure_teimosinha">Marque as dezenas, use Surpresinha ou configure Teimosinha.</string>
+    <string name="workflow_betting_dezenas">Dezenas</string>
+    <string name="workflow_betting_concursos">Concursos</string>
+    <string name="workflow_betting_adicionar_ao_carrinho">Adicionar ao carrinho</string>
+    <string name="workflow_betting_rapidao">Rapidão</string>
+    <string name="workflow_betting_configure_apostas_automaticas_por_modalidade_quantidade_e_valor">Configure apostas automáticas por modalidade, quantidade e valor.</string>
+    <string name="workflow_betting_quantidade_de_apostas">Quantidade de apostas</string>
+    <string name="workflow_betting_valor">Valor</string>
+    <string name="workflow_betting_gerar_apostas">Gerar apostas</string>
+    <string name="workflow_betting_confira_a_lista_de_apostas_geradas">Confira a lista de apostas geradas.</string>
+    <string name="workflow_betting_apostas_favoritas">Apostas favoritas</string>
+    <string name="workflow_betting_reaproveite_jogos_salvos_ou_escolha_favoritos_para_o_rapidao">Reaproveite jogos salvos ou escolha favoritos para o Rapidão.</string>
+    <string name="workflow_betting_apostar_novamente">Apostar novamente</string>
+    <string name="workflow_betting_boloes">Bolões</string>
+    <string name="workflow_betting_encontre_boloes_disponiveis_confira_cotas_e_detalhes_antes_de_com">Encontre bolões disponíveis, confira cotas e detalhes antes de comprar.</string>
+    <string name="workflow_betting_ver_boloes">Ver bolões</string>
+    <string name="workflow_betting_detalhes_do_bolao">Detalhes do bolão</string>
+    <string name="workflow_betting_consulte_concurso_apostas_dezenas_quantidade_de_cotas_e_valor_por">Consulte concurso, apostas, dezenas, quantidade de cotas e valor por cota.</string>
+    <string name="workflow_betting_adicionar_cota">Adicionar cota</string>
+    <string name="workflow_betting_bolao">Bolão</string>
+    <string name="workflow_betting_confira_todas_as_apostas_que_compoem_o_bolao">Confira todas as apostas que compõem o bolão.</string>
+    <string name="workflow_betting_comprar_cota">Comprar cota</string>
+    <string name="workflow_betting_combos">Combos</string>
+    <string name="workflow_betting_confira_combinacoes_prontas_de_apostas">Confira combinações prontas de apostas.</string>
+    <string name="workflow_betting_ver_detalhes">Ver detalhes</string>
+    <string name="workflow_betting_detalhes_do_combo">Detalhes do combo</string>
+    <string name="workflow_betting_revise_as_modalidades_e_apostas_incluidas_neste_combo">Revise as modalidades e apostas incluídas neste combo.</string>
+    <string name="workflow_betting_tutorial">Tutorial</string>
+    <string name="workflow_betting_veja_como_fazer_uma_aposta_na_modalidade_escolhida">Veja como fazer uma aposta na modalidade escolhida.</string>
+    <string name="workflow_betting_entendi">Entendi</string>
+    <string name="workflow_betting_milionaria">+Milionária</string>
+    <string name="workflow_betting_conheca_dezenas_e_trevos_da_milionaria">Conheça dezenas e trevos da +Milionária.</string>
+    <string name="workflow_betting_super_sete">Super Sete</string>
+    <string name="workflow_betting_conheca_as_sete_colunas_da_super_sete">Conheça as sete colunas da Super Sete.</string>
+</resources>

@@ -1,12 +1,16 @@
 package br.gov.caixa.loterias.core.auth
 
-import br.gov.caixa.loterias.core.domain.account.*
+import org.junit.Assert.*
+import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 
 class SessionContentTest {
     @Test fun `notification completion clears only exact owner and object while retaining cart and payment`() = runBlocking {

@@ -1,22 +1,26 @@
 package br.gov.caixa.loterias.core.domain.payment
 
-import br.gov.caixa.loterias.core.common.AppError
-import br.gov.caixa.loterias.core.common.AppResult
+import org.junit.Assert.*
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
 import java.net.URI
 import java.net.URLDecoder
 import java.io.IOException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.payment.domain.model.MercadoPagoRegistration
+import br.gov.caixa.loterias.feature.payment.domain.model.MercadoPagoRegistrationResult
+import br.gov.caixa.loterias.feature.payment.domain.model.MercadoPagoRegistrationToken
+import br.gov.caixa.loterias.feature.payment.domain.usecase.PrepareMercadoPagoRegistration
 
 class MercadoPagoRegistrationTest {
     @Test fun `service decisions pass through without constructing a browser URL or requesting another token`() = runTest {
         val decisions = listOf(
-            br.gov.caixa.loterias.core.domain.service.ServiceFailure.Unchanged,
-            br.gov.caixa.loterias.core.domain.service.ServiceFailure.RedirectRequired(br.gov.caixa.loterias.core.domain.service.ServiceRedirect.LOGIN),
-            br.gov.caixa.loterias.core.domain.service.ServiceFailure.NoticeRequired(br.gov.caixa.loterias.core.domain.service.ServiceNotice(br.gov.caixa.loterias.core.domain.service.ServiceNoticeReason.LOGIN_REQUIRED)),
-            br.gov.caixa.loterias.core.domain.service.ServiceFailure.RegistrationRequired("Confirme novamente"),
+            br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.Unchanged,
+            br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.RedirectRequired(br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect.LOGIN),
+            br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.NoticeRequired(br.gov.caixa.loterias.core.domain.service.model.ServiceNotice(br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason.LOGIN_REQUIRED)),
+            br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.RegistrationRequired("Confirme novamente"),
         )
         for (decision in decisions) {
             var calls = 0

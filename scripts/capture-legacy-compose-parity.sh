@@ -173,9 +173,9 @@ awk -F '\t' 'NR > 1 && $4 == "compose" && $1 ~ /Activity\.java$/ && $3 !~ /#/ {p
       tap_visible_text "$legacy_post_tap_text"
       sleep "$post_tap_settle_seconds"
     fi
-    # Algumas Activities aceitam o Intent e só encerram depois da inicialização
-    # assíncrona. Revalida o foco após o tempo de estabilização para não comparar
-    # a Home do launcher (ou outra tela) como se fosse a referência legada.
+    # Algumas Activities aceitam o Intent e encerram somente após a inicialização
+    # assíncrona. Verifica o foco novamente após estabilizar para evitar comparar
+    # a Home do inicializador ou outra tela como referência original.
     settled_focus="$(adb shell dumpsys window </dev/null | sed -n 's/.*mCurrentFocus=Window{[^ ]* [^ ]* \([^}]*\)}.*/\1/p' | head -1)"
     if [[ "$settled_focus" != *"$target"* ]]; then
       result="redirected-after-settle"
@@ -188,7 +188,7 @@ awk -F '\t' 'NR > 1 && $4 == "compose" && $1 ~ /Activity\.java$/ && $3 !~ /#/ {p
     compose_image="$output_dir/compose/$filename"
     adb exec-out screencap -p </dev/null > "$legacy_image"
 
-    # A referência sem backend pode abrir o alerta global de timeout. Ele não
+    # Uma referência sem servidor pode exibir o alerta global de tempo limite. Ele não
     # representa a tela solicitada e não deve produzir um SSIM enganoso.
     legacy_dump_path="/sdcard/codex-parity-legacy.xml"
     adb shell rm -f "$legacy_dump_path" </dev/null >/dev/null 2>&1 || true
@@ -207,18 +207,18 @@ awk -F '\t' 'NR > 1 && $4 == "compose" && $1 ~ /Activity\.java$/ && $3 !~ /#/ {p
     fi
 
     legacy_luma="$(average_luma_for "$legacy_image")"
-    # Em YUV, preto absoluto é reportado pelo ffmpeg como luma 16 (limited range).
+    # Em YUV, ffmpeg informa preto absoluto como luma 16 (faixa limitada).
     if [[ -z "$legacy_luma" ]] || awk "BEGIN {exit !($legacy_luma <= 16.5)}"; then
       printf '%s\t%s\t%s\tnot-rendered\t\n' "$owner" "$route" "$target" >> "$report"
       continue
     fi
 
-    # Evita que um processo legado lento exiba ANR sobre a rota Compose durante a segunda captura.
+    # Impede que um processo lento da referência exiba um ANR sobre o Compose durante a segunda captura.
     adb shell am force-stop "$legacy_package" </dev/null >/dev/null 2>&1 || true
     compose_route="$(launch_route_for "$route")"
-    # `adb shell` recompõe os argumentos em um comando remoto. Sem escapar `&`,
-    # rotas com query string eram truncadas e os parâmetros seguintes viravam
-    # processos de shell em segundo plano.
+    # `adb shell` recombina argumentos em um comando remoto. Sem escapar `&`,
+    # rotas com parâmetros de consulta eram truncadas e os parâmetros seguintes viravam
+    # processos do shell em segundo plano.
     compose_route_shell="${compose_route//&/\\&}"
     reset_compose_app
     compose_focus=""

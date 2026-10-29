@@ -1,4 +1,15 @@
 apply plugin: 'com.android.library'
+
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
 apply plugin: 'jacoco'
 
 android {
@@ -16,20 +27,25 @@ android {
 }
 
 dependencies {
-    implementation project(':core:domain')
+    implementation libs.androidx.lifecycle.process
+
+    implementation project(':feature:account:domain')
     implementation project(':core:network')
     implementation libs.appauth
     implementation libs.gson
     implementation libs.kotlinx.coroutines.core
     testImplementation libs.junit4
-    androidTestImplementation 'androidx.test:runner:1.6.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation libs.androidx.test.auth.runner
+    androidTestImplementation libs.androidx.test.ext.junit
 }
 
 jacoco { toolVersion = '0.8.13' }
 
-def authCoverageData = fileTree(layout.buildDirectory).include('jacoco/testDebugUnitTest.exec')
-// Gate for token/attempt state, not coverage certification of the Android/AppAuth bridge.
+// O AGP escolhe o destino dos testes unitários; nunca mescle um arquivo exec fixo obsoleto.
+def authCoverageData = files({
+    tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+}).filter { it.isFile() }
+// Verifica o estado de tokens/tentativas, sem certificar a cobertura da integração Android/AppAuth.
 def authCoverageClasses = files(fileTree(
         dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
         includes: ['**/SessionTokenStore*.class', '**/AuthorizationAttempt*.class', '**/PendingAuthorization*.class',

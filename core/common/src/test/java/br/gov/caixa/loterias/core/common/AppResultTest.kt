@@ -8,6 +8,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertThrows
 import org.junit.Test
+import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.common.result.appResultOf
+import br.gov.caixa.loterias.core.common.result.fold
 
 class AppResultTest {
     @Test
@@ -39,13 +45,12 @@ class AppResultTest {
     }
 
     @Test
-    fun `dispatcher holder and mapper expose injected behavior`() {
+    fun `dispatcher holder exposes injected dispatchers`() {
         val dispatchers = FixedCoroutineDispatchers(Dispatchers.Unconfined)
         assertSame(dispatchers.io, dispatchers.computation)
         assertSame(dispatchers.io, dispatchers.main)
         assertSame(Dispatchers.IO, DefaultCoroutineDispatchers.io)
         assertSame(Dispatchers.Default, DefaultCoroutineDispatchers.computation)
         assertSame(Dispatchers.Main, DefaultCoroutineDispatchers.main)
-        assertEquals(4, Mapper<String, Int>(String::length).map("test"))
     }
 }

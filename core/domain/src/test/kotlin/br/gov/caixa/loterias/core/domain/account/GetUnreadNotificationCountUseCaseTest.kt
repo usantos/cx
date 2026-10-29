@@ -1,10 +1,15 @@
 package br.gov.caixa.loterias.core.domain.account
 
+import org.junit.Assert.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import java.io.IOException
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.feature.account.domain.usecase.GetUnreadNotificationCountUseCase
+import br.gov.caixa.loterias.feature.account.domain.repository.UnreadNotificationCountRepository
+import br.gov.caixa.loterias.feature.account.domain.model.UnreadNotificationCountUnavailableException
 
 class GetUnreadNotificationCountUseCaseTest {
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))

@@ -3,6 +3,18 @@ package br.gov.caixa.loterias.core.auth
 import java.util.Base64
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.token.TokenEndpointIdentity
+import br.gov.caixa.loterias.core.auth.gateway.OidcConfiguration
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.auth.biometric.BiometricCredential
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionIdentityMode
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshRequest
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResponse
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshExecutor
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResult
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshCoordinator
+import br.gov.caixa.loterias.core.auth.gateway.biometricRefreshContext
+import br.gov.caixa.loterias.core.auth.gateway.rotatedBiometricCredential
 
 class IdlessBiometricRefreshRotationTest {
     private val issuer = "https://login.example.test/auth/realms/internet"

@@ -3,10 +3,15 @@ package br.gov.caixa.loterias.core.domain.onboarding
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.onboarding.domain.model.BettingTutorial
+import br.gov.caixa.loterias.feature.onboarding.domain.usecase.CompleteIntroduction
+import br.gov.caixa.loterias.feature.onboarding.domain.repository.OnboardingRepository
+import br.gov.caixa.loterias.feature.onboarding.domain.usecase.SetBettingTutorialDismissed
+import br.gov.caixa.loterias.feature.onboarding.domain.usecase.ShouldShowIntroduction
 
 class OnboardingTest {
     @Test
-    fun `introduction is shown until completion is stored`() {
+    fun `introduction is shown until completion is stored`() = kotlinx.coroutines.test.runTest {
         val repository = InMemoryOnboardingRepository()
         val shouldShow = ShouldShowIntroduction(repository)
         val complete = CompleteIntroduction(repository)
@@ -23,14 +28,14 @@ class OnboardingTest {
         private var completed = false
         var dismissed = false
 
-        override fun isIntroductionCompleted() = completed
-        override fun isTutorialDismissed(tutorial: BettingTutorial) = dismissed && tutorial == BettingTutorial.SUPER_SETE
+        override suspend fun isIntroductionCompleted() = completed
+        override suspend fun isTutorialDismissed(tutorial: BettingTutorial) = dismissed && tutorial == BettingTutorial.SUPER_SETE
 
-        override fun completeIntroduction() {
+        override suspend fun completeIntroduction() {
             completed = true
         }
 
-        override fun setTutorialDismissed(tutorial: BettingTutorial, dismissed: Boolean) {
+        override suspend fun setTutorialDismissed(tutorial: BettingTutorial, dismissed: Boolean) {
             this.dismissed = dismissed && tutorial == BettingTutorial.SUPER_SETE
         }
     }

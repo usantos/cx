@@ -1,0 +1,19 @@
+{
+  "edition": "2026-10-27",
+  "scope": "redux-all-14-features-presentation-core-app",
+  "passed": true,
+  "stages": {
+    "Detekt": "PASSED",
+    "Android Lint": "PASSED",
+    "Architecture Gates": "PASSED",
+    "Scoped Unit Tests": "2145 PASSED",
+    "Python Policy": "173 + 11 PASSED",
+    "Changed Kotlin Formatting": "PASSED",
+    "Retail AndroidTest Compile": "PASSED",
+    "Samsung": "26 passed / 0 failed / 0 skipped",
+    "Global Ktlint": "NOT RERUN (prior FAILED)",
+    "Coverage": "NOT RUN",
+    "Release/R8": "NOT RUN",
+    "Existing Architecture Debt": "2 P2 OPEN"
+  }
+}

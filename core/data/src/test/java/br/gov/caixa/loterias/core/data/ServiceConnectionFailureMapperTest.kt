@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.core.data
 
-import br.gov.caixa.loterias.core.domain.service.ServiceConnectionFailure
+import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -9,6 +9,7 @@ import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLPeerUnverifiedException
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.data.mapper.toServiceConnectionFailure
 
 class ServiceConnectionFailureMapperTest {
     @Test fun `timeouts remain distinguishable from connection and TLS failures without exposing causes`() {

@@ -1,0 +1,17 @@
+{
+  "Status": "DOCUMENTAÇÃO CONSOLIDADA; PRE-COMMIT INSTALADO E BLOQUEANTE; KTLINT GLOBAL REPROVADO",
+  "Edição": "28/10/2026 — America/Sao_Paulo",
+  "Arquitetura": "App/Core/14 features; 68 módulos + 17 agrupadores; 46 ViewModels, 45 bindings Redux e 72 arquivos de reducers. Dez grupos de achados descritos em FULL_AUDIT_20261028.md.",
+  "Testes unitários": "3.510 aprovados, zero falhas/erros/ignorados em uma execução fresca de allUnitTests selecionada por preCommitCheck; 68 módulos, incluindo NO-SOURCE discriminados no JSON. Evidência: pre-commit-20261028/full-gate.log.",
+  "Cobertura": "JaCoCo LINE 95.11% (54340/57135 linhas), estritamente maior que 95%; sem alterar exclusões ou limiar.",
+  "Android instrumentado": "Não executado nesta auditoria. Novos cenários Compose de retry/navegação foram executados em JVM/Robolectric.",
+  "Samsung": "Nenhuma instalação ou validação física nova nesta auditoria; histórico de 27/10 preservado em verification-samsung-20261027.json.",
+  "TalkBack": "Sem nova homologação humana nesta rodada. Confirmações e pendências históricas mantêm suas datas.",
+  "Qualidade": "Na execução completa preCommitCheck, Detekt, Android Lint, arquitetura/Compose/CaixaDS/contratos e APK PRD Debug passaram. Ferramentas Python: 190; hook: 21; contratos XML: 33. Código final 1 exclusivamente por Ktlint global: 6.897 ocorrências em 363 arquivos.",
+  "Proteções": "37 configurações/baselines e dois headers com SHA-256 inalterado. Sem ampliar baseline, supressão, exclusão de código ou reduzir cobertura.",
+  "Rastreabilidade": "4467 arquivos de fontes/build; SHA-256 84a910797a66e91d967c0e8ab4ba3621cf9a6530f1530a91477d93685aaa9f52. APK da última execução b8fe7aae43dc59bc18889f2de840b3c459dbbb5bac15442753b8dc5f2086c645, sem instalação física nesta atualização.",
+  "Limites": "Ktlint global conserva dívida preexistente, inclusive 26 ocorrências no header CurrentCartScaffold protegido. Lint usa os baselines históricos intactos. Gates lexicais complementam revisão manual e testes; release/R8, CI remoto, backend real e validação física não executados.",
+  "Histórico": "verification-samsung-20261027.json e quality-samsung-20261027.json preservam a rodada Samsung; coverage-summary-20261022.json e unit-tests-by-module-before-architecture-20261028.json preservam os resultados anteriores. Não foram somados como testes novos. A captura anterior da auditoria foi preservada nos manifestos *-architecture-20261028.json; o pre-commit atual tem manifesto próprio pre-commit-summary.json.",
+  "Pre-commit": "Instalado neste checkout. Runner fixo e mesmo comando no CI; falhas e divergências do workspace/index bloqueiam o commit. As fixtures XML usam cópias temporárias. Instalação em clones novos é explícita. A execução local registrada levou 47min33s; CI remoto/proteção da branch não foram alterados ou homologados.",
+  "Atualização documental": "Números transcritos da última execução completa, sem nova execução de Gradle/testes nesta atualização. Inventário API e PDF são regenerados a partir dos fontes atuais."
+}

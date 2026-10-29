@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.core.auth
 import java.util.Base64
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 
 class ForegroundNoticeRestorationTest {
     @Test fun savedUiMarkerRestoresTheSameExpiredSnapshotWithoutClearingUntilAccept() {

@@ -1,0 +1,34 @@
+<resources>
+    <string name="betting_recovery_write_failed">Não foi possível preservar sua aposta. Tente novamente.</string>
+    <string name="betting_recovery_reconcile_required">Confira seu carrinho antes de iniciar outra solicitação.</string>
+    <string name="betting_recovery_rules_unavailable">Não foi possível atualizar as regras da aposta.</string>
+    <string name="betting_recovery_contest_changed">O concurso do rascunho foi encerrado ou alterado. Sua seleção foi preservada para conferência.</string>
+    <string name="betting_recovery_read_failed">Não foi possível recuperar sua aposta. O rascunho foi preservado.</string>
+    <string name="betting_recovery_intent_failed">Não foi possível registrar a solicitação. Confira seu carrinho antes de continuar.</string>
+    <string name="betting_recovery_review_title">Rascunho preservado para conferência</string>
+    <string name="betting_recovery_review_contest">Modalidade %1$d · Concurso %2$d (%3$s)</string>
+    <string name="betting_recovery_review_mode">Modo %1$s · Etapa %2$s</string>
+    <string name="betting_recovery_review_numbers">Números: %1$s</string>
+    <string name="betting_recovery_review_clovers">Trevos: %1$s</string>
+    <string name="betting_recovery_review_team">Time: %1$d</string>
+    <string name="betting_recovery_review_month">Mês: %1$d</string>
+    <string name="betting_recovery_review_loteca">Jogo %1$d: %2$s</string>
+    <string name="betting_recovery_review_lotogol">Jogo %1$d: %2$s × %3$s</string>
+    <string name="betting_recovery_review_column">Coluna %1$d: %2$s</string>
+    <string name="betting_recovery_review_quantities">Quantidade de números: %1$d · Apostas: %2$d · Teimosinha: %3$d</string>
+    <string name="betting_recovery_review_mirror">Espelho: %1$s</string>
+    <string name="betting_recovery_mode_manual">Manual</string>
+    <string name="betting_recovery_mode_surprise">Surpresinha</string>
+    <string name="betting_recovery_step_numbers">Números</string>
+    <string name="betting_recovery_step_complement">Complemento</string>
+    <string name="betting_recovery_home">Mandante</string>
+    <string name="betting_recovery_draw">Empate</string>
+    <string name="betting_recovery_away">Visitante</string>
+    <string name="betting_recovery_yes">Sim</string>
+    <string name="betting_recovery_no">Não</string>
+    <string name="betting_recovery_review_favorite">Favorito: %1$s</string>
+    <string name="betting_recovery_review_clover_quantities">Trevos manuais: %1$d · Trevos na Surpresinha: %2$d</string>
+    <string name="betting_recovery_contest_normal">Normal</string>
+    <string name="betting_recovery_contest_special">Especial</string>
+    <string name="betting_recovery_retry">Tentar novamente</string>
+</resources>

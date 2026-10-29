@@ -1,0 +1,38 @@
+{
+  "kind": "full",
+  "passed": false,
+  "stages": {
+    "Ktlint": "FAILED",
+    "Detekt": "PASSED",
+    "Android Lint": "PASSED",
+    "Unit Tests": "PASSED",
+    "Coverage": "PASSED",
+    "JaCoCo Line Coverage": "95.11%",
+    "Architecture / Compose / CaixaDS / platform contracts": "PASSED in pre-commit-20261028/full-gate.log",
+    "PRD Debug APK": "ASSEMBLED; NOT INSTALLED IN THIS VALIDATION",
+    "Python regression tests": "190 PASSED",
+    "Platform XML policy fixtures": "33 PASSED; isolated copies, original sources unchanged",
+    "Changed Kotlin formatting": "117 files, zero violations in global report",
+    "Protected configurations and headers": "37 + 2 unchanged",
+    "Device / release / remote CI": "NOT_RUN",
+    "Git hook regression tests": "21 PASSED",
+    "Kotlin whitespace": "2600 files, zero violations",
+    "Local hook installation": "INSTALLED; actual pending-staging attempt blocked",
+    "Remote CI / branch protection": "Workflow updated locally; remote execution/protection not verified"
+  },
+  "edition": "2026-10-28",
+  "scope": "complete-pre-commit-validation",
+  "state": "COMMIT_BLOCKED_GLOBAL_KTLINT_DEBT",
+  "evidenceRoot": "build/verification/pre-commit-20261028",
+  "globalKtlint": {
+    "errors": 6897,
+    "files": 363,
+    "baselineErrors": 7017,
+    "baselineFiles": 368,
+    "protectedHeaderErrors": 26
+  },
+  "fullGateExitCode": 1,
+  "failedTasks": [
+    ":ktlintCheck"
+  ]
+}

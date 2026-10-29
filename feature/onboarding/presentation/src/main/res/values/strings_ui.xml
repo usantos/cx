@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_acessar_o_aplicativo_58076a" formatted="false">"Acessar o aplicativo"</string>
+    <string name="ui_apostar_e_para_maiores_de_18_anos_83aea7" formatted="false">"Apostar é para maiores de 18 anos"</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_chegou_a_milionaria_29108e" formatted="false">"Chegou a +milionária"</string>
+    <string name="ui_comecar_tutorial_2e42d1" formatted="false">"Começar\ntutorial"</string>
+    <string name="ui_conheca_o_novo_jogo_milionaria_vamos_9ca438" formatted="false">"Conheça o novo jogo +milionária.\nVamos explicar como funciona\nnessa nova modalidade."</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_logo_loterias_caixa_0ec4dc" formatted="false">"Logo Loterias CAIXA"</string>
+    <string name="ui_nao_9bc947" formatted="false">"Não"</string>
+    <string name="ui_nao_mostrar_mais_esse_tutorial_ae03a7" formatted="false">"Não mostrar mais esse tutorial"</string>
+    <string name="ui_o_uso_do_aplicativo_e_restrito_a_mai_6418db" formatted="false">"O uso do aplicativo é restrito a maiores de "</string>
+    <string name="ui_pagina_1_s_de_2_s_ecbc1a">"Página %1$s de %2$s"</string>
+    <string name="ui_pular_apresentacao_1e552b" formatted="false">"Pular\napresentação"</string>
+    <string name="ui_pular_introducao_24a12b" formatted="false">"Pular introdução"</string>
+    <string name="ui_rota_inicial_sem_layout_compose_1_s_6572cd">"Rota inicial sem layout Compose: %1$s"</string>
+    <string name="ui_saiba_mais_sobre_o_jogo_responsavel_696ab2" formatted="false">"Saiba mais sobre o Jogo Responsável."</string>
+    <string name="ui_sim_931345" formatted="false">"Sim"</string>
+    <string name="ui_unknown_startup_status_route_1_s_3643a7">"Unknown startup status route: %1$s"</string>
+    <string name="ui_voce_tem_mais_de_18_anos_215df2" formatted="false">"Você tem mais de 18 anos?"</string>
+    <string name="intro_illustration_phone">Celular</string>
+    <string name="intro_illustration_star">Estrela</string>
+    <string name="intro_illustration_search">Lista com lupa</string>
+</resources>

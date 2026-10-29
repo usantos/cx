@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="format_rapid_no_numbers">"0 números"</string>
+    <string name="format_clover_description">"Trevo %1$d"</string>
+    <plurals name="format_rapid_draw_quantity">
+        <item quantity="one">"%1$d sorteio"</item>
+        <item quantity="other">"%1$d sorteios"</item>
+    </plurals>
+    <plurals name="format_rapid_number_quantity">
+        <item quantity="one">"%1$d número"</item>
+        <item quantity="other">"%1$d números"</item>
+    </plurals>
+    <string name="format_step_description">"Etapa %1$d de %2$d"</string>
+</resources>

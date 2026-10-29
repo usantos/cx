@@ -4,6 +4,8 @@ import com.google.gson.JsonParser
 import java.util.Base64
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.token.TokenEndpointIdentity
+import br.gov.caixa.loterias.core.auth.gateway.OidcConfiguration
 
 class TokenEndpointIdentityTest {
     private val reader = TokenEndpointIdentity { Base64.getUrlDecoder().decode(it) }
@@ -34,7 +36,7 @@ class TokenEndpointIdentityTest {
         val invalid = listOf("iss" to "https://other.test", "iss" to "$issuer/", "sub" to "", "sub" to " ",
             "sub" to "a".repeat(256), "sub" to "ç", "aud" to "other", "nonce" to "other", "azp" to "other")
         invalid.forEach { (field, value) -> reject(token(claims().apply { addProperty(field, value) }.toString())) }
-        // Keep the invalid surrogate as a JSON escape, not a replacement '?' from UTF-8 encoding.
+        // Mantém o substituto inválido como escape JSON, sem convertê-lo em '?' pela codificação UTF-8.
         reject(token(claims().toString().replace("\"subject\"", "\"\\ud800\"")))
         for (field in listOf("iss", "sub", "aud", "nonce", "iat", "exp")) {
             reject(token(claims().apply { remove(field) }.toString()))

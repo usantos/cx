@@ -1,10 +1,14 @@
 # Estado da migração para Compose
 
-> Atualização de 13/10/2026: o fechamento técnico e as correções posteriores estão em [COMPOSE_CLOSURE_20261013.md](COMPOSE_CLOSURE_20261013.md). Os resultados abaixo preservam o escopo histórico de cada rodada; a homologação real/visual continua distinguida da conversão de código.
+Atualização visual de 15/10: tutorial de Bolão conferido com captura nativa, insets das ações/seletores de modalidades restaurados e largura dos modais flutuantes centralizada no DS. Evidências e limites: [relatório](VISUAL_ADJUSTMENTS_TUTORIAL_MODALITIES_MODALS_20261015.md).
+
+> Atualização pareada de 15/10/2026: [Bolão e Filtros frente ao CX](MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md). São 20 pares no mesmo AVD/dados, com Outubro Rosa ligada/desligada, e correções centralizadas no DS. `modernCheck releaseCheck` passou na árvore integrada: 1.699 testes JVM, 146 testes Android nos escopos executados e três Releases minificados. O bloqueio de captura das Activities internas foi resolvido pelo runner de instrumentação. A equivalência global de 100% continua pendente nos fluxos e casos históricos indicados abaixo.
+
+> Atualização de 14/10/2026: [consolidação do CaixaDS, gates e validação integrada](DS_CONSOLIDATION_20261014.md). `modernCheck` e `releaseCheck` passaram na árvore integrada; a validação Android adicional mantém dois testes raster preexistentes pendentes. O fechamento anterior está em [COMPOSE_CLOSURE_20261013.md](COMPOSE_CLOSURE_20261013.md). Os registros datados abaixo são históricos.
 
 ## Leitura correta do status
 
-O corte técnico para Compose está ativo, mas a equivalência integral com o legado ainda não está homologada. Há 78/78 destinos renderizando no smoke mock, zero layout XML e zero Fragment, porém isso não prova igualdade pixel a pixel nem cobre sozinho todas as combinações de respostas, permissões e regras. As afirmações abaixo descrevem implementações já presentes; a validação comparativa tela/estado continua sendo acompanhada em `VISUAL_PARITY_MATRIX.md`.
+O corte técnico para Compose está ativo, com 80 destinos no catálogo, sem layouts XML de tela ou Fragments em produção. A equivalência integral com o legado ainda não está homologada: há dois casos raster a reconciliar, composição específica de tela inventariada e estados privados/transacionais sem comparação pareada. As evidências atuais e os limites do smoke estão em `DS_CONSOLIDATION_20261014.md`; a matriz abaixo preserva o histórico de cada rodada.
 
 ## Aplicativo ativo
 

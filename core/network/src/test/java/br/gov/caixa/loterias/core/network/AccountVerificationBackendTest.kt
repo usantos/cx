@@ -1,7 +1,9 @@
 package br.gov.caixa.loterias.core.network
 
-import br.gov.caixa.loterias.core.keymanagement.HostPublicKeyPins
-import br.gov.caixa.loterias.core.keymanagement.PublicKeySet
+import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
+
+import br.gov.caixa.loterias.core.keymanagement.model.HostPublicKeyPins
+import br.gov.caixa.loterias.core.keymanagement.model.PublicKeySet
 import com.google.gson.Gson
 import java.io.IOException
 import kotlinx.coroutines.CancellationException
@@ -18,8 +20,22 @@ import retrofit2.Response
 import okio.Buffer
 import okio.ForwardingSource
 import okio.buffer
+import br.gov.caixa.loterias.core.network.interceptor.BearerTokenInterceptor
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.interceptor.SingleAttemptTransactionInterceptor
+import br.gov.caixa.loterias.core.network.interceptor.NetworkLogSink
+import br.gov.caixa.loterias.core.network.interceptor.NetworkDebugOptions
+import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionInterceptor
+import br.gov.caixa.loterias.core.network.api.AccountVerificationHttpException
+import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendApi
+import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendClient
+import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendProvider
+import br.gov.caixa.loterias.core.network.interceptor.PinnedHostInterceptor
 
-/** In-process responses only: no user's bets, real credentials or backend writes. */
+/** Somente respostas no processo: sem apostas de usuários, credenciais reais ou gravações no backend. */
 class AccountVerificationBackendTest {
     @Test fun `200 preserves business metadata without treating error or redirect as cart acceptance`() = runTest {
         val result = client(Response.success(envelope.toResponseBody(json))).verify(request, active())

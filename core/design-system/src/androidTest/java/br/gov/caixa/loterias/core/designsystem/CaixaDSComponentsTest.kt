@@ -3,6 +3,16 @@ package br.gov.caixa.loterias.core.designsystem
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.click
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.Text
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
@@ -22,6 +32,13 @@ import androidx.compose.ui.unit.dp
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoading
+import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSLightColors
+import br.gov.caixa.loterias.core.designsystem.components.CaixaDSButtonVariant
+import br.gov.caixa.loterias.core.designsystem.components.CaixaDSButton
+import br.gov.caixa.loterias.core.designsystem.components.CaixaDSNumberBall
+import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.CaixaDSContentState
 
 class CaixaDSComponentsTest {
     @get:Rule
@@ -38,6 +55,51 @@ class CaixaDSComponentsTest {
 
         composeRule.onNodeWithTag("button").assertIsEnabled().performClick()
         assertEquals(1, clicks)
+    }
+
+    @Test
+    fun allButtonVariantsPreserveHeightAndSuppressDisabledOrLoadingClicks() {
+        val enabled = mutableStateOf(true)
+        val loading = mutableStateOf(false)
+        val clicks = mutableListOf<CaixaDSButtonVariant>()
+        composeRule.setContent {
+            CaixaDSTheme(darkTheme = false) {
+                Column {
+                    CaixaDSButtonVariant.entries.forEach { variant ->
+                        CaixaDSButton(variant.name, { clicks.add(variant) },
+                            Modifier.testTag(variant.name), enabled = enabled.value,
+                            loading = loading.value, variant = variant)
+                    }
+                }
+            }
+        }
+        listOf(CaixaDSButtonVariant.Primary to CaixaDSLightColors.brand,
+            CaixaDSButtonVariant.Danger to CaixaDSLightColors.error).forEach { (variant, expected) ->
+            val pixels = composeRule.onNodeWithTag(variant.name).captureToImage().toPixelMap()
+            val actual = pixels[pixels.width / 4, pixels.height / 4]
+            assertEquals(expected.red, actual.red, 1f / 255)
+            assertEquals(expected.green, actual.green, 1f / 255)
+            assertEquals(expected.blue, actual.blue, 1f / 255)
+        }
+        CaixaDSButtonVariant.entries.forEach { variant ->
+            val button = composeRule.onNodeWithTag(variant.name)
+            button.assertIsEnabled().performClick()
+            assertEquals(with(composeRule.density) { 48.dp.toPx() },
+                button.fetchSemanticsNode().boundsInRoot.height, 1f)
+        }
+        composeRule.runOnIdle { assertEquals(CaixaDSButtonVariant.entries.toList(), clicks) }
+        composeRule.runOnIdle { enabled.value = false }
+        CaixaDSButtonVariant.entries.forEach { variant ->
+            composeRule.onNodeWithTag(variant.name).assertIsNotEnabled().performTouchInput { click() }
+        }
+        composeRule.runOnIdle { enabled.value = true; loading.value = true }
+        CaixaDSButtonVariant.entries.forEach { variant ->
+            composeRule.onNodeWithTag(variant.name).assertIsNotEnabled().performTouchInput { click() }
+            composeRule.onNodeWithText(variant.name).assertDoesNotExist()
+        }
+        composeRule.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.ProgressBarRangeInfo))
+            .assertCountEquals(4)
+        composeRule.runOnIdle { assertEquals(CaixaDSButtonVariant.entries.toList(), clicks) }
     }
 
     @Test
@@ -82,14 +144,49 @@ class CaixaDSComponentsTest {
         composeRule.mainClock.advanceTimeBy(800)
         assertLoadingCorner(Color.White)
         composeRule.runOnIdle { loading.value = true }
+        // Confirma a composição que retorna antes de medir seu novo atraso de esmaecimento.
+        composeRule.mainClock.advanceTimeByFrame()
+        composeRule.waitForIdle()
         composeRule.mainClock.advanceTimeBy(300)
         assertLoadingCorner(Color.White)
         composeRule.mainClock.advanceTimeBy(500)
         assertLoadingCorner(Color(0xE6005EAB).compositeOver(Color.White))
     }
 
+    @Test
+    fun contentState_prioritizesLoadingThenErrorAndRetriesBeforeShowingContent() {
+        val loading = mutableStateOf(true)
+        val error = mutableStateOf<String?>("Falha ao carregar")
+        var retries = 0
+        composeRule.setContent {
+            CaixaDSTheme {
+                CaixaDSContentState(loading.value, error.value, PaddingValues(8.dp), { retries++ }) {
+                    Text("Conteúdo carregado")
+                }
+            }
+        }
+        val progress = SemanticsMatcher.keyIsDefined(SemanticsProperties.ProgressBarRangeInfo)
+        composeRule.onNode(progress).assertIsDisplayed()
+        composeRule.onNodeWithText("Falha ao carregar").assertDoesNotExist()
+        composeRule.onNodeWithText("Tentar novamente").assertDoesNotExist()
+        composeRule.onNodeWithText("Conteúdo carregado").assertDoesNotExist()
+
+        composeRule.runOnIdle { loading.value = false }
+        composeRule.onNode(progress).assertDoesNotExist()
+        composeRule.onNodeWithText("Falha ao carregar").assertIsDisplayed()
+        composeRule.onNodeWithText("Conteúdo carregado").assertDoesNotExist()
+        composeRule.onNodeWithText("Tentar novamente").performClick()
+        composeRule.runOnIdle { assertEquals(1, retries) }
+
+        composeRule.runOnIdle { error.value = null }
+        composeRule.onNodeWithText("Conteúdo carregado").assertIsDisplayed()
+        composeRule.onNodeWithText("Falha ao carregar").assertDoesNotExist()
+        composeRule.onNodeWithText("Tentar novamente").assertDoesNotExist()
+        composeRule.onNode(progress).assertDoesNotExist()
+    }
+
     private fun assertLoadingCorner(expected: Color) {
-        // Away from the centered icon/text: detects a background drawn outside the alpha layer.
+        // Longe do ícone/texto centralizado: detecta um fundo desenhado fora da camada alfa.
         val actual = composeRule.onNodeWithTag("loading-host").captureToImage().toPixelMap()[1, 1]
         assertEquals(expected.red, actual.red, 1f / 255)
         assertEquals(expected.green, actual.green, 1f / 255)

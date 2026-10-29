@@ -13,6 +13,10 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.core.network.interceptor.MockBackendInterceptor
+import br.gov.caixa.loterias.core.network.mock.fixture.MockBackendFixtures
 
 class MockBackendInterceptorTest {
     @Test

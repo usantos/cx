@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="social_transfers_bet_action">Aposte e ajude ainda mais</string>
+    <string name="assessment_logo_description">Loterias CAIXA</string>
+    <string name="assessment_welcome">Bem-vindo ao processo de\nautoavaliação Loterias CAIXA!</string>
+    <string name="assessment_introduction">A partir de agora, uma vez por ano, será necessário que você responda poucas e rápidas perguntas para que possamos entender seu perfil e orientá-lo sobre como evitar ou tratar, se for o caso, o desenvolvimento do transtorno do jogo compulsivo.</string>
+    <string name="assessment_start">Seguir para autoavaliação</string>
+    <string name="assessment_close">Fechar</string>
+</resources>

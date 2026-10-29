@@ -1,5 +1,10 @@
 package br.gov.caixa.loterias.apostas
 
+import br.gov.caixa.loterias.core.navigation.state.authenticatedContinuation
+import br.gov.caixa.loterias.core.navigation.state.loggedContinuation
+import br.gov.caixa.loterias.core.navigation.state.restoredLoggedRoute
+import br.gov.caixa.loterias.core.navigation.state.shouldUseLoggedVisualFixture
+import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -28,8 +33,12 @@ class LoggedContinuationTest {
     }
     @Test fun `fresh cart and visitor entry are not bound to an earlier prize owner`() {
         assertEquals("cart/current", authenticatedContinuation("cart/current", "owner-a", "owner-b"))
-        assertEquals("home/combo", authenticatedContinuation("home/combo", null, "owner-b"))
+        assertEquals("home/pool/2/NORMAL", authenticatedContinuation("home/pool/2/NORMAL", null, "owner-b"))
         assertNull(authenticatedContinuation(null, "owner-a", "owner-b"))
+    }
+
+    @Test fun `combo login returns to home without opening the combo catalog automatically`() {
+        assertNull(authenticatedContinuation("home/combo", null, "owner-b"))
     }
 
 }

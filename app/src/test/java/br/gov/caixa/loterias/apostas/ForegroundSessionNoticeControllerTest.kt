@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.core.auth.SessionTokenStore
+import br.gov.caixa.loterias.core.auth.foreground.ForegroundSessionNoticeController
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 import java.util.Base64
 import org.junit.Assert.*
 import org.junit.Test

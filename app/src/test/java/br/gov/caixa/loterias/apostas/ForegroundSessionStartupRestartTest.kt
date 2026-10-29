@@ -2,7 +2,10 @@ package br.gov.caixa.loterias.apostas
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import br.gov.caixa.loterias.core.auth.SessionTokenStore
+import br.gov.caixa.loterias.core.auth.foreground.ForegroundSessionLifecycleObserver
+import br.gov.caixa.loterias.core.auth.foreground.ForegroundSessionNoticeController
+import br.gov.caixa.loterias.apostas.runtime.session.ForegroundSessionStartupRestarter
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 import java.util.Base64
 import org.junit.Assert.*
 import org.junit.Test
@@ -29,19 +32,19 @@ class ForegroundSessionStartupRestartTest {
         assertNull(notices.restore(marker))
     }
 
-    @Test fun missingSessionOnEligibleForegroundRestartsStartupWithoutAnExpiryDialog() {
+    @Test fun visitorReturningToEligibleRouteDoesNotRestartBeforeUsingAProtectedFeature() {
         val store = SessionTokenStore()
         val operations = mutableListOf<String>()
         val restart = ForegroundSessionStartupRestarter({ operations += "startup" }, { operations += "finish" })
         val observer = ForegroundSessionLifecycleObserver(store, { "home" }, { 100 }, restart::restart,
-            { error("Missing session must not ask for expiry acknowledgment") })
+            { error("Missing session must not ask for expiry acknowledgment") }, routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible)
         observer.onResume(owner)
         assertTrue(operations.isEmpty())
         observer.onStop(owner)
         observer.onResume(owner)
-        assertEquals(listOf("startup", "finish"), operations)
+        assertTrue("A visitor may browse until an action requires authentication", operations.isEmpty())
         observer.onResume(owner)
-        assertEquals("One restart per consumed process background", 2, operations.size)
+        assertTrue(operations.isEmpty())
     }
 
     @Test fun staleExpiryAcknowledgmentCannotRestartOrFinishReplacementSession() {

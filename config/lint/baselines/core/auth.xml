@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.1)" variant="all" version="9.2.1">
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 29 (current min is 23): `android.hardware.biometrics.BiometricManager#BIOMETRIC_SUCCESS`"
+        errorLine1="    status == android.hardware.biometrics.BiometricManager.BIOMETRIC_SUCCESS ||"
+        errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/gateway/BiometricAuthenticationGateway.kt"
+            line="37"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 29 (current min is 23): `android.hardware.biometrics.BiometricManager#BIOMETRIC_ERROR_NONE_ENROLLED`"
+        errorLine1="        status == android.hardware.biometrics.BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/gateway/BiometricAuthenticationGateway.kt"
+            line="38"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 30 (current min is 23): `android.provider.Settings#ACTION_BIOMETRIC_ENROLL`"
+        errorLine1="        startActivity(Intent(android.provider.Settings.ACTION_BIOMETRIC_ENROLL).putExtra("
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/gateway/BiometricAuthenticationGateway.kt"
+            line="43"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 30 (current min is 23): `android.provider.Settings#EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED`"
+        errorLine1="            android.provider.Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/gateway/BiometricAuthenticationGateway.kt"
+            line="44"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 30 (current min is 23): `android.hardware.biometrics.BiometricManager.Authenticators#BIOMETRIC_WEAK`"
+        errorLine1="            android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_WEAK or"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/gateway/BiometricAuthenticationGateway.kt"
+            line="45"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 30 (current min is 23): `android.hardware.biometrics.BiometricManager.Authenticators#DEVICE_CREDENTIAL`"
+        errorLine1="                android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL))"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/gateway/BiometricAuthenticationGateway.kt"
+            line="46"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                val exchange = TokenRequest.Builder(AuthorizationServiceConfiguration(Uri.parse(configuration.authorizationEndpoint),"
+        errorLine2="                                                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthBiometricAuthorization.kt"
+            line="61"
+            column="87"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                    Uri.parse(configuration.tokenEndpoint)), configuration.clientId)"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthBiometricAuthorization.kt"
+            line="62"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                    Uri.parse(configuration.authorizationEndpoint),"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthBrowserAuthorization.kt"
+            line="30"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                    Uri.parse(configuration.tokenEndpoint),"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthBrowserAuthorization.kt"
+            line="31"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                Uri.parse(configuration.redirectUri),"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthBrowserAuthorization.kt"
+            line="35"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="            val endpoint = Uri.parse(configuration.endSessionEndpoint)"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthEndSession.kt"
+            line="37"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                Uri.parse(configuration.authorizationEndpoint), Uri.parse(configuration.tokenEndpoint), null, endpoint,"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthEndSession.kt"
+            line="41"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                Uri.parse(configuration.authorizationEndpoint), Uri.parse(configuration.tokenEndpoint), null, endpoint,"
+        errorLine2="                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthEndSession.kt"
+            line="41"
+            column="65"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                .setPostLogoutRedirectUri(Uri.parse(configuration.postLogoutRedirectUri))"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthEndSession.kt"
+            line="45"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="            val exchange = TokenRequest.Builder(AuthorizationServiceConfiguration(Uri.parse(configuration.authorizationEndpoint),"
+        errorLine2="                                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthRefresh.kt"
+            line="23"
+            column="83"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                Uri.parse(configuration.tokenEndpoint)), configuration.clientId)"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/appauth/AppAuthRefresh.kt"
+            line="24"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        val editor = preferences.edit().putBoolean(&quot;enabled&quot;, enabled)"
+        errorLine2="                     ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/biometric/EncryptedBiometricCredentialStore.kt"
+            line="28"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        check(preferences.edit().putString(&quot;credential&quot;, envelope.toString()).commit()) { &quot;Não foi possível salvar a biometria&quot; }"
+        errorLine2="              ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/biometric/EncryptedBiometricCredentialStore.kt"
+            line="59"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        check(preferences.edit().remove(&quot;credential&quot;).commit()) { &quot;Não foi possível encerrar a biometria&quot; }"
+        errorLine2="              ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/core/auth/biometric/EncryptedBiometricCredentialStore.kt"
+            line="62"
+            column="15"/>
+    </issue>
+
+</issues>

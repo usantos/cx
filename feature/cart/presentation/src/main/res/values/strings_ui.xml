@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_02d_02d_9c3cfc" formatted="false">"%02d/%02d"</string>
+    <string name="ui_1_s_d020a2">"%1$s"</string>
+    <string name="ui_a_s_cota_s_expirada_s_foram_excluida_410ba9" formatted="false">"A(s) cota(s) expirada(s) foram excluídas do seu carrinho."</string>
+    <string name="ui_adicionar_nova_aposta_d81512" formatted="false">"Adicionar nova aposta"</string>
+    <string name="ui_ajuda_fe0add" formatted="false">"Ajuda"</string>
+    <string name="ui_aposta_incluida_115885" formatted="false">"aposta incluída"</string>
+    <string name="ui_aposta_inserida_no_carrinho_com_suce_bcb0ad" formatted="false">"Aposta inserida no\ncarrinho com sucesso."</string>
+    <string name="ui_apostas_do_carrinho_favorito_escolhi_e1e1bf" formatted="false">"Apostas do carrinho favorito escolhido"</string>
+    <string name="ui_apostas_incluidas_cb7197" formatted="false">"apostas incluídas"</string>
+    <string name="ui_apostas_locais_preservadas_070a46" formatted="false">"Apostas locais preservadas"</string>
+    <string name="ui_apostas_preservadas_39e62c" formatted="false">"Apostas preservadas"</string>
+    <string name="ui_aqui_estao_todos_os_seus_carrinhos_f_b20b4b" formatted="false">"Aqui estão todos os seus carrinhos favoritos."</string>
+    <string name="ui_as_apostas_preservadas_foram_excluid_558d60" formatted="false">"As apostas preservadas foram excluídas. O carrinho da conta foi mantido."</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_atualizar_consulta_996a29" formatted="false">"Atualizar consulta"</string>
+    <string name="ui_bolao_1_s_d4b106">"Bolão %1$s"</string>
+    <string name="ui_bolao_6bdc7b" formatted="false">"bolão"</string>
+    <string name="ui_bolao_inserido_no_carrinho_com_suces_0423e6" formatted="false">"Bolão inserido no\ncarrinho com sucesso."</string>
+    <string name="ui_carrinho_61cc7d" formatted="false">"Carrinho"</string>
+    <string name="ui_carrinho_da_conta_2b6e20" formatted="false">"Carrinho da conta"</string>
+    <string name="ui_carrinho_de_apostas_23d953" formatted="false">"Carrinho de apostas"</string>
+    <string name="ui_carrinho_de_apostas_9fc087" formatted="false">"Carrinho\nde apostas"</string>
+    <string name="ui_carrinho_favorito_fc14c7" formatted="false">"Carrinho Favorito"</string>
+    <string name="ui_carrinho_salvo_nos_favoritos_349648" formatted="false">"Carrinho salvo nos favoritos."</string>
+    <string name="ui_carrinhos_favoritos_0efd75" formatted="false">"Carrinhos Favoritos"</string>
+    <string name="ui_combo_inserido_no_carrinho_com_suces_1198f8" formatted="false">"Combo inserido no\ncarrinho com sucesso."</string>
+    <string name="ui_conclua_o_pagamento_de_suas_apostas_c293f6" formatted="false">"Conclua o pagamento de suas\napostas dentro do prazo"</string>
+    <string name="ui_concurso_1_s_32ee4c">"Concurso %1$s"</string>
+    <string name="ui_conferir_carrinho_da_conta_9fe601" formatted="false">"Conferir carrinho da conta"</string>
+    <string name="ui_confira_suas_apostas_e_siga_para_o_p_f4bc60" formatted="false">"Confira suas apostas e siga para o pagamento"</string>
+    <string name="ui_cota_expirada_90c16c" formatted="false">"Cota expirada"</string>
+    <string name="ui_cota_reservada_no_1_s_de_2_s_7b73c7">"cota reservada nº %1$s de %2$s"</string>
+    <string name="ui_cotas_ef3c1d" formatted="false">"Cotas"</string>
+    <string name="ui_deseja_excluir_as_apostas_locais_mos_cd1897" formatted="false">"Deseja excluir as apostas locais mostradas nesta tela? Esta ação não exclui as apostas do carrinho da sua conta."</string>
+    <string name="ui_deseja_excluir_esta_aposta_do_carrin_dfea3f" formatted="false">"Deseja excluir esta aposta do carrinho?"</string>
+    <string name="ui_deseja_excluir_todas_as_apostas_do_c_57359b" formatted="false">"Deseja excluir todas as apostas do carrinho?"</string>
+    <string name="ui_deseja_realmente_excluir_esta_aposta_ac0b38" formatted="false">"Deseja realmente excluir esta aposta?"</string>
+    <string name="ui_deseja_realmente_excluir_este_carrin_97da23" formatted="false">"Deseja realmente excluir este carrinho favorito?"</string>
+    <string name="ui_detalhar_carrinho_c36d88" formatted="false">"Detalhar carrinho"</string>
+    <string name="ui_devido_a_regras_de_arredondamento_o_37ef7b" formatted="false">"Devido a regras de arredondamento,\no valor cobrado pela Cota deste bolão\npoderá ser menor que o exibido."</string>
+    <string name="ui_duvidas_10e026" formatted="false">"Dúvidas"</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_espelho_0c9ce2" formatted="false">"Espelho"</string>
+    <string name="ui_estas_apostas_ficaram_sem_confirmaca_ca5e91" formatted="false">"Estas apostas ficaram sem confirmação de envio. Compare com o carrinho da sua conta. Nenhuma aposta será enviada novamente por esta tela."</string>
+    <string name="ui_este_carrinho_favorito_ja_foi_adicio_b81250" formatted="false">"Este carrinho favorito já foi adicionado ao carrinho atual. Deseja adicioná-lo novamente?"</string>
+    <string name="ui_excluir_8b1951" formatted="false">"Excluir"</string>
+    <string name="ui_excluir_aposta_86e1ac" formatted="false">"Excluir aposta"</string>
+    <string name="ui_excluir_apostas_preservadas_904b4c" formatted="false">"Excluir apostas preservadas"</string>
+    <string name="ui_excluir_carrinho_b2cf91" formatted="false">"Excluir carrinho"</string>
+    <string name="ui_excluir_todas_as_apostas_bc0d0d" formatted="false">"Excluir todas as apostas"</string>
+    <string name="ui_existe_compra_efetivada_em_processam_8900c1" formatted="false">"Existe compra efetivada, em processamento ou aguardando efetivação da aposta com o mesmo valor do carrinho atual nas últimas 24 horas. Você gostaria de revisar o carrinho atual?"</string>
+    <string name="ui_existem_2_concursos_abertos_para_a_1_6bb68f">"Existem 2 concursos abertos para a %1$s.\nDeseja incluir no carrinho qual concurso?"</string>
+    <string name="ui_expira_em_e5b7cd" formatted="false">"Expira em"</string>
+    <string name="ui_favoritas_1f5b98" formatted="false">"Favoritas"</string>
+    <string name="ui_favorite_cart_background_096634" formatted="false">"favorite-cart-background"</string>
+    <string name="ui_fechar_0f2bd8" formatted="false">"Fechar"</string>
+    <string name="ui_ha_uma_suspensao_temporaria_ativa_pa_a64d6f" formatted="false">"Há uma suspensão temporária ativa para compras. Novas apostas poderão ser realizadas no Portal Loterias Online e no Aplicativo Loterias CAIXA após o término do período selecionado."</string>
+    <string name="ui_ir_para_pagamento_5e155c" formatted="false">"Ir para pagamento"</string>
+    <string name="ui_ja_existe_um_carrinho_favorito_com_e_c68666" formatted="false">"Já existe um carrinho favorito com este nome. Deseja substituí-lo?"</string>
+    <string name="ui_legenda_61154f" formatted="false">"Legenda"</string>
+    <string name="ui_legenda_da_loteca_8b6284" formatted="false">"Legenda da Loteca"</string>
+    <string name="ui_lembre_se_o_valor_minimo_do_total_de_61222c">"Lembre-se: o valor mínimo do total de compras nesse aplicativo é %1$s"</string>
+    <string name="ui_lotofacil_dd4339" formatted="false">"LOTOFÁCIL"</string>
+    <string name="ui_mais_detalhes_269973" formatted="false">"mais detalhes"</string>
+    <string name="ui_nao_9bc947" formatted="false">"Não"</string>
+    <string name="ui_nao_ha_lote_pendente_disponivel_para_8d1b5e" formatted="false">"Não há lote pendente disponível para esta conta. Um lote de outra conta só pode ser revisado pelo usuário que iniciou o envio."</string>
+    <string name="ui_nesta_area_estao_todas_as_suas_apost_4883b2" formatted="false">"Nesta área estão todas as suas apostas da sorte.\nÉ só escolher e apostar. Boa sorte!"</string>
+    <string name="ui_nome_do_carrinho_favorito_4c48f5" formatted="false">"Nome do carrinho favorito"</string>
+    <string name="ui_numero_84871a" formatted="false">"número"</string>
+    <string name="ui_numeros_5b88ef" formatted="false">"números"</string>
+    <string name="ui_o_carrinho_da_conta_esta_vazio_03261b" formatted="false">"O carrinho da conta está vazio."</string>
+    <string name="ui_o_valor_minimo_do_carrinho_e_r_2_50_e14f4e" formatted="false">"O valor mínimo do carrinho é R$2,50"</string>
+    <string name="ui_palpite_escolhido_fea20f" formatted="false">"Palpite escolhido"</string>
+    <string name="ui_palpite_nao_escolhido_9dfb91" formatted="false">"Palpite não escolhido"</string>
+    <string name="ui_para_continuar_utilizando_a_funciona_a5583f" formatted="false">"Para continuar utilizando a funcionalidade, você precisa efetuar o login no app Loterias Caixa. Deseja efetuar o login?"</string>
+    <string name="ui_salvar_carrinho_favorito_97b999" formatted="false">"Salvar carrinho favorito"</string>
+    <string name="ui_seu_carrinho_esta_vazio_106816" formatted="false">"Seu carrinho está vazio"</string>
+    <string name="ui_sim_931345" formatted="false">"Sim"</string>
+    <string name="ui_sucesso_29bf2d" formatted="false">"Sucesso"</string>
+    <string name="ui_surpresinha_34302e" formatted="false">"Surpresinha"</string>
+    <string name="ui_teimosinha_dba980" formatted="false">"Teimosinha"</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_total_do_carrinho_b01305" formatted="false">"Total do carrinho"</string>
+    <string name="ui_transformar_carrinho_8fce5c" formatted="false">"Transformar carrinho"</string>
+    <string name="ui_trevos_1_s_946f5c">"Trevos: %1$s"</string>
+    <string name="ui_valor_dessa_aposta_127399" formatted="false">"Valor dessa\naposta"</string>
+    <string name="ui_ver_detalhes_4a4ed0" formatted="false">"Ver detalhes"</string>
+    <string name="ui_voce_ainda_nao_possui_carrinhos_favo_baaa0f" formatted="false">"Você ainda não possui carrinhos favoritos."</string>
+    <string name="ui_voce_pode_excluir_detalhar_e_transfo_c7e1fd" formatted="false">"Você pode excluir, detalhar e transformar no seu carrinho atual."</string>
+    <string name="ui_voltar_59dc92" formatted="false">"Voltar"</string>
+    <string name="ui_voltar_ao_inicio_372787" formatted="false">"Voltar ao início"</string>
+</resources>

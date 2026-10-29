@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pt">
+    <string name="ui_012_345_678_98_7642fd" formatted="false">"012.345.678‑98"</string>
+    <string name="ui_1_s_ate_2_s_5e0e98">"%1$s até %2$s"</string>
+    <string name="ui_a_limpeza_dos_dados_locais_da_sessao_25a8d7" formatted="false">"A limpeza dos dados locais da sessão anterior foi concluída. O encerramento da sessão no navegador não foi confirmado."</string>
+    <string name="ui_a_pagina_segura_da_conta_caixa_foi_a_9f4f21" formatted="false">"A página segura da Conta CAIXA foi aberta no navegador."</string>
+    <string name="ui_aceito_receber_notificacoes_de_loter_474748" formatted="false">"Aceito receber notificações de Loterias."</string>
+    <string name="ui_acessar_com_biometria_3765f3" formatted="false">"Acessar com biometria"</string>
+    <string name="ui_aguarde_apenas_um_instante_enquanto_369064" formatted="false">"Aguarde apenas um instante enquanto te redirecionamos para a tela inicial."</string>
+    <string name="ui_aguarde_apenas_um_instante_enquanto_7fde7c" formatted="false">"Aguarde apenas um instante enquanto te redirecionamos para suas apostas."</string>
+    <string name="ui_alterar_dados_login_caixa_c7bbfc" formatted="false">"Alterar dados Login CAIXA"</string>
+    <string name="ui_ao_ativar_esta_opcao_voce_recebera_n_1403b7" formatted="false">"Ao ativar esta opção, você receberá notificações importantes de loterias se estiverem habilitadas no seu aparelho. A funcionalidade pode ser ativada ou desativada a qualquer momento. Para salvar, clique em atualizar."</string>
+    <string name="ui_ao_desativar_esta_opcao_voce_nao_rec_251a0d" formatted="false">"Ao desativar esta opção, você não receberá mais notificações de loterias. Para salvar, clique em atualizar."</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_cancelar_bb9dbb" formatted="false">"Cancelar"</string>
+    <string name="ui_cep_d68636" formatted="false">"CEP"</string>
+    <string name="ui_confirmar_717bed" formatted="false">"Confirmar"</string>
+    <string name="ui_cpf_30d436" formatted="false">"CPF"</string>
+    <string name="ui_dados_pessoais_f10a9c" formatted="false">"Dados Pessoais"</string>
+    <string name="ui_depois_b8db71" formatted="false">"Depois"</string>
+    <string name="ui_desaja_desativar_a_biometria_e_acess_5635c3" formatted="false">"Desaja desativar a biometria e acessar apenas com o Login Caixa?"</string>
+    <string name="ui_desativar_biometria_fead3c" formatted="false">"Desativar biometria"</string>
+    <string name="ui_deseja_habilitar_a_biometria_989f23" formatted="false">"Deseja habilitar a biometria?"</string>
+    <string name="ui_e_mail_2550d9" formatted="false">"E-mail"</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_estes_sao_seus_dados_pessoais_por_fa_7b7c92" formatted="false">"Estes são seus dados pessoais. Por favor, mantenha-os sempre atualizados."</string>
+    <string name="ui_experimente_ccdddf" formatted="false">"Experimente"</string>
+    <string name="ui_faca_login_cadastre_se_491977" formatted="false">"Faça login/cadastre-se"</string>
+    <string name="ui_finalizar_cadastro_77d482" formatted="false">"Finalizar cadastro"</string>
+    <string name="ui_habilitar_2d7376" formatted="false">"Habilitar"</string>
+    <string name="ui_li_e_concordo_com_os_3bcaeb" formatted="false">"Li e concordo com os "</string>
+    <string name="ui_limite_diario_de_apostas_5e8560" formatted="false">"Limite Diário de Apostas"</string>
+    <string name="ui_logo_loterias_caixa_0ec4dc" formatted="false">"Logo Loterias CAIXA"</string>
+    <string name="ui_loterias_caixa_02d076" formatted="false">"Loterias Caixa"</string>
+    <string name="ui_mudanca_de_ambiente_83353f" formatted="false">"Mudança de Ambiente"</string>
+    <string name="ui_municipio_8e4309" formatted="false">"Município"</string>
+    <string name="ui_nao_9bc947" formatted="false">"Não"</string>
+    <string name="ui_nao_foi_possivel_abrir_a_pagina_segu_7efc3e" formatted="false">"Não foi possível abrir a página segura da Conta CAIXA. Tente novamente."</string>
+    <string name="ui_nao_foi_possivel_concluir_esta_opera_25b771" formatted="false">"Não foi possível concluir esta operação. Por favor, tente novamente mais tarde."</string>
+    <string name="ui_nao_foi_possivel_encerrar_a_sessao_n_64a8f8" formatted="false">"Não foi possível encerrar a sessão neste aplicativo. Tente novamente."</string>
+    <string name="ui_nao_foi_possivel_encerrar_a_sessao_n_95501b" formatted="false">"Não foi possível encerrar a sessão no serviço de loterias. Seu acesso foi mantido. Tente novamente."</string>
+    <string name="ui_nao_foi_possivel_salvar_a_mudanca_de_a13520" formatted="false">"Não foi possível salvar a mudança de ambiente. Tente novamente."</string>
+    <string name="ui_nao_foi_possivel_verificar_ou_conclu_08ef9f" formatted="false">"Não foi possível verificar ou concluir a limpeza dos dados da sessão anterior. Tente novamente para continuar com segurança."</string>
+    <string name="ui_nao_sei_o_meu_cep_eb7e08" formatted="false">"Não sei o meu CEP"</string>
+    <string name="ui_necessario_habilitar_biometria_82b2c8" formatted="false">"Necessário habilitar biometria"</string>
+    <string name="ui_nome_508690" formatted="false">"Nome"</string>
+    <string name="ui_nome_de_exemplo_268008" formatted="false">"Nome de exemplo"</string>
+    <string name="ui_nome_meio_sobrenome_a0dea7" formatted="false">"Nome Meio Sobrenome"</string>
+    <string name="ui_nome_sobrenome_email_com_70f17b" formatted="false">"nome.sobrenome@email.com"</string>
+    <string name="ui_o_acesso_foi_encerrado_mas_nao_foi_p_0514a0" formatted="false">"O acesso foi encerrado, mas não foi possível limpar todos os dados locais da sessão. Tente novamente para continuar com segurança."</string>
+    <string name="ui_o_aplicativo_sera_encerrado_para_apl_9d8ad5" formatted="false">"O aplicativo será encerrado para aplicar as mudanças de ambiente."</string>
+    <string name="ui_o_cadastro_e_bem_rapido_para_comecar_b409e1" formatted="false">"O cadastro é bem rápido. Para começar, informe os dados abaixo:"</string>
+    <string name="ui_ou_79a904" formatted="false">"OU"</string>
+    <string name="ui_que_bom_ver_voce_por_aqui_c7c430" formatted="false">"Que bom ver você por aqui"</string>
+    <string name="ui_r_1_s_ate_2_s_813a89" formatted="false">"R$ %1$s até %2$s"</string>
+    <string name="ui_rota_de_conta_sem_layout_compose_1_s_19cdf9">"Rota de conta sem layout Compose: %1$s"</string>
+    <string name="ui_sessao_local_encerrada_no_modo_de_si_0f3d60" formatted="false">"Sessão local encerrada no modo de simulação. Nenhuma sessão real do navegador foi encerrada."</string>
+    <string name="ui_sim_931345" formatted="false">"Sim"</string>
+    <string name="ui_solicitar_limite_acima_de_1_s_19ffe1">"Solicitar limite acima de %1$s"</string>
+    <string name="ui_somente_numeros_a4bde0" formatted="false">"Somente números"</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_termos_de_uso_3eec48" formatted="false">"termos de uso"</string>
+    <string name="ui_texto_da106a" formatted="false">" ▾"</string>
+    <string name="ui_uf_55852e" formatted="false">"UF"</string>
+    <string name="ui_usuario_habilitado_apenas_para_consu_b9a66b" formatted="false">"Usuário habilitado apenas para consultas."</string>
+    <string name="ui_v_1_s_8c8fcd">"v. %1$s"</string>
+    <string name="ui_voce_saiu_deste_aplicativo_mas_nao_f_000db1" formatted="false">"Você saiu deste aplicativo, mas não foi possível confirmar o encerramento da sessão no navegador."</string>
+    <string name="ui_voce_saiu_deste_aplicativo_o_encerra_88f3c9" formatted="false">"Você saiu deste aplicativo. O encerramento da sessão no navegador foi cancelado e não pôde ser confirmado."</string>
+    <string name="ui_voce_sera_redirecionado_para_o_site_61dd1a" formatted="false">"Você será redirecionado para o site dos Correios"</string>
+    <string name="ui_entrar_como">Entrar como %1$s</string>
+    <string name="ui_trocar_usuario">Trocar usuário</string>
+</resources>

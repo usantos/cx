@@ -1,0 +1,57 @@
+// Testes locais Android exercitam código de UI/plataforma escrito manualmente sem alterar o
+// denominador da cobertura de produção nem exigir conexão com telefone/backend.
+subprojects { owner ->
+    def configureLocalTests = {
+        owner.android.testOptions.unitTests.includeAndroidResources = true
+        owner.dependencies.add('testImplementation', 'org.robolectric:robolectric:4.17')
+        owner.tasks.withType(Test).configureEach {
+            // Dependências Android de diagnóstico usam bytecode Java 21; o alvo do app permanece JVM 17.
+            javaLauncher = owner.javaToolchains.launcherFor {
+                languageVersion = JavaLanguageVersion.of(21)
+            }
+            systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
+            jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED', '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED'
+            // Testes individuais de janela física mantêm seu executor em dispositivo conectado.
+            // As classes de produção permanecem no denominador agregado inalterado.
+            rootProject.file('config/testing/local-ui-device-methods.txt').readLines()
+                    .collect { it.trim() }.findAll { it && !it.startsWith('#') }.each { name ->
+                filter.excludeTestsMatching(name)
+            }
+            maxHeapSize = '2g'
+            maxParallelForks = 1
+        }
+        owner.afterEvaluate {
+            // Suítes compartilhadas de asserções são compiladas como testes unitários apenas nos módulos habilitados.
+            def modulePath = rootProject.relativePath(owner.projectDir)
+            def manifest = rootProject.file('config/testing/local-ui-suites.txt')
+            def selected = manifest.readLines().any { it.trim().replaceFirst('^helper:', '').startsWith(modulePath + '/src/androidTest/') }
+            if (owner.android.buildFeatures.compose) {
+                owner.dependencies.add('testImplementation', owner.dependencies.platform(libs.androidx.compose.bom))
+                owner.dependencies.add('testImplementation', libs.androidx.compose.ui.test.junit4)
+                owner.dependencies.add('testImplementation', libs.androidx.test.ext.junit)
+                owner.dependencies.add('debugImplementation', libs.androidx.compose.ui.test.manifest)
+            }
+            if (!selected) return
+            owner.configurations.testImplementation.extendsFrom(owner.configurations.androidTestImplementation)
+            def output = owner.layout.buildDirectory.dir('generated/local-ui-tests/kotlin')
+            def prepare = owner.tasks.register('prepareLocalUiTests', Exec) {
+                inputs.file(manifest)
+                inputs.file(rootProject.file('scripts/prepare-local-ui-tests.py'))
+                inputs.dir(owner.file('src/androidTest'))
+                outputs.dir(output)
+                commandLine 'python3', rootProject.file('scripts/prepare-local-ui-tests.py'),
+                        '--root', rootDir, '--module', modulePath,
+                        '--manifest', manifest, '--output', output.get().asFile
+            }
+            owner.android.sourceSets.test.java.srcDir(output.get().asFile)
+            owner.android.sourceSets.test.kotlin.srcDir(output.get().asFile)
+            owner.android.sourceSets.test.res.srcDir(owner.file('src/androidTest/res'))
+            owner.tasks.matching { it.name ==~ /compile.*UnitTest(Kotlin|JavaWithJavac)/ || it.name ==~ /ksp.*UnitTestKotlin/ ||
+                    it.name ==~ /lintAnalyze.*UnitTest/ || it.name ==~ /generate.*UnitTestLintModel/ }.configureEach {
+                dependsOn prepare
+            }
+        }
+    }
+    owner.plugins.withId('com.android.library') { configureLocalTests() }
+    owner.plugins.withId('com.android.application') { configureLocalTests() }
+}

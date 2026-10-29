@@ -1,0 +1,2957 @@
+{
+  "sourceEntryCount": 533,
+  "bundleCount": 35,
+  "messages": [
+    {
+      "bundle": "br.gov.caixa.loterias.apostas.environment.messages",
+      "key": "nao_foi_possivel_salvar_o_ambien_d4a3bf",
+      "expected": "Não foi possível salvar o ambiente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.data.messages",
+      "key": "tempo_de_resposta_esgotou_18ae0a",
+      "expected": "Tempo de resposta esgotou"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "escolha_10_numeros_entre_os_80_d_0f5ae8",
+      "expected": "Escolha 10 números entre os 80 disponíveis, logo após escolha o time do coração e <b>ganhe prêmios acertando 7, 6, 5, 4 e 3 dos números sorteados e/ou acertando o time do coração</b>. Você pode concorrer com a <b>mesma aposta por 3, 6, 9 ou 12 concursos consecutivos com a opção teimosinha</b>. Com a opção <b>surpresinha, o sistema escolhe os números por você</b>, tornando sua aposta mais prática, nesta opção os números apenas serão revelados a você após o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "escolha_50_numeros_entre_os_100_2c8ac4",
+      "expected": "Escolha 50 números entre os 100 disponíveis e <b>ganhe prêmios acertando 20, 19, 18, 17, 16, 15 ou nenhum dos números sorteados</b>. Escolhendo a opção <b>\"aposta-espelho\" o sistema realiza um jogo automaticamente com os 50 números que você não escolheu</b>, aumentando suas chances. Você pode concorrer com a <b>mesma aposta por 2, 3, 4, 6, 8, 9 ou 12 concursos consecutivos com a opção teimosinha</b>. Com a opção <b>surpresinha, o sistema escolhe os números por você</b>, tornando sua aposta mais prática, nesta opção os números apenas serão revelados a você após o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "escolha_de_15_a_20_numeros_entre_562def",
+      "expected": "Escolha de 15 a 20 números entre os 25 números disponíveis e <b>ganhe prêmios acertando 11, 12, 13, 14 ou 15 dos números sorteados</b>. Você pode concorrer com <b>a mesma aposta por 2, 3, 4, 6, 8, 9, 12, 18 ou 24 concursos consecutivos com a opção teimosinha</b>. Com a opção <b>surpresinha, o sistema escolhe os números por você</b>, tornando sua aposta mais prática, nesta opção os números apenas serão revelados a você após o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "escolha_de_5_a_15_numeros_entre_8f6942",
+      "expected": "Escolha de 5 a 15 números entre os 80 disponíveis e <b>ganhe prêmios acertando 2 (duque), 3 (terno) ou 4 (quadra) ou 5 (quina)</b> dos números sorteados. Você pode concorrer com <b>a mesma aposta por 3, 6, 12, 18 ou 24 concursos consecutivos com a opção teimosinha</b>. Com a opção <b>surpresinha, o sistema escolhe os números por você</b>, tornando sua aposta mais prática, nesta opção os números apenas serão revelados a você após o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "escolha_de_6_a_12_numeros_entre_17d285",
+      "expected": "Escolha de 6 a 12 números entre os 50 disponíveis, logo após escolha de 2 a 6 trevos dos 6 disponiveis e <b>ganhe prêmios acertando 6 números + 1, 2 ou nenhum trevo; 5 números + 1, 2 ou nenhum trevo; 4 números + 1, 2 ou nenhum trevo; 3 números + 1 ou 2 trevos; 2 números + 1 ou 2 trevos</b>. Você pode <b>concorrer com a mesma aposta por 2, 3, 4 ou 5 concursos consecutivos com a opção teimosinha</b>. Com a opção <b>surpresinha, o sistema escolhe os números por você</b>, tornando sua aposta mais prática, nesta opção os números apenas serão revelados a você após o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "escolha_de_6_a_15_numeros_entre_093c29",
+      "expected": "Escolha de 6 a 15 números entre os 50 disponíveis e <b>ganhe prêmios acertando 3 (terno), 4 (quadra), 5 (quina) ou 6 (sena)</b> dos números sorteados em um ou nos dois sorteios. Você pode concorrer com a <b>mesma aposta por 2, 3, 4, 6, 8, 9 ou 12 concursos consecutivos com a opção teimosinha</b>. Com a opção <b>surpresinha, o sistema escolhe os números por você</b>, tornando sua aposta mais prática, nesta opção os números apenas serão revelados a você após o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "escolha_de_6_a_20_numeros_entre_667389",
+      "expected": "Escolha de 6 a 20 números entre os 60 disponíveis e <b>ganhe prêmios acertando 6 (sena), 5 (quina) ou 4 (quadra)</b> dos números sorteados. Você pode concorrer com a mesma aposta por <b>2, 3, 4, 6, 8, 9 ou 12 concursos consecutivos</b> com a <b>opção teimosinha</b>. Com a opção <b>surpresinha, o sistema escolhe os números por você</b>, tornando sua aposta mais prática, nesta opção os números apenas serão revelados a você após o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "escolha_de_7_a_15_numeros_entre_41efca",
+      "expected": "Escolha de 7 a 15 números entre os 31 disponíveis, logo após escolha o mês de sorte e <b>ganhe prêmios acertando 7, 6, 5 ou 4 dos números sorteados e/ou acertando o mês de sorte</b>. Você pode concorrer com a mesma aposta por <b>3, 6, 9 ou 12 concursos consecutivos com a opção teimosinha</b>. Com a opção surpresinha, o sistema escolhe os números por você, tornando sua aposta mais prática, nesta opção os números apenas serão revelados a você após o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "escolha_os_resultados_dos_jogos_fe3e2d",
+      "expected": "Escolha os resultados dos jogos abaixo. Você precisa apostar em todos os jogos, sendo que <b>pelo menos 1 palpite deve ser duplo</b> (apostar nos dois times ou em um time e no empate) <b>ou triplo</b> (apostar em empate e nos dois times). <b>O valor da sua aposta depende da quantidade de duplas e triplas.</b> Você ganha com 13 ou 14 palpites corretos."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "falha_na_tentativa_de_conexao_co_3a89ba",
+      "expected": "Falha na tentativa de conexão com o servidor"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "nao_foi_possivel_concluir_esta_o_3c7db3",
+      "expected": "Não foi possível concluir esta operação. Por favor, tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "o_cpf_vinculado_ao_e_mail_inform_f8be0d",
+      "expected": "O CPF vinculado ao e-mail informado deve ser o mesmo CPF cadastrado nas Loterias CAIXA."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "o_super_sete_tem_7_colunas_cada_84c6ee",
+      "expected": "O Super sete tem 7 colunas, cada uma com os números de 0 a 9. <b>Você deve escolher, no mínimo, 1 número em cada coluna</b>. Se quiser, pode marcar mais números, até 3 por coluna, aumentando suas chances de ganhar. No sorteio, é escolhido 1 número de cada coluna (total de 7 números). <b>Ganha quem acertar a partir de 3 números na ordem correta das colunas</b>."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "o_tempo_de_conexao_expirou_806cae",
+      "expected": "O Tempo de conexão expirou."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "o_termo_de_uso_foi_atualizado_e_959939",
+      "expected": "O termo de Uso foi Atualizado. É necessário aceitar novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "opa_ocorreu_um_erro_na_sua_requi_3fbf1f",
+      "expected": "Opa, ocorreu um erro na sua requisição. Por favor, tente novamente dentro de alguns instantes."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "parece_que_sua_internet_esta_com_15865a",
+      "expected": "Parece que sua internet está com alguma instabilidade. Verifique sua conexão e tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "sua_sessao_expirou_e_necessario_a7a802",
+      "expected": "Sua sessão expirou. É necessário realizar o login novamente para continuar utilizando o aplicativo Loterias CAIXA."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.core.presentation.formatting.messages",
+      "key": "tempo_de_resposta_esgotou_18ae0a",
+      "expected": "Tempo de resposta esgotou"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.data.messages",
+      "key": "dados_do_apostador_indisponiveis_a42aa2",
+      "expected": "Dados do apostador indisponíveis"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.data.messages",
+      "key": "identificacao_de_notificacao_inv_7398ea",
+      "expected": "Identificação de notificação inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.data.messages",
+      "key": "limite_autorizado_indisponivel_fafc9d",
+      "expected": "Limite autorizado indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.data.messages",
+      "key": "o_cep_informado_nao_foi_localiza_857ff7",
+      "expected": "O CEP informado não foi localizado. Por favor, insira um CEP válido."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "a_sessao_foi_encerrada_ou_substi_d04bdc",
+      "expected": "A sessão foi encerrada ou substituída. Entre novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "cep_invalido_8b6688",
+      "expected": "CEP inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "contagem_de_notificacoes_indispo_e4b355",
+      "expected": "Contagem de notificações indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "e_necessario_aceitar_os_termos_d_ae9866",
+      "expected": "É necessário aceitar os Termos de Uso e a Política de Privacidade"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "identificacao_de_notificacao_inv_7398ea",
+      "expected": "Identificação de notificação inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "limite_abaixo_do_minimo_permitid_fe1e62",
+      "expected": "Limite abaixo do mínimo permitido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "limite_acima_do_maximo_permitido_9e41b4",
+      "expected": "Limite acima do máximo permitido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "limite_invalido_cd553d",
+      "expected": "Limite inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "municipio_invalido_d31036",
+      "expected": "Município inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "notificacao_de_outra_sessao_7c7fdc",
+      "expected": "Notificação de outra sessão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.domain.model.messages",
+      "key": "notificacao_ou_sessao_substituid_019255",
+      "expected": "Notificação ou sessão substituída"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "foi_atualizado_com_sucesso_6508c4",
+      "expected": " foi atualizado com sucesso."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "informe_um_limite_diario_valido_584186",
+      "expected": "Informe um limite diário válido."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "nao_foi_possivel_abrir_o_navegad_6f18e4",
+      "expected": "Não foi possível abrir o navegador para entrar. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "nao_foi_possivel_atualizar_a_bio_eaef6c",
+      "expected": "Não foi possível atualizar a biometria. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "nao_foi_possivel_conectar_verifi_d9330e",
+      "expected": "Não foi possível conectar. Verifique sua internet e tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "nao_foi_possivel_encerrar_a_sess_3e9e60",
+      "expected": "Não foi possível encerrar a sessão. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "nao_foi_possivel_entrar_tente_no_e61749",
+      "expected": "Não foi possível entrar. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "nao_foi_possivel_recuperar_os_da_23a90e",
+      "expected": "Não foi possível recuperar os dados da Conta CAIXA."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "nao_foi_possivel_validar_o_cadas_3b5e61",
+      "expected": "Não foi possível validar o cadastro. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "nao_foi_possivel_validar_o_cadas_8cef5e",
+      "expected": "Não foi possível validar o cadastro."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "nao_foi_possivel_validar_o_cadas_f5be2c",
+      "expected": "Não foi possível validar o cadastro. Verifique sua internet e tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "o_valor_maximo_e_1_s_5b1314",
+      "expected": "O valor máximo é %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "o_valor_minimo_e_1_s_6adb02",
+      "expected": "O valor mínimo é %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "ocorreu_um_erro_inesperado_ao_va_2f618d",
+      "expected": "Ocorreu um erro inesperado ao validar o cadastro. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "seu_cadastro_3cf9f3",
+      "expected": "Seu cadastro"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.account.presentation.formatting.messages",
+      "key": "seu_cadastro_foi_realizado_com_s_23c238",
+      "expected": "! Seu cadastro foi realizado com sucesso!"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.data.messages",
+      "key": "aposta_favorita_5aae3e",
+      "expected": "Aposta favorita"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.data.messages",
+      "key": "configuracao_do_rapidao_sem_payl_a7a2d6",
+      "expected": "Configuração do Rapidão sem payload"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.data.messages",
+      "key": "parametros_de_apostas_sem_payloa_8d006b",
+      "expected": "Parâmetros de apostas sem payload"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "a_aposta_nao_possui_numeros_9e7dc9",
+      "expected": "A aposta não possui números."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "acesse_compre_seu_bolao_e_partic_9b96df",
+      "expected": "Acesse \"Compre seu bolão\" e participe!"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "aposta_favorita_invalida_5735e8",
+      "expected": "Aposta favorita inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "combo_indisponivel_no_momento_f03c03",
+      "expected": "Combo indisponível no momento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "combo_invalido_db3401",
+      "expected": "Combo inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "concurso_invalido_2780ba",
+      "expected": "Concurso inválido."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "filtro_de_apostas_favoritas_inva_a43ae4",
+      "expected": "Filtro de apostas favoritas inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "ha_uma_suspensao_temporaria_ativ_a64d6f",
+      "expected": "Há uma suspensão temporária ativa para compras. Novas apostas poderão ser realizadas no Portal Loterias Online e no Aplicativo Loterias CAIXA após o término do período selecionado."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "informe_um_nome_para_a_aposta_b64e5e",
+      "expected": "Informe um nome para a aposta."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "mas_ainda_da_tempo_de_comprar_se_831645",
+      "expected": "Mas ainda dá tempo de comprar seu bolão e concorrer a esse sorteio.\n"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "modalidade_indisponivel_para_apo_59acb4",
+      "expected": "Modalidade indisponível para apostar no momento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "modalidade_invalida_4a3e50",
+      "expected": "Modalidade inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "modalidade_invalida_964af4",
+      "expected": "Modalidade inválida."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "modalidade_ou_tipo_de_concurso_i_ccc42d",
+      "expected": "Modalidade ou tipo de concurso inválido."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "o_registro_de_apostas_individuai_571554",
+      "expected": "O registro de apostas individuais para o concurso %1$s foi encerrado. "
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "premio_minimo_invalido_0cfb85",
+      "expected": "Prêmio mínimo inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "quantidade_de_apostas_invalida_4cbf5a",
+      "expected": "Quantidade de apostas inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "quantidade_de_numeros_ou_palpite_bea725",
+      "expected": "Quantidade de números ou palpites inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "quantidade_de_teimosinha_invalid_9d386a",
+      "expected": "Quantidade de Teimosinha inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "quantidade_invalida_2eede1",
+      "expected": "Quantidade inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "rapidao_indisponivel_no_momento_31419b",
+      "expected": "Rapidão indisponível no momento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "selecione_os_numeros_ou_palpites_e95abf",
+      "expected": "Selecione os números ou palpites da aposta"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "selecione_pelo_menos_uma_modalid_e9a6ca",
+      "expected": "Selecione pelo menos uma modalidade"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "tipo_de_concurso_invalido_01ede7",
+      "expected": "Tipo de concurso inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "um_numero_nao_pode_ser_obrigator_3391bd",
+      "expected": "Um número não pode ser obrigatório e proibido ao mesmo tempo"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "valor_maximo_deve_ser_maior_que_6a7402",
+      "expected": "Valor máximo deve ser maior que o mínimo"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.domain.model.messages",
+      "key": "valor_minimo_invalido_9a7500",
+      "expected": "Valor mínimo inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "adicionar_ao_carrinho_bf86b8",
+      "expected": "Adicionar ao carrinho"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "agora_voce_so_precisa_confirmar_919dde",
+      "expected": "Agora você só precisa confirmar o seu carrinho de apostas e selecionar a opção Avançar para forma de pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "ao_escolher_esta_opcao_o_sistema_28c883",
+      "expected": "Ao escolher esta opção, o sistema fará uma aposta automaticamente com os 50 números não escolhidos na aposta original. A mesma regra se aplica às apostas com Surpresinha e/ou Teimosinha."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "aumente_suas_chances_de_ganhar_a_c0a561",
+      "expected": "Aumente suas chances de ganhar apostando agora mesmo!"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "aumente_suas_chances_de_ganhar_c_e123f3",
+      "expected": "Aumente suas chances de ganhar com a aposta-espelho.\n"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "avancar_859e48",
+      "expected": "Avançar"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "bem_vindo_ao_super_sete_ffdab6",
+      "expected": "Bem vindo ao Super Sete"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "combo_nao_encontrado_0bb727",
+      "expected": "Combo não encontrado."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "continuar_63e2bb",
+      "expected": "Continuar"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "dia_de_sorte_71bc30",
+      "expected": "dia de sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "dia_de_sorte_b5c7a5",
+      "expected": "Dia de Sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "dupla_de_pascoa_6da0ff",
+      "expected": "dupla de \npáscoa"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "e_no_aplicativo_loterias_caixa_a_d4a054",
+      "expected": "e no Aplicativo Loterias CAIXA após o término do período selecionado."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "escolher_mes_de_sorte_38ec85",
+      "expected": "Escolher Mês de Sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "escolher_meu_bolao_bff5fd",
+      "expected": "Escolher\nmeu bolão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "escolher_time_do_coracao_c6bef9",
+      "expected": "Escolher Time do Coração"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "essa_combinacao_de_simples_duplo_411b1c",
+      "expected": "Essa combinação de simples, duplos e triplos não é permitida para a Loteca. Tente outra combinação."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "favor_inserir_um_nome_para_sua_a_8a57b0",
+      "expected": "Favor inserir um nome para sua aposta favorita"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "fechar_0f2bd8",
+      "expected": "Fechar"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "ha_uma_suspensao_temporaria_ativ_3db999",
+      "expected": "Há uma suspensão temporária ativa para compras. Novas apostas poderão ser realizadas "
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "informe_o_placar_de_todos_os_jog_1e76a6",
+      "expected": "Informe o placar de todos os jogos."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "informe_uma_quantidade_valida_de_f055ff",
+      "expected": "Informe uma quantidade válida de Surpresinhas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "jogue_marcando_1_numero_em_cada_ec2a5b",
+      "expected": "Jogue marcando 1 número em cada uma das 7 colunas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "lotofacil_d3ed7c",
+      "expected": "Lotofácil"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "lotofacil_da_independencia_5a2372",
+      "expected": "lotofácil da \nindependência"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "lotofacil_dbb2e4",
+      "expected": "lotofácil"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "mega_da_virada_ce5f36",
+      "expected": "mega da \nvirada"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "mes_de_sorte_1_s_327387",
+      "expected": "\nMês de sorte: %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "milionaria_11be79",
+      "expected": "+Milionária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "milionaria_c791e4",
+      "expected": "+milionária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "modalidade_nao_disponivel_no_mom_5f4037",
+      "expected": "Modalidade não disponível no momento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_e_possivel_selecionar_quanti_5a1fce",
+      "expected": "Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_e_possivel_selecionar_uma_qu_0ede70",
+      "expected": "Não é possível selecionar uma quantidade de números superior ao limite da modalidade."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_acessar_o_servi_856170",
+      "expected": "Não foi possível acessar o serviço. Verifique sua conexão."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_atualizar_a_apo_711f0f",
+      "expected": "Não foi possível atualizar a aposta favorita."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_atualizar_a_apo_da2fb5",
+      "expected": "Não foi possível atualizar a aposta."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_atualizar_as_ap_f4191d",
+      "expected": "Não foi possível atualizar as apostas do Rapidão. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_atualizar_o_rap_0cd7c5",
+      "expected": "Não foi possível atualizar o Rapidão."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_a_apos_fa8c4f",
+      "expected": "Não foi possível carregar a aposta. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_as_apo_0ae4e5",
+      "expected": "Não foi possível carregar as apostas favoritas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_as_apo_e3b519",
+      "expected": "Não foi possível carregar as apostas favoritas. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_as_opc_1953eb",
+      "expected": "Não foi possível carregar as opções de apostas. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_o_rapi_0e0802",
+      "expected": "Não foi possível carregar o Rapidão. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_os_lim_08d889",
+      "expected": "Não foi possível carregar os limites da aposta. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_salvar_a_aposta_79ba1d",
+      "expected": "Não foi possível salvar a aposta favorita. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_salvar_a_aposta_eab8cf",
+      "expected": "Não foi possível salvar a aposta favorita."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nao_foi_possivel_salvar_o_rapida_58375b",
+      "expected": "Não foi possível salvar o Rapidão."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "nenhuma_modalidade_disponivel_pa_88a68e",
+      "expected": "Nenhuma modalidade disponível para aposta."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "o_registro_de_apostas_individuai_b546d7",
+      "expected": "O registro de apostas individuais para o concurso %1$s foi encerrado."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "o_valor_escolhido_tem_que_ser_um_01a660",
+      "expected": "O valor escolhido tem que ser um pouco maior que o valor mínimo do carrinho, para isso já ajustamos o máximo para %1$s e o mínimo para %2$s assim tudo vai funcionar perfeitamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "ocorreu_um_erro_inesperado_ao_ca_2cdaea",
+      "expected": "Ocorreu um erro inesperado ao carregar as apostas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "ocorreu_um_erro_inesperado_ao_ca_ba37c6",
+      "expected": "Ocorreu um erro inesperado ao carregar a aposta."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "ocorreu_um_erro_inesperado_ao_ca_be2fa9",
+      "expected": "Ocorreu um erro inesperado ao carregar as apostas favoritas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "ocorreu_um_erro_inesperado_no_ra_2ee739",
+      "expected": "Ocorreu um erro inesperado no Rapidão."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "para_esta_aposta_selecione_no_ma_343a7c",
+      "expected": "Para esta aposta, selecione no máximo %1$s número(s) por coluna."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "por_ser_uma_modalidade_especial_d5f024",
+      "expected": "Por ser uma modalidade especial, esse concurso não permite teimosinhas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "pular_para_o_final_9a2a22",
+      "expected": "Pular para\no final"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "quina_de_sao_joao_6cc954",
+      "expected": "quina de \nsão joão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "revise_a_configuracao_do_rapidao_9fabb5",
+      "expected": "Revise a configuração do Rapidão antes de salvar."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "selecione_a_quantidade_escolhida_9aaa6d",
+      "expected": "Selecione a quantidade escolhida, com pelo menos um número em cada coluna."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "selecione_mais_1_numero_96f15b",
+      "expected": "Selecione mais 1 número."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "selecione_mais_1_s_numeros_868900",
+      "expected": "Selecione mais %1$s números."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "selecione_o_mes_da_sorte_c559a5",
+      "expected": "Selecione o mês da sorte."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "selecione_o_time_do_coracao_7bbd51",
+      "expected": "Selecione o time do coração."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "selecione_todos_os_jogos_e_ao_me_13258f",
+      "expected": "Selecione todos os jogos e ao menos um duplo ou triplo válido."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "seu_carrinho_esta_vazio_6e7dbb",
+      "expected": "Seu carrinho está vazio."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "time_do_coracao_1_s_73aec0",
+      "expected": "\nTime do coração: %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "todas_aff4d1",
+      "expected": "Todas"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "um_numero_nao_pode_ser_marcado_c_e7cc40",
+      "expected": "Um número não pode ser marcado como obrigatório e proibido."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "vamos_comecar_ac24d9",
+      "expected": "Vamos começar"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "voce_aumentou_a_quantidade_de_nu_2d08ee",
+      "expected": "Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "voce_aumentou_a_quantidade_de_tr_ad1edd",
+      "expected": "Você aumentou a quantidade de trevos, o valor será alterado. Fique atento ao valor final da sua aposta."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "voce_nao_pode_fazer_isso_pois_ne_0b0267",
+      "expected": "Você não pode fazer isso, pois nessa coluna é necessário ter selecionado %1$s número(s)"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.betting.presentation.formatting.messages",
+      "key": "voce_pode_escolher_mais_numeros_96770d",
+      "expected": "Você pode escolher mais números por coluna fazendo apostas combinadas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "1_aposta_4391cf",
+      "expected": "1 aposta"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "1_s_2_s_x_3_s_4_s_4784ee",
+      "expected": "%1$s. %2$s x %3$s%4$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "1_s_aposta_s_8c965f",
+      "expected": "%1$s aposta(s)"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "1_s_apostas_7b352b",
+      "expected": "%1$s apostas"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "1_s_bolao_2_s_05fab1",
+      "expected": "%1$s • Bolão %2$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "carrinho_favorito_e0c191",
+      "expected": "Carrinho favorito"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "carrinho_sem_payload_d5c84c",
+      "expected": "Carrinho sem payload"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "cota_1_s_740517",
+      "expected": "Cota %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "cota_de_bolao_5dbb22",
+      "expected": "Cota de bolão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "cota_de_bolao_sem_valor_total_29f4a7",
+      "expected": "Cota de bolão sem valor total"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "dia_de_sorte_b5c7a5",
+      "expected": "Dia de Sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "dupla_sena_a2c9e5",
+      "expected": "Dupla Sena"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "lotofacil_d3ed7c",
+      "expected": "Lotofácil"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "mega_sena_1af8ff",
+      "expected": "Mega-Sena"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "mes_da_sorte_1_s_35a139",
+      "expected": "Mês da sorte: %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "milionaria_11be79",
+      "expected": "+Milionária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "modalidade_indisponivel_para_sim_2dee23",
+      "expected": "Modalidade indisponível para simulação."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "para_continuar_faca_login_cadast_30e1ca",
+      "expected": "Para continuar, faça login/cadastre-se."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "super_sete_8d4823",
+      "expected": "Super Sete"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "time_do_coracao_1_s_7e407c",
+      "expected": "Time do coração: %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.data.messages",
+      "key": "trevos_1_s_946f5c",
+      "expected": "Trevos: %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "a_remocao_automatica_exige_uma_r_8c9f83",
+      "expected": "A remoção automática exige uma reserva de cota"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "aposta_favorita_invalida_5735e8",
+      "expected": "Aposta favorita inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "aposta_local_nao_encontrada_8ea469",
+      "expected": "Aposta local não encontrada."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "carrinho_favorito_invalido_32aa99",
+      "expected": "Carrinho favorito inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "existe_uma_aposta_identica_em_se_18a78d",
+      "expected": "Existe uma aposta idêntica em seu carrinho. Deseja prosseguir com a inclusão?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "informe_o_nome_do_carrinho_favor_cbc31f",
+      "expected": "Informe o nome do carrinho favorito"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "item_do_carrinho_invalido_eb5fe0",
+      "expected": "Item do carrinho inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "modalidade_indisponivel_para_apo_59acb4",
+      "expected": "Modalidade indisponível para apostar no momento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "nao_e_permitido_incluir_uma_nova_f0e027",
+      "expected": "Não é permitido incluir uma nova aposta no carrinho, pois a quantidade máxima de aposta já foi atingida."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "o_registro_de_apostas_individuai_b546d7",
+      "expected": "O registro de apostas individuais para o concurso %1$s foi encerrado."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "preco_da_aposta_indisponivel_2b7239",
+      "expected": "Preço da aposta indisponível."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "quantidade_de_apostas_invalida_f224c8",
+      "expected": "Quantidade de apostas inválida."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "selecao_de_concurso_invalida_d3c4ad",
+      "expected": "Seleção de concurso inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "valor_da_compra_invalido_9e6191",
+      "expected": "Valor da compra inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.domain.model.messages",
+      "key": "valor_do_carrinho_invalido_e1f371",
+      "expected": "Valor do carrinho inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "as_apostas_ou_a_sessao_foram_alt_8c96c3",
+      "expected": "As apostas ou a sessão foram alteradas. Atualize a consulta antes de excluir."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "as_apostas_so_podem_ocorrer_em_t_ee6a34",
+      "expected": "As apostas só podem ocorrer em território nacional. Portanto, você somente conseguirá pagar uma compra se estiver no Brasil, não havendo impedimento para utilizar os demais serviços.\nPodemos consultar a sua localização?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "as_apostas_so_podem_ocorrer_em_t_efd4af",
+      "expected": "As apostas só podem ocorrer em território nacional. Suas apostas serão mantidas no carrinho para a conclusão da compra quando você estiver no país."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "bolao_e1fa12",
+      "expected": "BOLÃO"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "combo_de_apostas_c1d6d3",
+      "expected": "Combo de Apostas"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "cotas_bolao_86b8bf",
+      "expected": "Cotas Bolão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "dia_de_sorte_71bc30",
+      "expected": "dia de sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "informe_o_nome_do_carrinho_favor_fe59d0",
+      "expected": "Informe o nome do carrinho favorito."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "lotofacil_dbb2e4",
+      "expected": "lotofácil"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "milionaria_c791e4",
+      "expected": "+milionária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "nao_foi_possivel_atualizar_o_car_12bae5",
+      "expected": "Não foi possível atualizar o carrinho."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "nao_foi_possivel_atualizar_o_car_80502e",
+      "expected": "Não foi possível atualizar o carrinho favorito."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_o_carr_0383b6",
+      "expected": "Não foi possível carregar o carrinho. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_os_car_ddd83b",
+      "expected": "Não foi possível carregar os carrinhos favoritos. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "nao_foi_possivel_concluir_esta_o_3c7db3",
+      "expected": "Não foi possível concluir esta operação. Por favor, tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "nao_foi_possivel_consultar_as_ap_430cc0",
+      "expected": "Não foi possível consultar as apostas. Entre na conta utilizada no envio e tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "ocorreu_um_erro_inesperado_ao_at_0c9f29",
+      "expected": "Ocorreu um erro inesperado ao atualizar o carrinho favorito."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "ocorreu_um_erro_inesperado_ao_at_fbdd3e",
+      "expected": "Ocorreu um erro inesperado ao atualizar o carrinho."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "pascoa_64b52e",
+      "expected": "páscoa"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.cart.presentation.formatting.messages",
+      "key": "sao_joao_395cc6",
+      "expected": "são joão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "2_numeros_e_1_trevo_acertados_92a7be",
+      "expected": "2 números e 1 trevo acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "2_numeros_e_2_trevos_acertados_220ba0",
+      "expected": "2 números e 2 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "3_numeros_e_1_trevo_acertados_1dae8c",
+      "expected": "3 números e 1 trevo acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "3_numeros_e_2_trevos_acertados_bb86bb",
+      "expected": "3 números e 2 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "4_numeros_e_1_ou_0_trevos_acerta_af30a9",
+      "expected": "4 números e 1 ou 0 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "4_numeros_e_2_trevos_acertados_195c27",
+      "expected": "4 números e 2 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "5_numeros_2_trevos_acertados_d08e75",
+      "expected": "5 números +2 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "5_numeros_e_1_ou_0_trevos_acerta_76578f",
+      "expected": "5 números e 1 ou 0 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "6_numeros_1_ou_6_0_trevos_acerta_78c0c2",
+      "expected": "6 números +1 ou 6 +0 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "6_numeros_2_trevos_acertados_bf714e",
+      "expected": "6 números +2 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "atencao_b0f8a4",
+      "expected": "Atenção"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "autoavaliacao_do_apostador_057b6e",
+      "expected": "Autoavaliação do apostador"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "combos_de_apostas_d263ed",
+      "expected": "Combos de Apostas"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "dia_de_sorte_71bc30",
+      "expected": "dia de sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "dia_de_sorte_b5c7a5",
+      "expected": "Dia de Sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "duvidas_10e026",
+      "expected": "Dúvidas"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "final_draw_pending",
+      "expected": "Sorteio a confirmar"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "final_dupla_sena_title",
+      "expected": "dupla sena"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "final_instant_title",
+      "expected": "instantânea"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "final_mega_sena_title",
+      "expected": "mega-sena"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "final_prize_pending",
+      "expected": "Prêmio a confirmar"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "final_super_seven_title",
+      "expected": "super sete"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "horario_indisponivel_ac0a5e",
+      "expected": "Horário indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "jogo_responsavel_01eb13",
+      "expected": "Jogo responsável"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "lotericas_favoritas_8a5e86",
+      "expected": "Lotéricas Favoritas"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "lotofacil_d3ed7c",
+      "expected": "Lotofácil"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "lotofacil_dbb2e4",
+      "expected": "lotofácil"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "mes_de_sorte_4fd420",
+      "expected": "Mês de sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "meus_cartoes_d7f57a",
+      "expected": "Meus cartões"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "milhao_afa9f1",
+      "expected": "Milhão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "milhao_e71117",
+      "expected": "milhão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "milhoes_44bbbb",
+      "expected": "Milhões"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "milhoes_ae1862",
+      "expected": "milhões"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "milionaria_11be79",
+      "expected": "+Milionária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "milionaria_c791e4",
+      "expected": "+milionária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "minha_area_f0acc6",
+      "expected": "Minha área"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "nao_foi_possivel_abrir_o_link_da_af56cc",
+      "expected": "Não foi possível abrir o link da notificação."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "nao_foi_possivel_abrir_o_navegad_b731a5",
+      "expected": "Não foi possível abrir o navegador. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "nao_foi_possivel_acessar_o_servi_856170",
+      "expected": "Não foi possível acessar o serviço. Verifique sua conexão."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "nao_foi_possivel_atualizar_as_pr_0951be",
+      "expected": "Não foi possível atualizar as preferências. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_as_mod_7d682d",
+      "expected": "Não foi possível carregar as modalidades. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "nao_foi_possivel_concluir_a_oper_29014f",
+      "expected": "Não foi possível concluir a operação. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "nao_foi_possivel_concluir_a_oper_c13b9b",
+      "expected": "Não foi possível concluir a operação."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "nao_foi_possivel_concluir_esta_o_3c7db3",
+      "expected": "Não foi possível concluir esta operação. Por favor, tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "nenhuma_modalidade_disponivel_no_8d67af",
+      "expected": "Nenhuma modalidade disponível no momento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "numeros_acertados_934ae9",
+      "expected": " números acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "o_carousel_precisa_ter_ao_menos_d656c9",
+      "expected": "O carousel precisa ter ao menos um item"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "politica_de_jogo_responsavel_0fb2c8",
+      "expected": "Política de jogo responsável"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "rapidao_658c41",
+      "expected": "Rapidão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "resultados_310561",
+      "expected": "Resultados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "suspensao_temporaria_3a6e3c",
+      "expected": "Suspensão temporária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "termo_de_uso_d57d7b",
+      "expected": "Termo de uso"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "time_do_coracao_3a182e",
+      "expected": "Time do Coração"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "voce_sera_direcionado_para_o_sit_79e7bc",
+      "expected": "Você será direcionado para o site da CAIXA Loterias e sairá do aplicativo. Deseja continuar?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.home.presentation.formatting.messages",
+      "key": "voce_sera_redirecionado_para_o_p_ddf63b",
+      "expected": "Você será redirecionado para o portal do Jogo Responsável"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.data.messages",
+      "key": "as_ab3cd7",
+      "expected": " às "
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.data.messages",
+      "key": "codigo_do_bolao_obrigatorio_4b3ef2",
+      "expected": "Código do bolão obrigatório"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.data.messages",
+      "key": "resposta_do_detalhe_do_bolao_sem_9036e4",
+      "expected": "Resposta do detalhe do bolão sem payload"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.apimessages.messages",
+      "key": "a_quantidade_minima_de_cotas_nao_d94b6d",
+      "expected": "A quantidade mínima de cotas não pode ser maior que a máxima"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.apimessages.messages",
+      "key": "filtro_nao_informado_d8ea12",
+      "expected": "Filtro não informado"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.apimessages.messages",
+      "key": "loteca_dos_pais_f69a3a",
+      "expected": "loteca\ndos pais"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.apimessages.messages",
+      "key": "quantidade_maxima_nao_pode_ser_m_1d14f1",
+      "expected": "Quantidade máxima não pode ser maior que 100"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.apimessages.messages",
+      "key": "quantidade_maxima_nao_pode_ser_m_6f7be5",
+      "expected": "Quantidade máxima não pode ser menor que 2"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.apimessages.messages",
+      "key": "quantidade_minima_nao_pode_ser_m_536325",
+      "expected": "Quantidade mínima não pode ser menor que 2"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.apimessages.messages",
+      "key": "quantidade_minima_nao_pode_ser_m_d73775",
+      "expected": "Quantidade mínima não pode ser maior que a máxima"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.apimessages.messages",
+      "key": "um_numero_nao_pode_estar_nas_dua_75bd07",
+      "expected": "Um número não pode estar nas duas listas"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.messages",
+      "key": "codigo_do_bolao_obrigatorio_4b3ef2",
+      "expected": "Código do bolão obrigatório"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.messages",
+      "key": "concurso_do_bolao_invalido_639982",
+      "expected": "Concurso do bolão inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.messages",
+      "key": "modalidade_do_bolao_obrigatoria_65e63e",
+      "expected": "Modalidade do bolão obrigatória"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.messages",
+      "key": "quantidade_de_cotas_indisponivel_5f2f0a",
+      "expected": "Quantidade de cotas indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.domain.model.messages",
+      "key": "valor_da_cota_invalido_ab7cb7",
+      "expected": "Valor da cota inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "aposta_de_9a14cf",
+      "expected": " aposta de "
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "apostas_de_11b8ee",
+      "expected": " apostas de "
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "apostas_sem_quantidade_minina_ne_697e36",
+      "expected": "Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "bilhao_d89fd6",
+      "expected": "Bilhão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "bilhoes_656f67",
+      "expected": "Bilhões"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "cota_disponivel_de_fae690",
+      "expected": " cota disponível de "
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "cotas_disponiveis_de_010d84",
+      "expected": " cotas disponíveis de "
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "dia_de_sorte_71bc30",
+      "expected": "dia de sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "dupla_de_pascoa_68c9b0",
+      "expected": "dupla de páscoa"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "dupla_de_pascoa_6da0ff",
+      "expected": "dupla de \npáscoa"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "lotofacil_da_independencia_5a2372",
+      "expected": "lotofácil da \nindependência"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "lotofacil_da_independencia_86aece",
+      "expected": "lotofácil da independência"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "lotofacil_dbb2e4",
+      "expected": "lotofácil"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "mega_da_virada_4113fa",
+      "expected": "mega da virada"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "mega_da_virada_ce5f36",
+      "expected": "mega da \nvirada"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "milhao_afa9f1",
+      "expected": "Milhão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "milhoes_44bbbb",
+      "expected": "Milhões"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "milionaria_c791e4",
+      "expected": "+milionária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "nao_foi_possivel_adicionar_a_cot_6eae19",
+      "expected": "Não foi possível adicionar a cota ao carrinho. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_as_lot_60820b",
+      "expected": "Não foi possível carregar as lotéricas favoritas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_os_det_245a06",
+      "expected": "Não foi possível carregar os detalhes do bolão. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "nao_foi_possivel_concluir_esta_o_3c7db3",
+      "expected": "Não foi possível concluir esta operação. Por favor, tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "nao_foi_possivel_confirmar_a_res_4afb21",
+      "expected": "Não foi possível confirmar a reserva da cota. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "nao_foram_encontrados_boloes_dis_ecef7d",
+      "expected": "Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "quina_de_sao_joao_6cc954",
+      "expected": "quina de \nsão joão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "quina_de_sao_joao_a3337a",
+      "expected": "quina de são joão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "sessao_necessaria_para_buscar_bo_6628ac",
+      "expected": "Sessão necessária para buscar bolões"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplace.presentation.formatting.messages",
+      "key": "sessao_substituida_durante_a_con_d4be24",
+      "expected": "Sessão substituída durante a consulta"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "configuracao_do_filtro_indisponi_ecb11f",
+      "expected": "Configuração do filtro indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "dia_de_sorte_b5c7a5",
+      "expected": "Dia de Sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "dupla_de_pascoa_2b9126",
+      "expected": "dupla de\npáscoa"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "dupla_de_pascoa_80ee17",
+      "expected": "Dupla de Páscoa"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "final_instant_title",
+      "expected": "Instantânea"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "lotofacil_d3ed7c",
+      "expected": "Lotofácil"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "lotofacil_da_independencia_2d7ac9",
+      "expected": "lotofácil da\nindependência"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "lotofacil_da_independencia_af8f9c",
+      "expected": "Lotofácil da Independência"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "mega_da_virada_2ccce6",
+      "expected": "mega da\nvirada"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "mega_da_virada_8d37ad",
+      "expected": "Mega da Virada"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "milionaria_11be79",
+      "expected": "+Milionária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "quantidade_maxima_nao_pode_ser_m_1d14f1",
+      "expected": "Quantidade máxima não pode ser maior que 100"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "quantidade_maxima_nao_pode_ser_m_6f7be5",
+      "expected": "Quantidade máxima não pode ser menor que 2"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "quantidade_minima_nao_pode_ser_m_536325",
+      "expected": "Quantidade mínima não pode ser menor que 2"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "quantidade_minima_nao_pode_ser_m_d73775",
+      "expected": "Quantidade mínima não pode ser maior que a máxima"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "quina_de_sao_joao_3f2b5c",
+      "expected": "Quina de São João"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "quina_de_sao_joao_4893ab",
+      "expected": "quina de\nsão joão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "sua_busca_nao_retornou_resultado_d069d5",
+      "expected": "Sua busca não retornou resultados."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.messages",
+      "key": "todas_as_modalidades_d0b87a",
+      "expected": "Todas as\nmodalidades"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "all_title",
+      "expected": "Todas as notificações"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "canal_loterias_8d3249",
+      "expected": "Canal Loterias"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "loterias_2a60a4",
+      "expected": "Loterias"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "luck_description",
+      "expected": "Avisos quando houver oportunidades de ganhar mais (concurso especial, prêmio acumulado)"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "luck_title",
+      "expected": "Lembretes da Sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "news_description",
+      "expected": "Novos produtos ou serviços no App"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "news_title",
+      "expected": "Dicas e Novidades"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "payments_description",
+      "expected": "Confirmação e pendências de pagamentos e confirmação de resgates realizados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "payments_title",
+      "expected": "Pagamentos e Resgates"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "results_description",
+      "expected": "Avisos quando resultados das suas apostas estiverem disponíveis para conferência"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "results_title",
+      "expected": "Resultados Disponíveis"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "security_description",
+      "expected": "Avisos para proteger você e melhorar sua experiência"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.notifications.data.formatting.messages",
+      "key": "security_title",
+      "expected": "Alertas de Segurança ou Disponibilidade de Serviços"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.onboarding.presentation.formatting.messages",
+      "key": "acompanhe_e_gerencie_todas_as_su_4b243f",
+      "expected": "Acompanhe e gerencie todas as suas apostas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.onboarding.presentation.formatting.messages",
+      "key": "suas_apostas_ainda_mais_faceis_e_dae5cf",
+      "expected": "Suas apostas ainda mais fáceis e muito mais rápidas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.onboarding.presentation.formatting.messages",
+      "key": "todas_as_apostas_na_palma_da_sua_8f3184",
+      "expected": "Todas as apostas na palma da sua mão, o dia inteiro, todos os dias. ;)"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.onboarding.presentation.formatting.messages",
+      "key": "uma_nova_experiencia_1b5282",
+      "expected": "Uma nova experiência"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "bandeira_do_cartao_nao_identific_08cc16",
+      "expected": "Bandeira do cartão não identificada"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "chave_publica_do_mercado_pago_in_5458c9",
+      "expected": "Chave pública do Mercado Pago indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "cobranca_pix_sem_payload_8e1518",
+      "expected": "Cobrança Pix sem payload"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "compra_sem_identificador_valido_7f1e28",
+      "expected": "Compra sem identificador válido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "compra_sem_limite_de_consultas_5dbe00",
+      "expected": "Compra sem limite de consultas"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "compra_sem_payload_de_processame_78e664",
+      "expected": "Compra sem payload de processamento"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "compra_sem_periodicidade_de_cons_b180c8",
+      "expected": "Compra sem periodicidade de consulta"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "configuracao_do_mercado_pago_ind_b60829",
+      "expected": "Configuração do Mercado Pago indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "consulte_minhas_compras_para_aco_1dc19c",
+      "expected": "Consulte Minhas Compras para acompanhar esta compra."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "dados_do_apostador_indisponiveis_a42aa2",
+      "expected": "Dados do apostador indisponíveis"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "nao_foi_possivel_processar_a_com_fb8518",
+      "expected": "Não foi possível processar a compra."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "numero_do_cartao_invalido_ce174e",
+      "expected": "Número do cartão inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "resposta_de_processamento_perten_838225",
+      "expected": "Resposta de processamento pertence a outra compra"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "tempo_de_resposta_esgotou_18ae0a",
+      "expected": "Tempo de resposta esgotou"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.data.messages",
+      "key": "token_do_cartao_indisponivel_497900",
+      "expected": "Token do cartão indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.domain.model.messages",
+      "key": "cartao_invalido_4d214d",
+      "expected": "Cartão inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.domain.model.messages",
+      "key": "codigo_de_seguranca_invalido_130084",
+      "expected": "Código de segurança inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.domain.model.messages",
+      "key": "compra_invalida_66f609",
+      "expected": "Compra inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.domain.model.messages",
+      "key": "informe_um_e_mail_valido_para_o_82d261",
+      "expected": "Informe um e-mail válido para o cadastro Mercado Pago."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.domain.model.messages",
+      "key": "meio_de_pagamento_invalido_eaf8a5",
+      "expected": "Meio de pagamento inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.domain.model.messages",
+      "key": "nome_do_titular_invalido_bb8e15",
+      "expected": "Nome do titular inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.domain.model.messages",
+      "key": "numero_do_cartao_invalido_ce174e",
+      "expected": "Número do cartão inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.domain.model.messages",
+      "key": "token_de_cadastro_mercado_pago_i_0cf401",
+      "expected": "Token de cadastro Mercado Pago inválido."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.domain.model.messages",
+      "key": "validade_do_cartao_invalida_0dacf3",
+      "expected": "Validade do cartão inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "a_validade_do_seu_codigo_de_paga_9fd6f9",
+      "expected": "A validade do seu código de pagamento Pix expirou.\n"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "acompanhe_o_processamento_do_seu_ce74e7",
+      "expected": "Acompanhe o processamento do seu pedido na opção Minhas Compras.\n\n"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "acompanhe_o_status_da_sua_compra_0013f7",
+      "expected": "Acompanhe o status da sua compra acessando o menu Minhas Compras."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "aguarde_alguns_instantes_e_verif_ab3d34",
+      "expected": "Aguarde alguns instantes e verifique na área Minhas compras se a compra foi processada antes de tentar novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "cadastre_um_cartao_para_continua_c53e25",
+      "expected": "Cadastre um cartão para continuar."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "cartao_salvo_nao_encontrado_aa07a0",
+      "expected": "Cartão salvo não encontrado"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "caso_precise_recuperar_este_codi_8f24e6",
+      "expected": "Caso precise recuperar este código ou consultar o status da compra acesse o menu \"Minhas Compras\"."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "codigo_de_seguranca_invalido_130084",
+      "expected": "Código de segurança inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "cole_o_codigo_pix_14fe16",
+      "expected": "Cole o código Pix;"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "confirme_as_informacoes_e_realiz_bceb56",
+      "expected": "Confirme as informações e realize o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "copie_o_codigo_gerado_e_pague_de_28e040",
+      "expected": "Copie o código gerado e pague dentro do prazo que será apresentado;"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "entre_no_aplicativo_da_sua_insti_f16eb7",
+      "expected": "Entre no aplicativo da sua instituição financeira e \nacesse o ambiente Pix;"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "escolha_a_opcao_pix_copia_e_cola_61c86b",
+      "expected": "Escolha a opção Pix Copia e Cola;"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "escolha_um_dos_processadores_aba_c619e4",
+      "expected": "Escolha um dos processadores abaixo e cadastre um cartão de crédito de sua titularidade ou escolha um cartão salvo para continuar."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "estamos_processando_sua_compra_952655",
+      "expected": "Estamos processando sua compra."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "forma_de_146f5e",
+      "expected": "Forma de "
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "meio_de_pagamento_indisponivel_69edb1",
+      "expected": "Meio de pagamento indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "nao_foi_possivel_abrir_o_cadastr_c2af28",
+      "expected": "Não foi possível abrir o cadastro Mercado Pago no navegador."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "nao_foi_possivel_acessar_o_pagam_5e08bc",
+      "expected": "Não foi possível acessar o pagamento. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "nao_foi_possivel_consultar_sua_c_08c7ae",
+      "expected": "Não foi possível consultar sua compra."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "nao_foi_possivel_consultar_sua_c_4f772c",
+      "expected": "Não foi possível consultar sua compra. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "nao_foi_possivel_continuar_o_pag_2420df",
+      "expected": "Não foi possível continuar o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "nao_foi_possivel_iniciar_o_cadas_640b5c",
+      "expected": "Não foi possível iniciar o cadastro Mercado Pago. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "nao_foi_possivel_iniciar_o_cadas_cf9f3e",
+      "expected": "Não foi possível iniciar o cadastro Mercado Pago. Verifique sua conexão."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "nao_foi_possivel_processar_o_pag_16bbc1",
+      "expected": "Não foi possível processar o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "nao_foi_possivel_processar_o_pag_f870ef",
+      "expected": "Não foi possível processar o pagamento. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "nao_garante_a1d33e",
+      "expected": "não garante"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "o_pagamento_realizado_nao_garant_2daf0a",
+      "expected": "O pagamento realizado não garante automaticamente a efetivação da aposta."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "o_termo_de_uso_foi_atualizado_e_959939",
+      "expected": "O termo de Uso foi Atualizado. É necessário aceitar novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "o_valor_total_da_sua_compra_e_de_776a2e",
+      "expected": "O Valor total da sua compra é de %1$s. Confirma?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "ocorreu_um_erro_inesperado_ao_pr_5f8b70",
+      "expected": "Ocorreu um erro inesperado ao processar o pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "pagamento_ainda_nao_identificado_a85b53",
+      "expected": "Pagamento ainda não identificado.\n"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "pagamentos_identificados_fora_do_9a0a5a",
+      "expected": "Pagamentos identificados fora do tempo limite para efetivação das apostas serão estornados.\n"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "pagamentos_identificados_fora_do_a6ac3d",
+      "expected": "Pagamentos identificados fora do tempo limite para efetivação de apostas serão estornados.\n"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "para_participar_dos_sorteios_a_a_a7b029",
+      "expected": "Para participar dos sorteios, a aposta precisa estar EFETIVADA."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "preencha_corretamente_os_dados_d_47a8d5",
+      "expected": "Preencha corretamente os dados do cartão."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "se_a_aposta_nao_for_registrada_o_cd21b6",
+      "expected": "Se a aposta não for registrada, o valor será devolvido."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "valor_do_carrinho_invalido_e1f371",
+      "expected": "Valor do carrinho inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "verificamos_que_sua_compra_esta_6e10b2",
+      "expected": "Verificamos que sua compra está em processamento e está demorando mais que o esperado. "
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "voce_deseja_aguardar_a_confirmac_b26135",
+      "expected": "Você deseja aguardar a confirmação de pagamento?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.payment.presentation.formatting.messages",
+      "key": "voce_pode_acompanhar_tudo_em_min_ea338a",
+      "expected": "Você pode acompanhar tudo em Minhas Compras."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.data.messages",
+      "key": "autoavaliacao_sem_payload_33d037",
+      "expected": "Autoavaliação sem payload"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.data.messages",
+      "key": "cpf_do_apostador_indisponivel_1e300c",
+      "expected": "CPF do apostador indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.data.messages",
+      "key": "repassometro_sem_payload_d61f0b",
+      "expected": "Repassômetro sem payload"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.data.messages",
+      "key": "suspensao_sem_payload_9b402b",
+      "expected": "Suspensão sem payload"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.domain.model.messages",
+      "key": "autoavaliacao_sem_perguntas_84a6e1",
+      "expected": "Autoavaliação sem perguntas"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.domain.model.messages",
+      "key": "periodo_de_suspensao_invalido_23733b",
+      "expected": "Período de suspensão inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.domain.model.messages",
+      "key": "respostas_obrigatorias_a68d44",
+      "expected": "Respostas obrigatórias"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "0800_104_0104_demais_regioes_c86b7a",
+      "expected": "0800 104 0104 - Demais regiões"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "4004_0104_capitais_e_regioes_met_6b2fb5",
+      "expected": "4004 0104 - Capitais e Regiões Metropolitanas"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "associacao_viver_bem_52a905",
+      "expected": "Associação Viver Bem"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "av_ascendino_reis_763_vila_cleme_aa091c",
+      "expected": "Av. Ascendino Reis, 763 - Vila Clementino - São Paulo - SP"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "bilhao_de_reais_552327",
+      "expected": "bilhão de reais"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "bilhoes_de_reais_a06f6e",
+      "expected": "bilhões de reais"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "centros_de_atencao_psicossocial_38d323",
+      "expected": "Centros de Atenção Psicossocial do Ministério da Saúde - CAPS"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "clique_aqui_e_localize_uma_unida_033ccc",
+      "expected": "Clique aqui e localize uma unidade mais próxima"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_anonymous_gamblers_link",
+      "expected": "www.jogadoresanonimos.com.br"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_anonymous_gamblers_phones",
+      "expected": "Telefones: (21) 99477-1813 | (11)99571-6942"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_anonymous_gamblers_title",
+      "expected": "Jogadores Anônimos"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_caixa_phone_label",
+      "expected": "_Alô CAIXA:_"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_caixa_title",
+      "expected": "Telefones atuais:"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_proad_email",
+      "expected": "mpm_fto@uol.com.br"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_proad_phones",
+      "expected": "Telefones: (11) 5579-1543 | (11) 94147-0763"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_proamjo_email",
+      "expected": "proamjo.secretaria@gmail.com"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_proamjo_phones",
+      "expected": "Telefones: (11) 2661-7805 | (11) 2307-78052"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_santa_casa_phone",
+      "expected": "Telefones: (21) 2533-0118"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_title",
+      "expected": "ONDE PROCURAR AJUDA?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_viver_bem_email",
+      "expected": "contato@associacaoviverbem.org.br"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "final_help_viver_bem_phone",
+      "expected": "Telefone: (11) 2307-7804"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "milhao_de_reais_c7c808",
+      "expected": "milhão de reais"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "milhoes_de_reais_36a26e",
+      "expected": "milhões de reais"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_os_dad_351069",
+      "expected": "Não foi possível carregar os dados."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "nao_foi_possivel_conectar_verifi_d9330e",
+      "expected": "Não foi possível conectar. Verifique sua internet e tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "opcao_2_jogo_responsavel_03fb59",
+      "expected": "Opção 2 (Jogo Responsável)"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "opcao_6_loterias_083c40",
+      "expected": "Opção 6 (Loterias)"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "proad_programa_de_orientacao_e_a_28c49a",
+      "expected": "PROAD (Programa de Orientação e Atendimento a Dependentes) USP (Universidade Federal de São Paulo)"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "proamjo_programa_ambulatorial_do_fb8407",
+      "expected": "PROAMJO (Programa Ambulatorial do Jogo Patológico do Hospital das Clínicas do Instituto de Psiquiatria do HCFMUSP)"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "rua_artur_de_azevedo_147_cerquei_94f21f",
+      "expected": "Rua Artur de Azevedo, 147 - Cerqueira César - São Paulo - SP"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "rua_dr_ovidio_pires_de_campos_78_3f937f",
+      "expected": "Rua Dr. Ovídio Pires de Campos, 785 - Cerqueira César - São Paulo - SP"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "rua_santa_luzia_206_centro_rio_d_f91b64",
+      "expected": "Rua Santa Luzia, 206 - Centro - Rio de Janeiro - RJ"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "santa_casa_de_misericordia_c096e2",
+      "expected": "Santa Casa de Misericórdia"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.responsiblegaming.presentation.formatting.messages",
+      "key": "se_voce_precisa_de_orientacao_de_3b93e0",
+      "expected": "Se você precisa de orientação de profissionais para auxiliar no tratamento de doenças relacionadas aos jogos, relacionamos abaixo os contatos de algumas entidades que podem prestar informações e atendimento. Não deixe de procurar ajuda!"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.data.messages",
+      "key": "concurso_invalido_892893",
+      "expected": "Concurso inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.data.messages",
+      "key": "modalidade_obrigatoria_63c4e6",
+      "expected": "Modalidade obrigatória"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.data.messages",
+      "key": "resultado_sem_payload_df1f51",
+      "expected": "Resultado sem payload"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.data.messages",
+      "key": "resultados_sem_payload_cfdd7a",
+      "expected": "Resultados sem payload"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "2_numeros_e_1_trevo_acertados_92a7be",
+      "expected": "2 números e 1 trevo acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "2_numeros_e_2_trevos_acertados_220ba0",
+      "expected": "2 números e 2 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "3_numeros_e_1_trevo_acertados_1dae8c",
+      "expected": "3 números e 1 trevo acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "3_numeros_e_2_trevos_acertados_bb86bb",
+      "expected": "3 números e 2 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "4_numeros_e_1_ou_0_trevos_acerta_af30a9",
+      "expected": "4 números e 1 ou 0 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "4_numeros_e_2_trevos_acertados_195c27",
+      "expected": "4 números e 2 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "5_numeros_2_trevos_acertados_d08e75",
+      "expected": "5 números +2 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "5_numeros_e_1_ou_0_trevos_acerta_76578f",
+      "expected": "5 números e 1 ou 0 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "6_numeros_1_ou_6_0_trevos_acerta_78c0c2",
+      "expected": "6 números +1 ou 6 +0 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "6_numeros_2_trevos_acertados_bf714e",
+      "expected": "6 números +2 trevos acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "dia_de_sorte_b5c7a5",
+      "expected": "Dia de Sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "dupla_de_pascoa_80ee17",
+      "expected": "Dupla de Páscoa"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "informe_uma_modalidade_e_um_conc_a51e1e",
+      "expected": "Informe uma modalidade e um concurso válido."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "lotofacil_d3ed7c",
+      "expected": "Lotofácil"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "lotofacil_da_independencia_af8f9c",
+      "expected": "Lotofácil da Independência"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "mega_da_virada_8d37ad",
+      "expected": "Mega da Virada"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "mes_de_sorte_4fd420",
+      "expected": "Mês de sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "milionaria_11be79",
+      "expected": "+Milionária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "nao_foi_possivel_acessar_o_servi_856170",
+      "expected": "Não foi possível acessar o serviço. Verifique sua conexão."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "nao_foi_possivel_consultar_o_res_465180",
+      "expected": "Não foi possível consultar o resultado. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "numeros_acertados_934ae9",
+      "expected": " números acertados"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "o_ultimo_concurso_apurado_e_o_1_df14d0",
+      "expected": "O último concurso apurado é o %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "quina_de_sao_joao_3f2b5c",
+      "expected": "Quina de São João"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.results.presentation.formatting.messages",
+      "key": "time_do_coracao_3a182e",
+      "expected": "Time do Coração"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "1_s_vezes_56b471",
+      "expected": " (%1$s vezes)"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "1o_sorteio_1_s_c0dc67",
+      "expected": "1º Sorteio - %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "2o_sorteio_1_s_5db28e",
+      "expected": "2º Sorteio - %1$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "agencia_caixa_f622ab",
+      "expected": "Agência Caixa"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "comprovante_pdf_invalido_bede87",
+      "expected": "Comprovante PDF inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "dia_de_sorte_b5c7a5",
+      "expected": "Dia de Sorte"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "dupla_sena_a2c9e5",
+      "expected": "Dupla Sena"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "fonte_de_resgate_de_premio_nao_c_0f199c",
+      "expected": "Fonte de resgate de prêmio não configurada"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "loteca_2979a8",
+      "expected": "Loteca"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "loterica_6552e8",
+      "expected": "Lotérica"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "lotofacil_d3ed7c",
+      "expected": "Lotofácil"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "lotogol_adaed4",
+      "expected": "Lotogol"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "lotomania_244a56",
+      "expected": "Lotomania"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "mega_sena_1af8ff",
+      "expected": "Mega-Sena"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "mercado_pago_fe6402",
+      "expected": "Mercado Pago"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "milionaria_11be79",
+      "expected": "+Milionária"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "nao_foi_possivel_iniciar_o_cadas_026de0",
+      "expected": "Não foi possível iniciar o cadastro Mercado Pago."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "pix_41b063",
+      "expected": "PIX"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "quina_2d1f9e",
+      "expected": "Quina"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "receba_na_hora_fe40ac",
+      "expected": "Receba na hora"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "retire_em_qualquer_loterica_d53b24",
+      "expected": "Retire em qualquer lotérica"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "super_sete_8d4823",
+      "expected": "Super Sete"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "timemania_e24e8e",
+      "expected": "Timemania"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "token_de_cadastro_mercado_pago_a_f82269",
+      "expected": "Token de cadastro Mercado Pago ausente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.data.messages",
+      "key": "valores_acima_da_isencao_do_ir_b68573",
+      "expected": "Valores acima da isenção do IR"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.domain.model.messages",
+      "key": "aposta_invalida_de9ad6",
+      "expected": "Aposta inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.domain.model.messages",
+      "key": "chave_pix_obrigatoria_a97b4b",
+      "expected": "Chave Pix obrigatória"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.domain.model.messages",
+      "key": "e_mail_obrigatorio_a49d54",
+      "expected": "E-mail obrigatório"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.domain.model.messages",
+      "key": "loterica_invalida_d34015",
+      "expected": "Lotérica inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "aposta_de_troca_5f4dcc",
+      "expected": "Aposta de Troca"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "as_apostas_de_loterias_so_podem_27508d",
+      "expected": "As apostas de Loterias só podem ser realizadas em território brasileiro."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "bolao_99927e",
+      "expected": "Bolão"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "chave_invalida_22ed25",
+      "expected": "Chave inválida!"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "codigo_de_resgate_indisponivel_e3a861",
+      "expected": "Código de resgate indisponível"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "e_mail_invalido_3660cb",
+      "expected": "E-mail inválido."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "ir_para_configuracoes_00f494",
+      "expected": "Ir para configurações"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "nao_foi_possivel_abrir_o_comprov_c2df10",
+      "expected": "Não foi possível abrir o comprovante para gravação"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "nao_foi_possivel_acessar_o_servi_856170",
+      "expected": "Não foi possível acessar o serviço. Verifique sua conexão."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "nao_foi_possivel_buscar_as_loter_06f491",
+      "expected": "Não foi possível buscar as lotéricas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "nao_foi_possivel_concluir_a_oper_29014f",
+      "expected": "Não foi possível concluir a operação. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "nao_foi_possivel_concluir_a_oper_c13b9b",
+      "expected": "Não foi possível concluir a operação."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "nao_foi_possivel_consultar_o_con_5fcb9e",
+      "expected": "Não foi possível consultar o concurso atual."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "nao_foi_possivel_favoritar_65b94b",
+      "expected": "Não foi possível favoritar."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "nao_foi_possivel_recuperar_sua_l_9fee10",
+      "expected": "Não foi possível recuperar sua localização. Por favor, tente novamente"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "nao_foi_possivel_remover_de_favo_41e8c6",
+      "expected": "Não foi possível remover de favoritas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "permitir_acesso_a_localizacao_9eea5f",
+      "expected": "Permitir acesso a localização"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "precisamos_conferir_se_voce_esta_0dfcfe",
+      "expected": "Precisamos conferir se você está em território brasileiro.\nHabilite sua localização."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.retail.presentation.formatting.messages",
+      "key": "premio_resgatado_com_sucesso_sua_de7645",
+      "expected": "Prêmio resgatado com sucesso! Sua aposta possui Teimosinha e continuará participando dos próximos concursos. Foi gerado um recibo de troca válido para os próximos concursos, e este já está disponível em 'Minhas Apostas'."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.support.presentation.formatting.messages",
+      "key": "as_regras_desta_modalidade_nao_e_069199",
+      "expected": "As regras desta modalidade não estão disponíveis."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.support.presentation.formatting.messages",
+      "key": "h2_politica_de_privacidade_h2_cb0073",
+      "expected": "<h2>Política de privacidade</h2>"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.support.presentation.formatting.messages",
+      "key": "nao_foi_possivel_aceitar_os_term_5a4c46",
+      "expected": "Não foi possível aceitar os termos"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.support.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_o_cont_63e02a",
+      "expected": "Não foi possível carregar o conteúdo"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.support.presentation.formatting.messages",
+      "key": "nao_informado_01af1e",
+      "expected": "Não informado"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.data.messages",
+      "key": "1_s_de_2_s_ec1761",
+      "expected": "%1$s de %2$s"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.data.messages",
+      "key": "aposta_invalida_de9ad6",
+      "expected": "Aposta inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.data.messages",
+      "key": "comprovante_da_aposta_ausente_1128e7",
+      "expected": "Comprovante da aposta ausente"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.data.messages",
+      "key": "dados_do_premio_ausentes_92dfab",
+      "expected": "Dados do prêmio ausentes"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.data.messages",
+      "key": "detalhes_do_premio_ausentes_372548",
+      "expected": "Detalhes do prêmio ausentes"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.data.messages",
+      "key": "situacao_da_aposta_ausente_cc015d",
+      "expected": "Situação da aposta ausente"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.data.messages",
+      "key": "situacao_da_aposta_incompleta_9e526c",
+      "expected": "Situação da aposta incompleta"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.data.messages",
+      "key": "valor_liquido_do_premio_ausente_8a11c9",
+      "expected": "Valor líquido do prêmio ausente"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.domain.model.messages",
+      "key": "aposta_invalida_de9ad6",
+      "expected": "Aposta inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.domain.model.messages",
+      "key": "codigo_do_bilhete_obrigatorio_179100",
+      "expected": "Código do bilhete obrigatório"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.domain.model.messages",
+      "key": "compra_invalida_66f609",
+      "expected": "Compra inválida"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.domain.model.messages",
+      "key": "informe_o_nome_do_carrinho_favor_cbc31f",
+      "expected": "Informe o nome do carrinho favorito"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "a_modalidade_1_s_nao_esta_vigent_4502e8",
+      "expected": "A modalidade %1$s não está vigente. A aposta será efetivada na modalidade %2$s. Deseja prosseguir?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "ajuda_fe0add",
+      "expected": "Ajuda"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "aposta_nao_premiada_1218e0",
+      "expected": "Aposta não premiada"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "aposta_nao_premiada_concorrendo_ffe743",
+      "expected": "Aposta não premiada concorrendo em concursos futuros"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "atencao_b0f8a4",
+      "expected": "Atenção"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "cancelar_bb9dbb",
+      "expected": "Cancelar"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "comprovante_indisponivel_para_es_829b02",
+      "expected": "Comprovante indisponível para esta aposta."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "comprovante_pdf_invalido_bede87",
+      "expected": "Comprovante PDF inválido"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "concurso_nao_apurado_b96550",
+      "expected": "Concurso não apurado"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "final_awarded",
+      "expected": "Premiado"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "final_prize_paid",
+      "expected": "Prêmio pago"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "gerar_novo_codigo_03d852",
+      "expected": "Gerar novo Código"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "informe_o_codigo_do_bilhete_804a11",
+      "expected": "Informe o código do bilhete."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "informe_o_nome_do_carrinho_favor_fe59d0",
+      "expected": "Informe o nome do carrinho favorito."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "modalidade_nao_disponivel_no_mom_5f4037",
+      "expected": "Modalidade não disponível no momento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_abrir_o_comprov_1e8165",
+      "expected": "Não foi possível abrir o comprovante. Verifique se há um leitor de PDF instalado e tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_acessar_o_servi_856170",
+      "expected": "Não foi possível acessar o serviço. Verifique sua conexão."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_adicionar_a_apo_028911",
+      "expected": "Não foi possível adicionar a aposta ao carrinho."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_adicionar_a_apo_072de2",
+      "expected": "Não foi possível adicionar a aposta ao carrinho. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_atualizar_os_de_006e16",
+      "expected": "Não foi possível atualizar os detalhes da compra."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_as_com_4f57c2",
+      "expected": "Não foi possível carregar as compras. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_as_mod_bf4e8c",
+      "expected": "Não foi possível carregar as modalidades."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_as_sit_30d9f2",
+      "expected": "Não foi possível carregar as situações de compra."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_os_dad_bf517e",
+      "expected": "Não foi possível carregar os dados. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_os_fil_0b7129",
+      "expected": "Não foi possível carregar os filtros de apostas."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_os_mei_09d0c5",
+      "expected": "Não foi possível carregar os meios de pagamento."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_carregar_os_mes_526eac",
+      "expected": "Não foi possível carregar os meses das compras."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_completar_a_sua_a93aac",
+      "expected": "Não foi possível completar a sua aposta e seu Pix será devolvido.\n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. Deseja salvar esta compra como carrinho favorito?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_concluir_essa_c_eb0ad1",
+      "expected": "Não foi possível concluir essa compra e sua aposta não foi efetivada. Você pode salvar esse mesmo carrinho para tentar novamente. Deseja salvar esta compra como carrinho favorito?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_concluir_sua_co_777acc",
+      "expected": "Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_consultar_sua_c_08c7ae",
+      "expected": "Não foi possível consultar sua compra."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_consultar_sua_c_4f772c",
+      "expected": "Não foi possível consultar sua compra. Verifique sua internet."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_gerar_o_comprov_4a1d0d",
+      "expected": "Não foi possível gerar o comprovante. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_gerar_o_comprov_9e2cea",
+      "expected": "Não foi possível gerar o comprovante."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_recuperar_os_da_cb8122",
+      "expected": "Não foi possível recuperar os dados desta aposta."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_salvar_a_aposta_79ba1d",
+      "expected": "Não foi possível salvar a aposta favorita. Tente novamente."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_salvar_a_aposta_eab8cf",
+      "expected": "Não foi possível salvar a aposta favorita."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_foi_possivel_salvar_o_carrin_1a8fd3",
+      "expected": "Não foi possível salvar o carrinho favorito."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_identificamos_o_seu_pagament_ab94c8",
+      "expected": "Não identificamos o seu pagamento dentro do prazo previsto para efetuar sua aposta e você não está concorrendo.\n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. E não se preocupe! Caso o pagamento seja identificado, será estornado para a conta pagadora. Deseja salvar esta compra como carrinho favorito?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_premiado_527d80",
+      "expected": "Não premiado"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "nao_recebemos_seu_pix_dentro_do_088627",
+      "expected": "Não recebemos seu Pix dentro do prazo previsto para efetuar sua aposta e você não está concorrendo.\n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. Deseja salvar esta compra como carrinho favorito?"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "pagamento_nao_realizado_1e6ddf",
+      "expected": "Pagamento não realizado"
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "por_favor_insira_o_nome_da_apost_ca54f1",
+      "expected": "Por favor, insira o nome da aposta."
+    },
+    {
+      "bundle": "br.gov.caixa.loterias.feature.tickets.presentation.formatting.messages",
+      "key": "voltar_ao_inicio_372787",
+      "expected": "Voltar ao início"
+    }
+  ],
+  "supplementalEntryCount": 124
+}

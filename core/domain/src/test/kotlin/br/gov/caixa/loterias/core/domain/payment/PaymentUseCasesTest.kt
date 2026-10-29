@@ -1,12 +1,34 @@
 package br.gov.caixa.loterias.core.domain.payment
 
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.core.common.result.AppResult
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.payment.domain.model.CardSubmissionOutcome
+import br.gov.caixa.loterias.feature.payment.domain.model.CardPaymentRequest
+import br.gov.caixa.loterias.feature.payment.domain.model.DamValidation
+import br.gov.caixa.loterias.feature.payment.domain.usecase.DeleteSavedCard
+import br.gov.caixa.loterias.feature.payment.domain.usecase.GeneratePixCharge
+import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethods
+import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgress
+import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCards
+import br.gov.caixa.loterias.feature.payment.domain.model.PaymentCardDraft
+import br.gov.caixa.loterias.feature.payment.domain.model.PaymentCardSelection
+import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
+import br.gov.caixa.loterias.feature.payment.domain.repository.PaymentRepository
+import br.gov.caixa.loterias.feature.payment.domain.model.PixCharge
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseSubmission
+import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
+import br.gov.caixa.loterias.feature.payment.domain.usecase.SubmitCardPayment
+import br.gov.caixa.loterias.feature.payment.domain.usecase.ValidateDam
+import br.gov.caixa.loterias.feature.payment.domain.model.cardBrand
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 
 class PaymentUseCasesTest {
     @Test fun `business notices survive use cases and suppress terminal payment classifiers`() = runTest {

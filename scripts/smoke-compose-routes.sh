@@ -37,6 +37,9 @@ while IFS= read -r route; do
   rendered=false
   if [[ "$started" == true ]]; then
     for _ in {1..4}; do
+      # uiautomator pode retornar sucesso com raiz nula no Android 16. Nunca
+      # aceita a hierarquia da rota anterior quando nenhum novo dump foi gravado.
+      adb shell rm -f /sdcard/compose-route.xml </dev/null >/dev/null
       if adb shell uiautomator dump /sdcard/compose-route.xml </dev/null >/dev/null 2>&1 &&
         adb shell cat /sdcard/compose-route.xml </dev/null 2>/dev/null |
           grep -q "class=\"android.view.View\" package=\"$PACKAGE_NAME\""; then
@@ -46,8 +49,8 @@ while IFS= read -r route; do
       if [[ "$route" == "account/change-login" ]] &&
         adb shell cat /sdcard/compose-route.xml </dev/null 2>/dev/null |
           grep -q 'package="com.android.chrome"'; then
-        # Esta rota abre imediatamente a Conta CAIXA no navegador seguro. O processo do
-        # app deve continuar vivo para receber o retorno e a UI visível pertence ao Chrome.
+        # Esta rota abre imediatamente a Conta CAIXA no navegador seguro. O processo do aplicativo
+        # deve permanecer ativo para receber o callback; a interface visível pertence ao Chrome.
         rendered=true
         break
       fi

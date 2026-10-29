@@ -1,13 +1,22 @@
 package br.gov.caixa.loterias.core.domain.betting
 
-import br.gov.caixa.loterias.core.common.*
-import br.gov.caixa.loterias.core.domain.account.*
-import br.gov.caixa.loterias.core.domain.configuration.*
-import br.gov.caixa.loterias.core.domain.onboarding.*
+import org.junit.Assert.*
+import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
+import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
+import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
+import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
+import br.gov.caixa.loterias.feature.onboarding.domain.model.BettingTutorial
+import br.gov.caixa.loterias.feature.onboarding.domain.repository.OnboardingRepository
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingAction
+import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingDecision
+import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingTarget
+import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareHomeBettingAction
 
 class PrepareHomeBettingActionTest {
     private var access: AppResult<AccountAccess> = AppResult.Success(AccountAccess(PostLoginDestination.HOME, false, BigDecimal.ZERO))
@@ -16,22 +25,45 @@ class PrepareHomeBettingActionTest {
     private var preferenceReads = 0
     private var rapidCompleted = false
     private val onboarding = object : OnboardingRepository {
-        override fun isIntroductionCompleted(): Boolean = error("Unexpected introduction query")
-        override fun completeIntroduction(): Unit = error("Unexpected preference write")
-        override fun setTutorialDismissed(tutorial: BettingTutorial, dismissed: Boolean): Unit = error("Entry must not change the legacy flag")
-        override fun isTutorialDismissed(tutorial: BettingTutorial): Boolean {
+        override suspend fun isIntroductionCompleted(): Boolean = error("Unexpected introduction query")
+        override suspend fun completeIntroduction(): Unit = error("Unexpected preference write")
+        override suspend fun setTutorialDismissed(tutorial: BettingTutorial, dismissed: Boolean): Unit =
+            error("Entry must not change the legacy flag")
+        override suspend fun isTutorialDismissed(tutorial: BettingTutorial): Boolean {
             assertEquals(BettingTutorial.RAPID, tutorial)
             preferenceReads++
             return rapidCompleted
         }
     }
-    private val prepare = PrepareHomeBettingAction(VerifyAccountAccessUseCase { access },
-        GetHomeFeatureConfigurationUseCase { featureReads++; config }, onboarding)
+    private val prepare = PrepareHomeBettingAction(
+        VerifyAccountAccessUseCase { access },
+        GetHomeFeatureConfigurationUseCase {
+            featureReads++
+            config
+        },
+        onboarding
+    )
 
     @Test fun `visitor instant lottery does not request private account flags or preferences`() = runTest {
-        val visitor = PrepareHomeBettingAction(VerifyAccountAccessUseCase { error("Private account request") },
-            GetHomeFeatureConfigurationUseCase { error("Unexpected flags") }, onboarding, isAuthenticated = { false })
+        val visitor = PrepareHomeBettingAction(
+            VerifyAccountAccessUseCase { error("Private account request") },
+            GetHomeFeatureConfigurationUseCase { error("Unexpected flags") },
+            onboarding,
+            isAuthenticated = { false }
+        )
         assertEquals(AppResult.Success(HomeBettingDecision.Ready(HomeBettingTarget.INSTANT)), visitor(HomeBettingAction.INSTANT))
+    }
+
+    @Test fun `visitor rapid respects tutorial without requesting private account flags`() = runTest {
+        val visitor = PrepareHomeBettingAction(
+            VerifyAccountAccessUseCase { error("Private account request") },
+            GetHomeFeatureConfigurationUseCase { AppResult.Success(HomeFeatureConfiguration(rapidBettingEnabled = true)) },
+            onboarding,
+            isAuthenticated = { false }
+        )
+        assertEquals(AppResult.Success(HomeBettingDecision.Ready(HomeBettingTarget.RAPID_CONFIGURATION)), visitor(HomeBettingAction.RAPID))
+        rapidCompleted = true
+        assertEquals(AppResult.Success(HomeBettingDecision.Ready(HomeBettingTarget.RAPID_LIST)), visitor(HomeBettingAction.RAPID))
     }
 
     @Test fun `suspension and account failure block every action before flags or preferences`() = runTest {
@@ -42,7 +74,8 @@ class PrepareHomeBettingActionTest {
             val error = (prepare(it) as AppResult.Failure).error as AppError.Validation
             assertTrue(error.reason.startsWith("Há uma suspensão temporária ativa para compras."))
         }
-        assertEquals(0, featureReads); assertEquals(0, preferenceReads)
+        assertEquals(0, featureReads)
+        assertEquals(0, preferenceReads)
     }
 
     @Test fun `account requirements take precedence over external or internal navigation`() = runTest {

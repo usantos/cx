@@ -1,0 +1,3 @@
+# Original connected tests remain unchanged and executable on the device.
+# Compose/Robolectric PAUSED cannot inject an OS BACK event into a focused modal window.
+br.gov.caixa.loterias.apostas.ResponsibleGamingCoordinationUiTest.affirmativeAssessmentOffersLegacyHelpSheetAndReturnsToResultOnBack

@@ -1,0 +1,9 @@
+# Result launcher shortcuts
+
+The user selected four long-press actions: Resultado Mega-Sena, Resultado Lotofácil, Resultado Loteca, and Todos os resultados. The first three open the latest public draw result; the fourth opens the existing modality selector. No login or account mutation is required.
+
+Use Android's native shortcut API on supported devices (API 25+), with stable IDs, localized labels and the existing app icon. Publish dynamically from the foreground launcher activity so intent components use the actual package for PRD/TQS/Automação and the device's shortcut capacity is respected. Static XML would duplicate package-specific intents; a widget or in-app menu would not implement the requested interaction. The user chose the four menu entries; dynamic publication and the existing icon are implementation choices.
+
+Shortcut intents accept only an explicit action and a fixed ID allowlist, never arbitrary routes. The activity stores a pending UI request, including save/restore before startup completes. The normal recovery, update, security and queue gates remain in place. Navigation consumes the request only when the existing AppNavHost is available. Cold launches construct a public Home → Results stack; warm launches preserve the existing screen below Results. Repeated result shortcuts replace the active results entry so latest results and the all-modality selector are refreshed.
+
+Preserve unrelated dirty work, headers, baselines, session state and the visitor cart. No dependencies, commit, push, real credential entry or financial operations. Validate publication and routing with JVM/Compose tests, rejection of unknown IDs/actions, saved-state replay rules, cold/warm navigation and Samsung launcher interaction. Launcher display capacity is device-dependent; the chosen four entries follow Android's recommended visible count.

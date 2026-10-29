@@ -1,6 +1,13 @@
 package br.gov.caixa.loterias.core.designsystem
 
 import androidx.compose.ui.graphics.Color
+import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSDarkColors
+import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSLightColors
+import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSMotion
+import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSSizes
+import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSSpacing
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -31,19 +38,19 @@ class CaixaDSTokensTest {
 
     @Test
     fun `legacy material card keeps the auto assessment card color`() {
-        assertEquals(Color(0xFFECECEC), CaixaDSColorTokens.LegacyMaterialCard)
+        assertEquals(Color(0xFFECECEC), CaixaDSColorTokens.MaterialCard)
     }
 
     @Test
     fun `tutorial primitives preserve the legacy palette`() {
-        assertEquals(Color(0xFF008254), CaixaDSColorTokens.LegacyTutorialGreen)
-        assertEquals(Color(0xFF00784E), CaixaDSColorTokens.LegacyTutorialGreenButton)
-        assertEquals(Color(0xFF47586C), CaixaDSColorTokens.LegacyTutorialGray)
-        assertEquals(Color(0xFF007BFF), CaixaDSColorTokens.LegacyTutorialCheckbox)
-        assertEquals(Color(0xFFCED4DA), CaixaDSColorTokens.LegacyTutorialCheckboxOutline)
-        assertEquals(Color(0xFFEFF5F6), CaixaDSColorTokens.LegacyTicketDisabledBackground)
-        assertEquals(Color(0xFFD7E0E2), CaixaDSColorTokens.LegacyTicketDisabledContent)
-        assertEquals(Color(0xFF4E596B), CaixaDSColorTokens.LegacyNotificationText)
+        assertEquals(Color(0xFF008254), CaixaDSColorTokens.TutorialGreen)
+        assertEquals(Color(0xFF00784E), CaixaDSColorTokens.TutorialGreenButton)
+        assertEquals(Color(0xFF47586C), CaixaDSColorTokens.TutorialGray)
+        assertEquals(Color(0xFF007BFF), CaixaDSColorTokens.TutorialCheckbox)
+        assertEquals(Color(0xFFCED4DA), CaixaDSColorTokens.TutorialCheckboxOutline)
+        assertEquals(Color(0xFFEFF5F6), CaixaDSColorTokens.TicketDisabledBackground)
+        assertEquals(Color(0xFFD7E0E2), CaixaDSColorTokens.TicketDisabledContent)
+        assertEquals(Color(0xFF4E596B), CaixaDSColorTokens.NotificationText)
     }
 
     @Test

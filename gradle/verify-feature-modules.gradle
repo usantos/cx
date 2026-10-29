@@ -1,0 +1,72 @@
+// Estas tarefas forçam a configuração de cada projeto real mesmo com configure-on-demand.
+subprojects { p ->
+    p.tasks.register('verifyOwnedProductionSources') {
+        group = 'verification'
+        doLast {
+            def sources = p.extensions.findByName('sourceSets')?.findByName('main')?.allSource?.srcDirs ?: []
+            def android = p.extensions.findByName('android')
+            if (android != null) sources += android.sourceSets.main.java.srcDirs + android.sourceSets.main.kotlin.srcDirs
+            sources.each { source ->
+                if (!source.canonicalFile.toPath().startsWith(p.projectDir.canonicalFile.toPath())) {
+                    throw new GradleException("${p.path} compila fontes externas: ${source}")
+                }
+            }
+        }
+    }
+}
+
+tasks.register('verifyFeatureModules') {
+    dependsOn subprojects.collect { it.path + ':verifyOwnedProductionSources' }
+    group = 'verification'
+    description = 'Rejects production source aggregation, duplicate ownership, dependency cycles and app dependencies.'
+    doLast {
+        def roots = []
+        subprojects.each { p ->
+            def sourceSets = p.extensions.findByName('sourceSets')
+            def mainDirs = sourceSets?.findByName('main')?.allSource?.srcDirs ?: []
+            def android = p.extensions.findByName('android')
+            if (android != null) {
+                mainDirs += android.sourceSets.main.java.srcDirs
+                mainDirs += android.sourceSets.main.kotlin.srcDirs
+            }
+            mainDirs.collect { it.canonicalFile }.unique().each { source ->
+                if (!source.toPath().startsWith(p.projectDir.canonicalFile.toPath())) {
+                    throw new GradleException("${p.path} compila fontes de outro módulo: ${source}")
+                }
+                roots.add([project: p.path, source: source.toPath()])
+            }
+        }
+        roots.eachWithIndex { left, index ->
+            roots.drop(index + 1).each { right ->
+                if (left.project != right.project &&
+                        (left.source.startsWith(right.source) || right.source.startsWith(left.source))) {
+                    throw new GradleException("Raiz de produção compartilhada: ${left.project}/${right.project}: ${left.source}/${right.source}")
+                }
+            }
+        }
+        // Lê as dependências configuradas, incluindo plugins de convenção e declarações de variantes.
+        // Testes podem depender de fixtures de integração; essas dependências não são arestas do grafo de produção.
+        def graph = [:]
+        subprojects.each { p ->
+            def dependencies = p.configurations.findAll { configuration ->
+                def name = configuration.name.toLowerCase(java.util.Locale.ROOT)
+                !name.contains('test') && ['api', 'implementation', 'compileonly', 'runtimeonly'].any { name.endsWith(it) }
+            }.collectMany { configuration ->
+                configuration.allDependencies.withType(org.gradle.api.artifacts.ProjectDependency).collect { it.path }
+            }.unique().sort()
+            graph[p.path] = [dependencies: dependencies,
+                             android: p.plugins.hasPlugin('com.android.library') || p.plugins.hasPlugin('com.android.application')]
+        }
+        def graphFile = layout.buildDirectory.file('reports/architecture/feature-modules.json').get().asFile
+        graphFile.parentFile.mkdirs()
+        graphFile.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson([
+                projects: graph, roots: roots.collect { [project: it.project, source: it.source.toString()] }
+        ]))
+        def policy = providers.exec {
+            commandLine 'python3', rootProject.file('scripts/check-feature-modules.py'), '--graph', graphFile
+            ignoreExitValue = true
+        }
+        if (policy.result.get().exitValue != 0) throw new GradleException(policy.standardError.asText.get())
+        logger.lifecycle(policy.standardOutput.asText.get().trim())
+    }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="favorite_filter_title">Selecione a modalidade desejada</string>
+    <string name="favorite_all_modalities">Todas</string>
+    <string name="favorite_close">Fechar</string>
+    <string name="favorite_cancel">Cancelar</string>
+    <string name="favorite_filter">Filtrar</string>
+    <string name="favorite_options_title">Selecione as opções e clique em adicionar</string>
+    <string name="favorite_contest_type">Tipo de Concurso</string>
+    <string name="favorite_recurring_draws">Quantidade de teimosinhas</string>
+    <string name="favorite_add_to_cart">Adicionar ao carrinho</string>
+    <string name="favorite_mirror_description">Ao selecionar esta opção, o sistema fará a aposta automaticamente, escolhendo os 50 números que não foram registrados na sua aposta original.</string>
+</resources>

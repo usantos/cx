@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_1_s_2_s_069c89">"%1$s:%2$s"</string>
+    <string name="ui_1_s_2_s_3_s_apostas_be142d">"%1$s - %2$s (%3$s apostas)"</string>
+    <string name="ui_1_s_concurso_2_s_9f3926">"%1$s • Concurso %2$s"</string>
+    <string name="ui_1_s_d020a2">"%1$s"</string>
+    <string name="ui_1_s_numeros_f145a3">"%1$s números"</string>
+    <string name="ui_1_x_2_e8072e" formatted="false">"1     X     2"</string>
+    <string name="ui_1o_sorteio_a7dc6e" formatted="false">"1º Sorteio"</string>
+    <string name="ui_2o_sorteio_679b24" formatted="false">"2º Sorteio"</string>
+    <string name="ui_5_fa676d" formatted="false">"5+"</string>
+    <string name="ui_a_conferencia_dos_jogos_da_teimosinh_86f58e" formatted="false">"A conferência dos jogos da Teimosinha é realizada para todos os concursos apostados, no entanto, é exibida apenas a do primeiro concurso."</string>
+    <string name="ui_acertos_bab9c0" formatted="false">"Acertos:"</string>
+    <string name="ui_acompanhe_todas_as_compras_que_voce_b96f1f" formatted="false">"Acompanhe todas as compras que você já realizou em nosso aplicativo."</string>
+    <string name="ui_adicionar_ao_carrinho_bf86b8" formatted="false">"Adicionar ao carrinho"</string>
+    <string name="ui_ajuda_fe0add" formatted="false">"Ajuda"</string>
+    <string name="ui_aplicar_3a0489" formatted="false">"Aplicar"</string>
+    <string name="ui_aposta_adicionada_ao_carrinho_com_su_d9668a" formatted="false">"Aposta adicionada ao carrinho com sucesso!"</string>
+    <string name="ui_aposta_de_troca_f0835f" formatted="false">"aposta de troca"</string>
+    <string name="ui_aposta_favorita_5aae3e" formatted="false">"Aposta favorita"</string>
+    <string name="ui_aposta_nao_premiada_b3d311" formatted="false">"Aposta\nnão premiada"</string>
+    <string name="ui_apostar_mais_a6282e" formatted="false">"Apostar mais"</string>
+    <string name="ui_apostas_da_compra_37ee79" formatted="false">"Apostas da Compra"</string>
+    <string name="ui_aposte_agora_8c4ff2" formatted="false">"Aposte\nagora"</string>
+    <string name="ui_aposte_aqui_a5080d" formatted="false">"Aposte aqui"</string>
+    <string name="ui_aqui_voce_pode_acompanhar_todas_suas_312271" formatted="false">"Aqui você pode acompanhar todas suas apostas realizadas nos últimos 6 meses. Boa sorte!"</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+    <string name="ui_bolao_99927e" formatted="false">"Bolão"</string>
+    <string name="ui_cancelar_bb9dbb" formatted="false">"Cancelar"</string>
+    <string name="ui_carrinho_de_apostas_1_s_itens_e4b649">"Carrinho de apostas, %1$s itens"</string>
+    <string name="ui_carrinho_favorito_fc14c7" formatted="false">"Carrinho Favorito"</string>
+    <string name="ui_carrinho_favorito_salvo_com_sucesso_441141" formatted="false">"Carrinho favorito salvo com sucesso."</string>
+    <string name="ui_coluna_862f07" formatted="false">"Coluna"</string>
+    <string name="ui_conc_1_s_a_2_s_a6ec3a">"Conc. %1$s a %2$s"</string>
+    <string name="ui_concurso_1997f5" formatted="false">"Concurso"</string>
+    <string name="ui_concurso_1_s_32ee4c">"Concurso %1$s"</string>
+    <string name="ui_concurso_nao_apurado_ff0687" formatted="false">"Concurso\nnão apurado"</string>
+    <string name="ui_concurso_prescrito_8021f2" formatted="false">"Concurso prescrito"</string>
+    <string name="ui_concursos_80935e" formatted="false">"Concursos"</string>
+    <string name="ui_conferir_aposta_c2b3fa" formatted="false">"Conferir aposta"</string>
+    <string name="ui_conferir_bilhetes_1465ae" formatted="false">"Conferir bilhetes"</string>
+    <string name="ui_continuar_63e2bb" formatted="false">"Continuar"</string>
+    <string name="ui_data_1_s_fa0526">"Data: %1$s"</string>
+    <string name="ui_data_aposta_59182a" formatted="false">"Data aposta:"</string>
+    <string name="ui_detalhe_da_aposta_b67444" formatted="false">"Detalhe da aposta"</string>
+    <string name="ui_detalhes_da_aposta_82fbc3" formatted="false">"Detalhes da aposta"</string>
+    <string name="ui_duvidas_10e026" formatted="false">"Dúvidas"</string>
+    <string name="ui_editar_aposta_d694dd" formatted="false">"Editar aposta"</string>
+    <string name="ui_em_acompanhamento_9afa47" formatted="false">"Em acompanhamento"</string>
+    <string name="ui_encerramento_das_apostas_6f9fb5" formatted="false">"Encerramento das apostas"</string>
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+    <string name="ui_escolha_o_tipo_de_concurso_f2315a" formatted="false">"Escolha o tipo de concurso"</string>
+    <string name="ui_esta_aposta_com_teimosinha_nao_e_mai_8ffde1" formatted="false">"Esta aposta com Teimosinha não é mais válida para acompanhamento. Utilize a "</string>
+    <string name="ui_estimativa_de_premio_04eb68" formatted="false">"Estimativa de prêmio"</string>
+    <string name="ui_favoritar_aposta_a34b1e" formatted="false">"Favoritar aposta"</string>
+    <string name="ui_filtrar_06b52c" formatted="false">"Filtrar"</string>
+    <string name="ui_filtrar_apostas_210e4a" formatted="false">"Filtrar apostas"</string>
+    <string name="ui_filtrar_compras_752066" formatted="false">"Filtrar compras"</string>
+    <string name="ui_gerada_apos_o_resgate_do_premio_para_ceb8bd" formatted="false">" gerada após o resgate do prêmio, para acompanhar os próximos sorteios."</string>
+    <string name="ui_gerar_comprovante_a92bea" formatted="false">"Gerar comprovante"</string>
+    <string name="ui_hora_1_s_d2a782">"Hora: %1$s"</string>
+    <string name="ui_id_do_pagamento_1_s_f691b7">"ID do Pagamento:\n%1$s"</string>
+    <string name="ui_informacoes_do_concurso_atual_ce38ae" formatted="false">"Informações do concurso atual"</string>
+    <string name="ui_informe_o_nome_da_aposta_ecaf89" formatted="false">"Informe o nome da aposta"</string>
+    <string name="ui_ja_existe_um_carrinho_favorito_com_e_c68666" formatted="false">"Já existe um carrinho favorito com este nome. Deseja substituí-lo?"</string>
+    <string name="ui_limpar_5585ca" formatted="false">"Limpar"</string>
+    <string name="ui_limpar_filtros_fade92" formatted="false">"Limpar filtros"</string>
+    <string name="ui_loterico_c1ae0d" formatted="false">"Lotérico"</string>
+    <string name="ui_manter_surpresinhas_8d84c2" formatted="false">"Manter surpresinhas"</string>
+    <string name="ui_meio_de_pagamento_1_s_826d04">"Meio de pagamento: %1$s"</string>
+    <string name="ui_meio_de_pagamento_579abd" formatted="false">"Meio de pagamento: "</string>
+    <string name="ui_meio_de_pagamento_83501f" formatted="false">"Meio de pagamento"</string>
+    <string name="ui_mes_da_sorte_1_s_35a139">"Mês da sorte: %1$s"</string>
+    <string name="ui_mes_sorteado_1_s_af82b8">"Mês sorteado: %1$s"</string>
+    <string name="ui_meus_numeros_f099c2" formatted="false">"Meus números"</string>
+    <string name="ui_minhas_apostas_807108" formatted="false">"Minhas apostas"</string>
+    <string name="ui_minhas_compras_c1e245" formatted="false">"Minhas Compras"</string>
+    <string name="ui_modalidade_0121ad" formatted="false">"Modalidade"</string>
+    <string name="ui_nao_9bc947" formatted="false">"Não"</string>
+    <string name="ui_nao_foi_possivel_acessar_o_servico_t_9c588c" formatted="false">"Não foi possível acessar o serviço. Tente novamente."</string>
+    <string name="ui_nao_foi_possivel_acessar_o_servico_v_856170" formatted="false">"Não foi possível acessar o serviço. Verifique sua conexão."</string>
+    <string name="ui_nao_foi_possivel_consultar_esta_apos_728d12" formatted="false">"Não foi possível consultar esta aposta"</string>
+    <string name="ui_nao_foi_possivel_consultar_esta_apos_e725f2" formatted="false">"Não foi possível consultar esta aposta."</string>
+    <string name="ui_nao_informada_c6f460" formatted="false">"Não informada"</string>
+    <string name="ui_nao_premiado_ou_ainda_nao_apurado_d69d0e" formatted="false">"Não premiado ou ainda não apurado"</string>
+    <string name="ui_nenhuma_aposta_encontrada_60307f" formatted="false">"Nenhuma aposta encontrada"</string>
+    <string name="ui_nenhuma_aposta_encontrada_neste_bilh_97edde" formatted="false">"Nenhuma aposta encontrada neste bilhete."</string>
+    <string name="ui_nome_do_carrinho_3c05fa" formatted="false">"Nome do carrinho"</string>
+    <string name="ui_nsb_77c304" formatted="false">"NSB"</string>
+    <string name="ui_numeros_sorteados_513d0e" formatted="false">"Números sorteados"</string>
+    <string name="ui_o_premio_deste_bilhete_ja_foi_pago_p_ce473d" formatted="false">"O prêmio deste bilhete já foi pago. Parabéns :)"</string>
+    <string name="ui_o_proximo_ganhador_pode_ser_voce_ja_492506" formatted="false">"O próximo ganhador pode ser você. Já pensou?"</string>
+    <string name="ui_ok_565339" formatted="false">"OK"</string>
+    <string name="ui_pode_comemorar_f533cc" formatted="false">"Pode comemorar!"</string>
+    <string name="ui_por_favor_informe_o_numero_do_seu_bi_f18e7e" formatted="false">"Por favor, informe o número do seu bilhete."</string>
+    <string name="ui_prazo_para_recebimento_de_premio_90_14a8d5" formatted="false">"Prazo para recebimento de prêmio:\n90 dias após a data do sorteio"</string>
+    <string name="ui_resgatar_premio_e68bcd" formatted="false">"Resgatar prêmio"</string>
+    <string name="ui_resultado_da_aposta_4e6334" formatted="false">"Resultado da aposta"</string>
+    <string name="ui_resultado_do_concurso_1_s_98d81e">"Resultado do Concurso %1$s"</string>
+    <string name="ui_resultado_dos_jogos_b19143" formatted="false">"Resultado dos jogos"</string>
+    <string name="ui_revise_os_filtros_aplicados_973628" formatted="false">"Revise os filtros aplicados."</string>
+    <string name="ui_salvar_aef7cd" formatted="false">"Salvar"</string>
+    <string name="ui_salvar_carrinho_favorito_97b999" formatted="false">"Salvar carrinho favorito"</string>
+    <string name="ui_selecione_a_aposta_realizada_a33b3d" formatted="false">"Selecione a aposta realizada"</string>
+    <string name="ui_selecione_o_periodo_2d4193" formatted="false">"Selecione o período"</string>
+    <string name="ui_seus_numeros_ac6cc9" formatted="false">"Seus números"</string>
+    <string name="ui_sim_931345" formatted="false">"Sim"</string>
+    <string name="ui_situacao_1_s_48ba95">"situação: %1$s"</string>
+    <string name="ui_situacao_1_s_796e19">"Situação: %1$s"</string>
+    <string name="ui_situacao_cf7d46" formatted="false">"Situação"</string>
+    <string name="ui_situacao_d07ed5" formatted="false">"Situação: "</string>
+    <string name="ui_sua_aposta_3bcfc2" formatted="false">"Sua aposta"</string>
+    <string name="ui_suas_colunas_69913f" formatted="false">"Suas colunas"</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_termos_de_uso_a6f04f" formatted="false">"Termos de uso"</string>
+    <string name="ui_termos_de_uso_e259be" formatted="false">"Termos de Uso"</string>
+    <string name="ui_texto_07d452" formatted="false">"⌃"</string>
+    <string name="ui_texto_1dabba" formatted="false">"✓"</string>
+    <string name="ui_texto_641b9b" formatted="false">"⌄"</string>
+    <string name="ui_texto_a318c2" formatted="false">"+"</string>
+    <string name="ui_texto_afba24" formatted="false">"−"</string>
+    <string name="ui_time_33b934" formatted="false">"Time"</string>
+    <string name="ui_time_do_coracao_1_s_2_s_3b5c68">"Time do coração: %1$s%2$s"</string>
+    <string name="ui_time_sorteado_1_s_ca30eb">"Time sorteado: %1$s"</string>
+    <string name="ui_tipo_de_concurso_4a82cf" formatted="false">"Tipo de concurso"</string>
+    <string name="ui_total_18e872" formatted="false">"Total:"</string>
+    <string name="ui_total_c9b3c3" formatted="false">"Total"</string>
+    <string name="ui_total_do_carrinho_b01305" formatted="false">"Total do carrinho"</string>
+    <string name="ui_trevos_0f4867" formatted="false">"Trevos"</string>
+    <string name="ui_ultimos_7_dias_e05d6c" formatted="false">"Últimos 7 dias"</string>
+    <string name="ui_valor_do_premio_940005" formatted="false">"Valor do prêmio:"</string>
+    <string name="ui_ver_resultado_2011cb" formatted="false">"Ver resultado"</string>
+    <string name="ui_ver_resultados_08bb7b" formatted="false">"Ver resultados"</string>
+    <string name="ui_voce_ainda_nao_fez_apostas_no_period_002a42" formatted="false">"Você ainda não fez apostas no período selecionado. Aproveite para apostar agora!"</string>
+    <string name="ui_voce_ainda_nao_possui_compras_neste_0585aa" formatted="false">"Você ainda não possui compras neste mês."</string>
+    <string name="ui_voce_foi_premiado_9441db" formatted="false">"você foi premiado!"</string>
+    <string name="ui_voce_foi_premiado_com_total_de_1_s_2bb4e9">"você foi premiado com total de\n %1$s"</string>
+    <string name="ui_x_2d7116" formatted="false">"x"</string>
+</resources>

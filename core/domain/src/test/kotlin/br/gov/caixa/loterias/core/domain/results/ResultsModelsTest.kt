@@ -4,6 +4,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.results.domain.model.DrawPayout
+import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 
 class ResultsModelsTest {
     @Test

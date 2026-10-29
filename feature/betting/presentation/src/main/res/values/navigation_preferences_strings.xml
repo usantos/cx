@@ -1,0 +1,4 @@
+<resources>
+    <string name="betting_navigation_preferences_read_failed">Não foi possível ler suas preferências. Tente novamente.</string>
+    <string name="betting_navigation_preferences_write_failed">Não foi possível salvar suas preferências. Tente novamente.</string>
+</resources>

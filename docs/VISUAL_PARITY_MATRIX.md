@@ -1,6 +1,10 @@
 # Matriz de migração visual XML → Compose
 
-> Atualização de 13/10/2026: o fechamento técnico e as correções posteriores estão em [COMPOSE_CLOSURE_20261013.md](COMPOSE_CLOSURE_20261013.md). Os resultados abaixo preservam o escopo histórico de cada rodada; a homologação real/visual continua distinguida da conversão de código.
+Atualização visual de 15/10: tutorial de Bolão conferido com captura nativa, insets das ações/seletores de modalidades restaurados e largura dos modais flutuantes centralizada no DS. Evidências e limites: [relatório](VISUAL_ADJUSTMENTS_TUTORIAL_MODALITIES_MODALS_20261015.md).
+
+> Atualização pareada de 15/10/2026: [Bolão e Filtros frente ao CX](MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md). São 20 pares no mesmo AVD/dados, com Outubro Rosa ligada/desligada, e correções centralizadas no DS. `modernCheck releaseCheck` passou na árvore integrada: 1.699 testes JVM, 146 testes Android nos escopos executados e três Releases minificados. O bloqueio de captura das Activities internas foi resolvido pelo runner de instrumentação. A equivalência global de 100% continua pendente nos fluxos e casos históricos indicados abaixo.
+
+> Atualização de 14/10/2026: [consolidação CaixaDS e validação integrada](DS_CONSOLIDATION_20261014.md). Os gates e os três Releases passaram; os testes adicionais cobrem componentes extraídos, com dois testes de origem raster de Dia de Sorte/Lotofácil ainda pendentes (95px esperados, 93px também na base anterior). A alteração de card encerrado/concurso e Dia de Sorte branco foi solicitada pelo produto nesta conversa. As linhas abaixo preservam evidências históricas; não homologam automaticamente a árvore atual.
 
 `CART_CHECKOUT_ACTION_AUDIT.md` corrige o CTA do carrinho, título, fundo branco, texto do mínimo
 e estado vazio. Ação em carrinho vazio volta a percorrer gates e validação remota, sem bloqueio
@@ -35,7 +39,7 @@ os estados de sucesso, redirect, sessão invalidada, resposta perdida e conflito
 
 Esta matriz registra a substituição dos layouts navegáveis do aplicativo anterior. Layouts de `item`, `row`, `card`, `dialog`, `content` e `fragment` são contabilizados no fluxo que os compõe; eles não viram destinos artificiais na navegação.
 
-Ela não constitui, sozinha, certificação de igualdade pixel a pixel. O catálogo de smoke automatizado contém 78 destinos/estados Compose, atualmente com resultado 78/78 sem crash no cenário mock. A certificação visual e a homologação de todas as ramificações de negócio exigem comparação de screenshots/estados com o binário legado e permanecem em andamento. Uma linha só pode ser tratada como paridade homologada quando houver evidência reproduzível de estado, ação e imagem de referência.
+Ela não constitui, sozinha, certificação de igualdade pixel a pixel. O catálogo de smoke automatizado contém 80 destinos/estados Compose, com resultado final 80/80 sem crash ou novo ANR no cenário mock de Outubro Rosa em 15/10/2026; a ocorrência anterior de ANR e sua repetição controlada estão discriminadas no relatório da rodada. A certificação visual e a homologação de todas as ramificações de negócio exigem comparação de screenshots/estados com o binário legado e permanecem em andamento. Uma linha só pode ser tratada como paridade homologada quando houver evidência reproduzível de estado, ação e imagem de referência.
 
 Legenda:
 
@@ -99,8 +103,8 @@ Loading institucional: a revisão `LOADING_PARITY_AUDIT.md` corrige fundo/fade, 
 | Seletor “Números que quero/não quero” | `activity_quero_nao_quero.xml` | Componente Compose de tela cheia integrado ao filtro e ao Rapidão; cancelar/fechar preserva valores, confirmar aplica e há bloqueio mútuo com alerta |
 | `betting/rapid` / `betting/rapid-list` | `activity_configuracao_rapidao.xml`, fragments 1–8, `activity_lista_rapidao.xml` | Estado real; sete etapas, obrigatórios/proibidos mutuamente exclusivos, modalidades, valores, prêmio, geração, exclusão e validação via API |
 | `betting/favorites` | `activity_favoritas.xml` e itens de favoritas | Estado real; agrupamento/filtro, vazio por modalidade, exclusão, concurso/Teimosinha/Espelho e inclusão no carrinho via API |
-| `betting/pools` | `activity_bolao.xml`, cards de bolão | Estado real |
-| `marketplace/filter` | `activity_filtra_marketplace.xml`, filtros e modais de números | Estado real |
+| `betting/pools` | `activity_bolao.xml`, cards de bolão | 10 pares nativos/Compose em duas campanhas: carrossel, lista, expansão, favoritas e concurso; estilos/componentes no DS. Ver relatório pareado de 15/10/2026. |
+| `marketplace/filter` | `activity_filtra_marketplace.xml`, filtros e modais de números | 10 pares nativos/Compose em duas campanhas: inicial, rodapé, diálogo e seleção; 10 testes Android aprovados, componentes no DS. Ver relatório pareado de 15/10/2026. |
 | `betting/pools`, `betting/pool-view` | lista de bolões, `item_list_bolao.xml` | Estado real; cards em acordeão, favorito por lotérica, quantidade limitada ao estoque, total tarifado, detalhe e reserva direta via API |
 | `betting/pool-detail` | `activity_detalhes_bolao.xml`, itens de jogos e cotas | Estado real; quantidade limitada ao estoque e reserva confirmada pelo backend |
 | `betting/combos` | `activity_combos.xml`, `item_lista_combos.xml` | Compose específico |
@@ -179,10 +183,10 @@ Revisão comportamental de cartão: `CARD_POLLING_PARITY_AUDIT.md` registra o ac
 ## Componentes XML absorvidos
 
 - Barras `app_bar_*`: `CaixaDSLegacyTopBar` e `CaixaDSLegacyScaffold`.
-- Botões e rodapés: `CaixaDSLegacyPrimaryButton`, `CaixaDSLegacyOutlinedButton` e `CaixaDSLegacyBottomSummary`.
+- Botões e rodapés: `CaixaDSLegacyPrimaryButton` e `CaixaDSLegacyOutlinedButton`.
 - Campos de 52 dp: `CaixaDSLegacyLabelledField`.
 - Cards, linhas e divisores: `CaixaDSLegacyCard`, `CaixaDSLegacyChoiceRow` e `CaixaDSLegacyDivider`.
-- Grades de dezenas: `CaixaDSLegacyNumberGrid`.
+- Grades de dezenas: `BettingLegacyNumberGrid` na feature Betting, usando estilos e tokens do CaixaDS.
 - Dialogs: componentes de dialog do CaixaDS e dialogs específicos das features.
 - Itens RecyclerView/GridView: `LazyColumn`, `LazyRow`, `LazyVerticalGrid` e `HorizontalPager` nas features.
 
@@ -239,3 +243,21 @@ Combo, Instantânea e o atalho de Rapidão passaram a usar decisões verificadas
 - A central de notificações foi verificada no emulador nos estados recolhido e expandido; os antigos ícones XML foram convertidos em vetores nativos do `CaixaDSIcons`.
 - As 78 entradas atuais foram novamente percorridas no emulador com `automacaoDebug` e `HAPPY_PATH` (`78/78`, zero falhas). As rotas que dependem de aposta ou compra selecionada usam fixtures somente no APK debug mock; sem esse contexto, retornam ao destino anterior como no fluxo real. Formulário, prévia, CVV e confirmação de cartão foram capturados separadamente para verificar a etapa restaurada e o uso do cartão salvo retornado pelo mock Retrofit.
 - Após os ajustes desta auditoria, `modernCheck` passou com testes, cobertura, lint e todos os gates arquiteturais; `releaseCheck` também passou para `automacaoRelease`, `prdRelease` e `tqsRelease`, todos com R8 e recursos reduzidos.
+
+
+### Drawer institucional — alteração solicitada em 15/10/2026
+
+O menu passa a seguir a referência fornecida pelo usuário: degradê no azul CAIXA, logo do login centralizada, botão de fechar, ícones e textos claros, sem divisores entre os itens principais e com rodapé escuro. A implementação visual reside no DS. Essa alteração é uma exceção aprovada à reprodução visual do Drawer legado; os contratos de navegação, flags, expansão dos grupos, informações institucionais e confirmação de saída permanecem.
+
+Validação desta alteração: gates `verifyCaixaDS`/`verifyComposeMigration`, APK `prdDebug` normal (mock desativado), 111 testes JVM do app, 32 da Home e 2 testes Android do Drawer aprovados. Capturas do menu aberto e de Minha área expandida foram inspecionadas em `build/verification/drawer-20261015/`; testes e capturas usam emulador dedicado.
+
+
+### Campanhas e status bar — continuação de 15/10/2026
+
+A status bar agora segue azul CAIXA com ícones claros em todas as rotas do host, incluindo login e Drawer. Aposta Shake compartilha a tipografia dos outros itens. Seu tooltip fica abaixo do ícone de informação, com seta ancorada no centro, cantos de 20 dp e mensagem em duas linhas.
+
+As campanhas passam a obedecer à configuração do backend, substituindo a antiga ativação local de Outubro Rosa pelo mês do aparelho. As flags `vigenciaMesOutubroRosa` e `vigenciaOutubroRosaMegaSena` foram recuperadas do legado; a paleta do Drawer pode, portanto, mudar de azul para rosa quando a campanha estiver ativa. Setembro Azul e futuras ativações por área usam a extensão opcional descrita em `COMMEMORATIVE_CAMPAIGNS.md`; essa extensão ainda depende de publicação pelo backend. As áreas existentes são Home, Drawer e cartões de Mega-Sena na Home V2.
+
+As capturas inspecionadas estão em `build/verification/drawer-refinement-20261015/`: status bar na Home/login/suporte, tooltip no Drawer padrão, Home/Drawer com Outubro Rosa pelas flags legadas e Setembro Azul na Home antiga pelo contrato opcional. Os cenários de campanha usados nas capturas são mocks determinísticos; não constituem evidência de alteração no servidor de produção. A revisão independente também verificou a atualização ao retomar a Home antiga, a remoção do painel de Outubro Rosa após desativação e o banner de Setembro Azul nesse layout.
+
+Verificação final desta continuação: 646 testes JVM e 7 Android aprovados, gates DS/Compose e APK `prdDebug` normal aprovados. `BuildConfig` final: `HOME_V2=true`, `ENABLE_MOCK_BACKEND=false`.

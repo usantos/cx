@@ -1,0 +1,26 @@
+{
+  "default_icon": "default",
+  "timezone": "America/Sao_Paulo",
+  "campaigns": [
+    {
+      "icon": "agosto_lilas",
+      "start": "08-01",
+      "end": "08-31"
+    },
+    {
+      "icon": "setembro_amarelo",
+      "start": "09-01",
+      "end": "09-30"
+    },
+    {
+      "icon": "outubro_rosa",
+      "start": "10-01",
+      "end": "10-31"
+    },
+    {
+      "icon": "novembro_azul",
+      "start": "11-01",
+      "end": "11-30"
+    }
+  ]
+}

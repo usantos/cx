@@ -1,0 +1,194 @@
+// Uma variante de produção por módulo. Os dados de instrumentação no dispositivo não são
+// mesclados: linhas de UI/plataforma não exercitadas por testes unitários ficam sem cobertura nesta verificação.
+subprojects { owner ->
+    owner.pluginManager.apply('jacoco')
+    owner.extensions.configure(org.gradle.testing.jacoco.plugins.JacocoPluginExtension) { extension ->
+        extension.toolVersion = '0.8.13'
+    }
+    owner.tasks.withType(Test).configureEach {
+        jacoco.includeNoLocationClasses = true
+        jacoco.excludes = ['jdk.internal.*']
+    }
+}
+// Descobre todos os módulos de produção, independentemente de terem testes.
+subprojects.each { owner -> evaluationDependsOn(owner.path) }
+def modules = subprojects.findAll { owner ->
+    owner.plugins.hasPlugin('com.android.application') ||
+            owner.plugins.hasPlugin('com.android.library') ||
+            owner.extensions.findByName('sourceSets')?.findByName('main') != null
+}.collect { owner ->
+    def android = owner.plugins.hasPlugin('com.android.application') || owner.plugins.hasPlugin('com.android.library')
+    def variant = owner.path == ':app' ? 'prdDebug' : 'debug'
+    def capitalized = variant.capitalize()
+    def testName = android ? "test${capitalized}UnitTest" : 'test'
+    def suite = owner.tasks.findByName(testName)
+    if (!(suite instanceof Test)) {
+        throw new GradleException("Missing required unit-test task ${owner.path}:${testName}; configure this module explicitly.")
+    }
+    def transform = android ? owner.tasks.findByName("transform${capitalized}ClassesWithAsm") : null
+    def compile = android ? ["compile${capitalized}Kotlin", "compile${capitalized}JavaWithJavac"].collect {
+        owner.tasks.findByName(it)
+    }.findAll { it != null } : [owner.tasks.named('classes')]
+    if (transform != null) compile += transform
+    [owner: owner, android: android, variant: variant, capitalized: capitalized,
+     suite: suite, compile: compile, transform: transform]
+}
+def suites = modules.collect { it.suite }
+// Estes padrões representam apenas saídas do compilador/ferramentas de build. Não exclui UI,
+// ViewModels, regras de domínio, Java legado ou qualquer outro código de produção escrito manualmente.
+def exclusions = [
+        '**/R.class', '**/R$*.class', '**/BuildConfig.class', // Constantes/recursos gerados pelo Android.
+        '**/*_Factory.class', '**/*_Factory$*.class', '**/*_MembersInjector.class', // Fábricas/injetores do Dagger.
+        '**/Dagger*.class', '**/Hilt_*.class', '**/*_HiltModules*.class', // Implementações do Dagger/Hilt.
+        '**/*_GeneratedInjector.class', '**/*_ComponentTreeDeps.class',
+        'hilt_aggregated_deps/**', 'dagger/hilt/internal/aggregatedroot/codegen/**',
+        'dagger/hilt/internal/processedrootsentinel/codegen/**',
+        '**/META-INF/**', '**/module-info.class', // Metadados da JVM, sem código de produção executável.
+]
+modules.each { module ->
+    def owner = module.owner
+    module.classes = files({
+        def candidates
+        if (module.android) {
+            // Usa as mesmas classes após ASM carregadas pelos testes do AGP. Nunca as combina
+            // com suas cópias anteriores à transformação (identidades de classe duplicadas).
+            candidates = module.transform != null ? [owner.layout.buildDirectory.dir(
+                    "intermediates/classes/${module.variant}/transform${module.capitalized}ClassesWithAsm/dirs").get().asFile] : [
+                    owner.layout.buildDirectory.dir("intermediates/built_in_kotlinc/${module.variant}/compile${module.capitalized}Kotlin/classes").get().asFile,
+                    owner.layout.buildDirectory.dir("intermediates/javac/${module.variant}/compile${module.capitalized}JavaWithJavac/classes").get().asFile,
+            ]
+        } else {
+            candidates = owner.sourceSets.main.output.classesDirs.files.toList()
+        }
+        candidates.collect { directory -> fileTree(directory) { include '**/*.class'; exclude exclusions } }
+    })
+    module.sources = module.android ? files(['main', 'debug', 'prd', module.variant].unique().collectMany { name ->
+        def sourceSet = owner.android.sourceSets.findByName(name)
+        sourceSet == null ? [] : sourceSet.java.srcDirs + sourceSet.kotlin.srcDirs
+    }) : files(owner.sourceSets.main.allSource.srcDirs)
+}
+def classes = files(modules.collect { it.classes })
+// O AGP 9 altera destinationFile após criar a tarefa. Resolve durante a execução,
+// incluindo outputs/unit_test_code_coverage/...; nunca presume um caminho jacoco/*.exec.
+def execution = files({ suites.collect { suite ->
+    suite.extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+}.findAll { it != null && it.isFile() } })
+def sources = files(modules.collect { it.sources })
+
+def aggregateRequested = {
+    gradle.taskGraph.allTasks.any { task ->
+        task.project == rootProject && (task.name in ['allUnitTests', 'jacocoAggregateReport', 'verifyCoverage', 'testAndCoverageReport'] ||
+                task.name.startsWith('jacocoModule'))
+    }
+}
+def prepare = tasks.register('prepareAggregateCoverage') {
+    group = 'verification'
+    description = 'Deletes selected unit-test execution data so skipped/no-source suites cannot reuse stale coverage.'
+    onlyIf { aggregateRequested() }
+    doLast {
+        // Um JacocoReport ignorado nunca deve deixar um XML anterior como entrada da verificação.
+        delete layout.buildDirectory.dir('reports/jacoco/aggregate')
+        delete layout.buildDirectory.dir('reports/jacoco/modules')
+        suites.each { suite ->
+            def destination = suite.extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+            if (destination != null) {
+                if (!destination.toPath().toAbsolutePath().normalize().startsWith(suite.project.layout.buildDirectory.get().asFile.toPath().toAbsolutePath().normalize())) {
+                    throw new GradleException("Refusing to delete coverage outside ${suite.project.path} build directory: ${destination}")
+                }
+                delete destination
+            }
+        }
+    }
+}
+suites.each { suite ->
+    suite.dependsOn prepare
+    // A compilação continua incremental e armazenável em cache; as execuções dos testes selecionados devem ser
+    // novas, inclusive quando seus resultados anteriores puderem ser restaurados do cache.
+    suite.outputs.upToDateWhen { !aggregateRequested() }
+    suite.outputs.doNotCacheIf('Aggregate coverage requires a fresh unit-test execution') { aggregateRequested() }
+    suite.ignoreFailures = false
+}
+def unitTests = tasks.register('allUnitTests') {
+    group = 'verification'
+    description = 'Runs fresh JVM and Android Debug/PRD Debug unit tests across all production modules.'
+    dependsOn suites
+}
+
+def moduleReports = modules.collect { module ->
+    def reportName = 'jacocoModule' + module.owner.path.split(':').findAll { it }.collect { it.capitalize() }.join('') + 'Report'
+    tasks.register(reportName, JacocoReport) {
+        group = 'verification'
+        description = "Production LINE coverage breakdown for ${module.owner.path}."
+        dependsOn unitTests, module.compile
+        executionData.from(execution)
+        classDirectories.from(module.classes)
+        sourceDirectories.from(module.sources)
+        reports {
+            xml.required = true
+            xml.outputLocation = layout.buildDirectory.file("reports/jacoco/modules/${module.owner.path.substring(1).replace(':', '/')}/jacoco.xml")
+            html.required = false
+            csv.required = false
+        }
+        outputs.upToDateWhen { false }
+    }
+}
+def coverage = tasks.register('jacocoAggregateReport', JacocoReport) {
+    group = 'verification'
+    description = 'Runs fresh unit tests and reports every eligible production module, including modules without tests.'
+    dependsOn unitTests, modules.collectMany { it.compile }
+    executionData.from(execution)
+    classDirectories.from(classes)
+    sourceDirectories.from(sources)
+    reports {
+        html.required = true
+        html.outputLocation = layout.buildDirectory.dir('reports/jacoco/aggregate/html')
+        xml.required = true
+        xml.outputLocation = layout.buildDirectory.file('reports/jacoco/aggregate/jacoco.xml')
+        csv.required = true
+        csv.outputLocation = layout.buildDirectory.file('reports/jacoco/aggregate/jacoco.csv')
+    }
+    outputs.upToDateWhen { false }
+    doFirst {
+        def omitted = suites.findAll { suite ->
+            !suite.state.executed || (suite.state.skipped && suite.state.skipMessage != 'NO-SOURCE')
+        }
+        if (!omitted.isEmpty()) {
+            throw new GradleException("Required unit-test suites were skipped: ${omitted*.path}")
+        }
+        def missingClasses = modules.findAll { module ->
+            !module.sources.asFileTree.matching { include '**/*.kt', '**/*.java' }.isEmpty() && module.classes.asFileTree.isEmpty()
+        }
+        if (!missingClasses.isEmpty()) {
+            throw new GradleException("Production sources have no compiled coverage classes: ${missingClasses.collect { it.owner.path }}")
+        }
+        if (execution.files.isEmpty() || classes.asFileTree.isEmpty()) {
+            throw new GradleException('No fresh JaCoCo execution data/production classes; coverage cannot be verified.')
+        }
+    }
+}
+tasks.register('verifyCoverage', Exec) {
+    group = 'verification'
+    description = 'Enforces actual weighted production LINE coverage >95% after fresh unit tests.'
+    dependsOn coverage, moduleReports
+    doFirst {
+        def arguments = ['python3', rootProject.file('scripts/verify-jacoco-coverage.py').absolutePath,
+                         '--aggregate', coverage.get().reports.xml.outputLocation.get().asFile.absolutePath,
+                         '--summary', layout.buildDirectory.file('reports/jacoco/aggregate/summary.json').get().asFile.absolutePath]
+        modules.eachWithIndex { module, index ->
+            arguments += ['--module', "${module.owner.path}=${moduleReports[index].get().reports.xml.outputLocation.get().asFile.absolutePath}"]
+        }
+        commandLine arguments
+    }
+}
+def tests = tasks.register('aggregateTestReport', TestReport) {
+    group = 'verification'
+    description = 'Generates a single HTML result report for all selected unit-test suites.'
+    mustRunAfter suites
+    destinationDirectory = layout.buildDirectory.dir('reports/tests/aggregate')
+    testResults.from(suites)
+}
+tasks.register('testAndCoverageReport') {
+    group = 'verification'
+    description = 'Runs fresh unit tests and generates consolidated test and JaCoCo reports.'
+    dependsOn unitTests, coverage, tests
+}

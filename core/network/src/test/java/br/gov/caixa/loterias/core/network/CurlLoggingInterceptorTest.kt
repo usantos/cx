@@ -7,11 +7,43 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.interceptor.NetworkDebugOptions
+import br.gov.caixa.loterias.core.network.interceptor.CurlLoggingInterceptor
 
 class CurlLoggingInterceptorTest {
+    @Test fun `opt in logs readable sanitized bodies without changing the response`() = MockWebServer().use { server ->
+        val responseJson = """{"payload":{"totalRegistros":1,"cpf":"private-document","tokens":{"access":"private-token"}}}"""
+        server.enqueue(MockResponse().setHeader("Content-Type", "application/json").setBody(responseJson))
+        val logs = mutableListOf<String>()
+        val client = OkHttpClient.Builder()
+            .addInterceptor(CurlLoggingInterceptor(NetworkDebugOptions(true, logs::add, includeBodies = true)))
+            .build()
+        val request = Request.Builder().url(server.url("/apostas?mes=45&cpf=private-query"))
+            .post("""{"modalidade":2,"usuario":{"senha":"private-password"}}""".toRequestBody("application/json".toMediaType())).build()
+
+        client.newCall(request).execute().use { assertEquals(responseJson, it.body.string()) }
+
+        val output = logs.joinToString("\n")
+        assertTrue(output.contains("REQUEST BODY"))
+        assertTrue(output.contains("RESPONSE BODY"))
+        assertTrue(output.contains("\"totalRegistros\":1"))
+        assertTrue(output.contains("\"modalidade\":2"))
+        assertFalse(output.contains("private-"))
+    }
+
+    @Test fun `body logging stays off unless explicitly enabled`() = MockWebServer().use { server ->
+        server.enqueue(MockResponse().setBody("{\"payload\":\"private-response\"}"))
+        val logs = mutableListOf<String>()
+        val client = OkHttpClient.Builder().addInterceptor(CurlLoggingInterceptor(NetworkDebugOptions(true, logs::add))).build()
+        client.newCall(Request.Builder().url(server.url("/")).build()).execute().close()
+        assertFalse(logs.joinToString().contains("private-response"))
+        assertFalse(logs.joinToString().contains("RESPONSE BODY"))
+    }
+
     @Test
     fun `disabled logging emits nothing`() = MockWebServer().use { server ->
         server.enqueue(MockResponse())

@@ -1,0 +1,39 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+// Apenas material público de inicialização. Chaves privadas de assinatura nunca devem entrar em BuildConfig.
+def localConfiguration = new Properties()
+def localConfigurationFile = rootProject.file('.local/build-security.properties')
+if (localConfigurationFile.isFile()) {
+    localConfigurationFile.withInputStream { localConfiguration.load(it) }
+}
+
+ext.securityBuildValue = { String name, String fallback = null ->
+    def value = providers.environmentVariable(name)
+        .orElse(providers.gradleProperty(name))
+        .orElse(localConfiguration.getProperty(name, fallback) ?: '').get().trim()
+    if (value.isEmpty() && fallback == null) {
+        throw new GradleException("Configure ${name} in CI/environment, Gradle properties or .local/build-security.properties. No value was logged.")
+    }
+    value
+}
+ext.securityBuildString = { String name -> JsonOutput.toJson(securityBuildValue(name)) }
+
+// Uma inicialização inválida deve falhar o build para impedir a criação de um cliente sem pins.
+def pinsValid = false
+try {
+    def hosts = new JsonSlurper().parseText(securityBuildValue('SIMLO_TLS_DEFAULT_PINS'))
+    pinsValid = hosts instanceof List && !hosts.isEmpty() && hosts.size() <= 10 &&
+        hosts.every { host ->
+            host instanceof Map && host.keySet() == ['hostname', 'pins'].toSet() &&
+            host.hostname instanceof String && host.hostname ==~ /[a-z0-9](?:[a-z0-9.-]{0,251}[a-z0-9])?/ &&
+            host.pins instanceof List && !host.pins.isEmpty() && host.pins.size() <= 5 &&
+            host.pins.toSet().size() == host.pins.size() && host.pins.every { pin ->
+                pin instanceof String && pin.startsWith('sha256/') &&
+                    Base64.decoder.decode(pin.substring(7)).length == 32
+            }
+        } && hosts.collect { it.hostname }.toSet().size() == hosts.size()
+} catch (Exception ignored) {
+    // Não reproduz o valor fornecido, erro do analisador, chave ou certificado nos logs do build.
+}
+if (!pinsValid) throw new GradleException('SIMLO_TLS_DEFAULT_PINS is missing or invalid; configure a nonempty, reviewed host/pin set.')

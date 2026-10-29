@@ -1,5 +1,17 @@
 apply plugin: 'com.android.library'
+
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
 apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+android { buildFeatures { compose = true } }
 
 android {
     namespace = 'br.gov.caixa.loterias.core.designsystem'
@@ -19,8 +31,10 @@ android {
 }
 
 dependencies {
+    implementation libs.lottie.compose
     implementation libs.androidx.appcompat
     implementation libs.google.material.views
+    implementation libs.compose.webview
     implementation platform(libs.androidx.compose.bom)
     androidTestImplementation platform(libs.androidx.compose.bom)
 
@@ -34,5 +48,5 @@ dependencies {
 
     androidTestImplementation libs.androidx.compose.ui.test.junit4
     debugImplementation libs.androidx.compose.ui.test.manifest
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation libs.androidx.test.ext.junit
 }

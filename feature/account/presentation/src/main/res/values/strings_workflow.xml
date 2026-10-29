@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workflow_account_entrar">Entrar</string>
+    <string name="workflow_account_acesse_sua_conta_caixa_para_apostar_e_acompanhar_seus_jogos">Acesse sua conta CAIXA para apostar e acompanhar seus jogos.</string>
+    <string name="workflow_account_cpf">CPF</string>
+    <string name="workflow_account_senha">Senha</string>
+    <string name="workflow_account_cadastre_se">Cadastre-se</string>
+    <string name="workflow_account_cadastro">Cadastro</string>
+    <string name="workflow_account_o_cadastro_e_bem_rapido_para_comecar_informe_os_dados_abaixo">O cadastro é bem rápido. Para começar, informe os dados abaixo:</string>
+    <string name="workflow_account_nome">Nome</string>
+    <string name="workflow_account_cep">CEP</string>
+    <string name="workflow_account_uf">UF</string>
+    <string name="workflow_account_municipio">Município</string>
+    <string name="workflow_account_e_mail">E-mail</string>
+    <string name="workflow_account_finalizar_cadastro">Finalizar cadastro</string>
+    <string name="workflow_account_loterias_caixa">Loterias CAIXA</string>
+    <string name="workflow_account_cadastro_realizado">Cadastro realizado.</string>
+    <string name="workflow_account_dados_pessoais">Dados pessoais</string>
+    <string name="workflow_account_estes_sao_seus_dados_pessoais_por_favor_mantenha_os_sempre_atuali">Estes são seus dados pessoais. Por favor, mantenha-os sempre atualizados.</string>
+    <string name="workflow_account_limite_diario_de_apostas">Limite Diário de Apostas</string>
+    <string name="workflow_account_atualizar">Atualizar</string>
+    <string name="workflow_account_cadastro_atualizado">Cadastro atualizado.</string>
+    <string name="workflow_account_alterar_dados_login_caixa">Alterar dados Login CAIXA</string>
+    <string name="workflow_account_pagina_segura_da_conta_caixa">Página segura da Conta CAIXA.</string>
+    <string name="workflow_account_token">Token</string>
+    <string name="workflow_account_tela_tecnica_de_retorno_da_autenticacao">Tela técnica de retorno da autenticação.</string>
+</resources>

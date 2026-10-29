@@ -7,6 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import br.gov.caixa.loterias.core.navigation.workflow.VisitorLoginCallbacks
+import br.gov.caixa.loterias.core.navigation.workflow.openResponsibleAssessment
+import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestination
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -26,8 +29,8 @@ class VisitorLoginNavigationUiTest {
             NavHost(nav, startDestination = "home") {
                 composable("home") { Text("Home") }
                 composable("responsible/start") { Text("Welcome") }
-                listOf("account/personal-data", "tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form").forEach { route -> composable(route) { Text(route) } }
-                composable("account/login?authorize={authorize}") { Text("Login") }
+                listOf("account/personal-data", "tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form", "betting/rapid", "betting/rapid-list", "betting/rapid-config").forEach { route -> composable(route) { Text(route) } }
+                composable(br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation.pattern) { Text("Login") }
             }
         }
         compose.runOnIdle { if (openPersonal) nav.navigate(protectedRoute) }
@@ -42,7 +45,7 @@ class VisitorLoginNavigationUiTest {
 
     @Test fun allPrivateDrawerEntriesOpenUnderPromptAndDeclineOnceToHome() {
         show(false)
-        listOf("tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form").forEach { route ->
+        listOf("tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form", "betting/rapid", "betting/rapid-list", "betting/rapid-config").forEach { route ->
             compose.runOnIdle {
                 protectedRoute = route
                 openVisitorDrawerDestination(route, nav) { request = it }
@@ -61,7 +64,7 @@ class VisitorLoginNavigationUiTest {
 
     @Test fun allPrivateDrawerAcceptsRetainContinuationAndDuplicateCallbacksCannotNavigateTwice() {
         show(false)
-        listOf("tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form").forEach { route ->
+        listOf("tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form", "betting/rapid", "betting/rapid-list", "betting/rapid-config").forEach { route ->
             compose.runOnIdle {
                 protectedRoute = route
                 openVisitorDrawerDestination(route, nav) { request = it }
@@ -129,7 +132,7 @@ class VisitorLoginNavigationUiTest {
             val callback = callbacks()
             callback.onPositive()
             assertEquals("account/personal-data", continuation)
-            assertEquals("account/login?authorize={authorize}", nav.currentDestination?.route)
+            assertEquals(br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation.pattern, nav.currentDestination?.route)
             assertEquals("account/personal-data", nav.previousBackStackEntry?.destination?.route)
             val login = nav.currentBackStackEntry
             callback.onPositive()

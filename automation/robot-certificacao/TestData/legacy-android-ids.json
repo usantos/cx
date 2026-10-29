@@ -1,0 +1,530 @@
+[
+  {
+    "id": "marketplace_retailer_suggestions",
+    "expression": "\"marketplace_retailer_suggestions\"",
+    "source": "feature/marketplace-filter/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplacefilter/presentation/components/MarketplaceRetailerSearch.kt",
+    "line": 89
+  },
+  {
+    "id": "marketplace_filter_screen",
+    "expression": "\"marketplace_filter_screen\"",
+    "source": "feature/marketplace-filter/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplacefilter/presentation/components/MarketplaceFilterForm.kt",
+    "line": 48
+  },
+  {
+    "id": "favorite-name-input",
+    "expression": "\"favorite-name-input\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/BettingFavoriteDialog.kt",
+    "line": 145
+  },
+  {
+    "id": null,
+    "expression": "\"betting-number-$label\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/BettingNumberGrid.kt",
+    "line": 105
+  },
+  {
+    "id": "betting-mode-toolbar",
+    "expression": "\"betting-mode-toolbar\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/BettingModeToolbar.kt",
+    "line": 71
+  },
+  {
+    "id": "betting-surprise-switch-control",
+    "expression": "\"betting-surprise-switch-control\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/BettingModeToolbar.kt",
+    "line": 93
+  },
+  {
+    "id": "combo-purchase-panel",
+    "expression": "\"combo-purchase-panel\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/ComboPurchasePanel.kt",
+    "line": 47
+  },
+  {
+    "id": "combo-add-to-cart",
+    "expression": "\"combo-add-to-cart\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/ComboPurchasePanel.kt",
+    "line": 76
+  },
+  {
+    "id": "combo-header-clover",
+    "expression": "\"combo-header-clover\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/ComboDetailContent.kt",
+    "line": 50
+  },
+  {
+    "id": "pool-tutorial-viewport",
+    "expression": "\"pool-tutorial-viewport\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/PoolTutorialLayout.kt",
+    "line": 99
+  },
+  {
+    "id": "pool-tutorial-pager",
+    "expression": "\"pool-tutorial-pager\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/PoolTutorialLayout.kt",
+    "line": 103
+  },
+  {
+    "id": "pool-tutorial-close",
+    "expression": "\"pool-tutorial-close\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/PoolTutorialLayout.kt",
+    "line": 109
+  },
+  {
+    "id": "pool-tutorial-skip",
+    "expression": "\"pool-tutorial-skip\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/PoolTutorialLayout.kt",
+    "line": 123
+  },
+  {
+    "id": "pool-tutorial-primary",
+    "expression": "\"pool-tutorial-primary\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/PoolTutorialLayout.kt",
+    "line": 150
+  },
+  {
+    "id": "pool-tutorial-checkbox-row",
+    "expression": "\"pool-tutorial-checkbox-row\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/PoolTutorialLayout.kt",
+    "line": 156
+  },
+  {
+    "id": "pool-tutorial-checkbox",
+    "expression": "\"pool-tutorial-checkbox\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/PoolTutorialLayout.kt",
+    "line": 157
+  },
+  {
+    "id": "pool-tutorial-indicator-strip",
+    "expression": "\"pool-tutorial-indicator-strip\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/PoolTutorialLayout.kt",
+    "line": 183
+  },
+  {
+    "id": null,
+    "expression": "\"pool-tutorial-dot-$index\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/PoolTutorialLayout.kt",
+    "line": 195
+  },
+  {
+    "id": null,
+    "expression": "\"pool-tutorial-media-${page.media}\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/PoolTutorialLayout.kt",
+    "line": 227
+  },
+  {
+    "id": "betting-cart-footer",
+    "expression": "\"betting-cart-footer\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/BettingGameFooter.kt",
+    "line": 188
+  },
+  {
+    "id": null,
+    "expression": "\"betting-footer-amount-$label\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/BettingGameFooter.kt",
+    "line": 224
+  },
+  {
+    "id": null,
+    "expression": "\"combo-catalog-${combo.id}\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/BettingCatalogCards.kt",
+    "line": 63
+  },
+  {
+    "id": null,
+    "expression": "\"combo-entry-$key\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/BettingCatalogCards.kt",
+    "line": 123
+  },
+  {
+    "id": null,
+    "expression": "\"combo-clover-$key\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/components/BettingCatalogCards.kt",
+    "line": 129
+  },
+  {
+    "id": null,
+    "expression": "\"lucky-month-${month.name}\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/screen/BettingLuckyMonthContent.kt",
+    "line": 53
+  },
+  {
+    "id": null,
+    "expression": "\"betting-clover-$number\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/screen/BettingCloverContent.kt",
+    "line": 61
+  },
+  {
+    "id": null,
+    "expression": "\"loteca-count-${listOf(\"partidas\", \"simples\", \"duplas\", \"triplas\")[index]}\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/screen/BettingLotecaContent.kt",
+    "line": 160
+  },
+  {
+    "id": "loteca-quantity",
+    "expression": "\"loteca-quantity\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/screen/BettingLotecaContent.kt",
+    "line": 183
+  },
+  {
+    "id": null,
+    "expression": "\"loteca-${match.number}-$outcome\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/screen/BettingLotecaContent.kt",
+    "line": 245
+  },
+  {
+    "id": null,
+    "expression": "\"super-sete-header-$column\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/screen/BettingSuperSevenContent.kt",
+    "line": 109
+  },
+  {
+    "id": null,
+    "expression": "\"super-sete-$column-$digit\"",
+    "source": "feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/screen/BettingSuperSevenContent.kt",
+    "line": 167
+  },
+  {
+    "id": "home-large-font-body",
+    "expression": "\"home-large-font-body\"",
+    "source": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/components/HomeLargeFontLotteryContent.kt",
+    "line": 44
+  },
+  {
+    "id": "home-pool-resale-timer",
+    "expression": "\"home-pool-resale-timer\"",
+    "source": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/components/HomePoolResaleTimer.kt",
+    "line": 64
+  },
+  {
+    "id": "home-pool-resale-timer",
+    "expression": "\"home-pool-resale-timer\"",
+    "source": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/components/HomePoolResaleTimer.kt",
+    "line": 64
+  },
+  {
+    "id": "home-notification-overlay",
+    "expression": "\"home-notification-overlay\"",
+    "source": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/components/HomeNotificationPopup.kt",
+    "line": 76
+  },
+  {
+    "id": "home-notification-panel",
+    "expression": "\"home-notification-panel\"",
+    "source": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/components/HomeNotificationPopup.kt",
+    "line": 83
+  },
+  {
+    "id": "home-result-sports-pager",
+    "expression": "\"home-result-sports-pager\"",
+    "source": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/screen/HomeSportsResults.kt",
+    "line": 51
+  },
+  {
+    "id": "home-result-loading",
+    "expression": "\"home-result-loading\"",
+    "source": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/screen/HomeResultsContent.kt",
+    "line": 29
+  },
+  {
+    "id": "home-result-scroll",
+    "expression": "\"home-result-scroll\"",
+    "source": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/screen/HomeDrawResult.kt",
+    "line": 58
+  },
+  {
+    "id": "home-result-revenue",
+    "expression": "\"home-result-revenue\"",
+    "source": "feature/home/presentation/src/main/java/br/gov/caixa/loterias/feature/home/presentation/screen/HomeDrawResult.kt",
+    "line": 227
+  },
+  {
+    "id": "bet-detail-footer",
+    "expression": "\"bet-detail-footer\"",
+    "source": "feature/tickets/presentation/src/main/java/br/gov/caixa/loterias/feature/tickets/presentation/screen/NativeBetDetailContent.kt",
+    "line": 223
+  },
+  {
+    "id": "bet-detail-scroll",
+    "expression": "\"bet-detail-scroll\"",
+    "source": "feature/tickets/presentation/src/main/java/br/gov/caixa/loterias/feature/tickets/presentation/screen/BetDetailScreen.kt",
+    "line": 96
+  },
+  {
+    "id": "pool-detail-purchase-panel",
+    "expression": "\"pool-detail-purchase-panel\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceLargeFontPurchasePanel.kt",
+    "line": 52
+  },
+  {
+    "id": "pool-detail-add-to-cart",
+    "expression": "\"pool-detail-add-to-cart\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceLargeFontPurchasePanel.kt",
+    "line": 82
+  },
+  {
+    "id": null,
+    "expression": "\"pool-detail-ball-$position-${rowIndex * 6 + column}\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceDetailGrids.kt",
+    "line": 70
+  },
+  {
+    "id": null,
+    "expression": "\"pool-detail-clover-$position-${rowIndex * 6 + column}\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceDetailGrids.kt",
+    "line": 255
+  },
+  {
+    "id": null,
+    "expression": "\"pool-detail-super-$position-$column-$row\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceDetailGrids.kt",
+    "line": 306
+  },
+  {
+    "id": null,
+    "expression": "tag",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceDetailGrids.kt",
+    "line": 200
+  },
+  {
+    "id": "marketplace-carousel",
+    "expression": "\"marketplace-carousel\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceCarousel.kt",
+    "line": 204
+  },
+  {
+    "id": null,
+    "expression": "\"carousel-detail-${pool.code}\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceCarousel.kt",
+    "line": 305
+  },
+  {
+    "id": null,
+    "expression": "\"carousel-add-${pool.code}\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceCarousel.kt",
+    "line": 335
+  },
+  {
+    "id": null,
+    "expression": "tag",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceCarousel.kt",
+    "line": 361
+  },
+  {
+    "id": null,
+    "expression": "\"carousel-favorite-${pool.code}\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceCarousel.kt",
+    "line": 590
+  },
+  {
+    "id": "pool-detail-purchase-panel",
+    "expression": "\"pool-detail-purchase-panel\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceDetailPurchase.kt",
+    "line": 71
+  },
+  {
+    "id": "pool-detail-add-to-cart",
+    "expression": "\"pool-detail-add-to-cart\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceDetailPurchase.kt",
+    "line": 83
+  },
+  {
+    "id": null,
+    "expression": "\"carousel-add-${pool.code}\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceLargeFontCarouselCard.kt",
+    "line": 107
+  },
+  {
+    "id": null,
+    "expression": "tag",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceLargeFontCarouselCard.kt",
+    "line": 185
+  },
+  {
+    "id": "marketplace-pools-list",
+    "expression": "\"marketplace-pools-list\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/screen/MarketplacePoolsContent.kt",
+    "line": 69
+  },
+  {
+    "id": null,
+    "expression": "\"pool-list-${pool.code}\"",
+    "source": "feature/marketplace/presentation/src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/screen/MarketplacePoolsContent.kt",
+    "line": 77
+  },
+  {
+    "id": "retail-search-content",
+    "expression": "\"retail-search-content\"",
+    "source": "feature/retail/presentation/src/main/java/br/gov/caixa/loterias/feature/retail/presentation/route/RetailSearchRoute.kt",
+    "line": 75
+  },
+  {
+    "id": "retail-search-loader",
+    "expression": "\"retail-search-loader\"",
+    "source": "feature/retail/presentation/src/main/java/br/gov/caixa/loterias/feature/retail/presentation/route/RetailSearchRoute.kt",
+    "line": 115
+  },
+  {
+    "id": "result_loteca_pager",
+    "expression": "\"result_loteca_pager\"",
+    "source": "feature/results/presentation/src/main/java/br/gov/caixa/loterias/feature/results/presentation/components/DrawLotecaResults.kt",
+    "line": 62
+  },
+  {
+    "id": null,
+    "expression": "tag",
+    "source": "feature/results/presentation/src/main/java/br/gov/caixa/loterias/feature/results/presentation/components/DrawPublicSuperSevenResult.kt",
+    "line": 109
+  },
+  {
+    "id": "support_game_help",
+    "expression": "\"support_game_help\"",
+    "source": "feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/screen/GameHelpScreen.kt",
+    "line": 72
+  },
+  {
+    "id": "support_screen",
+    "expression": "\"support_screen\"",
+    "source": "feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/screen/SupportContent.kt",
+    "line": 55
+  },
+  {
+    "id": "support_html",
+    "expression": "\"support_html\"",
+    "source": "feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/screen/SupportAnswerContent.kt",
+    "line": 50
+  },
+  {
+    "id": "support_terms_view",
+    "expression": "\"support_terms_view\"",
+    "source": "feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/screen/ReadOnlyTermsScreen.kt",
+    "line": 30
+  },
+  {
+    "id": "support_terms_document",
+    "expression": "\"support_terms_document\"",
+    "source": "feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/screen/ReadOnlyTermsScreen.kt",
+    "line": 52
+  },
+  {
+    "id": "cart-summary-divider",
+    "expression": "\"cart-summary-divider\"",
+    "source": "feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/components/CurrentCartSummary.kt",
+    "line": 131
+  },
+  {
+    "id": "cart-summary-badge",
+    "expression": "\"cart-summary-badge\"",
+    "source": "feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/components/CurrentCartSummary.kt",
+    "line": 144
+  },
+  {
+    "id": "cart-summary-divider",
+    "expression": "\"cart-summary-divider\"",
+    "source": "feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/components/CurrentCartSummary.kt",
+    "line": 131
+  },
+  {
+    "id": "cart-summary-badge",
+    "expression": "\"cart-summary-badge\"",
+    "source": "feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/components/CurrentCartSummary.kt",
+    "line": 144
+  },
+  {
+    "id": null,
+    "expression": "\"cart-super-seven-header-$column\"",
+    "source": "feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/screen/CurrentCartPresentation.kt",
+    "line": 120
+  },
+  {
+    "id": "cart-empty-icon",
+    "expression": "\"cart-empty-icon\"",
+    "source": "feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/screen/CurrentCartContent.kt",
+    "line": 63
+  },
+  {
+    "id": "environment-picker",
+    "expression": "\"environment-picker\"",
+    "source": "feature/account/presentation/src/main/java/br/gov/caixa/loterias/feature/account/presentation/components/EnvironmentPicker.kt",
+    "line": 39
+  },
+  {
+    "id": "introduction-page-indicators",
+    "expression": "\"introduction-page-indicators\"",
+    "source": "feature/onboarding/presentation/src/main/java/br/gov/caixa/loterias/feature/onboarding/presentation/components/OnboardingIntroduction.kt",
+    "line": 206
+  },
+  {
+    "id": "introduction-page-indicators",
+    "expression": "\"introduction-page-indicators\"",
+    "source": "feature/onboarding/presentation/src/main/java/br/gov/caixa/loterias/feature/onboarding/presentation/components/OnboardingIntroduction.kt",
+    "line": 206
+  },
+  {
+    "id": "startupUnavailableContent",
+    "expression": "\"startupUnavailableContent\"",
+    "source": "feature/onboarding/presentation/src/main/java/br/gov/caixa/loterias/feature/onboarding/presentation/screen/StartupStatusScreen.kt",
+    "line": 78
+  },
+  {
+    "id": "startupRetryIcon",
+    "expression": "\"startupRetryIcon\"",
+    "source": "feature/onboarding/presentation/src/main/java/br/gov/caixa/loterias/feature/onboarding/presentation/screen/StartupStatusScreen.kt",
+    "line": 248
+  },
+  {
+    "id": null,
+    "expression": "testTag",
+    "source": "core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/CaixaDSMarketplaceFilterComponents.kt",
+    "line": 233
+  },
+  {
+    "id": null,
+    "expression": "tag",
+    "source": "core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/dialog/CaixaDSOptionDialog.kt",
+    "line": 178
+  },
+  {
+    "id": null,
+    "expression": "if (description == null) \"betting-option-list\" else \"betting-option-wheel\"",
+    "source": "core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/dialog/CaixaDSOptionDialog.kt",
+    "line": 309
+  },
+  {
+    "id": "betting-option-cancel",
+    "expression": "\"betting-option-cancel\"",
+    "source": "core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/dialog/CaixaDSOptionDialog.kt",
+    "line": 358
+  },
+  {
+    "id": "betting-option-confirm",
+    "expression": "\"betting-option-confirm\"",
+    "source": "core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/dialog/CaixaDSOptionDialog.kt",
+    "line": 379
+  },
+  {
+    "id": "betting-option-cancel",
+    "expression": "\"betting-option-cancel\"",
+    "source": "core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/dialog/OptionDialogLargeFontActions.kt",
+    "line": 31
+  },
+  {
+    "id": "betting-option-confirm",
+    "expression": "\"betting-option-confirm\"",
+    "source": "core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/dialog/OptionDialogLargeFontActions.kt",
+    "line": 45
+  },
+  {
+    "id": null,
+    "expression": "\"betting-button-$text\"",
+    "source": "core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/button/CaixaDSBettingButton.kt",
+    "line": 79
+  },
+  {
+    "id": "betting-dropdown-icon",
+    "expression": "\"betting-dropdown-icon\"",
+    "source": "core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/button/CaixaDSBettingButton.kt",
+    "line": 130
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "app/src/main/java/br/gov/caixa/loterias/apostas/push/LoteriasMessagingService.kt": {
+    "kind": "android-entry",
+    "forwards_to": "br.gov.caixa.loterias.apostas.push",
+    "reason": "Manifest/Hilt service FQN, injected field and callback ABI retained; payload handling belongs to integration."
+  },
+  "app/src/debug/java/br/gov/caixa/loterias/apostas/HomeDrawerTestActivity.kt": {
+    "kind": "android-entry",
+    "reason": "Existing debug-only Hilt/UI test host FQN and manifest entry."
+  }
+}

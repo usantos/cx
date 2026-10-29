@@ -3,6 +3,8 @@ package br.gov.caixa.loterias.core.domain.support
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
+import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
+import br.gov.caixa.loterias.feature.support.domain.model.SupportSection
 
 class SupportModelsTest {
     @Test

@@ -1,12 +1,15 @@
 package br.gov.caixa.loterias.core.domain.marketplace
 
 import java.math.BigDecimal
-
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceBet
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePage
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
 
 class MarketplaceModelsTest {
     @Test

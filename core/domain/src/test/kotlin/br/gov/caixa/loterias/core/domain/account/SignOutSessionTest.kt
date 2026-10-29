@@ -1,9 +1,15 @@
 package br.gov.caixa.loterias.core.domain.account
 
-import br.gov.caixa.loterias.core.domain.service.*
+import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
+import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.feature.account.domain.repository.SessionSignOutRepository
+import br.gov.caixa.loterias.feature.account.domain.model.SessionSignOutResult
+import br.gov.caixa.loterias.feature.account.domain.usecase.SignOutSession
 
 class SignOutSessionTest {
     @Test fun `missing login sends nothing and replacement login rejects late confirmation`() = runTest {

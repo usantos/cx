@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_quick_ticket_description">"Apostou em uma lotérica?\n Confira aqui os seus resultados."</string>
+    <string name="final_quick_responsible_description">"Prevenção e tratamento aos danos relacionados com jogos."</string>
+    <string name="final_quick_women_description">"Denuncie e busque ajuda a vítimas de violência pelo WhatsApp do canal 180."</string>
+    <string name="final_quick_transferred">"repassados"</string>
+    <string name="final_quick_transfer_year">" em %1$s."</string>
+    <string name="final_instant_title">"INSTANTÂNEA"</string>
+</resources>

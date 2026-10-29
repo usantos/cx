@@ -1,11 +1,13 @@
 package br.gov.caixa.loterias.core.data
 
-import br.gov.caixa.loterias.core.network.AppParametersMapDto
+import br.gov.caixa.loterias.core.network.model.AppParametersMapDto
 import com.google.gson.Gson
 import java.lang.reflect.Proxy
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.data.repository.AppConfigurationRepositoryImpl
+import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
 
 class PoolSalesConfigurationTest {
     @Test fun `history menu uses consultaMinhasApostas with legacy enabled fallback`() = runTest {
@@ -23,7 +25,7 @@ class PoolSalesConfigurationTest {
                 check(method.name == "appParameters")
                 dto
             } as AppConfigurationRemoteDataSource
-            assertEquals(parameters, expected, RemoteAppConfigurationRepository(source).homeFeatures().myBetsVisible)
+            assertEquals(parameters, expected, AppConfigurationRepositoryImpl(source).homeFeatures().myBetsVisible)
         }
     }
 
@@ -42,7 +44,7 @@ class PoolSalesConfigurationTest {
                 requests++
                 dto
             } as AppConfigurationRemoteDataSource
-            val repository = RemoteAppConfigurationRepository(source)
+            val repository = AppConfigurationRepositoryImpl(source)
             assertEquals(expected, repository.homeFeatures().poolSalesEnabled)
             assertEquals(expected, repository.homeFeatures().poolSalesEnabled)
             assertEquals(1, requests)

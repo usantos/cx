@@ -7,11 +7,13 @@ import androidx.compose.ui.unit.dp
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSTextInputDialog
+import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
 
 class CaixaDSTextInputDialogTest {
     @get:Rule val compose = createComposeRule()
 
-    @Test fun legacyNameDialogEditsAndDispatchesSaveAndCancel() {
+    @Test fun nameDialogEditsAndDispatchesSaveAndCancel() {
         val value = mutableStateOf("")
         var saved: String? = null
         var cancelled = false

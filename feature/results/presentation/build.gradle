@@ -1,0 +1,95 @@
+apply plugin: 'com.google.devtools.ksp'
+apply plugin: 'com.google.dagger.hilt.android'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
+
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+android { buildFeatures { compose = true } }
+
+android { defaultConfig { minSdk 24 } }
+dependencies {
+    implementation project(':core:common')
+    implementation project(':core:design-system')
+    api project(':core:presentation')
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.ui.tooling.preview
+    implementation libs.androidx.compose.material3
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    testImplementation libs.junit4
+}
+android { namespace = 'br.gov.caixa.loterias.feature.results' }
+apply plugin: 'jacoco'
+
+android {
+    testOptions {
+        unitTests.all {
+            jacoco.includeNoLocationClasses = true
+            jacoco.excludes = ['jdk.internal.*']
+        }
+    }
+}
+
+dependencies {
+    testImplementation project(':core:testing')
+    implementation project(':core:navigation')
+    implementation libs.hilt.android
+    ksp libs.hilt.compiler
+    implementation project(':core:network')
+    implementation project(':feature:results:data')
+    implementation project(':feature:tickets:domain')
+    api project(':feature:results:domain')
+    implementation libs.androidx.activity.compose
+    implementation project(':core:domain')
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.kotlinx.coroutines.core
+    testImplementation libs.kotlinx.coroutines.test
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+// O AGP escolhe o destino dos testes unitários; nunca mescle um arquivo exec fixo obsoleto.
+def resultCoverageData = files({
+    tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+}).filter { it.isFile() }
+def resultCoverageClasses = files(fileTree(
+        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        includes: ['**/ResultsViewModel.class', '**/ResultsUiState.class',
+                   '**/ConfirmedBetResultsViewModel*.class', '**/ConfirmedBetResultsState.class']
+))
+
+tasks.register('jacocoDebugCoverageReport', JacocoReport) {
+    dependsOn tasks.named('testDebugUnitTest')
+    executionData.from(resultCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(resultCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+
+tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoDebugCoverageReport')
+    executionData.from(resultCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(resultCoverageClasses)
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.95
+            }
+        }
+    }
+}
+
+tasks.named('check').configure { dependsOn tasks.named('jacocoDebugCoverageVerification') }

@@ -2,6 +2,9 @@ package br.gov.caixa.loterias.core.auth
 
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.gateway.biometricHardwareAvailable
+import br.gov.caixa.loterias.core.auth.gateway.sameBiometricCredential
+import br.gov.caixa.loterias.core.auth.biometric.BiometricCredential
 
 class BiometricCredentialContextTest {
     @Test fun `no hardware and unavailable hide row while no enrollment permits enrollment`() {

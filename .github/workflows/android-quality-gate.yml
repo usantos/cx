@@ -1,0 +1,75 @@
+name: Android Quality Gate
+
+on:
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-gate:
+    name: Android Quality Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # Gradle/AGP executam na versão 21; os módulos Kotlin/JVM solicitam explicitamente a cadeia de ferramentas 17.
+      - name: Set up JDKs 17 and 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            17
+            21
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      # O AGP 9.2 usa Build Tools 36.0.0 por padrão, mesmo com compileSdk 37.
+      - name: Install compile SDK
+        run: sdkmanager 'platforms;android-37' 'build-tools;36.0.0'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # A configuração inicial da compilação é lida diretamente do ambiente por
+      # gradle/security-build-config.gradle. Nenhum arquivo de configuração ou chave literal é versionado.
+      # PRs de bifurcações não confiáveis não têm esses segredos e são bloqueados até a validação em uma
+      # ramificação confiável; nunca use pull_request_target para executar código contribuído.
+      - name: Run the same full quality gate as pre-commit
+        env:
+          SIMLO_PRD_FIREBASE_APP_ID: ${{ secrets.SIMLO_PRD_FIREBASE_APP_ID }}
+          SIMLO_PRD_FIREBASE_API_KEY: ${{ secrets.SIMLO_PRD_FIREBASE_API_KEY }}
+          SIMLO_PRD_FIREBASE_PROJECT_ID: ${{ secrets.SIMLO_PRD_FIREBASE_PROJECT_ID }}
+          SIMLO_PRD_FIREBASE_SENDER_ID: ${{ secrets.SIMLO_PRD_FIREBASE_SENDER_ID }}
+          SIMLO_TQS_FIREBASE_APP_ID: ${{ secrets.SIMLO_TQS_FIREBASE_APP_ID }}
+          SIMLO_TQS_FIREBASE_API_KEY: ${{ secrets.SIMLO_TQS_FIREBASE_API_KEY }}
+          SIMLO_TQS_FIREBASE_PROJECT_ID: ${{ secrets.SIMLO_TQS_FIREBASE_PROJECT_ID }}
+          SIMLO_TQS_FIREBASE_SENDER_ID: ${{ secrets.SIMLO_TQS_FIREBASE_SENDER_ID }}
+          SIMLO_AUTOMACAO_FIREBASE_APP_ID: ${{ secrets.SIMLO_AUTOMACAO_FIREBASE_APP_ID }}
+          SIMLO_AUTOMACAO_FIREBASE_API_KEY: ${{ secrets.SIMLO_AUTOMACAO_FIREBASE_API_KEY }}
+          SIMLO_AUTOMACAO_FIREBASE_PROJECT_ID: ${{ secrets.SIMLO_AUTOMACAO_FIREBASE_PROJECT_ID }}
+          SIMLO_AUTOMACAO_FIREBASE_SENDER_ID: ${{ secrets.SIMLO_AUTOMACAO_FIREBASE_SENDER_ID }}
+          SIMLO_TLS_DEFAULT_PINS: ${{ secrets.SIMLO_TLS_DEFAULT_PINS }}
+          SIMLO_KEYSET_TRUSTED_SIGNERS: ${{ secrets.SIMLO_KEYSET_TRUSTED_SIGNERS }}
+          SIMLO_KEYSET_SIGNATURE_THRESHOLD: ${{ secrets.SIMLO_KEYSET_SIGNATURE_THRESHOLD }}
+        run: python3 scripts/validate-pre-commit.py
+
+      - name: Publish quality and test reports even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-quality-reports-${{ github.run_attempt }}
+          path: |
+            **/build/reports/
+            **/build/test-results/
+          if-no-files-found: warn
+          retention-days: 14

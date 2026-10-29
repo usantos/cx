@@ -1,5 +1,8 @@
 package br.gov.caixa.loterias.apostas.authentication
 
+import br.gov.caixa.loterias.core.security.topaz.ComponentOverrideBackup
+import br.gov.caixa.loterias.core.security.topaz.ComponentOverrideController
+import br.gov.caixa.loterias.core.security.topaz.TopazMockComponentPolicy
 import org.junit.Assert.*
 import org.junit.Test
 

@@ -1,15 +1,33 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.core.network.MockBackendScenario
+import br.gov.caixa.loterias.apostas.navigation.startup.startupDestination
+import br.gov.caixa.loterias.apostas.navigation.startup.mockStartDestination
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
+import br.gov.caixa.loterias.feature.tickets.navigation.visualTestPurchase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.session.ForegroundSessionStatus
 
 class MockScenarioNavigationTest {
     @Test
-    fun `real startup shows introduction only while it is pending`() {
-        assertEquals("onboarding/introduction", startupDestination(shouldShowIntroduction = true))
-        assertEquals("account/login", startupDestination(shouldShowIntroduction = false))
+    fun `startup opens home only with an active owned session`() {
+        assertEquals("home", startupDestination(ForegroundSessionStatus.ACTIVE, hasIdentity = true))
+        assertEquals("account/login", startupDestination(ForegroundSessionStatus.ACTIVE, hasIdentity = false))
+        listOf(ForegroundSessionStatus.MISSING, ForegroundSessionStatus.EXPIRED,
+            ForegroundSessionStatus.AUTHORIZATION_PENDING).forEach { status ->
+            assertEquals("account/login", startupDestination(status, hasIdentity = true))
+            assertEquals("account/login", startupDestination(status, hasIdentity = false))
+        }
+    }
+
+    @Test
+    fun `remembered credential starts authorization without granting direct home access`() {
+        assertEquals("account/login?authorize=true", startupDestination(ForegroundSessionStatus.MISSING, false, true))
+        assertEquals("account/login?authorize=true", startupDestination(ForegroundSessionStatus.EXPIRED, true, true))
+        assertEquals("home", startupDestination(ForegroundSessionStatus.ACTIVE, true, true))
+        assertEquals("account/login", startupDestination(ForegroundSessionStatus.AUTHORIZATION_PENDING, false, true))
     }
 
     @Test
@@ -67,7 +85,7 @@ class MockScenarioNavigationTest {
             MockBackendScenario.PRIZE_SERVER_MESSAGE to "retail/prize-mercado-pago",
             MockBackendScenario.PRIZE_SERVER_FAILURE to "retail/prize-mercado-pago",
             MockBackendScenario.PRIZE_INVALID_IDENTIFICATION to "retail/prize-mercado-pago",
-            MockBackendScenario.PRIZE_MP_REGISTRATION_TOKEN_FAILURE to "retail/prize-mercado-pago",
+            MockBackendScenario.PRIZE_MP_REGISTRATION_TOKEN_FAILURE to "retail/prize-mercado-pago"
         )
 
         destinations.forEach { (scenario, destination) ->

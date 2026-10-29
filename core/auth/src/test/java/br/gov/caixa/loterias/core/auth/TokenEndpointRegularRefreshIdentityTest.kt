@@ -4,6 +4,11 @@ import com.google.gson.JsonParser
 import java.util.Base64
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.core.auth.token.TokenEndpointIdentity
+import br.gov.caixa.loterias.core.auth.gateway.OidcConfiguration
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionIdentityMode
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshContext
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshRequest
 
 class TokenEndpointRegularRefreshIdentityTest {
     private val reader = TokenEndpointIdentity { Base64.getUrlDecoder().decode(it) }
@@ -20,10 +25,15 @@ class TokenEndpointRegularRefreshIdentityTest {
     // Previously validated ID may be expired by the time access is refreshed.
     private fun originalId() = token(claims().apply { addProperty("aud", "client"); addProperty("nonce", "nonce"); addProperty("iat", 990); addProperty("exp", 1500) }.toString())
     private fun refreshed(access: String? = token(), id: String? = null, context: RegularSessionRefreshContext = oauth,
-        previousId: String? = null, expectedOwner: String = owner) =
-        reader.regularRefreshOwnerKey(id, access, context, previousId, expectedOwner, 2000)
-    private fun reject(access: String? = token(), id: String? = null, context: RegularSessionRefreshContext = oauth,
-        previousId: String? = null, expectedOwner: String = owner) {
+        previousId: String? = null, expectedOwner: String = owner,
+    ) = reader.regularRefreshOwnerKey(id, access, context, previousId, expectedOwner, 2000)
+    private fun reject(
+        access: String? = token(),
+        id: String? = null,
+        context: RegularSessionRefreshContext = oauth,
+        previousId: String? = null,
+        expectedOwner: String = owner,
+    ) {
         val failure = runCatching { refreshed(access, id, context, previousId, expectedOwner) }.exceptionOrNull()
         assertNotNull("Invalid refreshed identity must fail", failure)
         assertEquals("Identidade da autenticação inválida", failure!!.message)
@@ -36,26 +46,72 @@ class TokenEndpointRegularRefreshIdentityTest {
 
     @Test fun `remembered biometric refresh rejects owner context claims and present invalid ID`() {
         for ((field, value) in listOf("sub" to "other", "azp" to "other", "iss" to "https://other.test", "nonce" to "other")) {
-            assertNotNull(runCatching { reader.biometricRefreshOwnerKey(null,
-                token(claims().apply { addProperty(field, value) }.toString()), config, "nonce", owner, 2000) }.exceptionOrNull())
+            assertNotNull(
+                runCatching {
+                    reader.biometricRefreshOwnerKey(
+                        null,
+                        token(claims().apply { addProperty(field, value) }.toString()),
+                        config,
+                        "nonce",
+                        owner,
+                        2000
+                    )
+                }.exceptionOrNull()
+            )
         }
-        for (access in listOf(null, "", "opaque", token(claims().apply { addProperty("exp", 2000) }.toString()),
-            token(claims().apply { addProperty("iat", 1000) }.toString()))) {
+        for (access in listOf(
+            null,
+            "",
+            "opaque",
+            token(claims().apply { addProperty("exp", 2000) }.toString()),
+            token(claims().apply { addProperty("iat", 1000) }.toString())
+        )) {
             assertNotNull(runCatching { reader.biometricRefreshOwnerKey(null, access, config, "nonce", owner, 2000) }.exceptionOrNull())
         }
-        for (invalidId in listOf("", "invalid", token(claims().apply { addProperty("aud", "client"); addProperty("sub", "other") }.toString()))) {
-            assertNotNull(runCatching { reader.biometricRefreshOwnerKey(invalidId, token(), config, "nonce", owner, 2000) }.exceptionOrNull())
+        for (invalidId in listOf(
+            "",
+            "invalid",
+            token(
+                claims().apply {
+                    addProperty("aud", "client")
+                    addProperty("sub", "other")
+                }.toString()
+            )
+        )) {
+            assertNotNull(
+                runCatching {
+                    reader.biometricRefreshOwnerKey(invalidId, token(), config, "nonce", owner, 2000)
+                }.exceptionOrNull()
+            )
         }
-        assertNotNull(runCatching { reader.biometricRefreshOwnerKey(null, token(), config.copy(sessionNamespace = "https://other-api.test/"), "nonce", owner, 2000) }.exceptionOrNull())
+        assertNotNull(
+            runCatching {
+                reader.biometricRefreshOwnerKey(
+                    null,
+                    token(),
+                    config.copy(sessionNamespace = "https://other-api.test/"),
+                    "nonce",
+                    owner,
+                    2000
+                )
+            }.exceptionOrNull()
+        )
     }
 
     @Test fun `remembered biometric access rejects unsupported algorithm future validity and malformed binding`() {
         val unsupported = "${encode("""{"alg":"HS256"}""")}.${encode(claims().toString())}.AQID"
-        val invalid = listOf(unsupported,
+        val invalid = listOf(
+            unsupported,
             token(claims().apply { addProperty("nbf", 2001) }.toString()),
-            token(claims().apply { addProperty("iat", 2601); addProperty("exp", 3000) }.toString()),
+            token(
+                claims().apply {
+                    addProperty("iat", 2601)
+                    addProperty("exp", 3000)
+                }.toString()
+            ),
             token(claims().apply { remove("azp") }.toString()),
-            token(claims().apply { addProperty("sub", "") }.toString()))
+            token(claims().apply { addProperty("sub", "") }.toString())
+        )
         for (access in invalid) {
             val failure = runCatching { reader.biometricRefreshOwnerKey(null, access, config, "nonce", owner, 2000) }.exceptionOrNull()
             assertNotNull(failure)
@@ -92,11 +148,41 @@ class TokenEndpointRegularRefreshIdentityTest {
     @Test fun `new ID in either mode must match existing owner and original nonce when supplied`() {
         for (context in listOf(oauth, oidc)) {
             assertEquals(owner, refreshed(id = id(), context = context, previousId = originalId()))
-            assertEquals(owner, refreshed(id = token(claims().apply { addProperty("aud", "client"); addProperty("nonce", "nonce") }.toString()), context = context, previousId = originalId()))
+            assertEquals(
+                owner,
+                refreshed(
+                    id = token(
+                        claims().apply {
+                            addProperty("aud", "client")
+                            addProperty("nonce", "nonce")
+                        }.toString()
+                    ),
+                    context = context,
+                    previousId = originalId()
+                )
+            )
             reject(id = "", context = context, previousId = originalId())
             reject(id = "invalid", context = context, previousId = originalId())
-            reject(id = token(claims().apply { addProperty("aud", "client"); addProperty("sub", "other") }.toString()), context = context, previousId = originalId())
-            reject(id = token(claims().apply { addProperty("aud", "client"); addProperty("nonce", "wrong") }.toString()), context = context, previousId = originalId())
+            reject(
+                id = token(
+                    claims().apply {
+                        addProperty("aud", "client")
+                        addProperty("sub", "other")
+                    }.toString()
+                ),
+                context = context,
+                previousId = originalId()
+            )
+            reject(
+                id = token(
+                    claims().apply {
+                        addProperty("aud", "client")
+                        addProperty("nonce", "wrong")
+                    }.toString()
+                ),
+                context = context,
+                previousId = originalId()
+            )
         }
     }
 
@@ -126,7 +212,10 @@ class TokenEndpointRegularRefreshIdentityTest {
         for (context in listOf(oauth, oidc)) {
             for (access in listOf(null, "", " ")) reject(access = access, id = id(), context = context, previousId = originalId())
             reject(context = RegularSessionRefreshContext(config, "", context.mode), previousId = originalId())
-            reject(context = RegularSessionRefreshContext(config.copy(tokenEndpoint = "https://other.test/token"), "nonce", context.mode), previousId = originalId())
+            reject(
+                context = RegularSessionRefreshContext(config.copy(tokenEndpoint = "https://other.test/token"), "nonce", context.mode),
+                previousId = originalId()
+            )
         }
     }
 }

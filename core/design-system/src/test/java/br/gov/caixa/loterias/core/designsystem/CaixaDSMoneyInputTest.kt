@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.core.designsystem
 
+import br.gov.caixa.loterias.core.designsystem.components.input.caixaDSMoneyInputAmount
+import br.gov.caixa.loterias.core.designsystem.components.input.caixaDSMoneyInputFormat
 import java.math.BigDecimal
 import java.util.Locale
 import org.junit.Assert.assertEquals

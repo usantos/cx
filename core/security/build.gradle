@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+apply from: rootProject.file('gradle/harden-topaz.gradle')
+
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
+apply plugin: 'jacoco'
+
+android {
+    namespace = 'br.gov.caixa.loterias.core.security'
+    compileSdk 37
+    defaultConfig {
+        minSdk 24
+        manifestPlaceholders = [appAuthRedirectScheme: 'br.gov.caixa.caixaloterias']
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+
+dependencies {
+    implementation libs.androidx.core
+    api project(':core:auth')
+    api project(':core:key-management')
+    implementation project(':core:domain')
+    implementation project(':core:network')
+    implementation libs.androidx.lifecycle.process
+    implementation libs.androidx.biometric
+    // O aplicativo empacota o AAR reforçado (incluindo recursos/JNI).
+    // Uma biblioteca não pode empacotar um AAR local; compila com o mesmo JAR exato.
+    compileOnly hardenedTopazHeartbeatClasses
+    testImplementation hardenedTopazHeartbeatClasses
+    implementation platform(libs.firebase.bom)
+    implementation libs.firebase.config
+    implementation libs.gson
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.okhttp
+    debugImplementation libs.chucker
+    testImplementation libs.junit4
+}
+
+jacoco { toolVersion = '0.8.13' }
+
+dependencies { implementation project(':core:common') }

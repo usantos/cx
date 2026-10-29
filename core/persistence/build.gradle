@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+apply plugin: 'jacoco'
+
+android {
+    namespace 'br.gov.caixa.loterias.core.persistence'
+    compileSdk 37
+    defaultConfig {
+        minSdk 24
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    testOptions { unitTests.includeAndroidResources = true }
+}
+
+dependencies {
+    api project(':core:domain')
+    implementation libs.androidx.datastore.core
+    implementation libs.kotlinx.coroutines.core
+    androidTestImplementation libs.androidx.test.ext.junit
+    androidTestImplementation libs.androidx.test.auth.runner
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+}
+
+jacoco { toolVersion = '0.8.13' }

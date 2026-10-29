@@ -1,0 +1,118 @@
+apply plugin: 'com.google.devtools.ksp'
+apply plugin: 'com.google.dagger.hilt.android'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
+
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+android { buildFeatures { compose = true } }
+
+android { defaultConfig { minSdk 24 } }
+dependencies {
+    implementation project(':core:common')
+    implementation project(':core:design-system')
+    api project(':core:presentation')
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.ui.tooling.preview
+    implementation libs.androidx.compose.material3
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    testImplementation libs.junit4
+}
+apply plugin: 'jacoco'
+android {
+    buildFeatures { buildConfig = true; resValues = true }
+    defaultConfig {
+        resValue 'string', 'status_toolbar_title', 'Loterias'
+        buildConfigField 'boolean', 'HOME_V2', providers.gradleProperty('homeV2').orElse('true').get()
+        buildConfigField 'String', 'DEFAULT_VERSION_NAME', groovy.json.JsonOutput.toJson(providers.gradleProperty('PRD_VERSION_NAME').get())
+    }
+    namespace = 'br.gov.caixa.loterias.feature.home'
+    defaultConfig {
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        manifestPlaceholders = [appAuthRedirectScheme: 'br.gov.caixa.caixaloterias']
+    }
+    buildTypes { debug { enableAndroidTestCoverage = true } }
+    testCoverage { jacocoVersion = '0.8.13' }
+}
+
+dependencies {
+    testImplementation project(':core:testing')
+    implementation project(':feature:betting:presentation')
+    implementation project(':core:auth')
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.hilt.android
+    ksp libs.hilt.compiler
+    implementation project(':feature:results:presentation')
+    implementation project(':feature:onboarding:presentation')
+    implementation project(':core:navigation')
+    implementation libs.androidx.activity.compose
+    implementation project(':feature:home:data')
+    implementation project(':feature:results:domain')
+    implementation project(':feature:responsible-gaming:domain')
+    implementation project(':feature:cart:domain')
+    implementation project(':feature:betting:domain')
+    implementation project(':feature:account:domain')
+    api project(':feature:home:domain')
+    implementation project(':core:domain')
+    implementation libs.kotlinx.coroutines.core
+    testImplementation libs.kotlinx.coroutines.test
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    debugImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation libs.androidx.test.runner
+}
+
+jacoco { toolVersion = '0.8.13' }
+// O AGP escolhe o destino dos testes unitários; nunca mescle um arquivo exec obsoleto com caminho fixo.
+def homeCoverageData = files({
+    tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+}, fileTree(layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
+def homeCoverageClasses = files(fileTree(dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'), includes: [
+        '**/HomePreferencesViewModel*.class', '**/HomePreferencesUiState*.class', '**/HomeV2ModalityOrder*.class',
+        '**/HomeViewModel*.class', '**/HomeUiState*.class', '**/HomeNotificationRedirect*.class', '**/HomeFormattingKt*.class', '**/HomeDrawerMenuMapping*.class', '**/HomeDrawerGroup*.class', '**/HomeDrawerItem*.class',
+        '**/HomePaymentNoticeKt*.class', '**/ComposableSingletons$HomePaymentNoticeKt*.class',
+        '**/HomeNotificationPopupKt*.class', '**/ComposableSingletons$HomeNotificationPopupKt*.class',
+        '**/NotificationLinkKt*.class',
+        '**/HomeSessionCoordinator*.class', '**/HomeLoadingCoordinator*.class', '**/HomeNotificationsCoordinator*.class',
+        '**/HomeCartCoordinator*.class', '**/HomeSocialTransfersCoordinator*.class', '**/HomeEntryCoordinator*.class'
+]))
+tasks.register('verifyHomeCoverageInputs') {
+    dependsOn tasks.named('testDebugUnitTest')
+    dependsOn 'connectedDebugAndroidTest'
+    doLast {
+        if (homeCoverageClasses.asFileTree.isEmpty() || homeCoverageData.isEmpty()) {
+            throw new GradleException('Cobertura da Home sem classes ou execução de testes.')
+        }
+    }
+}
+tasks.register('jacocoDebugTestReport', JacocoReport) {
+    dependsOn tasks.named('verifyHomeCoverageInputs')
+    executionData.from(homeCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(homeCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoDebugTestReport')
+    executionData.from(homeCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(homeCoverageClasses)
+    violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.9501 } } }
+}
+tasks.named('check').configure { dependsOn tasks.named('jacocoDebugCoverageVerification') }
+
+// HomeNativeOracleUiTest exige legacy-reference.apk em -PlegacyHomeReferenceAssets nas verificações instrumentadas.
+def legacyHomeAssets = providers.gradleProperty('legacyHomeReferenceAssets').orNull
+if (legacyHomeAssets != null) {
+    android.sourceSets.androidTest.assets.srcDir(legacyHomeAssets)
+}

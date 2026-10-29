@@ -2,6 +2,12 @@ package br.gov.caixa.loterias.core.domain.payment
 
 import org.junit.Assert.*
 import org.junit.Test
+import br.gov.caixa.loterias.feature.payment.domain.model.CardPurchasePolling
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchasePolling
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 
 class CardPurchasePollingTest {
     @Test fun `notice cannot accidentally end processing as a successful purchase`() {

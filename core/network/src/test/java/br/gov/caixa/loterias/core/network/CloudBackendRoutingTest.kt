@@ -13,6 +13,12 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertThrows
 import org.junit.Test
+import br.gov.caixa.loterias.core.network.interceptor.NetworkLogSink
+import br.gov.caixa.loterias.core.network.interceptor.NetworkDebugOptions
+import br.gov.caixa.loterias.core.network.interceptor.CurlLoggingInterceptor
+import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
+import br.gov.caixa.loterias.core.network.routing.CloudBackendRouting
+import br.gov.caixa.loterias.core.network.model.AppParametersDto
 
 class CloudBackendRoutingTest {
     private val source = "https://mobileloterias.caixa.gov.br/silce-servico-rest/rest/v1/".toHttpUrl()

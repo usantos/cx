@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdk 37
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies { coreLibraryDesugaring libs.desugar.jdk.libs }
+
+apply plugin: 'jacoco'
+android {
+    defaultConfig {
+        minSdk 24
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    buildTypes { debug { enableAndroidTestCoverage = true } }
+    testCoverage { jacocoVersion = '0.8.13' }
+    testOptions.unitTests.all { test ->
+        test.jacoco.includeNoLocationClasses = true
+        test.jacoco.excludes = ['jdk.internal.*']
+    }
+}
+jacoco { toolVersion = '0.8.13' }
+dependencies {
+    api libs.gson
+    implementation libs.kotlinx.coroutines.core
+    testImplementation project(':core:testing')
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.okhttp.mockwebserver
+    androidTestImplementation libs.junit4
+    androidTestImplementation libs.kotlinx.coroutines.core
+    androidTestImplementation libs.androidx.test.runner
+}
+android { namespace = 'br.gov.caixa.loterias.feature.account.data' }
+
+dependencies {
+    api libs.gson
+    implementation libs.kotlinx.coroutines.core
+
+    api project(':core:common')
+    api project(':core:data')
+    api project(':core:domain')
+    api project(':core:network')
+    api project(':feature:account:domain')
+    api project(':feature:cart:data')
+    api project(':feature:cart:domain')
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+}
+
+dependencies { implementation project(':core:persistence') }

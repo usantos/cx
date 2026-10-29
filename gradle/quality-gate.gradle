@@ -1,0 +1,114 @@
+def ktlint = tasks.named('ktlintCheck')
+def detekt = tasks.named('detekt')
+def lint = tasks.named('lintQualityCheck')
+tasks.register('quickQualityCheck') {
+    group = 'verification'
+    description = 'Static checks only: Ktlint, Detekt, then Android Lint.'
+    dependsOn ktlint, detekt, lint
+}
+tasks.register('qualityGate') {
+    group = 'verification'
+    description = 'Ktlint → Detekt → Android Lint → fresh unit tests → global LINE coverage >95%.'
+    dependsOn 'quickQualityCheck', 'verifyCoverage'
+}
+// Impõe a ordem das etapas nas tarefas-folha reais, além das tarefas agregadas de ciclo de vida.
+gradle.projectsEvaluated {
+    tasks.named('detekt') { mustRunAfter ktlint }
+    tasks.named('lintQualityCheck') { mustRunAfter detekt }
+    subprojects.each { owner ->
+        owner.tasks.matching { it.name.startsWith('lint') }.configureEach { mustRunAfter detekt }
+        owner.tasks.withType(Test).configureEach {
+            mustRunAfter lint
+            mustRunAfter subprojects.collectMany { it.tasks.matching { t -> t.name.startsWith('lint') }.toList() }
+        }
+    }
+}
+
+// Emite um resumo fiel mesmo quando um pré-requisito falha antes da execução de qualityGate.
+// Este build já usa configuration-on-demand; este observador intencionalmente
+// não é compatível com configuration-cache. Nunca altera o resultado de falha de uma tarefa.
+def qualitySelection = []
+gradle.taskGraph.whenReady { graph -> qualitySelection = graph.allTasks.toList() }
+gradle.buildFinished { result ->
+    def selected = qualitySelection
+    def fullGate = selected.any { it.path == ':qualityGate' }
+    if (!fullGate && !selected.any { it.path == ':quickQualityCheck' }) return
+    def describe = { List stageTasks, Task aggregate ->
+        if (stageTasks.any { it.state.failure != null }) return 'FAILED'
+        if (aggregate.state.executed && aggregate.state.failure == null && (!aggregate.state.skipped || aggregate.state.upToDate || aggregate.state.noSource)) return 'PASSED'
+        return 'NOT RUN (dependency failed or skipped)'
+    }
+    def summary = new LinkedHashMap<String, String>()
+    summary['Ktlint'] = describe([tasks.named('ktlintCheck').get()], tasks.named('ktlintCheck').get())
+    summary['Detekt'] = describe([tasks.named('detekt').get()], tasks.named('detekt').get())
+    summary['Android Lint'] = describe(selected.findAll { it.name.startsWith('lint') }, tasks.named('lintQualityCheck').get())
+    if (fullGate) {
+        summary['Unit Tests'] = describe(selected.findAll { it instanceof Test }, tasks.named('allUnitTests').get())
+        summary['Coverage'] = describe(selected.findAll { it.name == 'verifyCoverage' || it.name.startsWith('jacocoModule') || it.name == 'jacocoAggregateReport' }, tasks.named('verifyCoverage').get())
+    }
+    def verified = result.failure == null && summary.values().every { it == 'PASSED' }
+    def title = fullGate ? 'QUALITY GATE' : 'QUICK QUALITY CHECK'
+    logger.lifecycle('\n' + title + (verified ? ' PASSED' : result.failure != null ? ' FAILED' : ' NOT EXECUTED'))
+    summary.each { label, status -> logger.lifecycle("${label}: ${status}") }
+    if (fullGate) {
+        def coverageSummary = layout.buildDirectory.file('reports/jacoco/aggregate/summary.json').get().asFile
+        if (tasks.named('verifyCoverage').get().state.executed && coverageSummary.isFile()) {
+            def measured = new groovy.json.JsonSlurper().parse(coverageSummary)
+            summary['JaCoCo Line Coverage'] = measured.percentage + '%'
+        }
+        logger.lifecycle('JaCoCo Line Coverage: ' + (summary['JaCoCo Line Coverage'] ?: 'NOT MEASURED in this gate'))
+        logger.lifecycle('Minimum Required: >95.00%')
+    }
+    def outputName = fullGate ? 'full-summary.json' : 'quick-summary.json'
+    def output = layout.buildDirectory.file("reports/quality/${outputName}").get().asFile
+    output.parentFile.mkdirs()
+    output.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson([
+            kind: fullGate ? 'full' : 'static', passed: verified, stages: summary,
+    ])) + '\n'
+}
+
+gradle.taskGraph.whenReady { graph ->
+    if ([ ':qualityGate', ':quickQualityCheck' ].any { graph.hasTask(it) } &&
+            [ ':detektBaseline', ':ktlintBaseline', ':lintQualityBaseline', ':ktlintFormat' ].any { graph.hasTask(it) }) {
+        throw new GradleException('Validation cannot run alongside baseline generation or automatic formatting. Run maintenance tasks separately and review their diff.')
+    }
+}
+
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(':qualityGate') || graph.hasTask(':quickQualityCheck')) {
+        if (!gradle.startParameter.excludedTaskNames.isEmpty()) {
+            throw new GradleException("Mandatory quality stages excluded: task exclusions (-x) are not permitted inside a quality gate: ${gradle.startParameter.excludedTaskNames}")
+        }
+        def required = [':ktlintCheck', ':detekt', ':lintQualityCheck']
+        if (graph.hasTask(':qualityGate')) required += [':allUnitTests', ':verifyCoverage']
+        def omitted = required.findAll { !graph.hasTask(it) }
+        if (!omitted.isEmpty()) throw new GradleException("Mandatory quality stages excluded: ${omitted}")
+    }
+}
+
+// Testes de ferramentas usam repositórios/dados temporários, sem modificar fontes do aplicativo.
+tasks.register('verifyToolingPolicyTests', Exec) {
+    group = 'verification'
+    description = 'Runs the Python architecture, coverage, local UI and Remote Config policy tests.'
+    commandLine 'python3', '-m', 'unittest', 'discover', '-s', 'scripts', '-p', 'test_*.py', '-v'
+}
+tasks.register('verifyGitHooksPolicy', Exec) {
+    group = 'verification'
+    description = 'Proves commit blocking and installation in disposable Git repositories.'
+    commandLine 'python3', rootProject.file('scripts/test-git-hooks.py')
+}
+tasks.register('verifyAutomationIds', Exec) {
+    group = 'verification'
+    description = 'Confere IDs Compose e o contrato de localizadores entregue à certificação Robot.'
+    commandLine 'python3', rootProject.file('scripts/check-automation-ids.py')
+}
+
+tasks.register('preCommitCheck') {
+    group = 'verification'
+    description = 'Mandatory complete pre-commit validation; any failed dependency blocks the commit.'
+    dependsOn 'qualityGate', 'verifyKotlinFormatting', 'verifyCleanArchitecture', 'verifyComposeMigration',
+            'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyCaixaDS', 'verifyFilaBraAar',
+            'verifyTopazHeartbeat', 'verifyNetworkSecurity', 'verifyAppIdentityAndFlavors',
+            'verifyComposePlatformResourcePolicy', 'verifyToolingPolicyTests', 'verifyGitHooksPolicy', 'verifyAutomationIds',
+            'aggregateTestReport', ':app:assemblePrdDebug'
+}

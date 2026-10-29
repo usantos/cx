@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.1)" variant="all" version="9.2.1">
+
+    <issue
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    @Composable private fun screen(state: MarketplaceUiState, calls: MutableList&lt;String> = mutableListOf()) {"
+        errorLine2="                            ~~~~~~">
+        <location
+            file="src/androidTest/java/br/gov/caixa/loterias/feature/marketplace/MarketplaceCarouselParityUiTest.kt"
+            line="75"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    @Composable private fun screen(total: BigDecimal, count: Int, onCart: () -> Unit) {"
+        errorLine2="                            ~~~~~~">
+        <location
+            file="src/androidTest/java/br/gov/caixa/loterias/feature/marketplace/MarketplaceCartSummaryUiTest.kt"
+            line="33"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    private fun screen("
+        errorLine2="                ~~~~~~">
+        <location
+            file="src/androidTest/java/br/gov/caixa/loterias/feature/marketplace/MarketplaceCoordinationUiTest.kt"
+            line="95"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    @androidx.compose.runtime.Composable private fun route(model: MarketplaceViewModel, onBack: () -> Unit) {"
+        errorLine2="                                                     ~~~~~">
+        <location
+            file="src/androidTest/java/br/gov/caixa/loterias/feature/marketplace/MarketplaceMutationLoadingUiTest.kt"
+            line="173"
+            column="54"/>
+    </issue>
+
+    <issue
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    @Composable private fun screen(state: MarketplaceUiState, next: () -> Unit) {"
+        errorLine2="                            ~~~~~~">
+        <location
+            file="src/androidTest/java/br/gov/caixa/loterias/feature/marketplace/MarketplacePaginationUiTest.kt"
+            line="43"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="FrequentlyChangingValue"
+        message="Reading a value annotated with @FrequentlyChangingValue inside composition"
+        errorLine1="                val offset = abs((pager.currentPage - page) + pager.currentPageOffsetFraction).coerceIn(0f, 1f)"
+        errorLine2="                                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/br/gov/caixa/loterias/feature/marketplace/presentation/components/MarketplaceCarousel.kt"
+            line="138"
+            column="69"/>
+    </issue>
+
+</issues>

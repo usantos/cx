@@ -12,6 +12,8 @@ import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartSummary
+import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
 
 class CaixaDSCartSummaryTest {
     @get:Rule val compose = createComposeRule()

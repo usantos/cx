@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workflow_onboarding_loterias_caixa">Loterias CAIXA</string>
+    <string name="workflow_onboarding_carregando_configuracoes_e_verificando_a_versao_do_aplicativo">Carregando configurações e verificando a versão do aplicativo.</string>
+    <string name="workflow_onboarding_entrar">Entrar</string>
+    <string name="workflow_onboarding_bem_vindo">Bem-vindo</string>
+    <string name="workflow_onboarding_conheca_as_apostas_resultados_favoritos_e_formas_de_pagamento_do">Conheça as apostas, resultados, favoritos e formas de pagamento do Loterias CAIXA.</string>
+    <string name="workflow_onboarding_comecar">Começar</string>
+    <string name="workflow_onboarding_como_apostar">Como apostar</string>
+    <string name="workflow_onboarding_escolha_uma_modalidade_marque_seus_numeros_e_confira_a_aposta_ant">Escolha uma modalidade, marque seus números e confira a aposta antes do pagamento.</string>
+    <string name="workflow_onboarding_avancar">Avançar</string>
+    <string name="workflow_onboarding_pular">Pular</string>
+    <string name="workflow_onboarding_jogo_responsavel">Jogo responsável</string>
+    <string name="workflow_onboarding_este_aplicativo_e_destinado_exclusivamente_a_maiores_de_18_anos">Este aplicativo é destinado exclusivamente a maiores de 18 anos.</string>
+    <string name="workflow_onboarding_confirmo_que_tenho_18_anos_ou_mais">Confirmo que tenho 18 anos ou mais</string>
+    <string name="workflow_onboarding_confirmar">Confirmar</string>
+    <string name="workflow_onboarding_atualizacao_disponivel">Atualização disponível</string>
+    <string name="workflow_onboarding_uma_nova_versao_do_aplicativo_esta_disponivel_para_manter_seguran">Uma nova versão do aplicativo está disponível para manter segurança e compatibilidade.</string>
+    <string name="workflow_onboarding_atualizar">Atualizar</string>
+    <string name="workflow_onboarding_aplicativo_indisponivel">Aplicativo indisponível</string>
+    <string name="workflow_onboarding_o_servico_esta_temporariamente_indisponivel_tente_novamente_em_al">O serviço está temporariamente indisponível. Tente novamente em alguns instantes.</string>
+    <string name="workflow_onboarding_tentar_novamente">Tentar novamente</string>
+</resources>

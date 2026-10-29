@@ -1,10 +1,21 @@
 package br.gov.caixa.loterias.core.domain.notifications
 
-import br.gov.caixa.loterias.core.common.AppResult
+import br.gov.caixa.loterias.feature.notifications.domain.usecase.GetNotifications
+import br.gov.caixa.loterias.feature.notifications.domain.usecase.GetNotificationPreferences
+import br.gov.caixa.loterias.feature.notifications.domain.usecase.MarkNotificationRead
+import br.gov.caixa.loterias.feature.notifications.domain.usecase.DeleteNotification
+import br.gov.caixa.loterias.feature.notifications.domain.usecase.DeleteAllNotifications
+import br.gov.caixa.loterias.feature.notifications.domain.usecase.SetNotificationPreference
+import br.gov.caixa.loterias.feature.notifications.domain.usecase.MarkAllNotificationsRead
+import br.gov.caixa.loterias.core.common.result.AppResult
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import br.gov.caixa.loterias.feature.notifications.domain.model.AppNotification
+import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationCategory
+import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationPreference
+import br.gov.caixa.loterias.feature.notifications.domain.repository.NotificationRepository
 
 class NotificationUseCasesTest {
     @Test fun `all notification use cases delegate to repository`() = runTest {

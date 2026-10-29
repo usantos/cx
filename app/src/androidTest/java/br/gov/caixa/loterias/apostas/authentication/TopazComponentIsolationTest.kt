@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.pm.PackageManager
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.apostas.BuildConfig
+import br.gov.caixa.loterias.core.security.topaz.topazMockComponents
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

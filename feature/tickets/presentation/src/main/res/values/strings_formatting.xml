@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="format_purchase_recurring_draws">
+        <item quantity="one">"%1$d Teimosinha"</item>
+        <item quantity="other">"%1$d Teimosinhas"</item>
+    </plurals>
+    <string name="format_faixa">"Faixa"</string>
+    <string name="format_qtde">"Qtde"</string>
+    <string name="format_sorteio">"Sorteio"</string>
+    <string name="format_todos">"Todos"</string>
+    <string name="format_valor">"Valor"</string>
+</resources>
