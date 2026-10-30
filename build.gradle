@@ -25,6 +25,7 @@ buildscript {
 apply from: rootProject.file('gradle/jvm-toolchains.gradle')
 apply from: rootProject.file('gradle/vendor-artifact-transforms.gradle')
 apply from: rootProject.file('gradle/android-processors.gradle')
+apply from: rootProject.file('gradle/incremental-precommit.gradle')
 apply from: rootProject.file('gradle/android-lint.gradle')
 apply from: rootProject.file('gradle/verify-feature-modules.gradle')
 apply from: rootProject.file('gradle/persistence-coverage.gradle')
@@ -370,7 +371,10 @@ tasks.register('verifyCleanArchitecture') {
 tasks.register('verifyKotlinFormatting', Exec) {
     group = 'verification'
     description = 'Checks UTF-8/LF/newlines and whitespace from .editorconfig without rewriting sources.'
-    commandLine 'python3', file('scripts/check-kotlin-format.py').absolutePath
+    doFirst {
+        commandLine(['python3', file('scripts/check-kotlin-format.py').absolutePath] +
+                rootProject.incrementalScope().collect { it.projectDir.absolutePath })
+    }
 }
 
 tasks.register('modernCheck') {

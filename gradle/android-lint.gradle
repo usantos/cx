@@ -50,8 +50,9 @@ def verifyLintPolicy = tasks.register('verifyLintPolicy') {
 def expectedLintTasks = []
 def lintQuality = tasks.register('lintQualityCheck') {
     group = 'verification'
-    description = 'Checks every Android module once (product app PRD Debug, other Android modules Debug).'
+    description = 'Checks Android modules in scope once (product app PRD Debug, other Android modules Debug).'
     dependsOn verifyLintPolicy
+    dependsOn { expectedLintTasks.findAll { rootProject.incrementalScope()*.path.contains(it.substring(0, it.lastIndexOf(':'))) } }
     doFirst {
         if (updateBaselines) {
             throw new GradleException('Baseline updates are separate from validation. Run lintQualityBaseline, then lintQualityCheck without -PupdateLintBaseline.')
@@ -105,7 +106,6 @@ subprojects { owner ->
             }
             lintModels[owner.path] = owner.extensions.getByName('android').lint
             expectedLintTasks += "${owner.path}:lint${variant}"
-            lintQuality.configure { dependsOn "${owner.path}:lint${variant}" }
             if (updateBaselines) {
                 owner.tasks.matching { it.name == "updateLintBaseline${variant}" }.configureEach {
                     doFirst { baselineFile.parentFile.mkdirs() }
@@ -121,7 +121,7 @@ gradle.taskGraph.whenReady { graph ->
         if (!gradle.startParameter.excludedTaskNames.isEmpty()) {
             throw new GradleException("Mandatory quality stages excluded: task exclusions (-x) are not permitted in lintQualityCheck: ${gradle.startParameter.excludedTaskNames}")
         }
-        def omitted = expectedLintTasks.findAll { !graph.hasTask(it) }
+        def omitted = expectedLintTasks.findAll { rootProject.incrementalScope()*.path.contains(it.substring(0, it.lastIndexOf(':'))) && !graph.hasTask(it) }
         if (!omitted.isEmpty()) throw new GradleException("Required Android Lint tasks excluded: ${omitted}")
     }
 }

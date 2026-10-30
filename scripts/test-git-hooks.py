@@ -51,6 +51,24 @@ class GitHooksTest(unittest.TestCase):
     def install(self):
         return self.run_command("sh", "scripts/install-git-hooks.sh")
 
+    def test_module_change_selects_incremental_gate(self):
+        self.env.pop("CI", None)
+        (self.repo / "app/src/main").mkdir(parents=True)
+        (self.repo / "app/build.gradle").write_text("// fixture\n")
+        source = self.repo / "app/src/main/Example.kt"
+        source.write_text("// original\n")
+        self.run_command("git", "add", ".")
+        self.assertEqual(self.run_command("git", "commit", "-qm", "base").returncode, 0)
+        source.write_text("// alterado\n")
+        self.run_command("git", "add", "app")
+        result = self.run_command(sys.executable, "scripts/validate-pre-commit.py")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("-PincrementalPreCommit=true", (self.repo / "invoked-task").read_text())
+        self.env["CI"] = "true"
+        result = self.run_command(sys.executable, "scripts/validate-pre-commit.py")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("-PincrementalPreCommit", (self.repo / "invoked-task").read_text())
+
     def test_install_is_reproducible(self):
         self.assertEqual(self.install().returncode, 0)
         hook = self.repo / ".git/hooks/pre-commit"

@@ -47,7 +47,8 @@ gradle.buildFinished { result ->
         summary['Coverage'] = describe(selected.findAll { it.name == 'verifyCoverage' || it.name.startsWith('jacocoModule') || it.name == 'jacocoAggregateReport' }, tasks.named('verifyCoverage').get())
     }
     def verified = result.failure == null && summary.values().every { it == 'PASSED' }
-    def title = fullGate ? 'QUALITY GATE' : 'QUICK QUALITY CHECK'
+    def incremental = fullGate && rootProject.incrementalPreCommitActive()
+    def title = incremental ? 'INCREMENTAL QUALITY GATE' : fullGate ? 'QUALITY GATE' : 'QUICK QUALITY CHECK'
     logger.lifecycle('\n' + title + (verified ? ' PASSED' : result.failure != null ? ' FAILED' : ' NOT EXECUTED'))
     summary.each { label, status -> logger.lifecycle("${label}: ${status}") }
     if (fullGate) {
@@ -59,11 +60,12 @@ gradle.buildFinished { result ->
         logger.lifecycle('JaCoCo Line Coverage: ' + (summary['JaCoCo Line Coverage'] ?: 'NOT MEASURED in this gate'))
         logger.lifecycle('Minimum Required: >95.00%')
     }
-    def outputName = fullGate ? 'full-summary.json' : 'quick-summary.json'
+    def outputName = incremental ? 'incremental-summary.json' : fullGate ? 'full-summary.json' : 'quick-summary.json'
     def output = layout.buildDirectory.file("reports/quality/${outputName}").get().asFile
     output.parentFile.mkdirs()
     output.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson([
-            kind: fullGate ? 'full' : 'static', passed: verified, stages: summary,
+            kind: incremental ? 'incremental' : fullGate ? 'full' : 'static', passed: verified, stages: summary,
+            modules: rootProject.incrementalScope()*.path.sort(),
     ])) + '\n'
 }
 
@@ -106,7 +108,7 @@ tasks.register('verifyAutomationIds', Exec) {
 tasks.register('preCommitCheck') {
     group = 'verification'
     description = 'Mandatory complete pre-commit validation; any failed dependency blocks the commit.'
-    dependsOn 'qualityGate', 'verifyKotlinFormatting', 'verifyCleanArchitecture', 'verifyComposeMigration',
+    dependsOn 'verifyIncrementalScopePolicy', 'qualityGate', 'verifyKotlinFormatting', 'verifyCleanArchitecture', 'verifyComposeMigration',
             'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyCaixaDS', 'verifyFilaBraAar',
             'verifyTopazHeartbeat', 'verifyNetworkSecurity', 'verifyAppIdentityAndFlavors',
             'verifyComposePlatformResourcePolicy', 'verifyToolingPolicyTests', 'verifyGitHooksPolicy', 'verifyAutomationIds',

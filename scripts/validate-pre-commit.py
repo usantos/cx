@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bloqueia commits sem validar integralmente o conteúdo preparado no index."""
+"""Bloqueia commits sem validar o conteúdo preparado no index."""
 import importlib.util
 import os
 from pathlib import Path
@@ -67,6 +67,21 @@ def gradle_environment(original, platform, studio_java):
     return environment
 
 
+def incremental_candidate(paths, module_roots):
+    """Mudanças compartilhadas/desconhecidas e index vazio exigem o gate completo."""
+    return bool(paths) and all(any(path.startswith(root + "/") for root in module_roots) for path in paths)
+
+
+def use_incremental():
+    if os.environ.get("CI", "").lower() not in ("", "false", "0"):
+        return False
+    paths = [os.fsdecode(path) for path in git("diff", "--cached", "--name-only", "--no-renames", "-z").split(b"\0") if path]
+    tracked = [os.fsdecode(path) for path in git("ls-files", "-z").split(b"\0") if path]
+    roots = [str(Path(path).parent).replace("\\", "/") for path in tracked
+             if Path(path).name in ("build.gradle", "build.gradle.kts") and Path(path).parent != Path(".")]
+    return incremental_candidate(paths, roots)
+
+
 def main():
     try:
         if len(sys.argv) != 1:
@@ -78,8 +93,12 @@ def main():
         if environment.get("JAVA_HOME") != os.environ.get("JAVA_HOME"):
             print("Gradle: usando o JBR 21 do Android Studio no lugar do JAVA_HOME herdado.", flush=True)
         command = [str(ROOT / "gradlew"), "preCommitCheck", "--continue", "--console=plain"]
+        incremental = use_incremental()
+        if incremental:
+            command.append("-PincrementalPreCommit=true")
         if environment.get("JAVA_HOME_21_X64"):
             command.append("-Porg.gradle.java.installations.fromEnv=JAVA_HOME_21_X64")
+        print("Escopo: módulos alterados e consumidores; cobertura global." if incremental else "Escopo: validação completa (mudança compartilhada, CI ou index vazio).", flush=True)
         print("Validando arquitetura, Ktlint, Detekt, Android Lint, testes, cobertura >95%, contratos e APK PRD Debug.", flush=True)
         result = subprocess.run(command, cwd=ROOT, env=environment)
         if result.returncode:

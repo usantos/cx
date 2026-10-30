@@ -7,7 +7,7 @@ Consulte [QUALITY_GATE](../../docs/QUALITY_GATE.md) e [hooks-and-ci](../../docs/
 
 - O runner oficial é `scripts/validate-pre-commit.py`; ele executa `preCommitCheck` e verifica estabilidade do workspace/index. Não efetuar stage, stash ou formatação automática dentro do hook. Preserve hooks existentes ao instalar.
 - Ktlint, Detekt, Android Lint, testes, arquitetura, contratos, IDs, APK e cobertura fazem parte do gate. Não remover dependências, aceitar códigos de erro, usar `-x` ou atualizar baselines para obter aprovação.
-- JaCoCo usa dados frescos e contadores agregados: `cobertas * 100 > elegíveis * 95`. Não arredondar para aprovar, reduzir denominador, excluir fontes manuais nem reutilizar execução antiga.
+- JaCoCo usa dados frescos e contadores agregados: `cobertas * 100 > elegíveis * 95`. Não arredondar para aprovar, reduzir denominador, excluir fontes manuais nem aceitar execução antiga sem validação nativa de entradas e saídas pelo Gradle no modo incremental.
 - Não confundir mocks/fixtures de ferramentas com resultados reais do aplicativo. Testes devem exercitar contrato e regressão; não tornar asserts permissivos nem substituir falhas por SKIP.
 - Mudanças nos verificadores exigem casos positivos e negativos isolados. Não executar mutações de teste contra fontes do checkout quando existir mecanismo de fixture.
 - Execute uma invocação Gradle por vez. Não atualizar toolchain/dependências fora do escopo. Consulte versões no Version Catalog.
@@ -23,3 +23,8 @@ warnings e a tarefa `verifyLintPolicy`. Não estender essa exceção a outras re
   Kotlin/Java em `src` não podem depender de arquivos ignorados. A regra de
   metadados do Finder não pode ignorar o pacote `icon`. Valide fontes novas
   também pelo conteúdo preparado no Git, mantendo os controles de capitalização.
+
+O hook local seleciona módulos alterados e consumidores pelo index/grafo Gradle.
+Preserve o fallback completo para mudanças compartilhadas/CI, os contratos globais
+e JaCoCo global >95%. Somente resultados nativos validados pelo Gradle podem ser
+reutilizados; não substitua essa verificação por presença de relatórios antigos.

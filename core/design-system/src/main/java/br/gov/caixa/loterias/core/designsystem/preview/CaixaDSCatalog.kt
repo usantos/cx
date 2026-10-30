@@ -68,7 +68,12 @@ fun CaixaDSCatalog(modifier: Modifier = Modifier) {
             modifier = (Modifier.fillMaxWidth()).uiId("ds.0135")
         )
         Row(horizontalArrangement = Arrangement.spacedBy(CaixaDS.spacing.sm)) {
-            listOf(3, 12, 27, 41, 56).forEach { CaixaDSNumberBall(it, modifier = Modifier.uiId("ds.0136")) }
+            val numberModifier = Modifier.uiId("ds.0136")
+            CaixaDSNumberBall(3, modifier = numberModifier)
+            CaixaDSNumberBall(12, modifier = numberModifier)
+            CaixaDSNumberBall(27, modifier = numberModifier)
+            CaixaDSNumberBall(41, modifier = numberModifier)
+            CaixaDSNumberBall(56, modifier = numberModifier)
         }
     }
 }

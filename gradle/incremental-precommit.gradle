@@ -1,0 +1,92 @@
+// O escopo vem do index real, nunca de uma lista de módulos fornecida pelo usuário.
+def requested = providers.gradleProperty('incrementalPreCommit').getOrElse('false') == 'true' &&
+        gradle.startParameter.taskNames.any { it == 'preCommitCheck' || it == ':preCommitCheck' } &&
+        (System.getenv('CI') ?: '').toLowerCase() in ['', 'false', '0']
+def changed = []
+if (requested) {
+    def output = new ByteArrayOutputStream()
+    exec {
+        workingDir rootDir
+        commandLine 'git', 'diff', '--cached', '--name-only', '--no-renames', '-z'
+        standardOutput = output
+    }
+    changed = output.toString('UTF-8').split('\u0000').findAll { it }
+}
+// Função pura compartilhada pela seleção real e pelas fixtures de regressão.
+ext.affectedPreCommitModules = { changedModules, productionDependencies, allDependencies ->
+    def affected = changedModules.toSet()
+    boolean expanded = true
+    while (expanded) {
+        expanded = false
+        productionDependencies.each { owner, dependencies ->
+            if (!affected.contains(owner) && dependencies.any { affected.contains(it) }) {
+                affected.add(owner)
+                expanded = true
+            }
+        }
+    }
+    def production = affected.toSet()
+    allDependencies.each { owner, dependencies ->
+        if (dependencies.any { production.contains(it) }) affected.add(owner)
+    }
+    affected
+}
+def cachedScope = null
+def active = false
+ext.incrementalScope = {
+    if (cachedScope != null) return cachedScope
+    def owners = changed.collect { path ->
+        subprojects.findAll { owner ->
+            owner.buildFile.isFile() && path.startsWith(rootDir.toPath().relativize(owner.projectDir.toPath()).toString().replace('\\', '/') + '/')
+        }.max { it.projectDir.toPath().nameCount }
+    }
+    if (!requested || changed.isEmpty() || owners.any { it == null }) {
+        cachedScope = subprojects.toSet()
+        return cachedScope
+    }
+    active = true
+    // Testes do consumidor não alteram o artefato publicado por ele.
+    def productionDependencies = [:]
+    def allDependencies = [:]
+    subprojects.each { owner ->
+        def dependencies = { configurations -> configurations.collectMany { configuration ->
+            configuration.dependencies.withType(ProjectDependency).collect { it.path }
+        }.toSet() }
+        productionDependencies[owner.path] = dependencies(owner.configurations.findAll {
+            !it.name.toLowerCase().contains('test')
+        })
+        allDependencies[owner.path] = dependencies(owner.configurations)
+    }
+    cachedScope = rootProject.affectedPreCommitModules(owners*.path, productionDependencies, allDependencies)
+            .collect { rootProject.project(it) }.toSet()
+    logger.lifecycle('Pre-commit incremental: ' + cachedScope*.path.sort().join(', '))
+    cachedScope
+}
+ext.incrementalPreCommitActive = {
+    rootProject.incrementalScope()
+    active
+}
+
+tasks.register('verifyIncrementalScopePolicy') {
+    group = 'verification'
+    description = 'Checks dependency closure, test consumers, cycles and isolation with pure fixtures.'
+    doLast {
+        def production = [domain: [], data: ['domain'], presentation: ['data'], app: ['presentation'],
+                          tester: [], testerConsumer: ['tester'], unrelated: []]
+        def all = production + [tester: ['domain']]
+        def selected = rootProject.affectedPreCommitModules(['domain'], production, all)
+        if (selected != ['domain', 'data', 'presentation', 'app', 'tester'].toSet()) {
+            throw new GradleException("Escopo incorreto: ${selected}")
+        }
+        if (rootProject.affectedPreCommitModules(['presentation'], production, all) != ['presentation', 'app'].toSet()) {
+            throw new GradleException('Alteração de presentation propagou para dependências ou módulos alheios')
+        }
+        if (rootProject.affectedPreCommitModules(['a'], [a: ['b'], b: ['a']], [:]) != ['a', 'b'].toSet()) {
+            throw new GradleException('Fechamento de dependências cíclicas incorreto')
+        }
+        if (!rootProject.affectedPreCommitModules([], production, all).isEmpty()) {
+            throw new GradleException('Seleção vazia incluiu módulos')
+        }
+        logger.lifecycle('Escopo incremental: fixtures de dependências transitivas, testes, isolamento e ciclos aprovadas.')
+    }
+}

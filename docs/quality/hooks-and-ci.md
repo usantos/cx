@@ -1,6 +1,6 @@
-# Pre-commit completo e CI
+# Pre-commit incremental e CI
 
-O hook local está em `scripts/git-hooks/pre-commit`. Ele chama `scripts/validate-pre-commit.py`, que executa o gate completo e retorna erro diante de qualquer falha. O workflow Android Quality Gate usa o mesmo runner.
+O hook local está em `scripts/git-hooks/pre-commit`. Ele chama `scripts/validate-pre-commit.py`, que seleciona o escopo pelo index e retorna erro diante de qualquer falha. O workflow Android Quality Gate usa o mesmo runner.
 
 ## Instalação e uso
 
@@ -82,7 +82,7 @@ A exceção autorizada abrange somente `AndroidGradlePluginVersion`, `GradleDepe
 `NewerVersionAvailable` e `OldTargetApi`, exibidas como informação.
 `verifyLintPolicy` valida essa lista exata e rejeita supressões globais ou
 relaxamento do bloqueio de erros/warnings. As demais regras continuam bloqueantes,
-e o hook continua executando o gate completo. O analisador Lint 9.2.1 é independente
+e o hook preserva todas as etapas obrigatórias, com o escopo incremental descrito abaixo. O analisador Lint 9.2.1 é independente
 do plugin AGP 8.13.0; o projeto não voltou ao AGP 9.
 
 O pre-commit também executa `:app:verifyVendorArtifactsForSync`, para impedir
@@ -98,3 +98,45 @@ contra o index antes de iniciar Gradle. Fontes ignoradas também são verificada
 O gate Gradle direto inclui `verifyTrackedSources`, com o mesmo verificador.
 Fontes preparadas no staging são aceitas, e colisões de maiúsculas são rejeitadas.
 Não se preparam arquivos nem se altera o workspace dentro do hook.
+
+## Seleção incremental dos módulos
+
+O runner habilita `-PincrementalPreCommit=true` quando todos os caminhos preparados
+pertencem a módulos Gradle versionados. A seleção é recalculada pelo Gradle com
+`git diff --cached --name-only --no-renames -z`; renomes consideram os caminhos
+antigo e novo. Não há lista manual de módulos nem opção de pular verificações.
+
+Ktlint, Detekt, whitespace e as tarefas canônicas de Android Lint validam os
+módulos alterados e os consumidores transitivos de suas dependências de produção.
+Consumidores por dependência exclusiva de teste também são incluídos, sem propagar
+essa alteração de teste como mudança de produção para outros consumidores.
+O log imprime `Pre-commit incremental:` com o escopo efetivo. O resumo fica em
+`build/reports/quality/incremental-summary.json`, com a lista de módulos. O AGP pode ainda
+solicitar modelos/análises de dependências; essas tarefas mantêm o cache nativo.
+
+Os testes do escopo executam novamente. Para as demais suítes, o Gradle confere
+entradas, classes, classpath e saídas, incluindo o `.exec` JaCoCo, antes de aceitar
+`UP-TO-DATE` ou `FROM-CACHE`. Se não houver evidência válida, executa a suíte.
+Suítes sem fontes não fornecem dados antigos ao relatório. O relatório JaCoCo é
+regenerado para **todos** os módulos e mantém LINE global **>95%**, sem mudar o
+denominador ou excluir código. Assim, o primeiro build pode executar mais testes.
+
+Contratos globais de arquitetura, IDs, segurança, políticas, testes das ferramentas
+e APK PRD Debug continuam obrigatórios. São verificações compartilhadas; a
+compilação do APK usa a incrementalidade e o cache do Gradle.
+
+Arquivos na raiz, `gradle/`, `scripts/`, `config/`, documentação fora dos módulos,
+caminhos desconhecidos e index vazio acionam a validação completa. Mudanças em
+`build.gradle` de um módulo entram no escopo desse módulo e de seus consumidores.
+No CI (`CI` diferente de vazio/`false`/`0`) e na chamada direta sem a propriedade,
+`./gradlew preCommitCheck` continua completo, com todas as suítes novas.
+Workspace/index estáveis, bloqueio de falhas, headers e baselines são preservados.
+
+Validação local em 30/10/2026: 211 testes Python e 30 testes do hook aprovados;
+fixtures Gradle conferiram dependências transitivas, consumidores de teste,
+isolamento e ciclos. Um index alternativo, sem alterar o staging do usuário,
+selecionou apenas `:sample:design-system`: gate em 1min29s, 49 suítes reutilizadas
+e regeneração nativa do `.exec` removido de `core/network`. Os 3.563 testes
+canônicos ficaram sem falhas, erros ou skips; JaCoCo global 95,16% (58.169/61.127).
+A análise estática completa também passou. Os 44 arquivos protegidos conferidos,
+incluindo headers e baselines, permaneceram intactos.

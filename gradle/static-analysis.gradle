@@ -14,7 +14,7 @@ dependencies {
     ktlintTool libs.ktlint.cli
 }
 
-def kotlinSources = files({ subprojects.collect { new File(it.projectDir, 'src') }.findAll { it.isDirectory() } })
+def kotlinSources = files({ rootProject.incrementalScope().collect { new File(it.projectDir, 'src') }.findAll { it.isDirectory() } })
 def sourceFiles = files({ kotlinSources.collect { dir -> fileTree(dir) {
     include '**/*.kt', '**/*.kts'
     exclude '**/build/**', '**/generated/**', '**/ksp/**', '**/kapt/**'
@@ -24,7 +24,7 @@ def detektBaselineFile = file('config/detekt/baseline.xml')
 def registerDetekt = { String taskName, boolean baseline ->
     tasks.register(taskName, JavaExec) {
         group = 'verification'
-        description = baseline ? 'Explicitly replaces the reviewed legacy Detekt baseline.' : 'Analyzes all module Kotlin sources and tests against the legacy baseline.'
+        description = baseline ? 'Explicitly replaces the reviewed legacy Detekt baseline.' : 'Analyzes module Kotlin sources and tests in scope against the legacy baseline.'
         classpath = configurations.detektTool
         mainClass = 'io.gitlab.arturbosch.detekt.cli.Main'
         maxHeapSize = '2g'

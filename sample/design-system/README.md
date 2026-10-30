@@ -39,3 +39,9 @@ fontes ignoradas deste checkout, compilou o sample com `--no-build-cache`: 67
 tarefas executadas e 10 testes do catálogo aprovados. O APK foi instalado e
 aberto no emulador Android 36; catálogo, busca, exemplo da digital e seta de
 navegação foram conferidos. Isso não representa execução no Windows remoto.
+
+O exemplo numérico de `CaixaDSCatalog` usa chamadas Compose explícitas para
+03, 12, 27, 41 e 56, preservando o Modifier/ID original. Isso remove a expressão
+`listOf(...).forEach` apontada pelo editor no Windows. O teste
+`CaixaDSCatalogJvmTest` confere os cinco números nos temas claro e escuro.
+A compilação e abertura locais não comprovam a sincronização do IDE remoto.

@@ -70,7 +70,7 @@ modules.each { module ->
 def classes = files(modules.collect { it.classes })
 // O AGP pode alterar destinationFile após criar a tarefa. Resolve durante a execução,
 // incluindo outputs/unit_test_code_coverage/...; nunca presume um caminho jacoco/*.exec.
-def execution = files({ suites.collect { suite ->
+def execution = files({ suites.findAll { !it.state.noSource && it.state.failure == null && it.state.executed }.collect { suite ->
     suite.extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
 }.findAll { it != null && it.isFile() } })
 def sources = files(modules.collect { it.sources })
@@ -89,7 +89,7 @@ def prepare = tasks.register('prepareAggregateCoverage') {
         // Um JacocoReport ignorado nunca deve deixar um XML anterior como entrada da verificação.
         delete layout.buildDirectory.dir('reports/jacoco/aggregate')
         delete layout.buildDirectory.dir('reports/jacoco/modules')
-        suites.each { suite ->
+        suites.findAll { !rootProject.incrementalPreCommitActive() || rootProject.incrementalScope().contains(it.project) }.each { suite ->
             def destination = suite.extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
             if (destination != null) {
                 if (!destination.toPath().toAbsolutePath().normalize().startsWith(suite.project.layout.buildDirectory.get().asFile.toPath().toAbsolutePath().normalize())) {
@@ -104,13 +104,14 @@ suites.each { suite ->
     suite.dependsOn prepare
     // A compilação continua incremental e armazenável em cache; as execuções dos testes selecionados devem ser
     // novas, inclusive quando seus resultados anteriores puderem ser restaurados do cache.
-    suite.outputs.upToDateWhen { !aggregateRequested() }
-    suite.outputs.doNotCacheIf('Aggregate coverage requires a fresh unit-test execution') { aggregateRequested() }
+    suite.outputs.file(providers.provider { suite.jacoco.destinationFile }).withPropertyName('jacocoExecutionData')
+    suite.outputs.upToDateWhen { !aggregateRequested() || (rootProject.incrementalPreCommitActive() && !rootProject.incrementalScope().contains(suite.project)) }
+    suite.outputs.doNotCacheIf('Aggregate coverage requires a fresh unit-test execution') { aggregateRequested() && (!rootProject.incrementalPreCommitActive() || rootProject.incrementalScope().contains(suite.project)) }
     suite.ignoreFailures = false
 }
 def unitTests = tasks.register('allUnitTests') {
     group = 'verification'
-    description = 'Runs fresh JVM and Android Debug/PRD Debug unit tests across all production modules.'
+    description = 'Validates JVM and Android unit tests globally; incremental pre-commit may reuse verified Gradle outputs.'
     dependsOn suites
 }
 
@@ -134,7 +135,7 @@ def moduleReports = modules.collect { module ->
 }
 def coverage = tasks.register('jacocoAggregateReport', JacocoReport) {
     group = 'verification'
-    description = 'Runs fresh unit tests and reports every eligible production module, including modules without tests.'
+    description = 'Validates unit tests and reports every eligible production module, including modules without tests.'
     dependsOn unitTests, modules.collectMany { it.compile }
     executionData.from(execution)
     classDirectories.from(classes)
@@ -150,7 +151,7 @@ def coverage = tasks.register('jacocoAggregateReport', JacocoReport) {
     outputs.upToDateWhen { false }
     doFirst {
         def omitted = suites.findAll { suite ->
-            !suite.state.executed || (suite.state.skipped && suite.state.skipMessage != 'NO-SOURCE')
+            !suite.state.executed || (suite.state.skipped && !suite.state.noSource && !(rootProject.incrementalPreCommitActive() && (suite.state.upToDate || suite.state.skipMessage == 'FROM-CACHE')))
         }
         if (!omitted.isEmpty()) {
             throw new GradleException("Required unit-test suites were skipped: ${omitted*.path}")
@@ -168,7 +169,7 @@ def coverage = tasks.register('jacocoAggregateReport', JacocoReport) {
 }
 tasks.register('verifyCoverage', Exec) {
     group = 'verification'
-    description = 'Enforces actual weighted production LINE coverage >95% after fresh unit tests.'
+    description = 'Enforces actual weighted production LINE coverage >95% after validated unit tests.'
     dependsOn coverage, moduleReports
     doFirst {
         def arguments = ['python3', rootProject.file('scripts/verify-jacoco-coverage.py').absolutePath,

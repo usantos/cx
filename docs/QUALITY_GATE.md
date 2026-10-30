@@ -66,7 +66,7 @@ sh scripts/install-git-hooks.sh
 
 `quickQualityCheck` executa Ktlint → Detekt → Lint; não executa testes nem cobertura.
 `qualityGate` acrescenta os testes unitários frescos e a verificação global de
-cobertura. O pre-commit e o CI usam `scripts/validate-pre-commit.py`, que chama `preCommitCheck`: acrescenta os gates de arquitetura/Compose/CaixaDS/contratos, testes dos scripts e do hook, fixtures XML isoladas, relatório agregado e APK PRD Debug. Testes/analisadores comuns são compartilhados no grafo, sem duplicar as mesmas tarefas. Falhas preservam o código de saída e bloqueiam o commit. Workspace e index precisam corresponder e permanecer estáveis durante a validação; nenhum arquivo é preparado automaticamente.
+cobertura. O pre-commit e o CI usam `scripts/validate-pre-commit.py`, que chama `preCommitCheck` (incremental localmente quando seguro; completo no CI): acrescenta os gates de arquitetura/Compose/CaixaDS/contratos, testes dos scripts e do hook, fixtures XML isoladas, relatório agregado e APK PRD Debug. Testes/analisadores comuns são compartilhados no grafo, sem duplicar as mesmas tarefas. Falhas preservam o código de saída e bloqueiam o commit. Workspace e index precisam corresponder e permanecer estáveis durante a validação; nenhum arquivo é preparado automaticamente.
 
 Exclusões de tarefas (`-x`) são rejeitadas no gate e em `lintQualityCheck`,
 inclusive exclusões de análises internas do Lint. O resumo registra PASSED, FAILED ou NOT RUN; uma etapa não executada não é
@@ -138,7 +138,7 @@ metadados de agregação e META-INF/module-info são excluídos. Não se excluem
 DTOs escritos à mão, estados, mappers, UI ou regras de negócio. O JaCoCo aplica
 seus próprios filtros de bytecode sintético.
 
-Antes do conjunto agregado, removem-se os `.exec` selecionados e relatórios antigos.
+Antes do conjunto agregado, removem-se os `.exec` selecionados e relatórios antigos. No modo incremental local, somente suítes afetadas perdem o `.exec`; as demais usam a validação nativa de entradas/saídas e cache do Gradle, incluindo o `.exec` como saída obrigatória. O agregado continua global. Consulte a [seleção incremental](quality/hooks-and-ci.md#seleção-incremental-dos-módulos).
 Os testes selecionados executam de novo, sem restauração do cache; compilação
 continua incremental. O destino real de `Test.jacoco.destinationFile` é resolvido
 na execução, inclusive os caminhos do AGP 9. Suítes omitidas/skipadas indevidamente
@@ -432,3 +432,10 @@ do index com cache de build desativado (67 tarefas executadas). O APK dessa cóp
 foi aberto no emulador Android 36, incluindo o exemplo `CaixaDSFingerprintIcon`.
 Essa evidência valida o conteúdo transferido pelo Git, sem alegar execução no
 Windows remoto. A aprovação integral continua dependente do pre-commit final.
+
+## Pre-commit incremental (30/10/2026)
+
+O hook seleciona módulos pelo index e pelo grafo real de dependências Gradle.
+Análises caras ficam no escopo afetado; contratos globais e cobertura LINE >95%
+permanecem obrigatórios. Configurações compartilhadas e CI exigem o gate completo.
+Veja [escopo, cache e recuperação segura](quality/hooks-and-ci.md#seleção-incremental-dos-módulos).
