@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.feature.betting.presentation.state.LotecaOutcome
 import java.math.BigDecimal
 import kotlin.random.Random
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -43,6 +44,15 @@ class LotecaCompletionTest {
         assertEquals(14, result.lotecaOutcomes.size)
         assertEquals(target, result.lotecaOutcomes.values.sumOf { it.size })
         assertTrue(result.canAddToCart)
+    }
+
+    @Test fun `closed sales allow local completion without permitting registration`() {
+        val input = state(old = mapOf(1 to single))
+        val result = input.copy(game = requireNotNull(input.game).copy(open = false)).withShake(false, Random(7))
+        assertEquals(14, result.lotecaOutcomes.size)
+        assertEquals(15, result.lotecaOutcomes.values.sumOf { it.size })
+        assertEquals(single, result.lotecaOutcomes[1])
+        assertFalse(result.canAddToCart)
     }
 
     @Test fun `footer completes chosen nonminimum target from service combination counts`() {

@@ -106,6 +106,17 @@ Os mapas de filtros não são campos arbitrários: a montagem pertence ao fluxo 
 
 Consumidores existentes: [BettingCatalogViewModel](../feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/viewmodel/BettingCatalogViewModel.kt), [BettingGameViewModel](../feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/viewmodel/BettingGameViewModel.kt), [BettingFlowViewModel](../feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/viewmodel/BettingFlowViewModel.kt), [FavoriteBetsViewModel](../feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/viewmodel/FavoriteBetsViewModel.kt), [RapidConfigurationViewModel](../feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/viewmodel/RapidConfigurationViewModel.kt), [RapidListViewModel](../feature/betting/presentation/src/main/java/br/gov/caixa/loterias/feature/betting/presentation/viewmodel/RapidListViewModel.kt).
 
+A geração por “Aposta aleatória”, “Completar jogo” e Aposta Shake é local:
+`BettingGameViewModel.fillShake` delega à seleção e publica o resultado imutável
+em Redux após salvar o rascunho. Completar preserva as marcações manuais e
+preenche apenas o que falta, incluindo os 50 números da Lotomania. O fechamento
+das vendas não impede editar/simular a cartela; continua impedindo registrar
+apostas e restaurar um concurso encerrado como elegível para compra.
+São verificados números nas oito modalidades numéricas, colunas do Super Sete,
+palpites da Loteca e os complementos (time, mês e trevos). Lotogol mantém a
+seleção manual de placares, sem geração aleatória. Nenhum desses sorteios locais
+chama um endpoint nem registra uma aposta por si só.
+
 ## Carrinho atual, preservado e favoritos — Cart
 
 | Necessidade | Classes | Observação |

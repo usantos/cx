@@ -1,8 +1,6 @@
 package br.gov.caixa.loterias.feature.betting.presentation.mapper
 
 import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
-
-import kotlin.random.Random
 import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
 import br.gov.caixa.loterias.feature.betting.presentation.state.BetSelectionStep
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState
@@ -13,6 +11,7 @@ import br.gov.caixa.loterias.feature.betting.presentation.state.LotecaOutcome
 import br.gov.caixa.loterias.feature.betting.presentation.state.MAIS_MILIONARIA_ID
 import br.gov.caixa.loterias.feature.betting.presentation.state.SUPER_SEVEN_ID
 import br.gov.caixa.loterias.feature.betting.presentation.state.TIMEMANIA_ID
+import kotlin.random.Random
 
 internal fun BettingGameUiState.shakeComplete(): Boolean = when {
     game?.modality?.id == LOTECA_ID || game?.modality?.id == LOTOGOL_ID -> canAddToCart
@@ -25,7 +24,7 @@ internal fun BettingGameUiState.shakeComplete(): Boolean = when {
 
 internal fun BettingGameUiState.withShake(renew: Boolean, random: Random = Random.Default): BettingGameUiState {
     val game = game ?: return this
-    if (loading || addedToCart || duplicateConfirmation || mode != BetEntryMode.MANUAL || !game.open ||
+    if (loading || addedToCart || duplicateConfirmation || mode != BetEntryMode.MANUAL ||
         game.modality.id == LOTOGOL_ID
     ) {
         return this

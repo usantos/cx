@@ -4,6 +4,7 @@
 package br.gov.caixa.loterias.feature.betting
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -33,6 +34,42 @@ import org.junit.Test
 @org.robolectric.annotation.Config(sdk = [35])
 class BettingLocalLoadingRecoveryTest {
     @get:Rule val compose = createComposeRule()
+
+    @Test fun lotomaniaRandomButtonCompletesLocalSimulationWhenSalesAreClosed() {
+        val game = LotteryGameParameters(
+            LotteryModality(16, "Lotomania", "LOTOMANIA"),
+            2985, "", 100, 50, 50, 3, listOf(0), listOf(BetPrice(50, 0, BigDecimal("3.00"))),
+            open = false
+        )
+        val session = testCheckpointFactory().open()
+        val vm = BettingGameViewModel(
+            16,
+            GetBettingParametersUseCase {
+                AppResult.Success(BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 50, listOf(game)))
+            },
+            AddBetToCartUseCase { error("Simulação local não deve enviar aposta") },
+            checkpointSession = session
+        )
+        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.waitUntil(10_000) { vm.state.value.game != null }
+        compose.onNodeWithText("Aposta aleatória").assertIsEnabled().performClick()
+        compose.waitUntil(10_000) { vm.state.value.selectedNumbers.size == 50 }
+        compose.runOnIdle {
+            assertEquals(50, vm.state.value.selectedNumbers.size)
+            assertFalse(vm.state.value.canAddToCart)
+            vm.clearSelection()
+        }
+        compose.waitUntil(10_000) { vm.state.value.selectedNumbers.isEmpty() }
+        compose.runOnIdle { vm.toggleNumber(1) }
+        compose.waitUntil(10_000) { vm.state.value.selectedNumbers == setOf(1) }
+        compose.onNodeWithText("Completar jogo").assertIsEnabled().performClick()
+        compose.waitUntil(10_000) { vm.state.value.selectedNumbers.size == 50 }
+        compose.runOnIdle {
+            assertTrue(1 in vm.state.value.selectedNumbers)
+            assertFalse(vm.state.value.canAddToCart)
+        }
+        assertEquals(vm.state.value.selectedNumbers, kotlinx.coroutines.runBlocking { session.read()?.checkpoint?.numbers })
+    }
 
     @Test fun loadingNetworkFailureAndRetryUseControlledServiceWithoutCartSubmission() {
         val firstResult = CompletableDeferred<AppResult<BettingParameters>>()

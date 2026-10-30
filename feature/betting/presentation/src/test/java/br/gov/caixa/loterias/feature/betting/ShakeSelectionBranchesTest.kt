@@ -39,7 +39,6 @@ class ShakeSelectionBranchesTest {
             input.copy(addedToCart = true),
             input.copy(duplicateConfirmation = true),
             input.copy(mode = BetEntryMode.SURPRISE),
-            input.copy(game = game().copy(open = false)),
             input.copy(game = game(LOTOGOL_ID))
         )
         blocked.forEach { assertSame(it, it.withShake(true, Random(3))) }
@@ -152,6 +151,31 @@ class ShakeSelectionBranchesTest {
         assertEquals(input, input.withShake(false, Random(2)))
         assertFalse(input.shakeComplete())
         assertTrue(input.copy(selectedNumbers = (1..6).toSet()).shakeComplete())
+    }
+
+    @Test fun closedSalesStillAllowSuperSevenAndComplementSimulation() {
+        val inputs = listOf(
+            state(SUPER_SEVEN_ID).copy(numberQuantity = 7),
+            state(TIMEMANIA_ID).copy(
+                game = game(TIMEMANIA_ID).copy(teams = listOf(team)),
+                selectionStep = BetSelectionStep.COMPLEMENT
+            ),
+            state(DIA_DE_SORTE_ID).copy(
+                game = game(DIA_DE_SORTE_ID).copy(luckyMonths = listOf(month)),
+                selectionStep = BetSelectionStep.COMPLEMENT
+            ),
+            state(MAIS_MILIONARIA_ID).copy(
+                game = game(MAIS_MILIONARIA_ID).copy(maximumCloverNumber = 6),
+                selectionStep = BetSelectionStep.COMPLEMENT,
+                manualCloverQuantity = 2
+            )
+        )
+        for (input in inputs) {
+            val closed = input.copy(game = requireNotNull(input.game).copy(open = false))
+            val completed = closed.withShake(false, Random(3))
+            assertTrue(completed.shakeComplete())
+            assertFalse(completed.canAddToCart)
+        }
     }
 
     private fun state(id: Int = 2) = BettingGameUiState(loading = false, game = game(id), numberQuantity = 6)

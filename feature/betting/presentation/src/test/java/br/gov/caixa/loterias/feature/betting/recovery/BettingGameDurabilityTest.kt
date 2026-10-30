@@ -91,6 +91,79 @@ class BettingGameDurabilityTest {
         }
     }
 
+    @Test fun `random numeric bets publish and persist every modality without replacing manual picks`() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        try {
+            val modalities = listOf(
+                Triple(2, 60, 6),
+                Triple(3, 80, 5),
+                Triple(16, 100, 50),
+                Triple(18, 50, 6),
+                Triple(17, 25, 15),
+                Triple(20, 80, 10),
+                Triple(11, 31, 7),
+                Triple(9, 50, 6)
+            )
+            val games = modalities.flatMap { (id, maximum, quantity) ->
+                listOf(true, false).map { open ->
+                    game.copy(
+                        modality = LotteryModality(id, "Modalidade $id", ""),
+                        maximumNumber = maximum,
+                        minimumSelection = quantity,
+                        maximumSelection = quantity,
+                        prices = listOf(BetPrice(quantity, 0, BigDecimal.ONE)),
+                        open = open
+                    )
+                }
+            }
+            for (parameters in games) {
+                val id = parameters.modality.id
+                val session = Session()
+                var submissions = 0
+                val model = BettingGameViewModel(
+                    id,
+                    GetBettingParametersUseCase {
+                        AppResult.Success(BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 50, listOf(parameters)))
+                    },
+                    AddBetToCartUseCase {
+                        submissions++
+                        error("Não deve enviar aposta")
+                    },
+                    dispatchers = FixedCoroutineDispatchers(StandardTestDispatcher(testScheduler)),
+                    checkpointSession = session
+                )
+                advanceUntilIdle()
+                model.fillShake(false)
+                advanceUntilIdle()
+                assertEquals(parameters.minimumSelection, model.state.value.selectedNumbers.size)
+                model.clearSelection()
+                model.toggleNumber(1)
+                model.fillShake(false)
+                advanceUntilIdle()
+                val selected = model.state.value.selectedNumbers
+                assertEquals("Modalidade $id", parameters.minimumSelection, selected.size)
+                assertTrue("Modalidade $id", 1 in selected && selected.all { it in 1..parameters.maximumNumber })
+                assertEquals(selected, session.record?.checkpoint?.numbers)
+                assertEquals(null, model.state.value.errorMessage)
+                model.fillShake(true)
+                advanceUntilIdle()
+                assertEquals(parameters.minimumSelection, model.state.value.selectedNumbers.size)
+                assertTrue(selected != model.state.value.selectedNumbers)
+                if (!parameters.open) {
+                    assertFalse(model.state.value.canAddToCart)
+                    model.addToCart()
+                    advanceUntilIdle()
+                    assertNotNull(model.state.value.errorMessage)
+                    assertEquals(parameters.minimumSelection, model.state.value.selectedNumbers.size)
+                }
+                assertEquals(model.state.value.selectedNumbers, session.record?.checkpoint?.numbers)
+                assertEquals(0, submissions)
+            }
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
+
     @Test fun `expired contest preserves encrypted selection without substituting refreshed contest`() = runTest {
         Dispatchers.setMain(StandardTestDispatcher(testScheduler))
         try {
