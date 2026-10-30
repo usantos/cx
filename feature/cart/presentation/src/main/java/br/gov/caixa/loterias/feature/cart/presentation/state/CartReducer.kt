@@ -95,9 +95,13 @@ private fun reduceCartContentsState(state: CartUiState, action: CartContentsActi
 
     CartContentsAction.LoadFinished -> state.copy(loading = false)
 
-    is CartContentsAction.RemovalRequested -> if (state.loading) state else state.copy(pendingRemoval = action.item)
+    is CartContentsAction.RemovalRequested -> if (state.loading) {
+        state
+    } else {
+        state.copy(pendingRemoval = action.item, clearConfirmation = false)
+    }
 
-    CartContentsAction.ClearRequested -> if (state.loading) state else state.copy(clearConfirmation = true)
+    CartContentsAction.ClearRequested -> if (state.loading) state else state.copy(clearConfirmation = true, pendingRemoval = null)
 
     CartContentsAction.ConfirmationDismissed -> state.copy(
         pendingRemoval = null,

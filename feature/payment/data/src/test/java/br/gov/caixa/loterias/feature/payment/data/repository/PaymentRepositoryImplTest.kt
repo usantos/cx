@@ -247,12 +247,12 @@ class PaymentRepositoryImplTest {
         assertTrue(source.pixBody?.asJsonObject?.get("parametrosPagamento")?.isJsonNull == true)
     }
 
-    @Test fun `existing purchase query rejects approval payload belonging to another purchase`() = runTest {
+    @Test fun `existing purchase query ignores approval payload belonging to another purchase`() = runTest {
         val source = FakeSource().apply {
             progressValue = json("{\"id\":9002,\"idSituacaoCompra\":8}")
         }
-        val failure = runCatching { PaymentRepositoryImpl(source).purchaseProgress(9003) }.exceptionOrNull()
-        assertTrue("A GET for 9003 must not approve payload purchase 9002", failure is IllegalArgumentException)
+        val progress = PaymentRepositoryImpl(source).purchaseProgress(9003)
+        assertEquals(br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress(9003, 0), progress)
     }
 
     @Test fun `mapping safely defaults malformed optional values`() = runTest {
@@ -793,4 +793,36 @@ class PaymentRepositoryImplTest {
         private fun <T> proxy(type: Class<T>, handler: (java.lang.reflect.Method) -> Any?): T =
             java.lang.reflect.Proxy.newProxyInstance(type.classLoader, arrayOf(type)) { _, method, _ -> handler(method) } as T
     }
+
+    @Test fun `foreign processing replies keep the requested purchase pending until a matching reply`() = runTest {
+        val requestedPurchaseId = REQUESTED_PURCHASE_ID
+        val foreignPurchaseId = FOREIGN_PURCHASE_ID
+        val pendingStatus = 1
+        val declinedStatus = 3
+        val completedStatus = 8
+        val source = FakeSource()
+        val repository = PaymentRepositoryImpl(source)
+        for (processing in listOf(false, true)) {
+            source.processing = processing
+            for (status in listOf(pendingStatus, declinedStatus, completedStatus)) {
+                source.progressValue = json(
+                    """{"id":$foreignPurchaseId,"idSituacaoCompra":$status,"periodicidade":1,"repeticoes":10}"""
+                )
+                val progress = repository.purchaseProgress(requestedPurchaseId)
+                assertEquals(requestedPurchaseId, progress.purchaseId)
+                assertEquals(0, progress.status)
+                assertFalse(progress.completed)
+                assertFalse(progress.rejected)
+                org.junit.Assert.assertNull(progress.nextPoll)
+            }
+        }
+        source.processing = false
+        source.progressValue = json("""{"id":$requestedPurchaseId,"idSituacaoCompra":$completedStatus}""")
+        assertTrue(repository.purchaseProgress(requestedPurchaseId).completed)
+        org.junit.Assert.assertNull(source.pixBody)
+        org.junit.Assert.assertNull(source.registerBody)
+    }
 }
+
+private const val REQUESTED_PURCHASE_ID = 9003L
+private const val FOREIGN_PURCHASE_ID = 9002L

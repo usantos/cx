@@ -6,21 +6,32 @@ package br.gov.caixa.loterias.feature.cart
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.common.time.ServerTimeSource
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
+import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.presentation.components.CartRow
 import br.gov.caixa.loterias.feature.cart.presentation.components.FavoriteBetCard
 import br.gov.caixa.loterias.feature.cart.presentation.components.FavoriteCartRow
 import br.gov.caixa.loterias.feature.cart.presentation.components.FavoriteConfirmDialog
+import br.gov.caixa.loterias.feature.cart.presentation.route.CurrentCartRoute
 import br.gov.caixa.loterias.feature.cart.presentation.screen.CartError
 import br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartContent
 import br.gov.caixa.loterias.feature.cart.presentation.screen.FavoriteCartDetailContent
@@ -28,8 +39,10 @@ import br.gov.caixa.loterias.feature.cart.presentation.screen.FavoriteCartsActio
 import br.gov.caixa.loterias.feature.cart.presentation.screen.FavoriteCartsContent
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartUiState
 import br.gov.caixa.loterias.feature.cart.presentation.state.FavoriteCartsUiState
+import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.CartViewModel
 import java.math.BigDecimal
 import java.time.Instant
+import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -286,4 +299,53 @@ class CartContentBranchesUiTest {
     private fun favorite() = FavoriteCartBet(1, "Mega-Sena", listOf(1, 2, 3), modalityId = 2)
     private fun item() = CartItem(1, CartItemKind.INDIVIDUAL_BET, "Mega-Sena", "Descrição do jogo", BigDecimal.TEN, "megasena", 123)
     private val now = Instant.parse("2026-10-22T15:00:00Z")
+
+    @Test
+    fun removingLotomaniaThroughItsTrashKeepsLotofacil() {
+        val lotomania = CartItem(1, CartItemKind.INDIVIDUAL_BET, "Lotomania", "", BigDecimal.ONE, modalityCode = "LOTOMANIA")
+        val lotofacil = CartItem(2, CartItemKind.INDIVIDUAL_BET, "Lotofácil", "", BigDecimal.ONE, modalityCode = "LOTOFACIL")
+        var cart = ShoppingCart(0, BigDecimal("2"), listOf(lotomania, lotofacil), totalBetCount = 2)
+        compose.setContent {
+            val model = remember {
+                CartViewModel(
+                    getCurrentCart = { AppResult.Success(cart) },
+                    removeCartItem = { selected ->
+                        assertEquals(lotomania, selected)
+                        cart = cart.copy(total = BigDecimal.ONE, items = listOf(lotofacil), totalBetCount = 1)
+                        AppResult.Success(cart)
+                    },
+                    clearCart = { error("A lixeira da aposta não pode limpar o carrinho") },
+                    serverTime = ServerTimeSource { Instant.parse("2026-10-30T12:00:00Z") },
+                    verifyPaymentAccount = { AppResult.Success(CartPaymentAccountDecision.LoginRequired) },
+                    validateCart = { error("Não deve validar pagamento") },
+                    hasRecentPurchase = { error("Não deve consultar compra recente") },
+                    checkCheckoutLocation = { error("Não deve consultar localização") },
+                    recordLocationRequest = { error("Não deve solicitar localização") },
+                    authenticated = false,
+                    dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate)
+                )
+            }
+            CaixaDSTheme(darkTheme = false) {
+                CurrentCartRoute(
+                    model,
+                    onBack = {},
+                    onContinueBetting = {},
+                    onPayment = {},
+                    onLogin = {},
+                    onAccountRequired = {},
+                    onLocationBlocked = {},
+                    onValidationRedirect = {}
+                )
+            }
+        }
+        compose.onNodeWithTag("simlo.cart.0103").performScrollToIndex(2)
+        compose.onNodeWithText("lotomania", useUnmergedTree = true).assertIsDisplayed()
+        compose.onAllNodesWithContentDescription("Excluir")[0].performClick()
+        compose.onNodeWithText("Deseja excluir esta aposta do carrinho?").assertIsDisplayed()
+        compose.onNodeWithText("Sim").performClick()
+        compose.onNodeWithText("lotomania", useUnmergedTree = true).assertDoesNotExist()
+        compose.onNodeWithTag("simlo.cart.0103").performScrollToIndex(2)
+        compose.onNodeWithText("lotofácil", useUnmergedTree = true).assertIsDisplayed()
+        compose.runOnIdle { assertEquals(listOf(lotofacil), cart.items) }
+    }
 }

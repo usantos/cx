@@ -22,8 +22,10 @@ internal object PurchaseResponseMapper {
         response.registrationNotice()?.let { return PurchaseProgress(purchaseId, 0, notice = it) }
         val envelope = response.envelope.validated()
         val value = envelope.payload
-        require(value?.id?.takeIf { it > 0 }?.let { it == purchaseId } != false) {
-            messageText("resposta_de_processamento_perten_838225")
+        if (value?.id?.takeIf { it > 0 }?.let { it != purchaseId } == true) {
+            // Uma resposta alheia não confirma nem rejeita esta compra. Mantém a cobrança
+            // atual pendente e permite uma nova consulta, sem repetir o pagamento.
+            return PurchaseProgress(purchaseId, 0)
         }
         val nextPoll = if (response.processing) {
             requireNotNull(value) { messageText("compra_sem_payload_de_processame_78e664") }

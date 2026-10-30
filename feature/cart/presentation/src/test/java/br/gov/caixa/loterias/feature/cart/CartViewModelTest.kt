@@ -1181,4 +1181,49 @@ class CartViewModelTest {
 
         private fun emptyCart() = ShoppingCart(5, BigDecimal.ZERO, emptyList())
     }
+
+    @Test
+    fun `individual removal cannot execute an unconfirmed clear and keeps the other modality`() = runTest(dispatcherRule.dispatcher) {
+        val lotomania = item().copy(id = 1, title = "Lotomania", modalityCode = "LOTOMANIA")
+        val lotofacil = item().copy(id = 2, title = "Lotofácil", modalityCode = "LOTOFACIL")
+        var current = cart().copy(items = listOf(lotomania, lotofacil))
+        val viewModel = viewModel(
+            load = { AppResult.Success(current) },
+            remove = { selected ->
+                assertEquals(lotomania, selected)
+                current = current.copy(items = current.items.filterNot { it.id == selected.id })
+                AppResult.Success(current)
+            },
+            clear = { error("Exclusão individual não autoriza limpar o carrinho") }
+        )
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        viewModel.requestRemoval(lotomania)
+        viewModel.confirmClear()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(listOf(lotomania, lotofacil), viewModel.state.value.cart?.items)
+        assertEquals(lotomania, viewModel.state.value.pendingRemoval)
+        viewModel.confirmRemoval()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(listOf(lotofacil), viewModel.state.value.cart?.items)
+        viewModel.confirmClear()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(listOf(lotofacil), viewModel.state.value.cart?.items)
+    }
+
+    @Test
+    fun `individual and whole cart confirmations replace each other`() = runTest(dispatcherRule.dispatcher) {
+        val viewModel = viewModel()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        viewModel.requestClear()
+        viewModel.requestRemoval(item())
+        assertFalse(viewModel.state.value.clearConfirmation)
+        assertEquals(item(), viewModel.state.value.pendingRemoval)
+        viewModel.requestClear()
+        assertTrue(viewModel.state.value.clearConfirmation)
+        assertNull(viewModel.state.value.pendingRemoval)
+        viewModel.dismissConfirmation()
+        viewModel.confirmClear()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(cart(), viewModel.state.value.cart)
+    }
 }

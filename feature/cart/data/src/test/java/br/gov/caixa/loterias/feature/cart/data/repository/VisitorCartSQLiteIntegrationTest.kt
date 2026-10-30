@@ -71,6 +71,19 @@ class VisitorCartSQLiteIntegrationTest {
         assertTrue(runCatching { repository.remove(first.items.single()) }.isFailure)
     }
 
+    @Test fun `removing unmirrored lotomania preserves lotofacil after recreation`() = runBlocking {
+        val repository = VisitorCartRepositoryImpl(SecureCartDocument(disk))
+        val parameters = parameters(game(16, "Lotomania", 50), game(8, "Lotofácil", 15))
+        val lotomania = repository.add(BetDraft(16, numbers = (1..50).toList()), parameters).items.single()
+        val both = repository.add(BetDraft(8, numbers = (1..15).toList()), parameters)
+        val lotofacil = both.items.single { it.id != lotomania.id }
+        val remaining = repository.remove(lotomania)
+        assertEquals(listOf(lotofacil), remaining.items)
+        assertEquals(lotofacil.amount, remaining.total)
+        assertEquals(1, remaining.betCount)
+        assertEquals(remaining, VisitorCartRepositoryImpl(SecureCartDocument(disk)).current())
+    }
+
     @Test fun `lotomania mirror pair is linked and removed together`() = runBlocking {
         val repository = VisitorCartRepositoryImpl(SecureCartDocument(disk))
         val draft = BetDraft(16, numbers = (1..50).toList(), generateMirror = true, recurringDraws = 2)

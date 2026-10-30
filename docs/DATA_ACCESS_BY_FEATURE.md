@@ -120,6 +120,15 @@ Consumidores existentes: [BettingCatalogViewModel](../feature/betting/presentati
 
 Consumidores: [CartViewModel](../feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/viewmodel/CartViewModel.kt), [FavoriteCartsViewModel](../feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/viewmodel/FavoriteCartsViewModel.kt) e [LocalCartReviewViewModel](../feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/viewmodel/LocalCartReviewViewModel.kt). Os demais comandos de exclusão, validação de nome e registro estão no catálogo completo abaixo.
 
+A exclusão de uma aposta visitante passa por `CartViewModel.requestRemoval` e
+`confirmRemoval`, `RemoveCartItem` e `VisitorCartRepositoryImpl.remove`. A
+transação local remove somente o ID selecionado; uma Lotomania com espelho
+remove seu par vinculado. A confirmação individual substitui a confirmação de
+limpeza total e vice-versa. `confirmClear` exige uma confirmação total ativa;
+um callback sem confirmação ou após cancelar não pode esvaziar o carrinho.
+O teste de persistência cobre Lotomania sem espelho com Lotofácil, preservando
+esta última e seus valores após excluir a primeira e recriar o repositório.
+
 ## Resultados de sorteios — Results
 
 | Consulta | Chamada | Retorno |
@@ -400,7 +409,16 @@ são preservados; voltar ao app não repete o POST. Falhas reais das consultas e
 primeiro plano continuam visíveis. Confirmações já recebidas podem concluir sua
 gravação local, independentemente do cancelamento da leitura de situação.
 
-Validação em 30/10/2026: 3.576 testes JVM passaram, sem falhas, erros ou skips,
+Na consulta de andamento, se o payload informar um `id` positivo diferente do
+`idCompraCarrinho` solicitado, `PurchaseResponseMapper` descarta sua situação e
+seus metadados de continuação. O resultado mantém o ID solicitado com situação
+indeterminada (`status = 0`), sem aprovar ou rejeitar a cobrança atual e sem
+exibir uma exceção técnica de outra compra. A próxima consulta continua sendo
+um GET para o ID original; não há reenvio do pagamento. Uma situação final só é
+aplicada se a identidade retornada for compatível com a consulta. Isso trata a
+resposta divergente; não comprova a origem dessa divergência no servidor.
+
+Validação anterior ao ajuste de respostas divergentes/confirmações, em 30/10/2026: 3.576 testes JVM passaram, sem falhas, erros ou skips,
 e o gate completo aprovou com cobertura global 95,17%. Os testes decodificam o QR
 renderizado nos dois temas (inclusive conteúdo longo), conferem centralização e
 expiração, simulam respostas tardias após background e garantem que o POST e o

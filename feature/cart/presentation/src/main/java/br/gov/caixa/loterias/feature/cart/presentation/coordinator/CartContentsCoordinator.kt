@@ -69,7 +69,7 @@ internal class CartContentsCoordinator(
     }
 
     fun confirmClear() {
-        if (mutableState.value.loading) return
+        if (mutableState.value.loading || !mutableState.value.clearConfirmation) return
         cartRequestRunning = true
         mutableState.dispatch(CartContentsAction.ClearStarted)
         viewModelScope.launch(dispatchers.io) {
