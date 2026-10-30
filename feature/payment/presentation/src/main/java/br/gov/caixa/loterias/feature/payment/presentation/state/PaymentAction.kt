@@ -20,6 +20,7 @@ internal sealed interface PaymentAction {
     data object PixGenerationStarted : PaymentAction
     data object PixRecoveryRequired : PaymentAction
     data class PixGenerated(val pix: PixCharge) : PaymentAction
+    data object PixStatusCheckCancelled : PaymentAction
     data object PixStatusCheckStarted : PaymentAction
     data class PixRedirectReceived(val destination: PurchaseRedirect) : PaymentAction
     data class PixNoticeReceived(val presentation: PurchaseNoticeUiState) : PaymentAction

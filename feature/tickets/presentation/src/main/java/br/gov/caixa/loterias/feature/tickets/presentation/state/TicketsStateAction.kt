@@ -53,6 +53,7 @@ internal sealed interface TicketsStateAction {
     data class TicketModalitiesReceived(val modalities: List<br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality>) :
         TicketsQueryAction
     data class TicketModalityToggled(val id: Int) : TicketsQueryAction
+    data object PixStatusCancelled : TicketsPixAction
     data object PixStatusLoading : TicketsPixAction
     data class PixStatusFailed(val purchaseId: Long, val error: AppError, val message: String = capturePixStatusFailure(error)) :
         TicketsPixAction

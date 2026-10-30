@@ -37,6 +37,7 @@ apply from: rootProject.file('gradle/source-tracking.gradle')
 apply from: rootProject.file('gradle/verify-vendor-sync.gradle')
 apply from: rootProject.file('gradle/compose-platform-resources.gradle')
 apply from: rootProject.file('gradle/launcher-entry-policy.gradle')
+apply from: rootProject.file('gradle/android-studio-run-configuration.gradle')
 
 allprojects {
     repositories {

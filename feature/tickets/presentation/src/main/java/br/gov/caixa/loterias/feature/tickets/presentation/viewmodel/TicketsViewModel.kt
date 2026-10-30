@@ -141,6 +141,8 @@ class TicketsViewModel(
 
     fun loadMorePurchases() = history.loadMorePurchases()
 
+    fun setPixScreenActive(active: Boolean) = pix.setScreenActive(active)
+
     fun checkPendingPixStatus() = pix.checkPendingPixStatus()
 
     fun consumePixPurchaseRedirect(expected: br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect): Boolean =

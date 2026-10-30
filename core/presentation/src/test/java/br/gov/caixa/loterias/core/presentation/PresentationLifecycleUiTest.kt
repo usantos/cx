@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.core.presentation.campaign.theme.ApplicationCampaig
 import br.gov.caixa.loterias.core.presentation.campaign.viewmodel.CampaignViewModel
 import br.gov.caixa.loterias.core.presentation.components.ServiceFailureOverlay
 import br.gov.caixa.loterias.core.presentation.effect.NavigationResumeEffect
+import br.gov.caixa.loterias.core.presentation.effect.ScreenForegroundEffect
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 import br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation
 import br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent
@@ -50,6 +51,34 @@ class PresentationLifecycleUiTest {
     @get:Rule val compose = createComposeRule()
     private class Owner : LifecycleOwner {
         override val lifecycle = LifecycleRegistry(this).apply { currentState = Lifecycle.State.STARTED }
+    }
+
+    @Test fun `foreground effect pauses on stop resumes and detaches without touching business data`() {
+        val owner = Owner()
+        val visible = mutableStateOf(true)
+        val events = mutableListOf<Boolean>()
+        compose.setContent {
+            CompositionLocalProvider(LocalLifecycleOwner provides owner) {
+                if (visible.value) ScreenForegroundEffect { events += it }
+            }
+        }
+        compose.runOnIdle {
+            assertEquals(false, events.last())
+            owner.lifecycle.currentState = Lifecycle.State.RESUMED
+            assertEquals(true, events.last())
+            owner.lifecycle.currentState = Lifecycle.State.CREATED
+            assertEquals(false, events.last())
+            owner.lifecycle.currentState = Lifecycle.State.RESUMED
+            assertEquals(true, events.last())
+            visible.value = false
+        }
+        compose.runOnIdle {
+            assertEquals(false, events.last())
+            val count = events.size
+            owner.lifecycle.currentState = Lifecycle.State.CREATED
+            owner.lifecycle.currentState = Lifecycle.State.RESUMED
+            assertEquals(count, events.size)
+        }
     }
 
     @Test fun `resume effect invokes latest callback and removes observer when destination leaves composition`() {

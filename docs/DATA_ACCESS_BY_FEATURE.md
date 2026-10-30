@@ -385,6 +385,29 @@ Retornos de inclusão são `CartDto`, convertido em carrinho de domínio. Na mes
 
 ### Pagamentos, Pix e cartões — Payment
 
+O painel Pix exibe um QR Code centralizado acima do campo Copia e Cola, gerado
+localmente pelo CaixaDS a partir do mesmo `PixCharge.copyPaste.trim()` copiado
+para a área de transferência. Essa renderização não gera outra cobrança nem
+chama endpoints; funciona também para cobranças restauradas sem imagem Base64.
+O QR é removido ao expirar, tem margem branca e usa preto/branco em ambos os temas.
+O ID de automação é `simlo.ds.0147` (`pagamento.pix.qr` no pacote Robot).
+
+Após copiar o Pix, a consulta automática de situação ocorre a cada 20 segundos
+somente com a tela em `RESUMED`, tanto no pagamento quanto na compra pendente.
+Ao ir para segundo plano ou sair da tela, a leitura pendente é cancelada e uma
+resposta atrasada não publica erro de internet. A cobrança, o código e o prazo
+são preservados; voltar ao app não repete o POST. Falhas reais das consultas em
+primeiro plano continuam visíveis. Confirmações já recebidas podem concluir sua
+gravação local, independentemente do cancelamento da leitura de situação.
+
+Validação em 30/10/2026: 3.576 testes JVM passaram, sem falhas, erros ou skips,
+e o gate completo aprovou com cobertura global 95,17%. Os testes decodificam o QR
+renderizado nos dois temas (inclusive conteúdo longo), conferem centralização e
+expiração, simulam respostas tardias após background e garantem que o POST e o
+registro de uma confirmação conhecida não sejam repetidos/cancelados. A captura
+nativa do catálogo também foi decodificada; contém somente dados de demonstração.
+
+
 `PaymentRemoteDataSourceImpl` usa backend CAIXA para Pix, cartões salvos e parâmetros; `CardPaymentTokenizer` usa as APIs externas para tokenização. Compra e acompanhamento usam `PurchaseBackendClient`, com `PurchaseEnvelopeDto` e tratamento de HTTP 303 como processamento. As declarações genéricas equivalentes de `BackendApi` não devem substituir esse cliente.
 
 | Serviço / método | HTTP e endpoint relativo | Parâmetros declarados | Retorno do transporte |

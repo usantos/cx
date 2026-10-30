@@ -45,11 +45,36 @@ class TicketsPixPurchaseViewModelTest {
     private val statusIds = mutableListOf<Long>()
     private var detailsCalls = 0
     private var elapsed = 10_000L
+    private var statusOverride: (suspend () -> AppResult<PurchaseProgress>)? = null
     private var detailsOverride: (suspend (Purchase) -> AppResult<PurchaseDetails>)? = null
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
 
     @After fun tearDown() = Dispatchers.resetMain()
+
+    @Test fun `background status failures cannot replace the saved purchase or show a stale error`() = runTest(dispatcher) {
+        val response = CompletableDeferred<AppResult<PurchaseProgress>>()
+        statusOverride = { kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) { response.await() } }
+        val vm = show()
+        vm.checkPendingPixStatus()
+        runCurrent()
+        assertTrue(vm.state.value.checkingPixPurchase)
+        vm.setPixScreenActive(false)
+        assertFalse(vm.state.value.checkingPixPurchase)
+        vm.checkPendingPixStatus()
+        response.complete(AppResult.Failure(AppError.Network))
+        advanceUntilIdle()
+        assertNull(vm.state.value.errorMessage)
+        assertEquals(pending, vm.state.value.selectedPurchase)
+        assertEquals(1, statusIds.size)
+        statusOverride = null
+        vm.setPixScreenActive(true)
+        vm.checkPendingPixStatus()
+        advanceUntilIdle()
+        assertEquals(2, statusIds.size)
+        assertFalse(vm.state.value.checkingPixPurchase)
+        assertEquals(pending, vm.state.value.selectedPurchase)
+    }
 
     @Test fun `server time keeps ten minute window queryable when device is fifteen minutes ahead`() = runTest(dispatcher) {
         detail = pending.copy(paymentExpiresAt = "2020-01-01T15:10:00.000")
@@ -189,7 +214,7 @@ class TicketsPixPurchaseViewModelTest {
             },
             getPixPurchaseStatus = GetPurchaseProgressUseCase {
                 statusIds.add(it)
-                status
+                statusOverride?.invoke() ?: status
             },
             dispatchers = FixedCoroutineDispatchers(dispatcher),
             elapsedMillis = { elapsed },

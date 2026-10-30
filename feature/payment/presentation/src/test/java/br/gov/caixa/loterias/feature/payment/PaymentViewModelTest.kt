@@ -1,24 +1,27 @@
 package br.gov.caixa.loterias.feature.payment
 
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.DamValidation
+import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
+import br.gov.caixa.loterias.feature.payment.domain.model.PixCharge
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
+import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
 import br.gov.caixa.loterias.feature.payment.domain.usecase.DeleteSavedCardUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GeneratePixChargeUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
-import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
-import br.gov.caixa.loterias.feature.payment.domain.model.PixCharge
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
-import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
 import br.gov.caixa.loterias.feature.payment.domain.usecase.ValidateDamUseCase
+import br.gov.caixa.loterias.feature.payment.presentation.mapper.PurchaseNoticeUiState
+import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentMode
+import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.PaymentViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -35,16 +38,13 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentMode
-import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.PaymentViewModel
-import br.gov.caixa.loterias.feature.payment.presentation.mapper.PurchaseNoticeUiState
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PaymentViewModelTest {
     private val methods = listOf(
         PaymentMethod(1, "Mercado Pago"),
         PaymentMethod(5, "RecargaPay"),
-        PaymentMethod(6, "Pix"),
+        PaymentMethod(6, "Pix")
     )
     private val card = SavedPaymentCard("card", 1, "411111", "1111", 12, 2030, 3, "Visa", "visa")
     private val pix = PixCharge("code", "tx", "qr", "now", "later", 9, BigDecimal.TEN)
@@ -57,11 +57,14 @@ class PaymentViewModelTest {
     private var cartResult: AppResult<ShoppingCart> = AppResult.Success(ShoppingCart(2, BigDecimal("25.50"), emptyList()))
     private val requestedMethods = mutableListOf<Long>()
     private var deleted: Pair<String, Long>? = null
+    private var recordOverride: (suspend () -> AppResult<Unit>)? = null
+    private var progressOverride: (suspend () -> AppResult<PurchaseProgress>)? = null
     private var generationOverride: (suspend () -> AppResult<PixCharge>)? = null
     private var generatedPixCount = 0
     private var queriedPixCount = 0
 
     @Before fun setUp() = Dispatchers.setMain(UnconfinedTestDispatcher())
+
     @After fun tearDown() = Dispatchers.resetMain()
 
     @Test fun `methods load cart confirm purchase and validate dam`() = runTest {
@@ -169,6 +172,77 @@ class PaymentViewModelTest {
         assertEquals(generatedBeforeReload, generatedPixCount)
     }
 
+    @Test fun `background cancels only status checks and ignores late connection errors`() = runTest {
+        val response = CompletableDeferred<AppResult<PurchaseProgress>>()
+        progressOverride = { kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) { response.await() } }
+        val vm = viewModel(PaymentMode.PIX)
+        advanceUntilIdle()
+        vm.checkPixStatus()
+        advanceUntilIdle()
+        assertTrue(vm.state.value.checkingPix)
+        vm.setPixScreenActive(false)
+        assertFalse(vm.state.value.checkingPix)
+        assertEquals(pix, vm.state.value.pix)
+        vm.checkPixStatus()
+        assertEquals(1, queriedPixCount)
+        response.complete(AppResult.Failure(AppError.Network))
+        advanceUntilIdle()
+        assertNull(vm.state.value.errorMessage)
+        assertEquals(pix, vm.state.value.pix)
+        assertEquals(1, generatedPixCount)
+        vm.setPixScreenActive(true)
+        progressOverride = null
+        vm.checkPixStatus()
+        advanceUntilIdle()
+        assertEquals(2, queriedPixCount)
+        assertFalse(vm.state.value.checkingPix)
+        assertNull(vm.state.value.errorMessage)
+        progressResult = AppResult.Failure(AppError.Network)
+        vm.checkPixStatus()
+        advanceUntilIdle()
+        assertTrue(requireNotNull(vm.state.value.errorMessage).contains("internet"))
+        assertEquals(pix, vm.state.value.pix)
+        assertEquals(1, generatedPixCount)
+    }
+
+    @Test fun `a known confirmation finishes its local record after background without duplicate status calls`() = runTest {
+        val recorded = CompletableDeferred<AppResult<Unit>>()
+        recordOverride = { recorded.await() }
+        val vm = viewModel(PaymentMode.PIX)
+        advanceUntilIdle()
+        progressResult = AppResult.Success(PurchaseProgress(pix.purchaseId, 8))
+        vm.checkPixStatus()
+        advanceUntilIdle()
+        assertTrue(vm.state.value.checkingPix)
+        vm.setPixScreenActive(false)
+        vm.setPixScreenActive(true)
+        vm.checkPixStatus()
+        assertEquals(1, queriedPixCount)
+        recorded.complete(AppResult.Success(Unit))
+        advanceUntilIdle()
+        assertTrue(vm.state.value.pixApproved)
+        assertFalse(vm.state.value.checkingPix)
+        assertEquals(listOf(pix.amount), recordedAmounts)
+        assertEquals(1, generatedPixCount)
+    }
+
+    @Test fun `background never cancels or repeats creation of a pix charge`() = runTest {
+        val response = CompletableDeferred<AppResult<PixCharge>>()
+        generationOverride = { response.await() }
+        val vm = viewModel(PaymentMode.PIX)
+        advanceUntilIdle()
+        vm.setPixScreenActive(false)
+        response.complete(AppResult.Success(pix))
+        advanceUntilIdle()
+        assertEquals(pix, vm.state.value.pix)
+        assertEquals(1, generatedPixCount)
+        assertNull(vm.state.value.errorMessage)
+        vm.setPixScreenActive(true)
+        vm.load()
+        advanceUntilIdle()
+        assertEquals(1, generatedPixCount)
+    }
+
     @Test fun `missing pix makes status check a safe no op`() = runTest {
         pixResult = AppResult.Failure(AppError.Network)
         val viewModel = viewModel(PaymentMode.PIX)
@@ -191,9 +265,11 @@ class PaymentViewModelTest {
         advanceUntilIdle()
         assertEquals("Carrinho inválido", methodsVm.state.value.errorMessage)
         cartResult = AppResult.Success(ShoppingCart(1, BigDecimal.ONE, emptyList()))
-        methodsVm.load(); advanceUntilIdle()
+        methodsVm.load()
+        advanceUntilIdle()
         damResult = AppResult.Failure(AppError.Unexpected)
-        methodsVm.acceptPrePurchase(); advanceUntilIdle()
+        methodsVm.acceptPrePurchase()
+        advanceUntilIdle()
         assertTrue(methodsVm.state.value.errorMessage!!.contains("inesperado"))
 
         methodResult = AppResult.Failure(AppError.Validation("Sem meios"))
@@ -202,12 +278,16 @@ class PaymentViewModelTest {
         assertEquals("Sem meios", cardsVm.state.value.errorMessage)
         methodResult = AppResult.Success(methods)
         cardResult = AppResult.Failure(AppError.Unexpected)
-        cardsVm.load(); advanceUntilIdle()
+        cardsVm.load()
+        advanceUntilIdle()
         assertTrue(cardsVm.state.value.errorMessage!!.contains("inesperado"))
         cardResult = AppResult.Success(listOf(card))
-        cardsVm.load(); advanceUntilIdle()
+        cardsVm.load()
+        advanceUntilIdle()
         deleteResult = AppResult.Failure(AppError.Network)
-        cardsVm.requestDelete(card); cardsVm.confirmDelete(); advanceUntilIdle()
+        cardsVm.requestDelete(card)
+        cardsVm.confirmDelete()
+        advanceUntilIdle()
         assertTrue(cardsVm.state.value.errorMessage!!.contains("internet"))
 
         pixResult = AppResult.Failure(AppError.Validation("Pix indisponível"))
@@ -215,9 +295,11 @@ class PaymentViewModelTest {
         advanceUntilIdle()
         assertEquals("Pix indisponível", pixVm.state.value.errorMessage)
         pixResult = AppResult.Success(pix)
-        pixVm.load(); advanceUntilIdle()
+        pixVm.load()
+        advanceUntilIdle()
         progressResult = AppResult.Failure(AppError.Unexpected)
-        pixVm.checkPixStatus(); advanceUntilIdle()
+        pixVm.checkPixStatus()
+        advanceUntilIdle()
         assertTrue(pixVm.state.value.errorMessage!!.contains("inesperado"))
     }
 
@@ -226,15 +308,19 @@ class PaymentViewModelTest {
         advanceUntilIdle()
         assertTrue(recordedAmounts.isEmpty())
         progressResult = AppResult.Success(PurchaseProgress(pix.purchaseId, 1))
-        vm.checkPixStatus(); advanceUntilIdle()
+        vm.checkPixStatus()
+        advanceUntilIdle()
         assertTrue(recordedAmounts.isEmpty())
         progressResult = AppResult.Success(PurchaseProgress(pix.purchaseId, 3))
-        vm.checkPixStatus(); advanceUntilIdle()
+        vm.checkPixStatus()
+        advanceUntilIdle()
         assertTrue(recordedAmounts.isEmpty())
         progressResult = AppResult.Success(PurchaseProgress(pix.purchaseId, 8))
         recordResult = AppResult.Failure(AppError.Unexpected)
-        vm.checkPixStatus(); advanceUntilIdle()
-        vm.checkPixStatus(); advanceUntilIdle()
+        vm.checkPixStatus()
+        advanceUntilIdle()
+        vm.checkPixStatus()
+        advanceUntilIdle()
         assertTrue(vm.state.value.pixApproved)
         assertFalse(vm.state.value.checkingPix)
         assertNull(vm.state.value.errorMessage)
@@ -247,7 +333,8 @@ class PaymentViewModelTest {
         for (status in listOf(0, 1, 2, 7, 9, 10, 15, -1)) {
             progressResult = AppResult.Success(PurchaseProgress(9, status))
             val vm = viewModel(PaymentMode.PIX)
-            vm.checkPixStatus(); advanceUntilIdle()
+            vm.checkPixStatus()
+            advanceUntilIdle()
             assertFalse("Status $status", vm.state.value.pixApproved)
             assertFalse("Status $status", vm.state.value.pixRejected)
             assertFalse(vm.state.value.checkingPix)
@@ -259,7 +346,8 @@ class PaymentViewModelTest {
         for (status in listOf(6, 8, 13, 14)) {
             progressResult = AppResult.Success(PurchaseProgress(9, status))
             val vm = viewModel(PaymentMode.PIX)
-            vm.checkPixStatus(); advanceUntilIdle()
+            vm.checkPixStatus()
+            advanceUntilIdle()
             assertTrue("Status $status", vm.state.value.pixApproved)
             assertFalse(vm.state.value.pixRejected)
         }
@@ -267,12 +355,14 @@ class PaymentViewModelTest {
         for (status in listOf(3, 4, 5, 11, 12)) {
             progressResult = AppResult.Success(PurchaseProgress(9, status))
             val vm = viewModel(PaymentMode.PIX)
-            vm.checkPixStatus(); advanceUntilIdle()
+            vm.checkPixStatus()
+            advanceUntilIdle()
             assertTrue("Status $status", vm.state.value.pixRejected)
             assertFalse(vm.state.value.pixApproved)
         }
         assertEquals(4, recordedAmounts.size)
     }
+
     @Test fun `Pix redirect pauses polling until destination returns without generating another charge`() = runTest {
         for (destination in PurchaseRedirect.entries) {
             val vm = viewModel(PaymentMode.PIX)
@@ -281,26 +371,33 @@ class PaymentViewModelTest {
             val queriedBefore = queriedPixCount
             assertFalse(vm.consumeRedirect(destination))
             progressResult = AppResult.Success(PurchaseProgress(9, 8, redirect = destination))
-            vm.checkPixStatus(); advanceUntilIdle()
+            vm.checkPixStatus()
+            advanceUntilIdle()
             assertEquals(destination, vm.state.value.redirect)
             assertFalse(vm.state.value.pixApproved)
             assertFalse(vm.state.value.pixRejected)
             assertFalse(vm.state.value.checkingPix)
             assertFalse(vm.consumeRedirect(PurchaseRedirect.entries.first { it != destination }))
-            vm.checkPixStatus(); vm.load(); advanceUntilIdle()
+            vm.checkPixStatus()
+            vm.load()
+            advanceUntilIdle()
             assertTrue(vm.consumeRedirect(destination))
             assertFalse(vm.consumeRedirect(destination))
             assertNull(vm.state.value.redirect)
             assertTrue(vm.state.value.redirectPaused)
-            vm.checkPixStatus(); vm.load(); advanceUntilIdle()
+            vm.checkPixStatus()
+            vm.load()
+            advanceUntilIdle()
             assertEquals(queriedBefore + 1, queriedPixCount)
             assertEquals(generatedBefore, generatedPixCount)
             assertEquals(pix, vm.state.value.pix)
-            vm.resumeAfterRedirect(); advanceUntilIdle()
+            vm.resumeAfterRedirect()
+            advanceUntilIdle()
             assertFalse(vm.state.value.redirectPaused)
             assertEquals(queriedBefore + 1, queriedPixCount)
             progressResult = AppResult.Success(PurchaseProgress(9, 2))
-            vm.checkPixStatus(); advanceUntilIdle()
+            vm.checkPixStatus()
+            advanceUntilIdle()
             assertEquals(queriedBefore + 2, queriedPixCount)
             assertEquals(generatedBefore, generatedPixCount)
         }
@@ -314,21 +411,27 @@ class PaymentViewModelTest {
             val queriedBefore = queriedPixCount
             assertFalse(vm.consumeNotice(PurchaseNoticeUiState("Old", false), false))
             progressResult = AppResult.Success(PurchaseProgress(9, 8, notice = PurchaseNotice(reason, "Mensagem", "E1")))
-            vm.checkPixStatus(); advanceUntilIdle()
+            vm.checkPixStatus()
+            advanceUntilIdle()
             val notice = requireNotNull(vm.state.value.notice)
             if (reason == PurchaseNoticeReason.BUSINESS_RULE) assertEquals("Mensagem\n\nE1\n07/09/2026 12:00:00", notice.message)
-            assertFalse(vm.state.value.pixApproved); assertFalse(vm.state.value.pixRejected)
+            assertFalse(vm.state.value.pixApproved)
+            assertFalse(vm.state.value.pixRejected)
             assertFalse(vm.state.value.checkingPix)
             assertFalse(vm.consumeNotice(notice.copy(), false))
             if (!notice.offerMoreBets) assertFalse(vm.consumeNotice(notice, true))
-            vm.checkPixStatus(); vm.load(); vm.dismissError(); advanceUntilIdle()
+            vm.checkPixStatus()
+            vm.load()
+            vm.dismissError()
+            advanceUntilIdle()
             assertEquals(queriedBefore + 1, queriedPixCount)
             assertEquals(generatedBefore, generatedPixCount)
             assertTrue(vm.consumeNotice(notice, false))
             assertFalse(vm.consumeNotice(notice, false))
             advanceUntilIdle()
             assertEquals(queriedBefore + 1, queriedPixCount)
-            vm.checkPixStatus(); advanceUntilIdle()
+            vm.checkPixStatus()
+            advanceUntilIdle()
             assertEquals(queriedBefore + 2, queriedPixCount)
             assertFalse(vm.consumeNotice(notice, false))
             assertTrue(vm.consumeNotice(requireNotNull(vm.state.value.notice), false))
@@ -340,13 +443,17 @@ class PaymentViewModelTest {
     @Test fun `Pix Apostar mais pauses until navigation resumes and never recreates a charge`() = runTest {
         val vm = viewModel(PaymentMode.PIX)
         progressResult = AppResult.Success(PurchaseProgress(9, 8, notice = PurchaseNotice(PurchaseNoticeReason.MORE_BETS_REQUIRED)))
-        vm.checkPixStatus(); advanceUntilIdle()
+        vm.checkPixStatus()
+        advanceUntilIdle()
         val notice = requireNotNull(vm.state.value.notice)
         assertTrue(vm.consumeNotice(notice, true))
         assertFalse(vm.consumeNotice(notice, true))
-        vm.checkPixStatus(); vm.load(); advanceUntilIdle()
+        vm.checkPixStatus()
+        vm.load()
+        advanceUntilIdle()
         assertEquals(1, queriedPixCount)
-        vm.resumeAfterRedirect(); advanceUntilIdle()
+        vm.resumeAfterRedirect()
+        advanceUntilIdle()
         assertEquals(1, queriedPixCount)
         assertEquals(1, generatedPixCount)
         assertTrue(recordedAmounts.isEmpty())
@@ -356,17 +463,24 @@ class PaymentViewModelTest {
         val vm = viewModel(PaymentMode.PIX)
         assertFalse(vm.consumeRegistrationNotice(PurchaseNoticeUiState("other", false)))
         progressResult = AppResult.Success(PurchaseProgress(9, 8, notice = PurchaseNotice(PurchaseNoticeReason.MERCADO_PAGO_REGISTRATION)))
-        vm.checkPixStatus(); advanceUntilIdle()
+        vm.checkPixStatus()
+        advanceUntilIdle()
         val notice = requireNotNull(vm.state.value.notice)
         assertFalse(vm.consumeRegistrationNotice(notice.copy()))
         assertTrue(vm.consumeRegistrationNotice(notice))
         assertFalse(vm.consumeRegistrationNotice(notice))
-        vm.resumeAfterRedirect(); vm.checkPixStatus(); vm.load(); advanceUntilIdle()
+        vm.resumeAfterRedirect()
+        vm.checkPixStatus()
+        vm.load()
+        advanceUntilIdle()
         assertTrue(vm.state.value.registrationPending)
-        assertEquals(1, queriedPixCount); assertEquals(1, generatedPixCount)
-        vm.registrationFinished(); advanceUntilIdle()
+        assertEquals(1, queriedPixCount)
+        assertEquals(1, generatedPixCount)
+        vm.registrationFinished()
+        advanceUntilIdle()
         assertFalse(vm.state.value.registrationPending)
-        assertEquals(1, queriedPixCount); assertEquals(1, generatedPixCount)
+        assertEquals(1, queriedPixCount)
+        assertEquals(1, generatedPixCount)
         assertTrue(recordedAmounts.isEmpty())
     }
 
@@ -374,7 +488,8 @@ class PaymentViewModelTest {
         val gate = CompletableDeferred<AppResult<PixCharge>>()
         generationOverride = { gate.await() }
         val vm = viewModel(PaymentMode.PIX)
-        vm.load(); vm.load()
+        vm.load()
+        vm.load()
         assertEquals(1, generatedPixCount)
         gate.complete(AppResult.Success(pix))
         advanceUntilIdle()
@@ -386,7 +501,8 @@ class PaymentViewModelTest {
         val vm = viewModel(PaymentMode.PIX)
         advanceUntilIdle()
         assertEquals(1, generatedPixCount)
-        vm.load(); vm.load()
+        vm.load()
+        vm.load()
         advanceUntilIdle()
         assertEquals("The same screen must retain the generated purchase", 1, generatedPixCount)
         assertEquals(pix, vm.state.value.pix)
@@ -469,7 +585,10 @@ class PaymentViewModelTest {
         assertEquals(listOf(1L), requestedMethods)
     }
 
-    private fun viewModel(mode: PaymentMode, selectedPaymentMethodId: Long? = null, autoLoad: Boolean = true,
+    private fun viewModel(
+        mode: PaymentMode,
+        selectedPaymentMethodId: Long? = null,
+        autoLoad: Boolean = true,
         isSessionCurrent: () -> Boolean = { true },
         methods: suspend () -> AppResult<List<PaymentMethod>> = { methodResult },
         cards: suspend (Long) -> AppResult<List<SavedPaymentCard>> = { cardResult },
@@ -479,20 +598,32 @@ class PaymentViewModelTest {
             clock = java.time.Clock.fixed(java.time.Instant.parse("2026-09-07T15:00:00Z"), java.time.ZoneId.of("America/Sao_Paulo")),
             recordRecentPurchase = br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase {
                 recordedAmounts += it
-                recordResult
+                recordOverride?.invoke() ?: recordResult
             },
             mode = mode,
             selectedPaymentMethodId = selectedPaymentMethodId,
             getMethods = GetPaymentMethodsUseCase { methods() },
-            getCards = GetSavedCardsUseCase { id -> requestedMethods += id; cards(id) },
-            deleteCard = DeleteSavedCardUseCase { id, method -> deleted = id to method; deleteResult },
-            generatePixCharge = GeneratePixChargeUseCase { generatedPixCount++; generationOverride?.invoke() ?: pixResult },
-            getPurchaseProgress = GetPurchaseProgressUseCase { queriedPixCount++; progressResult },
+            getCards = GetSavedCardsUseCase { id ->
+                requestedMethods += id
+                cards(id)
+            },
+            deleteCard = DeleteSavedCardUseCase { id, method ->
+                deleted = id to method
+                deleteResult
+            },
+            generatePixCharge = GeneratePixChargeUseCase {
+                generatedPixCount++
+                generationOverride?.invoke() ?: pixResult
+            },
+            getPurchaseProgress = GetPurchaseProgressUseCase {
+                queriedPixCount++
+                progressOverride?.invoke() ?: progressResult
+            },
             validateDam = ValidateDamUseCase { damResult },
             getCurrentCart = GetCurrentCartUseCase { cartResult },
             dispatchers = FixedCoroutineDispatchers(dispatcher),
             autoLoad = autoLoad,
-            isSessionCurrent = isSessionCurrent,
+            isSessionCurrent = isSessionCurrent
         )
     }
 }

@@ -7,6 +7,9 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.CaixaDSPixPanel
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
@@ -18,6 +21,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 internal fun PendingPurchasePix(purchase: Purchase, checking: Boolean, remainingSeconds: () -> Long, onCheckPayment: () -> Unit) {
+    val lifecycleOwner = LocalLifecycleOwner.current
     var remaining by remember(purchase.id, purchase.paymentExpiresAt) { mutableLongStateOf(remainingSeconds()) }
     var copied by remember(purchase.id) { androidx.compose.runtime.mutableStateOf(false) }
     LaunchedEffect(purchase.id, purchase.paymentExpiresAt) {
@@ -26,11 +30,13 @@ internal fun PendingPurchasePix(purchase: Purchase, checking: Boolean, remaining
             remaining = remainingSeconds()
         }
     }
-    LaunchedEffect(purchase.id, copied) {
+    LaunchedEffect(purchase.id, purchase.paymentExpiresAt, copied, lifecycleOwner) {
         if (copied) {
-            while (remaining > 0) {
-                delay(20_000)
-                if (remaining > 0) onCheckPayment()
+            lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                while (remaining > 0) {
+                    delay(20_000)
+                    if (remaining > 0) onCheckPayment()
+                }
             }
         }
     }

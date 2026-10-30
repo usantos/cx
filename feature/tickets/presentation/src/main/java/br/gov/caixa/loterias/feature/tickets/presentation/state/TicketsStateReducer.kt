@@ -196,6 +196,8 @@ private fun reduceTicketsQueryState(state: TicketsUiState, action: TicketsQueryA
 }
 
 private fun reduceTicketsPixState(state: TicketsUiState, action: TicketsPixAction): TicketsUiState = when (action) {
+    TicketsStateAction.PixStatusCancelled -> state.copy(checkingPixPurchase = false)
+
     TicketsStateAction.PixStatusLoading -> state.copy(checkingPixPurchase = true, errorMessage = null)
 
     is TicketsStateAction.PixStatusFailed -> reduceTicketsPixStatusFailure(state, action)

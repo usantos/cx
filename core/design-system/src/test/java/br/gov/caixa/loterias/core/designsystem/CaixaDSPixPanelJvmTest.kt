@@ -48,15 +48,15 @@ class CaixaDSPixPanelJvmTest {
                 )
             }
         }
-        compose.onNodeWithText("02:05").assertIsDisplayed()
-        compose.onNodeWithContentDescription("Copiar código Pix").performClick()
+        compose.onNodeWithText("02:05").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithContentDescription("Copiar código Pix").performScrollTo().performClick()
         compose.onNodeWithContentDescription("Pix copiado").assertIsDisplayed()
         compose.runOnIdle {
             assertEquals(code.trim(), clipboard.getText()?.text)
             assertEquals(1, copies)
         }
         compose.mainClock.advanceTimeBy(2_100)
-        compose.onNodeWithContentDescription("Copiar código Pix").performClick()
+        compose.onNodeWithContentDescription("Copiar código Pix").performScrollTo().performClick()
         compose.runOnIdle {
             assertEquals(2, copies)
             seconds.value = 0

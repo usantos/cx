@@ -141,6 +141,9 @@ fun PurchaseDetailDataRoute(
     onHelp: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    androidx.compose.runtime.key(viewModel, purchase.id) {
+        br.gov.caixa.loterias.core.presentation.effect.ScreenForegroundEffect(viewModel::setPixScreenActive)
+    }
     br.gov.caixa.loterias.core.presentation.effect.NavigationResumeEffect(viewModel::resumePixPurchaseAfterRedirect)
     LaunchedEffect(state.pixPurchaseRedirect) {
         state.pixPurchaseRedirect?.let { if (viewModel.consumePixPurchaseRedirect(it)) onPixRedirect(it) }

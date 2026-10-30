@@ -12,6 +12,7 @@ internal fun reducePaymentState(state: PaymentUiState, action: PaymentAction): P
     PaymentAction.PixGenerationStarted,
     PaymentAction.PixRecoveryRequired,
     is PaymentAction.PixGenerated,
+    PaymentAction.PixStatusCheckCancelled,
     PaymentAction.PixStatusCheckStarted,
     is PaymentAction.PixRedirectReceived,
     is PaymentAction.PixNoticeReceived,
@@ -69,6 +70,8 @@ private fun reducePaymentPix(state: PaymentUiState, action: PaymentAction): Paym
     PaymentAction.PixRecoveryRequired -> state.copy(pixRecoveryRequired = true)
 
     is PaymentAction.PixGenerated -> state.copy(loading = false, pix = action.pix)
+
+    PaymentAction.PixStatusCheckCancelled -> state.copy(checkingPix = false)
 
     PaymentAction.PixStatusCheckStarted -> state.copy(checkingPix = true, errorMessage = null)
 

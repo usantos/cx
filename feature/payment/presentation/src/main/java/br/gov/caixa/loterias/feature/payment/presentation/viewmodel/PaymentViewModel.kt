@@ -135,6 +135,8 @@ class PaymentViewModel(
 
     fun confirmDelete() = cards.confirmDelete()
 
+    fun setPixScreenActive(active: Boolean) = pix.setScreenActive(active)
+
     fun checkPixStatus() = pix.checkPixStatus()
 
     private fun applyFailure(error: AppError) = mutableState.dispatch(PaymentAction.Failed(error))

@@ -22,11 +22,15 @@ import br.gov.caixa.loterias.feature.payment.domain.model.PixCharge
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PIX_EXPIRED_GUIDANCE
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PIX_RECOVERY_GUIDANCE
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.secondsUntil
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import kotlinx.coroutines.delay
 
 @Composable
 internal fun PixContent(pix: PixCharge?, checking: Boolean, modifier: Modifier, onCheckPayment: () -> Unit, onPurchases: () -> Unit) {
     if (pix == null) return
+    val lifecycleOwner = LocalLifecycleOwner.current
     var remaining by remember(pix.expiresAt) { mutableLongStateOf(secondsUntil(pix.expiresAt)) }
     var copied by remember(pix.purchaseId) { mutableStateOf(false) }
     LaunchedEffect(pix.expiresAt) {
@@ -35,11 +39,13 @@ internal fun PixContent(pix: PixCharge?, checking: Boolean, modifier: Modifier, 
             remaining = secondsUntil(pix.expiresAt)
         }
     }
-    LaunchedEffect(pix.purchaseId, copied) {
+    LaunchedEffect(pix.purchaseId, pix.expiresAt, copied, lifecycleOwner) {
         if (copied) {
-            while (remaining > 0) {
-                delay(20_000)
-                if (remaining > 0) onCheckPayment()
+            lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                while (remaining > 0) {
+                    delay(20_000)
+                    if (remaining > 0) onCheckPayment()
+                }
             }
         }
     }

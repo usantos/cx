@@ -49,6 +49,11 @@ fun PaymentDataRoute(
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val state by viewModel.state.collectAsStateWithLifecycle()
+    if (mode == PaymentMode.PIX) {
+        androidx.compose.runtime.key(viewModel) {
+            br.gov.caixa.loterias.core.presentation.effect.ScreenForegroundEffect(viewModel::setPixScreenActive)
+        }
+    }
     PurchaseRedirectResumeEffect(viewModel::resumeAfterRedirect)
     PurchaseRedirectEffect(state.redirect, viewModel::consumeRedirect, onRedirect)
     PurchaseNoticeDialog(state.notice, viewModel::consumeNotice, onHome) {

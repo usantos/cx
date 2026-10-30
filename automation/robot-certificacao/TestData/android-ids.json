@@ -16114,5 +16114,14 @@
     "line": 67,
     "feature": "app",
     "symbol": "simlo.app.fila_bra_mock_gate.splashscreen_1"
+  },
+  {
+    "id": "simlo.ds.0147",
+    "key": "ds.0147",
+    "source": "core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/PixPanelQrCode.kt",
+    "kind": "Compose",
+    "line": 32,
+    "feature": "ds",
+    "symbol": "simlo.ds.pix_panel_qr_code.qr"
   }
 ]

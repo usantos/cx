@@ -1,0 +1,70 @@
+// O Studio carrega o XML compartilhado; o gate apenas valida, sem editar o workspace pessoal.
+def expectedOptions = [
+        MODE: 'specific_activity',
+        ACTIVITY_CLASS: 'br.gov.caixa.loterias.apostas.MainActivity',
+        CLEAR_APP_STORAGE: 'false',
+        SKIP_ACTIVITY_VALIDATION: 'false',
+        ALWAYS_INSTALL_WITH_PM: 'true',
+        ALLOW_ASSUME_VERIFIED: 'false',
+]
+def problems = { String xml, String projectName ->
+    def errors = []
+    if (projectName != 'simlo-app-android') errors += 'Nome raiz Gradle deve ser estável em qualquer pasta/OS'
+    def root
+    try {
+        root = new groovy.xml.XmlSlurper(false, false).parseText(xml)
+    } catch (org.xml.sax.SAXException failure) {
+        return errors + ['XML da configuração do Studio inválido']
+    }
+    if (root.name() != 'component' || root.@name.text() != 'ProjectRunConfigurationManager' || root.configuration.size() != 1) {
+        return errors + ['Arquivo deve conter uma única configuração compartilhada do IDE']
+    }
+    def config = root.configuration[0]
+    if (config.@name.text() != 'SIMLO App' || config.@type.text() != 'AndroidRunConfigurationType' ||
+            config.@factoryName.text() != 'Android App' || config.@default.text() != 'false') {
+        errors += 'SIMLO App deve ser uma configuração Android compartilhada'
+    }
+    if (config.module.size() != 1 || config.module.@name.text() != 'simlo-app-android.app') {
+        errors += 'Configuração deve apontar para o módulo app estável'
+    }
+    expectedOptions.each { name, value ->
+        def options = config.option.findAll { it.@name.text() == name }
+        if (options.size() != 1 || options[0].@value.text() != value) errors += "SIMLO App: ${name} deve ser ${value}"
+    }
+    def beforeRun = config.method.option
+    if (config.method.size() != 1 || beforeRun.size() != 1 ||
+            beforeRun[0].@name.text() != 'Android.Gradle.BeforeRunTask' || beforeRun[0].@enabled.text() != 'true') {
+        errors += 'Antes do Play deve existir somente a compilação Gradle nativa, sem scripts externos'
+    }
+    errors
+}
+tasks.register('verifyAndroidStudioRunConfiguration') {
+    group = 'verification'
+    description = 'Validates native shared Android Studio configuration and isolated regression fixtures.'
+    doLast {
+        def source = file('.run/SIMLO_App.run.xml')
+        if (!source.isFile()) throw new GradleException('Configuração compartilhada SIMLO App ausente')
+        def xml = source.getText('UTF-8')
+        def actual = problems(xml, rootProject.name)
+        if (actual) throw new GradleException(actual.join('; '))
+        def invalid = [
+                xml.replace('value="specific_activity"', 'value="default_activity"'),
+                xml.replace('value="br.gov.caixa.loterias.apostas.MainActivity"', 'value="br.gov.caixa.loterias.apostas.launcher.DefaultLauncher"'),
+                xml.replace('name="simlo-app-android.app"', 'name="cx.app"'),
+                xml.replace('name="SIMLO App"', 'name="app"'),
+                xml.replace('type="AndroidRunConfigurationType"', 'type="Application"'),
+                xml.replace('name="CLEAR_APP_STORAGE" value="false"', 'name="CLEAR_APP_STORAGE" value="true"'),
+                xml.replace('name="SKIP_ACTIVITY_VALIDATION" value="false"', 'name="SKIP_ACTIVITY_VALIDATION" value="true"'),
+                xml.replace('name="ALLOW_ASSUME_VERIFIED" value="false"', 'name="ALLOW_ASSUME_VERIFIED" value="true"'),
+                xml.replace('</method>', '<option name="ExternalTool" enabled="true" /></method>'),
+                xml.replace('</configuration>', '<option name="MODE" value="specific_activity" /></configuration>'),
+        ]
+        invalid.eachWithIndex { fixture, index ->
+            if (fixture == xml || problems(fixture, rootProject.name).isEmpty()) {
+                throw new GradleException("Fixture inválida do Studio aceita: ${index}")
+            }
+        }
+        if (problems(xml, 'cx').isEmpty()) throw new GradleException('Nome de módulo dependente da pasta aceito')
+        logger.lifecycle('Studio nativo: SIMLO App abre MainActivity; 12 fixtures aprovadas; nenhum script ou workspace modificado.')
+    }
+}

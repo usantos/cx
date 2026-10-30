@@ -115,12 +115,4 @@ tasks.register('preCommitCheck') {
             'aggregateTestReport', ':app:assemblePrdDebug'
 }
 
-tasks.register('verifyAndroidStudioRunConfiguration', Exec) {
-    group = 'verification'
-    description = 'Rejects Play configurations that depend on a disabled campaign alias.'
-    doFirst {
-        if (rootProject.name != 'simlo-app-android') throw new GradleException('O nome raiz deve ser estável para a configuração SIMLO App')
-    }
-    commandLine 'python3', rootProject.file('scripts/configure-android-studio-run.py'), '--check'
-}
 tasks.named('preCommitCheck') { dependsOn 'verifyAndroidStudioRunConfiguration' }

@@ -120,18 +120,21 @@ No Android Studio, selecione **SIMLO App**. A configuração tem nome distinto d
 `app` para evitar reutilizar uma configuração local antiga em **Default Activity**.
 O nome raiz Gradle é fixo em `simlo-app-android`: o módulo compartilhado não depende
 de a pasta do checkout se chamar `cx`, `SIMLO` ou outro nome.
-Para migrar as configurações locais no Windows ou macOS, feche o Android Studio e
-execute na raiz do projeto:
+O Android Studio carrega `.run/SIMLO_App.run.xml` como configuração nativa
+compartilhada ao abrir/sincronizar o projeto, no Windows e no macOS. Não há comando
+Python, tarefa de migração ou reescrita automática de `.idea/workspace.xml`.
 
-```sh
-python scripts/configure-android-studio-run.py
-```
+Em um IDE que já tenha a configuração antiga `app` selecionada, escolha **SIMLO
+App** uma vez no seletor ao lado do Play. A seleção é uma preferência local do
+Studio, preservada nos próximos usos. Não use a configuração antiga em
+**Default Activity**. O projeto não sobrescreve configurações pessoais ou do sample.
 
-O script seleciona **SIMLO App** e corrige apenas configurações Android cujo módulo
-é `app`, preservando configurações do sample e a escolha de dispositivo. Faz backup
-do workspace em `.local/android-studio/`, sem apagar dados do app nem desligar
-verificações. `--check` valida somente o XML compartilhado; essa verificação integra
-o pre-commit e não modifica o IDE durante o build.
+`verifyAndroidStudioRunConfiguration` valida diretamente no Gradle o XML e o nome
+estável do módulo, com doze fixtures. Rejeita alias de campanha como destino,
+modos incorretos, opções que apaguem dados ou dispensem verificação e tarefas
+externas antes do Play. O pre-commit mantém essa validação obrigatória.
+
+Referência: [configurações compartilhadas nativas do IDE](https://www.jetbrains.com/help/idea/run-debug-configuration.html).
 
 O teste de regressão confere os cinco aliases, o isolamento da tarefa, os extras
 encaminhados e a preservação da sessão nas APIs 32/35. O teste nativo na API 36
@@ -151,5 +154,5 @@ hook e as oito fixtures da entrada de plataforma. No emulador API 36, o APK PRD
 Debug foi reinstalado no mesmo pacote, mantendo os dados; abriu pelo alias padrão,
 ativou Outubro Rosa e permaneceu na tarefa MainActivity. Duas aberturas seguintes
 pela MainActivity retornaram `Status: ok` com o alias padrão desabilitado. A
-sincronização do Android Studio no Windows requer aplicar a migração local acima;
+configuração do Studio é compartilhada por XML, sem migração por script;
 essa máquina remota não foi controlada durante a validação.

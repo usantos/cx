@@ -9,5 +9,6 @@
   "home.apostar": "id=simlo.home.apostar",
   "menu.sair": "id=simlo.home.sair",
   "dialogo.positivo": "id=simlo.dialog.positivo",
-  "resultados.modalidades": "id=simlo.results.modalidades"
+  "resultados.modalidades": "id=simlo.results.modalidades",
+  "pagamento.pix.qr": "id=simlo.ds.0147"
 }

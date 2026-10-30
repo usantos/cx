@@ -120,6 +120,7 @@ fun CaixaDSPixPanel(
                 Modifier.weight(1f).padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                if (!expired) PixPanelQrCode(copyPaste)
                 Text(
                     texts.title,
                     Modifier.fillMaxWidth(),

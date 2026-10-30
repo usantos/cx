@@ -2,7 +2,9 @@ package br.gov.caixa.loterias.feature.tickets.presentation.coordinator
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.presentation.effect.ForegroundReadOperation
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.isPendingPix
@@ -21,49 +23,58 @@ internal class TicketsPixCoordinator(
     private val getPurchaseDetails: GetPurchaseDetailsUseCase?,
     private val pixNoticeClock: java.time.Clock,
     private val deadline: TicketsPixDeadlineTracker,
-    private val showPurchaseDetails: suspend (Purchase, List<ConfirmedBet>, String) -> Unit
+    private val showPurchaseDetails: suspend (Purchase, List<ConfirmedBet>, String) -> Unit,
 ) {
+    private val statusRead = ForegroundReadOperation<AppResult<PurchaseProgress>>(
+        scope,
+        dispatchers.io,
+        onCancelled = { mutableState.dispatch(TicketsStateAction.PixStatusCancelled) }
+    )
+
+    fun setScreenActive(active: Boolean) = statusRead.setActive(active)
+
     fun checkPendingPixStatus() {
-        val current = mutableState.value
-        val purchase = current.selectedPurchase ?: return
-        if (current.isLoading || current.checkingPixPurchase || current.pixPurchaseCompleted ||
-            current.pixPurchasePaused || current.pixPurchaseRedirect != null || current.pixPurchaseNotice != null ||
-            !purchase.isPendingPix() || pendingPixSecondsRemaining() <= 0
-        ) {
-            return
-        }
+        val purchase = mutableState.value.selectedPurchase ?: return
         val query = getPixPurchaseStatus ?: return
-        mutableState.dispatch(TicketsStateAction.PixStatusLoading)
-        scope.launch(dispatchers.io) {
-            when (val result = query(purchase.id)) {
-                is AppResult.Failure -> if (mutableState.value.selectedPurchase?.id == purchase.id) {
-                    mutableState.dispatch(TicketsStateAction.PixStatusFailed(purchase.id, result.error))
+        statusRead.launch(
+            allowed = {
+                val current = mutableState.value
+                !current.isLoading && !current.checkingPixPurchase && !current.pixPurchaseCompleted &&
+                    !current.pixPurchasePaused && current.pixPurchaseRedirect == null && current.pixPurchaseNotice == null &&
+                    current.selectedPurchase?.id == purchase.id && purchase.isPendingPix() && pendingPixSecondsRemaining() > 0
+            },
+            onStarted = { mutableState.dispatch(TicketsStateAction.PixStatusLoading) },
+            read = { query(purchase.id) },
+            onResult = { result ->
+                if (mutableState.value.selectedPurchase?.id == purchase.id) {
+                    when (result) {
+                        is AppResult.Failure -> mutableState.dispatch(TicketsStateAction.PixStatusFailed(purchase.id, result.error))
+                        is AppResult.Success -> applyProgress(purchase, result.value)
+                    }
                 }
+            }
+        )
+    }
 
-                is AppResult.Success -> {
-                    if (mutableState.value.selectedPurchase?.id != purchase.id) return@launch
-                    val progress = result.value
-                    mutableState.dispatch(
-                        TicketsStateAction.PixStatusReceived(
-                            purchase.id,
-                            progress,
-                            progress.notice?.let {
-                                ticketsPixNoticeUi(it, java.time.LocalDateTime.now(pixNoticeClock))
-                            }
-                        )
-                    )
-                    if (progress.completed || progress.rejected) {
-                        // Somente um GET da mesma compra atualiza o histórico após uma resposta de situação.
-                        val details = getPurchaseDetails ?: return@launch
-                        when (val refreshed = details(purchase)) {
-                            is AppResult.Success -> if (mutableState.value.selectedPurchase?.id == purchase.id) {
-                                showPurchaseDetails(refreshed.value.purchase, refreshed.value.bets, refreshed.value.serverDateTime)
-                            }
+    private fun applyProgress(purchase: Purchase, progress: PurchaseProgress) {
+        mutableState.dispatch(
+            TicketsStateAction.PixStatusReceived(
+                purchase.id,
+                progress,
+                progress.notice?.let { ticketsPixNoticeUi(it, java.time.LocalDateTime.now(pixNoticeClock)) }
+            )
+        )
+        if (progress.completed || progress.rejected) {
+            val details = getPurchaseDetails ?: return
+            scope.launch(dispatchers.io) {
+                // Uma situação confirmada atualiza a mesma compra, sem repetir pagamento.
+                when (val refreshed = details(purchase)) {
+                    is AppResult.Success -> if (mutableState.value.selectedPurchase?.id == purchase.id) {
+                        showPurchaseDetails(refreshed.value.purchase, refreshed.value.bets, refreshed.value.serverDateTime)
+                    }
 
-                            is AppResult.Failure -> if (mutableState.value.selectedPurchase?.id == purchase.id) {
-                                mutableState.dispatch(TicketsStateAction.PixDetailsRefreshFailed(purchase.id))
-                            }
-                        }
+                    is AppResult.Failure -> if (mutableState.value.selectedPurchase?.id == purchase.id) {
+                        mutableState.dispatch(TicketsStateAction.PixDetailsRefreshFailed(purchase.id))
                     }
                 }
             }
