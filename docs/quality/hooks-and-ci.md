@@ -84,3 +84,8 @@ A exceção autorizada abrange somente `AndroidGradlePluginVersion`, `GradleDepe
 relaxamento do bloqueio de erros/warnings. As demais regras continuam bloqueantes,
 e o hook continua executando o gate completo. O analisador Lint 9.2.1 é independente
 do plugin AGP 8.13.0; o projeto não voltou ao AGP 9.
+
+O pre-commit também executa `:app:verifyVendorArtifactsForSync`, para impedir
+regressão da primeira sincronização: os SDKs locais precisam resolver e extrair
+sem tarefas produtoras e rejeitar uma entrada adulterada em fixture isolada.
+As verificações TLS do FilaBRA e de entropia/formato Topaz continuam obrigatórias.

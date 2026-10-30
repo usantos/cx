@@ -4,32 +4,32 @@ def topazInput = rootProject.file('third-party/maven/br/com/topaz/heartbeat/4.38
 def topazPom = new File(topazInput.parentFile, 'heartbeat-4.38.0.1658708.pom')
 def topazOutput = rootProject.layout.buildDirectory.file('intermediates/hardened-topaz/heartbeat-secure-random.aar')
 def topazClasses = rootProject.layout.buildDirectory.file('intermediates/hardened-topaz/heartbeat-secure-random.jar')
-if (!rootProject.ext.has('hardenedTopazHeartbeat')) {
-    def hardenTopaz = rootProject.tasks.register('hardenTopazHeartbeat', Exec) {
-        inputs.file topazInput
-        inputs.file rootProject.file('scripts/harden-topaz-random.py')
+def preparedTopaz = rootProject.vendorArtifactsFor(project, 'topaz')
+if (!rootProject.tasks.findByName('hardenTopazHeartbeat')) {
+    def rootTopaz = rootProject.vendorArtifactsFor(rootProject, 'topaz')
+    def hardenTopaz = rootProject.tasks.register('hardenTopazHeartbeat') {
+        inputs.files rootTopaz.aar, rootTopaz.classes
         outputs.file topazOutput
         outputs.file topazClasses
-        commandLine 'python3', rootProject.file('scripts/harden-topaz-random.py').absolutePath,
-                '--input', topazInput.absolutePath, '--output', topazOutput.get().asFile.absolutePath,
-                '--classes-output', topazClasses.get().asFile.absolutePath
+        doLast {
+            def output = topazOutput.get().asFile
+            output.parentFile.mkdirs()
+            output.bytes = rootTopaz.aar.singleFile.bytes
+            topazClasses.get().asFile.bytes = rootTopaz.classes.singleFile.bytes
+        }
     }
-    rootProject.ext.hardenedTopazHeartbeat = rootProject.files(topazOutput).builtBy(hardenTopaz)
-    rootProject.ext.hardenedTopazHeartbeatClasses = rootProject.files(topazClasses).builtBy(hardenTopaz)
     def verifyTopazRandom = rootProject.tasks.register('verifyTopazKeyRandom', Exec) {
         group = 'verification'
         dependsOn hardenTopaz
-        inputs.file rootProject.file('scripts/test-topaz-random.py')
+        inputs.files rootProject.file('scripts/test-topaz-random.py'), rootProject.file('scripts/harden-topaz-random.py')
         environment 'JAVA_HOME', System.getProperty('java.home')
         commandLine 'python3', rootProject.file('scripts/test-topaz-random.py').absolutePath,
                 '--original', topazInput.absolutePath, '--aar', topazOutput.get().asFile.absolutePath
     }
-    rootProject.tasks.matching { it.name == 'verifyTopazHeartbeat' }.configureEach {
-        dependsOn verifyTopazRandom
-    }
+    rootProject.tasks.matching { it.name == 'verifyTopazHeartbeat' }.configureEach { dependsOn verifyTopazRandom }
 }
-ext.hardenedTopazHeartbeat = rootProject.ext.hardenedTopazHeartbeat
-ext.hardenedTopazHeartbeatClasses = rootProject.ext.hardenedTopazHeartbeatClasses
+ext.hardenedTopazHeartbeat = preparedTopaz.aar
+ext.hardenedTopazHeartbeatClasses = preparedTopaz.classes
 
 // Um AAR local não possui metadados transitivos. Preserva cada dependência original de compilação/execução
 // do POM adjacente com versão fixada para evitar manter uma segunda lista.

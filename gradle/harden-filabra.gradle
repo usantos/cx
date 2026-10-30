@@ -1,7 +1,5 @@
 // Mantém a entrada homologada imutável; substitui apenas seu X509TrustManager defeituoso.
 // Uma nova versão do fornecedor deve ser revisada explicitamente antes de receber este patch.
-def filaInput = rootProject.file('third-party/FilaBRAAdapter-2.6.5.1.aar')
-def filaExpectedSha256 = 'a27b67e45b6e9aa58346f90d61d18bed11160baf24f577d6c8119ba50bdf2bdd'
 def filaClasses = layout.buildDirectory.dir('intermediates/hardened-filabra/classes')
 def filaOutput = layout.buildDirectory.file('intermediates/hardened-filabra/FilaBRAAdapter-2.6.5.1-tls.aar')
 def compileFilaTrust = tasks.register('compileFilaBraTrustManager', JavaCompile) {
@@ -10,49 +8,19 @@ def compileFilaTrust = tasks.register('compileFilaBraTrustManager', JavaCompile)
     destinationDirectory = filaClasses
     options.release = 21
 }
+def preparedFila = rootProject.vendorArtifactsFor(project, 'filabra').aar
+// Mantém a tarefa pública e a cópia usada pela verificação TLS; o app consome o cache resolvido.
 def hardenFila = tasks.register('hardenFilaBra') {
     dependsOn compileFilaTrust
-    inputs.file filaInput
-    inputs.dir filaClasses
+    inputs.files preparedFila
     outputs.file filaOutput
     doLast {
-        def digest = java.security.MessageDigest.getInstance('SHA-256').digest(filaInput.bytes).encodeHex().toString()
-        if (digest != filaExpectedSha256) throw new GradleException('FilaBRA input changed: review the TLS patch before building.')
-        def replacement = filaClasses.get().file('a/d.class').asFile.bytes
-        def rewrite = { byte[] input, String target, byte[] newBytes ->
-            def buffer = new ByteArrayOutputStream()
-            int replaced = 0
-            def seen = new HashSet<String>()
-            new java.util.zip.ZipInputStream(new ByteArrayInputStream(input)).withCloseable { source ->
-                new java.util.zip.ZipOutputStream(buffer).withCloseable { sink ->
-                    java.util.zip.ZipEntry entry
-                    while ((entry = source.nextEntry) != null) {
-                        if (!seen.add(entry.name)) throw new GradleException('Duplicate entry in FilaBRA artifact.')
-                        byte[] bytes = source.readAllBytes()
-                        if (entry.name == target) { bytes = newBytes; replaced++ }
-                        def outputEntry = new java.util.zip.ZipEntry(entry.name)
-                        outputEntry.time = 0
-                        sink.putNextEntry(outputEntry)
-                        sink.write(bytes)
-                        sink.closeEntry()
-                    }
-                }
-            }
-            if (replaced != 1) throw new GradleException('Expected FilaBRA TLS class/artifact is missing.')
-            buffer.toByteArray()
-        }
-        byte[] classes
-        new java.util.zip.ZipFile(filaInput).withCloseable { archive ->
-            classes = archive.getInputStream(archive.getEntry('classes.jar')).bytes
-        }
-        def patchedClasses = rewrite(classes, 'a/d.class', replacement)
-        def patchedArchive = rewrite(filaInput.bytes, 'classes.jar', patchedClasses)
         def output = filaOutput.get().asFile
         output.parentFile.mkdirs()
-        output.bytes = patchedArchive
+        output.bytes = preparedFila.singleFile.bytes
     }
 }
-ext.hardenedFilaBra = files(filaOutput).builtBy(hardenFila)
+ext.hardenedFilaBra = preparedFila
 
 def verifyFilaTls = tasks.register('verifyFilaBraTls', Exec) {
     group = 'verification'

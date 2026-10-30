@@ -58,6 +58,20 @@ O arquivo local é ignorado pelo Git; o CI pode fornecer as mesmas chaves por va
 Pins vazios ou inválidos interrompem o build. Chaves privadas não devem ser incluídas.
 Veja [rotação segura de pins](docs/SECURE_PIN_ROTATION.md).
 
+## Primeira sincronização, inclusive no Windows
+
+FilaBRA e Topaz são preparados automaticamente por transformações de dependências
+no cache do Gradle. O Sync não depende de AARs previamente gerados em `app/build`
+ou `build`, nem de uma compilação anterior. As correções TLS e de `SecureRandom`
+são preservadas; os AARs originais continuam imutáveis e verificados por SHA-256.
+A preparação usa JDK 21. Python continua necessário para os testes e gates existentes.
+
+Para conferir a resolução e a extração usadas no Sync:
+
+```powershell
+.\gradlew.bat :app:verifyVendorArtifactsForSync
+```
+
 ## Home selecionável
 
 A Home v2 usa a apresentação do projeto CX (`HomeV2View`), portada para o host

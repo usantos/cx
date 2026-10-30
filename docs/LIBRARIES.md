@@ -48,3 +48,11 @@ processamento é atualizado separadamente para Hilt 2.58. Java e bytecode perman
 `gradle/android-processors.gradle` atualiza apenas o leitor de metadados dos
 processadores para 2.3.21. Mantém a validação estrita e evita impor versões à
 biblioteca padrão Kotlin do runtime.
+
+Os AARs reforçados de FilaBRA e Topaz são resolvidos por transformações Gradle
+cacheáveis, registradas em `gradle/vendor-artifact-transforms.gradle`. Cada
+consumidor usa uma configuração isolada; o AGP recebe arquivos existentes mesmo
+no primeiro Sync com buildDirs vazios. O JAR de compilação do Topaz é extraído
+do mesmo AAR empacotado. As tarefas públicas de hardening mantêm cópias para
+verificação; os consumidores não dependem dessas tarefas para resolver os SDKs.
+A correção da classe Topaz é comparada byte a byte com a referência Python anterior.

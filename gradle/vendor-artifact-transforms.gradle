@@ -1,0 +1,178 @@
+import org.gradle.api.artifacts.transform.CacheableTransform
+import org.gradle.api.artifacts.transform.InputArtifact
+import org.gradle.api.artifacts.transform.TransformAction
+import org.gradle.api.artifacts.transform.TransformOutputs
+import org.gradle.api.artifacts.transform.TransformParameters
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.FileSystemLocation
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+
+// A resolução de dependências também ocorre no Sync, sem executar tarefas produtoras.
+// Os binários originais são imutáveis; o cache contém somente as duas correções existentes.
+@CacheableTransform
+abstract class SimloVendorHardening implements TransformAction<SimloVendorHardening.Parameters> {
+    interface Parameters extends TransformParameters {
+        @Input Property<String> getKind()
+        @Input Property<String> getCompilerVersion()
+        @Optional @InputDirectory @PathSensitive(PathSensitivity.RELATIVE)
+        DirectoryProperty getJavaSources()
+    }
+
+    @InputArtifact @PathSensitive(PathSensitivity.NONE)
+    abstract Provider<FileSystemLocation> getInputArtifact()
+
+    @Override
+    void transform(TransformOutputs outputs) {
+        byte[] original = inputArtifact.get().asFile.bytes
+        if (!(parameters.kind.get() in ['filabra', 'topaz'])) throw new GradleException('Fornecedor de artefato desconhecido')
+        boolean fila = parameters.kind.get() == 'filabra'
+        String expected = fila ? 'a27b67e45b6e9aa58346f90d61d18bed11160baf24f577d6c8119ba50bdf2bdd' :
+                '82e586ee0417971b52decca1c23af6a933fd4c52a89ddc8b430d7433ccd01aad'
+        String digest = java.security.MessageDigest.getInstance('SHA-256').digest(original).encodeHex().toString()
+        if (digest != expected) throw new GradleException("${parameters.kind.get()}: binário de entrada alterado; revisão obrigatória")
+        byte[] replacement = fila ? compileTrustManager() : null
+        byte[] hardened = SimloVendorHardening.rewrite(original, 'classes.jar') { jar ->
+            SimloVendorHardening.rewrite(jar, fila ? 'a/d.class' : 'br/com/topaz/n/c.class') { entry ->
+                fila ? replacement : SimloVendorHardening.secureRandom(entry)
+            }
+        }
+        outputs.file(fila ? 'FilaBRAAdapter-2.6.5.1-tls.aar' : 'heartbeat-secure-random.aar').bytes = hardened
+    }
+
+    private byte[] compileTrustManager() {
+        def compiler = javax.tools.ToolProvider.systemJavaCompiler
+        if (JavaVersion.current() != JavaVersion.VERSION_21 || compiler == null) {
+            throw new GradleException('A preparação do FilaBRA exige compilador JDK 21')
+        }
+        File temporary = java.nio.file.Files.createTempDirectory('simlo-filabra-').toFile()
+        try {
+            def sources = []
+            parameters.javaSources.get().asFile.eachFileRecurse { file ->
+                if (file.isFile() && file.name.endsWith('.java')) sources += file.absolutePath
+            }
+            if (sources.isEmpty()) throw new GradleException('Fonte da correção TLS do FilaBRA ausente')
+            def arguments = ['--release', '21', '-g', '-d', temporary.absolutePath] + sources.sort()
+            if (compiler.run(null, null, null, arguments as String[]) != 0) {
+                throw new GradleException('Falha ao compilar a correção TLS do FilaBRA')
+            }
+            new File(temporary, 'a/d.class').bytes
+        } finally {
+            temporary.deleteDir()
+        }
+    }
+
+    static byte[] rewrite(byte[] input, String target, Closure<byte[]> replace) {
+        def buffer = new ByteArrayOutputStream()
+        def seen = new HashSet<String>()
+        int replacements = 0
+        new java.util.zip.ZipInputStream(new ByteArrayInputStream(input)).withCloseable { source ->
+            new java.util.zip.ZipOutputStream(buffer).withCloseable { sink ->
+                java.util.zip.ZipEntry entry
+                while ((entry = source.nextEntry) != null) {
+                    if (!seen.add(entry.name)) throw new GradleException('Entrada duplicada no artefato homologado')
+                    byte[] content = source.readAllBytes()
+                    if (entry.name == target) { content = replace(content); replacements++ }
+                    def output = new java.util.zip.ZipEntry(entry.name)
+                    output.time = 0
+                    sink.putNextEntry(output)
+                    sink.write(content)
+                    sink.closeEntry()
+                }
+            }
+        }
+        if (replacements != 1) throw new GradleException("Entrada obrigatória ausente no artefato: ${target}")
+        buffer.toByteArray()
+    }
+
+    static byte[] secureRandom(byte[] input) {
+        def source = new DataInputStream(new ByteArrayInputStream(input))
+        def buffer = new ByteArrayOutputStream()
+        def sink = new DataOutputStream(buffer)
+        if (source.readInt() != (int) 0xCAFEBABE) throw new GradleException('Classe Topaz inválida')
+        sink.writeInt((int) 0xCAFEBABE)
+        sink.writeShort(source.readUnsignedShort())
+        sink.writeShort(source.readUnsignedShort())
+        int count = source.readUnsignedShort()
+        sink.writeShort(count)
+        def sizes = [3: 4, 4: 4, 5: 8, 6: 8, 7: 2, 8: 2, 9: 4, 10: 4, 11: 4, 12: 4,
+                     15: 3, 16: 2, 17: 4, 18: 4, 19: 2, 20: 2]
+        int replacements = 0
+        for (int index = 1; index < count;) {
+            int tag = source.readUnsignedByte()
+            sink.writeByte(tag)
+            if (tag == 1) {
+                byte[] value = new byte[source.readUnsignedShort()]
+                source.readFully(value)
+                if (Arrays.equals(value, 'java/util/Random'.getBytes('UTF-8'))) {
+                    value = 'java/security/SecureRandom'.getBytes('UTF-8')
+                    replacements++
+                }
+                sink.writeShort(value.length)
+                sink.write(value)
+            } else {
+                if (!sizes.containsKey(tag)) throw new GradleException("Constante Topaz inválida: ${tag}")
+                byte[] value = new byte[sizes[tag]]
+                source.readFully(value)
+                sink.write(value)
+            }
+            index += tag in [5, 6] ? 2 : 1
+        }
+        if (replacements != 1) throw new GradleException('A classe Topaz deve conter exatamente um tipo Random')
+        sink.write(source.readAllBytes())
+        buffer.toByteArray()
+    }
+}
+
+@CacheableTransform
+abstract class SimloVendorClasses implements TransformAction<TransformParameters.None> {
+    @InputArtifact @PathSensitive(PathSensitivity.NONE)
+    abstract Provider<FileSystemLocation> getInputArtifact()
+
+    @Override
+    void transform(TransformOutputs outputs) {
+        new java.util.zip.ZipFile(inputArtifact.get().asFile).withCloseable { archive ->
+            def entry = archive.getEntry('classes.jar')
+            if (entry == null) throw new GradleException('classes.jar ausente no AAR reforçado')
+            outputs.file('heartbeat-secure-random.jar').bytes = archive.getInputStream(entry).bytes
+        }
+    }
+}
+
+ext.vendorArtifactsFor = { Project consumer, String kind ->
+    String type = "simlo-${kind}-aar"
+    String configurationName = "simlo${kind.capitalize()}Artifact"
+    def configuration = consumer.configurations.findByName(configurationName)
+    if (configuration == null) {
+        consumer.dependencies.registerTransform(SimloVendorHardening) {
+            from.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, 'aar')
+            to.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, type)
+            parameters.kind.set(kind)
+            parameters.compilerVersion.set(System.getProperty('java.runtime.version') + '/' + System.getProperty('java.vendor'))
+            if (kind == 'filabra') parameters.javaSources.set(rootProject.layout.projectDirectory.dir('third-party/security/filabra'))
+        }
+        if (kind == 'topaz') consumer.dependencies.registerTransform(SimloVendorClasses) {
+            from.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, type)
+            to.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, 'simlo-topaz-classes')
+        }
+        configuration = consumer.configurations.create(configurationName) {
+            canBeConsumed = false
+            canBeResolved = true
+            transitive = false
+            attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, type)
+        }
+        File original = rootProject.file(kind == 'filabra' ? 'third-party/FilaBRAAdapter-2.6.5.1.aar' :
+                'third-party/maven/br/com/topaz/heartbeat/4.38.0.1658708/heartbeat-4.38.0.1658708.aar')
+        consumer.dependencies.add(configurationName, consumer.files(original))
+    }
+    [aar: configuration.incoming.artifactView { }.files,
+     classes: kind == 'topaz' ? configuration.incoming.artifactView {
+         attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, 'simlo-topaz-classes')
+     }.files : null]
+}

@@ -377,3 +377,30 @@ lintQualityCheck --continue --console=plain` passou em 3min09s (1.632 tarefas).
 A política foi conferida em 36 módulos e oito fixtures. Esse resultado não
 substitui os testes e a cobertura: o hook executa o `preCommitCheck` completo
 e publica o resultado corrente em `build/reports/quality/full-summary.json`.
+
+### Regressão do primeiro Sync com AARs locais — 30/10/2026
+
+O erro `Null extracted folder for artifact` no FilaBRA era causado pela dependência
+local apontando para um AAR gerado por uma tarefa em `app/build`. O modelo do IDE
+pode resolver dependências sem executar essa tarefa. A situação foi reproduzida
+com um buildDir vazio, sem alterar fontes nem caches do checkout.
+
+FilaBRA e Topaz agora são preparados por [transformações de artefatos Gradle](https://docs.gradle.org/current/userguide/artifact_transforms.html),
+executadas na resolução de dependências. Entradas SHA-256 e fontes da correção TLS
+participam da validação/cache. O compilador JDK 21 produz a mesma classe TLS que
+a tarefa anterior. Classes, recursos e JNI do Topaz preservam a referência
+anterior; seu verificador também compara o bytecode alterado com a implementação
+Python preservada. Não há invocação Python na preparação dos SDKs durante o Sync.
+
+`:app:verifyVendorArtifactsForSync` é obrigatório no `preCommitCheck`. Confere três
+artefatos sem tarefas produtoras, extração de dois AARs pelo AGP e identidade entre
+o JAR Topaz compilado e o empacotado. Uma configuração destacada, criada somente
+na execução da fixture, exige rejeição de entrada adulterada. O arquivo temporário
+é removido em `finally`; a fixture não fica visível ao modelo de dependências.
+
+A regressão passou com todos os buildDirs redirecionados para pastas vazias fora
+do checkout, executando somente o verificador, em 8 segundos. Nenhum AAR ou classe
+precisou ser gerado nessas pastas. Os verificadores TLS e os 640 controles Topaz
+também passaram. Isso valida a resolução/extração usada no Sync nesta máquina;
+não equivale a ter executado o Android Studio no Windows remoto. AGP 8.13.0,
+JDK/bytecode 21, headers, baselines e critérios JaCoCo permanecem preservados.

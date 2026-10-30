@@ -23,6 +23,7 @@ buildscript {
 
 
 apply from: rootProject.file('gradle/jvm-toolchains.gradle')
+apply from: rootProject.file('gradle/vendor-artifact-transforms.gradle')
 apply from: rootProject.file('gradle/android-processors.gradle')
 apply from: rootProject.file('gradle/android-lint.gradle')
 apply from: rootProject.file('gradle/verify-feature-modules.gradle')
@@ -31,6 +32,7 @@ apply from: rootProject.file('gradle/local-ui-tests.gradle')
 apply from: rootProject.file('gradle/aggregate-test-reports.gradle')
 apply from: rootProject.file('gradle/static-analysis.gradle')
 apply from: rootProject.file('gradle/quality-gate.gradle')
+apply from: rootProject.file('gradle/verify-vendor-sync.gradle')
 apply from: rootProject.file('gradle/compose-platform-resources.gradle')
 
 allprojects {

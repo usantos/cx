@@ -1,0 +1,56 @@
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition
+
+// Verifica a mesma resolução/extração usada pelo modelo do IDE, sem tarefas produtoras.
+def owner = project(':app')
+def badInput = owner.layout.buildDirectory.file('tmp/vendor-sync-fixture/altered.aar')
+owner.tasks.register('verifyVendorArtifactsForSync') { probe ->
+    group = 'verification'
+    description = 'Checks task-free vendor artifact resolution, AGP extraction and rejection of altered inputs.'
+    doLast {
+        def artifacts = [owner.ext.hardenedFilaBra, owner.ext.hardenedTopazHeartbeat,
+                         owner.ext.hardenedTopazHeartbeatClasses]
+        artifacts.each { files ->
+            if (!files.buildDependencies.getDependencies(probe).isEmpty()) {
+                throw new GradleException('O artefato de Sync depende de tarefas produtoras')
+            }
+            if (!files.singleFile.isFile()) throw new GradleException('Artefato indisponível durante o Sync')
+        }
+        def extracted = owner.configurations.tqsDebugRuntimeClasspath.incoming.artifactView {
+            componentFilter { id -> id.displayName.contains('FilaBRAAdapter') || id.displayName.contains('heartbeat-secure-random') }
+            attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, 'android-exploded-aar')
+        }.files.files
+        ['FilaBRAAdapter', 'heartbeat-secure-random'].each { name ->
+            def folders = extracted.findAll { it.name.contains(name) }
+            if (folders.size() != 1 || !new File(folders.first(), 'AndroidManifest.xml').isFile()) {
+                throw new GradleException("Extração AGP indisponível para ${name}")
+            }
+        }
+        new java.util.zip.ZipFile(owner.ext.hardenedTopazHeartbeat.singleFile).withCloseable { archive ->
+            byte[] jar = archive.getInputStream(archive.getEntry('classes.jar')).bytes
+            if (!Arrays.equals(jar, owner.ext.hardenedTopazHeartbeatClasses.singleFile.bytes)) {
+                throw new GradleException('O JAR de compilação Topaz difere do JAR empacotado no AAR')
+            }
+        }
+        // Fixture privada, sem alterar a entrada homologada nem os arquivos do checkout.
+        File fixture = badInput.get().asFile
+        fixture.parentFile.mkdirs()
+        fixture.bytes = 'invalid vendor fixture'.getBytes('UTF-8')
+        def rejected = owner.configurations.detachedConfiguration(owner.dependencies.create(owner.files(fixture)))
+        rejected.transitive = false
+        rejected.attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, 'simlo-filabra-aar')
+        boolean blocked = false
+        try {
+            rejected.files
+        } catch (Exception failure) {
+            def causes = []
+            for (Throwable cause = failure; cause != null && !causes.contains(cause); cause = cause.cause) causes += cause
+            blocked = causes.any { it.message?.contains('filabra: binário de entrada alterado; revisão obrigatória') }
+            if (!blocked) throw failure
+        } finally {
+            fixture.delete()
+        }
+        if (!blocked) throw new GradleException('A fixture de binário adulterado foi aceita')
+        logger.lifecycle('Vendor Sync: 3 artefatos sem tarefas produtoras, 2 AARs extraídos pelo AGP e binário adulterado rejeitado.')
+    }
+}
+tasks.named('preCommitCheck').configure { dependsOn ':app:verifyVendorArtifactsForSync' }

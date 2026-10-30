@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import io
+import importlib.util
 import os
 from pathlib import Path
 import subprocess
@@ -15,6 +16,10 @@ def main():
     parser.add_argument('--original', type=Path, required=True)
     parser.add_argument('--aar', type=Path, required=True)
     args = parser.parse_args()
+    # Mantém paridade byte a byte com a correção anterior, usada como referência independente.
+    spec = importlib.util.spec_from_file_location("topaz_reference", Path(__file__).with_name("harden-topaz-random.py"))
+    reference = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(reference)
     assert hashlib.sha256(args.original.read_bytes()).hexdigest() == \
         '82e586ee0417971b52decca1c23af6a933fd4c52a89ddc8b430d7433ccd01aad'
     with zipfile.ZipFile(args.original) as before, zipfile.ZipFile(args.aar) as after:
@@ -27,6 +32,8 @@ def main():
             assert x.namelist() == y.namelist(), 'JAR entries changed'
             changes = [n for n in x.namelist() if x.read(n) != y.read(n)]
             assert changes == ['br/com/topaz/n/c.class'], 'Unexpected SDK changes: ' + repr(changes)
+            target = 'br/com/topaz/n/c.class'
+            assert y.read(target) == reference.secure_key_generator(x.read(target)), 'Topaz class differs from the reference patch'
         classes = after.read('classes.jar')
     java = Path(os.environ['JAVA_HOME']) / 'bin'
     with tempfile.TemporaryDirectory(prefix='topaz-key-test-') as tmp:
