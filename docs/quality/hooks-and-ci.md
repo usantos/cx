@@ -89,3 +89,12 @@ O pre-commit também executa `:app:verifyVendorArtifactsForSync`, para impedir
 regressão da primeira sincronização: os SDKs locais precisam resolver e extrair
 sem tarefas produtoras e rejeitar uma entrada adulterada em fixture isolada.
 As verificações TLS do FilaBRA e de entropia/formato Topaz continuam obrigatórias.
+
+## Fontes ocultas por ignore
+
+O runner verifica as fontes Kotlin/Java das pastas `src` dos projetos Gradle
+contra o index antes de iniciar Gradle. Fontes ignoradas também são verificadas;
+`git status` limpo não basta. O instalador exige que o verificador esteja presente.
+O gate Gradle direto inclui `verifyTrackedSources`, com o mesmo verificador.
+Fontes preparadas no staging são aceitas, e colisões de maiúsculas são rejeitadas.
+Não se preparam arquivos nem se altera o workspace dentro do hook.

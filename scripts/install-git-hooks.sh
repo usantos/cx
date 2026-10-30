@@ -12,8 +12,8 @@ if git config --get core.hooksPath >/dev/null 2>&1; then
 fi
 
 source_hook="$repository_root/scripts/git-hooks/pre-commit"
-if [ ! -f "$source_hook" ] || [ ! -f "$repository_root/scripts/validate-pre-commit.py" ]; then
-    printf '%s\n' 'Instalação bloqueada: hook ou runner de validação ausente. Nenhum hook foi alterado.' >&2
+if [ ! -f "$source_hook" ] || [ ! -f "$repository_root/scripts/validate-pre-commit.py" ] || [ ! -f "$repository_root/scripts/check-tracked-sources.py" ]; then
+    printf '%s\n' 'Instalação bloqueada: hook, runner ou verificador de fontes ausente. Nenhum hook foi alterado.' >&2
     exit 1
 fi
 hooks_directory=$(git rev-parse --git-path hooks)

@@ -18,3 +18,8 @@ Exceção autorizada em 30/10/2026: somente `AndroidGradlePluginVersion`,
 `GradleDependency`, `NewerVersionAvailable` e `OldTargetApi` são informativas
 para manter AGP 8.13.0/SDK 36. Preserve a lista exata, o bloqueio de erros e
 warnings e a tarefa `verifyLintPolicy`. Não estender essa exceção a outras regras.
+
+- Preserve `verifyTrackedSources` e a verificação antecipada do runner: fontes
+  Kotlin/Java em `src` não podem depender de arquivos ignorados. A regra de
+  metadados do Finder não pode ignorar o pacote `icon`. Valide fontes novas
+  também pelo conteúdo preparado no Git, mantendo os controles de capitalização.

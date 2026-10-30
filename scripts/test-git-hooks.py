@@ -32,6 +32,7 @@ class GitHooksTest(unittest.TestCase):
             shutil.copy2(ROOT / relative, target)
         runner = ROOT / "scripts/validate-pre-commit.py"
         shutil.copy2(runner, self.repo / "scripts/validate-pre-commit.py")
+        shutil.copy2(ROOT / "scripts/check-tracked-sources.py", self.repo / "scripts/check-tracked-sources.py")
         (self.repo / ".gitignore").write_text("invoked-task\n")
         self.write_gradlew('printf "%s\\n" "$*" > invoked-task\nexit 0\n')
         (self.repo / "tracked.txt").write_text("staged\n")
@@ -93,7 +94,7 @@ class GitHooksTest(unittest.TestCase):
         linked = Path(self.temporary.name) / "linked worktree"
         created = self.run_command("git", "worktree", "add", "-b", "linked-fixture", str(linked))
         self.assertEqual(created.returncode, 0, created.stderr)
-        for relative in ("scripts/git-hooks/pre-commit", "scripts/install-git-hooks.sh", "scripts/validate-pre-commit.py", "gradlew"):
+        for relative in ("scripts/git-hooks/pre-commit", "scripts/install-git-hooks.sh", "scripts/validate-pre-commit.py", "scripts/check-tracked-sources.py", "gradlew"):
             target = linked / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(self.repo / relative, target)
@@ -236,6 +237,33 @@ class GitHooksTest(unittest.TestCase):
         result = self.run_command("sh", "scripts/git-hooks/pre-commit")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual((self.repo / "invoked-task").read_text(), "preCommitCheck --continue --console=plain\n")
+
+    def test_ignored_source_blocks_before_gradle_and_staged_source_passes(self):
+        self.run_command("git", "config", "core.ignorecase", "true")
+        with (self.repo / ".gitignore").open("a") as output:
+            output.write("Icon\n")
+        source = self.repo / "core/ds/src/main/java/icon/Hidden.kt"
+        source.parent.mkdir(parents=True)
+        source.write_text("object Hidden\n")
+        (self.repo / "core/ds/build.gradle").write_text("// Fixture isolada\n")
+        self.run_command("git", "add", ".")
+        rejected = self.run_command("sh", "scripts/git-hooks/pre-commit")
+        self.assertNotEqual(rejected.returncode, 0)
+        self.assertIn("Fonte compilável fora do Git/index", rejected.stderr)
+        self.assertFalse((self.repo / "invoked-task").exists())
+        self.run_command("git", "add", "-f", str(source))
+        accepted = self.run_command("sh", "scripts/git-hooks/pre-commit")
+        self.assertEqual(accepted.returncode, 0, accepted.stderr)
+        self.assertTrue((self.repo / "invoked-task").is_file())
+
+    def test_missing_source_checker_blocks_runner_and_install(self):
+        (self.repo / "scripts/check-tracked-sources.py").unlink()
+        self.run_command("git", "add", "-u")
+        self.assertNotEqual(self.install().returncode, 0)
+        rejected = self.run_command("sh", "scripts/git-hooks/pre-commit")
+        self.assertNotEqual(rejected.returncode, 0)
+        self.assertIn("Verificador de fontes versionadas ausente", rejected.stderr)
+        self.assertFalse((self.repo / "invoked-task").exists())
 
     def test_install_refuses_missing_runner(self):
         (self.repo / "scripts/validate-pre-commit.py").unlink()

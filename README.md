@@ -72,6 +72,11 @@ Para conferir a resolução e a extração usadas no Sync:
 .\gradlew.bat :app:verifyVendorArtifactsForSync
 ```
 
+O pre-commit confere também fontes Kotlin/Java ignoradas ou fora do index e
+colisões de nomes por maiúsculas. O pacote `icon` do CaixaDS faz parte do Git.
+Veja o [sample do design system](sample/design-system/README.md) para compilar
+e abrir o catálogo independente.
+
 ## Home selecionável
 
 A Home v2 usa a apresentação do projeto CX (`HomeV2View`), portada para o host

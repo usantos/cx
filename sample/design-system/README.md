@@ -21,3 +21,21 @@ Os exemplos e as entradas do registro estão separados em arquivos pequenos por 
 Os testes locais verificam identidade e documentação de todas as entradas, navegação/busca, alterações de estado via ações semânticas, edição dos campos e layout dos exemplos. Robolectric verifica o contrato da integração Android; a aparência real de WebView e controles nativos requer um dispositivo/emulador.
 
 Validação local em 22/10/2026: dez testes do catálogo passaram, incluindo a abertura real da `CatalogActivity`, busca, retorno mantendo posição da lista, recriação da Activity no detalhe, alterações nos exemplos e ausência de sobreposição dos campos. No emulador Android 16 (API 36), foram conferidos a lista, a edição das três variantes e a renderização do HTML local. Capturas ficam em `build/reports/manual/` após esta execução; o APK está em `build/outputs/apk/debug/design-system-debug.apk`.
+
+## Ícones e portabilidade do checkout
+
+Os 14 fontes do pacote `core/design-system/.../icon` são versionados, incluindo
+`CaixaDSIcons.kt` e `CaixaDSFingerprint.kt`. O símbolo interno tem o nome
+`FingerprintVector`; para consumir a digital fora do módulo, use o componente
+público `CaixaDSFingerprintIcon`. A regra de ignore para o metadado `Icon` do
+Finder é restrita a nomes com caractere de controle, preservando o pacote `icon`.
+
+`verifyTrackedSources` verifica fontes Kotlin/Java nas pastas `src` dos projetos
+Gradle contra o Git/index e rejeita colisões por maiúsculas. O runner de pre-commit
+também realiza essa verificação antes de iniciar o build longo.
+
+Validação em 30/10/2026: uma cópia exportada somente do index, sem aproveitar
+fontes ignoradas deste checkout, compilou o sample com `--no-build-cache`: 67
+tarefas executadas e 10 testes do catálogo aprovados. O APK foi instalado e
+aberto no emulador Android 36; catálogo, busca, exemplo da digital e seta de
+navegação foram conferidos. Isso não representa execução no Windows remoto.

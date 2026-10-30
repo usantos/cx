@@ -32,6 +32,7 @@ apply from: rootProject.file('gradle/local-ui-tests.gradle')
 apply from: rootProject.file('gradle/aggregate-test-reports.gradle')
 apply from: rootProject.file('gradle/static-analysis.gradle')
 apply from: rootProject.file('gradle/quality-gate.gradle')
+apply from: rootProject.file('gradle/source-tracking.gradle')
 apply from: rootProject.file('gradle/verify-vendor-sync.gradle')
 apply from: rootProject.file('gradle/compose-platform-resources.gradle')
 

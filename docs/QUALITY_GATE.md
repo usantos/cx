@@ -404,3 +404,31 @@ precisou ser gerado nessas pastas. Os verificadores TLS e os 640 controles Topaz
 também passaram. Isso valida a resolução/extração usada no Sync nesta máquina;
 não equivale a ter executado o Android Studio no Windows remoto. AGP 8.13.0,
 JDK/bytecode 21, headers, baselines e critérios JaCoCo permanecem preservados.
+
+### Fontes ignoradas e portabilidade Windows — 30/10/2026
+
+A regra genérica `Icon` do template macOS também ignorava o diretório Kotlin
+`icon` quando `core.ignorecase=true`. Os 14 arquivos existiam no computador de
+desenvolvimento e participavam do build local, mas não chegavam a novos checkouts.
+A regra agora usa `Icon[[:cntrl:]]`, preservando o metadado do Finder e deixando
+as fontes do pacote versionáveis. Os 14 fontes foram incluídos sem alterar seu
+conteúdo nem os headers protegidos.
+
+`scripts/check-tracked-sources.py` descobre as pastas `src` dos projetos Gradle,
+compara os fontes Kotlin/Java físicos com `git ls-files --cached` e rejeita fontes
+locais invisíveis ao index. A comparação respeita aliases do mesmo arquivo em
+sistemas sem distinção de maiúsculas, mas recusa colisões de nomes no index e
+no workspace. Caches em `build` e demais diretórios de ferramentas não entram
+na descoberta dos módulos. Não se usa `git status` limpo como única prova.
+
+O runner chama o verificador antes de iniciar Gradle, sem gerar bytecode Python
+no workspace durante a importação. A tarefa `verifyTrackedSources` também faz
+parte do `preCommitCheck` executado diretamente. Fixtures com Git real cobrem
+fontes ignoradas, fontes preparadas, controle do Finder, os dois valores de
+`core.ignorecase`, aliases, colisões e bloqueio anterior à chamada do Gradle.
+
+O sample foi compilado e seus dez testes passaram numa cópia exportada somente
+do index com cache de build desativado (67 tarefas executadas). O APK dessa cópia
+foi aberto no emulador Android 36, incluindo o exemplo `CaixaDSFingerprintIcon`.
+Essa evidência valida o conteúdo transferido pelo Git, sem alegar execução no
+Windows remoto. A aprovação integral continua dependente do pre-commit final.

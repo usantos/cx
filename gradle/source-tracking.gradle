@@ -1,0 +1,7 @@
+// O build não pode depender de fontes locais invisíveis ao Git (por exemplo, um pacote icon ignorado).
+tasks.register('verifyTrackedSources', Exec) {
+    group = 'verification'
+    description = 'Checks Kotlin/Java source tracking and Windows filename compatibility.'
+    commandLine 'python3', rootProject.file('scripts/check-tracked-sources.py'), '--root', rootDir
+}
+tasks.named('preCommitCheck').configure { dependsOn 'verifyTrackedSources' }

@@ -266,8 +266,8 @@ tmp/
 .AppleDouble
 .LSOverride
 
-# Icon must end with two \r
-Icon
+# Metadado do Finder: Icon seguido de caractere de controle, sem ignorar pacotes icon.
+Icon[[:cntrl:]]
 
 # Thumbnails
 

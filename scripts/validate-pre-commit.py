@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Bloqueia commits sem validar integralmente o conteúdo preparado no index."""
+import importlib.util
 import os
 from pathlib import Path
 import re
@@ -26,6 +27,27 @@ def prepared_tree():
     return git("write-tree")
 
 
+def verify_tracked_sources():
+    checker = ROOT / "scripts/check-tracked-sources.py"
+    if not checker.is_file():
+        raise RuntimeError("Verificador de fontes versionadas ausente; nenhuma validação foi dispensada.")
+    spec = importlib.util.spec_from_file_location("tracked_source_checker", checker)
+    module = importlib.util.module_from_spec(spec)
+    previous = sys.dont_write_bytecode
+    try:
+        sys.dont_write_bytecode = True
+        spec.loader.exec_module(module)
+    finally:
+        sys.dont_write_bytecode = previous
+    try:
+        problems = module.source_problems(ROOT, module.discover_source_roots(ROOT))
+    except (ValueError, subprocess.CalledProcessError) as failure:
+        raise RuntimeError("Não foi possível verificar as fontes versionadas.") from failure
+    if problems:
+        raise RuntimeError("\n".join(problems))
+    print("Fontes Kotlin/Java do workspace conferidas contra o Git/index.", flush=True)
+
+
 def is_java21(home):
     if not home:
         return False
@@ -50,6 +72,7 @@ def main():
         if len(sys.argv) != 1:
             raise RuntimeError("A validação completa não aceita argumentos, exclusões ou opções de atalho.")
         tree = prepared_tree()
+        verify_tracked_sources()
         studio_java = Path("/Applications/Android Studio.app/Contents/jbr/Contents/Home")
         environment = gradle_environment(os.environ, sys.platform, studio_java)
         if environment.get("JAVA_HOME") != os.environ.get("JAVA_HOME"):
