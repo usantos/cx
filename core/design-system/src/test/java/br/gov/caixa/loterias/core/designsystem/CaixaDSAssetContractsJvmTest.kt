@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.Density
@@ -37,6 +36,7 @@ import br.gov.caixa.loterias.core.designsystem.icon.DrawerQuestions
 import br.gov.caixa.loterias.core.designsystem.icon.DrawerResponsible
 import br.gov.caixa.loterias.core.designsystem.icon.DrawerTerms
 import br.gov.caixa.loterias.core.designsystem.layout.caixaDSDrawablePainter
+import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSHomeV2Theme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

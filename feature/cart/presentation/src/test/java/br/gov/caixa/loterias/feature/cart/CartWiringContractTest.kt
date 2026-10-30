@@ -290,7 +290,7 @@ internal class CartWiringFixture {
     }
     fun adapter(
         presentation: CartRecoveryStatusPresentation = object : CartRecoveryStatusPresentation {
-            @Composable override fun show(loading: Boolean, onRetry: () -> Unit, networkAvailability: NetworkAvailability) = Unit
+            @Composable override fun Content(loading: Boolean, onRetry: () -> Unit, networkAvailability: NetworkAvailability) = Unit
         },
     ): CartNavigationDependenciesAdapter {
         val context = RuntimeEnvironment.getApplication()

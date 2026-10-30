@@ -36,7 +36,7 @@ class CartRecoverySlotUiTest {
         val fixture = CartWiringFixture()
         val observedLoading = mutableListOf<Boolean>()
         val adapter = fixture.adapter(object : CartRecoveryStatusPresentation {
-            @Composable override fun show(loading: Boolean, onRetry: () -> Unit, networkAvailability: NetworkAvailability) {
+            @Composable override fun Content(loading: Boolean, onRetry: () -> Unit, networkAvailability: NetworkAvailability) {
                 SideEffect {
                     observedLoading += loading
                     assertSame(fixture.network, networkAvailability)

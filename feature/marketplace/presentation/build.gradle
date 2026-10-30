@@ -1,12 +1,13 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.google.dagger.hilt.android'
-apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 apply plugin: 'jacoco'
 
 android {
     namespace = 'br.gov.caixa.loterias.feature.marketplace'
-    compileSdk 37
+    compileSdk 36
     defaultConfig { minSdk 24; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
     buildFeatures { compose = true }
     compileOptions {
@@ -63,7 +64,7 @@ def coverageExecutionData = files({
 }).filter { it.isFile() }
 def coverageSourceDirectories = files('src/main/java')
 def coverageClassDirectories = files(fileTree(
-        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        dir: layout.buildDirectory.dir('tmp/kotlin-classes/debug'),
         includes: [
                 '**/MarketplaceViewModel.class',
                 '**/MarketplaceViewModel$*.class',

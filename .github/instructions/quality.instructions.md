@@ -13,3 +13,8 @@ Consulte [QUALITY_GATE](../../docs/QUALITY_GATE.md) e [hooks-and-ci](../../docs/
 - Execute uma invocação Gradle por vez. Não atualizar toolchain/dependências fora do escopo. Consulte versões no Version Catalog.
 - Segredos do CI vêm das configurações autorizadas; não publicar valores em logs/artefatos. Workflow não configura proteção de branch sozinho; hooks locais podem ser desabilitados pelo usuário.
 - Ao reportar, diferencie PASSED, FAILED e NOT RUN. Aprovação de um módulo não equivale ao pre-commit completo. Documente limitações existentes sem mascará-las.
+
+Exceção autorizada em 30/10/2026: somente `AndroidGradlePluginVersion`,
+`GradleDependency`, `NewerVersionAvailable` e `OldTargetApi` são informativas
+para manter AGP 8.13.0/SDK 36. Preserve a lista exata, o bloqueio de erros e
+warnings e a tarefa `verifyLintPolicy`. Não estender essa exceção a outras regras.

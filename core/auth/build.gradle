@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdk 37
+    compileSdk 36
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_21
@@ -14,7 +15,7 @@ apply plugin: 'jacoco'
 
 android {
     namespace = 'br.gov.caixa.loterias.core.auth'
-    compileSdk 37
+    compileSdk 36
     defaultConfig {
         minSdk 23
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -47,7 +48,7 @@ def authCoverageData = files({
 }).filter { it.isFile() }
 // Verifica o estado de tokens/tentativas, sem certificar a cobertura da integração Android/AppAuth.
 def authCoverageClasses = files(fileTree(
-        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        dir: layout.buildDirectory.dir('tmp/kotlin-classes/debug'),
         includes: ['**/SessionTokenStore*.class', '**/AuthorizationAttempt*.class', '**/PendingAuthorization*.class',
                    '**/EndSessionRegistry*.class', '**/EndSessionLaunch*.class', '**/EndSessionOutcome*.class',
                    '**/TokenEndpointIdentity*.class', '**/BiometricAttemptRegistry*.class',

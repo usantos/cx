@@ -2,7 +2,7 @@
 
 Aplicativo Android independente para explorar o módulo `:core:design-system` com o tema azul e laranja da CAIXA. Não inicializa o aplicativo Loterias, autenticação, repositórios ou serviços de negócio.
 
-Use o JDK 21 e o Android SDK 37 configurados para o projeto. O sample pode ser selecionado como aplicação no Android Studio ou executado pelo terminal:
+Use o JDK 21 e o Android SDK 36 configurados para o projeto. O sample pode ser selecionado como aplicação no Android Studio ou executado pelo terminal:
 
 ```sh
 ./gradlew :sample:design-system:assembleDebug

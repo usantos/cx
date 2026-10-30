@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'jacoco'
 apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 apply plugin: 'com.google.devtools.ksp'
@@ -58,13 +59,13 @@ def topazWorkManagerDefaults = [
 
 android {
     namespace = 'br.gov.caixa.loterias.apostas'
-    compileSdk 37
+    compileSdk 36
 
     defaultConfig {
         applicationId 'br.gov.caixa.loterias.apostas'
         buildConfigField 'boolean', 'HOME_V2', homeV2Enabled
         minSdk 29
-        targetSdk 37
+        targetSdk 36
         versionCode prdVersionCode
         versionName prdVersionName
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

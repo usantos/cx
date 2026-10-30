@@ -12,12 +12,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnimation
 import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnimationImage
+import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import com.airbnb.lottie.LottieCompositionFactory
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

@@ -98,7 +98,7 @@ class FirebaseLauncherIconConfigurationRepositoryImplTest {
     @Test fun publishedExampleResolvesAnnualCampaignsAndTheDefaultOutsideTheirDates() {
         val root = generateSequence(Path.of(System.getProperty("user.dir"))) { it.parent }
             .first { Files.isRegularFile(it.resolve("config/firebase/app_launcher_icon.json")) }
-        val json = Files.readString(root.resolve("config/firebase/app_launcher_icon.json"))
+        val json = Files.readAllBytes(root.resolve("config/firebase/app_launcher_icon.json")).toString(Charsets.UTF_8)
         val schedule = FirebaseLauncherIconConfigurationRepositoryImpl({ json }, clock).activeSchedule
         listOf(
             "2027-07-31T12:00:00Z" to LauncherIconPreset.DEFAULT,

@@ -36,6 +36,9 @@ As regras do projeto inteiro estão em [.github/copilot-instructions.md](.github
 
 ## Configuração local e CI
 
+A versão de build é **AGP 8.13.0 + Gradle 8.14.6 + SDK 36**, compatível com o
+Android Studio que suporta AGP 8.13. O plugin Kotlin Android é explícito.
+
 Use somente **JDK 21**: Gradle, toolchains, testes e bytecode de todos os módulos
 estão configurados em 21. Não é necessário instalar JDK 17. No Android Studio,
 selecione JDK 21 em **Settings → Build, Execution, Deployment → Build Tools →

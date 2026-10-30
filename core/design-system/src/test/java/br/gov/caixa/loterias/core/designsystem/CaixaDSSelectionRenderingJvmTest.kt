@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
@@ -17,6 +16,7 @@ import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckSwit
 import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckbox
 import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSRadioButton
 import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSTutorialCheckbox
+import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
 import org.junit.Assert.assertFalse
 import org.junit.Rule

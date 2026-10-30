@@ -59,7 +59,7 @@ def dataCoverageExecution = files(
 )
 // Inclui corpos de coroutines e mapeadores aninhados; excluir classes '$' oculta o comportamento dos repositórios.
 def dataCoverageClasses = files({ [fileTree(layout.buildDirectory.dir('classes/kotlin/main')).include('**/*.class')] + featureDataProjects.collect { p ->
-    fileTree(p.layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes')).matching {
+    fileTree(p.layout.buildDirectory.dir('tmp/kotlin-classes/debug')).matching {
         include '**/*.class'
         // Preserva as classes de persistência local já excluídas após a mudança de pacote.
         exclude '**/br/gov/caixa/loterias/feature/account/data/datasource/local/SessionLocalDataSource.class', '**/br/gov/caixa/loterias/feature/account/data/datasource/local/SessionLocalDataSource$*.class'

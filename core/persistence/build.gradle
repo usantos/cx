@@ -1,9 +1,10 @@
 apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'jacoco'
 
 android {
     namespace 'br.gov.caixa.loterias.core.persistence'
-    compileSdk 37
+    compileSdk 36
     defaultConfig {
         minSdk 24
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

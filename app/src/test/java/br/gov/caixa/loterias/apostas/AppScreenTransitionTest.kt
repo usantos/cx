@@ -8,13 +8,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.apostas.navigation.transition.AppScreenNavHost
+import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

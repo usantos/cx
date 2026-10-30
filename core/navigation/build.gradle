@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdk 37
+    compileSdk 36
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_21
@@ -15,7 +16,7 @@ android { buildFeatures { compose = true } }
 
 android {
     namespace = 'br.gov.caixa.loterias.core.navigation'
-    compileSdk 37
+    compileSdk 36
     defaultConfig { minSdk 24 }
     buildFeatures { compose = true }
     compileOptions {

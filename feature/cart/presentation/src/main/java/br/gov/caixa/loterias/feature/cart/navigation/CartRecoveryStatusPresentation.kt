@@ -6,5 +6,5 @@ import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 /** Recursos Android do hospedeiro usados pelo espaço existente de estado de recuperação do carrinho. */
 interface CartRecoveryStatusPresentation {
     @Composable
-    fun show(loading: Boolean, onRetry: () -> Unit, networkAvailability: NetworkAvailability)
+    fun Content(loading: Boolean, onRetry: () -> Unit, networkAvailability: NetworkAvailability)
 }

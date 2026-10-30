@@ -62,7 +62,7 @@ class StartupDestinationJvmTest {
         val showIntro = ShouldShowIntroductionUseCase { true }
         val presentation = object : StartupStatusPresentation {
             @androidx.compose.runtime.Composable
-            override fun show(kind: StartupStatusKind, onRetry: () -> Unit, networkAvailability: NetworkAvailability, loading: Boolean) {
+            override fun Content(kind: StartupStatusKind, onRetry: () -> Unit, networkAvailability: NetworkAvailability, loading: Boolean) {
                 assertSame(network, networkAvailability)
                 Text("${kind.name}:$loading")
                 Button(onClick = onRetry) { Text("Retry validation") }

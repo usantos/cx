@@ -2,10 +2,10 @@ package br.gov.caixa.loterias.core.designsystem
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.graphics.toPixelMap
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSTopBar
+import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
 import org.junit.Assert.assertEquals

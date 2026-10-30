@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -15,6 +14,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
+import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.components.LotteryCard
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery

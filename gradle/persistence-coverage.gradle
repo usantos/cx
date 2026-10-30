@@ -30,7 +30,7 @@ def preferencesCoverageData = files(
 )
 def platformProjects = [project(':feature:account:data'), project(':feature:cart:data'), project(':feature:onboarding:data')]
 def preferencesCoverageClasses = files({ platformProjects.collect { p ->
-    fileTree(p.layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes')).matching {
+    fileTree(p.layout.buildDirectory.dir('tmp/kotlin-classes/debug')).matching {
         include '**/OnboardingRepositoryImpl.class', '**/FavoriteCartUsageRepositoryImpl.class', '**/*RecentPurchase*.class', '**/*LocalSessionDataRepositoryImpl*.class', '**/SessionLocalDataSourceImpl*.class', '**/LocalCartRepositoryImpl*.class', '**/LocalCartMapperKt*.class', '**/AbsentCartTransaction*.class', '**/AndroidCart*.class', '**/CartFingerprintKt*.class', '**/CartReceipt*.class', '**/CartSnapshot*.class', '**/CartTableDataSource*.class', '**/CartTransfer*.class', '**/CartUploadMapperKt*.class', '**/SQLiteCart*.class', '**/VisitorCartRepositoryImpl*.class', '**/VisitorCartGraph*.class', '**/VisitorCartMapperKt*.class'
     }
 } })

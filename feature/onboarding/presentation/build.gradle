@@ -1,9 +1,10 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.google.dagger.hilt.android'
-apply plugin: 'com.android.library'
 
 android {
-    compileSdk 37
+    compileSdk 36
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_21
@@ -61,7 +62,7 @@ def onboardingCoverageData = files({
     tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
 }).filter { it.isFile() }
 def onboardingCoverageClasses = files(fileTree(
-        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        dir: layout.buildDirectory.dir('tmp/kotlin-classes/debug'),
         includes: ['**/StartupViewModel*.class', '**/StartupStatusContentKt.class', '**/StartupStatusKind.class', '**/OnboardingViewModel*.class', '**/OnboardingUiState*.class']
 ))
 tasks.register('jacocoDebugCoverageReport', JacocoReport) {

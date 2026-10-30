@@ -1,9 +1,10 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.google.dagger.hilt.android'
-apply plugin: 'com.android.library'
 
 android {
-    compileSdk 37
+    compileSdk 36
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_21
@@ -67,7 +68,7 @@ jacoco { toolVersion = '0.8.13' }
 def retailCoverageData = files({
     tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
 }, fileTree(layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
-def retailCoverageClasses = files(fileTree(dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'), includes: [
+def retailCoverageClasses = files(fileTree(dir: layout.buildDirectory.dir('tmp/kotlin-classes/debug'), includes: [
         '**/*RulesKt*.class', '**/*ViewModel*.class', '**/*UiState*.class', '**/PrizeRegistrationNotice*.class',
         '**/PrizeRedemptionCoordinator*.class', '**/PrizeLotteryChannel*.class', '**/PrizePixChannel*.class',
         '**/PrizeMercadoPagoChannel*.class', '**/PrizeRedemptionSubmission*.class', '**/PrizeRedemptionTimer*.class',

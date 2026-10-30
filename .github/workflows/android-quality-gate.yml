@@ -31,9 +31,9 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      # O AGP 9.2 usa Build Tools 36.0.0 por padrão, mesmo com compileSdk 37.
+      # AGP 8.13 usa Build Tools 35.0.0; os módulos compilam com API 36.
       - name: Install compile SDK
-        run: sdkmanager 'platforms;android-37' 'build-tools;36.0.0'
+        run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4

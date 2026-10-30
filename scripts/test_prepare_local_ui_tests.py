@@ -40,6 +40,39 @@ class LocalUiAdapterTest(unittest.TestCase):
         self.assertNotIn('@RunWith(AndroidJUnit4', generated)
         self.assertIn('Mode.NATIVE', generated)
 
+    def test_local_capture_import_changes_without_altering_assertions_or_device(self):
+        body = 'class ExampleTest {\n @Test fun pixels() = assertEquals(1, node.captureToImage().width)\n}\n'
+        original = 'package sample\nimport androidx.compose.ui.test.captureToImage\n' + body
+        path = self.source(original)
+        self.run_adapter([str(path.relative_to(self.root))])
+        generated = (self.destination / 'sample/ExampleTest.kt').read_text()
+        self.assertIn('import br.gov.caixa.loterias.core.designsystem.testing.captureToImage', generated)
+        self.assertTrue(generated.endswith(body))
+        self.assertEqual(path.read_text(), original)
+
+    def test_capture_import_text_inside_body_is_not_rewritten(self):
+        body = 'class ExampleTest {\n val label = "import androidx.compose.ui.test.captureToImage"\n}\n'
+        path = self.source('package sample\n' + body)
+        self.run_adapter([str(path.relative_to(self.root))])
+        generated = (self.destination / 'sample/ExampleTest.kt').read_text()
+        self.assertTrue(generated.endswith(body))
+
+    def test_wildcard_capture_uses_local_import_and_preserves_device_body(self):
+        body = 'class ExampleTest {\n @Test fun pixels() = assertEquals(1, node.captureToImage().width)\n}\n'
+        original = 'package sample\nimport androidx.compose.ui.test.*\n' + body
+        path = self.source(original)
+        self.run_adapter([str(path.relative_to(self.root))])
+        generated = (self.destination / 'sample/ExampleTest.kt').read_text()
+        self.assertIn('import br.gov.caixa.loterias.core.designsystem.testing.captureToImage', generated)
+        self.assertTrue(generated.endswith(body))
+        self.assertEqual(path.read_text(), original)
+
+    def test_wildcard_without_capture_does_not_add_capture_dependency(self):
+        path = self.source('package sample\nimport androidx.compose.ui.test.*\nclass ExampleTest {}\n')
+        self.run_adapter([str(path.relative_to(self.root))])
+        generated = (self.destination / 'sample/ExampleTest.kt').read_text()
+        self.assertNotIn('core.designsystem.testing.captureToImage', generated)
+
     def test_parameterized_cases_and_parameters_are_preserved(self):
         path = self.source('package sample\n@RunWith(Parameterized::class)\nclass ExampleTest(val id: Long) {\n'
                            ' @Parameterized.Parameters(name = "{0}") fun values() = listOf(1L, 2L)\n}\n')

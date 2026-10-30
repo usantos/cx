@@ -27,7 +27,7 @@ internal fun BettingMessageDialog(
     onPositive: () -> Unit,
     negativeLabel: String? = null,
     onNegative: () -> Unit = {},
-) = CaixaDSDialog(
+): Unit = CaixaDSDialog(
     title = title,
     message = message,
     positiveLabel = positiveLabel,

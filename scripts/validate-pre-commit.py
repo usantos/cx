@@ -2,6 +2,7 @@
 """Bloqueia commits sem validar integralmente o conteúdo preparado no index."""
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 
@@ -25,15 +26,34 @@ def prepared_tree():
     return git("write-tree")
 
 
+def is_java21(home):
+    if not home:
+        return False
+    try:
+        for line in (Path(home) / "release").read_text().splitlines():
+            if line.startswith("JAVA_VERSION="):
+                return re.match(r'^"21(?:[.+-]|"$)', line.partition("=")[2]) is not None
+    except (OSError, UnicodeError):
+        return False
+    return False
+
+
+def gradle_environment(original, platform, studio_java):
+    environment = original.copy()
+    if platform == "darwin" and not is_java21(environment.get("JAVA_HOME")) and is_java21(studio_java):
+        environment["JAVA_HOME"] = str(studio_java)
+    return environment
+
+
 def main():
     try:
         if len(sys.argv) != 1:
             raise RuntimeError("A validação completa não aceita argumentos, exclusões ou opções de atalho.")
         tree = prepared_tree()
-        environment = os.environ.copy()
         studio_java = Path("/Applications/Android Studio.app/Contents/jbr/Contents/Home")
-        if sys.platform == "darwin" and not environment.get("JAVA_HOME") and studio_java.is_dir():
-            environment["JAVA_HOME"] = str(studio_java)
+        environment = gradle_environment(os.environ, sys.platform, studio_java)
+        if environment.get("JAVA_HOME") != os.environ.get("JAVA_HOME"):
+            print("Gradle: usando o JBR 21 do Android Studio no lugar do JAVA_HOME herdado.", flush=True)
         command = [str(ROOT / "gradlew"), "preCommitCheck", "--continue", "--console=plain"]
         if environment.get("JAVA_HOME_21_X64"):
             command.append("-Porg.gradle.java.installations.fromEnv=JAVA_HOME_21_X64")

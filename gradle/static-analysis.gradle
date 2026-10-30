@@ -1,6 +1,6 @@
 // Executa analisadores estáveis em JVMs isoladas: sem substituir o classpath do compilador Kotlin/AGP.
 // Usa a integração oficial JavaExec do Detekt porque o plugin Gradle da versão 1.23.8
-// é anterior ao Gradle 9 / AGP 9. Não garante resolução de tipos com Kotlin 2.4.
+// mantém os analisadores isolados do KGP/AGP. Não garante resolução de tipos com Kotlin 2.4.
 configurations {
     detektTool { canBeConsumed = false }
     ktlintTool {

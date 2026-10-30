@@ -50,7 +50,7 @@ internal fun OnboardingStartupStatusDestination(
         StartupState.UNAVAILABLE -> StartupStatusKind.UNAVAILABLE
         else -> retryKind ?: initialKind
     }
-    statusPresentation.show(
+    statusPresentation.Content(
         kind = kind,
         onRetry = {
             retryKind = kind

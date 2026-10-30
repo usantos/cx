@@ -13,7 +13,7 @@ python3 scripts/validate-pre-commit.py
 
 O instalador preserva hooks preexistentes e `core.hooksPath`, inclusive global. Uma instalação idêntica não é reescrita; arquivos ausentes impedem a instalação. Não configura um gerenciador de hooks nem substitui hooks de terceiros. O runner versionado é carregado da raiz do checkout atual, inclusive em worktrees.
 
-São necessários Python 3, somente JDK 21 para Gradle/AGP, compiladores e testes (bytecode JVM 21) e o SDK/configuração local do projeto. No macOS, se `JAVA_HOME` estiver ausente, o runner usa o JBR do Android Studio instalado em `/Applications/Android Studio.app`. Um `JAVA_HOME` explícito permanece respeitado. No CI, a instalação JDK 21 do setup-java é encaminhada ao Gradle.
+São necessários Python 3, somente JDK 21 para Gradle/AGP, compiladores e testes (bytecode JVM 21) e o SDK/configuração local do projeto. No macOS, um `JAVA_HOME` em Java 21 permanece respeitado. Se estiver ausente, inválido ou apontar para outro Java (inclusive 17 herdado de um terminal antigo), o runner usa o JBR do Android Studio instalado em `/Applications/Android Studio.app` somente quando o arquivo `release` confirma Java 21. Essa seleção afeta apenas o subprocesso do gate; a exigência de JDK 21 permanece ativa. Sem JBR 21 disponível, o runner mantém o ambiente e a verificação do Gradle continua bloqueando um JDK incompatível. No CI, a instalação JDK 21 do setup-java é encaminhada ao Gradle.
 
 ## Conteúdo validado
 
@@ -68,3 +68,19 @@ O workflow continua usando os secrets `SIMLO_*` documentados no projeto e public
 `verifyAutomationIds` passou a integrar `preCommitCheck`. O gate confere declarações estáticas de `automationId`, o inventário distribuído e os localizadores Robot; rejeita controles Compose básicos sem ID explícito. Os testes do gate usam fixtures isoladas e são descobertos por `verifyToolingPolicyTests`. A verificação não inicia Appium nem exige farm/credenciais.
 
 A entrega independente fica em [automation/robot-certificacao](../../automation/robot-certificacao/README.md). O [contrato Android](../../automation/robot-certificacao/docs/IDS_ANDROID.md) distingue IDs por componente, escopo de listas e telas externas. Inspeção da árvore nativa e execução Robot real são etapas de CI/certificação próprias; dry-run não é homologação. Headers e baselines permanecem preservados.
+
+### Terminal macOS já aberto
+
+Alterar o perfil do shell não atualiza o ambiente de terminais já abertos. Execute
+`source ~/.zshrc` ou abra outro terminal para atualizar `JAVA_HOME` e `PATH` também
+nos comandos Gradle executados diretamente. A recuperação do runner acima evita
+que o commit herde Java 17 nesse intervalo. Não desativa o hook nem as validações.
+
+## Recomendações de versões e SDK na linha AGP 8.13
+
+A exceção autorizada abrange somente `AndroidGradlePluginVersion`, `GradleDependency`,
+`NewerVersionAvailable` e `OldTargetApi`, exibidas como informação.
+`verifyLintPolicy` valida essa lista exata e rejeita supressões globais ou
+relaxamento do bloqueio de erros/warnings. As demais regras continuam bloqueantes,
+e o hook continua executando o gate completo. O analisador Lint 9.2.1 é independente
+do plugin AGP 8.13.0; o projeto não voltou ao AGP 9.

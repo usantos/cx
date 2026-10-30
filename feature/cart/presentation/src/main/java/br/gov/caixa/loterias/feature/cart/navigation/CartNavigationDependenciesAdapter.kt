@@ -70,7 +70,7 @@ class CartNavigationDependenciesAdapter @Inject constructor(
     ) {
         val uiStrings = androidx.compose.ui.platform.LocalResources.current
         BackHandler { if (!loading) onBack() }
-        startupStatusPresentation.show(loading, onRetry, networkAvailability)
+        startupStatusPresentation.Content(loading, onRetry, networkAvailability)
         if (message != null) {
             CaixaDSAlertDialog(
                 title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),

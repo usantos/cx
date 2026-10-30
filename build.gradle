@@ -11,16 +11,19 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:9.2.1'
+        // Também processa metadados Kotlin 2.4 das dependências, mantendo AGP 8.13.
+        classpath 'com.android.tools:r8:9.1.57'
+        classpath 'com.android.tools.build:gradle:8.13.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:$kotlin_version"
         classpath 'com.google.devtools.ksp:symbol-processing-gradle-plugin:2.3.6'
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.60.1'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.58'
     }
 }
 
 
 apply from: rootProject.file('gradle/jvm-toolchains.gradle')
+apply from: rootProject.file('gradle/android-processors.gradle')
 apply from: rootProject.file('gradle/android-lint.gradle')
 apply from: rootProject.file('gradle/verify-feature-modules.gradle')
 apply from: rootProject.file('gradle/persistence-coverage.gradle')
@@ -386,7 +389,7 @@ tasks.register('modernCheck') {
             ':feature:responsible-gaming:presentation:check', ':feature:notifications:presentation:check', ':feature:retail:presentation:check', ':feature:home:presentation:check'
 }
 
-// O Lint do AGP 9.2 lê fontes Java gerados pelo Hilt em outras variantes. Executar
+// O Lint lê fontes Java gerados pelo Hilt em outras variantes. Executar
 // os três analisadores simultaneamente pode remover ou recriar esses diretórios durante
 // a análise. A matriz permanece completa, mas é serializada deliberadamente por variante.
 project(':app').tasks.configureEach { task ->

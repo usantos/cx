@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -17,6 +16,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaignTheme
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme

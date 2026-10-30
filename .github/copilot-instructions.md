@@ -36,3 +36,8 @@ Não preparar arquivos nem criar commit automaticamente. Não usar `--no-verify`
 - [Ambientes](../docs/ENVIRONMENTS.md), [TLS](../docs/SECURE_PIN_ROTATION.md).
 - [Documentação técnica/PDF](../docs/technical-guide/README.md), [Robot](../automation/robot-certificacao/README.md).
 Atualize a documentação afetada junto com o código e preserve a proveniência das evidências.
+
+Exceção autorizada em 30/10/2026: somente `AndroidGradlePluginVersion`,
+`GradleDependency`, `NewerVersionAvailable` e `OldTargetApi` são informativas
+para manter AGP 8.13.0/SDK 36. Preserve a lista exata, o bloqueio de erros e
+warnings e a tarefa `verifyLintPolicy`. Não estender essa exceção a outras regras.

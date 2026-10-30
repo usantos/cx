@@ -25,7 +25,7 @@ internal fun LoadingData(modifier: Modifier = Modifier) =
     Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
 
 @Composable
-internal fun ErrorData(message: String, retry: () -> Unit, modifier: Modifier = Modifier) = CaixaDSEmptyState(
+internal fun ErrorData(message: String, retry: () -> Unit, modifier: Modifier = Modifier): Unit = CaixaDSEmptyState(
     title = androidx.compose.ui.res.stringResource(LocalizedR.string.final_load_failure),
     message = message,
     actionLabel = androidx.compose.ui.res.stringResource(LocalizedR.string.final_retry),

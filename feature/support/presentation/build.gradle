@@ -1,12 +1,13 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.google.dagger.hilt.android'
-apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 apply plugin: 'jacoco'
 
 android {
     namespace = 'br.gov.caixa.loterias.feature.support'
-    compileSdk 37
+    compileSdk 36
 
     defaultConfig {
         minSdk 24
@@ -64,7 +65,7 @@ def coverageData = files({
     tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
 }).filter { it.isFile() }
 def coverageClasses = files(fileTree(
-        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        dir: layout.buildDirectory.dir('tmp/kotlin-classes/debug'),
         includes: ['**/SupportReducerKt.class', '**/SupportViewModel.class']
 ))
 

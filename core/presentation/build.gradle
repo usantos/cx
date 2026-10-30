@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdk 37
+    compileSdk 36
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_21
@@ -16,7 +17,7 @@ apply plugin: 'jacoco'
 
 android {
     namespace = 'br.gov.caixa.loterias.core.presentation'
-    compileSdk 37
+    compileSdk 36
     defaultConfig {
         minSdk 24
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -61,7 +62,7 @@ def noticeCoverageData = files({
     tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
 }, fileTree(layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
 def noticeCoverageClasses = files(fileTree(
-        dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'),
+        dir: layout.buildDirectory.dir('tmp/kotlin-classes/debug'),
         includes: ['**/BrazilianCurrencyFormattingKt*.class', '**/NoticeFormatting*.class', '**/ServiceNoticeRules*.class', '**/ServiceNoticeUiState*.class', '**/ServiceConnectionRules*.class', '**/ServiceFailure*.class', '**/ServiceRedirectEvent*.class']
 ))
 tasks.register('verifyNoticeCoverageInputs') {

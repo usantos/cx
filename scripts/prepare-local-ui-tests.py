@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Reuse explicitly selected behavioral UI suites as local Robolectric tests.
 
-Only the runner/configuration changes. Assertions and test bodies stay byte-for-byte
-intact, and the device sources remain independently runnable.
+O runner, a configuração e o import da captura local são adaptados. Asserções e
+corpos dos testes permanecem intactos; fontes em dispositivo continuam independentes.
 """
 import argparse
 from pathlib import Path
@@ -31,6 +31,15 @@ def prepare(root, module, manifest, destination):
     destination.mkdir(parents=True)
     for source, helper in sources:
         content = source.read_text()
+        content = re.sub(r'^import androidx\.compose\.ui\.test\.captureToImage(?=\s*$)',
+                         'import br.gov.caixa.loterias.core.designsystem.testing.captureToImage',
+                         content, flags=re.MULTILINE)
+        if (re.search(r'^import androidx\.compose\.ui\.test\.\*\s*$', content, re.MULTILINE)
+                and re.search(r'\.\s*captureToImage\s*\(', content)
+                and 'import br.gov.caixa.loterias.core.designsystem.testing.captureToImage' not in content):
+            content = re.sub(r'^(import androidx\.compose\.ui\.test\.\*)',
+                             r'\1\nimport br.gov.caixa.loterias.core.designsystem.testing.captureToImage',
+                             content, count=1, flags=re.MULTILINE)
         package = re.search(r'^package ([\w.]+)\s*$', content, re.MULTILINE)
         if package is None:
             raise ValueError(f'Missing package in {source}')

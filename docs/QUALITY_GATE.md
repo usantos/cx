@@ -1,7 +1,7 @@
 # Quality gate Android
 
 Integração dos dois requisitos recebidos em 22/10/2026. O gate mantém a arquitetura,
-o código de produção e as versões de Kotlin, AGP e Gradle existentes.
+o código de produção; as versões de build vigentes estão na tabela abaixo.
 
 [Resultados medidos e cobertura por módulo](QUALITY_GATE_RESULTS_20261022.md).
 
@@ -9,16 +9,16 @@ o código de produção e as versões de Kotlin, AGP e Gradle existentes.
 
 | Item | Versão / configuração |
 |---|---|
-| Gradle | 9.4.1 |
-| AGP | 9.2.1 |
+| Gradle | 8.14.6 |
+| AGP | 8.13.0 |
 | Kotlin / Compose compiler | 2.4.10 |
 | JVM do Gradle | 21 (validado com Android Studio JBR 21.0.10) |
 | Bytecode / toolchain de todos os módulos | 21 / 21 |
 | JVM dos testes locais Android | 21, igual aos compiladores, ao Gradle e ao alvo de produção |
 | Detekt CLI | 1.23.8 estável |
 | Ktlint CLI | 1.8.0, distribuição completa isolada |
-| Android Lint | 9.2.1, fornecido pelo AGP |
-| Android SDK / Build Tools no CI | 37 / 36.0.0 ([padrão oficial do AGP 9.2](https://developer.android.com/build/releases/agp-9-2-0-release-notes)) |
+| Android Lint | 9.2.1, analisador independente do AGP 8.13.0 |
+| Android SDK / Build Tools no CI | 36 / 35.0.0 ([compatibilidade AGP 8.13](https://developer.android.com/build/releases/agp-8-13-0-release-notes)) |
 | JaCoCo | 0.8.13, preservado |
 | Scripts de verificação | Python 3; hooks POSIX sh, macOS/Linux |
 
@@ -31,9 +31,9 @@ no classpath do compilador do aplicativo.
 
 A [matriz oficial](https://detekt.dev/docs/introduction/compatibility/) informa que
 Detekt estável 1.23.8 foi construído com Kotlin 2.0.21/Gradle 8.12.1/AGP 8.8.1.
-As versões com Kotlin 2.4 ainda são alpha. Para preservar a exigência de estabilidade
+A linha do Detekt com suporte ao Kotlin 2.4 ainda é alpha. Para preservar a exigência de estabilidade
 e não alterar o toolchain, usamos a [integração oficial por JavaExec/CLI](https://detekt.dev/docs/1.23.8/gettingstarted/gradletask/),
-isolada dos plugins Kotlin/AGP. O parser analisou os 2.061 fontes atuais sem erro.
+isolada dos plugins Kotlin/AGP. Na adaptação de 30/10/2026, o parser analisou os 2.659 fontes Kotlin sem erro.
 Isso valida a análise sintática deste checkout, não a compatibilidade completa de
 resolução de tipos Kotlin 2.4 ou de recursos futuros da linguagem.
 
@@ -281,3 +281,99 @@ Validação desta padronização em 29/10/2026:
 Os relatórios do gate permanecem em `build/reports/quality/full-summary.json` e
 `build/reports/jacoco/aggregate/`. As evidências acima descrevem compilação e
 validação local; não substituem a certificação em dispositivo.
+
+## Compatibilidade Android Studio com AGP 8.13 — 30/10/2026
+
+O build usa AGP 8.13.0, Gradle 8.14.6 e Java 21. Os módulos Android aplicam
+`org.jetbrains.kotlin.android` explicitamente, pois Kotlin integrado é um recurso
+do AGP 9. O compileSdk/targetSdk é 36, dentro da faixa oficialmente suportada;
+as bibliotecas cujo metadata AAR exigia SDK 37/AGP 9 foram substituídas por
+versões compatíveis, descritas em [Bibliotecas](LIBRARIES.md).
+
+As tarefas de cobertura leem os diretórios Kotlin do plugin explícito do AGP 8,
+sem remover classes, fontes, exclusões existentes ou verificações de integridade.
+Headers e baselines permanecem imutáveis. Evidências datadas de 29/10 e anteriores
+referem-se à configuração anterior e não validam esta adaptação.
+
+A compatibilidade inclui Kotlin/Compose Compiler 2.4.10 e Hilt 2.58. O leitor
+`kotlin-metadata-jvm` dos classpaths Hilt/KSP/annotationProcessor é alinhado em
+2.3.21 para ler também metadados 2.4 das dependências. A leitura estrita permanece
+ativa, e essa regra não altera o classpath de runtime do aplicativo. Os nomes JVM
+dos módulos são derivados do caminho único do projeto, sem caracteres inválidos
+para factories ou arquivos no Windows. O Gradle rejeita JDK diferente de 21 no
+início da configuração, antes de executar a suíte de validação.
+
+Navigation 2.9.8 recebe as transições padrão de entrada/saída/retorno em `None`;
+os parâmetros exclusivos da 2.10 foram retirados da chamada de NavHost. O teste
+`AppScreenTransitionTest` continua sendo a verificação de opacidade dos primeiros
+frames de abertura e retorno.
+
+Para as capturas de pixels JVM, `core/design-system/src/testSupport` contém uma
+ponte test-only com PixelCopy e UiAutomation reais. Evita apenas a espera de
+FrameCommitCallback que o Robolectric não implementa, equivalente à
+[correção AndroidX](https://android.googlesource.com/platform/frameworks/support/+/bcef06da086866f7389fdb8e8d5a80cff2ea2808).
+Os imports explícitos e curingas das cópias locais são adaptados, sem modificar
+corpos/asserções ou fontes em dispositivo. As comparações de pixels permanecem
+ativas. O suporte é ligado somente a sourceSets.test de módulos Compose, sem
+participar do APK ou do denominador de produção.
+
+O módulo Marketplace Filter declara minSdk 24, coerente com Core Presentation
+e com o mínimo já exigido pelo app host. Não se usa overrideLibrary para ignorar
+contratos de plataforma das dependências.
+
+### Resultado da adaptação de 30/10/2026
+
+- `:app:assembleTqsDebug` e `:app:assembleTqsRelease` foram executados com JDK 21/AGP 8.13.2. O Release final, com Gradle 8.14.6, passou em 10min13s, incluindo R8 e Lint Vital. O APK gerado é **não assinado**: não houve instalação nem certificação no Samsung nesta adaptação.
+- `verifyCoverage` passou em execução fresca: LINE **95,16%** (58.162/61.120 linhas; 2.958 não cobertas), estritamente acima de 95%. As exclusões e o limiar permanecem idênticos. A redução de duas linhas elegíveis corresponde à retirada dos dois callbacks exclusivos de Navigation 2.10, sem exclusão de código da medição.
+- Inspeção efetiva de JDK: 671 tarefas de compilação/teste/alvo verificadas em Java 21; 16.031 classes em 183 diretórios com major version 65 (Java 21).
+- `detekt`, `ktlintCheck` e os testes locais de Onboarding Data, Responsible Gaming Data e Support Data passaram na mesma execução final. A leitura do JSON de teste usa bytes UTF-8, disponível no SDK 36.
+- Os filtros existentes de métodos que exigem dispositivo só são ligados a módulos que possuem fontes de testes ou suítes compartilhadas. Módulos sem testes continuam no grafo e no denominador de produção, sem desativar tarefas nem tolerar falhas de seleção.
+- A execução completa de `preCommitCheck` encontrou pendências de Lint e **não foi aprovada**. O analisador recomenda versões de bibliotecas que exigem AGP 9/SDK 37, incompatíveis com o AGP 8.13 solicitado; também reportou `OldTargetApi`, `ComposableNaming` e `Recycle` (incluindo consultas que já usam `use`). Não foram adicionadas supressões nem alterados baselines para aceitar esses resultados. Os erros de compilação/configuração de testes e de Detekt daquela execução foram corrigidos e validados separadamente; isso não transforma o gate completo em aprovado.
+
+Os relatórios desta máquina estão em `/Users/ubiracysantos/simlo-artifacts/2026-10-30/agp813/`, fora do versionamento. Naquela execução o gate permaneceu bloqueado. A exceção posterior autorizada e sua verificação estão descritas abaixo.
+
+### Versão exata solicitada para Windows
+
+O AGP vigente é **8.13.0**, com Gradle 8.14.6 e JDK/bytecode 21. Os resultados
+acima que identificam AGP 8.13.2 são históricos e não comprovam a versão 8.13.0.
+O repositório remoto ainda continha AGP 9.2.1 porque o hook bloqueou o commit da
+adaptação pelo Lint; um push sem commit não publica arquivos do staging.
+No Android Studio do Windows, selecione JDK 21 em **Settings > Build, Execution,
+Deployment > Build Tools > Gradle > Gradle JDK** e use o Gradle Wrapper do projeto.
+
+Validação da versão exata: `:app:assembleTqsDebug` com AGP 8.13.0 e JDK 21
+passou em 5min19s (878 tarefas). O metadata do APK confirma `androidGradlePluginVersion=8.13.0`.
+Isso comprova a compilação Debug nesta máquina, sem alegar aprovação do gate
+completo ou certificação de execução no Windows. Headers e baselines preservados.
+
+### Exceção autorizada às recomendações de atualização — 30/10/2026
+
+O usuário autorizou tornar informativas somente `AndroidGradlePluginVersion`,
+`GradleDependency`, `NewerVersionAvailable` e `OldTargetApi`, para manter a linha
+AGP **8.13.0**/SDK **36**. Essas recomendações continuam nos relatórios. Não há
+mudança de baseline, desativação do Lint nem tolerância a falhas das demais regras.
+`abortOnError` e `warningsAsErrors` permanecem ativos.
+
+`verifyLintPolicy`, dependência de `lintQualityCheck`, confere a configuração
+real de todos os módulos Android e oito fixtures isoladas: a política válida
+passa; desligar o bloqueio de erros, relaxar warnings, acrescentar `NewApi` à
+exceção, remover uma recomendação da lista, desativar `Recycle`, ignorar `NewApi`
+ou ignorar warnings são recusados. A exceção não pode crescer silenciosamente.
+
+O analisador Lint **9.2.1** é selecionado por `android.experimental.lint.version`,
+separadamente do plugin de build AGP **8.13.0**. Essa seleção independente segue o
+[mecanismo documentado pelo Android](https://developer.android.com/develop/ui/compose/tooling/lint).
+Na comparação com os mesmos fontes, eliminou os falsos alertas `Recycle` em
+consultas já fechadas por `use`. As verificações de liberação de recursos continuam
+ativas. Os wrappers Compose declaram retorno `Unit` explicitamente, e os contratos
+de apresentação de estado expõem `Content`, conforme a convenção de nomes de
+funções Compose. Chamadas, parâmetros e desenho das telas foram preservados.
+
+Os resumos de execuções anteriores que falharam acima são históricos. A aprovação
+integral depende de executar o pre-commit sobre o conteúdo final preparado.
+
+Validação estática após as correções: `verifyLintPolicy ktlintCheck detekt
+lintQualityCheck --continue --console=plain` passou em 3min09s (1.632 tarefas).
+A política foi conferida em 36 módulos e oito fixtures. Esse resultado não
+substitui os testes e a cobertura: o hook executa o `preCommitCheck` completo
+e publica o resultado corrente em `build/reports/quality/full-summary.json`.

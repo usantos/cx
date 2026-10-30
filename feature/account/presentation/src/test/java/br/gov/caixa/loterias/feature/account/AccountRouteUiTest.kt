@@ -10,7 +10,6 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -18,6 +17,7 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performSemanticsAction
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
 import br.gov.caixa.loterias.feature.account.presentation.route.AccountRoute
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.AccountStatusViewModel

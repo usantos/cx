@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Verifica instalação e commits reais somente em repositórios descartáveis."""
+import importlib.util
 import os
 from pathlib import Path
 import shutil
@@ -241,6 +242,53 @@ class GitHooksTest(unittest.TestCase):
         result = self.install()
         self.assertNotEqual(result.returncode, 0)
         self.assertFalse((self.repo / ".git/hooks/pre-commit").exists())
+
+
+
+class GradleJavaEnvironmentTest(unittest.TestCase):
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location("commit_runner", ROOT / "scripts/validate-pre-commit.py")
+        self.runner = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.runner)
+        self.temporary = tempfile.TemporaryDirectory(prefix="jdk selection fixtures ")
+        self.addCleanup(self.temporary.cleanup)
+        self.base = Path(self.temporary.name)
+        self.studio = self.java_home("studio jbr", "21.0.10")
+
+    def java_home(self, name, version):
+        home = self.base / name
+        home.mkdir()
+        (home / "release").write_text(f'JAVA_VERSION="{version}"\n')
+        return home
+
+    def test_stale_java17_uses_verified_studio21_on_macos(self):
+        old = self.java_home("old jdk", "17.0.18")
+        original = {"JAVA_HOME": str(old), "PATH": "/fixture/bin"}
+        actual = self.runner.gradle_environment(original, "darwin", self.studio)
+        self.assertEqual(actual["JAVA_HOME"], str(self.studio))
+        self.assertEqual(actual["PATH"], original["PATH"])
+        self.assertEqual(original["JAVA_HOME"], str(old))
+
+    def test_explicit_java21_is_preserved(self):
+        chosen = self.java_home("chosen jdk", "21.0.9+10")
+        original = {"JAVA_HOME": str(chosen)}
+        self.assertEqual(self.runner.gradle_environment(original, "darwin", self.studio), original)
+
+    def test_absent_java_home_uses_verified_studio21(self):
+        self.assertEqual(self.runner.gradle_environment({}, "darwin", self.studio)["JAVA_HOME"], str(self.studio))
+
+    def test_missing_or_wrong_studio_jdk_does_not_replace_existing_home(self):
+        wrong = self.java_home("wrong studio", "17.0.18")
+        original = {"JAVA_HOME": "/fixture/selected"}
+        for candidate in (wrong, self.base / "missing"):
+            with self.subTest(candidate=candidate):
+                self.assertEqual(self.runner.gradle_environment(original, "darwin", candidate), original)
+
+    def test_windows_and_linux_do_not_use_macos_studio(self):
+        original = {"JAVA_HOME": "/fixture/selected"}
+        for platform in ("win32", "linux"):
+            with self.subTest(platform=platform):
+                self.assertEqual(self.runner.gradle_environment(original, platform, self.studio), original)
 
 
 if __name__ == "__main__":

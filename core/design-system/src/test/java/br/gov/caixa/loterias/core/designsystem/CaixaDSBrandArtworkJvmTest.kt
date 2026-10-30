@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PixelMap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
@@ -19,6 +18,7 @@ import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSAttentionIcon
 import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSLotteryMark
 import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPixMark
 import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSSelfAssessmentIcon
+import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

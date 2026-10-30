@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.isPopup
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -26,6 +25,7 @@ import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPrizeMercadoPagoMa
 import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnchoredTooltip
 import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSCurrentCartChevron
 import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSPrizeChevron
+import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

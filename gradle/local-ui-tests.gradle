@@ -7,12 +7,6 @@ subprojects { owner ->
         owner.tasks.withType(Test).configureEach {
             systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
             jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED', '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED'
-            // Testes individuais de janela física mantêm seu executor em dispositivo conectado.
-            // As classes de produção permanecem no denominador agregado inalterado.
-            rootProject.file('config/testing/local-ui-device-methods.txt').readLines()
-                    .collect { it.trim() }.findAll { it && !it.startsWith('#') }.each { name ->
-                filter.excludeTestsMatching(name)
-            }
             maxHeapSize = '2g'
             maxParallelForks = 1
         }
@@ -22,10 +16,23 @@ subprojects { owner ->
             def manifest = rootProject.file('config/testing/local-ui-suites.txt')
             def selected = manifest.readLines().any { it.trim().replaceFirst('^helper:', '').startsWith(modulePath + '/src/androidTest/') }
             if (owner.android.buildFeatures.compose) {
+                owner.android.sourceSets.test.java.srcDir(rootProject.file('core/design-system/src/testSupport/kotlin'))
+                owner.android.sourceSets.test.kotlin.srcDir(rootProject.file('core/design-system/src/testSupport/kotlin'))
                 owner.dependencies.add('testImplementation', owner.dependencies.platform(libs.androidx.compose.bom))
                 owner.dependencies.add('testImplementation', libs.androidx.compose.ui.test.junit4)
                 owner.dependencies.add('testImplementation', libs.androidx.test.ext.junit)
                 owner.dependencies.add('debugImplementation', libs.androidx.compose.ui.test.manifest)
+            }
+            // Não aplicar filtros a módulos sem fontes de teste: o AGP 8 inclui classes R
+            // geradas nessas tarefas, e o Gradle interpreta o filtro vazio como seleção sem resultados.
+            def ownsLocalTests = !owner.fileTree('src/test').matching { include '**/*.kt', '**/*.java' }.isEmpty()
+            if (selected || ownsLocalTests) {
+                owner.tasks.withType(Test).configureEach {
+                    rootProject.file('config/testing/local-ui-device-methods.txt').readLines()
+                            .collect { it.trim() }.findAll { it && !it.startsWith('#') }.each { name ->
+                        filter.excludeTestsMatching(name)
+                    }
+                }
             }
             if (!selected) return
             owner.configurations.testImplementation.extendsFrom(owner.configurations.androidTestImplementation)

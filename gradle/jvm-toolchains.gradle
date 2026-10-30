@@ -1,8 +1,14 @@
+if (JavaVersion.current() != JavaVersion.VERSION_21) {
+    throw new GradleException('Este projeto exige JDK 21 também para executar o Gradle. Configure JAVA_HOME e o Gradle JDK do Android Studio para 21.')
+}
+
 // Compiladores e executores usam a mesma instalação, independentemente do JDK padrão da máquina.
 subprojects { owner ->
-    ['org.jetbrains.kotlin.jvm', 'com.android.application', 'com.android.library'].each { pluginId ->
+    ['org.jetbrains.kotlin.jvm', 'org.jetbrains.kotlin.android'].each { pluginId ->
         owner.plugins.withId(pluginId) {
             owner.kotlin.jvmToolchain(21)
+            // Evita ':' nos nomes JVM do Kotlin 2.4, incompatível com factories Hilt e arquivos no Windows.
+            owner.kotlin.compilerOptions.moduleName.set(owner.path.replaceAll('[^A-Za-z0-9_]', '_'))
         }
     }
     owner.tasks.withType(JavaCompile).configureEach {

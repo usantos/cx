@@ -16,6 +16,8 @@ internal fun HomeTopBar(
     quickAccessToggleEnabled: Boolean = true,
     campaignRotation: Float = 0f,
     actionsVisible: Boolean = true,
-) = CaixaDSHomeTopBar(unreadNotificationCount, homeCampaign == HomeCampaign.OUTUBRO_ROSA,
+): Unit = CaixaDSHomeTopBar(
+    unreadNotificationCount, homeCampaign == HomeCampaign.OUTUBRO_ROSA,
     quickAccessExpanded, cloverRotation, actions.openMenu, actions.openNotifications,
-    actions.toggleCampaign, actions.toggleQuickAccess, quickAccessToggleEnabled, campaignRotation, actionsVisible)
+    actions.toggleCampaign, actions.toggleQuickAccess, quickAccessToggleEnabled, campaignRotation, actionsVisible
+)

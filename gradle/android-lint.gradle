@@ -7,10 +7,51 @@ gradle.taskGraph.whenReady { graph ->
         throw new GradleException('Baseline updates cannot run inside validation. Use only -PupdateLintBaseline=true lintQualityBaseline.')
     }
 }
+// A exceção autorizada é limitada às recomendações; falhas reais continuam bloqueantes.
+def approvedAdvice = ['AndroidGradlePluginVersion', 'GradleDependency', 'NewerVersionAvailable', 'OldTargetApi'] as Set
+def lintModels = [:]
+def policyProblems = { policy ->
+    def problems = []
+    if (!policy.abortOnError) problems += 'abortOnError deve permanecer ativo'
+    if (!policy.warningsAsErrors) problems += 'warningsAsErrors deve permanecer ativo'
+    if ((policy.informational as Set) != approvedAdvice) problems += 'Severidades informativas fora da exceção autorizada'
+    if (policy.disable || policy.ignore || policy.ignoreWarnings) problems += 'Supressões globais não são permitidas'
+    problems
+}
+def verifyLintPolicy = tasks.register('verifyLintPolicy') {
+    group = 'verification'
+    description = 'Checks actual Lint severities and isolated positive/negative policy fixtures.'
+    doLast {
+        def valid = [abortOnError: true, warningsAsErrors: true, informational: approvedAdvice,
+                     disable: [] as Set, ignore: [] as Set, ignoreWarnings: false]
+        if (policyProblems(valid)) throw new GradleException('Fixture positiva da política Lint recusada')
+        def invalid = [
+                [abortOnError: false], [warningsAsErrors: false],
+                [informational: approvedAdvice + ['NewApi']],
+                [informational: approvedAdvice - ['OldTargetApi']],
+                [disable: ['Recycle'] as Set], [ignore: ['NewApi'] as Set], [ignoreWarnings: true],
+        ]
+        invalid.each { mutation ->
+            if (policyProblems(valid + mutation).isEmpty()) {
+                throw new GradleException("Fixture negativa da política Lint aceita: ${mutation.keySet()}")
+            }
+        }
+        lintModels.each { path, model ->
+            def actual = [abortOnError: model.abortOnError, warningsAsErrors: model.warningsAsErrors,
+                          informational: model.informational, disable: model.disable, ignore: model.ignore,
+                          ignoreWarnings: model.ignoreWarnings]
+            def problems = policyProblems(actual)
+            if (problems) throw new GradleException("Política Lint inválida em ${path}: ${problems.join('; ')}")
+        }
+        logger.lifecycle("Lint policy: ${lintModels.size()} módulos e 8 fixtures verificados; somente 4 recomendações informativas.")
+    }
+}
+
 def expectedLintTasks = []
 def lintQuality = tasks.register('lintQualityCheck') {
     group = 'verification'
     description = 'Checks every Android module once (product app PRD Debug, other Android modules Debug).'
+    dependsOn verifyLintPolicy
     doFirst {
         if (updateBaselines) {
             throw new GradleException('Baseline updates are separate from validation. Run lintQualityBaseline, then lintQualityCheck without -PupdateLintBaseline.')
@@ -35,6 +76,9 @@ subprojects { owner ->
             owner.extensions.getByName('android').lint {
                 abortOnError = true
                 warningsAsErrors = true
+                // A linha AGP 8.13 exige versões compatíveis: recomendações de atualização
+                // continuam no relatório; verificações de correção e segurança seguem bloqueantes.
+                informational += ['AndroidGradlePluginVersion', 'GradleDependency', 'NewerVersionAvailable', 'OldTargetApi']
                 checkReleaseBuilds = true
                 // Cada módulo Android possui sua tarefa canônica de lint. Não repete a análise/geração de relatórios de
                 // dependências para cada consumidor; os detectores de lint das dependências continuam sendo carregados.
@@ -59,6 +103,7 @@ subprojects { owner ->
                     baseline = baselineFile
                 }
             }
+            lintModels[owner.path] = owner.extensions.getByName('android').lint
             expectedLintTasks += "${owner.path}:lint${variant}"
             lintQuality.configure { dependsOn "${owner.path}:lint${variant}" }
             if (updateBaselines) {

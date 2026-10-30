@@ -103,7 +103,7 @@ private class AppAccountEnvironmentDependencies(
 
 private class AppHostStartupStatusPresentation : StartupStatusPresentation {
     @androidx.compose.runtime.Composable
-    override fun show(
+    override fun Content(
         kind: StartupStatusKind,
         onRetry: () -> Unit,
         networkAvailability: NetworkAvailability,
@@ -113,7 +113,7 @@ private class AppHostStartupStatusPresentation : StartupStatusPresentation {
 
 private class AppCartRecoveryStatusPresentation : CartRecoveryStatusPresentation {
     @androidx.compose.runtime.Composable
-    override fun show(
+    override fun Content(
         loading: Boolean,
         onRetry: () -> Unit,
         networkAvailability: NetworkAvailability,

@@ -194,9 +194,9 @@ class HostCompositionBindingsJvmTest {
         compose.setContent {
             CaixaDSTheme {
                 when (mode.value) {
-                    0 -> startup.show(StartupStatusKind.UNAVAILABLE, { retries++ }, network, false)
+                    0 -> startup.Content(StartupStatusKind.UNAVAILABLE, { retries++ }, network, false)
                     1 -> offline.Offline({ retries++ }, false)
-                    else -> cart.show(false, { retries++ }, network)
+                    else -> cart.Content(false, { retries++ }, network)
                 }
             }
         }

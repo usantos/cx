@@ -1,9 +1,10 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.google.dagger.hilt.android'
-apply plugin: 'com.android.library'
 
 android {
-    compileSdk 37
+    compileSdk 36
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_21
@@ -71,7 +72,7 @@ def cartCoverageData = files({
 }, fileTree(layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
 // Mantém a fronteira original de apresentação, incluindo todas as classes aninhadas de corrotinas e Compose.
 // DI e navegação movidas de app continuam validadas pelos testes de integração do aplicativo.
-def cartCoverageClasses = files(fileTree(dir: layout.buildDirectory.dir('intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes'), includes: [
+def cartCoverageClasses = files(fileTree(dir: layout.buildDirectory.dir('tmp/kotlin-classes/debug'), includes: [
         '**/presentation/**/*.class'
 ]))
 tasks.register('verifyCartCoverageInputs') {
