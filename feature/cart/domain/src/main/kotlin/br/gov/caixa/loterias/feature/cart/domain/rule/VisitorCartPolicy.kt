@@ -3,14 +3,48 @@ package br.gov.caixa.loterias.feature.cart.domain.rule
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
+import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.model.VISITOR_DUPLICATE_CONFIRMATION
 import br.gov.caixa.loterias.feature.cart.domain.model.VisitorCartEntry
 import br.gov.caixa.loterias.feature.cart.domain.model.VisitorCartSelection
 import br.gov.caixa.loterias.feature.cart.domain.model.localizedMessage as messageText
 import java.math.BigDecimal
+import java.text.Normalizer
+import java.util.Locale
 
 /** Regras de apostas de visitantes. A persistência fornece retratos e aplica todas as mutações atomicamente. */
 object VisitorCartPolicy {
+    /** Um carrinho não nulo não confirma o lote: todas as apostas e suas multiplicidades devem estar presentes. */
+    fun transferConfirmed(sent: ShoppingCart, received: ShoppingCart?): Boolean {
+        if (sent.items.isEmpty() || received == null || received.betCount < sent.betCount) return false
+        val individual = received.items.filter { it.kind == CartItemKind.INDIVIDUAL_BET && it.id > 0 }
+        if (individual.map { it.id }.distinct().size != individual.size) return false
+        val accepted = individual.groupingBy { it.transferIdentity() }.eachCount()
+        return sent.items.groupingBy { it.transferIdentity() }.eachCount().all { (bet, count) ->
+            accepted.getOrDefault(bet, 0) >= count
+        }
+    }
+
+    private fun CartItem.transferIdentity(): CartItem {
+        val code = Normalizer.normalize(modalityCode, Normalizer.Form.NFD)
+            .replace(Regex("\\p{M}+"), "").uppercase(Locale.ROOT).replace(Regex("[^A-Z0-9]"), "")
+        return copy(
+            id = 0,
+            title = "",
+            description = "",
+            amount = amount.stripTrailingZeros(),
+            modalityCode = when (code) {
+                "SUPERSETE" -> "SUPER7"
+                "MILIONARIA" -> "MAISMILIONARIA"
+                else -> code
+            },
+            selectedNumbers = selectedNumbers.map { it.sorted() },
+            selectedClovers = selectedClovers.sorted()
+        )
+    }
+
     fun gameFor(draft: BetDraft, parameters: BettingParameters): LotteryGameParameters {
         require(draft.quantity in 1..1000) { messageText("quantidade_de_apostas_invalida_f224c8") }
         val game = requireNotNull(

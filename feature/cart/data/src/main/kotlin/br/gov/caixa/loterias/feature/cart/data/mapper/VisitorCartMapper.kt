@@ -19,6 +19,9 @@ internal fun LocalCartBet.visitorCartSelection() = VisitorCartSelection(
     favoriteTeam?.number, luckyMonth?.number, loteca, lotogol
 )
 
+/** Usa a mesma projeção das apostas locais ao conferir o lote retornado após o login. */
+fun List<LocalCartBet>.toVisitorCartSnapshot(): ShoppingCart = legacyVisitorCart(this)
+
 internal fun legacyVisitorCart(bets: List<LocalCartBet>): ShoppingCart {
     val items = bets.map { bet ->
         val rows = when (val numbers = bet.numbers) {

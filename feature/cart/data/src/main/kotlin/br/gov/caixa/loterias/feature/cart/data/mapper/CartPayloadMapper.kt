@@ -1,21 +1,26 @@
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
+import br.gov.caixa.loterias.feature.cart.data.datasource.remote.summaryTotal
+import br.gov.caixa.loterias.feature.cart.data.dto.CartBetDto
+import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
 import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
-
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.data.dto.CartBetDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
 import java.math.BigDecimal
-import br.gov.caixa.loterias.feature.cart.data.datasource.remote.summaryTotal
 
 internal fun CartDto?.mapCartPayload(): ShoppingCart {
     val cart = requireNotNull(this) { messageText("carrinho_sem_payload_d5c84c") }
     val mappedItems = buildList {
         cart.poolShares.orEmpty().forEach { add(it.cartToCartItem(CartItemKind.POOL_SHARE)) }
-        cart.individualBets.orEmpty().filter { it.modality?.isJsonNull == false }.forEach {
+        val groupedBets = cart.individualBets.orEmpty()
+        val groupedIds = (groupedBets + cart.poolShares.orEmpty() + cart.combos.orEmpty().flatMap { it.bets.orEmpty() })
+            .mapNotNull { it.id }.toSet()
+        val individualBets = groupedBets + cart.bets.orEmpty().filter {
+            it.id !in groupedIds && it.poolReservation == null && it.combo != true
+        }
+        individualBets.filter { it.modality?.isJsonNull == false }.forEach {
             add(it.cartToCartItem(CartItemKind.INDIVIDUAL_BET))
         }
         cart.combos.orEmpty().forEach { combo ->

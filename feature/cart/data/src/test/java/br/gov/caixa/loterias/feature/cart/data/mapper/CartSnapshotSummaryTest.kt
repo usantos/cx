@@ -1,10 +1,13 @@
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
+import br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartRemoteDataSource
 import br.gov.caixa.loterias.feature.cart.data.dto.CartBetDto
 import br.gov.caixa.loterias.feature.cart.data.dto.CartComboDto
 import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
 import br.gov.caixa.loterias.feature.cart.data.dto.CartPoolReservationDto
+import br.gov.caixa.loterias.feature.cart.data.repository.CartRepositoryImpl
+import br.gov.caixa.loterias.feature.cart.data.repository.toDomainCart
+import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import java.math.BigDecimal
@@ -13,9 +16,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartRemoteDataSource
-import br.gov.caixa.loterias.feature.cart.data.repository.CartRepositoryImpl
-import br.gov.caixa.loterias.feature.cart.data.repository.toDomainCart
 
 class CartSnapshotSummaryTest {
     private val individual = CartBetDto(
@@ -71,7 +71,8 @@ class CartSnapshotSummaryTest {
         val cart = CartDto(bets = listOf(individual, pool) + comboBets).toDomainCart()
         assertEquals(BigDecimal("25.50"), cart.total)
         assertEquals(4, cart.betCount)
-        assertTrue(cart.items.isEmpty())
+        assertEquals(listOf(individual.id), cart.items.map { it.id })
+        assertEquals(CartItemKind.INDIVIDUAL_BET, cart.items.single().kind)
     }
 
     @Test fun `summary preserves decimal precision ignores absent standalone amounts and rejects incomplete reservation`() {
@@ -131,5 +132,25 @@ class CartSnapshotSummaryTest {
         snapshot = snapshot.copy(bets = emptyList(), individualBets = emptyList())
         assertEquals(0, repo.clear().betCount)
         assertEquals(BigDecimal.ZERO, repo.current().total)
+    }
+
+    @Test fun `flat individual bets remain visible with empty or incomplete grouped projections`() {
+        val extra = individual.copy(id = Long.MAX_VALUE)
+        for (grouped in listOf(emptyList(), listOf(individual))) {
+            val cart = fullCart().copy(individualBets = grouped, bets = listOf(individual, extra, pool) + comboBets).toDomainCart()
+            assertEquals(listOf(individual.id, extra.id), cart.items.filter { it.kind == CartItemKind.INDIVIDUAL_BET }.map { it.id })
+            assertEquals(listOf(pool.id), cart.items.filter { it.kind == CartItemKind.POOL_SHARE }.map { it.id })
+            assertEquals(
+                listOf(CartItemKind.POOL_SHARE, CartItemKind.INDIVIDUAL_BET, CartItemKind.INDIVIDUAL_BET, CartItemKind.COMBO),
+                cart.items.map { it.kind }
+            )
+        }
+    }
+
+    @Test fun `flat combo bets and reserved shares are not presented as individual bets`() {
+        val rows = listOf(individual, individual.copy(id = Long.MAX_VALUE, combo = true), pool)
+        val cart = CartDto(bets = rows).toDomainCart()
+        assertEquals(listOf(individual.id), cart.items.map { it.id })
+        assertTrue(cart.items.all { it.kind == CartItemKind.INDIVIDUAL_BET })
     }
 }

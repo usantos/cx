@@ -129,6 +129,29 @@ um callback sem confirmação ou após cancelar não pode esvaziar o carrinho.
 O teste de persistência cobre Lotomania sem espelho com Lotofácil, preservando
 esta última e seus valores após excluir a primeira e recriar o repositório.
 
+No pós-login, `PostLoginAccountRepositoryImpl` envia o lote preparado por
+`CartTransferRepository` ao `POST logado/usuarios/verificar-cadastro`, mantendo
+o vínculo com a identidade capturada. Um carrinho não nulo não confirma o lote:
+`VisitorCartPolicy.transferConfirmed` compara os itens individuais retornados
+com a projeção das apostas enviadas, incluindo quantidades repetidas, modalidade,
+concurso, seleções, trevos, valor, teimosinha e os indicadores/complementos
+disponíveis nessa projeção.
+Identificadores novos do servidor e textos de título/descrição não definem a
+identidade da aposta; a ordem dos números e a escala decimal são normalizadas.
+IDs de servidor duplicados não confirmam o recebimento de apostas distintas.
+
+Se o retorno estiver vazio, parcial ou divergente, a cópia local e o recibo
+pendente são preservados, com `localCartReviewRequired` para revisão na Home.
+As apostas não são reenviadas automaticamente em uma nova verificação. A
+limpeza só ocorre após a publicação do carrinho e a confirmação do lote para
+a mesma sessão, mantendo as proteções de fingerprint existentes.
+
+`CartPayloadMapper` também exibe apostas individuais válidas recebidas na lista
+`apostas`, mesmo se `apostasIndividuais` vier ausente, vazia ou incompleta. Ele
+completa os itens sem repetir IDs já agrupados e sem converter cotas ou apostas
+identificadas como parte de combos em exclusões individuais. Os cálculos de
+resumo continuam usando o retrato completo do serviço.
+
 ## Resultados de sorteios — Results
 
 | Consulta | Chamada | Retorno |
