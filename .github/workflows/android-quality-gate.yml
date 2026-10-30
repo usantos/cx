@@ -21,14 +21,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # Gradle/AGP executam na versão 21; os módulos Kotlin/JVM solicitam explicitamente a cadeia de ferramentas 17.
-      - name: Set up JDKs 17 and 21
+      # Gradle, compiladores e testes usam somente JDK 21; o bytecode também tem alvo 21.
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: |
-            17
-            21
+          java-version: '21'
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3

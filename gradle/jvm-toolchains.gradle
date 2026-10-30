@@ -1,0 +1,23 @@
+// Compiladores e executores usam a mesma instalação, independentemente do JDK padrão da máquina.
+subprojects { owner ->
+    ['org.jetbrains.kotlin.jvm', 'com.android.application', 'com.android.library'].each { pluginId ->
+        owner.plugins.withId(pluginId) {
+            owner.kotlin.jvmToolchain(21)
+        }
+    }
+    owner.tasks.withType(JavaCompile).configureEach {
+        javaCompiler = owner.javaToolchains.compilerFor {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+    owner.plugins.withId('java-library') {
+        owner.tasks.withType(JavaCompile).configureEach {
+            options.release = 21
+        }
+    }
+    owner.tasks.withType(Test).configureEach {
+        javaLauncher = owner.javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+}

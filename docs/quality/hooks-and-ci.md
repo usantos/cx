@@ -13,7 +13,7 @@ python3 scripts/validate-pre-commit.py
 
 O instalador preserva hooks preexistentes e `core.hooksPath`, inclusive global. Uma instalação idêntica não é reescrita; arquivos ausentes impedem a instalação. Não configura um gerenciador de hooks nem substitui hooks de terceiros. O runner versionado é carregado da raiz do checkout atual, inclusive em worktrees.
 
-São necessários Python 3, JDK 21 para Gradle/AGP, toolchain JVM 17 e o SDK/configuração local do projeto. No macOS, se `JAVA_HOME` estiver ausente, o runner usa o JBR do Android Studio instalado em `/Applications/Android Studio.app`. Um `JAVA_HOME` explícito permanece respeitado. No CI, as toolchains instaladas pelo setup-java são encaminhadas ao Gradle.
+São necessários Python 3, somente JDK 21 para Gradle/AGP, compiladores e testes (bytecode JVM 21) e o SDK/configuração local do projeto. No macOS, se `JAVA_HOME` estiver ausente, o runner usa o JBR do Android Studio instalado em `/Applications/Android Studio.app`. Um `JAVA_HOME` explícito permanece respeitado. No CI, a instalação JDK 21 do setup-java é encaminhada ao Gradle.
 
 ## Conteúdo validado
 

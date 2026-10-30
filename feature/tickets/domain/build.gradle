@@ -3,10 +3,10 @@ apply plugin: 'org.jetbrains.kotlin.jvm'
 apply plugin: 'jacoco'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
-kotlin { jvmToolchain(17) }
+kotlin { jvmToolchain(21) }
 jacoco { toolVersion = '0.8.13' }
 dependencies {
     testImplementation libs.junit4

@@ -20,7 +20,7 @@ Preserve alterações existentes; não usar reset/clean abrangente, apagar dados
 
 ## Validação e conclusão
 
-Execute testes pertinentes durante a implementação, uma invocação Gradle por vez. JDK 21 para Gradle, toolchain JVM 17 e SDK conforme o projeto. Configuração pública autorizada em `.local/build-security.properties`, baseada no exemplo em `gradle/`.
+Execute testes pertinentes durante a implementação, uma invocação Gradle por vez. JDK 21 para Gradle, compilação e testes, com bytecode JVM 21 e SDK conforme o projeto. Configuração pública autorizada em `.local/build-security.properties`, baseada no exemplo em `gradle/`.
 - Feedback estático: `./gradlew quickQualityCheck`.
 - Contratos de arquitetura/IDs: `./gradlew verifyCleanArchitecture verifyAutomationIds`.
 - APK de desenvolvimento: `./gradlew :app:assembleTqsDebug`.

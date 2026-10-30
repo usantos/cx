@@ -8,7 +8,7 @@ def compileFilaTrust = tasks.register('compileFilaBraTrustManager', JavaCompile)
     source rootProject.file('third-party/security/filabra')
     classpath = files()
     destinationDirectory = filaClasses
-    options.release = 8
+    options.release = 21
 }
 def hardenFila = tasks.register('hardenFilaBra') {
     dependsOn compileFilaTrust

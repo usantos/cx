@@ -35,8 +35,8 @@ def main():
         if sys.platform == "darwin" and not environment.get("JAVA_HOME") and studio_java.is_dir():
             environment["JAVA_HOME"] = str(studio_java)
         command = [str(ROOT / "gradlew"), "preCommitCheck", "--continue", "--console=plain"]
-        if environment.get("JAVA_HOME_17_X64") and environment.get("JAVA_HOME_21_X64"):
-            command.append("-Porg.gradle.java.installations.fromEnv=JAVA_HOME_17_X64,JAVA_HOME_21_X64")
+        if environment.get("JAVA_HOME_21_X64"):
+            command.append("-Porg.gradle.java.installations.fromEnv=JAVA_HOME_21_X64")
         print("Validando arquitetura, Ktlint, Detekt, Android Lint, testes, cobertura >95%, contratos e APK PRD Debug.", flush=True)
         result = subprocess.run(command, cwd=ROOT, env=environment)
         if result.returncode:

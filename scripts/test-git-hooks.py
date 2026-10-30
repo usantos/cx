@@ -224,11 +224,17 @@ class GitHooksTest(unittest.TestCase):
         self.assertIn("COMMIT BLOCKED", result.stderr)
         self.assertNotIn("COMMIT ALLOWED", result.stdout)
 
-    def test_ci_toolchains_are_forwarded_without_accepting_skip_options(self):
-        self.env.update(JAVA_HOME_17_X64="/fixture/java17", JAVA_HOME_21_X64="/fixture/java21")
+    def test_ci_jdk21_is_forwarded_without_requiring_jdk17(self):
+        self.env.update(JAVA_HOME_21_X64="/fixture/java21")
         result = self.run_command("sh", "scripts/git-hooks/pre-commit")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual((self.repo / "invoked-task").read_text(), "preCommitCheck --continue --console=plain -Porg.gradle.java.installations.fromEnv=JAVA_HOME_17_X64,JAVA_HOME_21_X64\n")
+        self.assertEqual((self.repo / "invoked-task").read_text(), "preCommitCheck --continue --console=plain -Porg.gradle.java.installations.fromEnv=JAVA_HOME_21_X64\n")
+
+    def test_legacy_jdk17_does_not_become_a_required_toolchain(self):
+        self.env.update(JAVA_HOME_17_X64="/fixture/java17")
+        result = self.run_command("sh", "scripts/git-hooks/pre-commit")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.repo / "invoked-task").read_text(), "preCommitCheck --continue --console=plain\n")
 
     def test_install_refuses_missing_runner(self):
         (self.repo / "scripts/validate-pre-commit.py").unlink()

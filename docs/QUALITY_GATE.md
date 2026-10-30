@@ -13,8 +13,8 @@ o código de produção e as versões de Kotlin, AGP e Gradle existentes.
 | AGP | 9.2.1 |
 | Kotlin / Compose compiler | 2.4.10 |
 | JVM do Gradle | 21 (validado com Android Studio JBR 21.0.10) |
-| Target JVM / toolchain dos módulos JVM | 17 |
-| JVM dos testes locais Android | 21, compatível com o bytecode das dependências Android de diagnóstico; alvo de produção preservado em 17 |
+| Bytecode / toolchain de todos os módulos | 21 / 21 |
+| JVM dos testes locais Android | 21, igual aos compiladores, ao Gradle e ao alvo de produção |
 | Detekt CLI | 1.23.8 estável |
 | Ktlint CLI | 1.8.0, distribuição completa isolada |
 | Android Lint | 9.2.1, fornecido pelo AGP |
@@ -221,7 +221,7 @@ Proveniência: `build/verification/pre-commit-20261028/full-gate.log`, `final-su
 
 Os testes locais Android usam um executor Java 21, pois as dependências de
 inspeção de rede do build Debug contêm bytecode dessa versão. A compilação do
-aplicativo e dos módulos JVM continua com alvo 17. Uma falha de carregamento de
+aplicativo e dos módulos JVM agora também usa alvo 21. Uma falha de carregamento de
 classe no executor deve ser resolvida no runtime de testes, sem excluir testes,
 fontes ou dependências da medição.
 
@@ -243,3 +243,41 @@ Shake, trevos e ganhadores regionais na Home, além dos redirecionamentos reais
 de apostas e pagamentos, limpeza do backstack e retomada da sessão vinculada
 ao titular. Esses testes exercitam interações e destinos observáveis; não
 substituem os testes locais existentes nem a certificação em dispositivo.
+
+## Padronização Java 21 — 29/10/2026
+
+Gradle, toolchains Kotlin/Java, compilação dos módulos Android/JVM e execução de
+testes usam JDK 21. O alvo de linguagem e o bytecode também são 21, conforme a
+orientação final de padronizar tudo nessa versão. `gradle/jvm-toolchains.gradle`
+seleciona os compiladores e executores; os módulos declaram compatibilidade 21.
+Nos módulos JVM, `options.release=21` mantém a API Java e o bytecode alinhados.
+No Android, `compileOptions` define o alvo que o Kotlin integrado do AGP herda;
+o D8/R8 converte as classes para DEX. SDK e minSdk permanecem os mesmos.
+
+O CI instala apenas JDK 21 e o hook encaminha `JAVA_HOME_21_X64` ao Gradle quando
+presente. O patch Java de FilaBRA e o compilador do runner legado também geram
+classes JVM21; os binários originais de fornecedores não são reescritos no Git.
+Os registros históricos de execuções anteriores descrevem o alvo vigente na
+respectiva data e não representam validação da nova configuração.
+
+Validação desta padronização em 29/10/2026:
+
+- `./gradlew preCommitCheck --continue --console=plain`: aprovado em 21m27s;
+  Ktlint, Detekt, Android Lint, arquitetura, contratos, testes e APK PRD Debug
+  aprovados. Os 3.563 testes Android/JVM passaram, sem falhas, erros ou skips;
+  o hook passou seus 22 testes isolados.
+- JaCoCo LINE: **95,16%**, com 58.164/61.122 linhas cobertas. Nenhuma fonte,
+  exclusão, limiar ou baseline foi alterado para obter esse resultado.
+- `:app:assembleTqsRelease`: aprovado com R8 e Lint vital de release, fornecendo
+  somente a instalação JDK 21 via `org.gradle.java.installations.paths`, com
+  detecção e download automáticos de outras instalações desativados.
+- Conferência adicional da configuração efetiva: 541 tarefas com compiladores,
+  executores e alvos 21. Nos outputs compilados de PRD Debug, TQS Release,
+  bibliotecas e testes JVM/Debug, 15.991 classes em 183 diretórios usam major
+  version 65 (Java 21).
+- O runner de paridade legado compilou e gerou seu APK com JDK 21. Headers
+  protegidos e arquivos de configuração/baselines conservaram seus hashes.
+
+Os relatórios do gate permanecem em `build/reports/quality/full-summary.json` e
+`build/reports/jacoco/aggregate/`. As evidências acima descrevem compilação e
+validação local; não substituem a certificação em dispositivo.

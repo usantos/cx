@@ -36,6 +36,18 @@ As regras do projeto inteiro estão em [.github/copilot-instructions.md](.github
 
 ## Configuração local e CI
 
+Use somente **JDK 21**: Gradle, toolchains, testes e bytecode de todos os módulos
+estão configurados em 21. Não é necessário instalar JDK 17. No Android Studio,
+selecione JDK 21 em **Settings → Build, Execution, Deployment → Build Tools →
+Gradle → Gradle JDK**; no terminal, configure `JAVA_HOME` para a mesma instalação.
+No Windows, por exemplo (ajuste o caminho à instalação):
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21"
+$env:Path = "$env:JAVA_HOME\bin;$env:Path"
+.\gradlew.bat --version
+```
+
 Antes de compilar em um novo checkout, copie `gradle/build-security.properties.example`
 para `.local/build-security.properties` e preencha com os valores públicos autorizados.
 O arquivo local é ignorado pelo Git; o CI pode fornecer as mesmas chaves por variáveis

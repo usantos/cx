@@ -14,7 +14,7 @@ CASES = [
     ('ForbiddenFeatureHostColor.kt', 'verifyCaixaDS', 'package br.gov.caixa.loterias.feature.home.presentation.host.components\nval forbiddenColor = androidx.compose.ui.graphics.Color(0xff123456)\n'),
 ]
 if __name__ == '__main__':
-    env = dict(os.environ, JAVA_HOME='/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home')
+    env = os.environ.copy()
     HOST.mkdir(parents=True, exist_ok=True)
     for name, gate, body in CASES:
         fixture = HOST / name

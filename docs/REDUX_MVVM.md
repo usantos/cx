@@ -67,7 +67,7 @@ A confirmação de favorito avalia a revisão quando o comando alcança a fila, 
 
 ## Dependência e compatibilidade
 
-O Version Catalog fixa 0.6.2. Core Presentation declara api para os artefatos oficiais redux-kotlin-threadsafe-jvm e redux-kotlin-jvm; Support e as demais features reutilizam a mesma ponte. A declaração thread-safe exclui o core multiplataforma transitivo para que os metadados não voltem a selecionar o AAR Android JVM21. Os artefatos JVM oficiais usam classfile61 e preservam o alvo JVM17. Não foi elevada a toolchain nem adotada a linha alpha.
+O Version Catalog fixa 0.6.2. Core Presentation declara api para os artefatos oficiais redux-kotlin-threadsafe-jvm e redux-kotlin-jvm; Support e as demais features reutilizam a mesma ponte. A declaração thread-safe exclui o core multiplataforma transitivo para que os metadados não voltem a selecionar o AAR Android JVM21. Os artefatos JVM oficiais usam classfile61, compatível com a toolchain atual. O projeto agora usa compiladores e bytecode JVM21; as dependências estáveis e a seleção dos artefatos JVM permanecem as mesmas, sem adotar a linha alpha.
 
 Referência: artefatos oficiais em https://repo.maven.apache.org/maven2/org/reduxkotlin/ e código em https://github.com/reduxkotlin/redux-kotlin . A inspeção binária original está em build/verification/redux-mvvm-20261027/binary-compatibility.json.
 

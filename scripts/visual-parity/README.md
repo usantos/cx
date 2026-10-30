@@ -2,7 +2,7 @@
 
 Ferramentas locais de teste; não pertencem à produção. O relatório da rodada é `docs/MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md`.
 
-Pré-requisitos: AVD dedicado `SimloComposeGates` no serial `emulator-5558`, 1280×2856/480dpi/fonte1, SDK/build-tools36, JDK17 e APK CX debug `br.gov.caixa.loterias.apostas.cxv2validation` já instalado com a chave de debug local. O runner é outro APK de instrumentação; não modifica nem exporta Activities do oráculo.
+Pré-requisitos: AVD dedicado `SimloComposeGates` no serial `emulator-5558`, 1280×2856/480dpi/fonte1, SDK/build-tools36, JDK 21 com `JAVA_HOME` configurado e APK CX debug `br.gov.caixa.loterias.apostas.cxv2validation` já instalado com a chave de debug local. O runner é outro APK de instrumentação; não modifica nem exporta Activities do oráculo.
 
 Sempre restrinja **cada comando Gradle que execute testes Android**:
 

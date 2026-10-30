@@ -5,10 +5,6 @@ subprojects { owner ->
         owner.android.testOptions.unitTests.includeAndroidResources = true
         owner.dependencies.add('testImplementation', 'org.robolectric:robolectric:4.17')
         owner.tasks.withType(Test).configureEach {
-            // Dependências Android de diagnóstico usam bytecode Java 21; o alvo do app permanece JVM 17.
-            javaLauncher = owner.javaToolchains.launcherFor {
-                languageVersion = JavaLanguageVersion.of(21)
-            }
             systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
             jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED', '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED'
             // Testes individuais de janela física mantêm seu executor em dispositivo conectado.
