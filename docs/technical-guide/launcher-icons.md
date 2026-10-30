@@ -71,7 +71,7 @@ A validação do calendário anual fica em `build/verification/launcher-calendar
 
 ## Executar pelo Android Studio
 
-O `app/build.gradle` define explicitamente o flavor `tqs` e o build type `debug` como padrões do Android Studio (`isDefault = true`), formando `tqsDebug`. A configuração compartilhada `app`, em `.run/app.run.xml`, usa **Launch: Specified Activity** com `br.gov.caixa.loterias.apostas.MainActivity`. O Play abre a atividade estável diretamente, independentemente do alias de campanha ativo. Mantenha **Skip Activity validation** e **Clear app storage before deployment** desmarcados.
+O `app/build.gradle` define explicitamente o flavor `tqs` e o build type `debug` como padrões do Android Studio (`isDefault = true`), formando `tqsDebug`. A configuração compartilhada `SIMLO App`, em `.run/SIMLO_App.run.xml`, usa **Launch: Specified Activity** com `br.gov.caixa.loterias.apostas.MainActivity`. O Play abre a atividade estável diretamente, independentemente do alias de campanha ativo. Mantenha **Skip Activity validation** e **Clear app storage before deployment** desmarcados.
 
 A configuração também habilita **Always install with package manager**, usando a instalação convencional e desabilitando as otimizações de deploy do Studio. **Skip bytecode verification** permanece desmarcado. No diagnóstico do Samsung, o APK tinha assinatura válida, mas duas instalações foram recusadas após timeout do verificador do Google Play (`INSTALL_FAILED_VERIFICATION_FAILURE`). A instalação convencional do mesmo APK foi concluída e recebeu `ALLOW` do verificador, sem desativar as proteções do aparelho.
 
@@ -104,3 +104,52 @@ As evidências locais estão em `build/verification/launcher-realtime-nprd-20261
 ## Fontes e exportações
 
 Os recursos empacotados no APK ficam em `app/src/main/res/`. As três imagens usadas pelo guia técnico ficam em `docs/technical-guide/images/`. `output/launcher-icons/` e as cópias legadas de referência são artefatos locais ignorados; não precisam ser incluídos no commit para compilar o app ou regenerar o guia. A reprodução das artes a partir do material extraído continua exigindo o insumo local descrito em `scripts/assets/generate_launcher_campaign_icons.py`.
+
+## Entrada estável e primeira troca de ícone
+
+Os cinco aliases apontam para `runtime.launcher.LauncherEntryActivity`. Essa
+Activity apenas encaminha o Intent à `MainActivity` com `NEW_TASK`/`SINGLE_TOP` e
+termina. Flags recebidas que limpem, dupliquem ou ocultem tarefas não são
+propagadas. Seu `taskAffinity` é vazio, com `noHistory` e `excludeFromRecents`; a
+tarefa da interface usa a entrada estável `MainActivity`. Desabilitar um alias
+não encerra a tarefa que contém as telas. O Android pode finalizar uma Activity
+aberta pelo componente desabilitado mesmo com `DONT_KILL_APP`, sem matar o processo
+ou registrar crash. Os quatro atalhos continuam abrindo `MainActivity` diretamente.
+
+No Android Studio, selecione **SIMLO App**. A configuração tem nome distinto de
+`app` para evitar reutilizar uma configuração local antiga em **Default Activity**.
+O nome raiz Gradle é fixo em `simlo-app-android`: o módulo compartilhado não depende
+de a pasta do checkout se chamar `cx`, `SIMLO` ou outro nome.
+Para migrar as configurações locais no Windows ou macOS, feche o Android Studio e
+execute na raiz do projeto:
+
+```sh
+python scripts/configure-android-studio-run.py
+```
+
+O script seleciona **SIMLO App** e corrige apenas configurações Android cujo módulo
+é `app`, preservando configurações do sample e a escolha de dispositivo. Faz backup
+do workspace em `.local/android-studio/`, sem apagar dados do app nem desligar
+verificações. `--check` valida somente o XML compartilhado; essa verificação integra
+o pre-commit e não modifica o IDE durante o build.
+
+O teste de regressão confere os cinco aliases, o isolamento da tarefa, os extras
+encaminhados e a preservação da sessão nas APIs 32/35. O teste nativo na API 36
+reproduziu o encerramento ao desabilitar o alias e confirmou a permanência da
+Activity com a entrada isolada. A configuração Firebase e as regras do calendário
+continuam responsáveis por escolher o ícone.
+
+`verifyLauncherEntryPolicy`, dependência de `verifyComposeMigration`, valida o
+adaptador completo e os atributos exatos do manifesto com oito fixtures positivas
+e negativas. A única nova Activity permitida fica nesse caminho de plataforma;
+ela não pode receber UI, ViewModel ou lógica de negócio. As demais Activities e
+Fragments de features continuam bloqueadas, sem alteração de headers ou baselines.
+
+Validação em 30/10/2026: 3.567 testes JVM aprovados, sem falhas, erros ou skips;
+cobertura global 95,16%. Passaram os 214 testes das ferramentas, os 30 testes do
+hook e as oito fixtures da entrada de plataforma. No emulador API 36, o APK PRD
+Debug foi reinstalado no mesmo pacote, mantendo os dados; abriu pelo alias padrão,
+ativou Outubro Rosa e permaneceu na tarefa MainActivity. Duas aberturas seguintes
+pela MainActivity retornaram `Status: ok` com o alias padrão desabilitado. A
+sincronização do Android Studio no Windows requer aplicar a migração local acima;
+essa máquina remota não foi controlada durante a validação.

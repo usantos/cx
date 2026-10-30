@@ -47,13 +47,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Loterias.Starting">
         </activity>
+        <activity
+            android:name=".runtime.launcher.LauncherEntryActivity"
+            android:enabled="true"
+            android:exported="true"
+            android:taskAffinity=""
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.Loterias.Starting" />
         <activity-alias
             android:name=".launcher.DefaultLauncher"
             android:enabled="true"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
-            android:targetActivity=".MainActivity">
+            android:targetActivity=".runtime.launcher.LauncherEntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -65,7 +73,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_outubro_rosa"
             android:roundIcon="@mipmap/ic_launcher_outubro_rosa_round"
-            android:targetActivity=".MainActivity">
+            android:targetActivity=".runtime.launcher.LauncherEntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -77,7 +85,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_setembro_amarelo"
             android:roundIcon="@mipmap/ic_launcher_setembro_amarelo_round"
-            android:targetActivity=".MainActivity">
+            android:targetActivity=".runtime.launcher.LauncherEntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -89,7 +97,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_novembro_azul"
             android:roundIcon="@mipmap/ic_launcher_novembro_azul_round"
-            android:targetActivity=".MainActivity">
+            android:targetActivity=".runtime.launcher.LauncherEntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -101,7 +109,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_agosto_lilas"
             android:roundIcon="@mipmap/ic_launcher_agosto_lilas_round"
-            android:targetActivity=".MainActivity">
+            android:targetActivity=".runtime.launcher.LauncherEntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -36,6 +36,7 @@ apply from: rootProject.file('gradle/quality-gate.gradle')
 apply from: rootProject.file('gradle/source-tracking.gradle')
 apply from: rootProject.file('gradle/verify-vendor-sync.gradle')
 apply from: rootProject.file('gradle/compose-platform-resources.gradle')
+apply from: rootProject.file('gradle/launcher-entry-policy.gradle')
 
 allprojects {
     repositories {
@@ -52,6 +53,7 @@ task clean(type: Delete) {
 }
 
 tasks.register('verifyComposeMigration') {
+    dependsOn 'verifyLauncherEntryPolicy'
     group = 'verification'
     description = 'Ensures the modern application graph contains no legacy UI artifacts.'
     doLast {
@@ -203,6 +205,7 @@ tasks.register('verifyComposeMigration') {
             }.files
         }.findAll { source ->
             source.name != 'MainActivity.kt' && source != file('app/src/main/java/br/gov/caixa/loterias/apostas/QueueActivity.kt') &&
+                    source != file('app/src/main/java/br/gov/caixa/loterias/apostas/runtime/launcher/LauncherEntryActivity.kt') &&
                     (source.text =~ /\b(class|object)\s+\w*(Activity|Fragment)\b/).find()
         }
         if (!forbiddenControllers.isEmpty()) {
@@ -214,9 +217,11 @@ tasks.register('verifyComposeMigration') {
         }.files.findAll { source ->
             (source.text =~ /\bclass\s+\w*Activity\b/).find()
         }
-        def allowedHosts = ['MainActivity.kt', 'QueueActivity.kt'] as Set
-        if (hosts.collect { it.name }.toSet() != allowedHosts || hosts.size() != 2) {
-            throw new GradleException("O app deve ter apenas MainActivity e a entrada interna QueueActivity; encontradas: ${hosts}")
+        def allowedHosts = ['app/src/main/java/br/gov/caixa/loterias/apostas/MainActivity.kt',
+                            'app/src/main/java/br/gov/caixa/loterias/apostas/QueueActivity.kt',
+                            'app/src/main/java/br/gov/caixa/loterias/apostas/runtime/launcher/LauncherEntryActivity.kt'].collect { file(it).canonicalFile }.toSet()
+        if (hosts.collect { it.canonicalFile }.toSet() != allowedHosts || hosts.size() != 3) {
+            throw new GradleException("O app deve ter somente MainActivity, QueueActivity interna e LauncherEntryActivity sem UI; encontradas: ${hosts}")
         }
         if (!requiredManifest.text.contains('android:name=".QueueActivity" android:exported="false"')) {
             throw new GradleException('QueueActivity deve permanecer não exportada.')

@@ -1,0 +1,65 @@
+// Entrada Android sem UI: a exceção permite somente encaminhar à tarefa estável.
+def expectedSource = '''
+package br.gov.caixa.loterias.apostas.runtime.launcher
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import br.gov.caixa.loterias.apostas.MainActivity
+class LauncherEntryActivity : Activity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        startActivity(
+            Intent(intent).setClass(this, MainActivity::class.java)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        )
+        finish()
+    }
+}
+'''
+def normalize = { String source -> source.replaceAll(/(?s)\/\*.*?\*\/|\/\/[^\n]*/, '').replaceAll(/\s+/, '') }
+def expectedAttributes = [
+        'android:name': '.runtime.launcher.LauncherEntryActivity',
+        'android:enabled': 'true', 'android:exported': 'true', 'android:taskAffinity': '',
+        'android:noHistory': 'true', 'android:excludeFromRecents': 'true',
+        'android:theme': '@style/Theme.Loterias.Starting',
+]
+def problems = { String source, Map attributes ->
+    def errors = []
+    if (normalize(source) != normalize(expectedSource)) errors += 'Entrada deve somente encaminhar Intent com flags estáveis e terminar, sem UI ou negócio'
+    if (attributes != expectedAttributes) errors += 'Entrada deve usar tarefa isolada e temporária, fora dos recentes'
+    errors
+}
+tasks.register('verifyLauncherEntryPolicy') {
+    group = 'verification'
+    description = 'Checks the exact platform-only launcher adapter and isolated negative fixtures.'
+    doLast {
+        if (problems(expectedSource, expectedAttributes)) throw new GradleException('Fixture válida da entrada recusada')
+        def invalidSources = [
+                expectedSource.replace('finish()', 'setContentView(0); finish()'),
+                expectedSource.replace('.setFlags(', '.addFlags('),
+                expectedSource.replace(' or Intent.FLAG_ACTIVITY_SINGLE_TOP', ' or Intent.FLAG_ACTIVITY_CLEAR_TASK'),
+                expectedSource.replace('MainActivity::class.java', 'QueueActivity::class.java'),
+        ]
+        invalidSources.each { source ->
+            if (!problems(source, expectedAttributes)) throw new GradleException('Fixture inválida da entrada aceita')
+        }
+        ['android:taskAffinity', 'android:noHistory', 'android:excludeFromRecents'].each { attribute ->
+            if (!problems(expectedSource, expectedAttributes + [(attribute): 'incorreto'])) {
+                throw new GradleException("Fixture inválida do manifesto aceita: ${attribute}")
+            }
+        }
+        def source = file('app/src/main/java/br/gov/caixa/loterias/apostas/runtime/launcher/LauncherEntryActivity.kt')
+        def manifest = new groovy.xml.XmlSlurper(false, false).parse(file('app/src/main/AndroidManifest.xml'))
+        def entries = manifest.application.activity.findAll { it.@'android:name'.text() == expectedAttributes['android:name'] }
+        if (entries.size() != 1 || entries[0].children().size() != 0) {
+            throw new GradleException('Entrada do launcher deve ser única e não pode ter filtros ou componentes extras')
+        }
+        def errors = problems(source.text, entries[0].attributes())
+        if (errors) throw new GradleException(errors.join('; '))
+        def aliases = manifest.application.'activity-alias'
+        if (aliases.size() != 5 || aliases.any { it.@'android:targetActivity'.text() != expectedAttributes['android:name'] }) {
+            throw new GradleException('Os cinco aliases devem encaminhar somente à entrada temporária')
+        }
+        logger.lifecycle('Entrada launcher sem UI: contrato e 8 fixtures aprovados.')
+    }
+}
