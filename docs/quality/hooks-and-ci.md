@@ -57,6 +57,25 @@ Os testes do hook usam Git real em diretórios descartáveis; somente o processo
 
 Os relatórios permanecem em `build/reports/quality`, `build/reports/architecture`, `build/reports/tests/aggregate`, `build/reports/jacoco/aggregate` e nos diretórios de cada módulo. O console identifica a tarefa que falhou. As evidências de implementação de 28/10 ficam em `build/verification/pre-commit-20261028/`.
 
+### Resumo textual no terminal
+
+Ao terminar, o console mostra `✓ ...: PASSED` para cada etapa aprovada,
+`✗ ...: FAILED` para falhas e `- ...: NOT RUN` para etapas que não executaram.
+Além de Ktlint, Detekt, Android Lint, testes e cobertura, o pre-commit lista os
+verificadores selecionados de arquitetura, módulos, IDs, segurança, fontes,
+configuração do Android Studio e o APK PRD Debug. As verificações de propriedade
+das fontes de cada módulo ficam agrupadas em `verifyFeatureModules`.
+
+As marcações usam o estado real das tarefas do Gradle, incluindo resultados
+incrementais aceitos pelo gate. Uma etapa pulada sem validação não recebe check.
+A porcentagem JaCoCo só aparece se `verifyCoverage` aprovar nessa execução;
+um relatório numérico existente não comprova aprovação. O JSON mantém os status
+`PASSED`, `FAILED` e `NOT RUN` para consumo por ferramentas.
+
+`./gradlew verifyQualitySummaryPolicy` executa somente as fixtures de decisão e
+formatação do resumo. Elas também integram o gate e não substituem a execução
+das verificações reais do aplicativo.
+
 ## Limite do hook local e proteção remota
 
 O Git permite ao próprio usuário desabilitar hooks locais. Para impedir integração sem aprovação, o administrador deve tornar **Android Quality Gate** obrigatório nas regras de proteção da branch/fila de merge. O workflow versionado não configura essas regras sozinho. Esta tarefa não alterou proteção remota nem executou CI remoto.

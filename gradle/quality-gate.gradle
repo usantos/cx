@@ -27,6 +27,15 @@ gradle.projectsEvaluated {
 // Emite um resumo fiel mesmo quando um pré-requisito falha antes da execução de qualityGate.
 // Este build já usa configuration-on-demand; este observador intencionalmente
 // não é compatível com configuration-cache. Nunca altera o resultado de falha de uma tarefa.
+ext.qualityStageStatus = { List stageStates, aggregateState ->
+    if (aggregateState.failure != null || stageStates.any { it.failure != null }) return 'FAILED'
+    if (aggregateState.executed && (!aggregateState.skipped || aggregateState.upToDate || aggregateState.noSource)) return 'PASSED'
+    'NOT RUN (dependency failed or skipped)'
+}
+ext.qualityStageLine = { String label, String status ->
+    def marker = status == 'PASSED' ? '✓' : status == 'FAILED' ? '✗' : '-'
+    "${marker} ${label}: ${status}"
+}
 def qualitySelection = []
 gradle.taskGraph.whenReady { graph -> qualitySelection = graph.allTasks.toList() }
 gradle.buildFinished { result ->
@@ -34,9 +43,7 @@ gradle.buildFinished { result ->
     def fullGate = selected.any { it.path == ':qualityGate' }
     if (!fullGate && !selected.any { it.path == ':quickQualityCheck' }) return
     def describe = { List stageTasks, Task aggregate ->
-        if (stageTasks.any { it.state.failure != null }) return 'FAILED'
-        if (aggregate.state.executed && aggregate.state.failure == null && (!aggregate.state.skipped || aggregate.state.upToDate || aggregate.state.noSource)) return 'PASSED'
-        return 'NOT RUN (dependency failed or skipped)'
+        rootProject.qualityStageStatus(stageTasks*.state, aggregate.state)
     }
     def summary = new LinkedHashMap<String, String>()
     summary['Ktlint'] = describe([tasks.named('ktlintCheck').get()], tasks.named('ktlintCheck').get())
@@ -46,14 +53,25 @@ gradle.buildFinished { result ->
         summary['Unit Tests'] = describe(selected.findAll { it instanceof Test }, tasks.named('allUnitTests').get())
         summary['Coverage'] = describe(selected.findAll { it.name == 'verifyCoverage' || it.name.startsWith('jacocoModule') || it.name == 'jacocoAggregateReport' }, tasks.named('verifyCoverage').get())
     }
+    if (selected.any { it.path == ':preCommitCheck' }) {
+        selected.findAll {
+            it.name.startsWith('verify') && !(it.name in ['verifyCoverage', 'verifyOwnedProductionSources'])
+        }.each { check ->
+            def checks = check.name == 'verifyFeatureModules' ?
+                    selected.findAll { it.name == 'verifyOwnedProductionSources' } + [check] : [check]
+            summary[check.path.substring(1)] = describe(checks, check)
+        }
+        def apk = selected.find { it.path == ':app:assemblePrdDebug' }
+        if (apk != null) summary['APK PRD Debug'] = describe([apk], apk)
+    }
     def verified = result.failure == null && summary.values().every { it == 'PASSED' }
     def incremental = fullGate && rootProject.incrementalPreCommitActive()
     def title = incremental ? 'INCREMENTAL QUALITY GATE' : fullGate ? 'QUALITY GATE' : 'QUICK QUALITY CHECK'
-    logger.lifecycle('\n' + title + (verified ? ' PASSED' : result.failure != null ? ' FAILED' : ' NOT EXECUTED'))
-    summary.each { label, status -> logger.lifecycle("${label}: ${status}") }
+    logger.lifecycle('\n' + rootProject.qualityStageLine(title, verified ? 'PASSED' : result.failure != null ? 'FAILED' : 'NOT EXECUTED'))
+    summary.each { label, status -> logger.lifecycle(rootProject.qualityStageLine(label, status)) }
     if (fullGate) {
         def coverageSummary = layout.buildDirectory.file('reports/jacoco/aggregate/summary.json').get().asFile
-        if (tasks.named('verifyCoverage').get().state.executed && coverageSummary.isFile()) {
+        if (summary['Coverage'] == 'PASSED' && coverageSummary.isFile()) {
             def measured = new groovy.json.JsonSlurper().parse(coverageSummary)
             summary['JaCoCo Line Coverage'] = measured.percentage + '%'
         }
@@ -116,3 +134,31 @@ tasks.register('preCommitCheck') {
 }
 
 tasks.named('preCommitCheck') { dependsOn 'verifyAndroidStudioRunConfiguration' }
+
+tasks.register('verifyQualitySummaryPolicy') {
+    group = 'verification'
+    description = 'Confere as marcações do resumo sem aprovar falhas ou etapas não executadas.'
+    doLast {
+        def state = { Map values ->
+            [failure: null, executed: false, skipped: false, upToDate: false, noSource: false] + values
+        }
+        def cases = [
+                [stage: [:], aggregate: [executed: true], expected: 'PASSED'],
+                [stage: [:], aggregate: [executed: true, skipped: true, upToDate: true], expected: 'PASSED'],
+                [stage: [:], aggregate: [executed: true, skipped: true, noSource: true], expected: 'PASSED'],
+                [stage: [failure: new RuntimeException('fixture')], aggregate: [executed: true], expected: 'FAILED'],
+                [stage: [:], aggregate: [executed: true, failure: new RuntimeException('fixture')], expected: 'FAILED'],
+                [stage: [:], aggregate: [:], expected: 'NOT RUN (dependency failed or skipped)'],
+                [stage: [:], aggregate: [executed: true, skipped: true], expected: 'NOT RUN (dependency failed or skipped)'],
+                [stage: [failure: new RuntimeException('fixture')], aggregate: [executed: true, upToDate: true], expected: 'FAILED'],
+        ]
+        cases.each { fixture ->
+            assert rootProject.qualityStageStatus([state(fixture.stage)], state(fixture.aggregate)) == fixture.expected
+        }
+        assert rootProject.qualityStageLine('Ktlint', 'PASSED') == '✓ Ktlint: PASSED'
+        assert rootProject.qualityStageLine('Arquitetura', 'FAILED') == '✗ Arquitetura: FAILED'
+        assert rootProject.qualityStageLine('APK', 'NOT RUN (dependency failed or skipped)') == '- APK: NOT RUN (dependency failed or skipped)'
+        logger.lifecycle('Resumo de qualidade: 11 fixtures de aprovação, falha e etapa não executada verificadas.')
+    }
+}
+tasks.named('preCommitCheck') { dependsOn 'verifyQualitySummaryPolicy' }
