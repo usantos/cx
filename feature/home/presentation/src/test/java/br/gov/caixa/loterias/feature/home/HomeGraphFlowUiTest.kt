@@ -250,35 +250,28 @@ class HomeGraphFlowUiTest {
     private fun fixtureSession(
         state: br.gov.caixa.loterias.core.navigation.state.AppSessionState,
         identity: AuthenticatedSessionIdentity?,
-    ): SessionNavigationActions =
-        Proxy.newProxyInstance(SessionNavigationActions::class.java.classLoader, arrayOf(SessionNavigationActions::class.java)) {
-                proxy,
-                method,
-                arguments,
-            ->
+    ): SessionNavigationActions {
+        val onLogout: () -> Unit = { error("Unexpected logout") }
+        val requestVisitorLogin: (String) -> Unit = { route ->
+            requests.add(route)
+            Unit
+        }
+        return Proxy.newProxyInstance(
+            SessionNavigationActions::class.java.classLoader,
+            arrayOf(SessionNavigationActions::class.java)
+        ) { proxy, method, arguments ->
             when (method.name) {
                 "equals" -> proxy === arguments?.firstOrNull()
-
                 "hashCode" -> System.identityHashCode(proxy)
-
                 "toString" -> "SessionNavigationActions fixture"
-
                 "getState" -> state
-
                 "getIdentity" -> identity
-
-                "getOnLogout" -> ({ error("Unexpected logout") })
-
-                "getRequestVisitorLogin" -> (
-                    { route: String ->
-                        requests.add(route)
-                        Unit
-                    }
-                    )
-
+                "getOnLogout" -> onLogout
+                "getRequestVisitorLogin" -> requestVisitorLogin
                 else -> error("Unexpected session callback ${method.name}")
             }
         } as SessionNavigationActions
+    }
 
     private class Settings(private var completed: Boolean = true) : ShakeSettingsRepository {
         private var pending = false

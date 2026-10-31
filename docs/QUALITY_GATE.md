@@ -11,7 +11,8 @@ o código de produção; as versões de build vigentes estão na tabela abaixo.
 |---|---|
 | Gradle | 8.14.6 |
 | AGP | 8.13.0 |
-| Kotlin / Compose compiler | 2.4.10 |
+| Kotlin / Compose compiler | 2.2.21 |
+| IDE de referência Windows | Android Studio Narwhal 3 (2025.1.3), modo K2 |
 | JVM do Gradle | 21 (validado com Android Studio JBR 21.0.10) |
 | Bytecode / toolchain de todos os módulos | 21 / 21 |
 | JVM dos testes locais Android | 21, igual aos compiladores, ao Gradle e ao alvo de produção |
@@ -31,11 +32,11 @@ no classpath do compilador do aplicativo.
 
 A [matriz oficial](https://detekt.dev/docs/introduction/compatibility/) informa que
 Detekt estável 1.23.8 foi construído com Kotlin 2.0.21/Gradle 8.12.1/AGP 8.8.1.
-A linha do Detekt com suporte ao Kotlin 2.4 ainda é alpha. Para preservar a exigência de estabilidade
-e não alterar o toolchain, usamos a [integração oficial por JavaExec/CLI](https://detekt.dev/docs/1.23.8/gettingstarted/gradletask/),
+O compilador do app é Kotlin 2.2.21. Para preservar a exigência de estabilidade
+e não acoplar o analisador ao toolchain do app, usamos a [integração oficial por JavaExec/CLI](https://detekt.dev/docs/1.23.8/gettingstarted/gradletask/),
 isolada dos plugins Kotlin/AGP. Na adaptação de 30/10/2026, o parser analisou os 2.659 fontes Kotlin sem erro.
 Isso valida a análise sintática deste checkout, não a compatibilidade completa de
-resolução de tipos Kotlin 2.4 ou de recursos futuros da linguagem.
+resolução de tipos Kotlin 2.2 ou de recursos futuros da linguagem.
 
 `SuspendFunWithCoroutineScopeReceiver` existe e está configurada, mas
 [exige resolução de tipos](https://detekt.dev/docs/1.23.8/rules/coroutines/), que
@@ -295,9 +296,9 @@ sem remover classes, fontes, exclusões existentes ou verificações de integrid
 Headers e baselines permanecem imutáveis. Evidências datadas de 29/10 e anteriores
 referem-se à configuração anterior e não validam esta adaptação.
 
-A compatibilidade inclui Kotlin/Compose Compiler 2.4.10 e Hilt 2.58. O leitor
+A compatibilidade inclui Kotlin/Compose Compiler 2.2.21 e Hilt 2.58. O leitor
 `kotlin-metadata-jvm` dos classpaths Hilt/KSP/annotationProcessor é alinhado em
-2.3.21 para ler também metadados 2.4 das dependências. A leitura estrita permanece
+2.3.21, isolado no classpath dos processadores. A leitura estrita permanece
 ativa, e essa regra não altera o classpath de runtime do aplicativo. Os nomes JVM
 dos módulos são derivados do caminho único do projeto, sem caracteres inválidos
 para factories ou arquivos no Windows. O Gradle rejeita JDK diferente de 21 no
@@ -439,3 +440,28 @@ O hook seleciona módulos pelo index e pelo grafo real de dependências Gradle.
 Análises caras ficam no escopo afetado; contratos globais e cobertura LINE >95%
 permanecem obrigatórios. Configurações compartilhadas e CI exigem o gate completo.
 Veja [escopo, cache e recuperação segura](quality/hooks-and-ci.md#seleção-incremental-dos-módulos).
+
+## Testes de core/presentation e Android Studio Narwhal 3 — 30/10/2026
+
+O projeto deve permanecer compatível com Narwhal 3/2025.1.3, AGP 8.13.0 e JDK 21.
+Um build pelo Gradle pode passar usando Kotlin 2.4.10 enquanto o analisador Kotlin
+mais antigo da IDE deixa de resolver funções padrão como `apply`, `mutableListOf`
+e `listOf`. A correção mantém Kotlin/Compose Compiler em 2.2.21 e Coil em 3.4.0;
+Coil 3.5.0 voltava a introduzir kotlin-stdlib 2.4 no classpath de apresentação.
+Os demais requisitos de dependências são respeitados, sem forçar versões da
+stdlib, suprimir erros ou desativar a verificação de metadados.
+
+O mapper de mensagens de aposta usa uma expressão compatível com Kotlin 2.2,
+sem retornos antecipados e preservando as mensagens e suas condições. Os
+parâmetros padrão dos testes da Home constroem explicitamente os casos de uso,
+sem depender de inferência de SAM de versões mais novas. Fixtures de navegação
+tipam callbacks de aridades diferentes antes de retorná-los pelo proxy.
+`core/presentation` declara `ui-test-manifest` em `testImplementation`: a Activity
+de suporte ao Compose existe também nos testes locais Release, sem entrar no
+manifesto de produção Release. Debug e Release devem compilar e executar a mesma
+suíte local; não remover casos para fazer uma variante passar.
+
+Após receber essas alterações no Windows, execute **File > Sync Project with Gradle Files**
+no Narwhal 3 e mantenha o Gradle JDK em 21. Não é necessário atualizar o AGP nem
+substituir chamadas válidas da biblioteca padrão. A verificação headless de
+metadados/compilação não equivale a ter operado a IDE Windows remotamente.

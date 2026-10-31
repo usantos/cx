@@ -23,6 +23,8 @@ import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent
 import br.gov.caixa.loterias.feature.account.domain.model.NotificationReadResult
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContentUseCase
+import br.gov.caixa.loterias.feature.account.domain.usecase.ReadLatestNotificationUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
 import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryRequest
@@ -861,10 +863,10 @@ class HomeViewModelTest {
     private fun viewModel(
         parametersResult: AppResult<BettingParameters>,
         parametersSource: suspend () -> AppResult<BettingParameters> = { parametersResult },
-        sessionContent: br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContentUseCase = {
+        sessionContent: ObserveAuthenticatedSessionContentUseCase = ObserveAuthenticatedSessionContentUseCase {
             kotlinx.coroutines.flow.flowOf(null)
         },
-        readNotification: br.gov.caixa.loterias.feature.account.domain.usecase.ReadLatestNotificationUseCase = {
+        readNotification: ReadLatestNotificationUseCase = ReadLatestNotificationUseCase {
             AppResult.Success(NotificationReadResult.Confirmed)
         },
         network: NetworkAvailability = NetworkAvailability { ConnectionAvailability.UNKNOWN },

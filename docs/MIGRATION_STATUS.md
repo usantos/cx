@@ -333,12 +333,13 @@ Os conjuntos históricos de imagens raster, fontes CAIXA/Futura/Arial, Lottie, J
 
 | Componente | Versão |
 |---|---:|
-| compileSdk / targetSdk | 37 |
+| compileSdk / targetSdk | 36 |
 | minSdk | 24 |
-| Android Gradle Plugin | 9.2.1 |
-| Gradle | 9.4.1 |
-| Kotlin / Compose Compiler | 2.4.10 |
-| Java | 17 |
+| Android Gradle Plugin | 8.13.0 |
+| Gradle | 8.14.6 |
+| Kotlin / Compose Compiler | 2.2.21 |
+| Java (Gradle, toolchain e bytecode) | 21 |
+| IDE de referência Windows | Android Studio Narwhal 3 (2025.1.3) |
 
 ## Inicialização e ícone
 

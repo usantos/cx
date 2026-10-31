@@ -1,7 +1,7 @@
 // Arquivo raiz de compilação para configurações comuns a todos os subprojetos e módulos.
 buildscript {
     ext {
-        kotlin_version = '2.4.10'
+        kotlin_version = '2.2.21'
     }
     repositories {
         google()
@@ -11,7 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        // Também processa metadados Kotlin 2.4 das dependências, mantendo AGP 8.13.
+        // Mantém o R8 verificado para as dependências do projeto com AGP 8.13.
         classpath 'com.android.tools:r8:9.1.57'
         classpath 'com.android.tools.build:gradle:8.13.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

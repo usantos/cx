@@ -4,7 +4,7 @@
 |---|---|---:|
 | Build | Android Gradle Plugin | 8.13.0 |
 | Build | Gradle Wrapper | 8.14.6 |
-| Linguagem | Kotlin / Compose Compiler | 2.4.10 |
+| Linguagem | Kotlin / Compose Compiler | 2.2.21 |
 | Processamento de código | KSP | 2.3.6 |
 | Injeção de dependências | Hilt / Dagger | 2.58 |
 | UI | Compose BOM | 2026.06.00 |
@@ -16,7 +16,7 @@
 | Navegação | Navigation Compose | 2.9.8 |
 | UI | Compose WebView (`io.github.kevinnzou:compose-webview`) | 0.33.6 |
 | Animações vetoriais | Lottie Compose | 6.7.1 |
-| Imagens/GIFs | Coil Compose / GIF | 3.5.0 |
+| Imagens/GIFs | Coil Compose / GIF | 3.4.0 |
 | Concorrência | Coroutines | 1.11.0 |
 | HTTP | Retrofit | 3.0.0 |
 | HTTP | OkHttp / MockWebServer | 5.4.0 |
@@ -37,13 +37,20 @@ As versões ficam centralizadas em `gradle/libs.versions.toml` (plugins de build
 O módulo principal `firebase-config` é usado em vez dos antigos módulos KTX separados. Remote Config transporta somente um manifesto público assinado para rotação de pins TLS; a decisão de confiança pertence a `:core:key-management`, não ao Firebase ou ao backend. Retrofit/OkHttp executa as APIs e gera cURL sanitizado somente quando `-PnetworkLogging=true` em debug; release mantém essa instrumentação desligada.
 
 A combinação Android Studio/AGP 8.13 usa SDK 36 e Java 21 (toolchain, testes e
-bytecode). O R8 é fixado em 9.1.57 no classpath de build: Dependências compiladas com Kotlin 2.4 requerem R8
->=9.1.29, conforme a [matriz oficial](https://developer.android.com/build/kotlin-support).
+bytecode). O R8 continua fixado em 9.1.57 no classpath de build, sem alterar
+as regras de desugaring ou ofuscação. Consulte a [matriz oficial](https://developer.android.com/build/kotlin-support).
 Hilt 2.58 mantém a compatibilidade do plugin com AGP 8; a linha 2.59+ exige AGP 9.
 Não se ignora a validação AAR nem se suprimem avisos de compileSdk incompatível.
 
-Kotlin/Compose Compiler 2.4.10 é mantido; o leitor dos metadados no classpath de
-processamento é atualizado separadamente para Hilt 2.58. Java e bytecode permanecem em 21.
+A IDE de referência no Windows é Android Studio Narwhal 3 (2025.1.3), em modo K2.
+Kotlin/Compose Compiler fica em 2.2.21 para manter fontes e metadados dos módulos
+legíveis por essa linha da IDE. Coil 3.4.0 evita a dependência de kotlin-stdlib
+2.4 introduzida pelo Coil 3.5.0. Não se força uma stdlib mais antiga que os
+requisitos das bibliotecas nem se ignora a validação de metadados.
+A stdlib transitiva de ReduxKotlin 0.6.2 é 2.3.20, lida pelo compilador 2.2.21
+com a validação padrão; isso não muda a versão do compilador.
+O leitor de metadados dos processadores continua separado para Hilt 2.58.
+Java e bytecode permanecem em 21.
 
 `gradle/android-processors.gradle` atualiza apenas o leitor de metadados dos
 processadores para 2.3.21. Mantém a validação estrita e evita impor versões à

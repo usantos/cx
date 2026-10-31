@@ -16,23 +16,35 @@ internal class BettingGameNoticeMapper(private val dispatch: (BettingGameAction)
         BetEntryMode.SURPRISE -> messageText("informe_uma_quantidade_valida_de_f055ff")
 
         BetEntryMode.MANUAL -> {
-            when (state.game?.modality?.id) {
+            val modalityMessage = when (state.game?.modality?.id) {
                 TIMEMANIA_ID -> if (state.selectedNumbers.size == state.numberQuantity) {
-                    return messageText("selecione_o_time_do_coracao_7bbd51")
+                    messageText("selecione_o_time_do_coracao_7bbd51")
+                } else {
+                    null
                 }
 
-                LOTECA_ID -> return messageText("selecione_todos_os_jogos_e_ao_me_13258f")
+                LOTECA_ID -> messageText("selecione_todos_os_jogos_e_ao_me_13258f")
 
-                LOTOGOL_ID -> return messageText("informe_o_placar_de_todos_os_jog_1e76a6")
+                LOTOGOL_ID -> messageText("informe_o_placar_de_todos_os_jog_1e76a6")
 
-                SUPER_SEVEN_ID -> return messageText("selecione_a_quantidade_escolhida_9aaa6d")
+                SUPER_SEVEN_ID -> messageText("selecione_a_quantidade_escolhida_9aaa6d")
 
                 DIA_DE_SORTE_ID -> if (state.selectedNumbers.size == state.numberQuantity) {
-                    return messageText("selecione_o_mes_da_sorte_c559a5")
+                    messageText("selecione_o_mes_da_sorte_c559a5")
+                } else {
+                    null
+                }
+
+                else -> null
+            }
+            modalityMessage ?: run {
+                val missing = (state.numberQuantity - state.selectedNumbers.size).coerceAtLeast(0)
+                if (missing == 1) {
+                    messageText("selecione_mais_1_numero_96f15b")
+                } else {
+                    messageText("selecione_mais_1_s_numeros_868900", missing)
                 }
             }
-            val missing = (state.numberQuantity - state.selectedNumbers.size).coerceAtLeast(0)
-            if (missing == 1) messageText("selecione_mais_1_numero_96f15b") else messageText("selecione_mais_1_s_numeros_868900", missing)
         }
     }
 

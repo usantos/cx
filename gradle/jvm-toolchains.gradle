@@ -7,7 +7,7 @@ subprojects { owner ->
     ['org.jetbrains.kotlin.jvm', 'org.jetbrains.kotlin.android'].each { pluginId ->
         owner.plugins.withId(pluginId) {
             owner.kotlin.jvmToolchain(21)
-            // Evita ':' nos nomes JVM do Kotlin 2.4, incompatível com factories Hilt e arquivos no Windows.
+            // Evita ':' nos nomes JVM dos módulos Kotlin, incompatível com factories Hilt e arquivos no Windows.
             owner.kotlin.compilerOptions.moduleName.set(owner.path.replaceAll('[^A-Za-z0-9_]', '_'))
         }
     }
