@@ -43,14 +43,23 @@ internal fun legacyPromptInset() = with(androidx.compose.ui.platform.LocalDensit
 }
 
 @Composable
-internal fun BettingGameError(message: String, padding: PaddingValues, onRetry: () -> Unit, review: BettingCheckpoint? = null) {
+internal fun BettingGameError(
+    message: String,
+    padding: PaddingValues,
+    onRetry: () -> Unit,
+    onBack: () -> Unit,
+    review: BettingCheckpoint? = null,
+) {
+    if (review != null) {
+        BettingRecoveredDraftReview(review, onBack)
+        return
+    }
     Column(
         Modifier.fillMaxSize().padding(padding).padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(message, color = CaixaDS.colors.text, textAlign = TextAlign.Center, modifier = Modifier.uiId("bet.0029"))
-        review?.let { BettingRecoveredDraftReview(it) }
         TextButton(onClick = onRetry, modifier = Modifier.uiId("bet.0030")) {
             Text(stringResource(R.string.betting_recovery_retry), modifier = Modifier.uiId("bet.0031"))
         }

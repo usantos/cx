@@ -117,6 +117,23 @@ palpites da Loteca e os complementos (time, mês e trevos). Lotogol mantém a
 seleção manual de placares, sem geração aleatória. Nenhum desses sorteios locais
 chama um endpoint nem registra uma aposta por si só.
 
+Na recuperação de uma cartela de concurso substituído ou indisponível, o app usa
+um aviso “Atenção” com “Entendi”, no padrão de mensagem do legado, e retorna
+à origem. Não apresenta painel técnico de rascunho nem retry para uma condição
+permanente. O retorno pelo Android e pelo cabeçalho continua disponível em falhas
+de recuperação, sem gravar um estado vazio por cima da seleção preservada.
+Falhas temporárias de leitura/rede mantêm “Tentar novamente”: a consulta é
+refeita e restaura o rascunho validando os parâmetros atualizados do mesmo concurso.
+Se esse concurso ainda existe mas suas vendas fecharam (flag do servidor ou prazo),
+a cartela normal é restaurada para simulação, preservando a seleção. A apresentação
+marca o registro como indisponível e mantém os controles de envio bloqueados;
+a validação anterior à requisição também continua obrigatória.
+Ao selecionar explicitamente outro concurso na Home, a nova cartela respeita
+esse concurso e não importa a seleção antiga. A referência legada é
+`SimulaActivity.onBackPressedDispatcher`/`exibirDialogConfirmacaoSaida` para
+retorno e `strings.xml/ainda_da_tempo` para o aviso de registro encerrado;
+a persistência criptografada continua sendo uma proteção do app novo.
+
 ## Carrinho atual, preservado e favoritos — Cart
 
 | Necessidade | Classes | Observação |

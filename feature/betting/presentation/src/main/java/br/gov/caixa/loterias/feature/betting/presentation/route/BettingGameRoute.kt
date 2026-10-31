@@ -145,6 +145,7 @@ fun BettingGameRoute(
                 message = state.errorMessage ?: uiStrings.getString(LocalizedR.string.ui_aposta_indisponivel_8fce95),
                 padding = padding,
                 onRetry = viewModel::load,
+                onBack = returnOrConfirm,
                 review = state.recoveryReview
             )
 

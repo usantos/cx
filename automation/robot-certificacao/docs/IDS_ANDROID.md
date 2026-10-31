@@ -63,3 +63,9 @@ Ao adicionar ou renomear um ID, atualizar `android-ids.json` e os localizadores/
 `Modifier.uiId("home.0001")` publica `simlo.home.0001`. O literal é estável; o helper acrescenta apenas o namespace `simlo.`. As chaves não são calculadas por posição de composição, texto, usuário ou idioma. Não renumerar ao reorganizar telas. O inventário inclui `feature`, `source`, `line` e `symbol` para localizar cada elemento, além da chave compacta quando usada.
 
 O gate bloqueia chaves dinâmicas/dados de usuário, namespace incorreto, IDs não registrados e duplicação de declarações distintas. A ação positiva do diálogo compartilhado tem uma exceção explícita para dois ramos mutuamente exclusivos. Repetição de instâncias da mesma linha/componente continua exigindo o escopo do contêiner no Appium.
+
+O painel técnico de revisão de rascunho foi retirado em 30/10/2026. As chaves
+`bet.0049` a `bet.0064` ficam aposentadas e não devem ser reutilizadas.
+O aviso de concurso encerrado usa o diálogo CaixaDS compartilhado e a ação
+`simlo.dialog.positivo`; não deve haver localizador para “Tentar novamente” nesse
+aviso permanente. O retry continua disponível para falhas temporárias de rede.

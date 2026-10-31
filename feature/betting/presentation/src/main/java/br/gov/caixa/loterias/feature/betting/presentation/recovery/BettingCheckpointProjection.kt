@@ -21,7 +21,7 @@ fun BettingCheckpoint.restoreInto(base: BettingGameUiState): BettingGameUiState 
     val game = requireNotNull(base.game)
     require(
         game.modality.id == modalityId && game.contestNumber == contestNumber &&
-            game.contestType.equals(contestType, true) && game.open
+            game.contestType.equals(contestType, true)
     )
     require(numbers.all { it in 1..game.maximumNumber } && numbers.size <= game.maximumSelection)
     require(clovers.all { it in 1..game.maximumCloverNumber } && clovers.size <= game.maximumClovers)

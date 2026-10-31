@@ -162,7 +162,8 @@ class BettingGameViewModel(
             return
         }
         val checkpoint = record?.checkpoint?.takeIf {
-            !record.reconcileCart && restoreCheckpoint && (modalityId == null || it.modalityId == modalityId)
+            !record.reconcileCart && restoreCheckpoint && (modalityId == null || it.modalityId == modalityId) &&
+                (expectedContestNumber == null || it.contestNumber == expectedContestNumber)
         }
         when (val result = getParameters()) {
             is AppResult.Failure -> recoveryError(recoveryMessages.text(BettingRecoveryMessage.RULES_UNAVAILABLE))
@@ -171,7 +172,7 @@ class BettingGameViewModel(
     }
 
     private fun installRecovery(fresh: BettingParameters, checkpoint: BettingCheckpoint?) {
-        val game = checkpoint?.let { draft -> fresh.games.firstOrNull { matches(it, draft) && eligible(it) } }
+        val game = checkpoint?.let { draft -> fresh.games.firstOrNull { matches(it, draft) } }
         if (checkpoint != null && game == null) {
             recoveryError(recoveryMessages.text(BettingRecoveryMessage.CONTEST_CHANGED), checkpoint)
             return
@@ -194,7 +195,7 @@ class BettingGameViewModel(
     private fun restoredState(fresh: BettingParameters, game: LotteryGameParameters, checkpoint: BettingCheckpoint): BettingGameUiState {
         val base = BettingGameUiState(
             loading = false,
-            game = game,
+            game = game.copy(open = eligible(game)),
             minimumCartAmount = fresh.minimumCartAmount,
             dailyLimit = fresh.dailyLimit
         )
@@ -246,11 +247,20 @@ class BettingGameViewModel(
 
     /** A navegação efetiva entra na fila após cada seleção e etapa confirmada. */
     fun checkpointNavigation(action: () -> Unit) {
+        if (recoveryLocked) {
+            // Sem cartela editável, sair não deve gravar por cima do rascunho preservado.
+            if (!state.value.loading && state.value.game == null && isCurrent()) action()
+            return
+        }
         if (commands == null) action() else commands.navigate { if (!recoveryLocked) action() }
     }
 
     /** Resolve o retorno somente após os toques e gravações anteriores, incluindo uma transição complementar pendente. */
     fun requestBack(onLeave: () -> Unit) {
+        if (recoveryLocked) {
+            checkpointNavigation(onLeave)
+            return
+        }
         val queue = commands
         if (queue == null) {
             if (!returnToNumbers()) onLeave()

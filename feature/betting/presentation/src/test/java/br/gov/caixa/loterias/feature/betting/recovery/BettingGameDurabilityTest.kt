@@ -44,7 +44,8 @@ class BettingGameDurabilityTest {
         var gate: CompletableDeferred<Unit>? = null
         var fail = false
         var writes = 0
-        override fun isCurrent() = true
+        var current = true
+        override fun isCurrent() = current
         override suspend fun read() = record
         override suspend fun save(checkpoint: BettingCheckpoint) {
             writes++
@@ -164,6 +165,69 @@ class BettingGameDurabilityTest {
         }
     }
 
+    @Test fun `rejected draft can leave through back and navigation without writing or submitting`() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        try {
+            val draft = BettingCheckpoint(2, "NORMAL", 99, numbers = setOf(4), numberQuantity = 6)
+            val session = Session(BettingRecoveryRecord(draft))
+            val model = BettingGameViewModel(
+                2,
+                GetBettingParametersUseCase {
+                    AppResult.Success(BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 50, listOf(game)))
+                },
+                AddBetToCartUseCase { error("Não deve enviar aposta") },
+                dispatchers = FixedCoroutineDispatchers(StandardTestDispatcher(testScheduler)),
+                checkpointSession = session
+            )
+            advanceUntilIdle()
+            var exits = 0
+            model.requestBack { exits++ }
+            advanceUntilIdle()
+            assertEquals(1, exits)
+            model.checkpointNavigation { exits++ }
+            advanceUntilIdle()
+            assertEquals(2, exits)
+            session.current = false
+            model.requestBack { exits++ }
+            model.checkpointNavigation { exits++ }
+            advanceUntilIdle()
+            assertEquals(2, exits)
+            assertEquals(draft, session.record?.checkpoint)
+            assertEquals(0, session.writes)
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
+
+    @Test fun `explicit current contest entry does not restore an obsolete draft from the same modality`() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        try {
+            val draft = BettingCheckpoint(2, "NORMAL", 99, numbers = setOf(4), numberQuantity = 6)
+            val session = Session(BettingRecoveryRecord(draft))
+            val model = BettingGameViewModel(
+                2,
+                GetBettingParametersUseCase {
+                    AppResult.Success(BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 50, listOf(game)))
+                },
+                AddBetToCartUseCase { error("Não deve enviar aposta") },
+                dispatchers = FixedCoroutineDispatchers(StandardTestDispatcher(testScheduler)),
+                checkpointSession = session,
+                expectedContestNumber = game.contestNumber
+            )
+            advanceUntilIdle()
+            assertEquals(game, model.state.value.game)
+            assertTrue(model.state.value.selectedNumbers.isEmpty())
+            assertEquals(null, model.state.value.recoveryReview)
+            assertEquals(draft, session.record?.checkpoint)
+            model.toggleNumber(5)
+            advanceUntilIdle()
+            assertEquals(game.contestNumber, session.record?.checkpoint?.contestNumber)
+            assertEquals(setOf(5), session.record?.checkpoint?.numbers)
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
+
     @Test fun `expired contest preserves encrypted selection without substituting refreshed contest`() = runTest {
         Dispatchers.setMain(StandardTestDispatcher(testScheduler))
         try {
@@ -192,28 +256,45 @@ class BettingGameDurabilityTest {
         }
     }
 
-    @Test fun `server closing deadline prevents restoring an apparently open old contest`() = runTest {
+    @Test fun `closed sales restore the same contest for local editing without permitting registration`() = runTest {
         Dispatchers.setMain(StandardTestDispatcher(testScheduler))
         try {
-            val draft = BettingCheckpoint(2, "NORMAL", 100, numbers = setOf(4), numberQuantity = 6)
-            val session = Session(BettingRecoveryRecord(draft))
-            val closed = game.copy(closingDateTime = "2026-10-21T10:00:00-03:00")
-            val model = BettingGameViewModel(
-                2,
-                GetBettingParametersUseCase {
-                    AppResult.Success(BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 50, listOf(closed)))
-                },
-                AddBetToCartUseCase { error("No remote calls") },
-                dispatchers = FixedCoroutineDispatchers(StandardTestDispatcher(testScheduler)),
-                checkpointSession = session,
-                serverTime = ServerTimeSource { Instant.parse("2026-10-22T10:00:00Z") }
-            )
-            advanceUntilIdle()
-            assertEquals(draft, session.record!!.checkpoint)
-            assertEquals(draft, model.state.value.recoveryReview)
-            assertEquals(0, session.writes)
-            assertNotNull(model.state.value.errorMessage)
-            assertFalse(model.state.value.canAddToCart)
+            val draft = BettingCheckpoint(2, "NORMAL", 100, numbers = (1..6).toSet(), numberQuantity = 6)
+            val closedGames = listOf(game.copy(open = false), game.copy(closingDateTime = "2026-10-21T10:00:00-03:00"))
+            for (closed in closedGames) {
+                val session = Session(BettingRecoveryRecord(draft))
+                var submissions = 0
+                val model = BettingGameViewModel(
+                    2,
+                    GetBettingParametersUseCase {
+                        AppResult.Success(BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 50, listOf(closed)))
+                    },
+                    AddBetToCartUseCase {
+                        submissions++
+                        error("Não deve enviar aposta")
+                    },
+                    dispatchers = FixedCoroutineDispatchers(StandardTestDispatcher(testScheduler)),
+                    checkpointSession = session,
+                    serverTime = ServerTimeSource { Instant.parse("2026-10-22T10:00:00Z") }
+                )
+                advanceUntilIdle()
+                assertEquals(draft.numbers, model.state.value.selectedNumbers)
+                assertEquals(null, model.state.value.recoveryReview)
+                assertEquals(null, model.state.value.errorMessage)
+                assertTrue(model.state.value.numbersAreComplete)
+                assertFalse(requireNotNull(model.state.value.game).open)
+                assertFalse(model.state.value.canAddToCart)
+                model.toggleNumber(1)
+                model.fillShake(false)
+                advanceUntilIdle()
+                assertEquals(6, model.state.value.selectedNumbers.size)
+                assertTrue(model.state.value.selectedNumbers.containsAll((2..6).toSet()))
+                model.addToCart()
+                advanceUntilIdle()
+                assertEquals(0, submissions)
+                assertFalse(model.state.value.addedToCart)
+                assertEquals(model.state.value.selectedNumbers, session.record?.checkpoint?.numbers)
+            }
         } finally {
             Dispatchers.resetMain()
         }
