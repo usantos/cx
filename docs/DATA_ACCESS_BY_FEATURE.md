@@ -148,6 +148,13 @@ a persistência criptografada continua sendo uma proteção do app novo.
 
 Consumidores: [CartViewModel](../feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/viewmodel/CartViewModel.kt), [FavoriteCartsViewModel](../feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/viewmodel/FavoriteCartsViewModel.kt) e [LocalCartReviewViewModel](../feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/viewmodel/LocalCartReviewViewModel.kt). Os demais comandos de exclusão, validação de nome e registro estão no catálogo completo abaixo.
 
+A lista de carrinhos favoritos é apresentada por ID numérico decrescente,
+colocando os últimos identificadores inseridos no início. A ordenação fica em
+`FavoriteCartRepositoryImpl`, compartilhada pelo carregamento e pelo retorno
+da exclusão de um carrinho. O contrato de `GET logado/carrinhos-favoritos`
+fornece somente `id` e `nome`, sem data de criação; o critério usa o ID e não
+altera nomes, identificadores, conteúdo das apostas ou parâmetros do serviço.
+
 A exclusão de uma aposta visitante passa por `CartViewModel.requestRemoval` e
 `confirmRemoval`, `RemoveCartItem` e `VisitorCartRepositoryImpl.remove`. A
 transação local remove somente o ID selecionado; uma Lotomania com espelho

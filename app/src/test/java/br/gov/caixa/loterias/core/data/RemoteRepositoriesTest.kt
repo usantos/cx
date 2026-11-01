@@ -627,6 +627,22 @@ class RemoteRepositoriesTest {
     }
 
     @Test
+    fun `favorite carts show highest numeric id first on load and after deletion`() = runBlocking {
+        val oldestId = 2L
+        val middleId = FAVORITE_ORDER_MIDDLE_ID
+        val newestId = FAVORITE_ORDER_NEWEST_ID
+        val original = listOf(FavoriteCartDto(oldestId, "Z"), FavoriteCartDto(newestId, "A"), FavoriteCartDto(middleId, "M"))
+        val repository = FavoriteCartRepositoryImpl(source(FakeApi(favorites = ApiEnvelope(original))))
+        assertEquals(listOf(newestId, middleId, oldestId), repository.favorites().map { it.id })
+        assertEquals(listOf("A", "M", "Z"), repository.favorites().map { it.name })
+        val remaining = listOf(original[0], original[2])
+        val afterDeletion = FavoriteCartRepositoryImpl(source(FakeApi(favorites = ApiEnvelope(remaining))))
+        assertEquals(listOf(middleId, oldestId), afterDeletion.deleteCart(newestId).map { it.id })
+        assertEquals(listOf(oldestId, newestId, middleId), original.map { it.id })
+        assertTrue(FavoriteCartRepositoryImpl(source(FakeApi(favorites = ApiEnvelope(emptyList())))).favorites().isEmpty())
+    }
+
+    @Test
     fun `favorite cart repository maps bets and delegates every mutation`() = runBlocking {
         val api = FakeApi()
         val repository = FavoriteCartRepositoryImpl(source(api))
@@ -657,7 +673,7 @@ class RemoteRepositoriesTest {
             """{"id":1,"modalidade":{"valor":7,"descricao":"Super Sete"},"numerosSelecionados":[[0,3],[4],[6],[7],[8],[9],[2]],"indicadorSurpresinha":"NAO_SURPRESINHA"}""",
             """{"id":2,"modalidade":{"valor":9},"quantidadeNumeros":6,"quantidadeTrevos":2,"indicadorSurpresinha":"SURPRESINHA"}""",
             """{"id":3,"modalidade":{"valor":20},"timeDoCoracao":{"nome":"FLAMENGO","uf":"RJ"}}""",
-            """{"id":4,"modalidade":{"valor":11},"mesDeSorte":{"nome":"Setembro"}}""",
+            """{"id":4,"modalidade":{"valor":11},"mesDeSorte":{"nome":"Setembro"}}"""
         ).map { gson.fromJson(it, FavoriteCartBetDto::class.java) }
         val repository = FavoriteCartRepositoryImpl(source(FakeApi(favoriteBets = ApiEnvelope(payloads))))
         val bets = repository.bets(1)
@@ -681,12 +697,12 @@ class RemoteRepositoriesTest {
                         listOf(
                             FavoriteCartBetDto(
                                 selectedNumbers = JsonParser.parseString("{}"),
-                                surpriseIndicator = "NAO_SURPRESINHA",
-                            ),
-                        ),
-                    ),
-                ),
-            ),
+                                surpriseIndicator = "NAO_SURPRESINHA"
+                            )
+                        )
+                    )
+                )
+            )
         )
         assertEquals("Carrinho favorito", repository.favorites().single().name)
         val bet = repository.bets(1).single()
@@ -1274,3 +1290,6 @@ class RemoteRepositoriesTest {
         }
     }
 }
+
+private const val FAVORITE_ORDER_MIDDLE_ID = 3L
+private const val FAVORITE_ORDER_NEWEST_ID = 10L
