@@ -23,6 +23,78 @@ class VisitorCartPresentationTest {
     private val game = LotteryGameParameters(LotteryModality(2, "Mega-Sena", ""), 3000, "", 60, 6, 20, 10, emptyList(), emptyList())
     private fun bet(draft: BetDraft) = decodeLegacyCart(guestCartRows(draft, game, BigDecimal("6.00"), 1, 1)).single()
 
+    @Test fun `visitor upload uses the same contest and surprise codes as authenticated inclusion`() {
+        val manual = BetDraft(2, numbers = (1..6).toList())
+        val cases = listOf(
+            Triple(manual, "1", 1),
+            Triple(manual.copy(modalityId = 8), "1", 1),
+            Triple(manual.copy(modalityId = 16), "1", 1),
+            Triple(manual.copy(contestType = "ESPECIAL"), "2", 1),
+            Triple(manual.copy(numbers = emptyList(), surprise = true), "1", 2),
+            Triple(
+                manual.copy(
+                    modalityId = 20,
+                    surprise = true,
+                    surpriseTeamSelected = true,
+                    favoriteTeam = SportsTeam(1, "Time")
+                ),
+                "1",
+                3
+            )
+        )
+        for ((draft, contest, indicator) in cases) {
+            val persisted = bet(draft)
+            assertEquals(contest, persisted.contestType.value)
+            assertEquals(indicator, persisted.quickPickIndicator.value)
+            val upload = persisted.toUploadDto()
+            assertEquals(contest, upload.contestType.value)
+            assertEquals(indicator, upload.quickPickIndicator.value)
+            assertEquals(draft.surprise, upload.quickPick)
+        }
+    }
+
+    @Test fun `upload repairs previously saved visitor codes without changing selections or persisted receipt data`() {
+        val manual = bet(BetDraft(2, numbers = (1..6).toList()))
+        for ((oldCode, expected) in listOf("N" to "1", "E" to "2", "1" to "1", "2" to "2")) {
+            val old = manual.copy(
+                contestType = manual.contestType.copy(value = oldCode),
+                quickPickIndicator = manual.quickPickIndicator.copy(value = 0)
+            )
+            val upload = old.toUploadDto()
+            assertEquals(expected, upload.contestType.value)
+            assertEquals(1, upload.quickPickIndicator.value)
+            assertEquals("[1,2,3,4,5,6]", upload.numbers.toString())
+            assertEquals(oldCode, old.contestType.value)
+            assertEquals(0, old.quickPickIndicator.value)
+            assertEquals(
+                manual.copy(contestType = manual.contestType.copy(value = expected)).visitorCartSelection(),
+                old.visitorCartSelection()
+            )
+        }
+        val oldSurprise = manual.copy(quickPick = true, quickPickIndicator = manual.quickPickIndicator.copy(value = 1))
+        assertEquals(2, oldSurprise.toUploadDto().quickPickIndicator.value)
+        val timemania = bet(
+            BetDraft(
+                20,
+                numbers = emptyList(),
+                surprise = true,
+                favoriteTeam = SportsTeam(1, "Time")
+            )
+        )
+        assertEquals(
+            3,
+            timemania.copy(quickPickIndicator = timemania.quickPickIndicator.copy(value = 1))
+                .toUploadDto().quickPickIndicator.value
+        )
+        for (valid in listOf(2, 3)) {
+            assertEquals(
+                valid,
+                oldSurprise.copy(quickPickIndicator = oldSurprise.quickPickIndicator.copy(value = valid))
+                    .toUploadDto().quickPickIndicator.value
+            )
+        }
+    }
+
     @Test fun `visitor projection preserves localized modality titles number padding and total count`() {
         val source = bet(BetDraft(2, numbers = (1..6).toList()))
         val labels = mapOf(

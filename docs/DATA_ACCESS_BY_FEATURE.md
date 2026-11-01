@@ -157,6 +157,16 @@ um callback sem confirmação ou após cancelar não pode esvaziar o carrinho.
 O teste de persistência cobre Lotomania sem espelho com Lotofácil, preservando
 esta última e seus valores após excluir a primeira e recriar o repositório.
 
+O lote visitante usa os mesmos códigos de protocolo da inclusão autenticada:
+`tipoConcurso.valor` é `"1"` (normal) ou `"2"` (especial), e
+`indicadorSurpresinha.valor` é `1` (manual), `2` (Surpresinha) ou `3`
+(Surpresinha numérica da Timemania com time escolhido). `GuestCartRows` grava
+esses códigos. `CartUploadMapper` converte os antigos `N/E` e `0/1` ao montar
+cada `CartUploadDto`, sem regravar seleções ou alterar fingerprints dos recibos.
+A comparação de duplicidade também normaliza `N/E` para reconhecer apostas
+salvas antes da correção. Modalidade, concurso, números, trevos e valores do
+lote permanecem preservados.
+
 No pós-login, `PostLoginAccountRepositoryImpl` envia o lote preparado por
 `CartTransferRepository` ao `POST logado/usuarios/verificar-cadastro`, mantendo
 o vínculo com a identidade capturada. Um carrinho não nulo não confirma o lote:

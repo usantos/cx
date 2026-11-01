@@ -104,6 +104,8 @@ class PostLoginCartTransferTest {
                                 assertEquals(1, request.bets.size)
                                 assertEquals("MEGA_SENA", request.bets.single().modality)
                                 assertNull(request.bets.single().id)
+                                assertEquals("1", request.bets.single().contestType.value)
+                                assertEquals(1, request.bets.single().quickPickIndicator.value)
                             } else {
                                 assertTrue(request.bets.isEmpty())
                             }

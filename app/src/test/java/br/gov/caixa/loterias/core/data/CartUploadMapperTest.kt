@@ -101,7 +101,7 @@ class CartUploadMapperTest {
         val request = AccountVerificationRequestDto(listOf(dto))
         val actual = gson.toJsonTree(request)
         val expected = JsonParser.parseString("""{
-          "apostas": [{"modalidade":"MAIS_MILIONARIA", "tipoConcurso":{"valor":"E","descricao":"Especial"},
+          "apostas": [{"modalidade":"MAIS_MILIONARIA", "tipoConcurso":{"valor":"2","descricao":"Especial"},
             "numerosSelecionados":[1,2,3,4,5,6], "numerosSelecionadosMaisMilionariaTrevo":[1,3],
             "indicadorSurpresinha":{"valor":2,"descricao":"Parcial"}, "valor":35.50,
             "concursoAlvo":10,"quantidadeTeimosinhas":5,"quantidadeApostas":3,"espelho":true,"geraEspelho":true,

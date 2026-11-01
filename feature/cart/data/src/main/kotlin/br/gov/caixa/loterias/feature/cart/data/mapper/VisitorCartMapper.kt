@@ -15,7 +15,7 @@ import java.math.BigDecimal
 
 /** Projeta o armazenamento decodificado apenas na identidade de domínio usada pela política de duplicação. */
 internal fun LocalCartBet.visitorCartSelection() = VisitorCartSelection(
-    modality, targetContest, contestType.value, numbers, clovers.orEmpty(), repeatCount,
+    modality, targetContest, contestType.value.cartContestCode(), numbers, clovers.orEmpty(), repeatCount,
     favoriteTeam?.number, luckyMonth?.number, loteca, lotogol
 )
 

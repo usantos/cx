@@ -29,7 +29,7 @@ class VisitorCartSelectionMapperTest {
             mirrored = true, mirrorLink = 999, generateMirror = true, quickPick = true, clovers = null,
             favoriteTeam = source.favoriteTeam!!.copy(name = "Updated"), luckyMonth = source.luckyMonth!!.copy(name = "Updated"))
         assertEquals(source.visitorCartSelection(), altered.visitorCartSelection())
-        assertEquals(VisitorCartSelection(CartModality.MEGA_SENA, 3000, "N",
+        assertEquals(VisitorCartSelection(CartModality.MEGA_SENA, 3000, "1",
             CartNumbers.Flat(listOf(1, 2, 3, 4, 5, 6)), emptyList(), 0, 10, 12, emptyList(), emptyList()),
             source.visitorCartSelection())
     }
@@ -40,7 +40,7 @@ class VisitorCartSelectionMapperTest {
         val source = bet(BetDraft(19, numbers = emptyList(), contestType = "ESPECIAL", recurringDraws = 3,
             lotecaSelections = listOf(LotecaMatchSelection(match, true, true, false))))
         val identity = source.visitorCartSelection()
-        assertEquals("E", identity.contestType)
+        assertEquals("2", identity.contestType)
         assertEquals(3, identity.repeatCount)
         assertEquals(source.loteca, identity.loteca)
         assertEquals(55, identity.loteca.single().first.parameter!!.countryNumber)

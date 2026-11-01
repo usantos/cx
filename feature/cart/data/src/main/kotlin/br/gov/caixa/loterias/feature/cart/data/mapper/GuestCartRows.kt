@@ -97,7 +97,7 @@ private fun guestCartBetRow(
     val modality = guestCartModality(draft.modalityId)
     return mapOf(
         "_id" to id.toString(), "modalidade" to modality, "id_identificador" to "0",
-        "tipo_concurso_valor" to if (draft.contestType.equals("ESPECIAL", true)) "E" else "N",
+        "tipo_concurso_valor" to if (draft.contestType.equals("ESPECIAL", true)) "2" else "1",
         "tipo_concurso_descricao" to draft.contestType,
         "numeros_selecionados" to gson.toJson(if (draft.modalityId == 7) draft.superSevenColumns else draft.numbers),
         "trevos_selecionados" to gson.toJson(draft.clovers), "valor" to amount.toPlainString(),
@@ -105,7 +105,11 @@ private fun guestCartBetRow(
         "quantidade_teimosinhas" to draft.recurringDraws.toString(), "quantidade_apostas" to "1",
         "quantidade_numeros" to draft.numberQuantity.toString(), "quantidade_trevos" to draft.cloverQuantity.toString(),
         "surpresinha" to if (draft.surprise) "1" else "0", "quantidade_surpresinha" to if (draft.surprise) "1" else "0",
-        "indicador_surpresinha_valor" to if (draft.surprise) "1" else "0",
+        "indicador_surpresinha_valor" to when {
+            !draft.surprise -> "1"
+            draft.modalityId == 20 && draft.surpriseTeamSelected -> "3"
+            else -> "2"
+        },
         "indicador_surpresinha_descricao" to if (draft.surprise) "Surpresinha" else "Não",
         "espelho" to "0", "gera_espelho" to if (draft.generateMirror) "1" else "0", "vinculo_espelho" to "0",
         "id_time_coracao" to favorite.toString(), "id_mes_sorte" to (draft.luckyMonth?.number ?: 0).toString(),

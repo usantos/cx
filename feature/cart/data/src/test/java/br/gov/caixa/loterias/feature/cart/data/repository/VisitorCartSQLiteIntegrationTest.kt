@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.feature.cart.data.datasource.local.CartReceiptPhase
 import br.gov.caixa.loterias.feature.cart.data.datasource.local.SecureCartDocument
 import br.gov.caixa.loterias.feature.cart.data.datasource.local.VisitorCartGraphStorage
 import br.gov.caixa.loterias.feature.cart.data.mapper.LEGACY_CART_TABLE
+import br.gov.caixa.loterias.feature.cart.data.mapper.toUploadDto
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import java.math.BigDecimal
 import kotlinx.coroutines.runBlocking
@@ -69,6 +70,38 @@ class VisitorCartSQLiteIntegrationTest {
         assertTrue(repository.clear().items.isEmpty())
         assertTrue(VisitorCartRepositoryImpl(SecureCartDocument(disk)).current().items.isEmpty())
         assertTrue(runCatching { repository.remove(first.items.single()) }.isFailure)
+    }
+
+    @Test fun `anonymous modalities survive recreation and upload confirms the whole batch before local cleanup`() = runBlocking {
+        val repository = VisitorCartRepositoryImpl(SecureCartDocument(disk))
+        val parameters = parameters(game(16, "Lotomania", 50), game(8, "Lotofácil", 15))
+        repository.add(BetDraft(16, numbers = (1..50).toList()), parameters)
+        val anonymous = repository.add(BetDraft(8, numbers = (1..15).toList()), parameters)
+        val transfer = CartTransferRepositoryImpl(SecureCartDocument(disk)) { "login-batch" }
+        val owner = "a".repeat(64)
+        val prepared = transfer.prepare(owner) as br.gov.caixa.loterias.feature.cart.domain.model.CartTransferPreparation.Ready
+        val uploads = prepared.bets.map { it.toUploadDto() }
+        assertEquals(listOf("LOTOMANIA", "LOTOFACIL"), uploads.map { it.modality })
+        assertTrue(uploads.all { it.id == null && it.contestType.value == "1" && it.quickPickIndicator.value == 1 })
+        assertEquals(anonymous, VisitorCartRepositoryImpl(SecureCartDocument(disk)).current())
+        val gson = com.google.gson.Gson()
+        val received = br.gov.caixa.loterias.feature.cart.data.dto.CartDto(
+            id = 1,
+            individualBets = uploads.mapIndexed { index, upload ->
+                gson.fromJson(gson.toJson(upload), br.gov.caixa.loterias.feature.cart.data.dto.CartBetDto::class.java)
+                    .copy(id = (index + 100).toLong())
+            }
+        ).toDomainCart()
+        assertTrue(br.gov.caixa.loterias.feature.cart.domain.rule.VisitorCartPolicy.transferConfirmed(anonymous, received))
+        assertEquals(anonymous.items.map { it.selectedNumbers }, received.items.map { it.selectedNumbers })
+        assertEquals(0, anonymous.total.compareTo(received.total))
+        assertTrue(transfer.confirmReceived(owner, prepared.transferId))
+        assertEquals(
+            br.gov.caixa.loterias.feature.cart.domain.model.CartCleanupResult.Complete,
+            transfer.finishConfirmed(owner, prepared.transferId)
+        )
+        assertTrue(repository.current().items.isEmpty())
+        assertEquals(2, received.items.size)
     }
 
     @Test fun `removing unmirrored lotomania preserves lotofacil after recreation`() = runBlocking {
