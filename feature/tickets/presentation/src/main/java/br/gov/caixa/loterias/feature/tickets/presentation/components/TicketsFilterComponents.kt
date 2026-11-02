@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCheckbox as Checkbox
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSRadioButton as RadioButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCheckbox as Checkbox
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSRadioButton as RadioButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
 
 @Composable
@@ -33,7 +33,7 @@ internal fun FilterSection(title: String, content: @Composable () -> Unit) {
         if (title.isNotEmpty()) {
             Text(
                 title,
-                color = CaixaDS.colors.brand,
+                color = LoteriasCaixaDS.colors.brand,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .uiId("tickets.0133")

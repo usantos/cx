@@ -18,8 +18,8 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
 import br.gov.caixa.loterias.core.navigation.workflow.VisitorLoginCallbacks
@@ -53,7 +53,7 @@ class VisitorHomeEntryUiTest {
         lateinit var nav: NavHostController
         var request by mutableStateOf<String?>(null)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 nav = rememberNavController()
                 NavHost(nav, startDestination = "home") {
                     composable("home") {
@@ -76,7 +76,7 @@ class VisitorHomeEntryUiTest {
                 }
                 request?.let { route ->
                     val callbacks = VisitorLoginCallbacks(route, nav, { request }, { request = null }, {})
-                    CaixaDSDialog(
+                    LoteriasCaixaDSDialog(
                         "Atenção",
                         "Efetuar login?",
                         "Sim",

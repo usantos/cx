@@ -2,13 +2,13 @@
 
 package br.gov.caixa.loterias.sample.designsystem
 
-import br.gov.caixa.loterias.core.designsystem.components.state.CaixaDSGateMessage
-import br.gov.caixa.loterias.core.designsystem.components.state.CaixaDSStatusAction
+import br.gov.caixa.loterias.core.designsystem.components.state.LoteriasCaixaDSGateMessage
+import br.gov.caixa.loterias.core.designsystem.components.state.LoteriasCaixaDSStatusAction
 
 internal val statePreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.state.CaixaDSStatusAction") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.state.LoteriasCaixaDSStatusAction") { state ->
         with(state) {
-            CaixaDSStatusAction(
+            LoteriasCaixaDSStatusAction(
                 title = sample,
                 message = hint,
                 action = actionLabel,
@@ -16,9 +16,9 @@ internal val statePreviews0 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.state.CaixaDSGateMessage") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.state.LoteriasCaixaDSGateMessage") { state ->
         with(state) {
-            CaixaDSGateMessage(message = hint)
+            LoteriasCaixaDSGateMessage(message = hint)
         }
     }
 )

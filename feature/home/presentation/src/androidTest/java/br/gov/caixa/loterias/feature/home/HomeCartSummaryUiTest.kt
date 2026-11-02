@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import br.gov.caixa.loterias.core.designsystem.components.cart.isCartSummaryVisible
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.components.HomeCartSummary
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeActions
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeUiState
@@ -27,7 +27,7 @@ class HomeCartSummaryUiTest {
             pool = {}, bet = {}, openCart = { opens++ },
         )
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 Box { HomeCartSummary(state.value, isCartSummaryVisible(state.value.cartTotal), actions) }
             }
         }

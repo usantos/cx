@@ -6,7 +6,7 @@ import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.home.domain.repository.HomeLayoutRepository
 import br.gov.caixa.loterias.feature.home.presentation.mapper.HomeV2Modality
 import br.gov.caixa.loterias.feature.home.presentation.mapper.name
@@ -161,8 +161,8 @@ class HomeV2CoordinationUiTest {
     private fun lottery(code: String, contest: Int) = HomeLottery(
         2, "NORMAL", code, "Mega-Sena", contest,
         BigDecimal("100000000"), BigDecimal("6"), "2026-10-15T21:00:00", "", true,
-        HomeLotteryKind.LOTTERY, CaixaDSColorTokens.MegaSenaLight,
-        CaixaDSColorTokens.MegaSenaDark, CaixaDSColorTokens.White,
+        HomeLotteryKind.LOTTERY, LoteriasCaixaDSColorTokens.MegaSenaLight,
+        LoteriasCaixaDSColorTokens.MegaSenaDark, LoteriasCaixaDSColorTokens.White,
         br.gov.caixa.loterias.feature.home.R.drawable.trevo_megasena_fundo_branco,
         br.gov.caixa.loterias.feature.home.R.drawable.ic_calendario,
         br.gov.caixa.loterias.feature.home.R.drawable.ic_calendario

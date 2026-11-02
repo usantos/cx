@@ -32,6 +32,7 @@ class OnboardingViewModel(
 
     private val mutableEffects = SingleConsumerEventQueue<OnboardingEffect>()
     val effects = mutableEffects.events
+    private var completionClaimed = false
 
     fun pageChanged(page: Int) {
         mutableState.dispatch(OnboardingAction.PageChanged(page))
@@ -54,8 +55,11 @@ class OnboardingViewModel(
         mutableState.dispatch(OnboardingAction.TutorialPreferenceToggled)
     }
 
-    fun startBettingTutorial() = persistAndEmit(OnboardingEffect.StartBettingTutorial) {
-        if (state.value.tutorialDoNotShowAgain) setTutorialDismissed(BettingTutorial.MAIS_MILIONARIA, true)
+    fun startBettingTutorial() {
+        val doNotShowAgain = state.value.tutorialDoNotShowAgain
+        persistAndEmit(OnboardingEffect.StartBettingTutorial) {
+            if (doNotShowAgain) setTutorialDismissed(BettingTutorial.MAIS_MILIONARIA, true)
+        }
     }
 
     fun dismissStorageError() {
@@ -63,19 +67,23 @@ class OnboardingViewModel(
     }
 
     private fun persistAndEmit(effect: OnboardingEffect, action: suspend () -> Unit) {
+        if (completionClaimed) return
+        completionClaimed = true
         viewModelScope.launch {
             try {
                 action()
                 mutableEffects.emit(effect)
             } catch (cancelled: CancellationException) {
+                completionClaimed = false
                 throw cancelled
             } catch (_: Exception) {
+                completionClaimed = false
                 mutableState.dispatch(OnboardingAction.StorageFailed)
             }
         }
     }
 
-    fun skipBettingTutorial() = emit(OnboardingEffect.SkipBettingTutorial)
+    fun skipBettingTutorial() = persistAndEmit(OnboardingEffect.SkipBettingTutorial) {}
 
     private fun emit(effect: OnboardingEffect) {
         viewModelScope.launch { mutableEffects.emit(effect) }

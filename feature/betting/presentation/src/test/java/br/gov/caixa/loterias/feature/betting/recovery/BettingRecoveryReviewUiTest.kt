@@ -13,7 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -55,7 +55,7 @@ class BettingRecoveryReviewUiTest {
             checkpointSession = session
         )
         var exits = 0
-        compose.setContent { CaixaDSTheme { BettingGameRoute(model, { exits++ }, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { BettingGameRoute(model, { exits++ }, {}) } }
         compose.waitUntil(10_000) { model.state.value.recoveryReview != null }
         compose.onNodeWithText("Atenção").assertIsDisplayed()
         compose.onNodeWithText("O registro de apostas individuais para o concurso 99 foi encerrado.").assertIsDisplayed()
@@ -92,7 +92,7 @@ class BettingRecoveryReviewUiTest {
         var backDispatcher: OnBackPressedDispatcher? = null
         compose.setContent {
             backDispatcher = requireNotNull(LocalOnBackPressedDispatcherOwner.current).onBackPressedDispatcher
-            CaixaDSTheme { BettingGameRoute(model, { exits++ }, {}, fallbackModalityId = 2) }
+            LoteriasCaixaDSTheme { BettingGameRoute(model, { exits++ }, {}, fallbackModalityId = 2) }
         }
         compose.waitUntil(10_000) { model.state.value.errorMessage != null }
         compose.onNodeWithContentDescription("Voltar").performClick()
@@ -126,7 +126,7 @@ class BettingRecoveryReviewUiTest {
             AddBetToCartUseCase { error("Não deve enviar aposta") },
             checkpointSession = session
         )
-        compose.setContent { CaixaDSTheme { BettingGameRoute(model, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { BettingGameRoute(model, {}, {}) } }
         compose.waitUntil(10_000) { model.state.value.game != null || model.state.value.recoveryReview != null }
         assertEquals(draft.numbers, model.state.value.selectedNumbers)
         compose.onNodeWithText("Rascunho preservado para conferência").assertDoesNotExist()

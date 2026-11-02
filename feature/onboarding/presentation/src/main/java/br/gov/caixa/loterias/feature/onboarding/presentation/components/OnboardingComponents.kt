@@ -14,11 +14,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton as Button
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButtonDefaults as ButtonDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 @Composable
 internal fun LegacyFlatAction(text: String, modifier: Modifier, color: androidx.compose.ui.graphics.Color, onClick: () -> Unit) {
@@ -26,7 +26,7 @@ internal fun LegacyFlatAction(text: String, modifier: Modifier, color: androidx.
         onClick = onClick,
         modifier = (modifier).uiId("start.0010"),
         shape = RoundedCornerShape(0.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = CaixaDSColorTokens.White),
+        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = LoteriasCaixaDSColorTokens.White),
         elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp)
     ) {
         Text(text, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.uiId("start.0011"))
@@ -48,8 +48,8 @@ internal fun LegacyTutorialButton(text: String, color: androidx.compose.ui.graph
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 lines.first(),
-                color = CaixaDSColorTokens.White,
-                fontFamily = CaixaDSFuturaFontFamily,
+                color = LoteriasCaixaDSColorTokens.White,
+                fontFamily = LoteriasCaixaDSFuturaFontFamily,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 lineHeight = 18.sp,
@@ -58,8 +58,8 @@ internal fun LegacyTutorialButton(text: String, color: androidx.compose.ui.graph
             if (lines.size > 1) {
                 Text(
                     lines[1],
-                    color = CaixaDSColorTokens.White,
-                    fontFamily = CaixaDSFuturaFontFamily,
+                    color = LoteriasCaixaDSColorTokens.White,
+                    fontFamily = LoteriasCaixaDSFuturaFontFamily,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
                     lineHeight = 18.sp,

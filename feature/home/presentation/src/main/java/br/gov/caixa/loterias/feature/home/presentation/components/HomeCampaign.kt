@@ -32,7 +32,7 @@ internal fun BoxScope.HomeCampaign(
         // A marca-d'água permanece até a descrição desaparecer (500ms) e o conteúdo retornar (500ms).
         exit = fadeOut(tween(0, delayMillis = 1_000)),
     ) {
-        br.gov.caixa.loterias.core.designsystem.components.CaixaDSOctoberRoseCampaignPanel(
+        br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSOctoberRoseCampaignPanel(
             // Mede a descrição, excluindo a marca-d'água decorativa, e soma o recuo superior do painel.
             descriptionModifier = Modifier.onSizeChanged {
                 onContentHeightChanged(with(density) { it.height.toDp() } + 10.dp)

@@ -20,8 +20,8 @@ import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.home.navigation.HomeRuntimeConfiguration
 import br.gov.caixa.loterias.feature.home.navigation.LocalHomeRuntimeConfiguration
 import br.gov.caixa.loterias.feature.home.presentation.components.HomePoolResaleTimer
@@ -76,7 +76,7 @@ class HomePoolResaleTimerUiTest {
                 CompositionLocalProvider(
                     LocalHomeRuntimeConfiguration provides HomeRuntimeConfiguration(false, "teste", serverTime)
                 ) {
-                    CaixaDSTheme {
+                    LoteriasCaixaDSTheme {
                         if (visible.value) {
                             val countdown by rememberHomePoolResale("21/10/2026 18:00:00", "21/10/2026 18:00:02")
                             countdown?.let { HomePoolResaleTimer(it) }
@@ -115,14 +115,14 @@ class HomePoolResaleTimerUiTest {
     private fun renderAndCheckColors(fontScale: Float) {
         val countdown = mutableStateOf(HomePoolResaleCountdown("01:10:00", 0xFF004680.toInt()))
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Box(Modifier.width(320.dp)) { HomePoolResaleTimer(countdown.value) }
             }
         }
         compose.onNodeWithTag(TIMER_TAG).assertIsDisplayed()
         for (label in listOf("Você tem", "para comprar o seu bolão")) {
             compose.onNodeWithText(label).assertIsDisplayed()
-            assertEquals(CaixaDSColorTokens.NotificationAction, layoutOf(label).layoutInput.style.color)
+            assertEquals(LoteriasCaixaDSColorTokens.NotificationAction, layoutOf(label).layoutInput.style.color)
         }
         val states = listOf(
             HomePoolResaleCountdown("01:10:00", 0xFF004680.toInt()),

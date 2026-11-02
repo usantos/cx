@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.*
 import org.junit.Assert.assertEquals
@@ -17,12 +17,12 @@ class MarketplaceDetailHeaderRetailerGeometryUiTest {
     @get:Rule val compose = createComposeRule()
 
     @Test fun headerMetadataStartsAtNative4dpInset() {
-        compose.setContent { CaixaDSTheme { DetailHeader(detail(), marketplaceColors("MEGA_SENA"), {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { DetailHeader(detail(), marketplaceColors("MEGA_SENA"), {}) } }
         assertEquals(px(4), compose.onNodeWithText("Concurso").fetchSemanticsNode().boundsInRoot.top, 1f)
     }
 
     @Test fun favoriteCaptionOverlapsButtonWithoutIncreasingRetailerRowHeight() {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             Box(Modifier.width(426.dp)) { DetailRetailerData(detail(), false, false, {}) }
         } }
         val name = compose.onNodeWithText("Loterica Visual Offline").fetchSemanticsNode().boundsInRoot
@@ -33,7 +33,7 @@ class MarketplaceDetailHeaderRetailerGeometryUiTest {
     }
 
     @Test fun lotecaFathersDayUsesNativeSingleLineHeaderLabel() {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             DetailHeader(detail().copy(modality = "LOTECA", contestType = 2), marketplaceColors("LOTECA"), {},
                 specialName = "loteca\ndos pais")
         } }

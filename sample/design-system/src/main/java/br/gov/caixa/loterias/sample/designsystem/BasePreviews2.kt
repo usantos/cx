@@ -2,15 +2,15 @@
 
 package br.gov.caixa.loterias.sample.designsystem
 
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSTextButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTextButton
 
 internal val basePreviews2 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSTextButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTextButton") { state ->
         with(state) {
-            CaixaDSTextButton(
+            LoteriasCaixaDSTextButton(
                 onClick = action,
-                content = { CaixaDSText(actionLabel) }
+                content = { LoteriasCaixaDSText(actionLabel) }
             )
         }
     }

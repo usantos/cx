@@ -20,6 +20,10 @@ import br.gov.caixa.loterias.feature.betting.R
 internal fun ComboHelpAction(onHelp: () -> Unit) {
     val resources = LocalResources.current
     Box(Modifier.fillMaxSize().uiId("bet.0078").clickable(role = Role.Button, onClick = onHelp), contentAlignment = Alignment.Center) {
-        Image(painterResource(DesignR.drawable.caixads_modality_help), resources.getString(R.string.ui_ajuda_fe0add), Modifier.size(24.dp))
+        Image(
+            painterResource(DesignR.drawable.loterias_caixa_ds_modality_help),
+            resources.getString(R.string.ui_ajuda_fe0add),
+            Modifier.size(24.dp)
+        )
     }
 }

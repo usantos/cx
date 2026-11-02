@@ -25,7 +25,7 @@ import androidx.navigation.compose.composable
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
@@ -55,7 +55,7 @@ class TicketsDataCoordinationUiTest {
 
     @Test fun publicTicketResultDoesNotOfferSaveActionAbsentFromLegacy() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 br.gov.caixa.loterias.feature.tickets.presentation.route.TicketResultDataRoute(
                     bets = emptyList(),
                     onBack = {}
@@ -67,7 +67,7 @@ class TicketsDataCoordinationUiTest {
 
     @Test fun publicTicketResultKeepsLegacyToolbarHelp() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 br.gov.caixa.loterias.feature.tickets.presentation.route.TicketResultDataRoute(
                     bets = emptyList(),
                     onBack = {}
@@ -132,7 +132,7 @@ class TicketsDataCoordinationUiTest {
         compose.setContent {
             navigation = br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState(null)
             val nav = androidx.navigation.compose.rememberNavController()
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 androidx.navigation.compose.NavHost(nav, startDestination = "tickets/manual-code") {
                     ticketManualNavigation(dependencies, nav, navigation)
                     composable("home") { androidx.compose.material3.Text("Home destino") }
@@ -151,7 +151,7 @@ class TicketsDataCoordinationUiTest {
         val privateData = mutableStateOf(false)
         compose.setContent {
             val model = remember { fixture.model() }
-            CaixaDSTheme { ConfirmedBetsDataRoute(model, {}, {}, privateDataEnabled = privateData.value) }
+            LoteriasCaixaDSTheme { ConfirmedBetsDataRoute(model, {}, {}, privateDataEnabled = privateData.value) }
         }
         compose.runOnIdle {
             assertEquals(0, fixture.betLoads)
@@ -170,7 +170,7 @@ class TicketsDataCoordinationUiTest {
         val privateData = mutableStateOf(false)
         compose.setContent {
             val model = remember { fixture.model() }
-            CaixaDSTheme { PurchasesDataRoute(model, {}, {}, privateDataEnabled = privateData.value) }
+            LoteriasCaixaDSTheme { PurchasesDataRoute(model, {}, {}, privateDataEnabled = privateData.value) }
         }
         compose.runOnIdle {
             assertEquals(0, fixture.purchaseLoads)
@@ -193,7 +193,7 @@ class TicketsDataCoordinationUiTest {
         lateinit var model: TicketsViewModel
         compose.setContent {
             model = remember { fixture.model() }
-            CaixaDSTheme { ConfirmedBetsDataRoute(model, {}, {}) }
+            LoteriasCaixaDSTheme { ConfirmedBetsDataRoute(model, {}, {}) }
         }
         compose.onNodeWithContentDescription("Filtrar").performClick()
         compose.onNodeWithText("Situação da aposta").performScrollTo().performClick()
@@ -263,7 +263,7 @@ class TicketsDataCoordinationUiTest {
         lateinit var model: TicketsViewModel
         compose.setContent {
             model = remember { fixture.model() }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (showingQuery.value) {
                     val onResult: (List<ConfirmedBet>) -> Unit = {
                         results++
@@ -308,7 +308,7 @@ class TicketsDataCoordinationUiTest {
     private fun showManual(fixture: Fixture, results: MutableList<List<ConfirmedBet>>) {
         compose.setContent {
             val model = remember { fixture.model() }
-            CaixaDSTheme { ManualTicketDataRoute(model, {}, { results.add(it) }) }
+            LoteriasCaixaDSTheme { ManualTicketDataRoute(model, {}, { results.add(it) }) }
         }
     }
 

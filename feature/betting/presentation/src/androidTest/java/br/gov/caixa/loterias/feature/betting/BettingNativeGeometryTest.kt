@@ -21,7 +21,7 @@ import androidx.compose.ui.test.swipe
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -126,7 +126,7 @@ class BettingNativeGeometryTest {
         )
     }
     private fun render(vm: BettingGameViewModel) {
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
     }
     private fun nativeTextHeight(text: String, futura: Boolean = false): Float {
         var height = 0

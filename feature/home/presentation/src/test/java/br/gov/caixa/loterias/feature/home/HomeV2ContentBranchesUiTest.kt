@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.hasScrollAction
@@ -20,8 +19,8 @@ import androidx.compose.ui.test.performCustomAccessibilityActionWithLabel
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.components.HeroCarousel
 import br.gov.caixa.loterias.feature.home.presentation.components.PoolBanner
 import br.gov.caixa.loterias.feature.home.presentation.components.ReorderableModalities
@@ -51,7 +50,7 @@ class HomeV2ContentBranchesUiTest {
     @Test fun loadingRetainsNavigationButDoesNotExposeBettingContent() {
         show {
             HomeV2Content(listOf(lottery()), true, emptyMap(), emptyList(), { _, _ ->
-            }, actions, CaixaDSCampaign.DEFAULT, CaixaDSCampaign.DEFAULT)
+            }, actions, LoteriasCaixaDSCampaign.DEFAULT, LoteriasCaixaDSCampaign.DEFAULT)
         }
         compose.onNodeWithText("Carrinho").performClick()
         compose.onNodeWithText("Aposte").assertDoesNotExist()
@@ -63,7 +62,7 @@ class HomeV2ContentBranchesUiTest {
         val loading = mutableStateOf(true)
         show {
             HomeV2Content(listOf(lottery()), loading.value, emptyMap(), listOf("MEGA_SENA"), { _, _ ->
-            }, actions, CaixaDSCampaign.DEFAULT, CaixaDSCampaign.DEFAULT)
+            }, actions, LoteriasCaixaDSCampaign.DEFAULT, LoteriasCaixaDSCampaign.DEFAULT)
         }
         compose.runOnIdle { loading.value = false }
         compose.onNodeWithText("Escolha sua modalidade").assertExists()
@@ -74,7 +73,7 @@ class HomeV2ContentBranchesUiTest {
     @Test fun navigationDispatchesGamesResultsFavoritesCartMenuAndNotifications() {
         show {
             HomeV2Content(emptyList(), true, emptyMap(), emptyList(), { _, _ ->
-            }, actions, CaixaDSCampaign.DEFAULT, CaixaDSCampaign.DEFAULT)
+            }, actions, LoteriasCaixaDSCampaign.DEFAULT, LoteriasCaixaDSCampaign.DEFAULT)
         }
         compose.onNodeWithText("Minhas\nApostas").performClick()
         compose.onNodeWithText("Resultados").performClick()
@@ -202,8 +201,8 @@ class HomeV2ContentBranchesUiTest {
                 },
                 { _, _ -> },
                 actions,
-                CaixaDSCampaign.DEFAULT,
-                CaixaDSCampaign.DEFAULT
+                LoteriasCaixaDSCampaign.DEFAULT,
+                LoteriasCaixaDSCampaign.DEFAULT
             )
         }
         compose.onNodeWithText("Lotofácil").assertDoesNotExist()
@@ -218,7 +217,7 @@ class HomeV2ContentBranchesUiTest {
         val useNext = mutableStateOf(false)
         show {
             HomeV2Content(emptyList(), true, emptyMap(), emptyList(), { _, _ ->
-            }, if (useNext.value) next else actions, CaixaDSCampaign.DEFAULT, CaixaDSCampaign.DEFAULT)
+            }, if (useNext.value) next else actions, LoteriasCaixaDSCampaign.DEFAULT, LoteriasCaixaDSCampaign.DEFAULT)
         }
         compose.runOnIdle { useNext.value = true }
         compose.onNodeWithText("Carrinho").performClick()
@@ -229,7 +228,7 @@ class HomeV2ContentBranchesUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { content() } }
+        compose.setContent { LoteriasCaixaDSTheme { content() } }
     }
     private fun lottery(id: Int = 2, code: String = "megasena") = HomeLottery(
         id, "NORMAL", code, code, 123,

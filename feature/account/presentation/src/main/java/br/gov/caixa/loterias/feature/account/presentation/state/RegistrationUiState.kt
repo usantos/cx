@@ -17,6 +17,7 @@ data class RegistrationUiState(
     val acceptsNotifications: Boolean = true,
     val loading: Boolean = false,
     val registered: Boolean = false,
+    val completionConsumed: Boolean = false,
     val errorMessage: String? = null,
     val zipCodeErrorMessage: String? = null,
 )

@@ -9,9 +9,9 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.tokens.CxHomeV2Colors
 import br.gov.caixa.loterias.feature.home.domain.repository.HomeLayoutRepository
 import br.gov.caixa.loterias.feature.home.presentation.mapper.HomeV2Modality
@@ -120,7 +120,7 @@ class HomeV2UiTest {
         val lottery = lottery()
         compose.setContent {
             if (hostTheme.value) {
-                CaixaDSTheme { HomeV2TestContent(listOf(lottery), false, emptyMap(), preferences, actions) }
+                LoteriasCaixaDSTheme { HomeV2TestContent(listOf(lottery), false, emptyMap(), preferences, actions) }
             } else {
                 // HomeV2View do CX fornece a tipografia padrão do Material3 em sua própria raiz.
                 MaterialTheme(typography = Typography()) { reference.Home(listOf(lottery), false, emptyMap()) }
@@ -151,8 +151,8 @@ class HomeV2UiTest {
                 emptyMap(),
                 preferences,
                 actions,
-                campaign = CaixaDSCampaign.OCTOBER_ROSE,
-                megaSenaCampaign = CaixaDSCampaign.DEFAULT
+                campaign = LoteriasCaixaDSCampaign.OCTOBER_ROSE,
+                megaSenaCampaign = LoteriasCaixaDSCampaign.DEFAULT
             )
         }
         compose.onAllNodesWithText("Outubro Rosa").assertCountEquals(0)
@@ -171,8 +171,8 @@ class HomeV2UiTest {
                 emptyMap(),
                 preferences,
                 actions,
-                campaign = CaixaDSCampaign.OCTOBER_ROSE,
-                megaSenaCampaign = CaixaDSCampaign.OCTOBER_ROSE
+                campaign = LoteriasCaixaDSCampaign.OCTOBER_ROSE,
+                megaSenaCampaign = LoteriasCaixaDSCampaign.OCTOBER_ROSE
             )
         }
         fun assertColors(label: String, background: Color, foreground: Color) {
@@ -184,8 +184,8 @@ class HomeV2UiTest {
             assertTrue("$label foreground", foreground.toArgb() in colors)
         }
         // HomeV2View do CX mantém brancas as superfícies das duas ações, independentemente da cor da campanha do cartão.
-        assertColors("Aposte", CaixaDSColorTokens.White, CxHomeV2Colors.CFF003B71)
-        assertColors("Compre seu bolão", CaixaDSColorTokens.White, CxHomeV2Colors.CFF003B71)
+        assertColors("Aposte", LoteriasCaixaDSColorTokens.White, CxHomeV2Colors.CFF003B71)
+        assertColors("Compre seu bolão", LoteriasCaixaDSColorTokens.White, CxHomeV2Colors.CFF003B71)
     }
 
     private fun show() {
@@ -195,8 +195,8 @@ class HomeV2UiTest {
     private fun lottery(): HomeLottery = HomeLottery(
         2, "NORMAL", "megasena", "Mega-Sena", 4321,
         BigDecimal("100000000"), BigDecimal("6"), "2026-10-15T21:00:00", "", true,
-        HomeLotteryKind.LOTTERY, CaixaDSColorTokens.MegaSenaLight,
-        CaixaDSColorTokens.MegaSenaDark, CaixaDSColorTokens.White,
+        HomeLotteryKind.LOTTERY, LoteriasCaixaDSColorTokens.MegaSenaLight,
+        LoteriasCaixaDSColorTokens.MegaSenaDark, LoteriasCaixaDSColorTokens.White,
         br.gov.caixa.loterias.feature.home.R.drawable.trevo_megasena_fundo_branco,
         br.gov.caixa.loterias.feature.home.R.drawable.ic_calendario,
         br.gov.caixa.loterias.feature.home.R.drawable.ic_calendario

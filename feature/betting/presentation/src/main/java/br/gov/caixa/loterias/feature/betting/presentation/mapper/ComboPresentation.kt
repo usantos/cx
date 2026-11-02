@@ -9,13 +9,13 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryKey
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryKey
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
 import java.util.Locale
 
-internal fun comboText(size: Int, weight: FontWeight = FontWeight.Normal, family: FontFamily = CaixaDSFontFamily) = TextStyle(
+internal fun comboText(size: Int, weight: FontWeight = FontWeight.Normal, family: FontFamily = LoteriasCaixaDSFontFamily) = TextStyle(
     fontFamily = family,
     fontWeight = weight,
     fontSize = size.sp,
@@ -32,7 +32,7 @@ internal fun comboEntryName(entry: BetComboEntry): AnnotatedString {
     val normal = modality.managerName.ifBlank { modality.name }
     val special = entry.contestType.equals("ESPECIAL", true) || entry.contestType.equals("E", true)
     if (special) return AnnotatedString(modality.specialName.ifBlank { normal }.lowercase(Locale.forLanguageTag("pt-BR")))
-    return if (caixaDSLotteryKey(modality.id, modality.code) == "LOTOMANIA") {
+    return if (loteriasCaixaDSLotteryKey(modality.id, modality.code) == "LOTOMANIA") {
         buildAnnotatedString {
             append(normal)
             withStyle(SpanStyle(fontWeight = FontWeight.Normal)) { append(" + espelho") }

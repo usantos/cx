@@ -23,8 +23,8 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
@@ -240,17 +240,19 @@ class TicketsNavigationIntegrationUiTest {
         compose.setContent {
             nav = rememberNavController()
             navigation = rememberAppNavigationState(identity.ownerKey)
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 NavHost(nav, startDestination = "origin") {
-                    composable("origin") { CaixaDSText("Origem") }
-                    composable("home") { CaixaDSText("Destino início") }
-                    composable("cart/current") { CaixaDSText("Destino carrinho") }
-                    composable("cart/favorites") { CaixaDSText("Destino favoritos") }
-                    composable("results/confirmed-bet") { CaixaDSText("Destino resultado") }
+                    composable("origin") { LoteriasCaixaDSText("Origem") }
+                    composable("home") { LoteriasCaixaDSText("Destino início") }
+                    composable("cart/current") { LoteriasCaixaDSText("Destino carrinho") }
+                    composable("cart/favorites") { LoteriasCaixaDSText("Destino favoritos") }
+                    composable("results/confirmed-bet") { LoteriasCaixaDSText("Destino resultado") }
                     composable("betting/simulation/{modalityId}") { entry ->
-                        CaixaDSText("Editar modalidade ${entry.arguments?.getString("modalityId")}")
+                        LoteriasCaixaDSText("Editar modalidade ${entry.arguments?.getString("modalityId")}")
                     }
-                    composable("retail/prize/{betId}") { entry -> CaixaDSText("Resgatar aposta ${entry.arguments?.getString("betId")}") }
+                    composable("retail/prize/{betId}") { entry ->
+                        LoteriasCaixaDSText("Resgatar aposta ${entry.arguments?.getString("betId")}")
+                    }
                     composable(
                         "support/terms?tab={tab}",
                         arguments = listOf(
@@ -260,9 +262,9 @@ class TicketsNavigationIntegrationUiTest {
                                     ""
                             }
                         )
-                    ) { CaixaDSText("FAQ") }
+                    ) { LoteriasCaixaDSText("FAQ") }
                     composable("support/game-help?modalityId={modalityId}&modalityName={modalityName}") { entry ->
-                        CaixaDSText("Ajuda modalidade ${entry.arguments?.getString("modalityId")}")
+                        LoteriasCaixaDSText("Ajuda modalidade ${entry.arguments?.getString("modalityId")}")
                     }
                     ticketsGraph(adapter, nav, navigation, session, AppNavigationActions({ _, _ -> }, {}, {}, {}, {}, {}))
                 }

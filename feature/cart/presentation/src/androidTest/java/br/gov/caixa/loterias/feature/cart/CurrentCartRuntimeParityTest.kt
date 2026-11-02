@@ -27,7 +27,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
@@ -139,7 +139,7 @@ class CurrentCartRuntimeParityTest {
                     dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate)
                 )
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 CurrentCartRoute(
                     model,
                     onBack = {},
@@ -201,7 +201,7 @@ class CurrentCartRuntimeParityTest {
             "super sete", "quina", "lotomania", "timemania", "loteca", "concurso especial"
         )
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 Column(Modifier.verticalScroll(rememberScrollState())) {
                     codes.forEach { code ->
                         CurrentCartRow(
@@ -283,7 +283,7 @@ class CurrentCartRuntimeParityTest {
 
     @Test fun extraIndicatorsAreBelowExtraAndSuperSevenIndicatorsBelowColumns() {
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 Column {
                     CurrentCartRow(
                         mega.copy(
@@ -327,7 +327,7 @@ class CurrentCartRuntimeParityTest {
 
     @Test fun nativeExtraUsesGuidelineWidthWithoutNumericEndMargin() {
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 CurrentCartRow(
                     mega.copy(
                         modalityCode = "TIMEMANIA",
@@ -356,7 +356,7 @@ class CurrentCartRuntimeParityTest {
         val labels = listOf("Espelho", "Surpresinha", "Teimosinha")
         val badges = listOf(CartItemBadge.MIRROR, CartItemBadge.SURPRISE, CartItemBadge.RECURRING)
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 Column {
                     badges.forEach { badge -> CurrentCartRow(mega.copy(badges = setOf(badge)), Instant.EPOCH, {}, null) }
                 }
@@ -489,7 +489,7 @@ class CurrentCartRuntimeParityTest {
                     dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate)
                 ).also { capturedModel = it }
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 CurrentCartRoute(
                     model,
                     onBack = {},

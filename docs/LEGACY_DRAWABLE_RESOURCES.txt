@@ -235,7 +235,7 @@ feature/tickets/presentation/src/main/res/drawable/legacy_tickets_trevo_micro_se
 feature/tickets/presentation/src/main/res/drawable/legacy_tickets_trevo_nova_api.xml
 feature/tickets/presentation/src/main/res/drawable/legacy_tickets_trevo_silce.xml
 
-core/design-system/src/main/res/drawable/caixads_modality_back.xml
-core/design-system/src/main/res/drawable/caixads_home_bell.xml
-core/design-system/src/main/res/drawable/caixads_home_unread_badge.xml
+core/design-system/src/main/res/drawable/loterias_caixa_ds_modality_back.xml
+core/design-system/src/main/res/drawable/loterias_caixa_ds_home_bell.xml
+core/design-system/src/main/res/drawable/loterias_caixa_ds_home_unread_badge.xml
 core/design-system/src/main/res/drawable/splash_loterias_logo.xml

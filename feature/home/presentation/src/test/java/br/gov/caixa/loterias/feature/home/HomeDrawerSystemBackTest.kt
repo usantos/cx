@@ -8,7 +8,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeDrawerIdentity
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeExitConfirmation
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeNavigationDrawer
@@ -39,7 +39,7 @@ class HomeDrawerSystemBackTest {
             }
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 val drawer = rememberDrawerState(DrawerValue.Open)
                 val scope = rememberCoroutineScope()
                 HomeExitConfirmation(enabled = !drawer.isOpen) { exits++ }

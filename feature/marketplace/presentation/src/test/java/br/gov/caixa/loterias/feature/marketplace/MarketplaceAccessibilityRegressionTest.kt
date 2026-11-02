@@ -1,11 +1,9 @@
 package br.gov.caixa.loterias.feature.marketplace
 
 import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.MarketplaceCarousel
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceUiState
@@ -24,7 +22,7 @@ class MarketplaceAccessibilityRegressionTest {
     @Test fun carouselQuantityActionsSayWhatTheyChange() {
         val pool = MarketplacePool("B1", "MEGA_SENA", 1, "Lotérica", "27/10/2026", "10", AVAILABLE_SHARES, 1, NUMBERS_PER_BET, false)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 MarketplaceCarousel(MarketplaceUiState(pools = listOf(pool)), {}, {}, {}, {}, {})
             }
         }

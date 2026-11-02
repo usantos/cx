@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.tickets.presentation.components.LegacyTicketPeriodSelector
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -36,7 +36,7 @@ class TicketPeriodLargeFontTest {
         try {
             val selected = mutableListOf<Int>()
             compose.setContent {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     Box(Modifier.width(300.dp)) {
                         LegacyTicketPeriodSelector(
                             "Selecione o período",

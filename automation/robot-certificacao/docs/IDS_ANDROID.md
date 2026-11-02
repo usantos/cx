@@ -50,7 +50,7 @@ No checkout Android: `./gradlew verifyAutomationIds`. A tarefa está incluída e
 
 O gate não promete interpretar todo DSL Kotlin nem inspeciona a árvore nativa. Um componente customizado novo precisa expor o Modifier/ID no alvo interativo e ter um teste/inspeção correspondente. Preservar o ID publicado é parte do contrato com a certificação.
 
-Dois arquivos de header protegidos permanecem intactos. Seus componentes básicos compartilham a infraestrutura do CaixaDS. O `testTag` não substitui `contentDescription`, role, estado ou erro: acessibilidade continua independente dos identificadores de teste.
+Dois arquivos de header protegidos permanecem intactos. Seus componentes básicos compartilham a infraestrutura do LoteriasCaixaDS. O `testTag` não substitui `contentDescription`, role, estado ou erro: acessibilidade continua independente dos identificadores de teste.
 
 Não é possível atribuir IDs Compose a elementos pertencentes ao Chrome/SSO, ao diálogo biométrico Android, ao launcher ou ao HTML/SDK de terceiros. Esses alvos precisam de localizadores próprios e contexto/contratos do respectivo dono. Não contornar as proteções dessas telas.
 
@@ -66,6 +66,39 @@ O gate bloqueia chaves dinâmicas/dados de usuário, namespace incorreto, IDs n�
 
 O painel técnico de revisão de rascunho foi retirado em 30/10/2026. As chaves
 `bet.0049` a `bet.0064` ficam aposentadas e não devem ser reutilizadas.
-O aviso de concurso encerrado usa o diálogo CaixaDS compartilhado e a ação
+O aviso de concurso encerrado usa o diálogo LoteriasCaixaDS compartilhado e a ação
 `simlo.dialog.positivo`; não deve haver localizador para “Tentar novamente” nesse
 aviso permanente. O retry continua disponível para falhas temporárias de rede.
+
+Em 01/11/2026, 35 declarações do fluxo de cartões foram realocadas para os
+componentes de `core/design-system`. Os identificadores `simlo.pay.*` e os
+localizadores permaneceram iguais; o inventário registra os novos arquivos.
+O DS recebe os callbacks, sem conhecer IDs de compra ou operações de backend.
+
+
+## Organização de Compose — 01/11/2026
+
+A extração de Screens e seções nas 14 features/Core preserva os IDs e símbolos
+publicados. O inventário Android e o legado foram atualizados somente nos
+proprietários e linhas das declarações; localizadores continuam os mesmos.
+A contagem de ocorrências é conferida pelo validador. Mudança de arquivo não
+representa controle novo nem dispensa validar o escopo na árvore nativa.
+
+Na continuação final da mesma revisão, os 1.777 registros principais e os 88
+registros legados conservaram identificadores, chaves e símbolos. Em comparação
+com a árvore já refatorada da primeira rodada, mudaram somente arquivo/linha
+em 619 registros principais e 36 legados. O validador de automação foi executado
+novamente; os localizadores Robot não foram renumerados.
+
+Na refatoração adicional de 02/11/2026, as seções do diálogo de favorito foram
+separadas por responsabilidade. As chaves `bet.0021` a `bet.0028` e o ID legado
+do campo de nome mantêm os mesmos valores e semântica; somente os arquivos e
+linhas dos proprietários foram atualizados. Os localizadores Robot continuam
+iguais. O contrato de automação foi revalidado após a formatação final.
+
+Na extração autorizada dos headers em 02/11/2026 foram acrescentados dois IDs ao
+cabeçalho do carrinho: `simlo.cart.0143` para excluir todas as apostas e
+`simlo.cart.0144` para salvar favorito. São aditivos; os IDs anteriores continuam
+iguais. Os localizadores `carrinho.excluir_todas` e `carrinho.salvar_favorito`
+apontam para esses IDs e respeitam as mesmas condições de visibilidade. Os novos
+helpers passam pelo validador normal de controles, sem novas exclusões.

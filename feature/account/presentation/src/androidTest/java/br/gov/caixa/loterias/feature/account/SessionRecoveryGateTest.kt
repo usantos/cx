@@ -6,7 +6,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Rule
 import org.junit.Test
 import br.gov.caixa.loterias.feature.account.presentation.components.SessionRecoveryContent
@@ -18,7 +18,7 @@ class SessionRecoveryGateTest {
     @Test fun checkingAndFailureNeverComposeProtectedContentAndRetryReturnsToChecking() {
         val state = mutableStateOf(SessionRecoveryState.CHECKING)
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 SessionRecoveryContent(state.value, { state.value = SessionRecoveryState.CHECKING }, {},
                     loading = { Text("Splash de referência") }, content = { Text("Conteúdo protegido") })
             }
@@ -36,7 +36,7 @@ class SessionRecoveryGateTest {
     @Test fun recoveredCleanupRequiresAcknowledgmentAndDoesNotClaimBrowserLogout() {
         val state = mutableStateOf(SessionRecoveryState.AWAITING_ACKNOWLEDGMENT)
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 SessionRecoveryContent(state.value, {}, { state.value = SessionRecoveryState.READY },
                     loading = { Text("Splash de referência") }, content = { Text("Conteúdo protegido") })
             }
@@ -50,7 +50,7 @@ class SessionRecoveryGateTest {
 
     @Test fun ordinaryReadyEntryDoesNotAddAnAlertOrLoading() {
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 SessionRecoveryContent(SessionRecoveryState.READY, {}, {},
                     loading = { Text("Splash de referência") }, content = { Text("Conteúdo protegido") })
             }

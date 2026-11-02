@@ -70,9 +70,14 @@ private fun reduceFavoriteCartsLoadingState(state: FavoriteCartsUiState, action:
     when (action) {
         FavoriteCartsAction.LoadStarted -> state.copy(loading = true, errorMessage = null)
 
-        FavoriteCartsAction.ExpansionCleared -> state.copy(expandedCartId = null, expandedBets = emptyList())
+        FavoriteCartsAction.ExpansionCleared -> state.copy(expandedCartId = null, expandedBets = emptyList(), loadingCartId = null)
 
-        is FavoriteCartsAction.CachedCartExpanded -> state.copy(expandedCartId = action.id, expandedBets = action.bets, errorMessage = null)
+        is FavoriteCartsAction.CachedCartExpanded -> state.copy(
+            expandedCartId = action.id,
+            expandedBets = action.bets,
+            loadingCartId = null,
+            errorMessage = null
+        )
 
         is FavoriteCartsAction.CartLoadStarted -> state.copy(loadingCartId = action.id, errorMessage = null)
 

@@ -49,11 +49,11 @@ core/data/src/main/java/br/gov/caixa/loterias/core/data/RemoveExpiredRemotePoolS
 core/data/src/main/java/br/gov/caixa/loterias/core/data/SportsBetDtoMapping.kt
 core/data/src/test/java/br/gov/caixa/loterias/core/data/RemoteRepositoriesTest.kt
 core/data/src/test/java/br/gov/caixa/loterias/core/data/RemoveExpiredRemotePoolShareTest.kt
-core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCurrentCartColors.kt
-core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCurrentCartIcons.kt
-core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyDetailClover.kt
-core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSMarketplaceFilterCurrencyIcon.kt
-core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSTokens.kt
+core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCurrentCartColors.kt
+core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCurrentCartIcons.kt
+core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyDetailClover.kt
+core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSMarketplaceFilterCurrencyIcon.kt
+core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSTokens.kt
 core/domain/src/main/kotlin/br/gov/caixa/loterias/core/domain/betting/SessionBettingParametersRepository.kt
 core/domain/src/main/kotlin/br/gov/caixa/loterias/core/domain/cart/RemoveExpiredPoolShareUseCase.kt
 core/domain/src/main/kotlin/br/gov/caixa/loterias/core/domain/marketplace/MarketplaceFilter.kt

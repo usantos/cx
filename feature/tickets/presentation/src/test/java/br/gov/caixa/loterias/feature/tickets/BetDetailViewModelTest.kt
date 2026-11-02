@@ -495,6 +495,132 @@ class BetDetailViewModelTest {
         add: AddBetToCartUseCase = cartUseCase(),
     ) = BetDetailViewModel(target, recover, download, validate, save, add, FixedCoroutineDispatchers(dispatcher))
 
+    @Test fun `repeat claims parameters and cart submission before queued duplicate taps`() = runTest {
+        val parameters = CompletableDeferred<AppResult<BettingParameters>>()
+        val cart = CompletableDeferred<AppResult<ShoppingCart>>()
+        var parameterReads = 0
+        val submitted = mutableListOf<BetDraft>()
+        val model = repeatModel(
+            GetBettingParametersUseCase {
+                parameterReads++
+                parameters.await()
+            },
+            AddBetToCartUseCase {
+                submitted += it
+                cart.await()
+            }
+        )
+        advanceUntilIdle()
+        model.addCurrentBetToCart()
+        model.addCurrentBetToCart()
+        runCurrent()
+        assertEquals(1, parameterReads)
+        parameters.complete(
+            AppResult.Success(BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 10, listOf(game("NORMAL", "Mega-Sena"))))
+        )
+        runCurrent()
+        model.dismissRepeatContest()
+        model.addCurrentBetToCart()
+        runCurrent()
+        assertEquals(1, submitted.size)
+        assertEquals(listOf(1, 2, 3, 4, 5, 6), submitted.single().numbers)
+        cart.complete(AppResult.Success(ShoppingCart(1, BigDecimal.ZERO, emptyList())))
+        advanceUntilIdle()
+        assertTrue(model.state.value.cartAdditionConfirmed)
+        assertFalse(model.state.value.loading)
+    }
+
+    @Test fun `repeat keeps claim through contest selection and consumes confirmation once`() = runTest {
+        verifyRepeatConfirmation(listOf(game("NORMAL", "Mega-Sena"), game("ESPECIAL", "Mega-Sena")), conversion = false)
+    }
+
+    @Test fun `repeat keeps claim through conversion and consumes confirmation once`() = runTest {
+        verifyRepeatConfirmation(listOf(game("ESPECIAL", "Mega-Sena")), conversion = true)
+    }
+
+    private suspend fun kotlinx.coroutines.test.TestScope.verifyRepeatConfirmation(
+        games: List<LotteryGameParameters>,
+        conversion: Boolean,
+    ) {
+        val cart = CompletableDeferred<AppResult<ShoppingCart>>()
+        var parameterReads = 0
+        val submitted = mutableListOf<BetDraft>()
+        val model = repeatModel(
+            GetBettingParametersUseCase {
+                parameterReads++
+                AppResult.Success(BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 10, games))
+            },
+            AddBetToCartUseCase {
+                submitted += it
+                cart.await()
+            }
+        )
+        advanceUntilIdle()
+        model.addCurrentBetToCart()
+        advanceUntilIdle()
+        model.addCurrentBetToCart()
+        advanceUntilIdle()
+        assertEquals(1, parameterReads)
+        if (conversion) {
+            model.confirmRepeatConversion()
+            model.confirmRepeatConversion()
+        } else {
+            model.selectRepeatContest(1)
+            model.confirmRepeatContest()
+            model.confirmRepeatContest()
+        }
+        runCurrent()
+        model.dismissRepeatContest()
+        model.addCurrentBetToCart()
+        runCurrent()
+        assertEquals(1, submitted.size)
+        assertEquals("ESPECIAL", submitted.single().contestType)
+        cart.complete(AppResult.Success(ShoppingCart(1, BigDecimal.ZERO, emptyList())))
+        advanceUntilIdle()
+        assertTrue(model.state.value.cartAdditionConfirmed)
+        model.dismissCartAddition()
+        model.addCurrentBetToCart()
+        advanceUntilIdle()
+        assertEquals(2, parameterReads)
+    }
+
+    @Test fun `clearing detail prevents cart submission after non cooperative parameters complete`() = runTest {
+        var pending: kotlin.coroutines.Continuation<AppResult<BettingParameters>>? = null
+        val submitted = mutableListOf<BetDraft>()
+        val model = repeatModel(
+            GetBettingParametersUseCase { kotlin.coroutines.suspendCoroutine { pending = it } },
+            AddBetToCartUseCase {
+                submitted += it
+                AppResult.Success(ShoppingCart(1, BigDecimal.ZERO, emptyList()))
+            }
+        )
+        val store = ViewModelStore().apply { put("repeat", model) }
+        advanceUntilIdle()
+        model.addCurrentBetToCart()
+        runCurrent()
+        assertNotNull(pending)
+        store.clear()
+        requireNotNull(pending).resumeWith(
+            Result.success(
+                AppResult.Success(BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 10, listOf(game("NORMAL", "Mega-Sena"))))
+            )
+        )
+        advanceUntilIdle()
+        assertTrue(submitted.isEmpty())
+        assertFalse(model.state.value.cartAdditionConfirmed)
+    }
+
+    private fun repeatModel(parameters: GetBettingParametersUseCase, add: AddBetToCartUseCase) = BetDetailViewModel(
+        bet.copy(modalityId = 2, contestTypeId = 1, numbers = listOf(1, 2, 3, 4, 5, 6)),
+        RecoverConfirmedBetUseCase { AppResult.Success(it) },
+        DownloadBetReceiptUseCase { AppResult.Success(byteArrayOf()) },
+        ValidateFavoriteBetUseCase { AppResult.Success(Unit) },
+        SaveFavoriteBetUseCase { AppResult.Success(Unit) },
+        add,
+        FixedCoroutineDispatchers(dispatcher),
+        getBettingParameters = parameters
+    )
+
     private fun specialOnlyFor(result: AppResult<BettingParameters>) = BetDetailViewModel(
         bet.copy(modalityId = 2, numbers = listOf(1, 2, 3, 4, 5, 6)),
         RecoverConfirmedBetUseCase { AppResult.Success(it) },

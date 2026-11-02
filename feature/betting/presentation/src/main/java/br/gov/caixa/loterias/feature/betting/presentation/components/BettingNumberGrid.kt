@@ -28,13 +28,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCheckbox as Checkbox
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
-import br.gov.caixa.loterias.core.designsystem.tokens.resolveCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCheckbox as Checkbox
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.betting.R
 
 @Composable
@@ -45,10 +45,10 @@ internal fun BettingLegacyNumberGrid(
     modifier: Modifier,
     modalityId: Int,
 ) {
-    val style = caixaDSLotteryStyle(modalityId)
-    val accent = if (style != resolveCaixaDSLotteryStyle(modalityId, "", CaixaDSCampaign.DEFAULT)) {
+    val style = loteriasCaixaDSLotteryStyle(modalityId)
+    val accent = if (style != resolveLoteriasCaixaDSLotteryStyle(modalityId, "", LoteriasCaixaDSCampaign.DEFAULT)) {
         style.numeral
-    } else if (style.content == CaixaDSColorTokens.White) {
+    } else if (style.content == LoteriasCaixaDSColorTokens.White) {
         style.light
     } else {
         style.content
@@ -118,8 +118,8 @@ private fun BettingNumberCell(number: Int, checked: Boolean, accent: androidx.co
             )
             Text(
                 label,
-                color = if (checked) CaixaDSColorTokens.White else CaixaDSColorTokens.SocialGraphite,
-                fontFamily = CaixaDSFontFamily,
+                color = if (checked) LoteriasCaixaDSColorTokens.White else LoteriasCaixaDSColorTokens.SocialGraphite,
+                fontFamily = LoteriasCaixaDSFontFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,

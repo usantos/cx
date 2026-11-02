@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import kotlinx.coroutines.CancellationException
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -71,7 +71,7 @@ class AccountExternalLinkTest {
         val model = AccountStatusViewModel("account/change-login")
         compose.setContent {
             CompositionLocalProvider(LocalUriHandler provides handler) {
-                CaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSTheme(darkTheme = false) {
                     AccountRoute(model, onBack(), { error("No account completion expected") }, URL)
                 }
             }

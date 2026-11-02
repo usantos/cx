@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -26,8 +26,8 @@ class CatalogOfflineTest {
 
     @Test
     fun sampleWebViewLoadsOnlyPackagedHtmlWithoutJavaScriptOrInternetPermission() {
-        val key = "br.gov.caixa.loterias.core.designsystem.web.CaixaDSWebPage"
-        compose.setContent { CaixaDSTheme { catalogPreviews.getValue(key)(PreviewState()) } }
+        val key = "br.gov.caixa.loterias.core.designsystem.web.LoteriasCaixaDSWebPage"
+        compose.setContent { LoteriasCaixaDSTheme { catalogPreviews.getValue(key)(PreviewState()) } }
         compose.runOnIdle {
             val view = compose.activity.window.decorView.descendants().filterIsInstance<WebView>().single()
             assertEquals("file:///android_asset/catalog.html", shadowOf(view).lastLoadedUrl)

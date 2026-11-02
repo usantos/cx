@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.CaixaDSSample.Base" parent="android:style/Theme.Material.Light.NoActionBar">
+    <style name="Theme.LoteriasCaixaDSSample.Base" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/catalog_splash_background</item>
         <item name="android:fontFamily">sans</item>
         <item name="android:windowLightStatusBar">false</item>
@@ -7,5 +7,5 @@
         <item name="android:navigationBarColor">#FFFFFF</item>
         <item name="android:colorAccent">#F39200</item>
     </style>
-    <style name="Theme.CaixaDSSample" parent="Theme.CaixaDSSample.Base" />
+    <style name="Theme.LoteriasCaixaDSSample" parent="Theme.LoteriasCaixaDSSample.Base" />
 </resources>

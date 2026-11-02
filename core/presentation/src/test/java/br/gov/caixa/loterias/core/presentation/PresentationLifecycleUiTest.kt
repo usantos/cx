@@ -14,10 +14,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.theme.LocalCaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.LocalCaixaDSMegaSenaCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LocalLoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LocalLoteriasCaixaDSMegaSenaCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.CampaignActivation
 import br.gov.caixa.loterias.core.domain.configuration.model.CampaignArea
 import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign
@@ -118,7 +118,7 @@ class PresentationLifecycleUiTest {
         val notice = ServiceNoticeUiState("Aposte mais para continuar", ServiceRedirect.HOME)
         val decisions = mutableListOf<String>()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 ServiceFailureOverlay(
                     ServiceFailurePresentation(notice),
                     {
@@ -220,13 +220,13 @@ class PresentationLifecycleUiTest {
             },
             FixedCoroutineDispatchers(Dispatchers.Unconfined)
         )
-        var home = CaixaDSCampaign.DEFAULT
-        var game = CaixaDSCampaign.DEFAULT
+        var home = LoteriasCaixaDSCampaign.DEFAULT
+        var game = LoteriasCaixaDSCampaign.DEFAULT
         compose.setContent {
             CompositionLocalProvider(LocalLifecycleOwner provides owner) {
                 ApplicationCampaignTheme(model) {
-                    home = LocalCaixaDSCampaign.current
-                    game = LocalCaixaDSMegaSenaCampaign.current
+                    home = LocalLoteriasCaixaDSCampaign.current
+                    game = LocalLoteriasCaixaDSMegaSenaCampaign.current
                 }
             }
         }
@@ -234,7 +234,10 @@ class PresentationLifecycleUiTest {
             assertEquals(0, refreshes.get())
             owner.lifecycle.currentState = Lifecycle.State.RESUMED
         }
-        compose.waitUntil(5000) { home == CaixaDSCampaign.OCTOBER_ROSE && game == CaixaDSCampaign.SEPTEMBER_BLUE && refreshes.get() == 1 }
+        compose.waitUntil(5000) {
+            home == LoteriasCaixaDSCampaign.OCTOBER_ROSE && game == LoteriasCaixaDSCampaign.SEPTEMBER_BLUE &&
+                refreshes.get() == 1
+        }
         compose.runOnIdle { owner.lifecycle.currentState = Lifecycle.State.STARTED }
         compose.runOnIdle { owner.lifecycle.currentState = Lifecycle.State.RESUMED }
         compose.waitUntil(5000) { refreshes.get() == 2 }

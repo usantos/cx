@@ -5,6 +5,7 @@ import br.gov.caixa.loterias.feature.onboarding.domain.usecase.CompleteIntroduct
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.SetBettingTutorialDismissedUseCase
 import br.gov.caixa.loterias.feature.onboarding.presentation.state.OnboardingEffect
 import br.gov.caixa.loterias.feature.onboarding.presentation.viewmodel.OnboardingViewModel
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -96,7 +97,7 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `starting plus tutorial honors legacy checkbox while skip never suppresses it`() = runTest(dispatcher) {
+    fun `starting plus tutorial honors legacy checkbox`() = runTest(dispatcher) {
         val dismissals = mutableListOf<Pair<BettingTutorial, Boolean>>()
         val viewModel = OnboardingViewModel(
             route = "onboarding/tutorial",
@@ -110,18 +111,93 @@ class OnboardingViewModelTest {
             viewModel.effects.collect { effects += it }
         }
 
-        viewModel.skipBettingTutorial()
         viewModel.toggleTutorialDoNotShowAgain()
         assertTrue(viewModel.state.value.tutorialDoNotShowAgain)
         viewModel.startBettingTutorial()
         dispatcher.scheduler.advanceUntilIdle()
 
         assertEquals(listOf(BettingTutorial.MAIS_MILIONARIA to true), dismissals)
-        assertEquals(
-            listOf(OnboardingEffect.SkipBettingTutorial, OnboardingEffect.StartBettingTutorial),
-            effects
-        )
+        assertEquals(listOf(OnboardingEffect.StartBettingTutorial), effects)
         collector.cancel()
+    }
+
+    @Test fun `skip claims completion before a competing start`() = runTest(dispatcher) {
+        var dismissals = 0
+        val vm = OnboardingViewModel(
+            "onboarding/tutorial",
+            CompleteIntroductionUseCase {},
+            SetBettingTutorialDismissedUseCase { _, _ -> dismissals++ }
+        )
+        val effects = mutableListOf<OnboardingEffect>()
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { vm.effects.collect { effects += it } }
+        vm.toggleTutorialDoNotShowAgain()
+        vm.skipBettingTutorial()
+        vm.startBettingTutorial()
+        dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, dismissals)
+        assertEquals(listOf(OnboardingEffect.SkipBettingTutorial), effects)
+    }
+
+    @Test fun `completion claims before scheduling and remains consumed after navigation`() = runTest(dispatcher) {
+        var calls = 0
+        val vm = OnboardingViewModel("onboarding/introduction", CompleteIntroductionUseCase { calls++ })
+        val effects = mutableListOf<OnboardingEffect>()
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { vm.effects.collect { effects += it } }
+        vm.complete()
+        vm.complete()
+        dispatcher.scheduler.advanceUntilIdle()
+        vm.complete()
+        dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, calls)
+        assertEquals(listOf(OnboardingEffect.Completed), effects)
+    }
+
+    @Test fun `start owns completion while persistence waits and captures checkbox`() = runTest(dispatcher) {
+        val pending = CompletableDeferred<Unit>()
+        val dismissals = mutableListOf<Boolean>()
+        val vm = OnboardingViewModel(
+            "onboarding/tutorial",
+            CompleteIntroductionUseCase {},
+            SetBettingTutorialDismissedUseCase { _, dismissed ->
+                dismissals += dismissed
+                pending.await()
+            }
+        )
+        val effects = mutableListOf<OnboardingEffect>()
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { vm.effects.collect { effects += it } }
+        vm.toggleTutorialDoNotShowAgain()
+        vm.startBettingTutorial()
+        vm.toggleTutorialDoNotShowAgain()
+        dispatcher.scheduler.runCurrent()
+        vm.skipBettingTutorial()
+        dispatcher.scheduler.runCurrent()
+        assertEquals(listOf(true), dismissals)
+        assertTrue(effects.isEmpty())
+        pending.complete(Unit)
+        dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(listOf(OnboardingEffect.StartBettingTutorial), effects)
+    }
+
+    @Test fun `failed completion permits one explicit retry`() = runTest(dispatcher) {
+        var calls = 0
+        val vm = OnboardingViewModel(
+            "onboarding/introduction",
+            CompleteIntroductionUseCase {
+                calls++
+                if (calls == 1) error("disk full")
+            }
+        )
+        val effects = mutableListOf<OnboardingEffect>()
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { vm.effects.collect { effects += it } }
+        vm.complete()
+        dispatcher.scheduler.advanceUntilIdle()
+        assertTrue(vm.state.value.storageFailed)
+        vm.dismissStorageError()
+        vm.complete()
+        vm.complete()
+        dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(2, calls)
+        assertEquals(listOf(OnboardingEffect.Completed), effects)
     }
 
     @Test fun `failed preference commit keeps onboarding visible and emits no completion`() = runTest(dispatcher) {

@@ -8,7 +8,7 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.TicketScannerScreen
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -19,7 +19,7 @@ class TicketScannerOverlayTest {
 
     @Test fun overlayIsTranslucentBlueWithClearCameraWindowAndLowerTitle() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 TicketScannerScreen(true, {}, {}, cameraPreview = { Box(it.background(Color.Red)) })
             }
         }

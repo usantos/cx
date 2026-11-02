@@ -13,7 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
@@ -58,7 +58,7 @@ class CurrentCartBadgeCountTest {
 
     @Test fun removingGamesUpdatesTheVisibleCounterAcrossDigitBoundary() {
         val cart = mutableStateOf(cart(TWO_DIGITS))
-        compose.setContent { CaixaDSTheme { CurrentCartFooter(cart.value, true, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartFooter(cart.value, true, {}, {}) } }
         assertCount(TWO_DIGITS.toString())
         compose.runOnIdle { cart.value = cart(SINGLE_DIGIT) }
         assertCount("9")
@@ -69,7 +69,7 @@ class CurrentCartBadgeCountTest {
     private fun cart(count: Int) = ShoppingCart(1, BigDecimal.TEN, List(count) { individual.copy(id = it.toLong()) })
 
     private fun show(cart: ShoppingCart) {
-        compose.setContent { CaixaDSTheme { CurrentCartFooter(cart, true, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartFooter(cart, true, {}, {}) } }
     }
 
     private fun checkCount(count: Int, expected: String = count.toString()) {

@@ -20,8 +20,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.LocalSplashAnimation
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.SplashAnimationHost
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.SplashScreen
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBar
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import com.airbnb.lottie.compose.LottieAnimatable
 import java.io.File
 import kotlinx.coroutines.CoroutineScope
@@ -62,7 +62,7 @@ class SplashParityUiTest {
         lateinit var animation: LottieAnimatable
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            CaixaDSStatusBar {
+            LoteriasCaixaDSStatusBar {
                 SplashAnimationHost {
                     animation = LocalSplashAnimation.current!!
                     SplashScreen()
@@ -78,7 +78,7 @@ class SplashParityUiTest {
         val top = pixels[pixels.width / 2, 1]
         assertTrue(
             "Status inset must show the artwork instead of an opaque blue strip",
-            top != CaixaDSColorTokens.Blue700 && top != Color.Transparent
+            top != LoteriasCaixaDSColorTokens.Blue700 && top != Color.Transparent
         )
     }
 

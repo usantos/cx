@@ -10,7 +10,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.components.LotteryBanner
 import br.gov.caixa.loterias.feature.home.presentation.mapper.homeSpecialBannerResource
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
@@ -46,7 +46,7 @@ class HomeSpecialBannerUiTest {
 
     @Test fun configuredSpecialHeadersUseExactLegacyTwoLineTitles() {
         val lottery = mutableStateOf(mega.copy(specialBanner = br.gov.caixa.loterias.feature.home.presentation.state.HomeSpecialBanner.MEGA_THIRTY_YEARS))
-        compose.setContent { CaixaDSTheme(darkTheme = false) { Box(Modifier.width(280.dp)) { LotteryBanner(lottery.value) } } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { Box(Modifier.width(280.dp)) { LotteryBanner(lottery.value) } } }
         compose.onNodeWithText("mega-sena\n30 anos").assertIsDisplayed()
         assertEquals(R.drawable.legacy_home_special_cabecalho_mega_trinta_anos_carrossel, homeSpecialBannerResource(lottery.value))
         compose.runOnIdle { lottery.value = mega.copy(resultCode = "loteca", specialBanner = br.gov.caixa.loterias.feature.home.presentation.state.HomeSpecialBanner.LOTECA_FATHERS_DAY) }
@@ -55,7 +55,7 @@ class HomeSpecialBannerUiTest {
     }
 
     @Test fun specialHeaderUsesSeventyOneDpHeightAndNinetyTenDpTextMargins() {
-        compose.setContent { CaixaDSTheme(darkTheme = false) { Box(Modifier.width(280.dp)) { LotteryBanner(mega) } } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { Box(Modifier.width(280.dp)) { LotteryBanner(mega) } } }
         compose.onNodeWithTag("home-special-banner").assertWidthIsEqualTo(280.dp).assertHeightIsEqualTo(71.dp)
         val panel = compose.onNodeWithTag("home-special-banner").getUnclippedBoundsInRoot()
         val label = compose.onNodeWithTag("home-special-banner-title").getUnclippedBoundsInRoot()
@@ -70,7 +70,7 @@ class HomeSpecialBannerUiTest {
 
     @Test fun longSpecialTitleAutoFitsAndNormalContestKeepsOriginalBanner() {
         val lottery = mutableStateOf(mega.copy(name = "Lotofácil da Independência concurso especial comemorativo nacional"))
-        compose.setContent { CaixaDSTheme(darkTheme = false) { Box(Modifier.width(280.dp)) { LotteryBanner(lottery.value) } } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { Box(Modifier.width(280.dp)) { LotteryBanner(lottery.value) } } }
         val layout = mutableListOf<TextLayoutResult>()
         compose.onNodeWithTag("home-special-banner-title").performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layout) }
         val result = layout.last()

@@ -11,12 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSDropdownMenu as DropdownMenu
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSDropdownMenuItem as DropdownMenuItem
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSTextButton as TextButton
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSDropdownMenu as DropdownMenu
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSDropdownMenuItem as DropdownMenuItem
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTextButton as TextButton
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.domain.environment.model.TestEnvironment
 import br.gov.caixa.loterias.feature.account.R as LocalizedR
 import br.gov.caixa.loterias.feature.account.presentation.state.EnvironmentUiState
@@ -40,7 +40,7 @@ fun EnvironmentPicker(
         ) {
             Text(
                 (state.pending?.name ?: selected.name) + uiStrings.getString(LocalizedR.string.ui_texto_da106a),
-                color = CaixaDS.colors.onBrand,
+                color = LoteriasCaixaDS.colors.onBrand,
                 modifier = Modifier.uiId("account.0002")
             )
         }
@@ -54,7 +54,7 @@ fun EnvironmentPicker(
         }
     }
     if (state.pending != null && !state.saving && (state.persisted || state.failed)) {
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_mudanca_de_ambiente_83353f),
             message = if (state.failed) {
                 uiStrings.getString(LocalizedR.string.ui_nao_foi_possivel_salvar_a_mudanca_de_a13520)

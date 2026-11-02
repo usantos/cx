@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -574,7 +574,7 @@ class BettingLotecaParityTest {
         compose.setContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale)) {
-                CaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSTheme(darkTheme = false) {
                     Box(if (width == null) Modifier else Modifier.width(width.dp)) {
                         BettingGameRoute(vm, { backCalls++ }, {}, cartTotal = BigDecimal("24"), cartBetCount = 2)
                     }

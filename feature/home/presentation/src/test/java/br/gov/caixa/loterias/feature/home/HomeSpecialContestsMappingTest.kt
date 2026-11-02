@@ -42,7 +42,7 @@ class HomeSpecialContestsMappingTest {
     @Test fun `bright modalities use legacy dark prize text and independent dark header content`() {
         val codes = listOf("TIMEMANIA", "DIA_DE_SORTE", "SUPER_7")
         val cards = lotteries(codes.map { mega.copy(contestType = "NORMAL", modality = LotteryModality(2, it, it)) })
-        val colors = br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+        val colors = br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
         assertEquals(listOf(colors.TimemaniaContent, colors.DiaDeSorteContent, colors.SuperSeteContent), cards.map { it.listText })
         assertEquals(listOf(colors.TimemaniaContent, colors.White, colors.White), cards.map { it.darkContent })
         val lotogol = lotteries(listOf(mega.copy(contestType = "NORMAL", modality = LotteryModality(13, "Lotogol", "LOTOGOL")))).single()

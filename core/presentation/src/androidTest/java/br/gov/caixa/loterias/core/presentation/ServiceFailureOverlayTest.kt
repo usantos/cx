@@ -6,7 +6,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import org.junit.Assert.*
 import org.junit.Rule
@@ -65,7 +65,7 @@ class ServiceFailureOverlayTest {
     private fun show(state: MutableState<ServiceFailurePresentation>) {
         val network = NetworkAvailability { connection }
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 ServiceFailureOverlay(state.value, onAccept = { state.value = state.value.accept(it, network) },
                     onDismiss = { state.value = state.value.dismiss(it) }, consumeRedirect = { expected ->
                         if (state.value.redirect !== expected) false

@@ -12,6 +12,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.auth.biometric.showBiometricPrompt
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
+import br.gov.caixa.loterias.feature.account.presentation.components.LoginDialogActions
 import br.gov.caixa.loterias.feature.account.presentation.components.LoginDialogs
 import br.gov.caixa.loterias.feature.account.presentation.screen.LoginScreen
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewModel
@@ -86,5 +87,17 @@ fun LoginRoute(
         environmentSelector = environmentSelector,
         environmentSelectorVisible = environmentSelectorVisible, modifier = Modifier.uiId("account.0018")
     )
-    LoginDialogs(state, viewModel, promptHost, biometricEnrollment, onSessionInvalidated)
+    LoginDialogs(
+        state,
+        LoginDialogActions(
+            enableBiometric = {
+                viewModel.startBiometricEnrollment()
+                promptHost?.let(biometricEnrollment)
+            },
+            dismissEnrollment = viewModel::dismissBiometricEnrollment,
+            confirmDisable = viewModel::confirmBiometricDisable,
+            acknowledgeBlocked = { if (viewModel.acknowledgeBlockedAccountFailure()) onSessionInvalidated() },
+            acknowledgeConsultation = { viewModel.acknowledgeConsultationOnlyNotice() }
+        )
+    )
 }

@@ -1,14 +1,13 @@
 package br.gov.caixa.loterias.feature.tickets
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performCustomAccessibilityActionWithLabel
 import androidx.compose.ui.test.performScrollTo
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
@@ -91,7 +90,7 @@ class ExpandedBetFiltersUiTest {
 
     private fun show(value: TicketsUiState = state) {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 BetFiltersDialog(
                     value,
                     BetFiltersActions(

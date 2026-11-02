@@ -15,7 +15,7 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.components.LotteryCard
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
@@ -51,7 +51,7 @@ class HomeResultRevealTest {
             emptyList(), emptyList(), false, "", "0", "", emptyList()
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Box(Modifier.size(280.dp, 600.dp)) {
                     LotteryCard(lottery, ResultsUiState(result = result), expanded.value, { expanded.value = !expanded.value })
                 }

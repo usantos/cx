@@ -1,18 +1,12 @@
 package br.gov.caixa.loterias.feature.payment.presentation.mapper
 
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
 import br.gov.caixa.loterias.feature.payment.presentation.formatting.localizedMessage as messageText
 
-internal val legacyPaymentTextStyle = TextStyle(
-    fontFamily = CaixaDSFontFamily,
-    platformStyle = PlatformTextStyle(includeFontPadding = true)
-)
+internal val legacyPaymentTextStyle = br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSCardTextStyle
 
 internal fun legacyProcessingText(text: String) = buildAnnotatedString {
     val emphasis = when {

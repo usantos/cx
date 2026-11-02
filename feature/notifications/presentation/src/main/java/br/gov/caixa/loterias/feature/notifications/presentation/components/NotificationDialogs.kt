@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.feature.notifications.presentation.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.notifications.R
 import br.gov.caixa.loterias.feature.notifications.presentation.state.NotificationConfirmation
 import br.gov.caixa.loterias.feature.notifications.presentation.state.NotificationsUiState
@@ -17,7 +17,7 @@ internal fun NotificationDialogs(state: NotificationsUiState, onConfirm: () -> U
             is NotificationConfirmation.DeleteOne -> stringResource(R.string.notifications_deseja_excluir_esta_mensagem)
             is NotificationConfirmation.MarkOneRead -> stringResource(R.string.notifications_deseja_marcar_esta_mensagem_como_lida)
         }
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = stringResource(R.string.notifications_atencao),
             message = message,
             positiveLabel = stringResource(R.string.notifications_sim),
@@ -27,7 +27,7 @@ internal fun NotificationDialogs(state: NotificationsUiState, onConfirm: () -> U
         )
     }
     state.categoryActionMessage?.let { message ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = stringResource(R.string.notifications_atencao),
             message = message.resolve(),
             positiveLabel = stringResource(R.string.notifications_entendi),
@@ -35,7 +35,7 @@ internal fun NotificationDialogs(state: NotificationsUiState, onConfirm: () -> U
         )
     }
     state.errorMessage?.let { message ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = stringResource(R.string.notifications_atencao),
             message = message.resolve(),
             positiveLabel = stringResource(R.string.notifications_entendi),

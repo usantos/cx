@@ -21,28 +21,39 @@ class VerifyPostLoginAccessTest {
         PostLoginDestination.entries.forEach { destination ->
             val calls = mutableListOf<String>()
             val account = AccountAccess(destination, true, BigDecimal.TEN, AccountStatus.PARTIALLY_BLOCKED)
+            val sessions = Sessions()
             val useCase = VerifyPostLoginAccess(
                 { calls += "blocked" },
-                { calls += "account"; account },
-                Sessions(),
+                {
+                    calls += "account"
+                    account
+                },
+                sessions
             )
-            assertEquals(PostLoginAccessResult.Verified(account), useCase())
+            assertEquals(PostLoginAccessResult.Verified(account, sessions.identity), useCase())
             assertEquals(listOf("blocked", "account"), calls)
         }
     }
 
     @Test fun `failed blocked check never proceeds to registration or exposes the failure detail`() = runTest {
         listOf(IOException("private"), IllegalArgumentException("private"), IllegalStateException("private")).forEach { failure ->
-            val useCase = VerifyPostLoginAccess({ throw failure }, { error("Must not verify account") }, Sessions())
-            assertEquals(PostLoginAccessResult.BlockedAccountCheckFailed, useCase())
+            val sessions = Sessions()
+            val useCase = VerifyPostLoginAccess({ throw failure }, { error("Must not verify account") }, sessions)
+            assertEquals(PostLoginAccessResult.BlockedAccountCheckFailedForSession(sessions.identity), useCase())
         }
     }
 
     @Test fun `account verification errors are not misclassified as blocked check failures`() = runTest {
-        listOf(IOException() to AppError.Network, IllegalStateException() to AppError.Unexpected,
-            IllegalArgumentException("Invalid account") to AppError.Validation("Invalid account")).forEach { (exception, failure) ->
-            assertEquals(PostLoginAccessResult.AccountCheckFailed(failure),
-                VerifyPostLoginAccess({}, { throw exception }, Sessions())())
+        listOf(
+            IOException() to AppError.Network,
+            IllegalStateException() to AppError.Unexpected,
+            IllegalArgumentException("Invalid account") to AppError.Validation("Invalid account")
+        ).forEach { (exception, failure) ->
+            val sessions = Sessions()
+            assertEquals(
+                PostLoginAccessResult.AccountCheckFailed(failure, sessions.identity),
+                VerifyPostLoginAccess({}, { throw exception }, sessions)()
+            )
         }
     }
 
@@ -52,8 +63,11 @@ class VerifyPostLoginAccessTest {
             var checks = 0
             val useCase = VerifyPostLoginAccess(
                 { if (cancelBlocked) throw cancellation },
-                { checks++; throw cancellation },
-                Sessions(),
+                {
+                    checks++
+                    throw cancellation
+                },
+                Sessions()
             )
             assertSame(cancellation, runCatching { useCase() }.exceptionOrNull())
             assertEquals(if (cancelBlocked) 0 else 1, checks)
@@ -62,7 +76,10 @@ class VerifyPostLoginAccessTest {
 
     @Test fun `missing or already invalidated identity prevents both requests`() = runTest {
         for (missing in listOf(true, false)) {
-            val sessions = Sessions().apply { available = !missing; valid = false }
+            val sessions = Sessions().apply {
+                available = !missing
+                valid = false
+            }
             val result = VerifyPostLoginAccess({ error("No check") }, { error("No account") }, sessions)()
             assertEquals(expired, result)
         }
@@ -92,9 +109,7 @@ class VerifyPostLoginAccessTest {
         }
     }
 
-    private val expired = PostLoginAccessResult.AccountCheckFailed(
-        AppError.Validation("A sessão foi encerrada ou substituída. Entre novamente."),
-    )
+    private val expired = PostLoginAccessResult.SessionSuperseded
 
     private class Sessions : AuthenticatedSessionIdentityProvider {
         val identity = AuthenticatedSessionIdentity("a".repeat(64))

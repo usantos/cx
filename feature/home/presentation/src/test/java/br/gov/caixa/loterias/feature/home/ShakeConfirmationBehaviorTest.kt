@@ -11,7 +11,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.components.ShakeMenuRow
 import br.gov.caixa.loterias.feature.home.presentation.state.HomePreferencesUiState
 import org.junit.Assert.assertEquals
@@ -30,7 +30,7 @@ class ShakeConfirmationBehaviorTest {
         val settings = mutableStateOf(HomePreferencesUiState(loaded = true))
         val changes = mutableListOf<Boolean?>()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 ShakeMenuRow(
                     settings.value,
                     onToggle = { hideWarning ->
@@ -67,7 +67,7 @@ class ShakeConfirmationBehaviorTest {
         val settings = mutableStateOf(HomePreferencesUiState(loaded = true, shakeEnabled = true, shakeWarningHidden = true))
         val changes = mutableListOf<Boolean?>()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 ShakeMenuRow(
                     settings.value,
                     onToggle = { hideWarning ->

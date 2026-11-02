@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.account
 
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+
 import android.content.Intent
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
@@ -25,13 +27,145 @@ import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewMod
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
     @get:Rule val dispatcherRule = MainDispatcherRule()
-    private val allowed = VerifyPostLoginAccessUseCase { PostLoginAccessResult.Verified(AccountAccess(PostLoginDestination.HOME, false, BigDecimal.ZERO)) }
+    private val allowed =
+        VerifyPostLoginAccessUseCase { PostLoginAccessResult.Verified(AccountAccess(PostLoginDestination.HOME, false, BigDecimal.ZERO)) }
+
+    @Test fun `superseded post login check never logs out the replacement session`() = runTest(dispatcherRule.dispatcher) {
+        val identity = AuthenticatedSessionIdentity("a".repeat(SYNTHETIC_OWNER_HASH_LENGTH))
+        var current = true
+        val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+            override fun captureIdentity() = identity
+            override fun isCurrent(identity: AuthenticatedSessionIdentity) = current
+        }
+        var replacementLoggedOut = false
+        val authentication = object : br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication {
+            override fun cancelAuthorization() = Unit
+            override fun logout() {
+                replacementLoggedOut = true
+            }
+        }
+        val check = br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccess(
+            { current = false },
+            { error("Obsolete verification must not continue") },
+            sessions
+        )
+        val model = LoginViewModel(authentication, FixedCoroutineDispatchers(dispatcherRule.dispatcher), check)
+        model.complete { }
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertFalse(replacementLoggedOut)
+        assertFalse(model.state.value.authenticated)
+        assertFalse(model.state.value.isLoading)
+    }
+
+    @Test fun `account failure returned before replacement cannot revoke the newer identity`() = runTest(dispatcherRule.dispatcher) {
+        var current = AuthenticatedSessionIdentity("a".repeat(SYNTHETIC_OWNER_HASH_LENGTH))
+        val old = current
+        var logouts = 0
+        val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+            override fun captureIdentity() = current
+            override fun isCurrent(identity: AuthenticatedSessionIdentity) = current === identity
+        }
+        val authentication = object : br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication {
+            override fun cancelAuthorization() = Unit
+            override fun logout() {
+                logouts++
+            }
+            override fun isCurrent(identity: AuthenticatedSessionIdentity) = sessions.isCurrent(identity)
+            override fun logout(identity: AuthenticatedSessionIdentity): Boolean {
+                if (!sessions.isCurrent(identity)) return false
+                logout()
+                return true
+            }
+        }
+        val verification = br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccess(
+            {},
+            { throw java.io.IOException() },
+            sessions
+        )
+        val model = LoginViewModel(
+            authentication,
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            VerifyPostLoginAccessUseCase {
+                verification().also { current = AuthenticatedSessionIdentity("b".repeat(SYNTHETIC_OWNER_HASH_LENGTH)) }
+            }
+        )
+        model.complete { }
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertFalse(current === old)
+        assertEquals(0, logouts)
+        assertFalse(model.state.value.authenticated)
+    }
+
+    @Test fun `blocked failure acknowledgment cannot revoke a replacement installed after verification`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
+        var current = AuthenticatedSessionIdentity("a".repeat(SYNTHETIC_OWNER_HASH_LENGTH))
+        var logouts = 0
+        val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+            override fun captureIdentity() = current
+            override fun isCurrent(identity: AuthenticatedSessionIdentity) = current === identity
+        }
+        val authentication = object : br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication {
+            override fun cancelAuthorization() = Unit
+            override fun logout() {
+                logouts++
+            }
+            override fun isCurrent(identity: AuthenticatedSessionIdentity) = sessions.isCurrent(identity)
+            override fun logout(identity: AuthenticatedSessionIdentity): Boolean {
+                if (!sessions.isCurrent(identity)) return false
+                logout()
+                return true
+            }
+        }
+        val verification = br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccess(
+            { throw java.io.IOException() },
+            { error("Must not verify account") },
+            sessions
+        )
+        val model = LoginViewModel(authentication, FixedCoroutineDispatchers(dispatcherRule.dispatcher), verification)
+        model.complete { }
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertTrue(model.state.value.blockedAccountCheckFailed)
+        current = AuthenticatedSessionIdentity("b".repeat(SYNTHETIC_OWNER_HASH_LENGTH))
+        model.acknowledgeBlockedAccountFailure()
+        assertEquals(0, logouts)
+    }
+
+    @Test fun `verified result cannot authenticate an identity replaced after domain returns`() = runTest(dispatcherRule.dispatcher) {
+        var current = AuthenticatedSessionIdentity("a".repeat(SYNTHETIC_OWNER_HASH_LENGTH))
+        val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+            override fun captureIdentity() = current
+            override fun isCurrent(identity: AuthenticatedSessionIdentity) = current === identity
+        }
+        val authentication = object : br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication {
+            override fun cancelAuthorization() = Unit
+            override fun logout() = error("Must not revoke replacement")
+            override fun isCurrent(identity: AuthenticatedSessionIdentity) = sessions.isCurrent(identity)
+        }
+        val verification = br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccess(
+            {},
+            { AccountAccess(PostLoginDestination.HOME, false, BigDecimal.ZERO) },
+            sessions
+        )
+        val model = LoginViewModel(
+            authentication,
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            VerifyPostLoginAccessUseCase {
+                verification().also { current = AuthenticatedSessionIdentity("b".repeat(SYNTHETIC_OWNER_HASH_LENGTH)) }
+            }
+        )
+        model.complete { }
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertFalse(model.state.value.authenticated)
+        assertFalse(model.state.value.isLoading)
+    }
 
     @Test fun `publishes authenticated state after token exchange`() = runTest(dispatcherRule.dispatcher) {
         val authentication = FakeAuthentication()
-        val viewModel = LoginViewModel(authentication,
+        val viewModel = LoginViewModel(
+            authentication,
             FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            allowed,
+            allowed
         )
         viewModel.complete { authentication.completeAuthorization(null) }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -41,9 +175,10 @@ class LoginViewModelTest {
 
     @Test fun `publishes safe error after failed authentication`() = runTest(dispatcherRule.dispatcher) {
         val authentication = FakeAuthentication(failure = true)
-        val viewModel = LoginViewModel(authentication,
+        val viewModel = LoginViewModel(
+            authentication,
             FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            allowed,
+            allowed
         )
         viewModel.complete { authentication.completeAuthorization(null) }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -52,9 +187,10 @@ class LoginViewModelTest {
 
     @Test fun `updates biometric preference without changing authentication state`() {
         val authentication = FakeAuthentication()
-        val viewModel = LoginViewModel(authentication,
+        val viewModel = LoginViewModel(
+            authentication,
             FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            allowed,
+            allowed
         )
 
         viewModel.setBiometricEnabled(true)
@@ -68,15 +204,16 @@ class LoginViewModelTest {
             PostLoginDestination.HOME to "home",
             PostLoginDestination.REGISTRATION to "account/register",
             PostLoginDestination.TERMS to "support/terms-acceptance",
-            PostLoginDestination.SELF_ASSESSMENT to "responsible/start/required",
+            PostLoginDestination.SELF_ASSESSMENT to "responsible/start/required"
         )
         destinations.forEach { (destination, route) ->
             val authentication = FakeAuthentication()
-        val viewModel = LoginViewModel(authentication,
+            val viewModel = LoginViewModel(
+                authentication,
                 FixedCoroutineDispatchers(dispatcherRule.dispatcher),
                 VerifyPostLoginAccessUseCase {
                     PostLoginAccessResult.Verified(AccountAccess(destination, false, BigDecimal.ZERO))
-                },
+                }
             )
             viewModel.setBiometricEnabled(true)
             viewModel.complete { authentication.completeAuthorization(null) }
@@ -91,12 +228,13 @@ class LoginViewModelTest {
             AppError.Network to "Não foi possível validar o cadastro. Verifique sua internet e tente novamente.",
             AppError.Validation("") to "Não foi possível validar o cadastro.",
             AppError.Validation("Cadastro inválido") to "Cadastro inválido",
-            AppError.Unexpected to "Ocorreu um erro inesperado ao validar o cadastro. Tente novamente.",
+            AppError.Unexpected to "Ocorreu um erro inesperado ao validar o cadastro. Tente novamente."
         ).forEach { (error, message) ->
             val authentication = FakeAuthentication()
-        val viewModel = LoginViewModel(authentication,
+            val viewModel = LoginViewModel(
+                authentication,
                 FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-                VerifyPostLoginAccessUseCase { PostLoginAccessResult.AccountCheckFailed(error) },
+                VerifyPostLoginAccessUseCase { PostLoginAccessResult.AccountCheckFailed(error) }
             )
             viewModel.complete { authentication.completeAuthorization(null) }
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -128,7 +266,15 @@ class LoginViewModelTest {
     @Test fun `duplicate callback cannot repeat token exchange or verification`() = runTest(dispatcherRule.dispatcher) {
         val auth = FakeAuthentication()
         var checks = 0
-        val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher), VerifyPostLoginAccessUseCase { checks++; allowed() })
+        val vm =
+            LoginViewModel(
+                auth,
+                FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+                VerifyPostLoginAccessUseCase {
+                    checks++
+                    allowed()
+                }
+            )
         assertTrue(vm.beginAuthorization())
         vm.complete { auth.completeAuthorization(null) }
         vm.complete { auth.completeAuthorization(null) }
@@ -145,8 +291,11 @@ class LoginViewModelTest {
 
     @Test fun `cancelled token exchange does not validate account or leave loading`() = runTest(dispatcherRule.dispatcher) {
         val authentication = FakeAuthentication(cancelled = true)
-        val vm = LoginViewModel(authentication, FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            VerifyPostLoginAccessUseCase { error("Must not verify after cancellation") })
+        val vm = LoginViewModel(
+            authentication,
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            VerifyPostLoginAccessUseCase { error("Must not verify after cancellation") }
+        )
         vm.complete { authentication.completeAuthorization(null) }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertFalse(vm.state.value.isLoading)
@@ -157,8 +306,11 @@ class LoginViewModelTest {
 
     @Test fun `cancelled account verification does not authorize or leave loading`() = runTest(dispatcherRule.dispatcher) {
         val authentication = FakeAuthentication()
-        val vm = LoginViewModel(authentication, FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            VerifyPostLoginAccessUseCase { throw kotlinx.coroutines.CancellationException() })
+        val vm = LoginViewModel(
+            authentication,
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            VerifyPostLoginAccessUseCase { throw kotlinx.coroutines.CancellationException() }
+        )
         vm.complete { authentication.completeAuthorization(null) }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertFalse(vm.state.value.isLoading)
@@ -166,85 +318,103 @@ class LoginViewModelTest {
         assertTrue(vm.beginAuthorization())
     }
 
-    @Test fun `token screen remains active through exchange and account validation without repeating callbacks`() = runTest(dispatcherRule.dispatcher) {
-        val tokenGate = CompletableDeferred<Unit>()
-        val accessGate = CompletableDeferred<Unit>()
-        var exchanges = 0
-        var verifications = 0
-        val authentication = object : AuthenticationGateway by FakeAuthentication() {
-            override suspend fun completeAuthorization(result: Intent?) {
-                exchanges++
-                tokenGate.await()
+    @Test fun `token screen remains active through exchange and account validation without repeating callbacks`() =
+        runTest(dispatcherRule.dispatcher) {
+            val tokenGate = CompletableDeferred<Unit>()
+            val accessGate = CompletableDeferred<Unit>()
+            var exchanges = 0
+            var verifications = 0
+            val authentication = object : AuthenticationGateway by FakeAuthentication() {
+                override suspend fun completeAuthorization(result: Intent?) {
+                    exchanges++
+                    tokenGate.await()
+                }
             }
+            val vm = LoginViewModel(
+                authentication,
+                FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+                VerifyPostLoginAccessUseCase {
+                    verifications++
+                    accessGate.await()
+                    allowed()
+                }
+            )
+
+            vm.beginAuthorization()
+            assertFalse(vm.state.value.isLoading)
+            vm.complete { authentication.completeAuthorization(null) }
+            assertTrue(vm.state.value.isLoading)
+            assertFalse(vm.state.value.authorizationPending)
+            dispatcherRule.dispatcher.scheduler.runCurrent()
+            assertEquals(1, exchanges)
+            assertEquals(0, verifications)
+            assertTrue(vm.state.value.isLoading)
+
+            tokenGate.complete(Unit)
+            dispatcherRule.dispatcher.scheduler.runCurrent()
+            assertEquals(1, verifications)
+            assertTrue(vm.state.value.isLoading)
+            assertFalse(vm.state.value.authenticated)
+            vm.complete { authentication.completeAuthorization(null) }
+            assertFalse(vm.beginAuthorization())
+            accessGate.complete(Unit)
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertFalse(vm.state.value.isLoading)
+            assertTrue(vm.state.value.authenticated)
+            assertEquals(1, exchanges)
+            assertEquals(1, verifications)
         }
-        val vm = LoginViewModel(authentication, FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            VerifyPostLoginAccessUseCase {
-                verifications++
-                accessGate.await()
-                allowed()
-            })
 
-        vm.beginAuthorization()
-        assertFalse(vm.state.value.isLoading)
-        vm.complete { authentication.completeAuthorization(null) }
-        assertTrue(vm.state.value.isLoading)
-        assertFalse(vm.state.value.authorizationPending)
-        dispatcherRule.dispatcher.scheduler.runCurrent()
-        assertEquals(1, exchanges)
-        assertEquals(0, verifications)
-        assertTrue(vm.state.value.isLoading)
-
-        tokenGate.complete(Unit)
-        dispatcherRule.dispatcher.scheduler.runCurrent()
-        assertEquals(1, verifications)
-        assertTrue(vm.state.value.isLoading)
-        assertFalse(vm.state.value.authenticated)
-        vm.complete { authentication.completeAuthorization(null) }
-        assertFalse(vm.beginAuthorization())
-        accessGate.complete(Unit)
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertFalse(vm.state.value.isLoading)
-        assertTrue(vm.state.value.authenticated)
-        assertEquals(1, exchanges)
-        assertEquals(1, verifications)
-    }
-
-    @Test fun `blocked check failure waits for acknowledgment clears session once and only permits manual retry`() = runTest(dispatcherRule.dispatcher) {
-        var logouts = 0
-        var checks = 0
-        val auth = object : AuthenticationGateway by FakeAuthentication() {
-            override fun logout() { logouts++ }
+    @Test fun `blocked check failure waits for acknowledgment clears session once and only permits manual retry`() =
+        runTest(dispatcherRule.dispatcher) {
+            var logouts = 0
+            var checks = 0
+            val auth = object : AuthenticationGateway by FakeAuthentication() {
+                override fun logout() {
+                    logouts++
+                }
+            }
+            val vm = LoginViewModel(
+                auth,
+                FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+                VerifyPostLoginAccessUseCase {
+                    checks++
+                    PostLoginAccessResult.BlockedAccountCheckFailed
+                }
+            )
+            assertFalse(vm.acknowledgeBlockedAccountFailure())
+            vm.setBiometricEnabled(true)
+            vm.complete { auth.completeAuthorization(null) }
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertTrue(vm.state.value.blockedAccountCheckFailed)
+            assertFalse(vm.state.value.authenticated)
+            assertFalse(vm.state.value.isLoading)
+            assertFalse(vm.beginAuthorization())
+            vm.complete { auth.completeAuthorization(null) }
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertEquals(1, checks)
+            assertEquals(0, logouts)
+            assertTrue(vm.acknowledgeBlockedAccountFailure())
+            assertEquals(LoginUiState(biometricEnabled = true), vm.state.value)
+            assertFalse(vm.acknowledgeBlockedAccountFailure())
+            assertEquals(1, logouts)
+            assertEquals(1, checks)
+            assertTrue(vm.beginAuthorization())
+            assertEquals(1, checks)
         }
-        val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            VerifyPostLoginAccessUseCase { checks++; PostLoginAccessResult.BlockedAccountCheckFailed })
-        assertFalse(vm.acknowledgeBlockedAccountFailure())
-        vm.setBiometricEnabled(true)
-        vm.complete { auth.completeAuthorization(null) }
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertTrue(vm.state.value.blockedAccountCheckFailed)
-        assertFalse(vm.state.value.authenticated)
-        assertFalse(vm.state.value.isLoading)
-        assertFalse(vm.beginAuthorization())
-        vm.complete { auth.completeAuthorization(null) }
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals(1, checks)
-        assertEquals(0, logouts)
-        assertTrue(vm.acknowledgeBlockedAccountFailure())
-        assertEquals(LoginUiState(biometricEnabled = true), vm.state.value)
-        assertFalse(vm.acknowledgeBlockedAccountFailure())
-        assertEquals(1, logouts)
-        assertEquals(1, checks)
-        assertTrue(vm.beginAuthorization())
-        assertEquals(1, checks)
-    }
 
     @Test fun `cannot dismiss blocking decision if clearing secure credentials fails`() = runTest(dispatcherRule.dispatcher) {
         var failLogout = true
         val auth = object : AuthenticationGateway by FakeAuthentication() {
-            override fun logout() { if (failLogout) error("private-storage-error") }
+            override fun logout() {
+                if (failLogout) error("private-storage-error")
+            }
         }
-        val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            VerifyPostLoginAccessUseCase { PostLoginAccessResult.BlockedAccountCheckFailed })
+        val vm = LoginViewModel(
+            auth,
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            VerifyPostLoginAccessUseCase { PostLoginAccessResult.BlockedAccountCheckFailed }
+        )
         vm.complete { auth.completeAuthorization(null) }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertFalse(vm.acknowledgeBlockedAccountFailure())
@@ -256,49 +426,58 @@ class LoginViewModelTest {
         assertFalse(vm.state.value.blockedAccountCheckFailed)
     }
 
-    @Test fun `partial block requires one acknowledgment preserves destination and never logs out or repeats calls`() = runTest(dispatcherRule.dispatcher) {
-        for (destination in PostLoginDestination.entries) {
-            var checks = 0
-            val auth = FakeAuthentication()
-            val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher), VerifyPostLoginAccessUseCase {
-                checks++
-                PostLoginAccessResult.Verified(AccountAccess(destination, false, BigDecimal.TEN, AccountStatus.PARTIALLY_BLOCKED))
-            })
-            assertFalse(vm.acknowledgeConsultationOnlyNotice())
-            vm.setBiometricEnabled(true)
-            vm.complete { auth.completeAuthorization(null) }
-            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            val pending = vm.state.value
-            assertTrue(pending.consultationOnlyNoticePending)
-            assertFalse(pending.authenticated)
-            assertFalse(pending.isLoading)
-            assertFalse(vm.beginAuthorization())
-            vm.complete { auth.completeAuthorization(null) }
-            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            assertEquals(1, auth.completions)
-            assertEquals(1, checks)
-            assertFalse(vm.acknowledgeBlockedAccountFailure())
-            assertTrue(vm.acknowledgeConsultationOnlyNotice())
-            assertTrue(vm.state.value.authenticated)
-            assertEquals(pending.destination, vm.state.value.destination)
-            assertTrue(vm.state.value.biometricEnabled)
-            assertFalse(vm.state.value.consultationOnlyNoticePending)
-            assertFalse(vm.acknowledgeConsultationOnlyNotice())
-            assertFalse(vm.beginAuthorization())
-            vm.complete { auth.completeAuthorization(null) }
-            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            assertEquals(1, auth.completions)
-            assertEquals(1, checks)
-            assertEquals(0, auth.logouts)
+    @Test fun `partial block requires one acknowledgment preserves destination and never logs out or repeats calls`() =
+        runTest(dispatcherRule.dispatcher) {
+            for (destination in PostLoginDestination.entries) {
+                var checks = 0
+                val auth = FakeAuthentication()
+                val vm = LoginViewModel(
+                    auth,
+                    FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+                    VerifyPostLoginAccessUseCase {
+                        checks++
+                        PostLoginAccessResult.Verified(AccountAccess(destination, false, BigDecimal.TEN, AccountStatus.PARTIALLY_BLOCKED))
+                    }
+                )
+                assertFalse(vm.acknowledgeConsultationOnlyNotice())
+                vm.setBiometricEnabled(true)
+                vm.complete { auth.completeAuthorization(null) }
+                dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+                val pending = vm.state.value
+                assertTrue(pending.consultationOnlyNoticePending)
+                assertFalse(pending.authenticated)
+                assertFalse(pending.isLoading)
+                assertFalse(vm.beginAuthorization())
+                vm.complete { auth.completeAuthorization(null) }
+                dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+                assertEquals(1, auth.completions)
+                assertEquals(1, checks)
+                assertFalse(vm.acknowledgeBlockedAccountFailure())
+                assertTrue(vm.acknowledgeConsultationOnlyNotice())
+                assertTrue(vm.state.value.authenticated)
+                assertEquals(pending.destination, vm.state.value.destination)
+                assertTrue(vm.state.value.biometricEnabled)
+                assertFalse(vm.state.value.consultationOnlyNoticePending)
+                assertFalse(vm.acknowledgeConsultationOnlyNotice())
+                assertFalse(vm.beginAuthorization())
+                vm.complete { auth.completeAuthorization(null) }
+                dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+                assertEquals(1, auth.completions)
+                assertEquals(1, checks)
+                assertEquals(0, auth.logouts)
+            }
         }
-    }
 
     @Test fun `absent and active account status do not show a partial block notice`() = runTest(dispatcherRule.dispatcher) {
         for (status in listOf(null, AccountStatus.ACTIVE)) {
             val authentication = FakeAuthentication()
-        val vm = LoginViewModel(authentication, FixedCoroutineDispatchers(dispatcherRule.dispatcher), VerifyPostLoginAccessUseCase {
-                PostLoginAccessResult.Verified(AccountAccess(PostLoginDestination.HOME, false, BigDecimal.TEN, status))
-            })
+            val vm = LoginViewModel(
+                authentication,
+                FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+                VerifyPostLoginAccessUseCase {
+                    PostLoginAccessResult.Verified(AccountAccess(PostLoginDestination.HOME, false, BigDecimal.TEN, status))
+                }
+            )
             vm.complete { authentication.completeAuthorization(null) }
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertFalse(vm.state.value.consultationOnlyNoticePending)
@@ -309,15 +488,18 @@ class LoginViewModelTest {
 
     @Test fun `visitor entry after failed account verification clears exchanged session`() = runTest(dispatcherRule.dispatcher) {
         val authentication = FakeAuthentication()
-        val vm = LoginViewModel(authentication, FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            VerifyPostLoginAccessUseCase { PostLoginAccessResult.AccountCheckFailed(AppError.Network) })
+        val vm = LoginViewModel(
+            authentication,
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            VerifyPostLoginAccessUseCase { PostLoginAccessResult.AccountCheckFailed(AppError.Network) }
+        )
         vm.complete { authentication.completeAuthorization(null) }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertFalse(vm.state.value.authenticated)
         assertNotNull(vm.state.value.errorMessage)
-        assertEquals(1, authentication.logouts)
+        assertEquals(0, authentication.logouts)
         assertTrue(vm.enterVisitor())
-        assertEquals(2, authentication.logouts)
+        assertEquals(1, authentication.logouts)
         assertEquals(LoginUiState(), vm.state.value)
     }
 
@@ -328,10 +510,16 @@ class LoginViewModelTest {
             override fun createAuthorizationIntent(): Intent = error("not used")
             override suspend fun completeAuthorization(result: Intent?) = Unit
             override fun cancelAuthorization() = Unit
-            override fun logout() { logouts++; check(!logoutFails) }
+            override fun logout() {
+                logouts++
+                check(!logoutFails)
+            }
         }
-        val vm = LoginViewModel(authentication, FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            VerifyPostLoginAccessUseCase { PostLoginAccessResult.BlockedAccountCheckFailed })
+        val vm = LoginViewModel(
+            authentication,
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            VerifyPostLoginAccessUseCase { PostLoginAccessResult.BlockedAccountCheckFailed }
+        )
         assertFalse(vm.enterVisitor())
         assertNotNull(vm.state.value.errorMessage)
         assertFalse(vm.state.value.authenticated)
@@ -343,8 +531,13 @@ class LoginViewModelTest {
 
     @Test fun `visitor entry does not clear a successfully verified or pending login`() = runTest(dispatcherRule.dispatcher) {
         val auth = FakeAuthentication()
-        val vm = LoginViewModel(auth, FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            VerifyPostLoginAccessUseCase { PostLoginAccessResult.Verified(AccountAccess(PostLoginDestination.HOME, false, BigDecimal.TEN)) })
+        val vm = LoginViewModel(
+            auth,
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            VerifyPostLoginAccessUseCase {
+                PostLoginAccessResult.Verified(AccountAccess(PostLoginDestination.HOME, false, BigDecimal.TEN))
+            }
+        )
         assertTrue(vm.beginAuthorization())
         assertFalse(vm.enterVisitor())
         vm.complete { auth.completeAuthorization(null) }
@@ -355,9 +548,11 @@ class LoginViewModelTest {
         assertEquals(0, auth.logouts)
     }
 
-    @Test fun `failed account query immediately revokes acquired identity before login error is shown`() = runTest(dispatcherRule.dispatcher) {
+    @Test fun `failed account query immediately revokes acquired identity before login error is shown`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
         val store = br.gov.caixa.loterias.core.auth.session.SessionTokenStore()
-        var acquiredIdentity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity? = null
+        var acquiredIdentity: AuthenticatedSessionIdentity? = null
         val authentication = object : AuthenticationGateway {
             override fun createAuthorizationIntent(): Intent = error("not used")
             override fun cancelAuthorization() = Unit
@@ -365,13 +560,23 @@ class LoginViewModelTest {
                 assertTrue(br.gov.caixa.loterias.core.auth.fixture.SyntheticSessionFixture.install(store))
                 acquiredIdentity = store.captureIdentity()
             }
-            override fun logout() { store.clear() }
+            override fun logout() {
+                store.clear()
+            }
+            override fun logout(identity: AuthenticatedSessionIdentity): Boolean = synchronized(store) {
+                if (!store.isCurrent(identity)) return false
+                logout()
+                true
+            }
         }
-        val vm = LoginViewModel(authentication, FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+        val vm = LoginViewModel(
+            authentication,
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
             VerifyPostLoginAccessUseCase {
                 assertNotNull(store.captureIdentity())
-                PostLoginAccessResult.AccountCheckFailed(AppError.Network)
-            })
+                PostLoginAccessResult.AccountCheckFailed(AppError.Network, acquiredIdentity)
+            }
+        )
         vm.complete { authentication.completeAuthorization(null) }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertNotNull(acquiredIdentity)
@@ -384,17 +589,34 @@ class LoginViewModelTest {
         assertTrue(vm.beginAuthorization())
     }
 
-    @Test fun `account query cleanup failure retains blocking notice until successful cleanup retry`() = runTest(dispatcherRule.dispatcher) {
+    @Test fun `account query cleanup failure retains blocking notice until successful cleanup retry`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
         var cleanupFails = true
         var cleared = false
         val authentication = object : AuthenticationGateway {
             override fun createAuthorizationIntent(): Intent = error("not used")
             override fun cancelAuthorization() = Unit
             override suspend fun completeAuthorization(result: Intent?) = Unit
-            override fun logout() { check(!cleanupFails); cleared = true }
+            override fun logout() {
+                check(!cleanupFails)
+                cleared = true
+            }
+            override fun logout(identity: AuthenticatedSessionIdentity): Boolean {
+                logout()
+                return true
+            }
         }
-        val vm = LoginViewModel(authentication, FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-            VerifyPostLoginAccessUseCase { PostLoginAccessResult.AccountCheckFailed(AppError.Network) })
+        val vm = LoginViewModel(
+            authentication,
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            VerifyPostLoginAccessUseCase {
+                PostLoginAccessResult.AccountCheckFailed(
+                    AppError.Network,
+                    AuthenticatedSessionIdentity("a".repeat(SYNTHETIC_OWNER_HASH_LENGTH))
+                )
+            }
+        )
         vm.complete { authentication.completeAuthorization(null) }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertTrue(vm.state.value.blockedAccountCheckFailed)
@@ -413,13 +635,19 @@ class LoginViewModelTest {
         var completions = 0
         var logouts = 0
         var cancellations = 0
-        override fun cancelAuthorization() { cancellations++ }
+        override fun cancelAuthorization() {
+            cancellations++
+        }
         override fun createAuthorizationIntent(): Intent = error("not used")
         override suspend fun completeAuthorization(result: Intent?) {
             completions++
             if (cancelled) throw kotlinx.coroutines.CancellationException()
             if (failure) error("denied")
         }
-        override fun logout() { logouts++ }
+        override fun logout() {
+            logouts++
+        }
     }
 }
+
+private const val SYNTHETIC_OWNER_HASH_LENGTH = 64

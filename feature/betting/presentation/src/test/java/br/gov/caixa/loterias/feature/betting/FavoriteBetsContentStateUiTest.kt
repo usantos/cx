@@ -15,25 +15,16 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
-import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.presentation.components.AddFavoriteOptionsDialog
-import br.gov.caixa.loterias.feature.betting.presentation.components.ComboDetailEntryCard
 import br.gov.caixa.loterias.feature.betting.presentation.components.FavoriteBetsList
 import br.gov.caixa.loterias.feature.betting.presentation.components.ModalityFilterDialog
-import br.gov.caixa.loterias.feature.betting.presentation.screen.BetComboDetailScreen
-import br.gov.caixa.loterias.feature.betting.presentation.screen.BetCombosScreen
 import br.gov.caixa.loterias.feature.betting.presentation.screen.BettingLegacyMirror
 import br.gov.caixa.loterias.feature.betting.presentation.screen.FavoriteBetsContent
-import br.gov.caixa.loterias.feature.betting.presentation.screen.LotteryModalitiesScreen
-import br.gov.caixa.loterias.feature.betting.presentation.state.BettingCatalogUiState
 import br.gov.caixa.loterias.feature.betting.presentation.state.FavoriteBetsUiState
-import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -266,7 +257,7 @@ class FavoriteBetsContentStateUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { Column { content() } } }
+        compose.setContent { LoteriasCaixaDSTheme { Column { content() } } }
     }
     private fun modality(id: Int, name: String) = LotteryModality(id, name, "M$id")
     private fun favorite() = FavoriteBet(1, 2, "Mega-Sena", "Números da família", listOf(listOf(1, 2, 100)))

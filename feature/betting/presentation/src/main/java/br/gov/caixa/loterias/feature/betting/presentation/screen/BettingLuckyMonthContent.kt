@@ -28,12 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSRadioButton as RadioButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSRadioButton as RadioButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameActions
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState
@@ -54,9 +54,9 @@ internal fun LuckyMonthContent(state: BettingGameUiState, actions: BettingGameAc
                             .clip(RoundedCornerShape(4.dp))
                             .then(
                                 if (checked) {
-                                    Modifier.background(caixaDSLotteryStyle(DIA_DE_SORTE_ID).light)
+                                    Modifier.background(loteriasCaixaDSLotteryStyle(DIA_DE_SORTE_ID).light)
                                 } else {
-                                    Modifier.border(1.dp, CaixaDSColorTokens.SimulationMuted, RoundedCornerShape(4.dp))
+                                    Modifier.border(1.dp, LoteriasCaixaDSColorTokens.SimulationMuted, RoundedCornerShape(4.dp))
                                 }
                             )
                             .uiId("bet.0265").selectable(selected = checked, role = Role.RadioButton) { actions.selectLuckyMonth(month) }
@@ -69,10 +69,10 @@ internal fun LuckyMonthContent(state: BettingGameUiState, actions: BettingGameAc
                     ) {
                         Text(
                             month.name,
-                            fontFamily = CaixaDSFontFamily,
+                            fontFamily = LoteriasCaixaDSFontFamily,
                             fontWeight = if (checked) FontWeight.SemiBold else FontWeight.Normal,
                             fontSize = 14.sp,
-                            color = CaixaDSColorTokens.SocialGraphite,
+                            color = LoteriasCaixaDSColorTokens.SocialGraphite,
                             textAlign = TextAlign.Center,
                             style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)),
                             modifier = Modifier
@@ -86,7 +86,7 @@ internal fun LuckyMonthContent(state: BettingGameUiState, actions: BettingGameAc
         if (months.isEmpty()) {
             Text(
                 uiStrings.getString(LocalizedR.string.ui_meses_indisponiveis_para_este_concur_d5f08f),
-                color = CaixaDS.colors.mutedText,
+                color = LoteriasCaixaDS.colors.mutedText,
                 modifier = Modifier.uiId("bet.0267")
             )
         }

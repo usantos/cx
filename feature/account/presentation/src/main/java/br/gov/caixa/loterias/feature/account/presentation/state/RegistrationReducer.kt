@@ -11,6 +11,7 @@ sealed interface RegistrationAction {
     data class GenderChanged(val gender: Gender) : RegistrationAction
     data object NotificationsToggled : RegistrationAction
     data object SubmitStarted : RegistrationAction
+    data object CompletionConsumed : RegistrationAction
     data object Submitted : RegistrationAction
     data class SubmitFailed(val message: String) : RegistrationAction
     data object TermsToggled : RegistrationAction
@@ -52,9 +53,13 @@ fun reduceRegistrationState(state: RegistrationUiState, action: RegistrationActi
 
     RegistrationAction.TermsToggled -> state.copy(acceptsTerms = !state.acceptsTerms, errorMessage = null)
 
+    else -> reduceRegistrationSubmission(state, action)
+}
+
+private fun reduceRegistrationSubmission(state: RegistrationUiState, action: RegistrationAction): RegistrationUiState = when (action) {
     RegistrationAction.SubmitStarted -> state.copy(loading = true, errorMessage = null)
-
-    RegistrationAction.Submitted -> state.copy(loading = false, registered = true)
-
+    RegistrationAction.CompletionConsumed -> state.copy(completionConsumed = true)
+    RegistrationAction.Submitted -> state.copy(loading = false, registered = true, completionConsumed = false)
     is RegistrationAction.SubmitFailed -> state.copy(loading = false, errorMessage = action.message)
+    else -> state
 }

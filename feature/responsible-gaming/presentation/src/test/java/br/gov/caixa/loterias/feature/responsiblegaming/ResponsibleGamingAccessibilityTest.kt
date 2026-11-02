@@ -6,35 +6,27 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsOff
-import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
-import androidx.compose.ui.test.hasContentDescription
-import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performScrollTo
-import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.pressKey
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentQuestion
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.screen.AssessmentFormScreen
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.screen.SuspensionScreen
@@ -58,7 +50,7 @@ class ResponsibleGamingAccessibilityTest {
         val state = mutableStateOf(ResponsibleGamingUiState(questions = listOf(SelfAssessmentQuestion(1, "Pergunta", 1))))
         val actions = mutableListOf<ResponsibleGamingAction>()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 AssessmentFormScreen(state.value, { action ->
                     actions += action
                     if (action is ResponsibleGamingAction.Answer) state.value = state.value.copy(answers = mapOf(1 to action.affirmative))
@@ -71,7 +63,7 @@ class ResponsibleGamingAccessibilityTest {
     }
 
     @Test fun suspensionPeriodAndAcknowledgementRetainTheirNames() {
-        compose.setContent { CaixaDSTheme { SuspensionScreen(ResponsibleGamingUiState(), {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { SuspensionScreen(ResponsibleGamingUiState(), {}, {}) } }
         compose.onNode(role(Role.RadioButton) and hasText("24 horas")).performScrollTo().assertIsNotSelected()
         compose.onNode(role(Role.Checkbox) and hasText("Estou ciente", substring = true)).performScrollTo().assertIsOff()
     }
@@ -81,7 +73,7 @@ class ResponsibleGamingAccessibilityTest {
             val density = LocalDensity.current.density
             CompositionLocalProvider(LocalDensity provides Density(density, 2f)) {
                 Box(Modifier.width(NARROW_WIDTH.dp).height(COMPACT_HEIGHT.dp).testTag("suspension-viewport")) {
-                    CaixaDSTheme { SuspensionScreen(ResponsibleGamingUiState(), {}, {}) }
+                    LoteriasCaixaDSTheme { SuspensionScreen(ResponsibleGamingUiState(), {}, {}) }
                 }
             }
         }
@@ -97,7 +89,7 @@ class ResponsibleGamingAccessibilityTest {
     @Test fun keyboardTabMovesOncePerLabelledAssessmentChoice() {
         val actions = mutableListOf<ResponsibleGamingAction>()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 AssessmentFormScreen(
                     ResponsibleGamingUiState(assessmentRequired = true, questions = listOf(SelfAssessmentQuestion(1, "Pergunta", 1))),
                     actions::add

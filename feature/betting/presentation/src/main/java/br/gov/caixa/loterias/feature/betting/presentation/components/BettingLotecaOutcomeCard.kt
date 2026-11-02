@@ -28,8 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
@@ -58,8 +58,8 @@ internal fun LotecaOutcomeCard(
     Column(
         modifier
             .clip(shape)
-            .background(if (selected) CaixaDSColorTokens.LotecaSelectedBackground else CaixaDSColorTokens.White)
-            .border(2.dp, if (selected) CaixaDSColorTokens.LotecaCounter else CaixaDSColorTokens.LotecaChoiceBorder, shape)
+            .background(if (selected) LoteriasCaixaDSColorTokens.LotecaSelectedBackground else LoteriasCaixaDSColorTokens.White)
+            .border(2.dp, if (selected) LoteriasCaixaDSColorTokens.LotecaCounter else LoteriasCaixaDSColorTokens.LotecaChoiceBorder, shape)
             .uiId("bet.0036").clickable(onClick = onClick)
             .padding(8.dp)
             .semantics {
@@ -73,7 +73,7 @@ internal fun LotecaOutcomeCard(
                 painterResource(R.drawable.installed_betting_ic_empate),
                 null,
                 Modifier.padding(top = 16.dp, bottom = 10.dp).size(18.dp),
-                colorFilter = ColorFilter.tint(if (selected) CaixaDSColorTokens.Blue700 else CaixaDSColorTokens.BetAction)
+                colorFilter = ColorFilter.tint(if (selected) LoteriasCaixaDSColorTokens.Blue700 else LoteriasCaixaDSColorTokens.BetAction)
             )
         } else {
             TeamShield(team, Modifier.padding(top = 12.dp).size(35.dp), bottomPadding = 0.dp)
@@ -83,7 +83,7 @@ internal fun LotecaOutcomeCard(
             (Modifier.fillMaxWidth()).uiId("bet.0037"),
             fontFamily = FontFamily.SansSerif,
             fontSize = 14.sp,
-            color = if (selected) CaixaDSColorTokens.Blue700 else CaixaDSColorTokens.BetAction,
+            color = if (selected) LoteriasCaixaDSColorTokens.Blue700 else LoteriasCaixaDSColorTokens.BetAction,
             textAlign = TextAlign.Center,
             style = TextStyle(lineHeight = 14.sp, platformStyle = PlatformTextStyle(includeFontPadding = true))
         )
@@ -109,7 +109,7 @@ internal fun LotecaOutcomeCard(
                 (Modifier.fillMaxWidth()).uiId("bet.0039"),
                 fontFamily = FontFamily.SansSerif,
                 fontSize = if (index == 0) 12.sp else 14.sp,
-                color = if (selected) CaixaDSColorTokens.Blue700 else CaixaDSColorTokens.BetAction,
+                color = if (selected) LoteriasCaixaDSColorTokens.Blue700 else LoteriasCaixaDSColorTokens.BetAction,
                 textAlign = TextAlign.Center,
                 style = TextStyle(lineHeight = 14.sp, platformStyle = PlatformTextStyle(includeFontPadding = true))
             )

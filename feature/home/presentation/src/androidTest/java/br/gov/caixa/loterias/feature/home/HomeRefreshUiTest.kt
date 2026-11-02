@@ -16,7 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -87,7 +87,7 @@ class HomeRefreshUiTest {
         )
         val model = model(AtomicInteger(), parameters)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 val state = preferences.state.collectAsStateWithLifecycle()
                 if (!state.value.loaded) {
                     Text("Carregando")
@@ -128,7 +128,7 @@ class HomeRefreshUiTest {
                 br.gov.caixa.loterias.feature.home.navigation.LocalHomeRuntimeConfiguration provides
                     br.gov.caixa.loterias.feature.home.navigation.HomeRuntimeConfiguration(true, "test")
             ) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     if (show.value) {
                         HomeRoute(
                             null, { br.gov.caixa.loterias.core.common.network.ConnectionAvailability.UNKNOWN },
@@ -173,7 +173,7 @@ class HomeRefreshUiTest {
                     br.gov.caixa.loterias.feature.home.navigation.LocalHomeRuntimeConfiguration provides
                         br.gov.caixa.loterias.feature.home.navigation.HomeRuntimeConfiguration(false, "test")
                 ) {
-                    CaixaDSTheme {
+                    LoteriasCaixaDSTheme {
                         if (show.value) {
                             HomeRoute(
                                 null,
@@ -222,7 +222,7 @@ class HomeRefreshUiTest {
             R.drawable.trevo_megasena_fundo_branco, R.drawable.ic_calendario, R.drawable.ic_calendario
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 val state = model.state.collectAsStateWithLifecycle()
                 HomeV2RouteContent(
                     listOf("MEGA_SENA"), { _, _ -> }, state.value, null, listOf(lottery),

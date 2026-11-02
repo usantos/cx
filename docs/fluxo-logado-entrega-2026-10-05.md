@@ -25,7 +25,7 @@ A matriz de recursos e uma captura inicial por rota não comprovam todos os esta
 
 ## Verificações
 
-A etapa executou 522 testes JVM nos módulos diretamente afetados: app 48, cart 76, home 26, betting 70, auth 41, account 55, data 155, preferences 34 e CaixaDS 17; todos sem falhas. A matriz `modernCheck` passou com builds debug dos três flavors, lint, arquitetura e gates de cobertura. O carrinho atingiu 95,49% de linhas, acima do mínimo 95,01%, com testes reais da tela de revisão do lote.
+A etapa executou 522 testes JVM nos módulos diretamente afetados: app 48, cart 76, home 26, betting 70, auth 41, account 55, data 155, preferences 34 e LoteriasCaixaDS 17; todos sem falhas. A matriz `modernCheck` passou com builds debug dos três flavors, lint, arquitetura e gates de cobertura. O carrinho atingiu 95,49% de linhas, acima do mínimo 95,01%, com testes reais da tela de revisão do lote.
 
 Testes Android de autenticação: 16 no emulador e 16 no XCover7. Keystore: 8 no emulador e 8 no XCover7. A matriz global executou 27 testes de armazenamento, 3 de apresentação, 29 de carrinho, 4 de Home e 5 de notificações em cada dispositivo. O teste Android de salto entre páginas do Rapidão passou nos dois dispositivos. Os três builds release também passaram após as últimas correções visuais. Os ajustes finais de sessão e navegação passaram nos testes dos três flavors, lint e cobertura. A rodada de instrumentação anterior permanece válida; no último recheck global, suas cinco tarefas foram excluídas para evitar repeti-las durante a recaptura. O teste ampliado do Rapidão passou separadamente nos dois dispositivos, incluindo toques no centro dos indicadores 8 e 3 e verificação de página centralizada.
 

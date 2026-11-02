@@ -16,7 +16,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
@@ -35,7 +35,7 @@ class MarketplaceDetailGridNativeGeometryUiTest {
 
     @Test fun superSevenHeadersUseNativeWrapContentAnd24dpGaps() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Box(Modifier.width(426.dp)) {
                     DetailBetGrid(
                         0,
@@ -69,7 +69,7 @@ class MarketplaceDetailGridNativeGeometryUiTest {
 
     @Test fun millionaireCloverStarts24dpBelowNativeTrevosLabelTop() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 DetailBetGrid(0, MarketplaceBet((1..6).toList(), listOf(1, 2), false), Color(0xFF2A3580), "MAIS_MILIONARIA")
             }
         }
@@ -86,7 +86,7 @@ class MarketplaceDetailGridNativeGeometryUiTest {
             listOf(MarketplaceBet(emptyList(), emptyList(), false, numberColumns = (1..7).map { listOf(it) }))
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 MarketplaceDetailScreen(MarketplaceDetailUiState(detail = detail, isLoading = false), {}, {}, {}, {}, {})
             }
         }
@@ -97,19 +97,19 @@ class MarketplaceDetailGridNativeGeometryUiTest {
     }
 
     @Test fun lotecaUncheckedIndicatorKeepsNative27dpHeight() {
-        compose.setContent { CaixaDSTheme { DetailLotecaMatch(0, lotecaSelection()) } }
+        compose.setContent { LoteriasCaixaDSTheme { DetailLotecaMatch(0, lotecaSelection()) } }
         val indicator = compose.onNodeWithTag("pool-detail-loteca-0-draw").fetchSemanticsNode().boundsInRoot
         assertEquals(px(27), indicator.height, 1f)
     }
 
     @Test fun lotecaLegendKeepsNativeSpacingAfterTeamName() {
-        compose.setContent { CaixaDSTheme { DetailLotecaMatch(0, lotecaSelection()) } }
+        compose.setContent { LoteriasCaixaDSTheme { DetailLotecaMatch(0, lotecaSelection()) } }
         compose.onNodeWithText("SANTOS/SP  (PRINCIPAL)").assertIsDisplayed()
     }
 
     @Test fun consecutiveLotecaMatchesKeepNativeStrideAtDeviceDensity() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Column(Modifier.width(426.dp)) {
                     DetailLotecaMatch(0, lotecaSelection())
                     DetailLotecaMatch(1, lotecaSelection())

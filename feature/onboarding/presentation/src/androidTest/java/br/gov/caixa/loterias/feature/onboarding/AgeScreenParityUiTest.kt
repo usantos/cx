@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.*
 import br.gov.caixa.loterias.feature.onboarding.navigation.OnboardingNavigationDependencies
 import br.gov.caixa.loterias.feature.onboarding.navigation.onboardingGraph
@@ -38,7 +38,7 @@ class AgeScreenParityUiTest {
             @Composable override fun StartupStatusDestination(route: String, onRecovered: () -> Unit) {}
         }
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 nav = rememberNavController()
                 NavHost(nav, startDestination = "onboarding/introduction") { onboardingGraph(dependencies, nav) }
             }
@@ -60,7 +60,7 @@ class AgeScreenParityUiTest {
     }
 
     @Test fun agePhraseIsBoldAndButtonUsesSemiBold() {
-        compose.setContent { CaixaDSTheme { AgeScreen({}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { AgeScreen({}, {}) } }
         val layout = textLayout(message)
         val spans = layout.layoutInput.text.spanStyles
         assertTrue("Age must use the legacy bold face", spans.any {
@@ -70,7 +70,7 @@ class AgeScreenParityUiTest {
     }
 
     @Test fun spacingFollowsLegacyGuidelineAndMargins() {
-        compose.setContent { CaixaDSTheme { AgeScreen({}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { AgeScreen({}, {}) } }
         val icon = compose.onNodeWithContentDescription("Apostar é para maiores de 18 anos").getUnclippedBoundsInRoot()
         val text = compose.onNodeWithText(message).getUnclippedBoundsInRoot()
         val learnMore = compose.onNodeWithText(link).getUnclippedBoundsInRoot()
@@ -92,7 +92,7 @@ class AgeScreenParityUiTest {
             @Composable override fun StartupStatusDestination(route: String, onRecovered: () -> Unit) {}
         }
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 CompositionLocalProvider(LocalUriHandler provides handler) {
                     nav = rememberNavController()
                     NavHost(nav, startDestination = "onboarding/age") { onboardingGraph(dependencies, nav) }

@@ -10,12 +10,12 @@ import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
-import br.gov.caixa.loterias.core.designsystem.tokens.resolveCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
@@ -43,19 +43,19 @@ internal val CartItemBadge.label: String
 @Composable
 internal fun cartModalityColor(code: String): Color {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    val style = caixaDSLotteryStyle(0, code)
-    if (style != resolveCaixaDSLotteryStyle(0, code, CaixaDSCampaign.DEFAULT)) return style.textOnSurface
+    val style = loteriasCaixaDSLotteryStyle(0, code)
+    if (style != resolveLoteriasCaixaDSLotteryStyle(0, code, LoteriasCaixaDSCampaign.DEFAULT)) return style.textOnSurface
     return when (code.uppercase(Locale.ROOT)) {
-        "MEGA_SENA", "MEGASENA", "MEGA-SENA" -> CaixaDSColorTokens.MegaSena
-        "LOTOFACIL", uiStrings.getString(LocalizedR.string.ui_lotofacil_dd4339) -> CaixaDSColorTokens.Lotofacil
-        "QUINA" -> CaixaDSColorTokens.Quina
-        "LOTOMANIA" -> CaixaDSColorTokens.Lotomania
-        "TIMEMANIA" -> CaixaDSColorTokens.Timemania
-        "DUPLA_SENA", "DUPLASENA", "DUPLA-SENA" -> CaixaDSColorTokens.DuplaSena
-        "DIA_DE_SORTE", "DIADESORTE", "DIA-DE-SORTE" -> CaixaDSColorTokens.DiaDeSorte
-        "SUPER_SETE", "SUPERSETE", "SUPER-SETE" -> CaixaDSColorTokens.SuperSete
-        "MAIS_MILIONARIA", "MAISMILIONARIA", "+MILIONARIA" -> CaixaDSColorTokens.MaisMilionaria
-        else -> CaixaDS.colors.brand
+        "MEGA_SENA", "MEGASENA", "MEGA-SENA" -> LoteriasCaixaDSColorTokens.MegaSena
+        "LOTOFACIL", uiStrings.getString(LocalizedR.string.ui_lotofacil_dd4339) -> LoteriasCaixaDSColorTokens.Lotofacil
+        "QUINA" -> LoteriasCaixaDSColorTokens.Quina
+        "LOTOMANIA" -> LoteriasCaixaDSColorTokens.Lotomania
+        "TIMEMANIA" -> LoteriasCaixaDSColorTokens.Timemania
+        "DUPLA_SENA", "DUPLASENA", "DUPLA-SENA" -> LoteriasCaixaDSColorTokens.DuplaSena
+        "DIA_DE_SORTE", "DIADESORTE", "DIA-DE-SORTE" -> LoteriasCaixaDSColorTokens.DiaDeSorte
+        "SUPER_SETE", "SUPERSETE", "SUPER-SETE" -> LoteriasCaixaDSColorTokens.SuperSete
+        "MAIS_MILIONARIA", "MAISMILIONARIA", "+MILIONARIA" -> LoteriasCaixaDSColorTokens.MaisMilionaria
+        else -> LoteriasCaixaDS.colors.brand
     }
 }
 
@@ -66,7 +66,7 @@ internal fun formatCartAmount(value: BigDecimal?): String = NumberFormat
     .replace('\u202F', ' ')
 
 internal fun cartText(size: Int = 14, weight: FontWeight = FontWeight.Normal) = TextStyle(
-    fontFamily = CaixaDSFontFamily,
+    fontFamily = LoteriasCaixaDSFontFamily,
     fontSize = size.sp,
     fontWeight = weight,
     platformStyle = PlatformTextStyle(includeFontPadding = true)

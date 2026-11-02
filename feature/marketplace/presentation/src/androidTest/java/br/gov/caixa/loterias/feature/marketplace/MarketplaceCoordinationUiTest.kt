@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import org.junit.Assert.assertEquals
@@ -26,7 +26,7 @@ class MarketplaceCoordinationUiTest {
         val requests = intArrayOf(0, 0)
         compose.setContent {
             val current = revision.intValue
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Screen(MarketplaceUiState(pools = pools, canLoadMore = true), onLoadMore = { requests[current]++ })
             }
         }
@@ -44,7 +44,7 @@ class MarketplaceCoordinationUiTest {
     @Test fun appendFailureUsesNativeErrorCardWithoutRetryOrExhaustion() {
         var retries = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Screen(MarketplaceUiState(pools = pools, errorMessage = "Falha da próxima página", canLoadMore = false),
                     onRetry = { retries++ })
             }
@@ -64,7 +64,7 @@ class MarketplaceCoordinationUiTest {
         val removed = mutableListOf<Long>()
         var filters = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Screen(state.value, onFilter = { filters++ },
                     onSelectTab = { state.value = state.value.copy(selectedTab = it) },
                     onRetailerSelected = { opened += it }, onRemoveRetailer = { removed += it },

@@ -26,8 +26,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBar
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
@@ -155,7 +155,7 @@ class MarketplaceLocalContractsUiTest {
         val detailVisible = mutableStateOf(true)
         compose.runOnUiThread { compose.activity.window.isNavigationBarContrastEnforced = true }
         show {
-            CaixaDSStatusBar {
+            LoteriasCaixaDSStatusBar {
                 if (detailVisible.value) {
                     MarketplaceDetailScreen(MarketplaceDetailUiState(), {}, {}, {}, {}, {})
                 } else {
@@ -225,7 +225,7 @@ class MarketplaceLocalContractsUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { content() } }
+        compose.setContent { LoteriasCaixaDSTheme { content() } }
     }
     private fun detail() = MarketplacePoolDetail(
         "B1", "MEGA_SENA", 3070, 10, "Lotérica", "1", "Cidade - SP",

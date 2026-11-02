@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.viewModelScope
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.presentation.state.WorkflowSpec
 import br.gov.caixa.loterias.feature.betting.presentation.route.BettingRoute
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingFlowViewModel
@@ -31,7 +31,7 @@ class BettingRouteCoordinationTest {
         val model = model(SetBettingTutorialDismissedUseCase { kind, value -> dismissed += kind to value })
         var completed = 0
         var back = 0
-        compose.setContent { CaixaDSTheme { BettingRoute(model, { back++ }, { completed++ }) } }
+        compose.setContent { LoteriasCaixaDSTheme { BettingRoute(model, { back++ }, { completed++ }) } }
         compose.onNodeWithTag("pool-tutorial-skip").performClick()
         compose.onNodeWithTag("pool-tutorial-checkbox-row").performClick()
         compose.onNodeWithTag("pool-tutorial-primary").performClick()
@@ -48,7 +48,7 @@ class BettingRouteCoordinationTest {
         val second = model()
         val replace = mutableStateOf(false)
         var back = 0
-        compose.setContent { CaixaDSTheme { BettingRoute(if (replace.value) second else first, { back++ }, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { BettingRoute(if (replace.value) second else first, { back++ }, {}) } }
         compose.runOnIdle { replace.value = true }
         compose.waitForIdle()
         compose.runOnIdle { first.back() }

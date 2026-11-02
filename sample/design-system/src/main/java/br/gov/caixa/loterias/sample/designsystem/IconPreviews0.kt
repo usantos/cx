@@ -2,18 +2,18 @@
 
 package br.gov.caixa.loterias.sample.designsystem
 
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSPrizeChevron
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSPurchaseHelpIcon
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSPrizeChevron
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSPurchaseHelpIcon
 
 internal val iconPreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.icon.CaixaDSPrizeChevron") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSPrizeChevron") { state ->
         with(state) {
-            CaixaDSPrizeChevron()
+            LoteriasCaixaDSPrizeChevron()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.icon.CaixaDSPurchaseHelpIcon") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSPurchaseHelpIcon") { state ->
         with(state) {
-            CaixaDSPurchaseHelpIcon()
+            LoteriasCaixaDSPurchaseHelpIcon()
         }
     }
 )

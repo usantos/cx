@@ -23,15 +23,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton as Button
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButtonDefaults as ButtonDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIconButton as IconButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIconButton as IconButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.notifications.R
 import br.gov.caixa.loterias.feature.notifications.domain.model.AppNotification
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationCategory
@@ -50,9 +50,9 @@ internal fun NotificationItem(
     modifier: Modifier = Modifier,
 ) {
     val background = if (message.isRead || expanded) {
-        CaixaDS.colors.surface
+        LoteriasCaixaDS.colors.surface
     } else {
-        CaixaDSColorTokens.NotificationSearch
+        LoteriasCaixaDSColorTokens.NotificationSearch
     }
     Column(modifier.background(background).padding(8.dp)) {
         NotificationHeader(message, expanded, onToggle)
@@ -63,21 +63,21 @@ internal fun NotificationItem(
             exit = shrinkVertically()
         ) {
             Column(
-                Modifier.fillMaxWidth().background(CaixaDS.colors.surface)
+                Modifier.fillMaxWidth().background(LoteriasCaixaDS.colors.surface)
                     .padding(bottom = 8.dp)
             ) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
                     Text(
                         message.content,
                         modifier = (Modifier.padding(start = 40.dp).width(250.dp).padding(12.dp)).uiId("inbox.0001"),
-                        color = CaixaDS.colors.text,
-                        style = CaixaDS.typography.bodySmall.copy(fontFamily = CaixaDSFuturaFontFamily),
+                        color = LoteriasCaixaDS.colors.text,
+                        style = LoteriasCaixaDS.typography.bodySmall.copy(fontFamily = LoteriasCaixaDSFuturaFontFamily),
                         fontWeight = FontWeight.Bold
                     )
                     if (message.category.canShare()) {
                         IconButton(onClick = onShare, modifier = (Modifier.padding(start = 20.dp).size(28.dp)).uiId("inbox.0002")) {
                             Icon(
-                                CaixaDSIcons.NotificationShare,
+                                LoteriasCaixaDSIcons.NotificationShare,
                                 stringResource(R.string.notifications_compartilhar_mensagem),
                                 tint = Color.Unspecified,
                                 modifier = (Modifier.size(28.dp)).uiId("inbox.0003")
@@ -91,15 +91,15 @@ internal fun NotificationItem(
                         modifier = (Modifier.align(Alignment.CenterHorizontally)).uiId("inbox.0004"),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = if (message.category == NotificationCategory.RESULTS_AVAILABLE) {
-                                CaixaDSColorTokens.NotificationResultsAction
+                                LoteriasCaixaDSColorTokens.NotificationResultsAction
                             } else {
-                                CaixaDS.colors.brand
+                                LoteriasCaixaDS.colors.brand
                             }
                         )
                     ) {
                         Text(
                             stringResource(action),
-                            fontFamily = CaixaDSFuturaFontFamily,
+                            fontFamily = LoteriasCaixaDSFuturaFontFamily,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.uiId("inbox.0005")
                         )
@@ -127,7 +127,13 @@ private fun NotificationHeader(message: AppNotification, expanded: Boolean, onTo
         Column(Modifier.weight(1f).padding(horizontal = 16.dp)) {
             Text(
                 message.title,
-                color = if (message.isRead || expanded) CaixaDSColorTokens.Black else CaixaDSColorTokens.NotificationUnreadTitle,
+                color = if (message.isRead ||
+                    expanded
+                ) {
+                    LoteriasCaixaDSColorTokens.Black
+                } else {
+                    LoteriasCaixaDSColorTokens.NotificationUnreadTitle
+                },
                 style = notificationLegacyTextStyle(16.sp, FontWeight.Bold),
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
@@ -137,7 +143,7 @@ private fun NotificationHeader(message: AppNotification, expanded: Boolean, onTo
             // bind() do holder legado mantém a prévia enquanto o corpo completo está expandido.
             Text(
                 message.content,
-                color = CaixaDSColorTokens.NotificationText,
+                color = LoteriasCaixaDSColorTokens.NotificationText,
                 style = notificationLegacyTextStyle(16.sp),
                 maxLines = 1,
                 overflow = TextOverflow.Clip,
@@ -146,7 +152,7 @@ private fun NotificationHeader(message: AppNotification, expanded: Boolean, onTo
         }
         Text(
             message.dateLabel,
-            color = CaixaDSColorTokens.NotificationText,
+            color = LoteriasCaixaDSColorTokens.NotificationText,
             style = notificationLegacyTextStyle(14.sp),
             modifier = Modifier.uiId("inbox.0010")
         )

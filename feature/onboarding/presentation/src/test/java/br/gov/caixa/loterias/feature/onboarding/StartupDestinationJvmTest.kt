@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -19,7 +18,7 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParametersUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.IsVersionSupportedUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.PrepareNetworkSecurityUseCase
@@ -89,7 +88,7 @@ class StartupDestinationJvmTest {
         assertSame(complete, adapter.completeIntroduction)
         assertSame(dismiss, adapter.setBettingTutorialDismissed)
         assertSame(showIntro, adapter.shouldShowIntroduction)
-        compose.setContent { CaixaDSTheme { adapter.StartupStatusDestination("onboarding/unavailable", { recovered++ }) } }
+        compose.setContent { LoteriasCaixaDSTheme { adapter.StartupStatusDestination("onboarding/unavailable", { recovered++ }) } }
         compose.onNodeWithText("UNAVAILABLE:false").assertIsDisplayed()
         compose.onNodeWithText("Retry validation").performClick()
         compose.onNodeWithText("UNAVAILABLE:true").assertIsDisplayed()
@@ -108,7 +107,7 @@ class StartupDestinationJvmTest {
     fun updateScreenUsesProvidedBrandSlotsAndLaunchesItsOwnUpdateAction() {
         var updates = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 StartupStatusScreen(
                     StartupStatusKind.UPDATE_REQUIRED,
                     "Loterias",
@@ -135,7 +134,7 @@ class StartupDestinationJvmTest {
         var backs = 0
         var dismissals = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 SimulationRecoveryPanel(loading.value, message.value, { retries++ }, { backs++ }, {
                     dismissals++
                     message.value = null

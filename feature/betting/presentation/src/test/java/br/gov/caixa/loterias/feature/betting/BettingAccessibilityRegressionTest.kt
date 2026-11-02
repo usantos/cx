@@ -17,7 +17,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
@@ -47,7 +47,7 @@ class BettingAccessibilityRegressionTest {
     @Test fun comboActionIncludesItsNameAndPrice() {
         var calls = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 LegacyComboCatalogCard(BetCombo(1, "Combo acessível", "", false, BigDecimal.TEN, emptyList())) { calls++ }
             }
         }
@@ -56,7 +56,7 @@ class BettingAccessibilityRegressionTest {
     }
 
     @Test fun rapidPresetExposesSelectedRadioState() {
-        compose.setContent { CaixaDSTheme { RapidPreset("Meu valor", true, true, false) {} } }
+        compose.setContent { LoteriasCaixaDSTheme { RapidPreset("Meu valor", true, true, false) {} } }
         compose.onNodeWithText("Meu valor").assertIsSelected()
         compose.onNodeWithText("Meu valor").assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton))
     }
@@ -65,7 +65,7 @@ class BettingAccessibilityRegressionTest {
         val chosen = mutableStateOf(emptySet<Int>())
         var calls = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 RapidNumberCells(listOf(1), chosen.value, false, {
                     calls++
                     chosen.value = setOf(it)
@@ -77,13 +77,13 @@ class BettingAccessibilityRegressionTest {
     }
 
     @Test fun favoriteModalityFilterExposesSelection() {
-        compose.setContent { CaixaDSTheme { Column { FavoriteModalityGrid(listOf(2 to "Mega-Sena"), 2) {} } } }
+        compose.setContent { LoteriasCaixaDSTheme { Column { FavoriteModalityGrid(listOf(2 to "Mega-Sena"), 2) {} } } }
         compose.onNodeWithText("mega-sena").assertIsSelected()
     }
 
     @Test fun rapidModalitiesExposeIndependentToggleState() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 RapidModalitiesPage(listOf(LotteryModality(2, "Mega-Sena", "MEGASENA")), setOf(2)) {}
             }
         }
@@ -97,7 +97,7 @@ class BettingAccessibilityRegressionTest {
         )
         val actions = BettingGameActions({}, {}, {}, {}, {}, {}, {}, {}, { _, _ -> }, {}, { _, _, _ -> }, {}, {}, {}, {})
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 LotogolBetContent(BettingGameUiState(loading = false, game = game, lotogolScores = mapOf(1 to (2 to 1))), actions)
             }
         }
@@ -106,7 +106,7 @@ class BettingAccessibilityRegressionTest {
     }
 
     @Test fun disabledRapidPresetRetainsStateButOffersNoAction() {
-        compose.setContent { CaixaDSTheme { RapidPreset("...", true, false, true) {} } }
+        compose.setContent { LoteriasCaixaDSTheme { RapidPreset("...", true, false, true) {} } }
         compose.onNodeWithText("...").assertIsSelected().assertIsNotEnabled()
             .assert(SemanticsMatcher.keyNotDefined(SemanticsActions.OnClick))
         compose.onNodeWithText("...").assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton))
@@ -124,7 +124,7 @@ class BettingAccessibilityRegressionTest {
             { match, home, score -> selections.add(Triple(match, home, score)) }, {}, {}, {}, {}
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 LotogolBetContent(
                     BettingGameUiState(
                         loading = false,

@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.account.presentation.components
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.account.R as LocalizedR
 import br.gov.caixa.loterias.feature.account.presentation.state.SessionRecoveryState
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.SessionRecoveryViewModel
@@ -29,14 +29,14 @@ internal fun SessionRecoveryContent(
     }
     loading()
     when (state) {
-        SessionRecoveryState.FAILED -> CaixaDSDialog(
+        SessionRecoveryState.FAILED -> LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = uiStrings.getString(LocalizedR.string.ui_nao_foi_possivel_verificar_ou_conclu_08ef9f),
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_tentar_novamente_b9e106),
             onPositive = onRetry
         )
 
-        SessionRecoveryState.AWAITING_ACKNOWLEDGMENT -> CaixaDSDialog(
+        SessionRecoveryState.AWAITING_ACKNOWLEDGMENT -> LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = uiStrings.getString(LocalizedR.string.ui_a_limpeza_dos_dados_locais_da_sessao_25a8d7),
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),

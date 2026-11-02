@@ -22,7 +22,7 @@ This is a source-based audit. Device rendering and test execution must be record
 
 ## Consumer impact
 
-`CaixaDSCartSummary` also serves betting combo detail/list, marketplace/filter, confirmed bets, design-system catalog and app tests. No shared cart implementation or tokens were changed. Notification width is scoped to `HomeNotificationPopup`; other dialogs retain their existing sizing.
+`LoteriasCaixaDSCartSummary` also serves betting combo detail/list, marketplace/filter, confirmed bets, design-system catalog and app tests. No shared cart implementation or tokens were changed. Notification width is scoped to `HomeNotificationPopup`; other dialogs retain their existing sizing.
 
 ## Files changed for this audit
 

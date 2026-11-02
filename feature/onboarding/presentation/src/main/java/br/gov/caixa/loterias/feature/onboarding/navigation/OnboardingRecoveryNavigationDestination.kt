@@ -10,9 +10,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSAlertDialog as AlertDialog
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSTextButton as TextButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSAlertDialog as AlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTextButton as TextButton
 import br.gov.caixa.loterias.feature.onboarding.R
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.SplashScreen
 import br.gov.caixa.loterias.feature.onboarding.presentation.state.StartupRecoveryTarget

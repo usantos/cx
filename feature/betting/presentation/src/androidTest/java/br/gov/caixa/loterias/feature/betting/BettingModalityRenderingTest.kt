@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
@@ -50,7 +50,7 @@ class BettingModalityRenderingTest(private val id: Int, private val name: String
         val vm = BettingGameViewModel(id, GetBettingParametersUseCase { AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game))) }, object : AddBetToCartUseCase {
             override suspend fun invoke(draft: BetDraft): AppResult<ShoppingCart> { sends++; return AppResult.Success(ShoppingCart(1, BigDecimal.ZERO, emptyList())) }
         })
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(10_000) { vm.state.value.game != null }
         compose.onNodeWithText(name.lowercase()).assertIsDisplayed()
         compose.onNodeWithContentDescription("Dúvidas").assertIsDisplayed()

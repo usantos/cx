@@ -16,7 +16,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancel
 import org.junit.After
@@ -48,7 +48,7 @@ class CartAdditionCoordinationUiTest {
                 model(CartAdditionKind.POOL_SHARE, "QUINA", serverTime = ServerTimeSource { now }).also { model = it }
             }
             CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
-                CaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSTheme(darkTheme = false) {
                     CartAdditionRoute(viewModel, { calls += "back" }, { calls += "home" }, { calls += "cart" },
                         { id, modality -> calls += "help:$id:$modality" })
                 }
@@ -87,7 +87,7 @@ class CartAdditionCoordinationUiTest {
                     model(CartAdditionKind.POOL_SHARE, "MEGA_SENA", minimum = "99"))
             }
             val index = selected.intValue
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 CartAdditionRoute(viewModels[index], { calls += "back:$index" }, {}, {}, { _, _ -> })
             }
         }
@@ -125,7 +125,7 @@ class CartAdditionCoordinationUiTest {
         val calls = mutableListOf<Pair<Int, String>>()
         compose.setContent {
             val viewModels = remember { (examples.map { it.first } + "COMBO").map { model(CartAdditionKind.BET, it) } }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 CartAdditionRoute(viewModels[selected.intValue], {}, {}, {},
                     onHelp = if (helpEnabled.value) ({ id, modality -> calls += id to modality }) else null)
             }

@@ -112,8 +112,11 @@ class PersonalDataViewModel(
     fun dismissError() = mutableState.dispatch(PersonalDataAction.ErrorDismissed)
 
     fun recalculateLimit() = viewModelScope.launch(dispatchers.io) {
+        if (!isSessionCurrent()) return@launch
         mutableState.dispatch(PersonalDataAction.LimitRecalculationStarted)
-        when (val result = recalculateAuthorizedLimit()) {
+        val result = recalculateAuthorizedLimit()
+        if (!isSessionCurrent()) return@launch
+        when (result) {
             is AppResult.Success -> {
                 profile = profile?.copy(authorizedDailyLimit = result.value)
                 mutableState.dispatch(PersonalDataAction.LimitRecalculated(result.value))
@@ -123,9 +126,19 @@ class PersonalDataViewModel(
         }
     }
 
+    fun consumeCompletion(): Boolean = synchronized(mutableState) {
+        if (!isSessionCurrent() || !state.value.saved || state.value.completionConsumed) return@synchronized false
+        mutableState.dispatch(PersonalDataAction.CompletionConsumed)
+        true
+    }
+
     fun submit() {
         val task = synchronized(mutableState) {
-            if (submissionJob?.isCompleted == false || state.value.loading || state.value.saving || state.value.saved) return
+            if (!isSessionCurrent() || submissionJob?.isCompleted == false ||
+                state.value.loading || state.value.saving || state.value.saved
+            ) {
+                return
+            }
             val original = profile ?: return
             val current = state.value
             val limit = parseBrazilianCurrency(current.dailyLimit)
@@ -142,7 +155,10 @@ class PersonalDataViewModel(
                     dailyLimit = limit,
                     acceptsNotifications = current.acceptsNotifications
                 )
-                when (val result = updatePersonalData(update, original)) {
+                if (!isSessionCurrent()) return@launch
+                val result = updatePersonalData(update, original)
+                if (!isSessionCurrent()) return@launch
+                when (result) {
                     is AppResult.Success -> mutableState.dispatch(PersonalDataAction.Submitted)
                     is AppResult.Failure -> mutableState.dispatch(PersonalDataAction.SubmitFailed(result.error.userMessage()))
                 }

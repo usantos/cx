@@ -4,7 +4,7 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -20,8 +20,8 @@ class CatalogQuantityTest {
     @Test
     fun quantityCanIncreaseAndDecreaseWithoutCrossingOneAndCountsEveryInteraction() {
         val state = PreviewState()
-        val key = "br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplacePoolExpansion"
-        compose.setContent { CaixaDSTheme { catalogPreviews.getValue(key)(state) } }
+        val key = "br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolExpansion"
+        compose.setContent { LoteriasCaixaDSTheme { catalogPreviews.getValue(key)(state) } }
         compose.onNodeWithText("-").assertIsNotEnabled()
         compose.onNodeWithText("+").performClick()
         compose.runOnIdle {

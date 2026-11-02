@@ -1,0 +1,23 @@
+<resources>
+    <string name="card_components_description">Componente de cartões com medidas do legado em fonte normal e adaptação para acessibilidade. Os exemplos usam dados controlados e callbacks locais.</string>
+    <string name="card_0_signature">LoteriasCaixaDSCreditCardFront(content: LoteriasCaixaDSCreditCardContent, brand: @Composable (Modifier) -&gt; Unit, modifier: Modifier = Modifier)</string>
+    <string name="card_0_snippet">LoteriasCaixaDSCreditCardFront(dados, brand = { LoteriasCaixaDSPaymentBrandMark(\"VISA\", it) })</string>
+    <string name="card_1_signature">LoteriasCaixaDSCreditCardBack(showMagnifier: Boolean, brand: @Composable (Modifier) -&gt; Unit, magnifier: Painter, magnifierText: String)</string>
+    <string name="card_1_snippet">LoteriasCaixaDSCreditCardBack(true, brand = { LoteriasCaixaDSPaymentBrandMark(\"VISA\", it) }, magnifier = lupa, magnifierText = \"XXX\")</string>
+    <string name="card_2_signature">LoteriasCaixaDSCardSecurityCode(value: String, length: Int, onValueChange: (String) -&gt; Unit)</string>
+    <string name="card_2_snippet">LoteriasCaixaDSCardSecurityCode(cvv, 3, onCvvChanged)</string>
+    <string name="card_3_signature">LoteriasCaixaDSCardActionButton(label: String, onClick: () -&gt; Unit, modifier: Modifier = Modifier, enabled: Boolean = true)</string>
+    <string name="card_3_snippet">LoteriasCaixaDSCardActionButton(\"Incluir Código de Verificação\", onContinue)</string>
+    <string name="card_4_signature">LoteriasCaixaDSSavedCreditCard(number: String, expiration: String, brand: Painter, brandDescription: String, deleteIcon: Painter, deleteDescription: String, onOpen: () -&gt; Unit, onDelete: () -&gt; Unit)</string>
+    <string name="card_4_snippet">LoteriasCaixaDSSavedCreditCard(\"Final0000\", \"01/2030\", marca, \"VISA\", lixeira, \"Remover\", onOpen, onDelete)</string>
+    <string name="card_5_signature">LoteriasCaixaDSSavedCardSection(provider: LoteriasCaixaDSPaymentProvider, intro: String, logo: @Composable (Modifier) -&gt; Unit, cards: @Composable (Modifier) -&gt; Unit)</string>
+    <string name="card_5_snippet">LoteriasCaixaDSSavedCardSection(provider, \"Cartões salvos\", logo = logo, cards = cards)</string>
+    <string name="card_6_signature">LoteriasCaixaDSCardProviderHeader(backDescription: String, changeLabel: String, logo: @Composable (Modifier) -&gt; Unit, onChange: (() -&gt; Unit)?)</string>
+    <string name="card_6_snippet">LoteriasCaixaDSCardProviderHeader(\"Voltar\", \"Alterar\", logo = logo, onChange = onChange)</string>
+    <string name="card_7_signature">LoteriasCaixaDSCardTextInput(label: String, value: String, onValueChange: (String) -&gt; Unit)</string>
+    <string name="card_7_snippet">LoteriasCaixaDSCardTextInput(\"Nome\", nome, onNameChanged)</string>
+    <string name="card_8_signature">LoteriasCaixaDSCardPicker(label: String, value: String, options: List&lt;String&gt;, onSelected: (String) -&gt; Unit, selectionDescription: String)</string>
+    <string name="card_8_snippet">LoteriasCaixaDSCardPicker(\"Mês\", mes, meses, onMonthChanged, \"Selecionar mês\")</string>
+    <string name="card_9_signature">LoteriasCaixaDSCardHeading(text: String)</string>
+    <string name="card_9_snippet">LoteriasCaixaDSCardHeading(\"Confirme os dados do cartão escolhido\")</string>
+</resources>

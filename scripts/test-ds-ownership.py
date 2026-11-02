@@ -39,20 +39,20 @@ def main():
         ('foundation-qualified', prefix + '@androidx.compose.runtime.Composable fun OwnershipFixture() { androidx.compose.foundation.text.BasicTextField("Fixture", {}) }\n', False, 'Controles básicos'),
         ('native-webview', prefix + 'class OwnershipFixture(val view: android.webkit.WebView)\n', False, 'WebViews'),
         ('android-view', prefix + 'import androidx.compose.ui.viewinterop.AndroidView\n', False, 'WebViews'),
-        ('owned-controls', prefix + 'import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText\n@androidx.compose.runtime.Composable fun OwnershipFixture() { CaixaDSText("Fixture") }\n', True, 'BUILD SUCCESSFUL'),
-        ('owned-basic-text-field', prefix + 'import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSBasicTextField as BasicTextField\n@androidx.compose.runtime.Composable fun OwnershipFixture() { BasicTextField("Fixture", {}) }\n', True, 'BUILD SUCCESSFUL'),
+        ('owned-controls', prefix + 'import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText\n@androidx.compose.runtime.Composable fun OwnershipFixture() { LoteriasCaixaDSText("Fixture") }\n', True, 'BUILD SUCCESSFUL'),
+        ('owned-basic-text-field', prefix + 'import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSBasicTextField as BasicTextField\n@androidx.compose.runtime.Composable fun OwnershipFixture() { BasicTextField("Fixture", {}) }\n', True, 'BUILD SUCCESSFUL'),
     ]
     results = []
     for name, source, allowed, diagnostic in cases:
         log = args.output / (name + '.log')
         with fixture(location, source), log.open('w') as output:
-            result = subprocess.run(['./gradlew', 'verifyCaixaDS', '--offline', '--console=plain'], cwd=root, env=os.environ.copy(), stdout=output, stderr=subprocess.STDOUT)
+            result = subprocess.run(['./gradlew', 'verifyLoteriasCaixaDS', '--offline', '--console=plain'], cwd=root, env=os.environ.copy(), stdout=output, stderr=subprocess.STDOUT)
         text = log.read_text()
         assert (result.returncode == 0) == allowed and diagnostic in text, (name, result.returncode, log)
         results.append(dict(case=name,allowed=allowed,exit=result.returncode,restored=True))
         print(name + ': ' + ('accepted' if allowed else 'rejected') + ', fixture restored', flush=True)
     with (args.output / 'restored-baseline.log').open('w') as output:
-        result = subprocess.run(['./gradlew', 'verifyCaixaDS', '--offline', '--console=plain'], cwd=root, env=os.environ.copy(), stdout=output, stderr=subprocess.STDOUT)
+        result = subprocess.run(['./gradlew', 'verifyLoteriasCaixaDS', '--offline', '--console=plain'], cwd=root, env=os.environ.copy(), stdout=output, stderr=subprocess.STDOUT)
     assert result.returncode == 0, 'Restored baseline failed'
     (args.output / 'results.json').write_text(json.dumps(results, indent=2) + '\n')
     print('Baseline restored and accepted.', flush=True)

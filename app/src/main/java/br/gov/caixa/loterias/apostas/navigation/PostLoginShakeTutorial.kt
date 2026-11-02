@@ -18,8 +18,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.gov.caixa.loterias.apostas.R as LocalizedR
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.betting.presentation.route.ShakeTutorialRoute
@@ -70,12 +70,12 @@ internal fun PostLoginShakeTutorial(
                     onReady(request.destination)
                 }
             }
-            Box(Modifier.fillMaxSize().background(CaixaDSColorTokens.White)) {
+            Box(Modifier.fillMaxSize().background(LoteriasCaixaDSColorTokens.White)) {
                 if (state.loaded && !state.shakeTutorialCompleted) {
                     ShakeTutorialRoute { model.completeShakeTutorial() }
                 }
                 state.errorMessage?.let { message ->
-                    CaixaDSDialog(
+                    LoteriasCaixaDSDialog(
                         title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
                         message = message,
                         positiveLabel = uiStrings.getString(LocalizedR.string.ui_tentar_novamente_b9e106),

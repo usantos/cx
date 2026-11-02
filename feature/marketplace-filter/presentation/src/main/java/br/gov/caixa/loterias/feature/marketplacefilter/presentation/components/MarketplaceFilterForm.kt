@@ -15,13 +15,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterButton as ActionButton
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterLabel as Label
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterStyle
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSMaterialTheme as MaterialTheme
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartSummary
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterButton as ActionButton
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterLabel as Label
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterStyle
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSMaterialTheme as MaterialTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCartSummary
 import br.gov.caixa.loterias.feature.marketplacefilter.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.allModalities
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.screen.MarketplaceFilterScreen
@@ -42,19 +42,19 @@ internal fun MarketplaceFilterForm(
     onOpenNumberDialog: (NumberDialog) -> Unit,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = uiStrings.getString(LocalizedR.string.ui_filtros_57ac13),
         onBack = { onAction(MarketplaceFilterAction.Back) },
         modifier = (modifier.fillMaxSize().legacyAutomationId("marketplace_filter_screen")).uiId("filter.0008"),
         gradientTopBar = false,
-        containerColor = CaixaDSMarketplaceFilterStyle.canvas,
-        bottomBar = { CaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart, modifier = Modifier.uiId("filter.0009")) }
+        containerColor = LoteriasCaixaDSMarketplaceFilterStyle.canvas,
+        bottomBar = { LoteriasCaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart, modifier = Modifier.uiId("filter.0009")) }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).uiId("filter.0010").verticalScroll(rememberScrollState())) {
             Label(
                 text = uiStrings.getString(LocalizedR.string.ui_filtrar_06b52c),
                 modifier = (Modifier.padding(start = 10.dp, top = 10.dp)).uiId("filter.0011"),
-                color = CaixaDSMarketplaceFilterStyle.heading,
+                color = LoteriasCaixaDSMarketplaceFilterStyle.heading,
                 fontSize = 14
             )
             MarketplaceFilterModalities(state, onAction)
@@ -79,7 +79,7 @@ internal fun MarketplaceFilterForm(
             }
 
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 20.dp, bottom = CaixaDSMarketplaceFilterStyle.bottomInset),
+                modifier = Modifier.fillMaxWidth().padding(top = 20.dp, bottom = LoteriasCaixaDSMarketplaceFilterStyle.bottomInset),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ActionButton(

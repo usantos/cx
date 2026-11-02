@@ -16,6 +16,7 @@ import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionSt
 import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionUiState
 import java.time.Clock
 import java.time.LocalDateTime
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -28,43 +29,55 @@ internal class PrizeRedemptionSubmission(
     private val localClock: Clock,
     private val networkAvailability: NetworkAvailability,
     private val interactionBlocked: () -> Boolean,
-    private val fail: (AppError) -> Unit
+    private val fail: (AppError) -> Unit,
 ) {
+    private val claimed = AtomicBoolean(false)
+    val inProgress: Boolean get() = claimed.get()
+
     fun submit(channel: PrizeRedemptionChannel, value: String) {
         if (mutableState.value.loading || interactionBlocked() || mutableState.value.stage == PrizeRedemptionStage.SUCCESS) return
+        if (!claimed.compareAndSet(false, true)) return
         mutableState.dispatch(PrizeRedemptionStateAction.SubmissionStarted)
         scope.launch(dispatchers.io) {
-            when (val result = redeemPrize(betId, channel, value)) {
-                is AppResult.Success -> when (val outcome = result.value) {
-                    is PrizeRedemptionResult.ConnectionFailed -> mutableState.dispatch(
-                        PrizeRedemptionStateAction.ConnectionFailed(connectionFailureNotice(outcome.reason, networkAvailability.current()))
-                    )
+            try {
+                complete(channel, value)
+            } finally {
+                claimed.set(false)
+            }
+        }
+    }
 
-                    PrizeRedemptionResult.Unchanged -> mutableState.dispatch(PrizeRedemptionStateAction.SubmissionUnchanged)
+    private suspend fun complete(channel: PrizeRedemptionChannel, value: String) {
+        when (val result = redeemPrize(betId, channel, value)) {
+            is AppResult.Success -> when (val outcome = result.value) {
+                is PrizeRedemptionResult.ConnectionFailed -> mutableState.dispatch(
+                    PrizeRedemptionStateAction.ConnectionFailed(connectionFailureNotice(outcome.reason, networkAvailability.current()))
+                )
 
-                    is PrizeRedemptionResult.Redeemed -> mutableState.dispatch(
-                        PrizeRedemptionStateAction.Redeemed(channel, outcome.noticeCode.toLegacyNoticeMessage())
-                    )
+                PrizeRedemptionResult.Unchanged -> mutableState.dispatch(PrizeRedemptionStateAction.SubmissionUnchanged)
 
-                    is PrizeRedemptionResult.RegistrationRequired -> {
-                        if (channel != PrizeRedemptionChannel.MERCADO_PAGO) {
-                            fail(AppError.Unexpected)
-                        } else {
-                            mutableState.dispatch(PrizeRedemptionStateAction.RegistrationRequired(outcome.message, value))
-                        }
+                is PrizeRedemptionResult.Redeemed -> mutableState.dispatch(
+                    PrizeRedemptionStateAction.Redeemed(channel, outcome.noticeCode.toLegacyNoticeMessage())
+                )
+
+                is PrizeRedemptionResult.RegistrationRequired -> {
+                    if (channel != PrizeRedemptionChannel.MERCADO_PAGO) {
+                        fail(AppError.Unexpected)
+                    } else {
+                        mutableState.dispatch(PrizeRedemptionStateAction.RegistrationRequired(outcome.message, value))
                     }
-
-                    is PrizeRedemptionResult.NoticeRequired -> mutableState.dispatch(
-                        PrizeRedemptionStateAction.NoticeRequired(prizeNoticeUi(outcome.notice, LocalDateTime.now(localClock)))
-                    )
-
-                    is PrizeRedemptionResult.RedirectRequired -> mutableState.dispatch(
-                        PrizeRedemptionStateAction.RedirectRequired(outcome.destination)
-                    )
                 }
 
-                is AppResult.Failure -> fail(result.error)
+                is PrizeRedemptionResult.NoticeRequired -> mutableState.dispatch(
+                    PrizeRedemptionStateAction.NoticeRequired(prizeNoticeUi(outcome.notice, LocalDateTime.now(localClock)))
+                )
+
+                is PrizeRedemptionResult.RedirectRequired -> mutableState.dispatch(
+                    PrizeRedemptionStateAction.RedirectRequired(outcome.destination)
+                )
             }
+
+            is AppResult.Failure -> fail(result.error)
         }
     }
 }

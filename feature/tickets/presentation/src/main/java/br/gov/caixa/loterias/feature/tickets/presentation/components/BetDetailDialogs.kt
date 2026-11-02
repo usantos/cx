@@ -6,9 +6,9 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.withStyle
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSSelectionDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSSelectionDialog
 import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.TeimosinhaNotice
 import br.gov.caixa.loterias.feature.tickets.presentation.state.BetDetailUiState
@@ -18,12 +18,12 @@ import br.gov.caixa.loterias.feature.tickets.presentation.viewmodel.BetDetailVie
 @Composable
 internal fun BetDetailServiceFailureDialog(
     failure: br.gov.caixa.loterias.core.domain.service.model.ServiceFailure?,
-    viewModel: BetDetailViewModel,
-    onBack: () -> Unit,
+    onRetry: () -> Unit,
+    onDismiss: () -> Unit,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     if (failure != null && failure !is br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.RedirectRequired) {
-        CaixaDSAlertDialog(
+        LoteriasCaixaDSAlertDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = when (failure) {
                 is br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.NoticeRequired ->
@@ -40,11 +40,8 @@ internal fun BetDetailServiceFailureDialog(
                 else -> uiStrings.getString(LocalizedR.string.ui_nao_foi_possivel_consultar_esta_apos_e725f2)
             },
             confirmText = uiStrings.getString(LocalizedR.string.ui_tentar_novamente_b9e106),
-            onConfirm = viewModel::loadDetails,
-            onDismiss = {
-                viewModel.dismissServiceFailure()
-                onBack()
-            }
+            onConfirm = onRetry,
+            onDismiss = onDismiss
         )
     }
 }
@@ -52,7 +49,7 @@ internal fun BetDetailServiceFailureDialog(
 @Composable
 internal fun BetDetailTeimosinhaDialog(notice: TeimosinhaNotice?, onConfirm: () -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSAlertDialog(
+    LoteriasCaixaDSAlertDialog(
         title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
         message = buildAnnotatedString {
             if (notice == TeimosinhaNotice.ORIGINAL_PAID) {
@@ -77,7 +74,7 @@ internal fun BetDetailTeimosinhaDialog(notice: TeimosinhaNotice?, onConfirm: () 
 internal fun BetRepeatDialogs(state: BetDetailUiState, viewModel: BetDetailViewModel, onCartChanged: (() -> Unit)?) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     state.errorMessage?.let {
-        CaixaDSAlertDialog(
+        LoteriasCaixaDSAlertDialog(
             uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             it,
             stringResource(LocalizedR.string.ui_entendi_9f9373),
@@ -85,7 +82,7 @@ internal fun BetRepeatDialogs(state: BetDetailUiState, viewModel: BetDetailViewM
         )
     }
     if (state.cartAdditionConfirmed) {
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = uiStrings.getString(LocalizedR.string.ui_aposta_adicionada_ao_carrinho_com_su_d9668a),
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),
@@ -97,7 +94,7 @@ internal fun BetRepeatDialogs(state: BetDetailUiState, viewModel: BetDetailViewM
         )
     }
     if (state.repeatContestOptions.isNotEmpty()) {
-        CaixaDSSelectionDialog(
+        LoteriasCaixaDSSelectionDialog(
             title = uiStrings.getString(LocalizedR.string.ui_tipo_de_concurso_4a82cf),
             message = uiStrings.getString(LocalizedR.string.ui_escolha_o_tipo_de_concurso_f2315a),
             options = state.repeatContestOptions.map(RepeatContestOption::label),
@@ -108,7 +105,7 @@ internal fun BetRepeatDialogs(state: BetDetailUiState, viewModel: BetDetailViewM
         )
     }
     state.repeatConversion?.let { conversion ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = conversion.conversionMessage,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_sim_931345),

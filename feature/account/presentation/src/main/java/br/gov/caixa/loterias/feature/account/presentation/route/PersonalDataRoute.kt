@@ -4,7 +4,7 @@ import br.gov.caixa.loterias.feature.account.R as LocalizedR
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoadingDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.account.presentation.screen.PersonalDataActions
 import br.gov.caixa.loterias.feature.account.presentation.screen.PersonalDataScreen
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.PersonalDataViewModel
@@ -35,7 +35,7 @@ fun PersonalDataRoute(viewModel: PersonalDataViewModel, onBack: () -> Unit, onCo
     var notificationMessage by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(state.saved) {
-        if (state.saved) onComplete()
+        if (viewModel.consumeCompletion()) onComplete()
     }
 
     PersonalDataScreen(
@@ -61,10 +61,10 @@ fun PersonalDataRoute(viewModel: PersonalDataViewModel, onBack: () -> Unit, onCo
         )
     )
 
-    if (state.loading || state.saving) CaixaDSAuthenticationLoadingDialog()
+    if (state.loading || state.saving) LoteriasCaixaDSAuthenticationLoadingDialog()
 
     if (showZipCodeRedirect) {
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_nao_sei_o_meu_cep_eb7e08),
             message = uiStrings.getString(LocalizedR.string.ui_voce_sera_redirecionado_para_o_site_61dd1a),
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_confirmar_717bed),
@@ -77,7 +77,7 @@ fun PersonalDataRoute(viewModel: PersonalDataViewModel, onBack: () -> Unit, onCo
         )
     }
     notificationMessage?.let { message ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = message,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),
@@ -85,7 +85,7 @@ fun PersonalDataRoute(viewModel: PersonalDataViewModel, onBack: () -> Unit, onCo
         )
     }
     state.errorMessage?.let { message ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = message,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),

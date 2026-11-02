@@ -137,6 +137,14 @@ class PaymentViewModel(
 
     fun setPixScreenActive(active: Boolean) = pix.setScreenActive(active)
 
+    /** Mantém a aprovação terminal e reconhece sua navegação antes de chamar o hospedeiro. */
+    fun consumePixApprovalNavigation(): Boolean = synchronized(mutableState) {
+        val state = mutableState.value
+        if (!state.pixApproved || state.pixApprovalNavigationConsumed) return false
+        mutableState.dispatch(PaymentAction.PixApprovalNavigationConsumed)
+        true
+    }
+
     fun checkPixStatus() = pix.checkPixStatus()
 
     private fun applyFailure(error: AppError) = mutableState.dispatch(PaymentAction.Failed(error))

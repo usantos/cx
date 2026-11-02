@@ -18,7 +18,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performSemanticsAction
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.presentation.route.AccountRoute
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.AccountStatusViewModel
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -43,7 +43,7 @@ class AccountRouteUiTest {
         )
         var completions = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 AccountRoute(
                     androidx.compose.runtime.remember(registration.value) {
                         AccountStatusViewModel(
@@ -89,7 +89,7 @@ class AccountRouteUiTest {
             "account/personal-data-confirmation",
             FixedCoroutineDispatchers(StandardTestDispatcher(TestCoroutineScheduler()))
         )
-        compose.setContent { CaixaDSTheme { AccountRoute(model, {}, {}, "https://account.invalid") } }
+        compose.setContent { LoteriasCaixaDSTheme { AccountRoute(model, {}, {}, "https://account.invalid") } }
         val title = compose.onNodeWithText("Loterias Caixa").fetchSemanticsNode().boundsInRoot
         val screen = compose.onRoot().fetchSemanticsNode().boundsInRoot
         assertEquals(screen.center.x, title.center.x, 1f)
@@ -114,7 +114,7 @@ class AccountRouteUiTest {
                 androidx.compose.ui.platform.LocalDensity provides
                     androidx.compose.ui.unit.Density(density.density, 1.3f)
             ) {
-                CaixaDSTheme { AccountRoute(model, {}, {}, "https://account.invalid") }
+                LoteriasCaixaDSTheme { AccountRoute(model, {}, {}, "https://account.invalid") }
             }
         }
         val message = compose.onNodeWithText("Seu cadastro foi atualizado com sucesso.")
@@ -146,7 +146,7 @@ class AccountRouteUiTest {
         }
         val model = AccountStatusViewModel("account/change-login")
         compose.setContent {
-            CompositionLocalProvider(LocalUriHandler provides handler) { CaixaDSTheme { AccountRoute(model, { back++ }, {}, url) } }
+            CompositionLocalProvider(LocalUriHandler provides handler) { LoteriasCaixaDSTheme { AccountRoute(model, { back++ }, {}, url) } }
         }
         compose.onNodeWithText("Não foi possível abrir a página segura da Conta CAIXA. Tente novamente.").assertExists()
         assertEquals(listOf(url), attempts)

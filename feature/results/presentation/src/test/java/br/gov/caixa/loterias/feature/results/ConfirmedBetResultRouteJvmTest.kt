@@ -17,9 +17,9 @@ import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaignTheme
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaignTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
@@ -81,7 +81,7 @@ class ConfirmedBetResultRouteJvmTest {
         var redeem = 0
         compose.setContent {
             val model = remember { model(bet) { ServiceResult.Success(listOf(result)) } }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 ConfirmedBetResultRoute(bet, model, { backs++ }, { complete++ }, onRedeemPrize = { redeem++ })
             }
         }
@@ -132,7 +132,7 @@ class ConfirmedBetResultRouteJvmTest {
                         }
                     }
                 }
-            CaixaDSTheme { ConfirmedBetResultRoute(bet, model, {}, {}) }
+            LoteriasCaixaDSTheme { ConfirmedBetResultRoute(bet, model, {}, {}) }
         }
         compose.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.ProgressBarRangeInfo)).assertIsDisplayed()
         compose.runOnIdle { pending.complete(ServiceResult.Success(emptyList())) }
@@ -156,7 +156,7 @@ class ConfirmedBetResultRouteJvmTest {
         val redirects = mutableListOf<ServiceRedirect>()
         compose.setContent {
             viewModel = remember { model(bet) { current.value } }
-            CaixaDSTheme { ConfirmedBetResultRoute(bet, viewModel, {}, {}, redirects::add) }
+            LoteriasCaixaDSTheme { ConfirmedBetResultRoute(bet, viewModel, {}, {}, redirects::add) }
         }
         compose.onNodeWithText("Aguarde a apuração").assertIsDisplayed()
         compose.runOnIdle {
@@ -189,8 +189,8 @@ class ConfirmedBetResultRouteJvmTest {
         )
         compose.setContent {
             val model = remember { model(selected) { ServiceResult.Success(listOf(drawn)) } }
-            CaixaDSTheme {
-                CaixaDSCampaignTheme(CaixaDSCampaign.OCTOBER_ROSE, CaixaDSCampaign.OCTOBER_ROSE) {
+            LoteriasCaixaDSTheme {
+                LoteriasCaixaDSCampaignTheme(LoteriasCaixaDSCampaign.OCTOBER_ROSE, LoteriasCaixaDSCampaign.OCTOBER_ROSE) {
                     ConfirmedBetResultRoute(selected, model, {}, {}, onRedeemPrize = { error("Redeemed prize cannot be redeemed again") })
                 }
             }
@@ -215,7 +215,7 @@ class ConfirmedBetResultRouteJvmTest {
         compose.setContent {
             val current = selected.value
             val model = remember(current) { model(current) { ServiceResult.Success(listOf(drawn)) } }
-            CaixaDSTheme { ConfirmedBetResultRoute(current, model, {}, {}) }
+            LoteriasCaixaDSTheme { ConfirmedBetResultRoute(current, model, {}, {}) }
         }
         compose.onNodeWithText("1. Casa × Visitante: Casa / Empate").performScrollTo().assertIsDisplayed()
         compose.runOnIdle {
@@ -226,16 +226,16 @@ class ConfirmedBetResultRouteJvmTest {
 
     @Test
     fun megaCampaignRecolorsConfirmedResultWithoutChangingItsContent() {
-        val campaign = mutableStateOf(CaixaDSCampaign.DEFAULT)
+        val campaign = mutableStateOf(LoteriasCaixaDSCampaign.DEFAULT)
         compose.setContent {
             val model = remember { model(bet) { ServiceResult.Success(listOf(result)) } }
-            CaixaDSTheme {
-                CaixaDSCampaignTheme(campaign.value, campaign.value) { ConfirmedBetResultRoute(bet, model, {}, {}) }
+            LoteriasCaixaDSTheme {
+                LoteriasCaixaDSCampaignTheme(campaign.value, campaign.value) { ConfirmedBetResultRoute(bet, model, {}, {}) }
             }
         }
         val title = compose.onNodeWithText("Mega da Virada • Concurso 2000")
         val ordinary = title.captureToImage().asAndroidBitmap()
-        compose.runOnIdle { campaign.value = CaixaDSCampaign.OCTOBER_ROSE }
+        compose.runOnIdle { campaign.value = LoteriasCaixaDSCampaign.OCTOBER_ROSE }
         title.assertIsDisplayed()
         assertFalse(
             "Campaign presentation must change the result header palette",

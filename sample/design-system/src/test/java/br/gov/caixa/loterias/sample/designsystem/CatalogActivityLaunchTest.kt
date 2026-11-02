@@ -24,7 +24,7 @@ class CatalogActivityLaunchTest {
         // A Activity real controla setContent; este teste não substitui seu conteúdo de produção.
         compose.onNodeWithText("DS Loterias Caixa").assertIsDisplayed()
         compose.onNodeWithTag("catalog_search").assertIsDisplayed()
-        val key = "br.gov.caixa.loterias.core.designsystem.web.CaixaDSWebPage"
+        val key = "br.gov.caixa.loterias.core.designsystem.web.LoteriasCaixaDSWebPage"
         compose.onNodeWithTag("catalog_list").performScrollToNode(hasTestTag(key))
         compose.onNodeWithTag(key).assertIsDisplayed().performClick()
         compose.waitUntil { compose.onNodeWithTag("catalog_detail").isDisplayed() }
@@ -32,7 +32,7 @@ class CatalogActivityLaunchTest {
         compose.activityRule.scenario.recreate()
         compose.waitUntil { compose.onNodeWithTag("catalog_detail").isDisplayed() }
         compose.onNodeWithTag("catalog_detail").assertIsDisplayed()
-        compose.onNodeWithText("CaixaDSWebPage").assertIsDisplayed()
+        compose.onNodeWithText("LoteriasCaixaDSWebPage").assertIsDisplayed()
         compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }
         compose.onNodeWithTag(key).assertIsDisplayed()
     }

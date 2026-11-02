@@ -8,7 +8,7 @@ import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.feature.account.presentation.route.LoginEnvironmentPicker
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.presentation.screen.LoginScreen
 import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
 import kotlinx.coroutines.awaitCancellation
@@ -23,7 +23,7 @@ class LoginEnvironmentPickerUiTest {
     @Test fun environmentTouchTargetDoesNotOverlapBiometricSwitch() {
         var biometricChanged = false
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 LoginScreen(LoginUiState(), "test", {}, {}, { biometricChanged = it }, environmentSelectorVisible = true, environmentSelector = { enabled ->
                     LoginEnvironmentPicker(TestEnvironment.EXTERNO_ESTEIRA, enabled, { true }, {})
                 })
@@ -52,7 +52,7 @@ class LoginEnvironmentPickerUiTest {
                     if (restoreCommittedSelection) active.value = TestEnvironment.PILOTO
                 }
             }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 LoginEnvironmentPicker(active.value, true, { requested ->
                     changes++
                     // A gravação persistente ocorreu, mas o processo terminou antes de salvar o indicador de conclusão.

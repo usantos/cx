@@ -29,7 +29,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -53,8 +53,8 @@ internal fun RapidPageIndicator(page: Int, onPage: (Int) -> Unit) {
             ) {
                 Box(
                     Modifier.size(5.dp)
-                        .background(if (index == page) CaixaDS.colors.teal else CaixaDS.colors.surface, CircleShape)
-                        .border(1.dp, CaixaDS.colors.teal, CircleShape)
+                        .background(if (index == page) LoteriasCaixaDS.colors.teal else LoteriasCaixaDS.colors.surface, CircleShape)
+                        .border(1.dp, LoteriasCaixaDS.colors.teal, CircleShape)
                 )
             }
         }

@@ -33,11 +33,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSBasicTextField as BasicTextField
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSRegularFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSBasicTextField as BasicTextField
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSRegularFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
@@ -81,8 +81,8 @@ internal fun BettingTeamsContent(state: BettingGameUiState, onQueryChanged: (Str
             Text(
                 uiStrings.getString(LocalizedR.string.ui_times_indisponiveis_para_este_concur_e0d3b5),
                 (Modifier.padding(16.dp)).uiId("bet.0068"),
-                color = CaixaDSColorTokens.SocialGraphite,
-                fontFamily = CaixaDSFontFamily
+                color = LoteriasCaixaDSColorTokens.SocialGraphite,
+                fontFamily = LoteriasCaixaDSFontFamily
             )
         }
     }
@@ -90,7 +90,7 @@ internal fun BettingTeamsContent(state: BettingGameUiState, onQueryChanged: (Str
 
 @Composable
 private fun TeamSelectionCard(team: SportsTeam, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val selectionColor = if (selected) CaixaDSColorTokens.TimemaniaTeamSelection else Color.Transparent
+    val selectionColor = if (selected) LoteriasCaixaDSColorTokens.TimemaniaTeamSelection else Color.Transparent
     Column(
         modifier
             .height(115.dp)
@@ -104,8 +104,8 @@ private fun TeamSelectionCard(team: SportsTeam, selected: Boolean, onClick: () -
         TeamShield(team, Modifier.padding(top = 16.dp).size(40.dp))
         Text(
             team.name,
-            color = if (selected) selectionColor else CaixaDSColorTokens.BetAction,
-            fontFamily = CaixaDSFontFamily,
+            color = if (selected) selectionColor else LoteriasCaixaDSColorTokens.BetAction,
+            fontFamily = LoteriasCaixaDSFontFamily,
             fontSize = 14.2.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -115,8 +115,8 @@ private fun TeamSelectionCard(team: SportsTeam, selected: Boolean, onClick: () -
         )
         Text(
             team.state,
-            color = if (selected) selectionColor else CaixaDSColorTokens.BetAction,
-            fontFamily = CaixaDSRegularFontFamily,
+            color = if (selected) selectionColor else LoteriasCaixaDSColorTokens.BetAction,
+            fontFamily = LoteriasCaixaDSRegularFontFamily,
             fontSize = 14.2.sp,
             textAlign = TextAlign.Center,
             maxLines = 1,
@@ -138,14 +138,14 @@ private fun TeamQueryField(query: String, onQueryChanged: (String) -> Unit) {
                 .padding(16.dp)
                 .height(40.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(CaixaDSColorTokens.White)
-                .border(1.dp, CaixaDSColorTokens.SimulationMuted, RoundedCornerShape(8.dp))
+                .background(LoteriasCaixaDSColorTokens.White)
+                .border(1.dp, LoteriasCaixaDSColorTokens.SimulationMuted, RoundedCornerShape(8.dp))
                 .semantics { contentDescription = uiStrings.getString(LocalizedR.string.ui_nome_do_time_c897b8) }
             ).uiId("bet.0065"),
         singleLine = true,
         textStyle = TextStyle(
-            color = CaixaDSColorTokens.SocialGraphite,
-            fontFamily = CaixaDSRegularFontFamily,
+            color = LoteriasCaixaDSColorTokens.SocialGraphite,
+            fontFamily = LoteriasCaixaDSRegularFontFamily,
             fontSize = 16.sp,
             platformStyle = PlatformTextStyle(includeFontPadding = true)
         ),
@@ -160,8 +160,8 @@ private fun TeamQueryField(query: String, onQueryChanged: (String) -> Unit) {
                     if (query.isEmpty()) {
                         Text(
                             uiStrings.getString(LocalizedR.string.ui_nome_do_time_c897b8),
-                            color = CaixaDSColorTokens.SocialGraphite,
-                            fontFamily = CaixaDSRegularFontFamily,
+                            color = LoteriasCaixaDSColorTokens.SocialGraphite,
+                            fontFamily = LoteriasCaixaDSRegularFontFamily,
                             fontSize = 16.sp,
                             modifier = Modifier.uiId("bet.0066")
                         )

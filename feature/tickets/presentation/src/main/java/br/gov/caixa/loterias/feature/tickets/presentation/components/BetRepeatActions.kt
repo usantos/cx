@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSLoading
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSLoading
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
 import br.gov.caixa.loterias.feature.tickets.presentation.viewmodel.BetDetailViewModel
 
@@ -36,7 +36,7 @@ fun BetRepeatActionsOverlay(
             }
         }
         if (failure != null && failure !is br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.RedirectRequired) {
-            CaixaDSAlertDialog(
+            LoteriasCaixaDSAlertDialog(
                 uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
                 when (failure) {
                     is br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.NoticeRequired ->
@@ -54,8 +54,8 @@ fun BetRepeatActionsOverlay(
         }
     }
     if (showLoading && state.loading) {
-        Box(Modifier.fillMaxSize().background(CaixaDS.colors.surface.copy(alpha = 0.88f)), contentAlignment = Alignment.Center) {
-            CaixaDSLoading("Carregando…", modifier = Modifier.uiId("tickets.0001"))
+        Box(Modifier.fillMaxSize().background(LoteriasCaixaDS.colors.surface.copy(alpha = 0.88f)), contentAlignment = Alignment.Center) {
+            LoteriasCaixaDSLoading(label = "Carregando…", modifier = Modifier.uiId("tickets.0001"))
         }
     }
     BetRepeatDialogs(state, viewModel, onCartChanged)

@@ -4,7 +4,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaignTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaignTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.CampaignArea
 import br.gov.caixa.loterias.core.presentation.mapper.toDSCampaign
 import br.gov.caixa.loterias.core.presentation.campaign.viewmodel.CampaignViewModel
@@ -17,7 +17,7 @@ fun ApplicationCampaignTheme(model: CampaignViewModel, content: @Composable () -
         model.resumed(lifecycle.isAtLeast(Lifecycle.State.RESUMED))
         onDispose { model.resumed(false) }
     }
-    CaixaDSCampaignTheme(
+    LoteriasCaixaDSCampaignTheme(
         campaign = settings.active(CampaignArea.HOME).toDSCampaign(),
         megaSenaCampaign = settings.active(CampaignArea.MEGA_SENA).toDSCampaign(),
         content = content,

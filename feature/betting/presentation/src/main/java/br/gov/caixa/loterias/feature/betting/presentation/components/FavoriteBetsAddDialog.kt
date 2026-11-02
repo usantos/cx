@@ -2,13 +2,11 @@ package br.gov.caixa.loterias.feature.betting.presentation.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,12 +31,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton as Button
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButtonDefaults as ButtonDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.layout.caixaDSModalWidth
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSModalWidth
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.presentation.state.FavoriteBetsUiState
 
@@ -62,54 +60,40 @@ internal fun AddFavoriteOptionsDialog(
     var choiceOpened by remember { mutableStateOf(singleNormalRecurring) }
     Dialog(onDismissRequest = onCancel, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Column(
-            Modifier.caixaDSModalWidth().background(
-                CaixaDSColorTokens.White,
+            Modifier.loteriasCaixaDSModalWidth().background(
+                LoteriasCaixaDSColorTokens.White,
                 RoundedCornerShape(8.dp)
             ).uiId("bet.0084").verticalScroll(rememberScrollState()).padding(start = 22.dp, top = 18.dp, end = 22.dp, bottom = 22.dp)
         ) {
             Text(
                 stringResource(R.string.favorite_options_title),
                 (Modifier.fillMaxWidth().padding(horizontal = 5.dp)).uiId("bet.0085"),
-                color = CaixaDSColorTokens.ComboDark,
+                color = LoteriasCaixaDSColorTokens.ComboDark,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
                 style = favoriteLegacyTextStyle
             )
             if (contestOptions.isNotEmpty() && !singleNormalRecurring) {
-                FavoritePickerHeading(stringResource(R.string.favorite_contest_type), {
-                    choiceOpened = true
-                    showContest = !showContest
-                })
-                if (showContest && contestOptions.isNotEmpty()) {
-                    FavoriteComposePicker(
-                        contestOptions.map {
-                            it.second
-                        },
-                        contestOptions.indexOfFirst { it.first == state.contestType }.coerceAtLeast(0),
-                        Modifier.fillMaxWidth().padding(start = 20.dp, top = 20.dp, end = 20.dp).height(100.dp),
-                        label = stringResource(R.string.favorite_contest_type)
-                    ) { index ->
-                        onContestTypeChange(contestOptions[index].first)
-                    }
-                }
+                FavoriteContestSelector(
+                    contestOptions,
+                    state.contestType,
+                    showContest,
+                    onToggle = {
+                        choiceOpened = true
+                        showContest = !showContest
+                    },
+                    onSelect = onContestTypeChange
+                )
             }
             if (state.recurringOptions.isNotEmpty() && state.contestType == 1) {
-                FavoritePickerHeading(stringResource(R.string.favorite_recurring_draws), { showRecurring = !showRecurring })
-                if (showRecurring) {
-                    FavoriteComposePicker(
-                        state.recurringOptions.map(Int::toString),
-                        state.recurringSelectionIndex,
-                        Modifier.fillMaxWidth().padding(
-                            start = 20.dp,
-                            top = 20.dp,
-                            end = 20.dp
-                        ).height(100.dp),
-                        label = stringResource(R.string.favorite_recurring_draws)
-                    ) {
-                        onRecurringDrawsChange(state.recurringOptions[it])
-                    }
-                }
+                FavoriteRecurringSelector(
+                    state.recurringOptions,
+                    state.recurringSelectionIndex,
+                    showRecurring,
+                    onToggle = { showRecurring = !showRecurring },
+                    onSelect = onRecurringDrawsChange
+                )
             }
             if (state.mirrorAvailable) FavoriteMirrorOption(state.mirror, onToggleMirror)
             FavoriteOptionsActions(choiceOpened, onCancel, onConfirm)
@@ -124,7 +108,7 @@ private fun FavoriteMirrorOption(selected: Boolean, onToggleMirror: () -> Unit) 
         verticalAlignment = Alignment.CenterVertically
     ) {
         androidx.compose.foundation.layout.Box(Modifier.clearAndSetSemantics { }) {
-            br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckbox(
+            br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSCheckbox(
                 selected,
                 null,
                 (Modifier.size(24.dp)).uiId("bet.0087")
@@ -133,7 +117,7 @@ private fun FavoriteMirrorOption(selected: Boolean, onToggleMirror: () -> Unit) 
         Text(
             stringResource(R.string.favorite_mirror_description),
             (Modifier.padding(start = 8.dp)).uiId("bet.0088"),
-            fontFamily = CaixaDSFuturaFontFamily,
+            fontFamily = LoteriasCaixaDSFuturaFontFamily,
             style = favoriteLegacyTextStyle
         )
     }
@@ -147,10 +131,10 @@ private fun FavoriteOptionsActions(enabled: Boolean, onCancel: () -> Unit, onCon
             modifier = (Modifier.fillMaxWidth().heightIn(min = 60.dp)).uiId("bet.0089"),
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
             shape = RoundedCornerShape(4.dp),
-            border = BorderStroke(1.dp, CaixaDSColorTokens.White),
+            border = BorderStroke(1.dp, LoteriasCaixaDSColorTokens.White),
             colors = ButtonDefaults.buttonColors(
-                containerColor = CaixaDSColorTokens.Blue700,
-                contentColor = CaixaDSColorTokens.White
+                containerColor = LoteriasCaixaDSColorTokens.Blue700,
+                contentColor = LoteriasCaixaDSColorTokens.White
             ),
             elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp)
         ) {
@@ -169,10 +153,10 @@ private fun FavoriteOptionsActions(enabled: Boolean, onCancel: () -> Unit, onCon
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
             shape = RoundedCornerShape(0.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = CaixaDSColorTokens.TealAction,
-                contentColor = CaixaDSColorTokens.White,
-                disabledContainerColor = CaixaDSColorTokens.PersonalDataFooter,
-                disabledContentColor = CaixaDSColorTokens.White
+                containerColor = LoteriasCaixaDSColorTokens.TealAction,
+                contentColor = LoteriasCaixaDSColorTokens.White,
+                disabledContainerColor = LoteriasCaixaDSColorTokens.PersonalDataFooter,
+                disabledContentColor = LoteriasCaixaDSColorTokens.White
             ),
             elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp)
         ) {

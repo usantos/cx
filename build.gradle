@@ -390,7 +390,7 @@ tasks.register('modernCheck') {
     dependsOn([':feature:account:domain:check', ':feature:betting:domain:check', ':feature:cart:domain:check', ':feature:home:domain:check', ':feature:marketplace:domain:check', ':feature:notifications:domain:check', ':feature:onboarding:domain:check', ':feature:payment:domain:check', ':feature:responsible-gaming:domain:check', ':feature:results:domain:check', ':feature:retail:domain:check', ':feature:support:domain:check', ':feature:tickets:domain:check', ':feature:cart:api:check', ':feature:account:api:check', ':feature:marketplace:api:check', ':feature:account:data:check', ':feature:betting:data:check', ':feature:cart:data:check', ':feature:home:data:check', ':feature:marketplace:data:check', ':feature:notifications:data:check', ':feature:onboarding:data:check', ':feature:payment:data:check', ':feature:responsible-gaming:data:check', ':feature:results:data:check', ':feature:retail:data:check', ':feature:support:data:check', ':feature:tickets:data:check'])
     group = 'verification'
     description = 'Runs build, lint, tests, coverage gates and Compose architecture checks.'
-    dependsOn 'verifyKotlinFormatting', 'verifyComposeMigration', 'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyCleanArchitecture', 'verifyCaixaDS', 'verifyFilaBraAar', 'verifyTopazHeartbeat', 'verifyNetworkSecurity', 'verifyAppIdentityAndFlavors',
+    dependsOn 'verifyKotlinFormatting', 'verifyComposeMigration', 'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyCleanArchitecture', 'verifyLoteriasCaixaDS', 'verifyFilaBraAar', 'verifyTopazHeartbeat', 'verifyNetworkSecurity', 'verifyAppIdentityAndFlavors',
             ':app:assembleDebug',
             ':app:testPrdDebugUnitTest', ':app:testTqsDebugUnitTest', ':app:testAutomacaoDebugUnitTest',
             ':app:lintPrdDebug', ':app:lintTqsDebug', ':app:lintAutomacaoDebug',
@@ -506,9 +506,9 @@ tasks.register('verifyNetworkSecurity') {
     }
 }
 
-tasks.register('verifyCaixaDS') {
+tasks.register('verifyLoteriasCaixaDS') {
     group = 'verification'
-    description = 'Enforces CaixaDS as the visual contract of Compose features.'
+    description = 'Enforces LoteriasCaixaDS as the visual contract of Compose features.'
     doLast {
         def consumerRoots = [file('app'), file('core/presentation'), file('core/navigation'), file('core/queue'), file('feature'), file('sample')]
         def sources = consumerRoots.collectMany { root ->
@@ -519,7 +519,7 @@ tasks.register('verifyCaixaDS') {
                     (source.text =~ /Color\.(White|Black|Red|Blue|Green|Yellow)\b/).find()
         }
         if (!literalColors.isEmpty()) {
-            throw new GradleException("Cores literais fora do CaixaDS: ${literalColors}")
+            throw new GradleException("Cores literais fora do LoteriasCaixaDS: ${literalColors}")
         }
 
         def directControls = sources.findAll { source ->
@@ -533,17 +533,17 @@ tasks.register('verifyCaixaDS') {
                     (source.text =~ /\bandroidx\.compose\.foundation\.text\.BasicTextField\s*\(/).find()
         })
         if (!directControls.isEmpty()) {
-            throw new GradleException("Controles básicos devem ser consumidos pelo CaixaDS: ${directControls}")
+            throw new GradleException("Controles básicos devem ser consumidos pelo LoteriasCaixaDS: ${directControls}")
         }
 
         def unownedVisualContracts = sources.findAll { source ->
-            (source.text =~ /\bfun\s+(?:<[\s\S]*?>\s+)?CaixaDS\w*\s*\(/).find() ||
+            (source.text =~ /\bfun\s+(?:<[\s\S]*?>\s+)?(?:Loterias)?CaixaDS\w*\s*\(/).find() ||
                     (source.text =~ /\bTypography\s*\(/).find() ||
                     (source.text =~ /import\s+androidx\.compose\.material\.icons\./).find() ||
                     (source.text =~ /\bfun\s+(BettingDSButton|BettingOptionDialog|LegacyAccountUnderlineField|LegacyAccountSaveFooter)\s*\(/).find()
         }
         if (!unownedVisualContracts.isEmpty()) {
-            throw new GradleException("Componentes/tema/ícones compartilhados devem pertencer ao CaixaDS: ${unownedVisualContracts}")
+            throw new GradleException("Componentes/tema/ícones compartilhados devem pertencer ao LoteriasCaixaDS: ${unownedVisualContracts}")
         }
 
         def webConsumers = [file('app'), file('core'), file('feature')].collectMany { root ->
@@ -558,15 +558,15 @@ tasks.register('verifyCaixaDS') {
                     (source.text =~ /\bandroid\.widget\.(Toast|TextView|Button|EditText|ImageView)\b/).find()
         }
         if (!unownedWebViews.isEmpty()) {
-            throw new GradleException("WebViews, AndroidView e widgets nativos devem pertencer ao CaixaDS: ${unownedWebViews}")
+            throw new GradleException("WebViews, AndroidView e widgets nativos devem pertencer ao LoteriasCaixaDS: ${unownedWebViews}")
         }
 
         def appHost = file('app/src/main/java/br/gov/caixa/loterias/apostas/composition/AppContent.kt')
-        if (!appHost.text.contains('CaixaDSTheme')) {
-            throw new GradleException('A composição raiz do app deve aplicar CaixaDSTheme ao conteúdo Compose.')
+        if (!appHost.text.contains('LoteriasCaixaDSTheme')) {
+            throw new GradleException('A composição raiz do app deve aplicar LoteriasCaixaDSTheme ao conteúdo Compose.')
         }
-        if (!file('docs/CAIXA_DS.md').isFile()) {
-            throw new GradleException('Documentação do CaixaDS ausente.')
+        if (!file('docs/LOTERIAS_CAIXA_DS.md').isFile()) {
+            throw new GradleException('Documentação do LoteriasCaixaDS ausente.')
         }
     }
 }
@@ -700,4 +700,11 @@ gradle.projectsEvaluated {
     deviceTests.eachWithIndex { task, index ->
         if (index > 0) task.mustRunAfter(deviceTests.take(index))
     }
+}
+
+// Mantém o comando anterior apontando para a mesma política de propriedade visual.
+tasks.register('verifyCaixaDS') {
+    group = 'verification'
+    description = 'Alias de compatibilidade de verifyLoteriasCaixaDS.'
+    dependsOn 'verifyLoteriasCaixaDS'
 }

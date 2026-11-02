@@ -3,9 +3,9 @@ package br.gov.caixa.loterias.apostas
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.LocalCaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.LocalCaixaDSMegaSenaCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LocalLoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LocalLoteriasCaixaDSMegaSenaCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
 import br.gov.caixa.loterias.feature.betting.domain.repository.ShakeSettingsRepository
 import br.gov.caixa.loterias.feature.home.domain.repository.HomeLayoutRepository
 import br.gov.caixa.loterias.feature.home.domain.usecase.HomePreferencesUseCases
@@ -24,8 +24,8 @@ internal fun homePreferencesFixture(layout: HomeLayoutRepository, shake: ShakeSe
 internal fun HomeV2TestContent(
     lotteries: List<HomeLottery>, loading: Boolean, results: Map<String, DrawResult>,
     preferences: HomeLayoutRepository, actions: HomeV2Presentation.Actions,
-    campaign: CaixaDSCampaign = LocalCaixaDSCampaign.current,
-    megaSenaCampaign: CaixaDSCampaign = LocalCaixaDSMegaSenaCampaign.current,
+    campaign: LoteriasCaixaDSCampaign = LocalLoteriasCaixaDSCampaign.current,
+    megaSenaCampaign: LoteriasCaixaDSCampaign = LocalLoteriasCaixaDSMegaSenaCampaign.current,
 ) {
     val vm = remember(preferences) { homePreferencesFixture(preferences) }
     DisposableEffect(vm) {

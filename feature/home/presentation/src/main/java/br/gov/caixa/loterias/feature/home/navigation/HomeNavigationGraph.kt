@@ -74,7 +74,7 @@ private fun homePreferencesReady(
     val preferenceState by preferencesViewModel.state.collectAsStateWithLifecycle()
     if (!preferenceState.loaded) {
         preferenceState.errorMessage?.let { message ->
-            br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog(
+            br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog(
                 title = stringResource(
                     LocalizedR.string.ui_atencao_b0f8a4
                 ),
@@ -90,7 +90,7 @@ private fun homePreferencesReady(
             preferencesViewModel.completeShakeTutorial()
         }
         preferenceState.errorMessage?.let { message ->
-            br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog(
+            br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog(
                 title = stringResource(
                     LocalizedR.string.ui_atencao_b0f8a4
                 ),

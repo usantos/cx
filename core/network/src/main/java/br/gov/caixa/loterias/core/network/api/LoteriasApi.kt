@@ -114,10 +114,13 @@ interface LoteriasApi {
     suspend fun neighborhoodsByZipCode(@Query("cep") zipCode: String): ApiEnvelope<List<NeighborhoodDto>>
 
     @PUT("usuarios")
-    suspend fun updatePersonalData(@Body request: PersonalDataUpdateDto): ApiEnvelope<Unit>
+    suspend fun updatePersonalData(@Body request: PersonalDataUpdateDto, @Tag session: AccountVerificationSession): ApiEnvelope<Unit>
 
     @POST("usuarios")
-    suspend fun registerAccount(@Body request: AccountRegistrationDto): ApiEnvelope<UserProfileDto>
+    suspend fun registerAccount(
+        @Body request: AccountRegistrationDto,
+        @Tag session: AccountVerificationSession,
+    ): ApiEnvelope<UserProfileDto>
 
     @POST("logado/usuarios/verificar-cadastro")
     suspend fun verifyAccount(
@@ -125,7 +128,7 @@ interface LoteriasApi {
     ): ApiEnvelope<AccountSessionDto>
 
     @POST("usuarios/recalcular-limite-autorizado")
-    suspend fun recalculateAuthorizedLimit(): ApiEnvelope<UserProfileDto>
+    suspend fun recalculateAuthorizedLimit(@Tag session: AccountVerificationSession): ApiEnvelope<UserProfileDto>
 
     @GET("logado/carrinhos")
     suspend fun currentCart(): ApiEnvelope<CartDto>
@@ -134,10 +137,7 @@ interface LoteriasApi {
     suspend fun removeCartBet(@Path("id") id: Long): ApiEnvelope<CartDto>
 
     @DELETE("logado/carrinhos/apostas/{id}")
-    suspend fun removeBoundCartBet(
-        @Path("id") id: Long,
-        @Tag session: AccountVerificationSession,
-    ): ApiEnvelope<CartDto>
+    suspend fun removeBoundCartBet(@Path("id") id: Long, @Tag session: AccountVerificationSession): ApiEnvelope<CartDto>
 
     @DELETE("logado/carrinhos/combos/{id}")
     suspend fun removeCartCombo(@Path("id") id: Long): ApiEnvelope<CartDto>
@@ -149,42 +149,26 @@ interface LoteriasApi {
     suspend fun validateCart(): ApiEnvelope<JsonElement>
 
     @POST("logado/carrinhos-favoritos/validar")
-    suspend fun validateFavoriteCartName(
-        @Body request: SaveFavoriteCartRequestDto,
-    ): Unit
+    suspend fun validateFavoriteCartName(@Body request: SaveFavoriteCartRequestDto): Unit
 
     @POST("logado/carrinhos/salvar-carrinho-favorito")
-    suspend fun saveCurrentCartFavorite(
-        @Body request: SaveFavoriteCartRequestDto,
-    ): Unit
+    suspend fun saveCurrentCartFavorite(@Body request: SaveFavoriteCartRequestDto): Unit
 
     @GET("logado/carrinhos-favoritos")
     suspend fun favoriteCarts(): ApiEnvelope<List<FavoriteCartDto>>
 
     @GET("logado/carrinhos-favoritos/{cartId}/apostas")
-    suspend fun favoriteCartBets(
-        @Path("cartId") cartId: Long,
-    ): ApiEnvelope<List<FavoriteCartBetDto>>
+    suspend fun favoriteCartBets(@Path("cartId") cartId: Long): ApiEnvelope<List<FavoriteCartBetDto>>
 
     @DELETE("logado/carrinhos-favoritos/{cartId}")
-    suspend fun deleteFavoriteCart(
-        @Path("cartId") cartId: Long,
-    ): ApiEnvelope<List<FavoriteCartDto>>
+    suspend fun deleteFavoriteCart(@Path("cartId") cartId: Long): ApiEnvelope<List<FavoriteCartDto>>
 
     @DELETE("logado/carrinhos-favoritos/{cartId}/apostas/{betId}")
-    suspend fun deleteFavoriteCartBet(
-        @Path("cartId") cartId: Long,
-        @Path("betId") betId: Long,
-    ): ApiEnvelope<List<FavoriteCartBetDto>>
+    suspend fun deleteFavoriteCartBet(@Path("cartId") cartId: Long, @Path("betId") betId: Long): ApiEnvelope<List<FavoriteCartBetDto>>
 
     @POST("logado/carrinhos/incluir-carrinho-favorito/{cartId}")
-    suspend fun addFavoriteCartToCurrent(
-        @Path("cartId") cartId: Long,
-        @Body request: AddFavoriteCartRequestDto,
-    ): ApiEnvelope<CartDto>
+    suspend fun addFavoriteCartToCurrent(@Path("cartId") cartId: Long, @Body request: AddFavoriteCartRequestDto): ApiEnvelope<CartDto>
 
     @POST("usuarios/suspender-conta-apostador")
-    suspend fun suspendAccount(
-        @Body request: SuspendAccountRequestDto,
-    ): ApiEnvelope<AccountSuspensionDto>
+    suspend fun suspendAccount(@Body request: SuspendAccountRequestDto): ApiEnvelope<AccountSuspensionDto>
 }

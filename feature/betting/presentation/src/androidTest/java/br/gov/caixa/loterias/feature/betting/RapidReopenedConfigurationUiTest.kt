@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
@@ -84,7 +84,7 @@ class RapidReopenedConfigurationUiTest {
                     }
                 }
             }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 NavHost(nav, startDestination = "betting/rapid-config") {
                     bettingGraph(dependencies, nav, navigation, session)
                 }

@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.feature.betting.presentation.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,12 +34,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSDivider
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton as Button
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButtonDefaults as ButtonDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSDivider
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameActions
@@ -56,14 +55,14 @@ internal fun LotogolBetContent(state: BettingGameUiState, actions: BettingGameAc
     ) {
         Text(
             uiStrings.getString(LocalizedR.string.ui_informe_o_placar_de_cada_jogo_4cf784),
-            color = CaixaDSColorTokens.Lotogol,
+            color = LoteriasCaixaDSColorTokens.Lotogol,
             fontWeight = FontWeight.Bold,
             modifier = (Modifier.padding(top = 16.dp, bottom = 4.dp)).uiId("bet.0255")
         )
         game.matches.forEach { match ->
             Text(
                 uiStrings.getString(LocalizedR.string.ui_jogo_1_s_aa1e61, match.number.toString().padStart(2, '0')),
-                color = CaixaDSColorTokens.Blue700,
+                color = LoteriasCaixaDSColorTokens.Blue700,
                 fontSize = 16.sp,
                 modifier = (Modifier.padding(top = 20.dp, bottom = 8.dp)).uiId("bet.0256")
             )
@@ -77,7 +76,7 @@ internal fun LotogolBetContent(state: BettingGameUiState, actions: BettingGameAc
                 )
                 Text(
                     uiStrings.getString(LocalizedR.string.ui_x_4b68ab),
-                    color = CaixaDSColorTokens.Blue700,
+                    color = LoteriasCaixaDSColorTokens.Blue700,
                     fontWeight = FontWeight.Bold,
                     modifier = (Modifier.padding(8.dp)).uiId("bet.0258")
                 )
@@ -88,7 +87,7 @@ internal fun LotogolBetContent(state: BettingGameUiState, actions: BettingGameAc
                     modifier = (Modifier.weight(1f)).uiId("bet.0259")
                 )
             }
-            CaixaDSDivider()
+            LoteriasCaixaDSDivider()
         }
         OutlinedLegacyButton(uiStrings.getString(LocalizedR.string.ui_limpar_aposta_aa71b7), actions.clearSelection)
         Spacer(Modifier.height(16.dp))
@@ -107,7 +106,7 @@ private fun LotogolTeamScore(team: SportsTeam, selected: Int?, onScore: (Int) ->
         )
         Text(
             team.name,
-            color = CaixaDSColorTokens.TutorialGray,
+            color = LoteriasCaixaDSColorTokens.TutorialGray,
             fontSize = 14.2.sp,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -122,10 +121,10 @@ private fun LotogolTeamScore(team: SportsTeam, selected: Int?, onScore: (Int) ->
                 Box(
                     Modifier.size(28.dp)
                         .background(
-                            if (selected == score) CaixaDSColorTokens.Lotogol else CaixaDS.colors.background,
+                            if (selected == score) LoteriasCaixaDSColorTokens.Lotogol else LoteriasCaixaDS.colors.background,
                             CircleShape
                         )
-                        .border(1.dp, CaixaDSColorTokens.Lotogol, CircleShape)
+                        .border(1.dp, LoteriasCaixaDSColorTokens.Lotogol, CircleShape)
                         .uiId("bet.0261").selectable(selected = selected == score, role = Role.RadioButton) { onScore(score) }
                         .semantics {
                             contentDescription =
@@ -141,7 +140,7 @@ private fun LotogolTeamScore(team: SportsTeam, selected: Int?, onScore: (Int) ->
                 ) {
                     Text(
                         if (score == 5) uiStrings.getString(LocalizedR.string.ui_5_fa676d) else score.toString(),
-                        color = if (selected == score) CaixaDSColorTokens.White else CaixaDSColorTokens.Lotogol,
+                        color = if (selected == score) LoteriasCaixaDSColorTokens.White else LoteriasCaixaDSColorTokens.Lotogol,
                         fontSize = 10.sp,
                         modifier = Modifier.uiId("bet.0262")
                     )
@@ -157,8 +156,8 @@ private fun OutlinedLegacyButton(text: String, onClick: () -> Unit) {
         onClick = onClick,
         modifier = (Modifier.fillMaxWidth().height(54.dp)).uiId("bet.0263"),
         shape = RoundedCornerShape(4.dp),
-        colors = ButtonDefaults.outlinedButtonColors(contentColor = CaixaDS.colors.brand),
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = LoteriasCaixaDS.colors.brand),
         contentPadding = PaddingValues(0.dp),
-        border = androidx.compose.foundation.BorderStroke(1.dp, CaixaDS.colors.brand)
+        border = androidx.compose.foundation.BorderStroke(1.dp, LoteriasCaixaDS.colors.brand)
     ) { Text(text, modifier = Modifier.uiId("bet.0264")) }
 }

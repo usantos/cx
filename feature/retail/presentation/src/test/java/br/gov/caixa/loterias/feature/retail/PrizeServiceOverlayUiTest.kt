@@ -15,7 +15,7 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
@@ -102,7 +102,7 @@ class PrizeServiceOverlayUiTest {
             FixedCoroutineDispatchers(Dispatchers.Main.immediate)
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 PrizeRedemptionRoute(
                     model, initialChannel = PrizeRedemptionChannel.MERCADO_PAGO,
                     onBack = {

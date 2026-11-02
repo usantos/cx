@@ -1,8 +1,17 @@
 package br.gov.caixa.loterias.feature.tickets
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.ui.test.*
-import org.junit.Assert.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.bottom
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.top
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import android.widget.TextView
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +23,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.CheckTicketUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetConfirmedBetsConfigurationUseCase
@@ -37,7 +46,7 @@ class ConfirmedBetsRuntimeParityTest {
     @Test fun emptyListUsesCxEightDpRowInsetAndKeepsBetAction() {
         var betNow = false
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Column {
                     Spacer(Modifier.fillMaxWidth().height(16.dp).testTag("list-margin"))
                     LegacyEmptyBets { betNow = true }
@@ -45,7 +54,9 @@ class ConfirmedBetsRuntimeParityTest {
             }
         }
         val margin = compose.onNodeWithTag("list-margin").fetchSemanticsNode().boundsInRoot
-        val text = compose.onNodeWithText("Você ainda não fez apostas no período selecionado. Aproveite para apostar agora!").fetchSemanticsNode().boundsInRoot
+        val text = compose.onNodeWithText(
+            "Você ainda não fez apostas no período selecionado. Aproveite para apostar agora!"
+        ).fetchSemanticsNode().boundsInRoot
         val density = margin.height / 16f
         assertEquals("CX row_apostas_confirmadas_empty has an 8dp top inset", 8f * density, text.top - margin.bottom, 1f)
         compose.onNodeWithText("Aposte aqui").performClick()
@@ -55,7 +66,7 @@ class ConfirmedBetsRuntimeParityTest {
     @Test fun periodLabelMatchesNativeCxTextViewMetricsAndSelectsBackendPeriod() {
         lateinit var model: TicketsViewModel
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Column {
                     AndroidView(modifier = Modifier.testTag("native-label"), factory = { context ->
                         TextView(context).apply {
@@ -73,9 +84,15 @@ class ConfirmedBetsRuntimeParityTest {
                             CheckTicketUseCase { AppResult.Success(emptyList()) },
                             FixedCoroutineDispatchers(Dispatchers.Main.immediate),
                             getBetsConfiguration = GetConfirmedBetsConfigurationUseCase {
-                                AppResult.Success(ConfirmedBetsConfiguration(periods = listOf(
-                                    TicketPeriod(0, description = "Últimos 7 dias"), TicketPeriod(10, 2026, "Outubro de 2026"))))
-                            },
+                                AppResult.Success(
+                                    ConfirmedBetsConfiguration(
+                                        periods = listOf(
+                                            TicketPeriod(0, description = "Últimos 7 dias"),
+                                            TicketPeriod(10, 2026, "Outubro de 2026")
+                                        )
+                                    )
+                                )
+                            }
                         ).also { model = it }
                     }
                     ConfirmedBetsDataRoute(vm, {}, {})
@@ -87,7 +104,10 @@ class ConfirmedBetsRuntimeParityTest {
         assertEquals("Period label height must match CX TextView", expected.height, actual.height, 1f)
         compose.onNodeWithText("Últimos 7 dias").performClick()
         compose.onNodeWithText("Outubro de 2026").performClick()
-        compose.runOnIdle { assertEquals(10, model.state.value.betFilters.period?.month); assertEquals(2026, model.state.value.betFilters.period?.year) }
+        compose.runOnIdle {
+            assertEquals(10, model.state.value.betFilters.period?.month)
+            assertEquals(2026, model.state.value.betFilters.period?.year)
+        }
     }
 
     @Test fun authenticatedBetsExposeCapturedCartSummaryAndCartNavigation() {
@@ -100,19 +120,28 @@ class ConfirmedBetsRuntimeParityTest {
                     GetPurchasesUseCase { AppResult.Success(emptyList()) },
                     GetPurchaseBetsUseCase { AppResult.Success(emptyList()) },
                     CheckTicketUseCase { AppResult.Success(emptyList()) },
-                    FixedCoroutineDispatchers(Dispatchers.Main.immediate),
+                    FixedCoroutineDispatchers(Dispatchers.Main.immediate)
                 )
             }
-            CaixaDSTheme {
-                ConfirmedBetsDataRoute(model, {}, {}, cartTotal = total.value, cartBetCount = 9,
-                    onCart = { cartOpened = true })
+            LoteriasCaixaDSTheme {
+                ConfirmedBetsDataRoute(
+                    model,
+                    {},
+                    {},
+                    cartTotal = total.value,
+                    cartBetCount = 9,
+                    onCart = { cartOpened = true }
+                )
             }
         }
         compose.onNodeWithText("Valor atual do carrinho", useUnmergedTree = true).assertIsDisplayed()
         compose.onNodeWithText("R$ 39,00", useUnmergedTree = true).assertIsDisplayed()
         compose.onNodeWithText("9", useUnmergedTree = true).assertIsDisplayed()
         compose.onNodeWithText("Valor atual do carrinho").performClick()
-        compose.runOnIdle { assertTrue(cartOpened); total.value = BigDecimal.ZERO }
+        compose.runOnIdle {
+            assertTrue(cartOpened)
+            total.value = BigDecimal.ZERO
+        }
         compose.onNodeWithText("Valor atual do carrinho", useUnmergedTree = true).assertDoesNotExist()
         compose.onNodeWithText("R$ 39,00", useUnmergedTree = true).assertDoesNotExist()
     }

@@ -18,7 +18,7 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareBetEntryUseCase
@@ -200,16 +200,20 @@ class ControlledPrizeInteractionTest {
         show(installedSeven = true)
         val title = textLayout("Mercado Pago").layoutInput.style
         val subtitle = textLayout("Receba na hora").layoutInput.style
-        assertEquals("Packed greyText", br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens.SocialGraphite, title.color)
+        assertEquals(
+            "Packed greyText",
+            br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens.SocialGraphite,
+            title.color
+        )
         assertEquals(
             "Packed subtitle greyText",
-            br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens.SocialGraphite,
+            br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens.SocialGraphite,
             subtitle.color
         )
         assertEquals("Legacy title16sp", 16.sp, title.fontSize)
         assertEquals("Legacy subtitle14sp", 14.sp, subtitle.fontSize)
-        assertEquals(br.gov.caixa.loterias.core.designsystem.theme.CaixaDSRegularFontFamily, title.fontFamily)
-        assertEquals(br.gov.caixa.loterias.core.designsystem.theme.CaixaDSRegularFontFamily, subtitle.fontFamily)
+        assertEquals(br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSRegularFontFamily, title.fontFamily)
+        assertEquals(br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSRegularFontFamily, subtitle.fontFamily)
         assertEquals(androidx.compose.ui.text.font.FontWeight.Bold, title.fontWeight)
         assertEquals(androidx.compose.ui.text.font.FontWeight.Normal, subtitle.fontWeight)
     }
@@ -249,7 +253,7 @@ class ControlledPrizeInteractionTest {
         val label = textLayout("Prêmio").layoutInput.style
         assertEquals("Caixa DS MP prize label", expected, label.color)
         assertEquals("Caixa DS MP prize textSize", 15.199982f.sp, label.fontSize)
-        assertEquals(br.gov.caixa.loterias.core.designsystem.theme.CaixaDSRegularFontFamily, label.fontFamily)
+        assertEquals(br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSRegularFontFamily, label.fontFamily)
         assertEquals(
             "Caixa DS MP instructions",
             expected,
@@ -344,7 +348,7 @@ class ControlledPrizeInteractionTest {
             }
             val activityResultOwner = requireNotNull(LocalActivityResultRegistryOwner.current)
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides activityResultOwner) {
-                CaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSTheme(darkTheme = false) {
                     PrizeRedemptionRoute(
                         model, initialChannel = initialChannel, previewSuccessChannel = previewChannel,
                         onBack = {}, onHelp = {}, onHome = {}, onMyBets = { myBets.incrementAndGet() },

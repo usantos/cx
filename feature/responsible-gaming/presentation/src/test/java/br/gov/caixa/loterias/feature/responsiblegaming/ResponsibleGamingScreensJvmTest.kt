@@ -12,7 +12,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.AccountSuspension
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentQuestion
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.screen.AssessmentFormScreen
@@ -45,7 +45,7 @@ class ResponsibleGamingScreensJvmTest {
         val state = mutableStateOf(ResponsibleGamingUiState(questions = questions))
         val actions = mutableListOf<ResponsibleGamingAction>()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 AssessmentFormScreen(state.value, { action ->
                     actions.add(action)
                     state.value = when (action) {
@@ -92,7 +92,7 @@ class ResponsibleGamingScreensJvmTest {
     fun assessmentLoadingErrorAndMissingQuestionsOfferRetryWithoutShowingAnswers() {
         val state = mutableStateOf(ResponsibleGamingUiState(loading = true))
         val actions = mutableListOf<ResponsibleGamingAction>()
-        compose.setContent { CaixaDSTheme { AssessmentFormScreen(state.value, actions::add) } }
+        compose.setContent { LoteriasCaixaDSTheme { AssessmentFormScreen(state.value, actions::add) } }
         compose.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.ProgressBarRangeInfo)).assertIsDisplayed()
         compose.runOnIdle { state.value = state.value.copy(loading = false, errorMessage = "Falha ao carregar perguntas") }
         compose.onNodeWithText("Falha ao carregar perguntas").assertIsDisplayed()
@@ -107,7 +107,7 @@ class ResponsibleGamingScreensJvmTest {
     fun affirmativeAssessmentOffersHelpContactsAndCompletion() {
         val state = ResponsibleGamingUiState(questions = questions, answers = mapOf(1 to true), assessmentSubmitted = true)
         val actions = mutableListOf<ResponsibleGamingAction>()
-        compose.setContent { CaixaDSTheme { AssessmentFormScreen(state, actions::add) } }
+        compose.setContent { LoteriasCaixaDSTheme { AssessmentFormScreen(state, actions::add) } }
         compose.onNodeWithText("Muita atenção!", substring = true).performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("Ajuda").performClick()
         compose.onNodeWithText(AssessmentHelpText.Title).assertIsDisplayed()
@@ -121,7 +121,7 @@ class ResponsibleGamingScreensJvmTest {
     fun negativeAssessmentCongratulatesAndCompletesWithoutHelpAction() {
         val actions = mutableListOf<ResponsibleGamingAction>()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 AssessmentFormScreen(
                     ResponsibleGamingUiState(
                         questions = questions,
@@ -145,7 +145,7 @@ class ResponsibleGamingScreensJvmTest {
         val actions = mutableListOf<ResponsibleGamingAction>()
         var submissions = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 SuspensionScreen(state.value, { action ->
                     actions.add(action)
                     state.value = when (action) {
@@ -192,7 +192,7 @@ class ResponsibleGamingScreensJvmTest {
     fun suspensionLoadingErrorSuccessAndBackKeepTheirSpecificActions() {
         val state = mutableStateOf(ResponsibleGamingUiState(loading = true))
         val actions = mutableListOf<ResponsibleGamingAction>()
-        compose.setContent { CaixaDSTheme { SuspensionScreen(state.value, actions::add, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { SuspensionScreen(state.value, actions::add, {}) } }
         compose.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.ProgressBarRangeInfo)).assertIsDisplayed()
         compose.runOnIdle { state.value = state.value.copy(loading = false, errorMessage = "Não foi possível suspender") }
         compose.onNodeWithText("Tentar novamente").performClick()

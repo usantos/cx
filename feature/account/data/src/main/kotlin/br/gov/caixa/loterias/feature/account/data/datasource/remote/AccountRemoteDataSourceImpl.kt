@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.account.data.datasource.remote
 
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
 import br.gov.caixa.loterias.feature.account.data.dto.PersonalDataUpdateDto
 import br.gov.caixa.loterias.feature.account.data.dto.AccountRegistrationDto
@@ -7,6 +9,7 @@ import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequest
 
 class AccountRemoteDataSourceImpl(
     private val apiProvider: LoteriasApiProvider,
+    private val formSession: AccountVerificationSession? = null,
 ) : AccountRemoteDataSource {
     override suspend fun currentUserProfile() = apiProvider.current().featureAccountApi().currentUserProfile().payload
 
@@ -16,11 +19,11 @@ class AccountRemoteDataSourceImpl(
         apiProvider.current().featureAccountApi().neighborhoodsByZipCode(zipCode).payload
 
     override suspend fun updatePersonalData(request: PersonalDataUpdateDto) {
-        apiProvider.current().featureAccountApi().updatePersonalData(request)
+        apiProvider.current().featureAccountApi().updatePersonalData(request, requireFormSession())
     }
 
     override suspend fun registerAccount(request: AccountRegistrationDto) {
-        apiProvider.current().featureAccountApi().registerAccount(request)
+        apiProvider.current().featureAccountApi().registerAccount(request, requireFormSession())
     }
 
     override suspend fun verifyAccount(): AccountVerificationRemoteData {
@@ -29,5 +32,7 @@ class AccountRemoteDataSourceImpl(
     }
 
     override suspend fun recalculateAuthorizedLimit() =
-        apiProvider.current().featureAccountApi().recalculateAuthorizedLimit().payload
+        apiProvider.current().featureAccountApi().recalculateAuthorizedLimit(requireFormSession()).payload
+
+    private fun requireFormSession(): AccountVerificationSession = formSession ?: throw AccountVerificationSessionExpiredException()
 }

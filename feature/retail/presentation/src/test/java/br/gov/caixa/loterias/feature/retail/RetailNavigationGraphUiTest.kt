@@ -21,8 +21,8 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
@@ -160,12 +160,12 @@ class RetailNavigationGraphUiTest {
             {}
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 nav = rememberNavController()
                 NavHost(nav, "home") {
-                    composable("home") { CaixaDSText("HOME FIXTURE") }
-                    composable("tickets/my-bets") { CaixaDSText("MY BETS FIXTURE") }
-                    composable("support/terms?tab={tab}") { CaixaDSText("HELP FIXTURE") }
+                    composable("home") { LoteriasCaixaDSText("HOME FIXTURE") }
+                    composable("tickets/my-bets") { LoteriasCaixaDSText("MY BETS FIXTURE") }
+                    composable("support/terms?tab={tab}") { LoteriasCaixaDSText("HELP FIXTURE") }
                     retailGraph(dependencies, nav, session, actions)
                 }
             }

@@ -11,7 +11,7 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.DetailPurchasePanel
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceDetailUiState
@@ -37,7 +37,7 @@ class MarketplacePurchaseModalityColorTest {
             "26/10/2026", "1000000", AVAILABLE_SHARES, TOTAL_SHARES, 1, NUMBER_COUNT, "7", "2.61", "9.61", emptyList()
         )
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 DetailPurchasePanel(
                     MarketplaceDetailUiState(detail = detail, isLoading = false),
                     {},

@@ -16,7 +16,7 @@ O backend apresentou timeout `-502` e indisponibilidade `LTR-503`. O AVD também
 
 | Área | Mudança |
 |---|---|
-| Home v2 | Isola a Typography Material3 usada no CX; evita herdar métricas CaixaDS que deslocavam o banner/grade. |
+| Home v2 | Isola a Typography Material3 usada no CX; evita herdar métricas LoteriasCaixaDS que deslocavam o banner/grade. |
 | Resultado público | Não repete o resumo do concurso que o controller CX não apresenta nessa tela; mantém faixas, regiões, segundo sorteio e arrecadação. |
 | Ambientes de teste | Seletor CX no login não PRD, preferência persistida e reinício após aviso. API, SSO, pagamentos, fila, namespace e pins usam um snapshot consistente. PRD ignora seleção de teste; automação conserva seus endpoints. |
 | Login OAuth | Sem biometria o CX não solicita openid e pode receber access token sem ID token. Compose aceita esse contrato apenas na resposta fresca do endpoint configurado, com vínculo à tentativa, issuer, cliente, owner e validade. ID presente inválido nunca permite fallback. |

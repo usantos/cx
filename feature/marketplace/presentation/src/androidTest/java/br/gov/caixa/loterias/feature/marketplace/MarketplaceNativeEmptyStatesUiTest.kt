@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.feature.marketplace
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.MarketplaceScreen
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceUiState
 import org.junit.Rule
@@ -29,6 +29,8 @@ class MarketplaceNativeEmptyStatesUiTest {
         compose.onNodeWithText("Esta lotérica não possui bolões disponíveis no momento.").assertIsDisplayed()
     }
     private fun show(state: MarketplaceUiState) {
-        compose.setContent { CaixaDSTheme { MarketplaceScreen(state, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, false) } }
+        compose.setContent {
+            LoteriasCaixaDSTheme { MarketplaceScreen(state, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, false) }
+        }
     }
 }

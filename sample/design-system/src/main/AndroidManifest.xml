@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_loterias_caixa"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CaixaDSSample">
+        android:theme="@style/Theme.LoteriasCaixaDSSample">
         <activity android:name=".CatalogActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

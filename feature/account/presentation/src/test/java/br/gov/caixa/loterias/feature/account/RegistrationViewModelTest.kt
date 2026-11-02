@@ -277,16 +277,72 @@ class RegistrationViewModelTest {
         assertEquals(null, model.state.value.errorMessage)
     }
 
+    @Test fun `registration completion is consumed once without reopening submission`() = runTest(dispatcherRule.dispatcher) {
+        var writes = 0
+        val model = viewModel(register = {
+            writes++
+            AppResult.Success(Unit)
+        })
+        assertFalse(model.consumeCompletion())
+        model.submit()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertTrue(model.consumeCompletion())
+        assertFalse(model.consumeCompletion())
+        assertTrue(model.state.value.registered)
+        model.submit()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, writes)
+    }
+
+    @Test fun `expired registration session rejects queued command and late success`() = runTest(dispatcherRule.dispatcher) {
+        var current = true
+        var writes = 0
+        val pending = CompletableDeferred<AppResult<Unit>>()
+        val model = viewModel(register = {
+            writes++
+            pending.await()
+        }, isSessionCurrent = { current })
+        model.submit()
+        dispatcherRule.dispatcher.scheduler.runCurrent()
+        current = false
+        pending.complete(AppResult.Success(Unit))
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertFalse(model.state.value.registered)
+        assertFalse(model.consumeCompletion())
+        model.submit()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, writes)
+        val queued = viewModel(register = {
+            writes++
+            AppResult.Success(Unit)
+        }, isSessionCurrent = { current })
+        queued.submit()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, writes)
+    }
+
+    @Test fun `completion from old session is not delivered after replacement`() = runTest(dispatcherRule.dispatcher) {
+        var current = true
+        val model = viewModel(isSessionCurrent = { current })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        model.submit()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        current = false
+        assertFalse(model.consumeCompletion())
+    }
+
     private fun viewModel(
         ioDispatcher: kotlinx.coroutines.CoroutineDispatcher = dispatcherRule.dispatcher,
         user: AuthenticatedUser? = AuthenticatedUser("Pessoa", "12345678901", "pessoa@caixa.gov.br", "19900101"),
         resolve: suspend (String) -> AppResult<ZipCodeLocation> = { AppResult.Success(location()) },
         register: suspend (AccountRegistration) -> AppResult<Unit> = { AppResult.Success(Unit) },
+        isSessionCurrent: () -> Boolean = { true },
     ) = RegistrationViewModel(
         CurrentUserIdentityProvider { user },
         ResolveZipCodeUseCase { resolve(it) },
         RegisterAccountUseCase { register(it) },
-        FixedCoroutineDispatchers(ioDispatcher)
+        FixedCoroutineDispatchers(ioDispatcher),
+        isSessionCurrent
     )
 
     companion object {

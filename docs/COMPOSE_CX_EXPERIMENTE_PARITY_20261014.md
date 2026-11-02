@@ -1,6 +1,6 @@
 # Continuação da comparação CX / Compose pelo Experimente
 
-> Continuação posterior: [CaixaDS, gates e validação integrada](DS_CONSOLIDATION_20261014.md). O relatório registra os testes desta árvore, a centralização dos componentes, os dois raster preexistentes ainda pendentes e os limites da homologação. As capturas reais e decisões abaixo preservam o escopo original desta etapa.
+> Continuação posterior: [LoteriasCaixaDS, gates e validação integrada](DS_CONSOLIDATION_20261014.md). O relatório registra os testes desta árvore, a centralização dos componentes, os dois raster preexistentes ainda pendentes e os limites da homologação. As capturas reais e decisões abaixo preservam o escopo original desta etapa.
 
 Branch `codex/migracao-compose`; base desta continuação `911d5bc31`. Complementa o relatório runtime anterior, preservando seu escopo de 138 arquivos.
 

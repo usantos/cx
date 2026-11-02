@@ -10,9 +10,9 @@ import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.apostas.composition.startup.QueueWebConnectionGate
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -25,13 +25,13 @@ class QueueWebConnectionUiTest {
         var pageInstances = 0
         val network = NetworkAvailability { connection }
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 QueueWebConnectionGate(network) { failed ->
                     DisposableEffect(Unit) {
                         pageInstances++
                         onDispose { }
                     }
-                    CaixaDSButton(onClick = failed) { CaixaDSText("FAIL PAGE") }
+                    LoteriasCaixaDSButton(onClick = failed) { LoteriasCaixaDSText("FAIL PAGE") }
                 }
             }
         }

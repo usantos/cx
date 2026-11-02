@@ -7,47 +7,47 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSNotificationPlaceholder
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSButton
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSContentState
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSFingerprintIcon
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSIconButton
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSLabelledField
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSLoading
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSLoteriasLogo
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSNumberBall
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSSectionTitle
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSNotificationPlaceholder
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSButton
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSContentState
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSFingerprintIcon
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSIconButton
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSLabelledField
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSLoading
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSLoteriasLogo
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSNumberBall
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSSectionTitle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 
 internal val componentsPreviews1 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSButton") { state ->
         with(state) {
-            CaixaDSButton(
+            LoteriasCaixaDSButton(
                 text = actionLabel,
                 onClick = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSIconButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSIconButton") { state ->
         with(state) {
-            CaixaDSIconButton(
-                icon = CaixaDSNotificationPlaceholder,
+            LoteriasCaixaDSIconButton(
+                icon = LoteriasCaixaDSNotificationPlaceholder,
                 contentDescription = actionLabel,
                 onClick = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSSectionTitle") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSSectionTitle") { state ->
         with(state) {
-            CaixaDSSectionTitle(title = sample)
+            LoteriasCaixaDSSectionTitle(title = sample)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSAlertDialog(
+                LoteriasCaixaDSAlertDialog(
                     title = sample,
                     message = hint,
                     confirmText = closeLabel,
@@ -57,14 +57,14 @@ internal val componentsPreviews1 = mapOf(
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSLoading") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSLoading") { state ->
         with(state) {
-            CaixaDSLoading(label = sample)
+            LoteriasCaixaDSLoading(label = sample)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSLoteriasLogo") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSLoteriasLogo") { state ->
         with(state) {
-            CaixaDSLoteriasLogo(
+            LoteriasCaixaDSLoteriasLogo(
                 contentDescription = sample,
                 modifier = Modifier.size(
                     140.dp,
@@ -73,36 +73,36 @@ internal val componentsPreviews1 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSFingerprintIcon") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSFingerprintIcon") { state ->
         with(state) {
-            CaixaDSFingerprintIcon(
-                color = CaixaDS.colors.brand,
+            LoteriasCaixaDSFingerprintIcon(
+                color = LoteriasCaixaDS.colors.brand,
                 modifier = Modifier.size(64.dp)
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSNumberBall") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSNumberBall") { state ->
         with(state) {
-            CaixaDSNumberBall(
+            LoteriasCaixaDSNumberBall(
                 number = 7,
                 selected = checked
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSContentState") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSContentState") { state ->
         with(state) {
-            CaixaDSContentState(
+            LoteriasCaixaDSContentState(
                 loading = false,
                 error = null,
                 padding = PaddingValues(8.dp),
                 onRetry = action,
-                content = { CaixaDSText(hint) }
+                content = { LoteriasCaixaDSText(hint) }
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSLabelledField") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSLabelledField") { state ->
         with(state) {
-            CaixaDSLabelledField(
+            LoteriasCaixaDSLabelledField(
                 label = sample,
                 value = text,
                 onValueChange = { text = it },

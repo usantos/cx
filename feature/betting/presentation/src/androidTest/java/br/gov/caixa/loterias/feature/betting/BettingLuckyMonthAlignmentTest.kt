@@ -1,29 +1,26 @@
 package br.gov.caixa.loterias.feature.betting
 
-import br.gov.caixa.loterias.feature.betting.R
-
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import java.math.BigDecimal
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Rule
-import org.junit.Test
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
+import java.math.BigDecimal
+import org.junit.Assert.assertEquals
+import org.junit.Rule
+import org.junit.Test
 
 /** Seleção pública de janeiro no Dia1316, observada na versão 1.24.0 instalada.
  * Detecta rótulos nativos desenhados na borda esquerda da célula apesar de textAlignmentCENTER declarado.
@@ -54,7 +51,7 @@ class BettingLuckyMonthAlignmentTest {
         (1..7).forEach(vm::toggleNumber)
         vm.primaryAction()
         vm.selectLuckyMonth(months.first())
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.onNodeWithTag("lucky-month-Janeiro").assertIsSelected()
         names.forEach { label ->
             val cell = compose.onNodeWithTag("lucky-month-$label").fetchSemanticsNode().boundsInRoot
@@ -79,7 +76,7 @@ class BettingLuckyMonthAlignmentTest {
             AddBetToCartUseCase { error("Help title must never submit") },
             initialParameters = BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game))
         )
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.onNodeWithText("Como jogar").performClick()
         compose.onNodeWithText("Como Jogar: dia de sorte").assertIsDisplayed()
     }

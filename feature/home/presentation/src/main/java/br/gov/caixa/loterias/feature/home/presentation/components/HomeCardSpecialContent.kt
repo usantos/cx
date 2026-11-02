@@ -23,8 +23,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.home.R
 import br.gov.caixa.loterias.feature.home.R as LocalizedR
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
@@ -33,7 +33,7 @@ import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
 internal fun SpecialLotteryContent(kind: HomeLotteryKind) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     Column(
-        Modifier.fillMaxSize().background(CaixaDSColorTokens.White),
+        Modifier.fillMaxSize().background(LoteriasCaixaDSColorTokens.White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (kind == HomeLotteryKind.INSTANT) {
@@ -44,7 +44,7 @@ internal fun SpecialLotteryContent(kind: HomeLotteryKind) {
             Text(
                 uiStrings.getString(LocalizedR.string.ui_diversao_e_premios_na_hora_d9b789),
                 (Modifier.fillMaxWidth().padding(top = 3.dp)).uiId("home.0012"),
-                color = CaixaDSColorTokens.NotificationText,
+                color = LoteriasCaixaDSColorTokens.NotificationText,
                 style = homeLegacyTextStyle(13.8.sp),
                 textAlign = TextAlign.Center
             )
@@ -63,7 +63,7 @@ internal fun SpecialLotteryContent(kind: HomeLotteryKind) {
                     }
                 },
                 (Modifier.fillMaxWidth().padding(top = 20.dp)).uiId("home.0013"),
-                color = CaixaDSColorTokens.NotificationText,
+                color = LoteriasCaixaDSColorTokens.NotificationText,
                 style = homeLegacyTextStyle(13.8.sp),
                 textAlign = TextAlign.Center
             )
@@ -71,7 +71,7 @@ internal fun SpecialLotteryContent(kind: HomeLotteryKind) {
             Text(
                 uiStrings.getString(LocalizedR.string.ui_mais_que_apostas_combos_criados_para_9c4a06),
                 (Modifier.fillMaxWidth().padding(top = 40.dp)).uiId("home.0014"),
-                color = CaixaDSColorTokens.NotificationText,
+                color = LoteriasCaixaDSColorTokens.NotificationText,
                 style = homeLegacyTextStyle(13.8.sp),
                 textAlign = TextAlign.Center
             )

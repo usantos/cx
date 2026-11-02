@@ -18,7 +18,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
@@ -243,7 +243,7 @@ class BettingUncoveredPagesUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { content() } }
+        compose.setContent { LoteriasCaixaDSTheme { content() } }
     }
     private fun amountState() = RapidConfigurationUiState(
         minimumAmount = BigDecimal.TEN,

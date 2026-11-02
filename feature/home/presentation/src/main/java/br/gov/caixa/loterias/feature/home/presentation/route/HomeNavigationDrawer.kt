@@ -5,15 +5,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSModalNavigationDrawer as ModalNavigationDrawer
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSModalNavigationDrawer as ModalNavigationDrawer
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.domain.configuration.model.CampaignArea
 import br.gov.caixa.loterias.feature.home.presentation.components.HomeDrawer
 
@@ -41,7 +39,7 @@ internal fun HomeNavigationDrawer(
                 if (drawerState.isOpen) {
                     // Preserva o recuo branco da navegação; o hospedeiro do aplicativo pinta a barra de status azul.
                     drawRect(
-                        color = CaixaDSColorTokens.White,
+                        color = LoteriasCaixaDSColorTokens.White,
                         topLeft = Offset(0f, size.height - navigationBarInset),
                         size = Size(size.width, navigationBarInset)
                     )
@@ -49,7 +47,7 @@ internal fun HomeNavigationDrawer(
             }
             ).uiId("home.0110"),
         drawerState = drawerState,
-        scrimColor = CaixaDSColorTokens.HomeDrawerScrim,
+        scrimColor = LoteriasCaixaDSColorTokens.HomeDrawerScrim,
         drawerContent = {
             HomeDrawer(
                 preferenceState = preferenceState,

@@ -23,8 +23,8 @@ import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
@@ -164,12 +164,12 @@ class HomeGraphFlowUiTest {
             }
             val actions = remember { AppNavigationActions({ decision, _ -> entries.add(decision) }, {}, {}, {}, {}, {}) }
             CompositionLocalProvider(LocalHomeRuntimeConfiguration provides HomeRuntimeConfiguration(!classicHome, "test", now)) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     NavHost(nav, startDestination = "home") {
                         homeGraph(dependencies, nav, navigation, session, actions)
-                        composable("betting/favorites") { CaixaDSText("FAVORITES FIXTURE") }
-                        composable("betting/rapid") { CaixaDSText("RAPID FIXTURE") }
-                        composable("tickets/my-bets") { CaixaDSText("HISTORY FIXTURE") }
+                        composable("betting/favorites") { LoteriasCaixaDSText("FAVORITES FIXTURE") }
+                        composable("betting/rapid") { LoteriasCaixaDSText("RAPID FIXTURE") }
+                        composable("tickets/my-bets") { LoteriasCaixaDSText("HISTORY FIXTURE") }
                     }
                 }
             }

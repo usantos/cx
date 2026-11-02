@@ -4,12 +4,12 @@ import br.gov.caixa.loterias.feature.home.presentation.formatting.localizedMessa
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSLotteryArtwork
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSLotteryArtwork
 import br.gov.caixa.loterias.core.designsystem.tokens.CxHomeV2Colors
-import br.gov.caixa.loterias.core.designsystem.theme.LocalCaixaDSMegaSenaCampaign
-import br.gov.caixa.loterias.core.designsystem.artwork.caixaDSCampaignDrawable
-import br.gov.caixa.loterias.core.designsystem.tokens.resolveCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.theme.LocalLoteriasCaixaDSMegaSenaCampaign
+import br.gov.caixa.loterias.core.designsystem.artwork.loteriasCaixaDSCampaignDrawable
+import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeV2Presentation
 import br.gov.caixa.loterias.feature.home.R
@@ -43,9 +43,9 @@ fun HomeV2Presentation.name(type: HomeV2Modality): String = when (type) {
 }
 
 @Composable internal fun HomeV2Presentation.colors(type: HomeV2Modality): List<Color> {
-    val campaign = LocalCaixaDSMegaSenaCampaign.current
-    if (type == HomeV2Modality.MEGA_SENA && campaign != CaixaDSCampaign.DEFAULT) {
-        val style = resolveCaixaDSLotteryStyle(2, "", campaign)
+    val campaign = LocalLoteriasCaixaDSMegaSenaCampaign.current
+    if (type == HomeV2Modality.MEGA_SENA && campaign != LoteriasCaixaDSCampaign.DEFAULT) {
+        val style = resolveLoteriasCaixaDSLotteryStyle(2, "", campaign)
         return listOf(style.light, style.dark)
     }
     return when (type) {
@@ -63,7 +63,7 @@ fun HomeV2Presentation.name(type: HomeV2Modality): String = when (type) {
 
 @Composable internal fun HomeV2Presentation.icon(type: HomeV2Modality): Int {
     if (type == HomeV2Modality.MEGA_SENA) {
-        caixaDSCampaignDrawable(2, "", CaixaDSLotteryArtwork.CLOVER_ON_LIGHT)?.let { return it }
+        loteriasCaixaDSCampaignDrawable(2, "", LoteriasCaixaDSLotteryArtwork.CLOVER_ON_LIGHT)?.let { return it }
     }
     return when (type) {
         HomeV2Modality.MEGA_SENA -> R.drawable.trevo_megasena_fundo_branco

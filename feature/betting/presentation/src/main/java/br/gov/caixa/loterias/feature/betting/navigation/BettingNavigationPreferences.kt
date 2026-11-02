@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingNavigationPreferencesState
@@ -52,7 +52,7 @@ internal fun navigationShakeEnabled(
 @Composable
 internal fun NavigationPreferenceFailureDialog(state: BettingNavigationPreferencesState, onRetry: () -> Unit, onBack: () -> Unit) {
     val failure = state.failure ?: return
-    CaixaDSDialog(
+    LoteriasCaixaDSDialog(
         title = stringResource(R.string.ui_atencao_b0f8a4),
         message = stringResource(
             if (failure == NavigationPreferenceFailure.READ) {

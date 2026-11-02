@@ -38,7 +38,7 @@ def main():
         ('duplicate-source', 'feature/account/presentation/build.gradle', "\nandroid.sourceSets.main.java.srcDir('../data/src/main/kotlin')\n", True, 'verifyFeatureModules', 'fontes externas'),
         ('cycle', 'feature/cart/api/build.gradle', "\ndependencies { api project(':feature:betting:domain') }\n", True, 'verifyFeatureModules', 'Module dependency cycle'),
         ('app-dependency', 'feature/marketplace-filter/presentation/build.gradle', "\ndependencies { implementation project(':app') }\n", True, 'verifyFeatureModules', 'production dependency on application'),
-        ('shared-navigation-color', 'core/navigation/src/main/java/br/gov/caixa/loterias/core/navigation/ArchitectureFixture20261019.kt', 'package br.gov.caixa.loterias.core.navigation\nfun unwantedColor() = androidx.compose.ui.graphics.Color(0xFF112233)\n', False, 'verifyCaixaDS', 'Cores literais'),
+        ('shared-navigation-color', 'core/navigation/src/main/java/br/gov/caixa/loterias/core/navigation/ArchitectureFixture20261019.kt', 'package br.gov.caixa.loterias.core.navigation\nfun unwantedColor() = androidx.compose.ui.graphics.Color(0xFF112233)\n', False, 'verifyLoteriasCaixaDS', 'Cores literais'),
         ('feature-controller', presentation, 'package br.gov.caixa.loterias.feature.support.presentation.components\nclass ArchitectureFixtureActivity\n', False, 'verifyComposeMigration', 'Activities/Fragments de feature'),
         ('nested-java', 'feature/cart/transport/src/main/java/ArchitectureFixture20261019.java', 'class ArchitectureFixture20261019 {}\n', False, 'verifyComposeMigration', 'usar Kotlin'),
         ('xml-layout', 'feature/home/presentation/src/main/res/layout/architecture_fixture_20261019.xml', '<LinearLayout/>\n', False, 'verifyComposeMigration', 'XML não permitido'),
@@ -55,7 +55,7 @@ def main():
         results.append({'fixture': name, 'gate': task, 'exit': result.returncode, 'diagnostic': expected, 'restored': True})
         print(name + ': rejected and restored', flush=True)
     with (args.output / 'restored-baseline.log').open('w') as stream:
-        result = subprocess.run(['./gradlew', 'verifyCleanArchitecture', 'verifyCaixaDS', 'verifyComposeMigration', '--offline', '--console=plain'], cwd=root,
+        result = subprocess.run(['./gradlew', 'verifyCleanArchitecture', 'verifyLoteriasCaixaDS', 'verifyComposeMigration', '--offline', '--console=plain'], cwd=root,
                                 env=os.environ.copy(), stdout=stream, stderr=subprocess.STDOUT)
     assert result.returncode == 0, 'Restored baseline did not pass; inspect restored-baseline.log'
     (args.output / 'results.json').write_text(json.dumps(results, indent=2) + '\n')

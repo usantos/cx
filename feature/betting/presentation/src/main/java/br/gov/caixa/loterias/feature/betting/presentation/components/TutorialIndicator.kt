@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 @Composable
 internal fun TutorialIndicator(
@@ -19,7 +19,7 @@ internal fun TutorialIndicator(
     selectedPage: Int,
     selectedColor: Color,
     modifier: Modifier = Modifier,
-    unselectedColor: Color = CaixaDSColorTokens.TutorialIndicatorOutline,
+    unselectedColor: Color = LoteriasCaixaDSColorTokens.TutorialIndicatorOutline,
 ) {
     Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         repeat(pageCount) { index ->

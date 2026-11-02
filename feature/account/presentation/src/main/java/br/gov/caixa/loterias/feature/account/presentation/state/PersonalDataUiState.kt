@@ -9,6 +9,7 @@ data class PersonalDataUiState(
     val awaitingInitialProfile: Boolean = false,
     val saving: Boolean = false,
     val saved: Boolean = false,
+    val completionConsumed: Boolean = false,
     val cpf: String = "",
     val name: String = "",
     val email: String = "",

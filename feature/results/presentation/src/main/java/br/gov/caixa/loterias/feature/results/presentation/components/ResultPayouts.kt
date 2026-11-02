@@ -13,8 +13,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.results.R as LocalizedR
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.presentation.mapper.resultMoney
@@ -27,7 +27,7 @@ import br.gov.caixa.loterias.feature.results.presentation.mapper.spokenResultMon
 internal fun ResultPayouts(
     result: DrawResult,
     modality: String,
-    style: CaixaDSLotteryStyle,
+    style: LoteriasCaixaDSLotteryStyle,
     payoutStyle: TextStyle,
     gap16: Dp,
     gap18: Dp,

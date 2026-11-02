@@ -9,7 +9,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.core.net.toUri
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.support.R as LocalizedR
 
 internal fun supportAnswerText(answer: String, linkColor: Color): AnnotatedString {
@@ -34,7 +34,7 @@ internal fun supportAnswerText(answer: String, linkColor: Color): AnnotatedStrin
 @Composable
 internal fun SupportAnswerLinkDialog(url: String, context: Context, onDismiss: () -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSDialog(
+    LoteriasCaixaDSDialog(
         title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
         message = uiStrings.getString(LocalizedR.string.ui_voce_sera_direcionado_para_a_web_des_022470),
         positiveLabel = uiStrings.getString(LocalizedR.string.ui_confirmar_717bed),

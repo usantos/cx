@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.CART_LOCATION_BLOCKED
@@ -60,7 +60,7 @@ internal fun CartLocationDialogs(state: CartUiState, viewModel: CartViewModel, o
         CheckoutLocationStatus.PERMISSION_REQUIRED,
         CheckoutLocationStatus.PERMISSION_SETTINGS_REQUIRED,
         CheckoutLocationStatus.PROVIDER_DISABLED,
-        -> CaixaDSDialog(
+        -> LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = CART_LOCATION_CONSENT,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_sim_931345),
@@ -70,7 +70,7 @@ internal fun CartLocationDialogs(state: CartUiState, viewModel: CartViewModel, o
             onDismiss = {}
         )
 
-        CheckoutLocationStatus.OUTSIDE_BRAZIL, CheckoutLocationStatus.UNAVAILABLE -> CaixaDSDialog(
+        CheckoutLocationStatus.OUTSIDE_BRAZIL, CheckoutLocationStatus.UNAVAILABLE -> LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = CART_LOCATION_BLOCKED,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),

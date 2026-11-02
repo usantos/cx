@@ -12,8 +12,8 @@ import br.gov.caixa.loterias.apostas.navigation.session.AppSessionDependencies
 import br.gov.caixa.loterias.apostas.theme.campaign.AppCampaignDependencies
 import br.gov.caixa.loterias.apostas.theme.campaign.ApplicationCampaignTheme
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBar
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.navigation.AccountEnvironmentDependencies
 
 @Composable
@@ -29,9 +29,9 @@ internal fun AppContent(
 ) {
     // O aplicativo legado possui identidade exclusivamente clara. Manter a paleta
     // estável também evita que cards brancos recebam textos do tema escuro do sistema.
-    CaixaDSTheme(darkTheme = false) {
+    LoteriasCaixaDSTheme(darkTheme = false) {
         ApplicationCampaignTheme(campaign) {
-            CaixaDSStatusBar {
+            LoteriasCaixaDSStatusBar {
                 val recoveryViewModel = viewModel(key = "session-cleanup-recovery") {
                     br.gov.caixa.loterias.feature.account.presentation.viewmodel.SessionRecoveryViewModel(
                         session.account.resumeLocalSessionCleanup,

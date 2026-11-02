@@ -1,5 +1,9 @@
 # ReduxKotlin com MVVM em todas as features
 
+## Revisão por proprietário em 02/11/2026
+
+A revisão dos 46 ViewModels de features e dos dois de Core está documentada em [MVVM_REVIEW_20261102.md](architecture/MVVM_REVIEW_20261102.md). As correções distinguem sucesso de navegação consumida, preservam o proprietário de escritas durante Back e correlacionam respostas à consulta/seleção vigente. Formulários vinculam suas escritas à sessão capturada antes de agendar IO; sessão substituída não é uma falha que autoriza logout da sessão nova. A evidência de execução pertence à rodada datada, sem herdar a aprovação dos registros históricos abaixo.
+
 ## Contrato revisto em 28/10/2026
 
 O inventário atual contém **46 ViewModels de features, 45 com Redux e 72 arquivos de reducers**. Support usa o binding delegado da ponte compartilhada; AccountStatus continua dedicado a efeitos. A auditoria completa, os achados e as evidências estão em [FULL_AUDIT_20261028.md](architecture/FULL_AUDIT_20261028.md). As contagens e aprovações das rodadas datadas abaixo são históricas.
@@ -99,6 +103,6 @@ Validação das correções: allUnitTests aprovou 3.223 casos nos 68 módulos, s
 
 ## Verificação automática do contrato - pre-commit de 28/10/2026
 
-O hook nativo e o CI versionado usam `scripts/validate-pre-commit.py` e a tarefa `preCommitCheck`. Os gates de camadas, propriedade de fontes, grafo sem ciclos, App/Feature, Compose e CaixaDS são exigidos junto de Ktlint, Detekt, Lint, testes frescos, cobertura e contratos de plataforma. As fixtures XML operam em cópias temporárias. Divergências entre workspace e index ou falhas mantêm o commit bloqueado.
+O hook nativo e o CI versionado usam `scripts/validate-pre-commit.py` e a tarefa `preCommitCheck`. Os gates de camadas, propriedade de fontes, grafo sem ciclos, App/Feature, Compose e LoteriasCaixaDS são exigidos junto de Ktlint, Detekt, Lint, testes frescos, cobertura e contratos de plataforma. As fixtures XML operam em cópias temporárias. Divergências entre workspace e index ou falhas mantêm o commit bloqueado.
 
 A última execução completa aprovou 3.510 testes Android/JVM e JaCoCo LINE 95,11%, mas reprovou em Ktlint global; não é aprovação integral. Headers/baselines permanecem intactos. [Novidades e resultados](UPDATES_20261028.md) e [instalação/limites do pre-commit](quality/hooks-and-ci.md) discriminam a evidência e a proteção remota ainda dependente de configuração.

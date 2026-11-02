@@ -26,7 +26,7 @@ import androidx.compose.ui.test.swipe
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.notifications.domain.model.AppNotification
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationCategory
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationPreference
@@ -232,7 +232,7 @@ class NotificationCoordinationTest {
             }
         }
         CompositionLocalProvider(LocalContext provides capture) {
-            CaixaDSTheme(darkTheme = false) { NotificationsRoute(route, model, onBack, onHelp) }
+            LoteriasCaixaDSTheme(darkTheme = false) { NotificationsRoute(route, model, onBack, onHelp) }
         }
     }
 

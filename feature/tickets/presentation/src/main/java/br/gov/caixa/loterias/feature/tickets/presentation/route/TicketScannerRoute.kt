@@ -11,14 +11,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
 import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketScanOrientation
@@ -58,7 +57,7 @@ fun TicketScannerRoute(viewModel: TicketsViewModel, onBack: () -> Unit, onManual
         }
     )
     state.errorMessage?.let {
-        CaixaDSAlertDialog(
+        LoteriasCaixaDSAlertDialog(
             uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             it,
             stringResource(LocalizedR.string.ui_entendi_9f9373),

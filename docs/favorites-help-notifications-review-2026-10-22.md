@@ -32,6 +32,6 @@ Comparadas com `content_lista_msgpush.xml`, `item_msg_push_swipebuttons.xml`, `s
 - APK PRD compilado com backend real, Home clássica e logging/Chucker desabilitados.
 - 321 testes unitários passaram: cart/data 58; betting/data 40; cart/presentation 108; tickets/presentation 75; support/presentation 17; notifications/presentation 23.
 - 19 testes de interface passaram no emulador: notificações 10, ajuda/suporte 3, detalhe da aposta/favoritos 6. Logs `/tmp/simlo-{notifications,support,tickets}-favorites-layout-ui.log`.
-- `verifyCaixaDS`, `verifyKotlinFormatting`, `verifyCleanArchitecture` e `verifyLegacyBackendParity` passaram.
+- `verifyLoteriasCaixaDS`, `verifyKotlinFormatting`, `verifyCleanArchitecture` e `verifyLegacyBackendParity` passaram.
 - Log: `/tmp/simlo-favorites-review-final.log`.
 - Nenhuma aposta, pagamento, reserva ou favorito real foi criado por esta validação.

@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
@@ -38,7 +38,9 @@ class MarketplaceDetailParityUiTest {
 
     @Test fun nativeHeaderPrizeAndDetailAmountsNeverExposeBackendEnumOrDecimalStrings() {
         compose.setContent {
-            CaixaDSTheme { MarketplaceDetailScreen(MarketplaceDetailUiState(detail = detail(), isLoading = false), {}, {}, {}, {}, {}) }
+            LoteriasCaixaDSTheme {
+                MarketplaceDetailScreen(MarketplaceDetailUiState(detail = detail(), isLoading = false), {}, {}, {}, {}, {})
+            }
         }
         compose.onNodeWithText("mega-sena").assertIsDisplayed()
         compose.onNodeWithText("3070").assertIsDisplayed()
@@ -54,7 +56,9 @@ class MarketplaceDetailParityUiTest {
 
     @Test fun nativeNumberGridHasSixColumnsAndPurchasePanelStaysVisibleAfterScrolling() {
         compose.setContent {
-            CaixaDSTheme { MarketplaceDetailScreen(MarketplaceDetailUiState(detail = detail(), isLoading = false), {}, {}, {}, {}, {}) }
+            LoteriasCaixaDSTheme {
+                MarketplaceDetailScreen(MarketplaceDetailUiState(detail = detail(), isLoading = false), {}, {}, {}, {}, {})
+            }
         }
         val panelBefore = compose.onNodeWithTag("pool-detail-purchase-panel").fetchSemanticsNode().boundsInRoot
         compose.onNodeWithText("Jogo 1").performScrollTo().assertIsDisplayed()
@@ -102,7 +106,7 @@ class MarketplaceDetailParityUiTest {
             },
             FixedCoroutineDispatchers(Dispatchers.Main.immediate)
         )
-        compose.setContent { CaixaDSTheme { MarketplaceDetailRoute(model, {}, { confirmation = it }) } }
+        compose.setContent { LoteriasCaixaDSTheme { MarketplaceDetailRoute(model, {}, { confirmation = it }) } }
         compose.onNodeWithContentDescription("Aumentar cotas").performClick()
         compose.onNodeWithContentDescription("Diminuir cotas").performClick()
         compose.onNodeWithContentDescription("Aumentar cotas").performClick()
@@ -133,7 +137,7 @@ class MarketplaceDetailParityUiTest {
             },
             initialFavorite = false
         )
-        compose.setContent { CaixaDSTheme { MarketplaceDetailRoute(model, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { MarketplaceDetailRoute(model, {}, {}) } }
         compose.onNodeWithContentDescription("Favoritar lotérica").performClick()
         compose.onNodeWithText("Deseja incluir Lotérica Nazaré na sua lista de favoritas?").assertIsDisplayed()
         compose.runOnIdle { assertEquals(0, favoriteWrites) }

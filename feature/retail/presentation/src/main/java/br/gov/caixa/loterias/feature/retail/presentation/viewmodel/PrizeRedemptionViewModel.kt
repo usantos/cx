@@ -78,21 +78,21 @@ class PrizeRedemptionViewModel(
         dispatchers,
         generateLotteryCode,
         timer,
-        notices::interactionBlocked,
+        ::interactionBlocked,
         ::fail
     )
     private val pix = PrizePixChannel(
         betId, mutableState, viewModelScope, dispatchers, consultPixKey, cancelPix,
-        submission::submit, ::returnToOptions, notices::interactionBlocked, ::fail
+        submission::submit, ::returnToOptions, ::interactionBlocked, ::fail
     )
-    private val mercadoPago = PrizeMercadoPagoChannel(mutableState, notices::interactionBlocked, submission::submit)
+    private val mercadoPago = PrizeMercadoPagoChannel(mutableState, ::interactionBlocked, submission::submit)
     private val receiptDownloads = PrizeRedemptionReceipts(
         betId, mutableState, viewModelScope, dispatchers, mutableReceipts,
-        receiptUseCases.downloadBetReceipt, receiptUseCases.downloadPrizeReceipt, notices::interactionBlocked, ::fail
+        receiptUseCases.downloadBetReceipt, receiptUseCases.downloadPrizeReceipt, ::interactionBlocked, ::fail
     )
     private val coordinator = PrizeRedemptionCoordinator(
         betId, mutableState, viewModelScope, dispatchers, getDetails,
-        getBettingParameters, prepareBetEntry, notices::interactionBlocked, ::fail
+        getBettingParameters, prepareBetEntry, ::interactionBlocked, ::fail
     )
 
     init {
@@ -108,7 +108,7 @@ class PrizeRedemptionViewModel(
     fun consumeBetEntryDecision() = mutableState.dispatch(PrizeRedemptionStateAction.BetEntryConsumed)
 
     fun select(channel: PrizeRedemptionChannel) {
-        if (state.value.loading || notices.interactionBlocked() ||
+        if (state.value.loading || interactionBlocked() ||
             state.value.details?.options?.none { it.channel == channel } != false
         ) {
             return
@@ -124,7 +124,7 @@ class PrizeRedemptionViewModel(
 
     /** Retorna true quando o hospedeiro de navegação deve sair do fluxo. */
     fun back(): Boolean {
-        if (notices.interactionBlocked() || (state.value.loading && state.value.stage == PrizeRedemptionStage.MERCADO_PAGO)) return false
+        if (interactionBlocked() || (state.value.loading && state.value.stage == PrizeRedemptionStage.MERCADO_PAGO)) return false
         val stage = state.value.stage
         return when {
             stage != PrizeRedemptionStage.OPTIONS && stage != PrizeRedemptionStage.LOADING -> {
@@ -179,6 +179,8 @@ class PrizeRedemptionViewModel(
     fun consumeRegistrationNotice(expected: PrizeRegistrationNotice): String? = notices.consumeRegistrationNotice(expected)
 
     fun registrationFinished() = notices.registrationFinished()
+
+    private fun interactionBlocked(): Boolean = submission.inProgress || notices.interactionBlocked()
 
     private fun returnToOptions() {
         timer.cancel()

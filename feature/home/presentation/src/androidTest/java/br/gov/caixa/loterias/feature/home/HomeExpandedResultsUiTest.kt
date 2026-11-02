@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeDrawResult
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
@@ -32,7 +32,7 @@ class HomeExpandedResultsUiTest {
 
     private fun show(result: DrawResult) {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Box(Modifier.size(280.dp, 300.dp).background(lottery.darkColor)) {
                     HomeDrawResult(result, lottery.copy(resultCode = result.modality), Modifier.fillMaxSize())
                 }

@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.unit.sp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
@@ -32,7 +32,7 @@ class CurrentCartFooterVisibilityTest {
         val empty = ShoppingCart(0, BigDecimal.ZERO, emptyList())
         val filled = empty.copy(items = listOf(CartItem(1, CartItemKind.INDIVIDUAL_BET, "Mega-Sena", "01 02 03 04 05 06", BigDecimal.ZERO)))
         val state = mutableStateOf<ShoppingCart?>(filled)
-        compose.setContent { CaixaDSTheme { CurrentCartFooter(state.value, true, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartFooter(state.value, true, {}, {}) } }
         compose.onNodeWithText("Ir para pagamento").assertIsDisplayed()
         compose.onNodeWithContentDescription("Carrinho").assertExists()
         compose.onNodeWithTag("cart-summary-divider").assertExists()
@@ -45,7 +45,7 @@ class CurrentCartFooterVisibilityTest {
     }
 
     @Test fun emptyMessageUsesNativeCaixaSemiboldTwelveSpAndIconSize() {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartContent(
                 br.gov.caixa.loterias.feature.cart.presentation.state.CartUiState(),
                 androidx.compose.foundation.layout.PaddingValues(), emptyList(), 0L, {}, {}, {},
@@ -56,7 +56,7 @@ class CurrentCartFooterVisibilityTest {
             androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult,
         ) { it(layouts) }
         val style = layouts.single().layoutInput.style
-        assertEquals(br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily, style.fontFamily)
+        assertEquals(br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily, style.fontFamily)
         val nativeTextPixels = with(compose.density) { 12.sp.toPx().roundToInt().toFloat() }
         assertEquals(nativeTextPixels, with(compose.density) { style.fontSize.toPx() }, 0.01f)
         assertEquals(androidx.compose.ui.text.font.FontWeight.SemiBold, style.fontWeight)
@@ -66,7 +66,7 @@ class CurrentCartFooterVisibilityTest {
     }
 
     private fun show(cart: ShoppingCart?) {
-        compose.setContent { CaixaDSTheme { CurrentCartFooter(cart, true, {}, { error("Empty checkout must not run") }) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartFooter(cart, true, {}, { error("Empty checkout must not run") }) } }
     }
 
     private fun assertEmptyFooter() {

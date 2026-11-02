@@ -16,17 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceListFooter
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceStyle
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCard as Card
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCardDefaults as CardDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceListFooter
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCard as Card
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCardDefaults as CardDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.marketplace.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.MarketplaceCarousel
@@ -52,7 +51,7 @@ internal fun MarketplacePoolsContent(
     MarketplacePaginationEffect(listState, state, onLoadMore)
     when {
         state.isLoading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color = CaixaDS.colors.primaryButton)
+            CircularProgressIndicator(color = LoteriasCaixaDS.colors.primaryButton)
         }
 
         state.errorMessage != null -> MarketplaceEmptyState(state.errorMessage)
@@ -68,7 +67,7 @@ internal fun MarketplacePoolsContent(
         else -> LazyColumn(
             modifier = (Modifier.fillMaxSize().legacyAutomationId("marketplace-pools-list")).uiId("pool.0113"),
             state = listState,
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = CaixaDSMarketplaceStyle.listBottomPadding)
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = LoteriasCaixaDSMarketplaceStyle.listBottomPadding)
         ) {
             item(key = "carousel") {
                 MarketplaceCarousel(state, onDecrease, onIncrease, onFavorite, onPoolSelected, onAddToCart)
@@ -97,7 +96,7 @@ internal fun MarketplacePoolsContent(
                 }
             }
             item {
-                CaixaDSMarketplaceListFooter(state.isLoadingMore, exhausted = !state.canLoadMore && state.errorMessage == null)
+                LoteriasCaixaDSMarketplaceListFooter(state.isLoadingMore, exhausted = !state.canLoadMore && state.errorMessage == null)
             }
         }
     }
@@ -109,7 +108,7 @@ internal fun MarketplaceEmptyState(message: String) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp).padding(top = 20.dp),
         shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = CaixaDSColorTokens.White),
+        colors = CardDefaults.cardColors(containerColor = LoteriasCaixaDSColorTokens.White),
         elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Column(
@@ -119,14 +118,14 @@ internal fun MarketplaceEmptyState(message: String) {
         ) {
             Text(
                 uiStrings.getString(LocalizedR.string.ui_ops_aaf6b8),
-                color = CaixaDSColorTokens.Blue700,
-                style = CaixaDSMarketplaceStyle.text(24, FontWeight.Bold),
+                color = LoteriasCaixaDSColorTokens.Blue700,
+                style = LoteriasCaixaDSMarketplaceStyle.text(24, FontWeight.Bold),
                 modifier = Modifier.uiId("pool.0114")
             )
             Text(
                 message,
-                color = CaixaDSColorTokens.Blue700,
-                style = CaixaDSMarketplaceStyle.text(16),
+                color = LoteriasCaixaDSColorTokens.Blue700,
+                style = LoteriasCaixaDSMarketplaceStyle.text(16),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.uiId("pool.0115")
             )

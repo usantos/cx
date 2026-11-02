@@ -16,9 +16,9 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.tokens.resolveCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketAward
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
@@ -42,7 +42,7 @@ import org.robolectric.annotation.Config
 @Config(sdk = [35], qualifiers = "w480dp-h900dp")
 class NativeBetDetailBranchesUiTest {
     @get:Rule val compose = createComposeRule()
-    private val style = resolveCaixaDSLotteryStyle(2, "Mega-Sena", CaixaDSCampaign.DEFAULT)
+    private val style = resolveLoteriasCaixaDSLotteryStyle(2, "Mega-Sena", LoteriasCaixaDSCampaign.DEFAULT)
 
     @Test fun headerUsesReceiptNetPrizeAndRecurringRangeInsteadOfOriginalPrize() {
         show {
@@ -99,7 +99,7 @@ class NativeBetDetailBranchesUiTest {
         val calls = mutableListOf<String>()
         val saved = mutableStateOf(false)
         show {
-            NativeBetDetailFooter(bet(), style, true, {
+            NativeBetDetailFooter(style, true, {
                 calls.add("edit")
             }, { calls.add("cart") }, { calls.add("add") }, { calls.add("favorite") }, saved.value, BigDecimal.TEN, 3)
         }
@@ -117,7 +117,7 @@ class NativeBetDetailBranchesUiTest {
 
     @Test fun footerWithoutRepeatRetainsOnlyCartAndReadOnlyRepeatControlsAreDisabled() {
         val repeat = mutableStateOf(false)
-        show { NativeBetDetailFooter(bet(), style, repeat.value, null, {}, null, {}, false, BigDecimal.ZERO, 0) }
+        show { NativeBetDetailFooter(style, repeat.value, null, {}, null, {}, false, BigDecimal.ZERO, 0) }
         compose.onNodeWithText("Editar aposta").assertDoesNotExist()
         compose.onNodeWithText("Favoritar aposta").assertDoesNotExist()
         compose.onNodeWithContentDescription("Carrinho de apostas, 0 itens").assertIsEnabled()
@@ -210,7 +210,7 @@ class NativeBetDetailBranchesUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { Column { content() } } }
+        compose.setContent { LoteriasCaixaDSTheme { Column { content() } } }
     }
     private fun bet() = ConfirmedBet(1, "Mega-Sena", 123, "22/10/2026", "Efetivada", listOf(1, 2), modalityId = 2)
     private fun result(contest: Int) =

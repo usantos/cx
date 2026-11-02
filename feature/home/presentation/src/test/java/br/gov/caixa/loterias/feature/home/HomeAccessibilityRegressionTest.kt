@@ -10,7 +10,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeDrawResult
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
@@ -41,7 +41,7 @@ class HomeAccessibilityRegressionTest {
         compose.setContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, 2f)) {
-                CaixaDSTheme { HomeDrawResult(result, lottery, Modifier) }
+                LoteriasCaixaDSTheme { HomeDrawResult(result, lottery, Modifier) }
             }
         }
         val layouts = mutableListOf<TextLayoutResult>()

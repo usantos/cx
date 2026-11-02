@@ -22,26 +22,29 @@ internal class TicketsHistoryPurchases(
     fun loadPurchases() {
         if (!isSessionCurrent()) return
         if (mutableState.value.isLoading) return
+        val generation = pagination.beginQuery()
         mutableState.dispatch(TicketsStateAction.PurchasesLoading)
         scope.launch(dispatchers.io) {
             if (!isSessionCurrent()) return@launch
             val monthsResult = getPurchaseMonths()
-            if (!isSessionCurrent()) return@launch
-            val months = when (val result = monthsResult) {
-                is AppResult.Success -> result.value
-                is AppResult.Failure -> return@launch fail(messageText("nao_foi_possivel_carregar_os_mes_526eac"))
+            pagination.ifCurrent(generation) {
+                when (monthsResult) {
+                    is AppResult.Success -> mutableState.dispatch(TicketsStateAction.PurchaseMonthsReceived(monthsResult.value))
+                    is AppResult.Failure -> fail(messageText("nao_foi_possivel_carregar_os_mes_526eac"))
+                }
             }
-
-            mutableState.dispatch(TicketsStateAction.PurchaseMonthsReceived(months))
-            pagination.loadPurchasesWith(mutableState.value.purchaseFilters, append = false)
+            if (monthsResult is AppResult.Success) {
+                pagination.loadPurchasesWith(mutableState.value.purchaseFilters, generation)
+            }
         }
     }
 
     fun reloadPurchases() {
-        if (mutableState.value.isLoading) return
+        if (!isSessionCurrent()) return
+        val generation = pagination.beginQuery()
         mutableState.dispatch(TicketsStateAction.PurchasesReloading)
         scope.launch(dispatchers.io) {
-            pagination.loadPurchasesWith(mutableState.value.purchaseFilters, append = false)
+            pagination.loadPurchasesWith(mutableState.value.purchaseFilters, generation)
         }
     }
 }

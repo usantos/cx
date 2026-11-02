@@ -15,6 +15,7 @@ sealed interface PersonalDataAction {
     data class GenderChanged(val gender: Gender) : PersonalDataAction
     data object NotificationsToggled : PersonalDataAction
     data object SubmitStarted : PersonalDataAction
+    data object CompletionConsumed : PersonalDataAction
     data object Submitted : PersonalDataAction
     data class SubmitFailed(val message: String) : PersonalDataAction
     data object ProfileLoadStarted : PersonalDataAction
@@ -31,7 +32,7 @@ sealed interface PersonalDataAction {
 fun reducePersonalDataState(state: PersonalDataUiState, action: PersonalDataAction): PersonalDataUiState = when (action) {
     PersonalDataAction.SubmitStarted -> state.copy(saving = true, errorMessage = null)
 
-    PersonalDataAction.Submitted -> state.copy(saving = false, saved = true)
+    PersonalDataAction.Submitted -> state.copy(saving = false, saved = true, completionConsumed = false)
 
     is PersonalDataAction.SubmitFailed -> state.copy(saving = false, errorMessage = action.message)
 
@@ -65,6 +66,8 @@ fun reducePersonalDataState(state: PersonalDataUiState, action: PersonalDataActi
 }
 
 private fun reducePersonalDataDraft(state: PersonalDataUiState, action: PersonalDataAction): PersonalDataUiState = when (action) {
+    PersonalDataAction.CompletionConsumed -> state.copy(completionConsumed = true)
+
     is PersonalDataAction.ZipCodeChanged -> state.copy(
         zipCode = action.zipCode,
         zipCodeRequestVersion = action.version,

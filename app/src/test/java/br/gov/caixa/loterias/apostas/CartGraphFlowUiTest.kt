@@ -17,8 +17,8 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
@@ -101,10 +101,10 @@ class CartGraphFlowUiTest {
                     else -> error("Unexpected session action $name")
                 }
             }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 NavHost(nav, startDestination = "origin") {
-                    composable("origin") { CaixaDSText("ORIGIN FIXTURE") }
-                    composable("home") { CaixaDSText("MODALIDADES FIXTURE") }
+                    composable("origin") { LoteriasCaixaDSText("ORIGIN FIXTURE") }
+                    composable("home") { LoteriasCaixaDSText("MODALIDADES FIXTURE") }
                     cartGraph(dependencies, nav, navigation, session)
                 }
             }

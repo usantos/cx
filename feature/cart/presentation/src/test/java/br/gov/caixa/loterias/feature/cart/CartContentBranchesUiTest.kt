@@ -18,7 +18,7 @@ import androidx.compose.ui.test.performScrollToIndex
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
@@ -294,7 +294,7 @@ class CartContentBranchesUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { content() } }
+        compose.setContent { LoteriasCaixaDSTheme { content() } }
     }
     private fun favorite() = FavoriteCartBet(1, "Mega-Sena", listOf(1, 2, 3), modalityId = 2)
     private fun item() = CartItem(1, CartItemKind.INDIVIDUAL_BET, "Mega-Sena", "Descrição do jogo", BigDecimal.TEN, "megasena", 123)
@@ -325,7 +325,7 @@ class CartContentBranchesUiTest {
                     dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate)
                 )
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 CurrentCartRoute(
                     model,
                     onBack = {},

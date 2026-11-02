@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.web.CaixaDSWebPage
+import br.gov.caixa.loterias.core.designsystem.web.LoteriasCaixaDSWebPage
 
 internal val webPreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.web.CaixaDSWebPage") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.web.LoteriasCaixaDSWebPage") { state ->
         with(state) {
-            CaixaDSWebPage(
+            LoteriasCaixaDSWebPage(
                 url = "file:///android_asset/catalog.html",
                 modifier = Modifier.fillMaxWidth().height(220.dp),
                 isUrlAllowed = { it.startsWith("file:///android_asset/") },

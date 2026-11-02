@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.feature.account
 
-import android.app.Activity
 import android.content.Intent
 import android.os.ParcelFileDescriptor
 import androidx.compose.ui.test.assertIsDisplayed
@@ -13,9 +12,9 @@ import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
 import br.gov.caixa.loterias.feature.account.presentation.route.LoginAuthorization
 import br.gov.caixa.loterias.feature.account.presentation.route.rememberLoginAuthorization
@@ -66,7 +65,7 @@ class LoginBrowserReturnTest {
         lateinit var controller: LoginAuthorization
         try {
             compose.setContent {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     controller = rememberLoginAuthorization(
                         model,
                         auth,
@@ -77,9 +76,9 @@ class LoginBrowserReturnTest {
                         null
                     )
                     if (controller.offline) {
-                        CaixaDSText("OFFLINE LOGIN")
+                        LoteriasCaixaDSText("OFFLINE LOGIN")
                     } else {
-                        CaixaDSButton(onClick = controller.authorize) { CaixaDSText("BROWSER LOGIN") }
+                        LoteriasCaixaDSButton(onClick = controller.authorize) { LoteriasCaixaDSText("BROWSER LOGIN") }
                     }
                 }
             }

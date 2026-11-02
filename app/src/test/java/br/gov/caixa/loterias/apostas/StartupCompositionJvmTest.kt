@@ -22,7 +22,7 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParametersUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.IsVersionSupportedUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.PrepareNetworkSecurityUseCase
@@ -53,7 +53,7 @@ class StartupCompositionJvmTest {
         val state = mutableStateOf(StartupState.WAITING_QUEUE)
         var retries = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 StartupGateContent(state.value, {
                     retries++
                     state.value = StartupState.CHECKING
@@ -83,7 +83,7 @@ class StartupCompositionJvmTest {
             }
         )
         compose.setContent {
-            CaixaDSTheme { FilaBraInitialization(dependencies) { Text("Security prepared") } }
+            LoteriasCaixaDSTheme { FilaBraInitialization(dependencies) { Text("Security prepared") } }
         }
         compose.onNodeWithText("Security prepared").assertDoesNotExist()
         compose.onNodeWithText("Tentar novamente").performClick()
@@ -117,7 +117,9 @@ class StartupCompositionJvmTest {
             inactive(), inactive(), inactive(), inactive(), inactive(), inactive(), inactive()
         )
         val session = AppSessionDependencies(inactive(), ForegroundSessionBackgroundState(), Clock.systemUTC())
-        compose.setContent { CaixaDSTheme { MockBackendAppGate(dependencies, features, session, minimumSplashElapsed = false, {}) } }
+        compose.setContent {
+            LoteriasCaixaDSTheme { MockBackendAppGate(dependencies, features, session, minimumSplashElapsed = false, {}) }
+        }
         compose.onNodeWithText("Atualizar").assertIsDisplayed()
         compose.runOnIdle {
             assertEquals(1, versions)
@@ -129,7 +131,7 @@ class StartupCompositionJvmTest {
     fun startupGateCanStartFromAnExplicitUpdateRequirementWithoutRetryingBusinessServices() {
         var retries = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 StartupGateContent(StartupState.WAITING_QUEUE, {
                     retries++
                 }, network, StartupStatusKind.UPDATE_REQUIRED) { Text("Unexpected ready") }
@@ -163,7 +165,7 @@ class StartupCompositionJvmTest {
         )
         val session = AppSessionDependencies(inactive(), ForegroundSessionBackgroundState(), Clock.systemUTC())
         compose.setContent {
-            CaixaDSTheme { MockBackendAppGate(dependencies, features, session, minimumSplashElapsed = false, {}) }
+            LoteriasCaixaDSTheme { MockBackendAppGate(dependencies, features, session, minimumSplashElapsed = false, {}) }
         }
         compose.onNodeWithContentDescription("Logo Loterias CAIXA").assertExists()
         compose.onNodeWithText("Atualizar").assertDoesNotExist()

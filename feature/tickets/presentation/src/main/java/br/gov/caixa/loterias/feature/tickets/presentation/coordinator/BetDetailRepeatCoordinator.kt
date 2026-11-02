@@ -14,7 +14,11 @@ import br.gov.caixa.loterias.feature.tickets.presentation.mapper.toRepeatDraft
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.toRepeatOption
 import br.gov.caixa.loterias.feature.tickets.presentation.state.BetDetailStateAction
 import br.gov.caixa.loterias.feature.tickets.presentation.state.BetDetailUiState
+import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 
 internal class BetDetailRepeatCoordinator(
@@ -22,50 +26,92 @@ internal class BetDetailRepeatCoordinator(
     private val scope: CoroutineScope,
     private val dispatchers: CoroutineDispatchers,
     private val addBetToCart: AddBetToCartUseCase,
-    private val getBettingParameters: GetBettingParametersUseCase?
+    private val getBettingParameters: GetBettingParametersUseCase?,
 ) {
     fun dismissCartAddition() = mutableState.dispatch(BetDetailStateAction.CartAdditionDismissed)
 
-    fun addCurrentBetToCart() = scope.launch(dispatchers.io) {
-        if (!mutableState.value.detailsReady) return@launch
+    private enum class RepeatPhase { IDLE, LOADING, CONTEST, CONVERSION, SUBMITTING }
+
+    private val phase = AtomicReference(RepeatPhase.IDLE)
+
+    @Synchronized
+    fun addCurrentBetToCart(): Job {
+        if (!mutableState.value.detailsReady || !phase.compareAndSet(RepeatPhase.IDLE, RepeatPhase.LOADING)) return completedOperation()
         val bet = mutableState.value.bet
+        return scope.launch(dispatchers.io) {
+            var awaitingConfirmation = false
+            try {
+                awaitingConfirmation = prepareRepeat(bet)
+            } finally {
+                if (!awaitingConfirmation) phase.set(RepeatPhase.IDLE)
+            }
+        }
+    }
+
+    private suspend fun prepareRepeat(bet: ConfirmedBet): Boolean {
         val hasSelection = bet.numbers.isNotEmpty() || bet.numberColumns.any(List<Int>::isNotEmpty) ||
             bet.lotecaSelections.isNotEmpty() || bet.lotogolSelections.isNotEmpty() || bet.surprise
         if (bet.modalityId <= 0 || !hasSelection) {
             mutableState.dispatch(BetDetailStateAction.RepeatSelectionMissing())
-            return@launch
+            return false
         }
         mutableState.dispatch(BetDetailStateAction.RepeatLoading)
         val parameters = getBettingParameters
         if (parameters == null) {
             submitRepeat(bet, bet.contestType())
-            return@launch
+            return false
         }
-        when (val result = parameters()) {
-            is AppResult.Failure -> mutableState.dispatch(BetDetailStateAction.RepeatParametersFailed(result.error.toCartMessage()))
+        val result = parameters()
+        currentCoroutineContext().ensureActive()
+        return when (result) {
+            is AppResult.Failure -> {
+                mutableState.dispatch(BetDetailStateAction.RepeatParametersFailed(result.error.toCartMessage()))
+                false
+            }
+
             is AppResult.Success -> resolveRepeatContest(bet, result.value.games)
         }
     }
 
     fun selectRepeatContest(index: Int) = mutableState.dispatch(BetDetailStateAction.RepeatContestSelected(index))
 
-    fun confirmRepeatContest() = scope.launch(dispatchers.io) {
+    @Synchronized
+    fun confirmRepeatContest(): Job {
         val current = mutableState.value
-        val option = current.repeatContestOptions.getOrNull(current.selectedRepeatContestIndex) ?: return@launch
+        val option = current.repeatContestOptions.getOrNull(current.selectedRepeatContestIndex) ?: return completedOperation()
+        if (!phase.compareAndSet(RepeatPhase.CONTEST, RepeatPhase.SUBMITTING)) return completedOperation()
         mutableState.dispatch(BetDetailStateAction.RepeatContestConfirmed)
-        submitRepeat(current.bet, option.contestType)
+        return launchSubmission(current.bet, option.contestType)
     }
 
-    fun dismissRepeatContest() = mutableState.dispatch(BetDetailStateAction.RepeatContestDismissed)
+    @Synchronized
+    fun dismissRepeatContest() {
+        val current = phase.get()
+        if (current == RepeatPhase.LOADING || current == RepeatPhase.SUBMITTING) return
+        if (!phase.compareAndSet(current, RepeatPhase.IDLE)) return
+        mutableState.dispatch(BetDetailStateAction.RepeatContestDismissed)
+    }
 
-    fun confirmRepeatConversion() = scope.launch(dispatchers.io) {
+    @Synchronized
+    fun confirmRepeatConversion(): Job {
         val current = mutableState.value
-        val option = current.repeatConversion ?: return@launch
+        val option = current.repeatConversion ?: return completedOperation()
+        if (!phase.compareAndSet(RepeatPhase.CONVERSION, RepeatPhase.SUBMITTING)) return completedOperation()
         mutableState.dispatch(BetDetailStateAction.RepeatConversionConfirmed)
-        submitRepeat(current.bet, option.contestType)
+        return launchSubmission(current.bet, option.contestType)
     }
 
-    private suspend fun resolveRepeatContest(bet: ConfirmedBet, games: List<LotteryGameParameters>) {
+    private fun completedOperation(): Job = Job().apply { complete() }
+
+    private fun launchSubmission(bet: ConfirmedBet, contestType: String) = scope.launch(dispatchers.io) {
+        try {
+            submitRepeat(bet, contestType)
+        } finally {
+            phase.set(RepeatPhase.IDLE)
+        }
+    }
+
+    private suspend fun resolveRepeatContest(bet: ConfirmedBet, games: List<LotteryGameParameters>): Boolean {
         val available = games.filter { it.modality.id == bet.modalityId && it.open }
             .distinctBy { it.contestType.normalizedContestType() }
             .map { game -> game.toRepeatOption(bet) }
@@ -77,19 +123,29 @@ internal class BetDetailRepeatCoordinator(
                 if (option.contestType == bet.contestType()) {
                     submitRepeat(bet, option.contestType)
                 } else {
-                    mutableState.dispatch(BetDetailStateAction.RepeatConversionRequired(option))
+                    awaitConfirmation(RepeatPhase.CONVERSION, BetDetailStateAction.RepeatConversionRequired(option))
+                    return true
                 }
             }
 
             else -> {
                 val currentType = bet.contestType()
                 val selected = available.indexOfFirst { it.contestType == currentType }.coerceAtLeast(0)
-                mutableState.dispatch(BetDetailStateAction.RepeatContestsReceived(available, selected))
+                awaitConfirmation(RepeatPhase.CONTEST, BetDetailStateAction.RepeatContestsReceived(available, selected))
+                return true
             }
         }
+        return false
+    }
+
+    @Synchronized
+    private fun awaitConfirmation(next: RepeatPhase, action: BetDetailStateAction) {
+        phase.set(next)
+        mutableState.dispatch(action)
     }
 
     private suspend fun submitRepeat(bet: ConfirmedBet, contestType: String) {
+        currentCoroutineContext().ensureActive()
         val draft = bet.toRepeatDraft(contestType)
         when (val result = addBetToCart(draft)) {
             is AppResult.Success -> {

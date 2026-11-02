@@ -55,6 +55,7 @@ abstract class PrizeRedemptionTestFixture {
     protected var betPdfResult: AppResult<ByteArray> = AppResult.Success(byteArrayOf(1))
     protected var prizePdfResult: AppResult<ByteArray> = AppResult.Success(byteArrayOf(2))
     protected var redemption: Triple<Long, PrizeRedemptionChannel, String>? = null
+    protected var redemptionPending: kotlinx.coroutines.CompletableDeferred<Unit>? = null
     protected var redemptionCalls = 0
     protected var cancelCalls = 0
     protected var codeCalls = 0
@@ -89,6 +90,7 @@ abstract class PrizeRedemptionTestFixture {
         RedeemPrizeUseCase { id, channel, value ->
             redemptionCalls++
             redemption = Triple(id, channel, value)
+            redemptionPending?.await()
             redeemResult
         },
         CancelPixRedemptionUseCase {

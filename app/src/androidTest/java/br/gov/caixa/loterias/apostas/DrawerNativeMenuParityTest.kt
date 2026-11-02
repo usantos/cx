@@ -8,7 +8,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import br.gov.caixa.loterias.feature.home.presentation.components.HomeDrawer
 import org.junit.Assert.assertEquals
@@ -33,7 +33,7 @@ class DrawerNativeMenuParityTest {
         view.measure(View.MeasureSpec.makeMeasureSpec(width - (48 * density).toInt(), View.MeasureSpec.EXACTLY),
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             HomeDrawer(features = HomeFeatureConfiguration(), userName = null, environmentLabel = null, onOpen = {}, onLogout = {}, onClose = {}, onExternalFailure = {})
         } }
         val row = compose.onNodeWithText("Minha área").fetchSemanticsNode().boundsInRoot

@@ -5,11 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import br.gov.caixa.loterias.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 
 @Composable
-internal fun SynchronizeIntroductionPager(pagerState: PagerState, viewModel: OnboardingViewModel) {
+internal fun SynchronizeIntroductionPager(pagerState: PagerState, onPageChanged: (Int) -> Unit) {
     LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.distinctUntilChanged().collect(viewModel::pageChanged)
+        snapshotFlow { pagerState.currentPage }.distinctUntilChanged().collect(onPageChanged)
     }
 }

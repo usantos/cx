@@ -85,3 +85,39 @@ Par físico v2: títulos, linhas introdutórias, campos52dp/margens, divisores e
 
 
 Par físico v3: `compose-personal-data-v3.png` confrontado com `legacy-personal-data.png`, restrito a regiões estáticas fora dos valores pessoais. As duas linhas introdutórias e labels CPF/CEP têm os mesmos limites de glyph em coordenadas raw. O preenchimento dos campos corresponde em toda a região uniforme amostrada (#F5F7F7), e o contorno vertical sem foco corresponde (#A4A4A4). Gênero e CTA apresentam diferença residual de até1px nos limites de glyph; o link CEP também difere1px no extremo esquerdo. Isso documenta o limite raster observado, sem mudar dimensões literais por aproximação. Estado de gênero selecionado e dados são distintos entre capturas, portanto não foram incluídos em comparação pixel a pixel. Campos inferiores, foco/erro, scroll e variantes ainda precisam capturas pareadas. Fonte estável; nenhuma mudança em validators/handlers nesta revisãov3. Não constitui certificação100%.
+
+## Ajuste de Meus Cartões — 01/11/2026
+
+Referências locais consultadas: `activity_apresentar_cartao.xml`,
+`activity_digitar_cvv.xml`, `activity_confirmar_cartao.xml`,
+`fragment_cartao_credito.xml`, `fragment_meus_cartoes.xml`, `row_meu_cartao.xml`,
+`ApresentarCartaoActivity` e `CartaoUtil` do CX. A captura fornecida pelo usuário
+é do app atual, não um oráculo de raster do legado.
+
+A altura fixa de 50dp do botão, combinada ao padding padrão Material, cortava o
+texto ampliado. O botão do DS agora usa mínimo 50dp, padding explícito e texto
+centralizado. A prévia permite rolagem, como o NestedScrollView original.
+A frente normal mantém corpo 200dp, margem 32dp e raio 25dp; em fonte ampliada os
+campos deixam de se sobrepor. CVV mantém 40×60dp em fonte normal e adapta as
+três/quatro células à largura e à fonte; a edição continua no callback existente.
+Lista de cartões, seções, frente/verso, entradas, seleção e ações usam componentes
+do DS. Número salvo usa a máscara `**** **** ****  ` seguida dos últimos dígitos,
+validade na prévia mantém mês com dois dígitos e nome não informado continua `-`, conforme
+o XML/controlador. Na lista, o mês segue numérico sem preenchimento, como
+`MeuCartaoHolder.bind` e o campo `Long` de `RetornoCartao` do legado. Bandeira não reconhecida usa a arte CVC em vez de texto
+inventado como logotipo.
+
+Não houve mudança de headers protegidos, baselines, serviços, autenticação,
+validação financeira ou DTOs. Os resultados e capturas controladas desta rodada
+ficam em `simlo-artifacts/2026-11-01/meus-cartoes-ds`, fora do Git.
+A rodada atual dos ajustes isolados passou: Ktlint, Detekt, Android Lint,
+arquitetura, LoteriasCaixaDS, IDs, contratos Compose e APKs TQS Debug/catálogo DS.
+Foram 3.608 testes, sem falhas, erros ou ignorados; LINE global 95,25%
+(58.124/61.023), sem exclusões. Os 44 arquivos protegidos mantiveram seus hashes.
+O projeto utiliza exclusivamente o DS original. Os APKs foram inspecionados
+em DEX, XML, recursos e metadados Kotlin para confirmar a retirada da interface
+alternativa. Restam somente os ajustes de cartões, componentes, exemplos, testes
+e esta documentação. O staging foi esvaziado; novos fontes não foram preparados
+automaticamente. O `preCommitCheck` completo exige preparar todos esses arquivos
+no Git e não foi executado nesta etapa.
+As capturas Native/Robolectric não certificam equivalência de raster no Samsung.

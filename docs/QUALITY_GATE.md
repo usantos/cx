@@ -67,7 +67,7 @@ sh scripts/install-git-hooks.sh
 
 `quickQualityCheck` executa Ktlint → Detekt → Lint; não executa testes nem cobertura.
 `qualityGate` acrescenta os testes unitários frescos e a verificação global de
-cobertura. O pre-commit e o CI usam `scripts/validate-pre-commit.py`, que chama `preCommitCheck` (incremental localmente quando seguro; completo no CI): acrescenta os gates de arquitetura/Compose/CaixaDS/contratos, testes dos scripts e do hook, fixtures XML isoladas, relatório agregado e APK PRD Debug. Testes/analisadores comuns são compartilhados no grafo, sem duplicar as mesmas tarefas. Falhas preservam o código de saída e bloqueiam o commit. Workspace e index precisam corresponder e permanecer estáveis durante a validação; nenhum arquivo é preparado automaticamente.
+cobertura. O pre-commit e o CI usam `scripts/validate-pre-commit.py`, que chama `preCommitCheck` (incremental localmente quando seguro; completo no CI): acrescenta os gates de arquitetura/Compose/LoteriasCaixaDS/contratos, testes dos scripts e do hook, fixtures XML isoladas, relatório agregado e APK PRD Debug. Testes/analisadores comuns são compartilhados no grafo, sem duplicar as mesmas tarefas. Falhas preservam o código de saída e bloqueiam o commit. Workspace e index precisam corresponder e permanecer estáveis durante a validação; nenhum arquivo é preparado automaticamente.
 
 Exclusões de tarefas (`-x`) são rejeitadas no gate e em `lintQualityCheck`,
 inclusive exclusões de análises internas do Lint. O resumo registra PASSED, FAILED ou NOT RUN; uma etapa não executada não é
@@ -430,7 +430,7 @@ fontes ignoradas, fontes preparadas, controle do Finder, os dois valores de
 
 O sample foi compilado e seus dez testes passaram numa cópia exportada somente
 do index com cache de build desativado (67 tarefas executadas). O APK dessa cópia
-foi aberto no emulador Android 36, incluindo o exemplo `CaixaDSFingerprintIcon`.
+foi aberto no emulador Android 36, incluindo o exemplo `LoteriasCaixaDSFingerprintIcon`.
 Essa evidência valida o conteúdo transferido pelo Git, sem alegar execução no
 Windows remoto. A aprovação integral continua dependente do pre-commit final.
 

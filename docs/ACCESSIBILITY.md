@@ -5,7 +5,7 @@
 
 ## Resultado histórico da auditoria integral
 
-allUnitTests: **3.325 aprovados / 0 falhos / 0 erros / 0 ignorados**, com XML frescos em 68 módulos. Lint, Detekt, gates de arquitetura/CaixaDS, APK PRD e compilações AndroidTest de App/DS/Retail aprovados. Ktlint: 155 arquivos alterados. Políticas: 184 testes Python + 11 hooks, todos aprovados.
+allUnitTests: **3.325 aprovados / 0 falhos / 0 erros / 0 ignorados**, com XML frescos em 68 módulos. Lint, Detekt, gates de arquitetura/LoteriasCaixaDS, APK PRD e compilações AndroidTest de App/DS/Retail aprovados. Ktlint: 155 arquivos alterados. Políticas: 184 testes Python + 11 hooks, todos aprovados.
 
 Emulador Android16: 19 casos instrumentados aprovados. Samsung: 26 verificações nas duas rodadas finais, 2 cenários de escala normal/200% e 1 conferência humana com TalkBack aprovados; carrinho 5 apostas/R$22 preservado. Fonte/TalkBack temporários restaurados. A matriz distingue estes escopos de uma certificação de conformidade, cobertura global, release/R8 e homologação autenticada/financeira, que não foram realizadas.
 
@@ -22,7 +22,7 @@ A View publica nomes, papéis, valores, seleção, erros e ações compatíveis 
 - **Campos:** nome estável também quando preenchidos; erro associado ao campo, mantendo edição, seleção e privacidade de senha. Não usar clearAndSetSemantics para apagar ações de entrada. Loading e disabled conservam estado próprio.
 - **Escolhas:** um dono de ação para linha/checkbox/radio; nome, papel e estado no mesmo alvo. Não duplicar callbacks no indicador filho. Tabs publicam seleção. Estado não depende apenas de cor.
 - **Resultados e apostas:** anunciar modalidade/contexto, coluna, acerto/erro e títulos das linhas de premiação. Elementos decorativos permanecem sem descrição duplicada.
-- **Links:** `AnnotatedString.withCaixaDSAccessibleLinks` aceita tags URL/url preservando intervalos e estilos; publica LinkAnnotation.Clickable e chama o callback existente. Confirmação e validação de destinos continuam na feature. HTML compartilhado rejeita abertura externa de esquemas inseguros.
+- **Links:** `AnnotatedString.withLoteriasCaixaDSAccessibleLinks` aceita tags URL/url preservando intervalos e estilos; publica LinkAnnotation.Clickable e chama o callback existente. Confirmação e validação de destinos continuam na feature. HTML compartilhado rejeita abertura externa de esquemas inseguros.
 - **Diálogos e navegação:** ações alcançáveis por rolagem em viewport curto/fonte grande; teclado/Enter acionam uma vez. Indicadores filhos decorativos não mantêm ação/foco próprios quando a linha já é o dono da escolha. A roda tem faixa finita, valor atual, SetProgress, ações anterior/próximo e setas; as cópias visuais de rolagem circular não multiplicam os alvos acessíveis. Cada consumidor informa seu rótulo contextual.
 - **WebView:** zoom acompanha a escala do sistema na criação e nas alterações; manter DOM nativo, headings/links e política de origem/JavaScript. Nunca substituir o documento inteiro por uma única descrição.
 - **Contraste e toque:** usar cores acessíveis nos papéis de texto do corpo corrigidos; não alterar tokens globais que repintam headers. Avaliar área de toque efetiva, expansão automática Material e sobreposição entre controles; dimensões visuais isoladas não provam falha ou conformidade.
@@ -43,7 +43,7 @@ A View publica nomes, papéis, valores, seleção, erros e ações compatíveis 
 | Responsible Gaming | Perguntas/períodos nomeados e selecionados; confirmação associada | ResponsibleGamingAccessibilityTest |
 | Results | Busca preenchida nomeada; dígitos Super Sete associados às colunas e legíveis em 200% | ResultsAccessibilityTest |
 | Retail | Tabs Pix selecionadas; campo preenchido/erro e Enter sem duplicar ação | RetailAccessibilityTest |
-| Support | Links FAQ acionáveis preservam confirmação e política; documento escalável | SupportAccessibilityTest; CaixaDSWebFontScaleTest |
+| Support | Links FAQ acionáveis preservam confirmação e política; documento escalável | SupportAccessibilityTest; LoteriasCaixaDSWebFontScaleTest |
 | Tickets | NSB/Lotérico nomeados; acerto anunciado; resultado/coluna/premiação associados | TicketsAccessibilityTest |
 
 A inspeção visual no Samsung em 200% também encontrou corte/sobreposição no cartão e no resumo do carrinho da Home. O corpo passou a usar rolagem e slots de ações/rodapé medidos; o rodapé usa altura natural na escala ampliada. O caminho de 1× e os headers são preservados. Testes com a escala real do sistema reproduzem os cenários.

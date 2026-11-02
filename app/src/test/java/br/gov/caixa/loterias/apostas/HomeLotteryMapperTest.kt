@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.tokens.resolveCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -76,15 +76,15 @@ class HomeLotteryMapperTest {
 
     @Test fun `default campaign preserves each lottery presentation`() {
         val original = parameters(game(2, "MEGA_SENA"), game(3, "QUINA")).toHomeLotteries(false)
-        val mapped = original.withHomeMegaSenaCampaign(CaixaDSCampaign.DEFAULT)
+        val mapped = original.withHomeMegaSenaCampaign(LoteriasCaixaDSCampaign.DEFAULT)
         assertEquals(original, mapped)
         original.zip(mapped).forEach { (before, after) -> assertSame(before, after) }
     }
 
     @Test fun `mega campaign changes only its presentation and preserves backend contest data`() {
         val original = parameters(game(2, "MEGA_SENA"), game(3, "QUINA")).toHomeLotteries(false)
-        val mapped = original.withHomeMegaSenaCampaign(CaixaDSCampaign.OCTOBER_ROSE)
-        val style = resolveCaixaDSLotteryStyle(2, "", CaixaDSCampaign.OCTOBER_ROSE)
+        val mapped = original.withHomeMegaSenaCampaign(LoteriasCaixaDSCampaign.OCTOBER_ROSE)
+        val style = resolveLoteriasCaixaDSLotteryStyle(2, "", LoteriasCaixaDSCampaign.OCTOBER_ROSE)
         assertEquals(style.light, mapped.first().color)
         assertEquals(style.dark, mapped.first().darkColor)
         assertEquals(style.content, mapped.first().headerContentColor)

@@ -29,7 +29,7 @@ import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.presentation.state.WorkflowSpec
 import br.gov.caixa.loterias.feature.betting.presentation.components.AnimatedLotteryTutorial
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.tutorialDefinition
@@ -165,7 +165,7 @@ class AnimatedTutorialAccessibilityTest {
     private fun LargeFontTheme(content: @Composable () -> Unit) {
         val density = LocalDensity.current
         CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 2f)) {
-            CaixaDSTheme(content = content)
+            LoteriasCaixaDSTheme(content = content)
         }
     }
 

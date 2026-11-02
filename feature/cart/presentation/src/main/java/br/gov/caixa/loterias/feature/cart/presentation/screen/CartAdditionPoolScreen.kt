@@ -2,7 +2,19 @@ package br.gov.caixa.loterias.feature.cart.presentation.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,12 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.presentation.components.LegacyHomeButton
 import br.gov.caixa.loterias.feature.cart.presentation.components.PoolCartArrow
@@ -37,8 +49,8 @@ internal fun LegacyPoolAddition(
     onHelp: ((Int, String) -> Unit)?,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    val style = caixaDSLotteryStyle(0, state.modality)
-    Column(Modifier.fillMaxSize().background(CaixaDSColorTokens.White).statusBarsPadding()) {
+    val style = loteriasCaixaDSLotteryStyle(0, state.modality)
+    Column(Modifier.fillMaxSize().background(LoteriasCaixaDSColorTokens.White).statusBarsPadding()) {
         PoolHeader(
             modality = state.modality,
             contest = state.contest,
@@ -60,7 +72,7 @@ internal fun LegacyPoolAddition(
                     Text(
                         uiStrings.getString(LocalizedR.string.ui_bolao_inserido_no_carrinho_com_suces_0423e6),
                         color = style.content,
-                        fontFamily = CaixaDSFuturaFontFamily,
+                        fontFamily = LoteriasCaixaDSFuturaFontFamily,
                         fontSize = 14.2.sp,
                         lineHeight = 16.sp,
                         fontWeight = FontWeight.Bold,
@@ -76,7 +88,7 @@ internal fun LegacyPoolAddition(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            CaixaDSIcons.Time,
+                            LoteriasCaixaDSIcons.Time,
                             contentDescription = null,
                             modifier = (Modifier.size(24.dp)).uiId("cart.0096"),
                             tint = style.darkContent
@@ -119,7 +131,7 @@ internal fun LegacyPoolAddition(
             }
             LegacyHomeButton(onClick = onHome, modifier = (Modifier.align(Alignment.BottomCenter).offset(y = 43.dp)).uiId("cart.0100"))
         }
-        Column(Modifier.background(CaixaDSColorTokens.White).navigationBarsPadding()) {
+        Column(Modifier.background(LoteriasCaixaDSColorTokens.White).navigationBarsPadding()) {
             PoolCartFooter(state.amount, onOpenCart)
         }
     }

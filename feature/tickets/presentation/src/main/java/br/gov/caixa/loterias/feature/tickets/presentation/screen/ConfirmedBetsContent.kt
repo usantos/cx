@@ -7,15 +7,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartSummary
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCartSummary
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketPeriod
@@ -45,7 +41,7 @@ internal fun ConfirmedBetsContent(
     actions: ConfirmedBetsListActions,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = uiStrings.getString(LocalizedR.string.ui_minhas_apostas_807108),
         onBack = onBack,
 
@@ -57,8 +53,8 @@ internal fun ConfirmedBetsContent(
                 onHelp?.let { LegacyTicketsHelpAction(it) }
             }
         },
-        bottomBar = { CaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart, modifier = Modifier.uiId("tickets.0163")) },
-        containerColor = CaixaDSColorTokens.White,
+        bottomBar = { LoteriasCaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart, modifier = Modifier.uiId("tickets.0163")) },
+        containerColor = LoteriasCaixaDSColorTokens.White,
         modifier = Modifier.uiId("tickets.0164")
     ) { padding ->
         androidx.compose.foundation.lazy.LazyColumn((Modifier.fillMaxSize().padding(padding)).uiId("tickets.0165")) {

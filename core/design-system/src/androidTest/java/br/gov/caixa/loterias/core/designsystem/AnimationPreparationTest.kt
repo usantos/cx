@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.os.Looper
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.test.junit4.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnimationImage
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAnimationImage
 import br.gov.caixa.loterias.core.designsystem.components.prepareAnimationImages
 import com.airbnb.lottie.LottieCompositionFactory
 import java.util.concurrent.atomic.AtomicBoolean
@@ -31,7 +31,7 @@ class AnimationPreparationTest {
             LaunchedEffect(Unit) {
                 val images = prepareAnimationImages(
                     composition,
-                    listOf(CaixaDSAnimationImage("image", "Artwork", 1))
+                    listOf(LoteriasCaixaDSAnimationImage("image", "Artwork", 1))
                 ) {
                     decodedOnMain.set(Looper.myLooper() == Looper.getMainLooper())
                     Bitmap.createBitmap(TEST_BITMAP_SIZE, TEST_BITMAP_SIZE, Bitmap.Config.ARGB_8888)

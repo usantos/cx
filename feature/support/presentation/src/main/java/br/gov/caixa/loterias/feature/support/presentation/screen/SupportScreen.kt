@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.support.presentation.screen
 
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoadingDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportAction
@@ -13,7 +13,7 @@ fun SupportScreen(
     onAction: (SupportAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (state.isLoading) CaixaDSAuthenticationLoadingDialog()
+    if (state.isLoading) LoteriasCaixaDSAuthenticationLoadingDialog()
     if (state.mode == SupportMode.TERMS_READ_ONLY) {
         ReadOnlyTermsScreen(state, { onAction(SupportAction.Back) }, modifier)
         return

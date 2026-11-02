@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.payment
 
 import androidx.compose.ui.text.font.FontWeight
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -38,7 +38,7 @@ class PaymentTerminalFormattersTest {
     }
 
     @Test fun cardAndPixLegacyStyleKeepsFontAndPlatformPadding() {
-        assertEquals(CaixaDSFontFamily, legacyPaymentTextStyle.fontFamily)
+        assertEquals(LoteriasCaixaDSFontFamily, legacyPaymentTextStyle.fontFamily)
         assertEquals(true, legacyPaymentTextStyle.platformStyle?.paragraphStyle?.includeFontPadding)
     }
 }

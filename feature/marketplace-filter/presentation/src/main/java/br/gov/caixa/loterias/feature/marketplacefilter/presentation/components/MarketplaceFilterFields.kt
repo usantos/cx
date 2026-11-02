@@ -11,12 +11,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterBetGrid as NumberGrid
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterInput as Input
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterLabel as Label
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSMaterialTheme as MaterialTheme
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.caixaDSMarketplaceFilterText as filterText
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterBetGrid as NumberGrid
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterInput as Input
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterLabel as Label
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSMaterialTheme as MaterialTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.loteriasCaixaDSMarketplaceFilterText as filterText
 import br.gov.caixa.loterias.feature.marketplacefilter.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterAction
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState

@@ -12,7 +12,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.LotogolMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
@@ -259,7 +259,7 @@ class TicketSelectionResultUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { Column { content() } } }
+        compose.setContent { LoteriasCaixaDSTheme { Column { content() } } }
     }
     private fun bet() = ConfirmedBet(1, "Mega-Sena", 123, "22/10/2026", "Efetivada", listOf(1, 2), modalityId = 2)
     private fun draw() =

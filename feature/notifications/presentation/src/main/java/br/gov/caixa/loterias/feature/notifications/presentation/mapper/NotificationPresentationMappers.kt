@@ -6,20 +6,20 @@ import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationCategory
 
 internal fun notificationIcon(category: NotificationCategory): ImageVector = when (category) {
-    NotificationCategory.PAYMENTS_REDEMPTIONS -> CaixaDSIcons.NotificationPayments
-    NotificationCategory.LUCK_REMINDERS -> CaixaDSIcons.NotificationMoney
-    NotificationCategory.RESULTS_AVAILABLE -> CaixaDSIcons.NotificationResults
-    NotificationCategory.TIPS_NEWS -> CaixaDSIcons.NotificationNews
-    NotificationCategory.SECURITY_ALERTS -> CaixaDSIcons.NotificationSecurity
+    NotificationCategory.PAYMENTS_REDEMPTIONS -> LoteriasCaixaDSIcons.NotificationPayments
+    NotificationCategory.LUCK_REMINDERS -> LoteriasCaixaDSIcons.NotificationMoney
+    NotificationCategory.RESULTS_AVAILABLE -> LoteriasCaixaDSIcons.NotificationResults
+    NotificationCategory.TIPS_NEWS -> LoteriasCaixaDSIcons.NotificationNews
+    NotificationCategory.SECURITY_ALERTS -> LoteriasCaixaDSIcons.NotificationSecurity
 }
 
 internal fun notificationLegacyTextStyle(size: TextUnit, weight: FontWeight = FontWeight.Normal) = TextStyle(
-    fontFamily = CaixaDSFuturaFontFamily,
+    fontFamily = LoteriasCaixaDSFuturaFontFamily,
     fontSize = size,
     fontWeight = weight,
     platformStyle = PlatformTextStyle(includeFontPadding = true)

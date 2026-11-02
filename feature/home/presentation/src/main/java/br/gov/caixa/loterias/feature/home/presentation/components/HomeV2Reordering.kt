@@ -1,48 +1,35 @@
 package br.gov.caixa.loterias.feature.home.presentation.components
 
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.gestures.scrollBy
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.semantics.CustomAccessibilityAction
-import androidx.compose.ui.semantics.customActions
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.feature.home.R as LocalizedR
 import br.gov.caixa.loterias.feature.home.presentation.mapper.HomeV2Modality
 import br.gov.caixa.loterias.feature.home.presentation.mapper.tipoModalidade
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeV2Presentation
@@ -52,7 +39,6 @@ import kotlinx.coroutines.isActive
 
 @Composable
 internal fun HomeV2Presentation.ReorderableModalities(items: List<HomeLottery>, scroll: ScrollState, viewport: Rect, expand: () -> Unit) {
-    val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val bounds = remember { mutableMapOf<HomeV2Modality, Rect>() }
     var origin by remember { mutableStateOf(Offset.Zero) }
     var dragged by remember { mutableStateOf<HomeV2Modality?>(null) }
@@ -118,58 +104,7 @@ internal fun HomeV2Presentation.ReorderableModalities(items: List<HomeLottery>, 
                 )
             }
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            items.chunked(2).forEach { row ->
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    row.forEach { item ->
-                        key(item.tipoModalidade) {
-                            val type = item.tipoModalidade
-                            val index = items.indexOf(item)
-                            ModalityCard(
-                                item,
-                                Modifier.weight(1f)
-                                    .onGloballyPositioned { bounds[type] = it.boundsInRoot() }
-                                    .alpha(if (dragged == type) .3f else 1f)
-                                    .then(
-                                        if (target == type &&
-                                            dragged != type
-                                        ) {
-                                            Modifier.border(2.dp, blue, RoundedCornerShape(11.dp))
-                                        } else {
-                                            Modifier
-                                        }
-                                    )
-                                    .semantics {
-                                        customActions = buildList {
-                                            if (index > 0) {
-                                                add(
-                                                    CustomAccessibilityAction(
-                                                        uiStrings.getString(LocalizedR.string.ui_mover_para_posicao_anterior_0ea756)
-                                                    ) {
-                                                        moveModality(type, items[index - 1].tipoModalidade)
-                                                        true
-                                                    }
-                                                )
-                                            }
-                                            if (index < items.lastIndex) {
-                                                add(
-                                                    CustomAccessibilityAction(
-                                                        uiStrings.getString(LocalizedR.string.ui_mover_para_proxima_posicao_92b1b5)
-                                                    ) {
-                                                        moveModality(type, items[index + 1].tipoModalidade)
-                                                        true
-                                                    }
-                                                )
-                                            }
-                                        }
-                                    }
-                            )
-                        }
-                    }
-                    if (row.size == 1) Spacer(Modifier.weight(1f))
-                }
-            }
-        }
+        ModalityGrid(items, dragged, target) { type, rect -> bounds[type] = rect }
         dragged?.let { type ->
             val item = items.firstOrNull { it.tipoModalidade == type }
             val rect = bounds[type]

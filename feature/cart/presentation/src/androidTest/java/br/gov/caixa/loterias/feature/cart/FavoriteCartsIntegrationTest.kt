@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
@@ -130,7 +130,7 @@ class FavoriteCartsIntegrationTest {
                     dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate),
                 )
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 if (detail) FavoriteCartDetailRoute(model, onBack = { calls.add("back") }, onHelp = { calls.add("help") })
                 else FavoriteCartsRoute(model, onBack = { calls.add("back") }, onOpen = { calls.add("detail:$it") }, onCartReady = { calls.add("cart") })
             }

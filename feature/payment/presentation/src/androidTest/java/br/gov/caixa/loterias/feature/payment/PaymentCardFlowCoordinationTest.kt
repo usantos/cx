@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
@@ -38,7 +38,7 @@ class PaymentCardFlowCoordinationTest {
         val second = model()
         val replace = mutableStateOf(false)
         var completed = 0
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             PaymentCardFlowRoute(if (replace.value) second else first, {}, { completed++ }, {}, {}, {}, {})
         } }
         compose.onNodeWithText("Incluir Código de Verificação").performClick()
@@ -59,7 +59,7 @@ class PaymentCardFlowCoordinationTest {
     @Test fun cardLoadFailureRetriesToConfirmationAndBackKeepsTheExternalCallback() {
         val model = model(AppResult.Failure(AppError.Network))
         var back = 0
-        compose.setContent { CaixaDSTheme { PaymentCardFlowRoute(model, { back++ }, {}, {}, {}, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { PaymentCardFlowRoute(model, { back++ }, {}, {}, {}, {}, {}) } }
         compose.onNodeWithText("Pagamento não aprovado").assertIsDisplayed()
         compose.onNodeWithText("Não foi possível processar o pagamento. Verifique sua internet.").assertIsDisplayed()
         compose.onNodeWithText("Voltar").performClick()

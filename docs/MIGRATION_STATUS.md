@@ -4,7 +4,7 @@ Atualização visual de 15/10: tutorial de Bolão conferido com captura nativa, 
 
 > Atualização pareada de 15/10/2026: [Bolão e Filtros frente ao CX](MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md). São 20 pares no mesmo AVD/dados, com Outubro Rosa ligada/desligada, e correções centralizadas no DS. `modernCheck releaseCheck` passou na árvore integrada: 1.699 testes JVM, 146 testes Android nos escopos executados e três Releases minificados. O bloqueio de captura das Activities internas foi resolvido pelo runner de instrumentação. A equivalência global de 100% continua pendente nos fluxos e casos históricos indicados abaixo.
 
-> Atualização de 14/10/2026: [consolidação do CaixaDS, gates e validação integrada](DS_CONSOLIDATION_20261014.md). `modernCheck` e `releaseCheck` passaram na árvore integrada; a validação Android adicional mantém dois testes raster preexistentes pendentes. O fechamento anterior está em [COMPOSE_CLOSURE_20261013.md](COMPOSE_CLOSURE_20261013.md). Os registros datados abaixo são históricos.
+> Atualização de 14/10/2026: [consolidação do LoteriasCaixaDS, gates e validação integrada](DS_CONSOLIDATION_20261014.md). `modernCheck` e `releaseCheck` passaram na árvore integrada; a validação Android adicional mantém dois testes raster preexistentes pendentes. O fechamento anterior está em [COMPOSE_CLOSURE_20261013.md](COMPOSE_CLOSURE_20261013.md). Os registros datados abaixo são históricos.
 
 ## Leitura correta do status
 
@@ -14,21 +14,21 @@ O corte técnico para Compose está ativo, com 80 destinos no catálogo, sem lay
 
 ### 09/09/2026 — Diálogo de carrinho favorito
 
-A entrada do nome do carrinho favorito agora usa `CaixaDSTextInputDialog`, reconstruído
+A entrada do nome do carrinho favorito agora usa `LoteriasCaixaDSTextInputDialog`, reconstruído
 a partir do XML/controller no legado em `/Users/ubiracysantos/Projects/legado/simlo-app-android`.
 Foram restaurados título, hint, dimensões, fontes, limite de 30 caracteres e limpeza
 do nome ao cancelar. Envios repetidos ficam bloqueados enquanto a validação está em andamento.
 
 Validação: **69 testes unitários do carrinho**, **4 testes Android da tela do carrinho**
-e **2 testes Android do novo diálogo aprovados**. `verifyCaixaDS` e compilação da Home
-aprovados. A suíte completa do CaixaDS teve 9/10 aprovações (falha no teste antigo da bola
+e **2 testes Android do novo diálogo aprovados**. `verifyLoteriasCaixaDS` e compilação da Home
+aprovados. A suíte completa do LoteriasCaixaDS teve 9/10 aprovações (falha no teste antigo da bola
 numérica); `verifyCleanArchitecture` apontou referências de infraestrutura em três repositories
 não alterados nesta etapa. Paridade visual integral e modernCheck não estão aprovados.
 Ver [auditoria do diálogo](CART_FAVORITE_DIALOG_PARITY_AUDIT.md).
 
 Os registros abaixo preservam as evidências e limitações das revisões anteriores.
 
-O CTA do carrinho agora usa `CaixaDSCartActions`, com texto misto em duas linhas, alturas,
+O CTA do carrinho agora usa `LoteriasCaixaDSCartActions`, com texto misto em duas linhas, alturas,
 raios, cores e espaçamentos do legado. Título, fundo branco e aviso de mínimo também foram
 revistos. Carrinho vazio, inclusive após refresh de cotas/GPS, percorre conta → localização →
 histórico → login → validação do serviço, sem bloqueio local por mínimo/quantidade.
@@ -43,9 +43,9 @@ Os registros seguintes são históricos e conservam os limites de cada rodada.
 
 O resumo do carrinho agora preserva a lista plana `apostas` para total/quantidade e mantém os
 grupos somente para cards e IDs de exclusão. Home usa a contagem do snapshot no pós-login e no
-refresh; limpar/favoritar consideram a mesma projeção. `CaixaDSCartSummary` substitui os dois
+refresh; limpar/favoritar consideram a mesma projeção. `LoteriasCaixaDSCartSummary` substitui os dois
 rodapés divergentes, com fundo diagonal, ícone, dimensões/textos legados, overflow `...` e
-visibilidade por total positivo. Ver `CART_SUMMARY_PARITY_AUDIT.md` e o uso em `CAIXA_DS.md`.
+visibilidade por total positivo. Ver `CART_SUMMARY_PARITY_AUDIT.md` e o uso em `LOTERIAS_CAIXA_DS.md`.
 A revisão aprovou **682 testes JVM** e compilação isolada, com **326/328 linhas (99,39%)** no
 escopo selecionado de lógica/estado do carrinho; cálculo Data, entidade de resumo e regras de
 apresentação selecionadas atingiram 100%. Os **39 testes Android apenas compilaram**, incluindo
@@ -143,7 +143,7 @@ Esta revisão aprovou 570 testes JVM e compilação isolada; 22 testes Android a
 Leitura/conversão pura, mapeador e DTO selecionados atingiram 100% de linhas em seus escopos;
 isso não cobre SQLite Android, o aplicativo inteiro, flavors/Release ou paridade visual.
 
-Limpeza interrompida agora tem marcador persistido e recuperação antes de compor entrada normal, fila ou rota visual. O gate usa Splash/CaixaDS, bloqueia falhas e distingue recuperação local de logout SSO confirmado. Sem marcador não apaga dados/sessão; logout e recuperação compartilham repository singleton serializado. A revisão aprovou 556 testes JVM, compilação isolada e 96,15% na lógica da recuperação; 18 testes Android apenas compilaram. Persistência real/morte de processo, transição visual, demais caches, SSO, flavors/Release e cobertura global seguem sem homologação. Ver `SESSION_CLEANUP_RECOVERY_AUDIT.md`.
+Limpeza interrompida agora tem marcador persistido e recuperação antes de compor entrada normal, fila ou rota visual. O gate usa Splash/LoteriasCaixaDS, bloqueia falhas e distingue recuperação local de logout SSO confirmado. Sem marcador não apaga dados/sessão; logout e recuperação compartilham repository singleton serializado. A revisão aprovou 556 testes JVM, compilação isolada e 96,15% na lógica da recuperação; 18 testes Android apenas compilaram. Persistência real/morte de processo, transição visual, demais caches, SSO, flavors/Release e cobertura global seguem sem homologação. Ver `SESSION_CLEANUP_RECOVERY_AUDIT.md`.
 
 A saída agora limpa também os registros legados de usuário/biometria e a flag de usuário logado, por porta Domain e repository injetado, sem apagar as demais tabelas/preferências. A limpeza ocorre em I/O, antes de preparar EndSession; falha exige retry explícito e não libera continuação como sucesso. A revisão aprovou 546 testes JVM, compilação isolada e 98,61% no estado/lógica do logout; 13 testes Android somente compilaram. Persistência da limpeza interrompida, execução SQLite/Android, demais caches, SSO real, todos os flavors/Release e cobertura global seguem pendentes. Ver `LOCAL_SESSION_CLEANUP_AUDIT.md`.
 
@@ -155,9 +155,9 @@ O pós-login agora preserva `situacaoApostador.enum` e apresenta o aviso legado 
 
 O pós-login passou a executar o GET de verificação de apostador bloqueado antes da consulta de cadastro, por caso de uso e repository injetados. Falha inicial mostra o alerta legado, impede avançar e exige reconhecimento para limpar a sessão local. Cadastro ausente/redirect desconhecido deixaram de liberar Home. A revisão registra 508 testes JVM aprovados e compilação isolada, com cobertura parcial de 98,63% na lógica do login e 100% nos escopos novos de domínio/repos/DTO. Logout SSO externo, bloqueio parcial, sessão global, callbacks/visual, cobertura global e todos os flavors/Release continuam pendentes; ver `POST_LOGIN_BLOCKED_CHECK_AUDIT.md`. Os registros seguintes descrevem revisões anteriores.
 
-O retorno OAuth agora substitui o formulário do login pela superfície azul vazia da `TokenActivity` legada e pelo modal “Carregando…”. O mesmo `AccountTokenScreen` atende à rota de catálogo, eliminando a versão divergente com “Aguarde”. A revisão aprovou 10 testes JVM de login e 11 do CaixaDS, compilação isolada e compilação de três testes instrumentados novos ainda sem execução. O teste de estado preserva loading durante troca do token e validação do cadastro, sem duplicar chamadas. Isso não homologa navegador, retorno contextual, screenshots, flavors ou cobertura global; ver `AUTHENTICATION_RETURN_PARITY_AUDIT.md`.
+O retorno OAuth agora substitui o formulário do login pela superfície azul vazia da `TokenActivity` legada e pelo modal “Carregando…”. O mesmo `AccountTokenScreen` atende à rota de catálogo, eliminando a versão divergente com “Aguarde”. A revisão aprovou 10 testes JVM de login e 11 do LoteriasCaixaDS, compilação isolada e compilação de três testes instrumentados novos ainda sem execução. O teste de estado preserva loading durante troca do token e validação do cadastro, sem duplicar chamadas. Isso não homologa navegador, retorno contextual, screenshots, flavors ou cobertura global; ver `AUTHENTICATION_RETURN_PARITY_AUDIT.md`.
 
-O loading institucional compartilhado recebeu correção de alpha do fundo, interpolador legado, tipografia e modalidade sem dim adicional. Login, retry de indisponibilidade e operações Mercado Pago usam a mesma janela bloqueante. A revisão do CaixaDS registra 11 testes JVM, compilação isolada e novos testes instrumentados ainda sem execução; não homologa screenshots ou flavors. Ver `LOADING_PARITY_AUDIT.md`. Os registros seguintes são históricos e têm escopos distintos.
+O loading institucional compartilhado recebeu correção de alpha do fundo, interpolador legado, tipografia e modalidade sem dim adicional. Login, retry de indisponibilidade e operações Mercado Pago usam a mesma janela bloqueante. A revisão do LoteriasCaixaDS registra 11 testes JVM, compilação isolada e novos testes instrumentados ainda sem execução; não homologa screenshots ou flavors. Ver `LOADING_PARITY_AUDIT.md`. Os registros seguintes são históricos e têm escopos distintos.
 
 Falhas de transporte no POST de resgate e GET do token Mercado Pago preservam agora a distinção timeout/conexão. A apresentação consulta a conectividade no recebimento do erro e no clique para login, usa os textos conferidos no APK legado e mantém o formulário sem repetir operações após reconexão. Foram incluídos quatro mocks e a matriz de fixtures passou a exigir a falha de transporte correta nos endpoints afetados. A suíte isolada ampliada aprovou 468 testes e compilou todos os fontes de rede e os fontes selecionados de Compose/host/integração. Coberturas parciais: lógica de retail 97,75%, pagamento 99,03%, avisos compartilhados 37/37 e repository/data source/mapeador de resgate 234/234. Isso não comprova cobertura global, callbacks Android, paridade visual ou todos os flavors/Release; o Gradle permanece impedido pelo lock. Ver `PRIZE_CONNECTIVITY_PARITY_AUDIT.md`. Os registros abaixo são históricos.
 
@@ -208,7 +208,7 @@ O aplicativo moderno está diretamente no módulo Gradle `:app`, sob `app/`. `ap
 - Navigation Compose com 78 destinos/estados navegáveis catalogados; as quatro telas auxiliares do Rapidão e de números ficam registradas no inventário como componentes internos de pager/modal, sem criar destinos artificiais;
 - módulos independentes por feature, ViewModels com `StateFlow`/ações e dependências voltadas para casos de uso de `core:domain`;
 - Hilt no composition root, com KSP compatível com o Kotlin integrado do AGP 9.2.1;
-- CaixaDS aplicado no host, com tema claro/escuro, tokens, ícones e catálogo Compose;
+- LoteriasCaixaDS aplicado no host, com tema claro/escuro, tokens, ícones e catálogo Compose;
 - namespace e `applicationId` produtivo `br.gov.caixa.loterias.apostas` preservados;
 - flavors `prd`, `tqs` e `automacao` restauradas, incluindo endpoints, SSO, Firebase, FilaBRA, nomes e versionamento por ambiente.
 
@@ -224,7 +224,7 @@ O `AndroidManifest.xml` permanece porque é obrigatório na plataforma. AppAuth 
 | Layouts XML | 396 | 0 |
 | Destinos catalogados em Compose | 0 | 78 |
 
-`verifyComposeMigration` impede a reintrodução do diretório `app-compose`, de XML de layout/navegação/drawable, de Fragment ou de outra Activity no código-fonte moderno. A allowlist aceita apenas o Manifest, o tema de janela exigido pela pré-splash do Android e as duas declarações de ícone adaptativo; nenhum desses arquivos contém hierarquia de UI. `verifyLegacyUiInventory` preserva a baseline dos 396 XMLs e exige destino para os 95 pontos de montagem de UI inventariados. `verifyCleanArchitecture` valida a direção das dependências e o uso de Hilt. `verifyCaixaDS` impede cores literais nas features e exige o tema no host. `verifyFilaBraAar` garante o SHA-256 do binário homologado.
+`verifyComposeMigration` impede a reintrodução do diretório `app-compose`, de XML de layout/navegação/drawable, de Fragment ou de outra Activity no código-fonte moderno. A allowlist aceita apenas o Manifest, o tema de janela exigido pela pré-splash do Android e as duas declarações de ícone adaptativo; nenhum desses arquivos contém hierarquia de UI. `verifyLegacyUiInventory` preserva a baseline dos 396 XMLs e exige destino para os 95 pontos de montagem de UI inventariados. `verifyCleanArchitecture` valida a direção das dependências e o uso de Hilt. `verifyLoteriasCaixaDS` impede cores literais nas features e exige o tema no host. `verifyFilaBraAar` garante o SHA-256 do binário homologado.
 
 ## Integrações concluídas
 
@@ -305,7 +305,7 @@ O Rapidão recuperou o fluxo paginado do legado: boas-vindas, prêmio mínimo, f
 
 Apostas favoritas individuais também deixaram de usar exemplos locais. O fluxo consulta o agrupamento real, filtra por modalidade, formata dezenas, colunas do Super Sete, time do coração, mês de sorte e trevos, confirma exclusão e aplica as opções de concurso, Teimosinha e Espelho antes de chamar a inclusão no carrinho.
 
-A central de notificações também deixou de usar estado `remember` demonstrativo e o `WorkflowViewModel` genérico. A feature possui `NotificationsViewModel`, `StateFlow`, efeitos de compartilhamento, casos de uso e repositório injetados. Foram restauradas as cinco categorias do legado, a opção mestre, pesquisa, filtro de não lidas, expansão exclusiva com leitura automática, exclusão/leitura individual e em lote com confirmação e ações específicas de lembretes/resultados. Os ícones de mensagem foram convertidos dos vetores XML legados para `CaixaDSIcons`.
+A central de notificações também deixou de usar estado `remember` demonstrativo e o `WorkflowViewModel` genérico. A feature possui `NotificationsViewModel`, `StateFlow`, efeitos de compartilhamento, casos de uso e repositório injetados. Foram restauradas as cinco categorias do legado, a opção mestre, pesquisa, filtro de não lidas, expansão exclusiva com leitura automática, exclusão/leitura individual e em lote com confirmação e ações específicas de lembretes/resultados. Os ícones de mensagem foram convertidos dos vetores XML legados para `LoteriasCaixaDSIcons`.
 
 Os carrinhos favoritos também usam dados reais. A lista e o detalhe suportam exclusão, remoção da última aposta com exclusão do carrinho e transformação em carrinho atual, incluindo a escolha entre concursos regulares/especiais existente no legado.
 
@@ -323,7 +323,7 @@ A tela de escolha da forma de pagamento também preserva a geometria específica
 
 ## Assets do legado
 
-Os conjuntos históricos de imagens raster, fontes CAIXA/Futura/Arial, Lottie, JSONs de tutorial e modelos HTML de comprovante permanecem disponíveis. Uma auditoria por SHA-256 confirmou a preservação byte a byte de todos os assets binários de runtime do checkout legado; ficaram de fora somente configuração Google e artes de publicação da loja, que não são recursos de tela. A presença do arquivo não é tratada como prova de que ele já esteja aplicado corretamente em cada tela; esse uso é verificado no inventário visual. Os antigos drawables/font families XML não retornam; sua função é substituída por Compose/CaixaDS e o gate impede XML de UI. Os quatro certificados `.cer` antigos permanecem removidos: a pinagem moderna usa pins SPKI com manifesto assinado, cache validado e fallback local, conforme o runbook de segurança.
+Os conjuntos históricos de imagens raster, fontes CAIXA/Futura/Arial, Lottie, JSONs de tutorial e modelos HTML de comprovante permanecem disponíveis. Uma auditoria por SHA-256 confirmou a preservação byte a byte de todos os assets binários de runtime do checkout legado; ficaram de fora somente configuração Google e artes de publicação da loja, que não são recursos de tela. A presença do arquivo não é tratada como prova de que ele já esteja aplicado corretamente em cada tela; esse uso é verificado no inventário visual. Os antigos drawables/font families XML não retornam; sua função é substituída por Compose/LoteriasCaixaDS e o gate impede XML de UI. Os quatro certificados `.cer` antigos permanecem removidos: a pinagem moderna usa pins SPKI com manifesto assinado, cache validado e fallback local, conforme o runbook de segurança.
 
 ```bash
 ./gradlew modernCheck

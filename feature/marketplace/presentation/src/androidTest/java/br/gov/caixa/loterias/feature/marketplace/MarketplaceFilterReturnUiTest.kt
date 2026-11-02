@@ -16,7 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParametersUseCase
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
@@ -86,7 +86,7 @@ class MarketplaceFilterReturnUiTest {
         10, 2, 6, false, 101, "Brasília - DF", 20)
 
     private fun show(applied: Boolean = false) {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             val nav = rememberNavController()
             val navigation = rememberAppNavigationState(session.identity.ownerKey)
             SideEffect { testNavigation = navigation; testNavController = nav }

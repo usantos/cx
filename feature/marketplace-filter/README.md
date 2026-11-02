@@ -34,4 +34,4 @@ Na auditoria anterior ainda era necessária comparação visual pareada, com a m
 
 ## Comparação pareada posterior — 15/10/2026
 
-A referência nativa foi capturada com os mesmos dados e dispositivo do Compose. Superfície, campos, botões, cartelas e seleções agora consomem os componentes `CaixaDSMarketplaceFilter*`; os trevos/checks/ícones originais também pertencem ao DS. Foram comparados cinco estados de Filtros com Outubro Rosa ligada/desligada, junto a cinco estados de Bolão em cada campanha. Resultados e limites: [relatório pareado](../../docs/MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md).
+A referência nativa foi capturada com os mesmos dados e dispositivo do Compose. Superfície, campos, botões, cartelas e seleções agora consomem os componentes `LoteriasCaixaDSMarketplaceFilter*`; os trevos/checks/ícones originais também pertencem ao DS. Foram comparados cinco estados de Filtros com Outubro Rosa ligada/desligada, junto a cinco estados de Bolão em cada campanha. Resultados e limites: [relatório pareado](../../docs/MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md).

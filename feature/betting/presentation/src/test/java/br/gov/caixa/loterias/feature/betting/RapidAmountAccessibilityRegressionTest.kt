@@ -8,8 +8,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSRapidAmountDialog
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSRapidAmountDialog
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -31,8 +31,8 @@ class RapidAmountAccessibilityRegressionTest {
         try {
             var cancellations = 0
             compose.setContent {
-                CaixaDSTheme {
-                    CaixaDSRapidAmountDialog(
+                LoteriasCaixaDSTheme {
+                    LoteriasCaixaDSRapidAmountDialog(
                         "Valor mínimo",
                         "10",
                         "Digite o valor",

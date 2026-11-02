@@ -20,9 +20,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.marketplace.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
 import br.gov.caixa.loterias.feature.marketplace.presentation.mapper.marketplaceDetailMoney
@@ -33,7 +33,7 @@ import kotlin.math.roundToInt
 internal fun detailText(size: Int, weight: FontWeight = FontWeight.Normal): TextStyle {
     val nativeSize = with(LocalDensity.current) { size.sp.toPx().roundToInt().toFloat().toSp() }
     return TextStyle(
-        fontFamily = CaixaDSFontFamily,
+        fontFamily = LoteriasCaixaDSFontFamily,
         fontSize = nativeSize,
         fontWeight = weight,
         platformStyle = PlatformTextStyle(includeFontPadding = true)
@@ -42,7 +42,7 @@ internal fun detailText(size: Int, weight: FontWeight = FontWeight.Normal): Text
 
 @Composable
 internal fun DetailDivider(modifier: Modifier = Modifier) =
-    Box(modifier.fillMaxWidth().height(.8.dp).background(CaixaDSColorTokens.PrizeDivider))
+    Box(modifier.fillMaxWidth().height(.8.dp).background(LoteriasCaixaDSColorTokens.PrizeDivider))
 
 @Composable
 internal fun DetailEstimatedPrize(detail: MarketplacePoolDetail, colors: MarketplaceColors) {
@@ -65,7 +65,7 @@ internal fun DetailEstimatedPrize(detail: MarketplacePoolDetail, colors: Marketp
         Text(
             uiStrings.getString(LocalizedR.string.ui_premio_estimado_699ac4),
             style = detailText(18),
-            color = CaixaDSColorTokens.TicketChoiceMuted,
+            color = LoteriasCaixaDSColorTokens.TicketChoiceMuted,
             modifier = Modifier.uiId("pool.0030")
         )
     }
@@ -100,7 +100,7 @@ internal fun DetailPoolInformation(detail: MarketplacePoolDetail) {
             append(if (detail.modality.contains("LOTECA", true)) " palpites" else " dezenas")
         },
         style = detailText(18).copy(fontSize = 18.sp),
-        color = CaixaDSColorTokens.TicketChoiceMuted,
+        color = LoteriasCaixaDSColorTokens.TicketChoiceMuted,
         modifier = Modifier.uiId("pool.0031")
     )
     Text(
@@ -118,31 +118,31 @@ internal fun DetailPoolInformation(detail: MarketplacePoolDetail) {
             withStyle(SpanStyle(fontSize = 20.sp, fontWeight = FontWeight.SemiBold)) { append(detail.totalShares.toString()) }
         },
         style = detailText(18).copy(fontSize = 18.sp),
-        color = CaixaDSColorTokens.TicketChoiceMuted,
+        color = LoteriasCaixaDSColorTokens.TicketChoiceMuted,
         modifier = Modifier.uiId("pool.0032")
     )
     Text(
         uiStrings.getString(LocalizedR.string.ui_valor_da_cota_1_s_89868c, marketplaceDetailMoney(detail.sharePriceWithoutFee)),
         style = detailText(18),
-        color = CaixaDSColorTokens.TicketChoiceMuted,
+        color = LoteriasCaixaDSColorTokens.TicketChoiceMuted,
         modifier = Modifier.uiId("pool.0033")
     )
     Text(
         uiStrings.getString(LocalizedR.string.ui_tarifa_de_servico_1_s_1a2f5a, marketplaceDetailMoney(detail.lastShareFee)),
         style = detailText(18),
-        color = CaixaDSColorTokens.TicketChoiceMuted,
+        color = LoteriasCaixaDSColorTokens.TicketChoiceMuted,
         modifier = Modifier.uiId("pool.0034")
     )
     Text(
         uiStrings.getString(LocalizedR.string.ui_total_1_s_038bb5, marketplaceDetailMoney(detail.lastSharePriceWithFee)),
         style = detailText(16, FontWeight.Bold),
-        color = CaixaDSColorTokens.RetailSearchText,
+        color = LoteriasCaixaDSColorTokens.RetailSearchText,
         modifier = Modifier.uiId("pool.0035")
     )
     Text(
         uiStrings.getString(LocalizedR.string.ui_devido_a_regras_de_arredondamento_o_a7f150),
         (Modifier.padding(end = 80.dp)).uiId("pool.0036"),
         style = detailText(12),
-        color = CaixaDSColorTokens.TicketChoiceMuted
+        color = LoteriasCaixaDSColorTokens.TicketChoiceMuted
     )
 }

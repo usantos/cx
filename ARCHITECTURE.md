@@ -82,7 +82,7 @@ Route coordena ViewModel/lifecycle/permissões; Screen e componentes recebem est
 
 Os módulos Android e JVM aplicam diretamente os plugins necessários em seus próprios `build.gradle`, usando o catálogo existente. A DSL Groovy, versões de toolchain, namespaces, variantes e dependências de execução foram preservados na separação de Presentation. Os arquivos `src/main`, `src/test`, `src/androidTest`, recursos e manifestos pertencem ao novo módulo; não há redirecionamento de fontes para outro dono.
 
-`verifyFeatureModules` exporta o grafo configurado real, incluindo dependências introduzidas por convenções e variantes, em `build/reports/architecture/feature-modules.json`. Rejeita ciclos, dependência de produção no app, dependência externa de Domain, raízes externas e donos sobrepostos. `verifyCleanArchitecture` verifica também os novos módulos Domain/API/Data/Transport e restringe infraestrutura à integração DI/Data. Java, controllers de feature, cores fora do CaixaDS e layouts XML continuam bloqueados. Cópias exatas de desenhos anteriores são registradas individualmente no inventário de recursos, sem exceção geral.
+`verifyFeatureModules` exporta o grafo configurado real, incluindo dependências introduzidas por convenções e variantes, em `build/reports/architecture/feature-modules.json`. Rejeita ciclos, dependência de produção no app, dependência externa de Domain, raízes externas e donos sobrepostos. `verifyCleanArchitecture` verifica também os novos módulos Domain/API/Data/Transport e restringe infraestrutura à integração DI/Data. Java, controllers de feature, cores fora do LoteriasCaixaDS e layouts XML continuam bloqueados. Cópias exatas de desenhos anteriores são registradas individualmente no inventário de recursos, sem exceção geral.
 
 `scripts/test-feature-module-gates.py` injeta dez violações reais, executa os gates e restaura os arquivos byte a byte mesmo em falha. Os mínimos de cobertura anteriores são preservados; novos adaptadores e os wrappers comuns de persistência entram nas fronteiras correspondentes. O padrão amplo HomeDrawer foi substituído pelas três famílias originalmente cobertas, conservando todas as classes/filhos e o mesmo mínimo; a prova do conjunto anterior está nas evidências. No carrinho, `**/presentation/**/*.class` conserva as 61 famílias anteriores e seus filhos/lambdas/Compose; as classes de DI/navegação movidas do app não ampliam por acidente a fronteira histórica de presentation. O mínimo de 95,01% e todos os produtores/assertivas foram mantidos; a prova compara as 51 fontes anteriores e os contadores do relatório.
 
@@ -139,7 +139,7 @@ Na verificação final, `modernCheck` e `releaseCheck` passaram juntos nos três
 
 Os tipos de CORE usam o pacote do módulo que os compila. `EffectiveEnvironment`, `LegacyTestEnvironment` e `EnvironmentSelection` pertencem a `core.domain.environment`; `ForegroundSessionBackgroundState` a `core.auth.foreground`; `HomeSection` a `core.presentation`; a factory e o coordenador de clientes a `core.network.config`; o store de chaves assinadas e os adaptadores de autorização a `core.security`. As nove entradas de CORE do inventário de pacotes históricos do app foram removidas. Os consumidores usam diretamente esses donos, sem wrappers no pacote `apostas`.
 
-Os aliases de identidade e encerramento de sessão de `core.auth` foram retirados; os consumidores importam os contratos de Account que já eram seus tipos efetivos. `EndSessionGateway` e `JwtCurrentUserIdentityProvider` continuam sendo as pontes Android/JWT de CORE. Os aliases sem uso `CaixaTheme` e `CaixaColors` foram removidos; o design system publica `CaixaDSTheme` e `CaixaDS.colors`. O fake compartilhado de sessão pertence a `core.testing`, usado somente por testes.
+Os aliases de identidade e encerramento de sessão de `core.auth` foram retirados; os consumidores importam os contratos de Account que já eram seus tipos efetivos. `EndSessionGateway` e `JwtCurrentUserIdentityProvider` continuam sendo as pontes Android/JWT de CORE. Os aliases sem uso `CaixaTheme` e `CaixaColors` foram removidos; o design system publica `LoteriasCaixaDSTheme` e `LoteriasCaixaDS.colors`. O fake compartilhado de sessão pertence a `core.testing`, usado somente por testes.
 
 A limpeza retira intencionalmente os contratos públicos dessas fachadas, aliases e nomes históricos. Os valores de ambiente, URLs, payloads, chaves de persistência, regras de sessão, ordem de substituição de clientes/pins e escopos Hilt são preservados. A tarefa raiz `verifyPersistenceCoverage` executa a cobertura histórica de persistência; os módulos vazios de persistência foram retirados. Os contratos de transporte ativos continuam preservados nos donos já documentados.
 
@@ -278,9 +278,9 @@ A fachada cria uma única `PaymentCardPurchaseContext`, compartilhada pelos coor
 
 ## Design system e ferramentas
 
-CaixaDS continua utilizando Compose/Material3 com identidade visual existente. As 26 declarações do arquivo legado foram organizadas em scaffold, ícones, seletores, diálogos, barras, botões, conteúdo, grade e resumo. APIs e corpos permanecem idênticos; previews usam somente dados locais inertes.
+LoteriasCaixaDS continua utilizando Compose/Material3 com identidade visual existente. As 26 declarações do arquivo legado foram organizadas em scaffold, ícones, seletores, diálogos, barras, botões, conteúdo, grade e resumo. APIs e corpos permanecem idênticos; previews usam somente dados locais inertes.
 
-`gradle/libs.versions.toml` centraliza dependências, sem atualização indiscriminada. `.editorconfig` define formatação; `verifyKotlinFormatting` verifica UTF-8/LF/newline/whitespace, sem reescrever fontes. Android Lint e gates de arquitetura, Compose, inventário, backend, rede, identidade, Topaz, FilaBRA e CaixaDS permanecem ativos. A cobertura mantém mínimos e inclui os colaboradores extraídos; classes anteriormente protegidas não foram excluídas para aprovar a migração. Tickets exige dados JVM e Android reais antes do gate de 95%; os filtros incluídos permanecem no denominador e são exercitados por testes Compose de interação.
+`gradle/libs.versions.toml` centraliza dependências, sem atualização indiscriminada. `.editorconfig` define formatação; `verifyKotlinFormatting` verifica UTF-8/LF/newline/whitespace, sem reescrever fontes. Android Lint e gates de arquitetura, Compose, inventário, backend, rede, identidade, Topaz, FilaBRA e LoteriasCaixaDS permanecem ativos. A cobertura mantém mínimos e inclui os colaboradores extraídos; classes anteriormente protegidas não foram excluídas para aprovar a migração. Tickets exige dados JVM e Android reais antes do gate de 95%; os filtros incluídos permanecem no denominador e são exercitados por testes Compose de interação.
 
 ## Segurança e validação
 
@@ -374,7 +374,7 @@ HomeLegacyContent mantém Scaffold/BoxWithConstraints, tratamento vazio, key do 
 - HomeLegacyCarousel: Box com offset e HorizontalPager, mesmas restrições de scroll, página fixa, espaçamento, padding e condição do rodapé.
 - HomeLegacyCards: chamada de LotteryCard com escala pela distância e ações bolão/aposta, preservando seleção e habilitação.
 - HomeLegacyQuickAccess e HomeLegacyCampaign: transições e callbacks originais.
-- HomeLegacyCartSummary: regra de visibilidade e CaixaDSCartSummary original.
+- HomeLegacyCartSummary: regra de visibilidade e LoteriasCaixaDSCartSummary original.
 
 Os atalhos, campanha, ações dos cartões e resumo usam o BoxScope original, sem novos nós de layout. A ordem continua atalhos → campanha → Box do carrossel; dentro dele, pager → ações condicionais → resumo. Os tempos/easings/traduções e o proprietário das animações externas permanecem iguais. Não há alteração de ViewModel, StateFlow, navegação, Domain/Data, rede ou persistência.
 
@@ -425,6 +425,6 @@ Os 18 arquivos de DTOs dos nove módulos transport foram colocados em data.dto d
 
 ## Verificação automática do contrato - pre-commit de 28/10/2026
 
-O hook nativo e o CI versionado usam `scripts/validate-pre-commit.py` e a tarefa `preCommitCheck`. Os gates de camadas, propriedade de fontes, grafo sem ciclos, App/Feature, Compose e CaixaDS são exigidos junto de Ktlint, Detekt, Lint, testes frescos, cobertura e contratos de plataforma. As fixtures XML operam em cópias temporárias. Divergências entre workspace e index ou falhas mantêm o commit bloqueado.
+O hook nativo e o CI versionado usam `scripts/validate-pre-commit.py` e a tarefa `preCommitCheck`. Os gates de camadas, propriedade de fontes, grafo sem ciclos, App/Feature, Compose e LoteriasCaixaDS são exigidos junto de Ktlint, Detekt, Lint, testes frescos, cobertura e contratos de plataforma. As fixtures XML operam em cópias temporárias. Divergências entre workspace e index ou falhas mantêm o commit bloqueado.
 
 A última execução completa aprovou 3.510 testes Android/JVM e JaCoCo LINE 95,11%, mas reprovou em Ktlint global; não é aprovação integral. Headers/baselines permanecem intactos. [Novidades e resultados](docs/UPDATES_20261028.md) e [instalação/limites do pre-commit](docs/quality/hooks-and-ci.md) discriminam a evidência e a proteção remota ainda dependente de configuração.

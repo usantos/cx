@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.notifications.R
 import br.gov.caixa.loterias.feature.notifications.domain.model.AppNotification
 import kotlinx.coroutines.launch
@@ -56,15 +56,15 @@ internal fun SwipeableNotificationItem(
                 modifier = Modifier.width(itemWidth)
             )
             SwipeAction(
-                icon = br.gov.caixa.loterias.core.designsystem.icon.CaixaDSNotificationSwipeRead,
+                icon = br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSNotificationSwipeRead,
                 description = stringResource(R.string.notifications_marcar_mensagem_como_lida),
-                background = CaixaDSColorTokens.NotificationReadAction,
+                background = LoteriasCaixaDSColorTokens.NotificationReadAction,
                 onClick = onRead
             )
             SwipeAction(
-                icon = br.gov.caixa.loterias.core.designsystem.icon.CaixaDSNotificationSwipeDelete,
+                icon = br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSNotificationSwipeDelete,
                 description = stringResource(R.string.notifications_excluir_mensagem),
-                background = CaixaDSColorTokens.NotificationDeleteAction,
+                background = LoteriasCaixaDSColorTokens.NotificationDeleteAction,
                 onClick = onDelete
             )
         }

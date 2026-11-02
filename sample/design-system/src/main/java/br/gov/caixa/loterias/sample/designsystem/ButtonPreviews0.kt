@@ -6,46 +6,46 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSBettingButton
-import br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSFooterButton
-import br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSOutlinedButton
-import br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSPrimaryButton
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSBettingButton
+import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSFooterButton
+import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSOutlinedButton
+import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSPrimaryButton
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 internal val buttonPreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSPrimaryButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSPrimaryButton") { state ->
         with(state) {
-            CaixaDSPrimaryButton(
+            LoteriasCaixaDSPrimaryButton(
                 text = actionLabel,
                 onClick = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSFooterButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSFooterButton") { state ->
         with(state) {
-            CaixaDSFooterButton(
+            LoteriasCaixaDSFooterButton(
                 text = actionLabel,
                 onClick = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSOutlinedButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSOutlinedButton") { state ->
         with(state) {
-            CaixaDSOutlinedButton(
+            LoteriasCaixaDSOutlinedButton(
                 text = actionLabel,
                 onClick = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSBettingButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSBettingButton") { state ->
         with(state) {
-            CaixaDSBettingButton(
+            LoteriasCaixaDSBettingButton(
                 text = actionLabel,
                 onClick = action,
                 modifier = Modifier.fillMaxWidth().height(48.dp),
-                color = CaixaDS.colors.brand,
-                content = CaixaDSColorTokens.White
+                color = LoteriasCaixaDS.colors.brand,
+                content = LoteriasCaixaDSColorTokens.White
             )
         }
     }

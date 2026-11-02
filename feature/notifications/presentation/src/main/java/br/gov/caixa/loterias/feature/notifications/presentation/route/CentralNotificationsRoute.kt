@@ -5,7 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.notifications.R
 import br.gov.caixa.loterias.feature.notifications.presentation.screen.CentralNotificationsScreen
 import br.gov.caixa.loterias.feature.notifications.presentation.state.InboxConfirmation
@@ -44,7 +44,7 @@ fun CentralNotificationsRoute(viewModel: CentralNotificationsViewModel, onBack: 
                 pending.notification.title
             )
         }
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title,
             message,
             stringResource(R.string.notifications_sim),
@@ -54,7 +54,7 @@ fun CentralNotificationsRoute(viewModel: CentralNotificationsViewModel, onBack: 
         )
     }
     state.error?.let { message ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             stringResource(R.string.notifications_atencao),
             message.resolve(),
             stringResource(R.string.notifications_entendi),

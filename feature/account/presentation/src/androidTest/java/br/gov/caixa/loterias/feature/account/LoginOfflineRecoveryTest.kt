@@ -18,9 +18,9 @@ import androidx.lifecycle.Lifecycle
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
 import br.gov.caixa.loterias.feature.account.presentation.route.LoginRoute
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewModel
@@ -161,7 +161,7 @@ class LoginOfflineRecoveryTest {
     private fun show(f: Fixture, silent: Boolean = false, automatic: Boolean = true) {
         compose.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides f) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     LoginRoute(
                         f.model, f.auth, "test", { f.authenticated++ }, {}, {},
                         authorizeOnEnter = automatic && !silent,
@@ -170,8 +170,8 @@ class LoginOfflineRecoveryTest {
                         networkAvailability = NetworkAvailability { f.connection },
                         returnFromBrowser = { f.returns++ },
                         offlineScreen = { retry, _ ->
-                            CaixaDSText("OFFLINE LOGIN")
-                            CaixaDSButton(onClick = retry) { CaixaDSText("RETRY LOGIN") }
+                            LoteriasCaixaDSText("OFFLINE LOGIN")
+                            LoteriasCaixaDSButton(onClick = retry) { LoteriasCaixaDSText("RETRY LOGIN") }
                         }
                     )
                 }

@@ -5,11 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterAccordionHeader
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterAccordionKind
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterSelection
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterStyle
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSHorizontalDivider as HorizontalDivider
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterAccordionHeader
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterAccordionKind
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterSelection
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSHorizontalDivider as HorizontalDivider
 import br.gov.caixa.loterias.feature.marketplacefilter.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterAction
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
@@ -72,18 +72,18 @@ private fun LegacyAccordionSelector(
     onClear: () -> Unit,
     clearLabel: String,
 ) {
-    CaixaDSMarketplaceFilterAccordionHeader(
+    LoteriasCaixaDSMarketplaceFilterAccordionHeader(
         title,
         testTag,
         onOpen,
         kind = if (testTag == "number_quantity_selector") {
-            CaixaDSMarketplaceFilterAccordionKind.QUANTITY
+            LoteriasCaixaDSMarketplaceFilterAccordionKind.QUANTITY
         } else {
-            CaixaDSMarketplaceFilterAccordionKind.NUMBERS
+            LoteriasCaixaDSMarketplaceFilterAccordionKind.NUMBERS
         }
     )
     if (selected.isNotEmpty()) {
-        CaixaDSMarketplaceFilterSelection(selected, clearLabel, onRemove, onClear)
+        LoteriasCaixaDSMarketplaceFilterSelection(selected, clearLabel, onRemove, onClear)
     }
 }
 
@@ -92,6 +92,6 @@ private fun LegacyDivider() {
     HorizontalDivider(
         modifier = (Modifier.padding(start = 10.dp, top = 10.dp, end = 10.dp)).uiId("filter.0023"),
         thickness = 2.dp,
-        color = CaixaDSMarketplaceFilterStyle.line
+        color = LoteriasCaixaDSMarketplaceFilterStyle.line
     )
 }

@@ -1,28 +1,11 @@
 package br.gov.caixa.loterias.feature.tickets
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.assertCountEquals
-import androidx.compose.ui.test.assertIsNotSelected
-import androidx.compose.ui.test.assertIsOff
-import androidx.compose.ui.test.assertIsOn
-import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasSetTextAction
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performKeyInput
-import androidx.compose.ui.test.performScrollTo
-import androidx.compose.ui.test.performSemanticsAction
-import androidx.compose.ui.test.pressKey
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
@@ -36,8 +19,6 @@ import br.gov.caixa.loterias.feature.tickets.presentation.components.TicketResul
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.ManualTicketActions
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.ManualTicketContent
 import br.gov.caixa.loterias.feature.tickets.presentation.state.TicketsUiState
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -51,7 +32,7 @@ class TicketsAccessibilityTest {
 
     @Test fun filledManualInputsRetainDistinctNames() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 ManualTicketContent(TicketsUiState(ticketCode = "123456", ticketRetailerCode = "987654"), {
                 }, {}, false, ManualTicketActions({}, {}, {}))
             }
@@ -63,7 +44,7 @@ class TicketsAccessibilityTest {
     @Test fun confirmedNumberAnnouncesHitWithoutRelyingOnColor() {
         val bet = ConfirmedBet(1, "Mega-Sena", 1, "27/10/2026", "Apurada", listOf(1, UNHIT_NUMBER))
         val draw = DrawResult("Mega-Sena", 1, "27/10/2026", "", listOf(1), emptyList(), emptyList(), false, "", "", "", emptyList())
-        compose.setContent { CaixaDSTheme { ConfirmedBetNumbers(bet, Color.Black, Color.White, draw) } }
+        compose.setContent { LoteriasCaixaDSTheme { ConfirmedBetNumbers(bet, Color.Black, Color.White, draw) } }
         compose.onNodeWithContentDescription("Número 01, acertou").assertExists()
         compose.onNodeWithContentDescription("Número 09, não acertou").assertExists()
     }
@@ -71,7 +52,7 @@ class TicketsAccessibilityTest {
     @Test fun ticketAwardsExposeHeaderValuePairsAsRow() {
         val row = TicketResultAwardRow("123", "Premiado", "Sena", "1", "2", "R$ 10,00")
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 LegacyTicketResultContent(
                     emptyList(),
                     TicketResultVisualData(modalityId = 2, modalityName = "Mega-Sena", ticketStatusId = 100, awardRows = listOf(row)),
@@ -86,7 +67,7 @@ class TicketsAccessibilityTest {
 
     @Test fun lotecaSelectionAnnouncesMatchAndAllMarkedOutcomes() {
         val match = SportsMatch(1, SportsTeam(1, "Casa"), SportsTeam(2, "Visitante"))
-        compose.setContent { CaixaDSTheme { LotecaSelection(listOf(LotecaMatchSelection(match, true, true, false)), Color.Black) } }
+        compose.setContent { LoteriasCaixaDSTheme { LotecaSelection(listOf(LotecaMatchSelection(match, true, true, false)), Color.Black) } }
         compose.onNodeWithContentDescription("Jogo 1: Casa x Visitante; selecionados: Casa, Empate").assertExists()
     }
     private companion object {

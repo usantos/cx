@@ -14,7 +14,7 @@ import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
@@ -57,7 +57,7 @@ class PersonalDataRouteUiTest {
                         opened += uri
                     }
                 }
-            ) { CaixaDSTheme { PersonalDataRoute(model, {}, { completed++ }) } }
+            ) { LoteriasCaixaDSTheme { PersonalDataRoute(model, {}, { completed++ }) } }
         }
         compose.onNodeWithText("Não sei o meu CEP").performScrollTo().performClick()
         compose.onNodeWithText("Cancelar").performClick()
@@ -96,7 +96,7 @@ class PersonalDataRouteUiTest {
             updates++
             AppResult.Failure(AppError.Validation("Synthetic update rejected"))
         }
-        compose.setContent { CaixaDSTheme { PersonalDataRoute(model, {}, { completed++ }) } }
+        compose.setContent { LoteriasCaixaDSTheme { PersonalDataRoute(model, {}, { completed++ }) } }
         compose.onNodeWithText("Atualizar").performClick()
         flush()
         compose.onNodeWithText("Synthetic update rejected").assertExists()
@@ -109,6 +109,33 @@ class PersonalDataRouteUiTest {
             assertNull(model.state.value.errorMessage)
         }
     }
+
+    @Test fun `successful form reentry does not deliver completion twice`() {
+        val visible = androidx.compose.runtime.mutableStateOf(true)
+        var completed = 0
+        var writes = 0
+        val model = model { _, _ ->
+            writes++
+            AppResult.Success(Unit)
+        }
+        compose.setContent {
+            LoteriasCaixaDSTheme { if (visible.value) PersonalDataRoute(model, {}, { completed++ }) }
+        }
+        compose.onNodeWithText("Atualizar").performClick()
+        flush()
+        compose.runOnIdle {
+            assertEquals(1, completed)
+            visible.value = false
+        }
+        compose.waitForIdle()
+        compose.runOnIdle { visible.value = true }
+        compose.waitForIdle()
+        compose.runOnIdle {
+            assertEquals(1, completed)
+            assertEquals(1, writes)
+        }
+    }
+
     private fun flush() {
         compose.runOnIdle { Snapshot.sendApplyNotifications() }
         compose.waitForIdle()

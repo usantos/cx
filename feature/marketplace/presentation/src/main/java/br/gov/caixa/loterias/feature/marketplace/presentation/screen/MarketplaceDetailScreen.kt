@@ -1,7 +1,17 @@
 package br.gov.caixa.loterias.feature.marketplace.presentation.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -9,10 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSEmptyState
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBarColor
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSEmptyState
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBarColor
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.marketplace.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.DetailBetGrid
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.DetailDivider
@@ -41,16 +51,16 @@ fun MarketplaceDetailScreen(
     specialName: String? = null,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSStatusBarColor(CaixaDSColorTokens.White, darkIcons = true)
+    LoteriasCaixaDSStatusBarColor(LoteriasCaixaDSColorTokens.White, darkIcons = true)
     val detail = state.detail
     val colors = marketplaceColors(detail?.modality.orEmpty())
-    Column(Modifier.fillMaxSize().background(CaixaDSColorTokens.White).windowInsetsPadding(WindowInsets.safeDrawing)) {
+    Column(Modifier.fillMaxSize().background(LoteriasCaixaDSColorTokens.White).windowInsetsPadding(WindowInsets.safeDrawing)) {
         DetailHeader(detail, colors, onBack, specialName)
         Box(Modifier.weight(1f).fillMaxWidth()) {
             when {
                 state.isLoading -> CircularProgressIndicator(Modifier.align(Alignment.Center), color = colors.dark)
 
-                state.errorMessage != null -> CaixaDSEmptyState(
+                state.errorMessage != null -> LoteriasCaixaDSEmptyState(
                     title = uiStrings.getString(
                         LocalizedR.string.ui_nao_foi_possivel_carregar_o_bolao_41c8f3
                     ),

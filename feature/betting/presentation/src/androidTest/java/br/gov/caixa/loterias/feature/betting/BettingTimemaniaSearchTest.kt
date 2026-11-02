@@ -15,7 +15,7 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
@@ -58,7 +58,7 @@ class BettingTimemaniaSearchTest {
                 return AppResult.Success(ShoppingCart(1, BigDecimal.ZERO, emptyList()))
             }
         })
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(10_000) { vm.state.value.game != null }
         compose.runOnIdle { (1..10).forEach(vm::toggleNumber); vm.primaryAction() }
         compose.waitForIdle()

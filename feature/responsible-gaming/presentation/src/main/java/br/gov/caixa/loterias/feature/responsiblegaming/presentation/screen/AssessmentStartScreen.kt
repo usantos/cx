@@ -34,14 +34,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.R
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton as Button
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButtonDefaults as ButtonDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.layout.caixaDSDrawablePainter
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSRegularFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSDrawablePainter
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSRegularFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.responsiblegaming.R as FeatureR
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.state.ResponsibleGamingAction
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.state.ResponsibleGamingUiState
@@ -50,10 +50,10 @@ import br.gov.caixa.loterias.feature.responsiblegaming.presentation.state.Respon
 internal fun AssessmentStartScreen(state: ResponsibleGamingUiState, onAction: (ResponsibleGamingAction) -> Unit) {
     // A introdução legada consome o retorno do sistema; o botão opcional Fechar encerra explicitamente.
     BackHandler {}
-    Box(Modifier.fillMaxSize().background(CaixaDSColorTokens.White).statusBarsPadding().navigationBarsPadding()) {
+    Box(Modifier.fillMaxSize().background(LoteriasCaixaDSColorTokens.White).statusBarsPadding().navigationBarsPadding()) {
         Box(
             Modifier.fillMaxSize().background(
-                Brush.horizontalGradient(listOf(CaixaDS.colors.teal, CaixaDS.colors.brand))
+                Brush.horizontalGradient(listOf(LoteriasCaixaDS.colors.teal, LoteriasCaixaDS.colors.brand))
             )
         ) {
             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -70,7 +70,7 @@ internal fun AssessmentStartScreen(state: ResponsibleGamingUiState, onAction: (R
                     )
                     Spacer(Modifier.height(20.dp))
                     Image(
-                        caixaDSDrawablePainter(R.drawable.ic_volantes),
+                        loteriasCaixaDSDrawablePainter(R.drawable.ic_volantes),
                         null,
                         Modifier.width(180.dp).height(109.dp),
                         contentScale = ContentScale.Fit
@@ -78,8 +78,8 @@ internal fun AssessmentStartScreen(state: ResponsibleGamingUiState, onAction: (R
                     Text(
                         stringResource(FeatureR.string.assessment_welcome),
                         modifier = (Modifier.fillMaxWidth().padding(top = 40.dp)).uiId("rg.0042"),
-                        color = CaixaDSColorTokens.White,
-                        fontFamily = CaixaDSRegularFontFamily,
+                        color = LoteriasCaixaDSColorTokens.White,
+                        fontFamily = LoteriasCaixaDSRegularFontFamily,
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
@@ -88,7 +88,7 @@ internal fun AssessmentStartScreen(state: ResponsibleGamingUiState, onAction: (R
                     Text(
                         stringResource(FeatureR.string.assessment_introduction),
                         (Modifier.fillMaxWidth().padding(start = 40.dp, top = 30.dp, end = 40.dp)).uiId("rg.0043"),
-                        color = CaixaDSColorTokens.White,
+                        color = LoteriasCaixaDSColorTokens.White,
                         fontSize = 15.sp,
                         textAlign = TextAlign.Center,
                         style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true))
@@ -125,13 +125,16 @@ private fun WhiteOutlineButton(text: String, onClick: () -> Unit, modifier: Modi
         modifier = (modifier.heightIn(min = 50.dp)).uiId("rg.0046"),
         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
         shape = RoundedCornerShape(5.dp),
-        border = BorderStroke(1.dp, CaixaDSColorTokens.White),
-        colors = ButtonDefaults.buttonColors(containerColor = CaixaDSColorTokens.Transparent, contentColor = CaixaDSColorTokens.White)
+        border = BorderStroke(1.dp, LoteriasCaixaDSColorTokens.White),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = LoteriasCaixaDSColorTokens.Transparent,
+            contentColor = LoteriasCaixaDSColorTokens.White
+        )
     ) {
         Text(
             text,
             (Modifier.fillMaxWidth()).uiId("rg.0047"),
-            fontFamily = CaixaDSFontFamily,
+            fontFamily = LoteriasCaixaDSFontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
             textAlign = TextAlign.Center,

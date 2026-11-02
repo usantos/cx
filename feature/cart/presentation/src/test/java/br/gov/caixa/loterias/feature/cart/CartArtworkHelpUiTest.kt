@@ -13,7 +13,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.presentation.components.PoolCartArrow
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.cartHelpAction
 import org.junit.Assert.assertEquals
@@ -34,7 +34,7 @@ class CartArtworkHelpUiTest {
 
     @Test fun poolArrowRendersHorizontalConnectorAndDownwardTipInsideItsBounds() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 PoolCartArrow(Color.Red, Modifier.size(40.dp, 50.dp).background(Color.White).testTag("arrow"))
             }
         }

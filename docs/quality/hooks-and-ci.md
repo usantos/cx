@@ -35,7 +35,7 @@ A suíte é executada novamente e pode levar dezenas de minutos. Nesta validaç�
 
 - `qualityGate`: Ktlint global, Detekt, Android Lint, testes unitários frescos de todos os módulos e JaCoCo LINE global **estritamente maior que 95%**;
 - `verifyKotlinFormatting`, `verifyCleanArchitecture` e suas políticas de App/Feature, propriedade das fontes e grafo sem ciclos;
-- `verifyComposeMigration`, inventário de UI, paridade de backend e CaixaDS;
+- `verifyComposeMigration`, inventário de UI, paridade de backend e LoteriasCaixaDS;
 - identidade/flavors, segurança de rede, FilaBra e Topaz;
 - testes Python de arquitetura, cobertura, preparação de UI e assinatura/rotação Remote Config;
 - testes do próprio hook com commits reais em repositórios temporários;

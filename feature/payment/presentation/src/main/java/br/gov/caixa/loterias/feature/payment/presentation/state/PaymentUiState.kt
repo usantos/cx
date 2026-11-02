@@ -19,6 +19,7 @@ data class PaymentUiState(
     val deleteCandidate: SavedPaymentCard? = null,
     val pix: PixCharge? = null,
     val pixApproved: Boolean = false,
+    val pixApprovalNavigationConsumed: Boolean = false,
     val pixRejected: Boolean = false,
     val checkingPix: Boolean = false,
     val damMessage: String? = null,
@@ -28,5 +29,5 @@ data class PaymentUiState(
     val notice: PurchaseNoticeUiState? = null,
     val registrationPending: Boolean = false,
     val pixRecoveryRequired: Boolean = false,
-    val pixSessionMismatch: Boolean = false
+    val pixSessionMismatch: Boolean = false,
 )

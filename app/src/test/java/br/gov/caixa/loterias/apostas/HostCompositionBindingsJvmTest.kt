@@ -23,7 +23,7 @@ import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendProvider
 import br.gov.caixa.loterias.core.network.api.NotificationInboxApiProvider
 import br.gov.caixa.loterias.core.network.api.NotificationReadApiProvider
@@ -192,7 +192,7 @@ class HostCompositionBindingsJvmTest {
         val offline = HostFeatureConfigurationModule.loginConnectionPresentation(network)
         val cart = HostFeatureConfigurationModule.cartRecoveryStatusPresentation()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 when (mode.value) {
                     0 -> startup.Content(StartupStatusKind.UNAVAILABLE, { retries++ }, network, false)
                     1 -> offline.Offline({ retries++ }, false)

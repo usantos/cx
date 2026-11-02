@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -21,7 +21,7 @@ class TicketScannerScreenTest {
         val replacement = mutableStateOf(false)
         var first = 0
         var second = 0
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             TicketScannerScreen(false, { error("Scanner close must be hidden") },
                 if (replacement.value) ({ second++ }) else ({ first++ }),
                 cameraPreview = { error("Denied permission must not compose camera hardware") })
@@ -37,7 +37,7 @@ class TicketScannerScreenTest {
 
     @Test fun landscapeShowsAutomaticQrGuidanceWithoutModeButton() {
         var portraitRequests = 0
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             val landscape = Configuration(LocalConfiguration.current).apply {
                 orientation = Configuration.ORIENTATION_LANDSCAPE
             }
@@ -55,7 +55,7 @@ class TicketScannerScreenTest {
     @Test fun grantedPermissionShowsLegacyOverlayAndCloseWithoutInventingAQrButtonAction() {
         var close = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 TicketScannerScreen(true, { close++ }, { error("Already granted") }, cameraPreview = { Box(it) })
             }
         }

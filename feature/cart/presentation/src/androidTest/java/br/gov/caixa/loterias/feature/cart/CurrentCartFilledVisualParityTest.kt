@@ -16,7 +16,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
@@ -66,7 +66,7 @@ class CurrentCartFilledVisualParityTest {
             CartItem(2, CartItemKind.COMBO, "Combo", "", BigDecimal("12.00"), comboBetCount = 2)
         )
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 CurrentCartFooter(ShoppingCart(1, BigDecimal("18.00"), items), true, {}, {})
             }
         }
@@ -158,7 +158,7 @@ class CurrentCartFilledVisualParityTest {
 
     @Test fun poolDetailUsesInstalledBoldFont() {
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) { CurrentCartRow(pool(), Instant.EPOCH, {}, {}) }
+            LoteriasCaixaDSTheme(darkTheme = false) { CurrentCartRow(pool(), Instant.EPOCH, {}, {}) }
         }
         val layouts = mutableListOf<TextLayoutResult>()
         compose.onNodeWithText("mais detalhes", useUnmergedTree = true)
@@ -203,7 +203,7 @@ class CurrentCartFilledVisualParityTest {
 
     @Test fun detailChevronUsesInstalledNarrowArtwork() {
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 Box(Modifier.background(Color.White)) { CurrentCartRow(pool(), Instant.EPOCH, {}, {}) }
             }
         }
@@ -277,7 +277,7 @@ class CurrentCartFilledVisualParityTest {
 
     private fun show(item: CartItem) {
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 Box(Modifier.background(Color.White)) { CurrentCartRow(item, Instant.EPOCH, {}, null) }
             }
         }

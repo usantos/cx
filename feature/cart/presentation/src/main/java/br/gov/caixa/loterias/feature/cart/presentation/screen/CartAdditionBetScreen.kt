@@ -2,7 +2,15 @@ package br.gov.caixa.loterias.feature.cart.presentation.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,11 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.core.presentation.formatting.formatBrazilianCurrency
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.presentation.components.LegacyHomeButton
@@ -39,8 +47,8 @@ internal fun LegacyBetAddition(
     onHelp: ((Int, String) -> Unit)?,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    val style = caixaDSLotteryStyle(0, state.modality)
-    Column(Modifier.fillMaxSize().background(CaixaDSColorTokens.White).statusBarsPadding()) {
+    val style = loteriasCaixaDSLotteryStyle(0, state.modality)
+    Column(Modifier.fillMaxSize().background(LoteriasCaixaDSColorTokens.White).statusBarsPadding()) {
         PoolHeader(
             state.modality,
             state.contest,
@@ -62,7 +70,7 @@ internal fun LegacyBetAddition(
                     },
                     (Modifier.fillMaxWidth()).uiId("cart.0091"),
                     color = style.content,
-                    fontFamily = CaixaDSFontFamily,
+                    fontFamily = LoteriasCaixaDSFontFamily,
                     style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true)),
                     fontSize = 14.2.sp,
                     fontWeight = FontWeight.Bold,
@@ -85,7 +93,7 @@ internal fun LegacyBetAddition(
                             (Modifier.padding(start = 98.dp, end = 97.dp, top = 29.dp)).uiId("cart.0092"),
                             color = style.content,
                             fontSize = 14.sp,
-                            fontFamily = CaixaDSFuturaFontFamily,
+                            fontFamily = LoteriasCaixaDSFuturaFontFamily,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -93,7 +101,7 @@ internal fun LegacyBetAddition(
             }
             LegacyHomeButton(onClick = onHome, modifier = (Modifier.align(Alignment.BottomCenter).offset(y = 43.dp)).uiId("cart.0093"))
         }
-        Column(Modifier.background(CaixaDSColorTokens.White).navigationBarsPadding()) {
+        Column(Modifier.background(LoteriasCaixaDSColorTokens.White).navigationBarsPadding()) {
             PoolCartFooter(state.amount, onOpenCart)
         }
     }

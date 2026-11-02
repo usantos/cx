@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.marketplacefilter
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.components.MarketplaceFilterModalities
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
@@ -21,7 +21,7 @@ class MarketplaceFilterAccessibilityRegressionTest {
     @Test fun selectedModalityPublishesSelectedState() {
         val mega = MarketplaceFilterModalityUi(2, "Mega-Sena", contestType = 1, numberOptions = emptyList(), maximumNumber = 60)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 MarketplaceFilterModalities(MarketplaceFilterUiState(modalities = listOf(mega), selectedModality = mega)) {}
             }
         }

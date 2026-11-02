@@ -13,8 +13,8 @@ import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsMatch
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsTeam
 import br.gov.caixa.loterias.feature.results.presentation.components.DrawLotecaResults
@@ -68,7 +68,7 @@ class ResultLotecaLargeFontTest {
     @Test fun winningTeamTextHasAaContrastAtDefaultFont() = withFont(1f) {
         show()
         val foreground = layout("REAL MADRID").layoutInput.style.color
-        val contrast = ColorUtils.calculateContrast(foreground.toArgb(), CaixaDSColorTokens.RapidExcluded.toArgb())
+        val contrast = ColorUtils.calculateContrast(foreground.toArgb(), LoteriasCaixaDSColorTokens.RapidExcluded.toArgb())
         assertTrue("Winner text contrast is $contrast, minimum $MIN_TEXT_CONTRAST", contrast >= MIN_TEXT_CONTRAST)
     }
 
@@ -79,7 +79,7 @@ class ResultLotecaLargeFontTest {
             DrawSportsTeam("REAL MADRID", countryCode = "ESP", won = true)
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Box(Modifier.size(360.dp, 640.dp)) {
                     DrawLotecaResults(
                         listOf(match, match.copy(number = 2, home = DrawSportsTeam("OUTRO"), away = DrawSportsTeam("VISITANTE"))),

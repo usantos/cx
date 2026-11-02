@@ -31,11 +31,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSPrimaryButton
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSPrimaryButton
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.tickets.R
 
 /** A rota fornece o conteúdo da câmera; testes podem renderizar a sobreposição sem hardware. */
@@ -48,7 +48,7 @@ internal fun TicketScannerScreen(
     onManual: (() -> Unit)? = null,
 ) {
     val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-    Box(Modifier.fillMaxSize().background(CaixaDSColorTokens.CameraCanvas).navigationBarsPadding()) {
+    Box(Modifier.fillMaxSize().background(LoteriasCaixaDSColorTokens.CameraCanvas).navigationBarsPadding()) {
         if (permissionGranted) {
             cameraPreview(Modifier.fillMaxSize())
         } else {
@@ -57,13 +57,18 @@ internal fun TicketScannerScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Icon(CaixaDSIcons.Information, null, (Modifier.size(56.dp)).uiId("tickets.0244"), tint = CaixaDSColorTokens.White)
+                Icon(
+                    LoteriasCaixaDSIcons.Information,
+                    null,
+                    (Modifier.size(56.dp)).uiId("tickets.0244"),
+                    tint = LoteriasCaixaDSColorTokens.White
+                )
                 Text(
                     stringResource(R.string.tickets_scanner_permission_message),
                     (Modifier.padding(vertical = 20.dp)).uiId("tickets.0245"),
-                    color = CaixaDSColorTokens.White
+                    color = LoteriasCaixaDSColorTokens.White
                 )
-                CaixaDSPrimaryButton(stringResource(R.string.tickets_scanner_permission_action), {
+                LoteriasCaixaDSPrimaryButton(stringResource(R.string.tickets_scanner_permission_action), {
                     onRequestCameraPermission()
                 }, (Modifier.fillMaxWidth()).uiId("tickets.0246"))
             }
@@ -79,7 +84,7 @@ internal fun TicketScannerScreen(
             Text(
                 stringResource(R.string.tickets_scanner_title),
                 (Modifier.statusBarsPadding().offset(x = 100.dp, y = 58.dp)).uiId("tickets.0247"),
-                color = CaixaDSColorTokens.White,
+                color = LoteriasCaixaDSColorTokens.White,
                 fontSize = if (landscape) 16.sp else 18.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -93,13 +98,13 @@ internal fun TicketScannerScreen(
             Text(
                 stringResource(R.string.tickets_scanner_qr_instruction),
                 (Modifier.statusBarsPadding().offset(y = 88.dp).fillMaxWidth().padding(horizontal = 68.dp)).uiId("tickets.0249"),
-                color = CaixaDSColorTokens.White,
+                color = LoteriasCaixaDSColorTokens.White,
                 fontSize = 14.2.sp,
                 lineHeight = 20.sp
             )
         }
         onManual?.let { openManual ->
-            CaixaDSPrimaryButton(
+            LoteriasCaixaDSPrimaryButton(
                 stringResource(R.string.workflow_tickets_digitar_codigo),
                 openManual,
                 (Modifier.align(Alignment.BottomCenter).fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)).uiId("tickets.0250")
@@ -119,7 +124,7 @@ private fun TicketScannerMask(landscape: Boolean) {
             addRect(androidx.compose.ui.geometry.Rect(left, top, left + frameWidth, top + frameHeight))
         }
         clipPath(window, ClipOp.Difference) {
-            drawRect(CaixaDSColorTokens.Blue500.copy(alpha = .8f))
+            drawRect(LoteriasCaixaDSColorTokens.Blue500.copy(alpha = .8f))
         }
         val corner = 24.dp.toPx()
         val stroke = 3.dp.toPx()
@@ -129,8 +134,8 @@ private fun TicketScannerMask(landscape: Boolean) {
             Triple(Offset(left, top + frameHeight), 1f, -1f),
             Triple(Offset(left + frameWidth, top + frameHeight), -1f, -1f)
         ).forEach { (origin, horizontal, vertical) ->
-            drawLine(CaixaDSColorTokens.White, origin, origin + Offset(corner * horizontal, 0f), stroke)
-            drawLine(CaixaDSColorTokens.White, origin, origin + Offset(0f, corner * vertical), stroke)
+            drawLine(LoteriasCaixaDSColorTokens.White, origin, origin + Offset(corner * horizontal, 0f), stroke)
+            drawLine(LoteriasCaixaDSColorTokens.White, origin, origin + Offset(0f, corner * vertical), stroke)
         }
     }
 }

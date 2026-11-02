@@ -3,46 +3,46 @@
 package br.gov.caixa.loterias.sample.designsystem
 
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSAccountCheckbox
-import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckSwitch
-import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckbox
-import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSLoginSwitch
-import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSNumberPicker
-import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSRadioButton
-import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSTutorialCheckbox
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSAccountCheckbox
+import br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSCheckSwitch
+import br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSCheckbox
+import br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSLoginSwitch
+import br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSNumberPicker
+import br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSRadioButton
+import br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSTutorialCheckbox
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 internal val inputPreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSAccountCheckbox") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSAccountCheckbox") { state ->
         with(state) {
-            CaixaDSAccountCheckbox(
+            LoteriasCaixaDSAccountCheckbox(
                 checked = checked,
                 onToggle = toggle,
                 width = 32.dp
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckSwitch") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSCheckSwitch") { state ->
         with(state) {
-            CaixaDSCheckSwitch(
+            LoteriasCaixaDSCheckSwitch(
                 enabled = checked,
-                accent = CaixaDS.colors.brand,
-                onAccent = CaixaDSColorTokens.White,
-                trackBackground = CaixaDS.colors.line,
+                accent = LoteriasCaixaDS.colors.brand,
+                onAccent = LoteriasCaixaDSColorTokens.White,
+                trackBackground = LoteriasCaixaDS.colors.line,
                 invertColors = false,
                 onClick = toggle
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSLoginSwitch") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSLoginSwitch") { state ->
         with(state) {
-            CaixaDSLoginSwitch(checked = checked)
+            LoteriasCaixaDSLoginSwitch(checked = checked)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSNumberPicker") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSNumberPicker") { state ->
         with(state) {
-            CaixaDSNumberPicker(
+            LoteriasCaixaDSNumberPicker(
                 label = sample,
                 options = options,
                 selectedIndex = selection,
@@ -50,25 +50,25 @@ internal val inputPreviews0 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSRadioButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSRadioButton") { state ->
         with(state) {
-            CaixaDSRadioButton(
+            LoteriasCaixaDSRadioButton(
                 selected = checked,
                 onClick = toggle
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckbox") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSCheckbox") { state ->
         with(state) {
-            CaixaDSCheckbox(
+            LoteriasCaixaDSCheckbox(
                 checked = checked,
                 onClick = toggle
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSTutorialCheckbox") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSTutorialCheckbox") { state ->
         with(state) {
-            CaixaDSTutorialCheckbox(
+            LoteriasCaixaDSTutorialCheckbox(
                 checked = checked,
                 onClick = toggle
             )

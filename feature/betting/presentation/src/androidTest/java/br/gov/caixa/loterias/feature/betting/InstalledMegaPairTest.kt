@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
@@ -52,54 +52,72 @@ class InstalledMegaPairTest {
         },object:AddBetToCartUseCase {
             override suspend fun invoke(draft:BetDraft):AppResult<ShoppingCart> { sends.incrementAndGet();return AppResult.Success(ShoppingCart(1,BigDecimal.ZERO,emptyList())) }
         })
-        compose.setContent { CaixaDSTheme(darkTheme=false) { BettingGameRoute(vm,{}, {},cartTotal=BigDecimal.ZERO,cartBetCount=0) } }
+        compose.setContent {
+            LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}, cartTotal = BigDecimal.ZERO, cartBetCount = 0) }
+        }
         compose.waitUntil(10_000) { vm.state.value.game != null }
         compose.onNodeWithText("3067").assertIsDisplayed()
         compose.onNodeWithText("06/10").assertIsDisplayed()
-        capture("manual",vm)
+        capture("manual", vm)
         compose.onNodeWithText("6 números").performClick()
         compose.waitForIdle()
         compose.onNodeWithTag("betting-option-list").assertIsDisplayed()
-        compose.runOnIdle { assertEquals(15,vm.state.value.numberQuantityOptions.size) }
-        capture("quantity",vm)
+        compose.runOnIdle { assertEquals(15, vm.state.value.numberQuantityOptions.size) }
+        capture("quantity", vm)
         compose.onNodeWithTag("betting-option-cancel").performClick()
         compose.waitForIdle()
-        compose.runOnIdle { assertEquals(6,vm.state.value.numberQuantity) }
+        compose.runOnIdle { assertEquals(6, vm.state.value.numberQuantity) }
         compose.onNodeWithText("Teimosinha").performClick()
         compose.waitForIdle()
         compose.onNodeWithTag("betting-option-wheel").assertIsDisplayed()
         compose.onNodeWithTag("betting-option-item-0").assertIsDisplayed()
-        capture("recurrence",vm,"recurrenceOptions=${game.recurringOptions}\n")
+        capture("recurrence", vm, "recurrenceOptions=${game.recurringOptions}\n")
         compose.onNodeWithTag("betting-option-cancel").performClick()
         compose.waitForIdle()
         assertTrue(legacyBettingHelp(2).isNotBlank())
         compose.onNodeWithText("Como jogar").performClick()
         compose.waitForIdle()
         compose.onNodeWithText("Como Jogar: mega-sena").assertIsDisplayed()
-        capture("help",vm)
+        capture("help", vm)
         compose.onNodeWithText("Entendi").performClick()
-        compose.runOnIdle { assertEquals(0,sends.get());assertEquals(0,vm.state.value.recurringDraws);assertEquals(6,vm.state.value.numberQuantity) }
+        compose.runOnIdle {
+            assertEquals(0, sends.get())
+            assertEquals(0, vm.state.value.recurringDraws)
+            assertEquals(6, vm.state.value.numberQuantity)
+        }
     }
 
-    private fun capture(state:String,vm:BettingGameViewModel,additional:String="") {
+    private fun capture(state: String, vm: BettingGameViewModel, additional: String = "") {
         compose.waitForIdle()
-        val instrumentation=InstrumentationRegistry.getInstrumentation()
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
         // O estado ocioso do Compose não inclui a animação nativa de entrada/opacidade de Window.
         instrumentation.waitForIdleSync()
         android.os.SystemClock.sleep(300)
         instrumentation.waitForIdleSync()
-        val folder=File(requireNotNull(instrumentation.targetContext.externalCacheDir),"codex-parity").apply { mkdirs() }
-        val name="compose-mega-$state"
-        val bitmap=requireNotNull(instrumentation.uiAutomation.takeScreenshot())
-        File(folder,"$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) };bitmap.recycle()
-        val resources=instrumentation.targetContext.resources
+        val folder = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "codex-parity").apply { mkdirs() }
+        val name = "compose-mega-$state"
+        val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
+        File(folder, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        bitmap.recycle()
+        val resources = instrumentation.targetContext.resources
         compose.onNodeWithContentDescription("Dúvidas").assertIsDisplayed()
         val headerBounds = compose.onNodeWithContentDescription("Dúvidas").fetchSemanticsNode().boundsInRoot
-        val headerEvidence="headerBounds=$headerBounds\n"
-        File(folder,"$name.txt").writeText("fixture=true\nnetworkSends=0\ncontest=3067\ndrawDate=06/10/2026\nnumberQuantity=${vm.state.value.numberQuantity}\nrecurringDraws=${vm.state.value.recurringDraws}\ncartTotal=0\ndensityDpi=${resources.displayMetrics.densityDpi}\nfontScale=${resources.configuration.fontScale}\n$headerEvidence$additional")
-        assertTrue("PNG artifact missing",File(folder,"$name.png").length()>0)
-        assertTrue("Metadata artifact missing",File(folder,"$name.txt").length()>0)
-
+        val headerEvidence = "headerBounds=$headerBounds\n"
+        File(
+            folder,
+            "$name.txt"
+        ).writeText(
+            "fixture=true\nnetworkSends=0\ncontest=3067\ndrawDate=06/10/2026\nnumberQuantity=" +
+                "${vm.state.value.numberQuantity}\nrecurringDraws=${vm.state.value.recurringDraws}\ncartTotal=0\ndensityDpi=" +
+                "${resources.displayMetrics.densityDpi}\nfontScale=${resources.configuration.fontScale}\n" +
+                "$headerEvidence$additional"
+        )
+        assertTrue("PNG artifact missing", File(folder, "$name.png").length() > 0)
+        assertTrue("Metadata artifact missing", File(folder, "$name.txt").length() > 0)
     }
-    private fun combinations(n:Int,k:Int):Long { var result=1L;(1..k).forEach { result=result*(n-k+it)/it };return result }
+    private fun combinations(n: Int, k: Int): Long {
+        var result = 1L
+        (1..k).forEach { result = result * (n - k + it) / it }
+        return result
+    }
 }

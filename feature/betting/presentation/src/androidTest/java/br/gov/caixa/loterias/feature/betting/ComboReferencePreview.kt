@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
 import java.text.NumberFormat
@@ -26,8 +26,8 @@ private const val NATIVE_TITLE_SIZE = 16
 @Composable
 internal fun ComboReferencePreview(combo: BetCombo, combos: List<BetCombo>, detail: Boolean) {
     val context = LocalContext.current
-    Box(Modifier.fillMaxSize().background(CaixaDSColorTokens.Blue700).statusBarsPadding()) {
-        Box(Modifier.fillMaxSize().background(CaixaDSColorTokens.White).navigationBarsPadding()) {
+    Box(Modifier.fillMaxSize().background(LoteriasCaixaDSColorTokens.Blue700).statusBarsPadding()) {
+        Box(Modifier.fillMaxSize().background(LoteriasCaixaDSColorTokens.White).navigationBarsPadding()) {
             AndroidView(modifier = Modifier.fillMaxSize(), factory = {
                 val oracle = ComboNativeOracle(context)
                 val root = oracle.inflate(if (detail) "activity_detalhe_combo" else "activity_combos")

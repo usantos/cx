@@ -14,11 +14,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton as Button
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButtonDefaults as ButtonDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 
 @Composable
 internal fun LegacyLoginButton(
@@ -29,8 +29,8 @@ internal fun LegacyLoginButton(
     modifier: Modifier = Modifier,
     loading: Boolean = false,
 ) {
-    val background = if (outlined) CaixaDS.colors.authenticationBackground else CaixaDS.colors.actionHighlight
-    val foreground = CaixaDS.colors.onBrand
+    val background = if (outlined) LoteriasCaixaDS.colors.authenticationBackground else LoteriasCaixaDS.colors.actionHighlight
+    val foreground = LoteriasCaixaDS.colors.onBrand
     val largeFont = androidx.compose.ui.platform.LocalDensity.current.fontScale > 1f
     Button(
         onClick = onClick,
@@ -39,7 +39,7 @@ internal fun LegacyLoginButton(
             modifier.fillMaxWidth()
                 .then(if (largeFont) Modifier.heightIn(min = 48.dp) else Modifier.height(48.dp))
             ).uiId("account.0006"),
-        shape = RoundedCornerShape(CaixaDS.radii.sm),
+        shape = RoundedCornerShape(LoteriasCaixaDS.radii.sm),
         border = if (outlined) BorderStroke(1.dp, foreground) else null,
         colors = ButtonDefaults.buttonColors(
             containerColor = background,
@@ -47,11 +47,11 @@ internal fun LegacyLoginButton(
             disabledContainerColor = background.copy(alpha = 0.55f),
             disabledContentColor = foreground.copy(alpha = 0.75f)
         ),
-        elevation = ButtonDefaults.buttonElevation(defaultElevation = CaixaDS.elevation.none)
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = LoteriasCaixaDS.elevation.none)
     ) {
         if (loading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(CaixaDS.sizes.iconMd),
+                modifier = Modifier.size(LoteriasCaixaDS.sizes.iconMd),
                 color = foreground,
                 strokeWidth = 2.dp
             )

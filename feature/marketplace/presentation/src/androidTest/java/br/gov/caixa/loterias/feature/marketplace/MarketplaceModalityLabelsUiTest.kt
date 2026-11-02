@@ -12,7 +12,7 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
@@ -81,7 +81,7 @@ class MarketplaceModalityLabelsUiTest {
         try {
             compose.setContent {
                 val state by model.state.collectAsState()
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     MarketplaceScreen(state, onBack = {}, onFilter = {}, onHelp = {}, onRetailerSelected = {},
                         onRetry = {}, onLoadMore = {}, onPoolSelected = {}, onToggleExpanded = {},
                         onDecrease = {}, onIncrease = {}, onFavorite = {}, onAddToCart = {},

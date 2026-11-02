@@ -9,20 +9,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceBack
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceStyle
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceToolbarIcon
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIconButton as IconButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.caixaDSMarketplaceCanvas
-import br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartSummary
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceStyle
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceToolbarIcon
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIconButton as IconButton
+import br.gov.caixa.loterias.core.designsystem.components.loteriasCaixaDSMarketplaceCanvas
+import br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCartSummary
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.marketplace.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.FavoriteRetailersContent
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.MarketplaceContestHeader
@@ -56,7 +51,7 @@ fun MarketplaceScreen(
     onRetailerSearch: () -> Unit = {},
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = if (retailerView) {
             uiStrings.getString(
                 LocalizedR.string.ui_loterica_favorita_6ab38b
@@ -66,9 +61,9 @@ fun MarketplaceScreen(
         },
         onBack = onBack,
         gradientTopBar = false,
-        topBarStartColor = CaixaDSColorTokens.Blue700,
+        topBarStartColor = LoteriasCaixaDSColorTokens.Blue700,
 
-        bottomBar = { CaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart, modifier = Modifier.uiId("pool.0116")) },
+        bottomBar = { LoteriasCaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart, modifier = Modifier.uiId("pool.0116")) },
         topBarActionWidth = if (retailerView) 48.dp else 96.dp,
         topBarAction = {
             MarketplaceToolbar(state.selectedTab, retailerView, onFilter, onRetailerSearch, onHelp)
@@ -76,7 +71,7 @@ fun MarketplaceScreen(
         modifier = Modifier.uiId("pool.0121")
     ) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).caixaDSMarketplaceCanvas(cartTotal.signum() > 0)
+            Modifier.fillMaxSize().padding(padding).loteriasCaixaDSMarketplaceCanvas(cartTotal.signum() > 0)
         ) {
             if (!retailerView) {
                 MarketplaceTabs(state.selectedTab, onSelectTab)
@@ -117,16 +112,16 @@ private fun MarketplaceToolbar(
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     Row(
-        Modifier.fillMaxSize().padding(end = CaixaDSMarketplaceStyle.toolbarEndInset),
+        Modifier.fillMaxSize().padding(end = LoteriasCaixaDSMarketplaceStyle.toolbarEndInset),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (!retailerView) {
             IconButton(
                 onClick = if (selectedTab == MarketplaceTab.POOLS) onFilter else onRetailerSearch,
-                modifier = (Modifier.width(CaixaDSMarketplaceStyle.toolbarActionWidth)).uiId("pool.0117")
+                modifier = (Modifier.width(LoteriasCaixaDSMarketplaceStyle.toolbarActionWidth)).uiId("pool.0117")
             ) {
-                CaixaDSMarketplaceToolbarIcon(
+                LoteriasCaixaDSMarketplaceToolbarIcon(
                     help = false,
                     search = selectedTab == MarketplaceTab.FAVORITE_RETAILERS,
                     description = if (selectedTab == MarketplaceTab.POOLS) {
@@ -142,8 +137,8 @@ private fun MarketplaceToolbar(
                 )
             }
         }
-        IconButton(onClick = onHelp, modifier = (Modifier.width(CaixaDSMarketplaceStyle.toolbarActionWidth)).uiId("pool.0119")) {
-            CaixaDSMarketplaceToolbarIcon(
+        IconButton(onClick = onHelp, modifier = (Modifier.width(LoteriasCaixaDSMarketplaceStyle.toolbarActionWidth)).uiId("pool.0119")) {
+            LoteriasCaixaDSMarketplaceToolbarIcon(
                 help = true,
                 description = uiStrings.getString(LocalizedR.string.ui_ajuda_fe0add),
                 modifier = Modifier.uiId("pool.0120")

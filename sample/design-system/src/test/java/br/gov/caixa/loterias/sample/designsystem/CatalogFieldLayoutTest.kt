@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -21,11 +21,11 @@ class CatalogFieldLayoutTest {
     @Test
     fun variantsAndBasicOverloadsHaveSeparateVisibleNonOverlappingInputBounds() {
         val ids = listOf(
-            "br.gov.caixa.loterias.core.designsystem.components.CaixaDSTextField" to VARIANT_COUNT,
-            "br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSBasicTextField" to 2
+            "br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSTextField" to VARIANT_COUNT,
+            "br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSBasicTextField" to 2
         )
         val selected = mutableStateOf(CatalogRegistry.entries.first { it.id == ids.first().first })
-        compose.setContent { CaixaDSTheme { Column { CatalogDemo(selected.value) } } }
+        compose.setContent { LoteriasCaixaDSTheme { Column { CatalogDemo(selected.value) } } }
         ids.forEach { (id, count) ->
             compose.runOnIdle { selected.value = CatalogRegistry.entries.first { it.id == id } }
             val fields = compose.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().sortedBy { it.boundsInRoot.top }

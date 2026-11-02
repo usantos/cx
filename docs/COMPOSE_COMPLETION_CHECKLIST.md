@@ -9,7 +9,7 @@ A nova mensagem de sessão expirada solicitada pelo produto permanece como exce�
 
 > Atualização pareada de 15/10/2026: [Bolão e Filtros frente ao CX](MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md). São 20 pares no mesmo AVD/dados, com Outubro Rosa ligada/desligada, e correções centralizadas no DS. `modernCheck releaseCheck` passou na árvore integrada: 1.699 testes JVM, 146 testes Android nos escopos executados e três Releases minificados. O bloqueio de captura das Activities internas foi resolvido pelo runner de instrumentação. A equivalência global de 100% continua pendente nos fluxos e casos históricos indicados abaixo.
 
-Atualização da execução: [CaixaDS, gates e validação integrada de 14/10/2026](DS_CONSOLIDATION_20261014.md). A tabela de capturas abaixo é histórica; os dois testes raster preexistentes e as demais pendências visuais/de serviços continuam abertos.
+Atualização da execução: [LoteriasCaixaDS, gates e validação integrada de 14/10/2026](DS_CONSOLIDATION_20261014.md). A tabela de capturas abaixo é histórica; os dois testes raster preexistentes e as demais pendências visuais/de serviços continuam abertos.
 
 ## Critérios de conclusão
 

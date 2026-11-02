@@ -38,7 +38,7 @@ class LoginViewModel(
     private val biometrics = LoginBiometricPreferences(mutableState, authentication, biometric)
     private val completion =
         LoginCompletion(mutableState, viewModelScope, dispatchers, authentication, verifyAccess, biometrics::biometricAuthorizationFailed)
-    private val entry = LoginEntryDecisions(mutableState, authentication)
+    private val entry = LoginEntryDecisions(mutableState, authentication, completion::clearUnverifiedSession)
 
     init {
         biometrics.refreshBiometricAvailability()

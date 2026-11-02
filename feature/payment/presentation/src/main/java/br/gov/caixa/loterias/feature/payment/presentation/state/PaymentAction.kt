@@ -35,6 +35,7 @@ internal sealed interface PaymentAction {
     data object ErrorDismissed : PaymentAction
     data object DamMessageDismissed : PaymentAction
     data object PixStatusDismissed : PaymentAction
+    data object PixApprovalNavigationConsumed : PaymentAction
     data class CardDeletionRequested(val card: SavedPaymentCard) : PaymentAction
     data object CardDeletionCancelled : PaymentAction
     data class CardAdditionRequested(val methodId: Long) : PaymentAction

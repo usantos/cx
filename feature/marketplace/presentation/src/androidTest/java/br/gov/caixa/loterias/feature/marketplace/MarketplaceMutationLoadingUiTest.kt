@@ -12,7 +12,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.marketplace.domain.usecase.AddMarketplacePoolToCartUseCase
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
@@ -38,7 +38,7 @@ class MarketplaceMutationLoadingUiTest {
         val response = CompletableDeferred<AppResult<Unit>>()
         var backs = 0
         val model = model(favorite = SetRetailerFavoriteUseCase { _, _ -> response.await() })
-        compose.setContent { CaixaDSTheme { route(model) { backs++ } } }
+        compose.setContent { LoteriasCaixaDSTheme { route(model) { backs++ } } }
         compose.onNodeWithTag("carousel-favorite-B1").performClick()
         compose.onNodeWithText("Confirmar").performClick()
         assertBlocked { backs }
@@ -53,7 +53,7 @@ class MarketplaceMutationLoadingUiTest {
         val response = CompletableDeferred<AppResult<ShoppingCart>>()
         var backs = 0
         val model = model(add = AddMarketplacePoolToCartUseCase { response.await() })
-        compose.setContent { CaixaDSTheme { route(model) { backs++ } } }
+        compose.setContent { LoteriasCaixaDSTheme { route(model) { backs++ } } }
         compose.onNodeWithTag("carousel-add-B1").performClick()
         assertBlocked { backs }
         response.complete(AppResult.Failure(AppError.Network))
@@ -74,7 +74,7 @@ class MarketplaceMutationLoadingUiTest {
                 GetFavoriteRetailersUseCase { AppResult.Success(emptyList()) }, SetRetailerFavoriteUseCase { _, _ -> error("No mutation") },
                 FixedCoroutineDispatchers(Dispatchers.Main.immediate))
         }
-        compose.setContent { CaixaDSTheme { route(model) { backs++ } } }
+        compose.setContent { LoteriasCaixaDSTheme { route(model) { backs++ } } }
         assertBlocked { backs }
         response.complete(MarketplacePage(listOf(pool), 0, 0, 1))
         compose.waitUntil { !model.state.value.isLoading }
@@ -98,7 +98,7 @@ class MarketplaceMutationLoadingUiTest {
                 favoriteWrites++; AppResult.Success(Unit)
             }, FixedCoroutineDispatchers(Dispatchers.Main.immediate))
         }
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             val view = LocalView.current
             SideEffect { rootView = view }
             MarketplaceRoute(model, onBack = { backs++ }, onFilter = {}, onHelp = {},

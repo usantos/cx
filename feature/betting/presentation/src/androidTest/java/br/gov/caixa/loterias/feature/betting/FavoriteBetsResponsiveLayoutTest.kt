@@ -18,7 +18,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -55,7 +55,7 @@ class FavoriteBetsResponsiveLayoutTest {
         compose.setContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale)) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     Column(Modifier.width(292.dp)) {
                         FavoriteModalityGrid(names, null) { selected = it }
                     }
@@ -88,7 +88,7 @@ class FavoriteBetsResponsiveLayoutTest {
             // Renderiza uma janela de 360dp, produzindo o modal relatado de 312dp, em qualquer densidade de emulador.
             val widthPx = LocalResources.current.displayMetrics.widthPixels
             CompositionLocalProvider(LocalDensity provides Density(widthPx / WINDOW_WIDTH_DP, fontScale)) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     AddFavoriteOptionsDialog(state, { cancelled++ }, { confirmed++ }, {}, {}, {})
                 }
             }

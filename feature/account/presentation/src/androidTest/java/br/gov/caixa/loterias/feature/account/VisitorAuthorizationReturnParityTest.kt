@@ -26,8 +26,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation
@@ -136,7 +136,7 @@ class VisitorAuthorizationReturnParityTest {
         }
         compose.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     nav = rememberNavController()
                     NavHost(
                         nav,
@@ -167,7 +167,7 @@ class VisitorAuthorizationReturnParityTest {
                             { state.visitorLoginRequest = null },
                             { state.visitorReturnRoute = it }
                         )
-                        CaixaDSDialog("Atenção", "Efetuar login?", "Sim", callbacks::onPositive, "Não", callbacks::onNegative)
+                        LoteriasCaixaDSDialog("Atenção", "Efetuar login?", "Sim", callbacks::onPositive, "Não", callbacks::onNegative)
                     }
                 }
             }
@@ -207,6 +207,14 @@ class VisitorAuthorizationReturnParityTest {
             override fun cancelAuthorization() = Unit
             override fun logout() = Unit
         }
+        override val accountForms = br.gov.caixa.loterias.feature.account.domain.usecase.AccountFormUseCasesFactory(
+            br.gov.caixa.loterias.feature.account.data.repository.SessionAccountRepositoryFactory(
+                br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider(),
+                br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding {
+                    br.gov.caixa.loterias.core.network.api.AccountVerificationSession({ "fixture" }, { true })
+                }
+            )
+        )
         override val accountProfile = GetAccountProfileUseCase { error("Guest profile must not load") }
         override val currentUserIdentity = CurrentUserIdentityProvider { null }
         override val dispatchers = DefaultCoroutineDispatchers

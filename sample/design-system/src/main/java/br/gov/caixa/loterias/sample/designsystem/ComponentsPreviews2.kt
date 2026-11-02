@@ -10,37 +10,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSCard
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSChoiceRow
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSDivider
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSEmptyState
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFavoriteRetailer
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplacePoolExpansion
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplacePoolSummary
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceTab
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceToolbarIcon
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSSectionHeader
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSCard
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSChoiceRow
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSDivider
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSEmptyState
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFavoriteRetailer
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolExpansion
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolSummary
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceTab
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceToolbarIcon
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSSectionHeader
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 internal val componentsPreviews2 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSSectionHeader") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSSectionHeader") { state ->
         with(state) {
-            CaixaDSSectionHeader(
+            LoteriasCaixaDSSectionHeader(
                 title = sample,
                 subtitle = hint
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSCard") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSCard") { state ->
         with(state) {
-            CaixaDSCard(content = { CaixaDSText(sample) })
+            LoteriasCaixaDSCard(content = { LoteriasCaixaDSText(sample) })
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSChoiceRow") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSChoiceRow") { state ->
         with(state) {
-            CaixaDSChoiceRow(
+            LoteriasCaixaDSChoiceRow(
                 title = sample,
                 subtitle = hint,
                 selected = checked,
@@ -48,14 +48,14 @@ internal val componentsPreviews2 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSDivider") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSDivider") { state ->
         with(state) {
-            CaixaDSDivider()
+            LoteriasCaixaDSDivider()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSEmptyState") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSEmptyState") { state ->
         with(state) {
-            CaixaDSEmptyState(
+            LoteriasCaixaDSEmptyState(
                 title = sample,
                 message = hint,
                 actionLabel = actionLabel,
@@ -63,26 +63,26 @@ internal val componentsPreviews2 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceTab") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceTab") { state ->
         with(state) {
-            CaixaDSMarketplaceTab(
+            LoteriasCaixaDSMarketplaceTab(
                 label = sample,
                 selected = checked,
                 onClick = toggle
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceToolbarIcon") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceToolbarIcon") { state ->
         with(state) {
-            CaixaDSMarketplaceToolbarIcon(
+            LoteriasCaixaDSMarketplaceToolbarIcon(
                 help = true,
                 description = sample
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplacePoolSummary") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolSummary") { state ->
         with(state) {
-            CaixaDSMarketplacePoolSummary(
+            LoteriasCaixaDSMarketplacePoolSummary(
                 title = sample,
                 city = city,
                 summary = sample,
@@ -90,7 +90,7 @@ internal val componentsPreviews2 = mapOf(
                 lotteryFiltered = false,
                 prize = amount,
                 prizeWords = sample,
-                modalityColor = CaixaDS.colors.brand,
+                modalityColor = LoteriasCaixaDS.colors.brand,
                 expanded = checked,
                 favorite = checked,
                 canFavorite = true,
@@ -99,9 +99,9 @@ internal val componentsPreviews2 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFavoriteRetailer") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFavoriteRetailer") { state ->
         with(state) {
-            CaixaDSMarketplaceFavoriteRetailer(
+            LoteriasCaixaDSMarketplaceFavoriteRetailer(
                 name = sample,
                 city = city,
                 onOpen = action,
@@ -109,12 +109,12 @@ internal val componentsPreviews2 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplacePoolExpansion") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolExpansion") { state ->
         with(state) {
-            CaixaDSText(stringResource(R.string.wide_preview_note))
+            LoteriasCaixaDSText(stringResource(R.string.wide_preview_note))
             Box(Modifier.horizontalScroll(rememberScrollState())) {
                 Box(Modifier.width(400.dp)) {
-                    CaixaDSMarketplacePoolExpansion(
+                    LoteriasCaixaDSMarketplacePoolExpansion(
                         contest = "1234",
                         prognostics = AnnotatedString(sample),
                         availability = AnnotatedString(sample),
@@ -123,9 +123,9 @@ internal val componentsPreviews2 = mapOf(
                         canIncrease = true,
                         adding = false,
                         canAdd = true,
-                        color = CaixaDS.colors.brand,
-                        contentColor = CaixaDSColorTokens.White,
-                        detailColor = CaixaDS.colors.brand,
+                        color = LoteriasCaixaDS.colors.brand,
+                        contentColor = LoteriasCaixaDSColorTokens.White,
+                        detailColor = LoteriasCaixaDS.colors.brand,
                         onDetail = action,
                         onDecrease = decreaseShares,
                         onIncrease = increaseShares,

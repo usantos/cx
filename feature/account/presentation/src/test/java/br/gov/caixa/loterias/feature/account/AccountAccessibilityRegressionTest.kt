@@ -10,7 +10,7 @@ import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.RegisterAccountUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCodeUseCase
@@ -36,7 +36,7 @@ class AccountAccessibilityRegressionTest {
             RegisterAccountUseCase { AppResult.Success(Unit) },
             FixedCoroutineDispatchers(StandardTestDispatcher())
         )
-        compose.setContent { CaixaDSTheme { RegistrationRoute(vm, {}, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { RegistrationRoute(vm, {}, {}, {}) } }
     }
 
     @Test fun termsTextContainsAnAccessibleLink() {

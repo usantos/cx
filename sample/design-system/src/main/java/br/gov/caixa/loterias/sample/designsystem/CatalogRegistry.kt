@@ -27,7 +27,23 @@ object CatalogRegistry {
             catalogEntries9 +
             catalogEntries10 +
             catalogEntries11 +
-            catalogLayoutEntries
+            catalogLayoutEntries + catalogPaymentCardEntries
+
+    fun findEntry(id: String?): CatalogEntry? {
+        val current = entries.find { it.id == id }
+        if (current != null || id == null) return current
+        val savedName = id.substringAfterLast('.')
+        if (!savedName.startsWith("CaixaDS")) return null
+        val currentId = id.dropLast(savedName.length) + "Loterias" + savedName
+        return entries.find { it.id == currentId }
+    }
+
+    fun groups(query: String, type: CatalogType? = null): List<CatalogGroup> {
+        val matches = search(query).groupBy { it.category }
+        return CatalogType.entries.filter { type == null || it == type }.mapNotNull { group ->
+            matches[group.title]?.let { entries -> CatalogGroup(group, entries.sortedBy { it.name }) }
+        }
+    }
 
     fun search(query: String): List<CatalogEntry> = entries.filter {
         it.id.contains(query.trim(), ignoreCase = true) ||

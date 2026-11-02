@@ -4,7 +4,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import java.math.BigDecimal
 import java.time.Instant
 import org.junit.Rule
@@ -48,7 +48,7 @@ class CartAdditionIntegrationTest {
                     expiresAt = "2026-09-09T12:15:00Z", modality = "MEGA_SENA", contest = 2800,
                     drawDate = "10/09/2026", amount = BigDecimal("5.00"), minimumCartAmount = BigDecimal("30"))
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 CartAdditionRoute(model, onBack = { calls.add("back") }, onHome = { calls.add("home") }, onOpenCart = { calls.add("cart") }, onHelp = { id, _ -> calls.add("help:$id") })
             }
         }

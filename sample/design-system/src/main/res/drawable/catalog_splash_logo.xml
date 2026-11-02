@@ -4,7 +4,7 @@
     android:insetTop="44.1667%"
     android:insetBottom="44.1667%">
     <bitmap
-        android:src="@drawable/caixads_caixa_logo"
+        android:src="@drawable/loterias_caixa_ds_caixa_logo"
         android:gravity="fill"
         android:filter="true" />
 </inset>

@@ -10,7 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
 import br.gov.caixa.loterias.core.navigation.destination.openAppStore
 import br.gov.caixa.loterias.feature.home.R
 import br.gov.caixa.loterias.feature.home.R as LocalizedR
@@ -53,7 +53,7 @@ internal fun SimulationRecoveryPanel(
         }
     )
     if (message != null) {
-        CaixaDSAlertDialog(
+        LoteriasCaixaDSAlertDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = message,
             confirmText = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),

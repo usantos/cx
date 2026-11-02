@@ -31,8 +31,8 @@ import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.auth.gateway.EndSessionGateway
 import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation
 import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestination
@@ -153,7 +153,7 @@ class PostLoginTutorialNavigationUiTest {
             val navigation = rememberAppNavigationState(session.lease?.ownerKey)
             var pending by remember { mutableStateOf<PostLoginTutorialRequest?>(null) }
             var validated by remember { mutableStateOf(false) }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 coordinator = rememberAppSessionCoordinator(dependencies, nav, navigation, session.lease, {})
                 NavHost(nav, startDestination = LoginNavigation.pattern) {
                     composable(LoginNavigation.pattern) {
@@ -177,7 +177,7 @@ class PostLoginTutorialNavigationUiTest {
                     }
                     composable(destination) {
                         SideEffect { if (validated) record(destination) }
-                        CaixaDSScaffold(title = "Dados Pessoais", onBack = { nav.popBackStack() }) { padding ->
+                        LoteriasCaixaDSScaffold(title = "Dados Pessoais", onBack = { nav.popBackStack() }) { padding ->
                             Text("Funcionalidade acessada", Modifier.padding(padding))
                         }
                     }

@@ -20,6 +20,7 @@ internal sealed interface PaymentCardAction {
     data object ProcessingStarted : PaymentCardAction
     data object PurchaseTrackingStarted : PaymentCardAction
     data object PurchaseCompleted : PaymentCardAction
+    data object SuccessNavigationConsumed : PaymentCardAction
     data object RegistrationFinished : PaymentCardAction
     data class NoticeConsumed(
         val tracking: Boolean,

@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextReplacement
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.presentation.components.BettingFavoriteDialog
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -22,7 +22,7 @@ class BettingFavoriteCallbacksTest {
         val events = mutableListOf<String>()
         compose.setContent {
             val current = revision.value
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 BettingFavoriteDialog(name.value,
                     onNameChange = { name.value = it; events.add("change-$current-$it") },
                     onConfirm = { events.add("confirm-$current") },

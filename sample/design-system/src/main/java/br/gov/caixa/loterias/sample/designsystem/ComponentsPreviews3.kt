@@ -3,39 +3,39 @@
 package br.gov.caixa.loterias.sample.designsystem
 
 import androidx.compose.ui.text.input.KeyboardType
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceBack
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterAccordionHeader
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterBetGrid
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterButton
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterInput
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterLabel
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterNumberCell
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterSelection
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceListFooter
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMercadoPagoPrizePanel
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceBack
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterAccordionHeader
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterBetGrid
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterButton
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterInput
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterLabel
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterNumberCell
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterSelection
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceListFooter
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMercadoPagoPrizePanel
 
 internal val componentsPreviews3 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceListFooter") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceListFooter") { state ->
         with(state) {
-            CaixaDSMarketplaceListFooter(
+            LoteriasCaixaDSMarketplaceListFooter(
                 loading = false,
                 exhausted = true
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceBack") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceBack") { state ->
         with(state) {
-            CaixaDSMarketplaceBack(onClick = action)
+            LoteriasCaixaDSMarketplaceBack(onClick = action)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterLabel") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterLabel") { state ->
         with(state) {
-            CaixaDSMarketplaceFilterLabel(text = sample)
+            LoteriasCaixaDSMarketplaceFilterLabel(text = sample)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterInput") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterInput") { state ->
         with(state) {
-            CaixaDSMarketplaceFilterInput(
+            LoteriasCaixaDSMarketplaceFilterInput(
                 value = text,
                 onValueChange = { text = it },
                 placeholder = hint,
@@ -43,9 +43,9 @@ internal val componentsPreviews3 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterBetGrid") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterBetGrid") { state ->
         with(state) {
-            CaixaDSMarketplaceFilterBetGrid(
+            LoteriasCaixaDSMarketplaceFilterBetGrid(
                 options = listOf(
                     1,
                     2,
@@ -57,36 +57,36 @@ internal val componentsPreviews3 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterNumberCell") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterNumberCell") { state ->
         with(state) {
-            CaixaDSMarketplaceFilterNumberCell(
+            LoteriasCaixaDSMarketplaceFilterNumberCell(
                 value = 7,
                 selected = checked,
                 onClick = toggle
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterAccordionHeader") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterAccordionHeader") { state ->
         with(state) {
-            CaixaDSMarketplaceFilterAccordionHeader(
+            LoteriasCaixaDSMarketplaceFilterAccordionHeader(
                 title = sample,
                 testTag = "accordion",
                 onOpen = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterButton") { state ->
         with(state) {
-            CaixaDSMarketplaceFilterButton(
+            LoteriasCaixaDSMarketplaceFilterButton(
                 text = actionLabel,
                 outlined = checked,
                 onClick = toggle
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterSelection") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterSelection") { state ->
         with(state) {
-            CaixaDSMarketplaceFilterSelection(
+            LoteriasCaixaDSMarketplaceFilterSelection(
                 values = listOf(
                     1,
                     2,
@@ -98,9 +98,9 @@ internal val componentsPreviews3 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSMercadoPagoPrizePanel") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMercadoPagoPrizePanel") { state ->
         with(state) {
-            CaixaDSMercadoPagoPrizePanel(amount = amount)
+            LoteriasCaixaDSMercadoPagoPrizePanel(amount = amount)
         }
     }
 )

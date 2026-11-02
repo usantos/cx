@@ -27,8 +27,8 @@ class CatalogNavigationTest {
     @Test
     fun searchOpensDetailsAndBackRetainsQuery() {
         compose.setContent { DesignSystemCatalog() }
-        compose.onNodeWithTag("catalog_search").performTextInput("CaixaDSNumberBall")
-        compose.onNodeWithTag("br.gov.caixa.loterias.core.designsystem.components.CaixaDSNumberBall")
+        compose.onNodeWithTag("catalog_search").performTextInput("LoteriasCaixaDSNumberBall")
+        compose.onNodeWithTag("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSNumberBall")
             .performScrollTo().performClick()
         compose.onNodeWithText("Exemplo interativo").assertIsDisplayed()
         compose.onNodeWithText("07").assertIsDisplayed()
@@ -36,7 +36,7 @@ class CatalogNavigationTest {
         compose.onNodeWithTag("catalog_detail").performScrollToNode(hasText("Parâmetros e sobrecargas"))
         compose.onNodeWithText("Parâmetros e sobrecargas").assertIsDisplayed()
         compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }
-        compose.onNodeWithTag("catalog_search").assertTextContains("CaixaDSNumberBall")
+        compose.onNodeWithTag("catalog_search").assertTextContains("LoteriasCaixaDSNumberBall")
         compose.onNodeWithTag("catalog_search").performTextClearance()
         compose.onNodeWithTag("catalog_search").performTextInput("unfindablecomponent")
         compose.onNodeWithText("Nenhum componente encontrado.").assertIsDisplayed()
@@ -45,12 +45,12 @@ class CatalogNavigationTest {
     @Test
     fun actionPreviewReportsInteraction() {
         compose.setContent { DesignSystemCatalog() }
-        compose.onNodeWithTag("catalog_search").performTextInput("CaixaDSPrimaryButton")
-        compose.onNodeWithTag("br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSPrimaryButton")
+        compose.onNodeWithTag("catalog_search").performTextInput("LoteriasCaixaDSPrimaryButton")
+        compose.onNodeWithTag("br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSPrimaryButton")
             .performScrollTo().performClick()
         compose.onNodeWithText("Experimentar ação").performClick()
         compose.onNodeWithText("Interações: 1").assertIsDisplayed()
         compose.onNodeWithContentDescription("Voltar").performClick()
-        compose.onNodeWithTag("catalog_search").assertTextContains("CaixaDSPrimaryButton")
+        compose.onNodeWithTag("catalog_search").assertTextContains("LoteriasCaixaDSPrimaryButton")
     }
 }

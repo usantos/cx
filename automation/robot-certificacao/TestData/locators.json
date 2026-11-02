@@ -10,5 +10,7 @@
   "menu.sair": "id=simlo.home.sair",
   "dialogo.positivo": "id=simlo.dialog.positivo",
   "resultados.modalidades": "id=simlo.results.modalidades",
-  "pagamento.pix.qr": "id=simlo.ds.0147"
+  "pagamento.pix.qr": "id=simlo.ds.0147",
+  "carrinho.excluir_todas": "id=simlo.cart.0143",
+  "carrinho.salvar_favorito": "id=simlo.cart.0144"
 }

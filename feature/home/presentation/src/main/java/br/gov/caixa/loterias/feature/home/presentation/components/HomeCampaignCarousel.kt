@@ -17,12 +17,11 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.home.R as LocalizedR
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeActions
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomePresentation
@@ -91,7 +90,7 @@ internal fun HomeCarousel(
             val scrimHeight = with(LocalDensity.current) { minimumLine.toDp() } + 46.dp
             Box(
                 Modifier.fillMaxWidth().height(scrimHeight).align(Alignment.BottomCenter)
-                    .background(CaixaDSColorTokens.White.copy(alpha = presentation.footerScrimAlpha))
+                    .background(LoteriasCaixaDSColorTokens.White.copy(alpha = presentation.footerScrimAlpha))
             )
         }
         if (expandedResultPage == null) {

@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GenerateRapidBetsUseCase
 import br.gov.caixa.loterias.feature.betting.presentation.route.RapidListRoute
@@ -33,7 +33,7 @@ class RapidListConfigurationUiTest {
             autoLoad = false,
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 RapidListRoute(viewModel, onBack = {}, onPayment = {}, onValidationRedirect = {}, onConfiguration = { configurationRequests++ })
             }
         }

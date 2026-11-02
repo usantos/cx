@@ -14,9 +14,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSPixPanel
-import br.gov.caixa.loterias.core.designsystem.components.caixaDSPixPanelText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSPixPanel
+import br.gov.caixa.loterias.core.designsystem.components.loteriasCaixaDSPixPanelText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.presentation.formatting.formatBrazilianCurrency
 import br.gov.caixa.loterias.feature.payment.domain.model.PixCharge
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PIX_EXPIRED_GUIDANCE
@@ -49,12 +49,12 @@ internal fun PixContent(pix: PixCharge?, checking: Boolean, modifier: Modifier, 
             }
         }
     }
-    Column(modifier.fillMaxSize().uiId("pay.0100").verticalScroll(rememberScrollState()).background(CaixaDS.colors.canvas)) {
-        CaixaDSPixPanel(
+    Column(modifier.fillMaxSize().uiId("pay.0100").verticalScroll(rememberScrollState()).background(LoteriasCaixaDS.colors.canvas)) {
+        LoteriasCaixaDSPixPanel(
             purchaseId = pix.purchaseId, copyPaste = pix.copyPaste, remainingSeconds = remaining,
             formattedAmount = formatBrazilianCurrency(pix.amount), checking = checking,
             onCheckPayment = onCheckPayment, onCopied = { copied = true }, onPurchases = onPurchases,
-            texts = caixaDSPixPanelText(warning = if (remaining <= 0) PIX_EXPIRED_GUIDANCE else PIX_RECOVERY_GUIDANCE),
+            texts = loteriasCaixaDSPixPanelText(warning = if (remaining <= 0) PIX_EXPIRED_GUIDANCE else PIX_RECOVERY_GUIDANCE),
             modifier = Modifier
                 .uiId("pay.0101")
         )

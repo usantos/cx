@@ -18,10 +18,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSScaffold as Scaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSScaffold as Scaffold
 import br.gov.caixa.loterias.core.designsystem.components.cart.isCartSummaryVisible
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign as HomeCampaign
 import br.gov.caixa.loterias.feature.home.presentation.components.HomeCampaign
 import br.gov.caixa.loterias.feature.home.presentation.components.HomeCarousel
@@ -30,7 +29,6 @@ import br.gov.caixa.loterias.feature.home.presentation.components.HomeQuickAcces
 import br.gov.caixa.loterias.feature.home.presentation.components.HomeTopBar
 import br.gov.caixa.loterias.feature.home.presentation.components.infiniteCarouselInitialPage
 import br.gov.caixa.loterias.feature.home.presentation.components.loopedCarouselIndex
-import br.gov.caixa.loterias.feature.home.presentation.mapper.colors
 import br.gov.caixa.loterias.feature.home.presentation.mapper.shouldShowPoolButton
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeUiState
@@ -87,7 +85,7 @@ fun HomeContent(
         }
     }
     Scaffold(
-        containerColor = CaixaDSColorTokens.White,
+        containerColor = LoteriasCaixaDSColorTokens.White,
         topBar = {
             HomeTopBar(
                 homeState.unreadNotificationCount,
@@ -105,7 +103,7 @@ fun HomeContent(
         BoxWithConstraints(
             Modifier.fillMaxSize().padding(padding).background(
                 Brush.verticalGradient(
-                    listOf(CaixaDSColorTokens.White, CaixaDSColorTokens.HomeGradientEnd)
+                    listOf(LoteriasCaixaDSColorTokens.White, LoteriasCaixaDSColorTokens.HomeGradientEnd)
                 )
             )
         ) {

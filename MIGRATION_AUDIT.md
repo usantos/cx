@@ -29,7 +29,7 @@ Não há evidência exigindo troca indiscriminada de bibliotecas ou framework DI
 
 :feature:* contém presentation e depende de Domain; :core:domain é JVM sem Android/Compose/Retrofit; :core:data implementa repositories e mappers sobre data sources; network/auth/preferences/queue isolam plataformas. :app é composition root Hilt e navegação. Não será criada estrutura vazia nem módulo por tela.
 
-verifyCleanArchitecture verifica dependências/package/Hilt; verifyComposeMigration preserva exceção debug NetworkInspectorActivity e proíbe Java/layouts/fragments de produção; demais gates cobrem identidade/flavors, 99 operações backend, inventário UI, CaixaDS, FilaBRA, Topaz e rede. Gates e limites não serão enfraquecidos.
+verifyCleanArchitecture verifica dependências/package/Hilt; verifyComposeMigration preserva exceção debug NetworkInspectorActivity e proíbe Java/layouts/fragments de produção; demais gates cobrem identidade/flavors, 99 operações backend, inventário UI, LoteriasCaixaDS, FilaBRA, Topaz e rede. Gates e limites não serão enfraquecidos.
 
 ## Problemas e ordem de refatoração
 
@@ -38,7 +38,7 @@ verifyCleanArchitecture verifica dependências/package/Hilt; verifyComposeMigrat
 | UI | BettingRoute, PaymentCardFlowRoute, LocationGateRoute, PersonalDataRoute, TicketScannerRoute, HomeRoute | Coordenação, composição, plataforma e helpers no mesmo arquivo | média; Home/câmera alta | testes originais+novos de coordenação, corpos recompostos, UI em emulador |
 | Estado | BettingGameViewModel, TicketsViewModel, CartViewModel | Seleção/favoritos/restauração, históricos/Pix, checkout/reserva excessivamente concentrados | alta | testes de estado/cancelamento/ordem/stale response, cobertura incluindo colaboradores |
 | Data | RemoteTicketsRepository, RemotePaymentRepository | Adaptadores, mapeamento, roteamento/recibos, tokenização/resposta de compra misturados | alta | contratos de data sources, DTO/JSON/cancelamento/cache/HTTP, cobertura ampliada |
-| Design system | CaixaDSLegacyComponents |1007 linhas com ícones, controles, scaffold, barras, diálogos e campos | média | igualdade de declarações/APIs/defaults, UI DS/previews |
+| Design system | LoteriasCaixaDSLegacyComponents |1007 linhas com ícones, controles, scaffold, barras, diálogos e campos | média | igualdade de declarações/APIs/defaults, UI DS/previews |
 | Consolidação | três Java de teste, catalog de versões, documentação | linguagem/documentação/dependências residuais | baixa | mesma contagem de testes, matriz completa, gates |
 
 Mudanças independentes podem ser preparadas em paralelo, com builds/testes centralizados. Cada frente deve permanecer compilável em seu checkpoint.

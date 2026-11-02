@@ -23,7 +23,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
@@ -196,7 +196,7 @@ class TicketsFilterInteractionsTest {
         var clears = 0
         var closes = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (visible.value) {
                     BetFiltersDialog(
                         state.value,
@@ -332,7 +332,7 @@ class TicketsFilterInteractionsTest {
         onClose: () -> Unit,
     ) {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (visible.value) {
                     PurchaseFiltersDialog(
                         state.value,
@@ -375,7 +375,7 @@ class TicketsFilterInteractionsTest {
         onClose: () -> Unit,
     ) {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (visible.value) {
                     PurchaseBetFiltersDialog(
                         state.value,

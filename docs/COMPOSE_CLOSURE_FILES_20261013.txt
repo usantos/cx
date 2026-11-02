@@ -44,8 +44,8 @@ core/data/src/test/java/br/gov/caixa/loterias/core/data/RemotePushRegistrationRe
 core/data/src/test/java/br/gov/caixa/loterias/core/data/RemoteSessionSignOutRepositoryTest.kt
 core/data/src/test/java/br/gov/caixa/loterias/core/data/RemoteUnreadNotificationCountRepositoryTest.kt
 core/data/src/test/java/br/gov/caixa/loterias/core/data/SpecialDrawResultsMappingTest.kt
-core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyDrawablePainter.kt
-core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSTokens.kt
+core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyDrawablePainter.kt
+core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSTokens.kt
 core/design-system/src/main/res/raw/caixa_std_regular_html.ttf
 core/domain/src/main/kotlin/br/gov/caixa/loterias/core/domain/account/SignOutSession.kt
 core/domain/src/main/kotlin/br/gov/caixa/loterias/core/domain/push/RegisterPushDevice.kt

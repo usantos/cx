@@ -6,7 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.CheckTicketUseCase
@@ -63,7 +63,7 @@ class ControlledPurchaseStatusInteractionTest(private val statusId: Long) {
                     dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate),
                 ).also { vm = it }
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 PurchaseDetailDataRoute(model, detail, onBack = {}, onOpen = { opened.add(it) })
             }
         }

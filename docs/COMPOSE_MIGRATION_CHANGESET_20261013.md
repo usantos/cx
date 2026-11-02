@@ -28,7 +28,7 @@ registrou 64 testes JVM do host, 14 de Results e 2 testes Android da Home v2,
 com os gates de backend e arquitetura aprovados. Esses resultados não representam
 aprovação de todas as alterações históricas desta migração.
 
-O `modernCheck` permanece com falhas documentadas: cores fora de CaixaDS,
+O `modernCheck` permanece com falhas documentadas: cores fora de LoteriasCaixaDS,
 XMLs anteriores fora do inventário, cobertura de apostas inferior ao mínimo e
 falta de memória no dex de um teste. A continuação global foi interrompida.
 O CX executado respondeu LTR-503; a paridade integral com serviços reais não
@@ -2274,45 +2274,45 @@ foi homologada. Ver `HOME_V2_CX_PARITY_20261013.md` para critérios e pendência
 | A | `core/data/src/test/resources/tickets/legacy-ticket-result-contract.json` |
 | A | `core/design-system/README.md` |
 | A | `core/design-system/build.gradle` |
-| A | `core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCartActionsTest.kt` |
-| A | `core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCartSummaryTest.kt` |
-| A | `core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSComponentsTest.kt` |
-| A | `core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSTextInputDialogTest.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSAuthenticationLoading.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSBetTypeIcons.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSBetTypeStrip.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCartActions.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCartSummary.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCartSummaryRules.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCatalog.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSComponents.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSDrawerIcons.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSIcons.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyActionIcons.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyCartIcons.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyComponents.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyDrawablePainter.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyFingerprint.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyHtmlDialog.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyLotteryClover.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyMercadoPagoPrizePanel.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyPixPanel.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyPrizeChevron.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyPurchaseToolbarIcons.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacySpacedRewardText.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyWheel.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLoginSwitch.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLotteryStyle.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSMoneyInput.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSNotificationPlaceholder.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSNotificationSwipeIcons.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSPaymentMarks.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSPaymentVectors.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSPrizeMarks.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSRapidAmountDialog.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSTextInputDialog.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSTheme.kt` |
-| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSTokens.kt` |
+| A | `core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCartActionsTest.kt` |
+| A | `core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCartSummaryTest.kt` |
+| A | `core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSComponentsTest.kt` |
+| A | `core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSTextInputDialogTest.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSAuthenticationLoading.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSBetTypeIcons.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSBetTypeStrip.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCartActions.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCartSummary.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCartSummaryRules.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCatalog.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSComponents.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSDrawerIcons.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSIcons.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyActionIcons.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyCartIcons.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyComponents.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyDrawablePainter.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyFingerprint.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyHtmlDialog.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyLotteryClover.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyMercadoPagoPrizePanel.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyPixPanel.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyPrizeChevron.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyPurchaseToolbarIcons.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacySpacedRewardText.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyWheel.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLoginSwitch.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLotteryStyle.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSMoneyInput.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSNotificationPlaceholder.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSNotificationSwipeIcons.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSPaymentMarks.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSPaymentVectors.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSPrizeMarks.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSRapidAmountDialog.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSTextInputDialog.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSTheme.kt` |
+| A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSTokens.kt` |
 | A | `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CxHomeV2Colors.kt` |
 | A | `core/design-system/src/main/res/drawable-hdpi/icgrouprepasses.png` |
 | A | `core/design-system/src/main/res/drawable-hdpi/icon_duvida2.png` |
@@ -2446,10 +2446,10 @@ foi homologada. Ver `HOME_V2_CX_PARITY_20261013.md` para critérios e pendência
 | A | `core/design-system/src/main/res/font/caixa_std_semi_bold.ttf` |
 | A | `core/design-system/src/main/res/font/futura_std_bold.otf` |
 | A | `core/design-system/src/main/res/font/futura_std_book.otf` |
-| A | `core/design-system/src/test/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCartSummaryRulesTest.kt` |
-| A | `core/design-system/src/test/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLoadingMotionTest.kt` |
-| A | `core/design-system/src/test/java/br/gov/caixa/loterias/core/designsystem/CaixaDSMoneyInputTest.kt` |
-| A | `core/design-system/src/test/java/br/gov/caixa/loterias/core/designsystem/CaixaDSTokensTest.kt` |
+| A | `core/design-system/src/test/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCartSummaryRulesTest.kt` |
+| A | `core/design-system/src/test/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLoadingMotionTest.kt` |
+| A | `core/design-system/src/test/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSMoneyInputTest.kt` |
+| A | `core/design-system/src/test/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSTokensTest.kt` |
 | A | `core/domain/README.md` |
 | A | `core/domain/build.gradle` |
 | A | `core/domain/src/main/kotlin/br/gov/caixa/loterias/core/domain/account/Account.kt` |
@@ -3158,7 +3158,7 @@ foi homologada. Ver `HOME_V2_CX_PARITY_20261013.md` para critérios e pendência
 | A | `docs/AUTHENTICATION_RETURN_PARITY_AUDIT.md` |
 | A | `docs/AUTH_ATTEMPT_LIFECYCLE_AUDIT.md` |
 | A | `docs/BACKEND_MIGRATION.md` |
-| A | `docs/CAIXA_DS.md` |
+| A | `docs/LOTERIAS_CAIXA_DS.md` |
 | A | `docs/CARD_POLLING_PARITY_AUDIT.md` |
 | A | `docs/CARD_SUBMISSION_REVIEW_AUDIT.md` |
 | A | `docs/CART_CHECKOUT_ACTION_AUDIT.md` |

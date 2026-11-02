@@ -27,9 +27,9 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.Density
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSBettingButton
-import br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSBettingButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSBettingButton
+import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSBettingButtonDefaults
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -97,17 +97,17 @@ class BettingButtonNativeInsetTest {
             }
         )
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 Box(Modifier.background(androidx.compose.ui.graphics.Color.White)) {
                     CompositionLocalProvider(LocalDensity provides Density(450f / 160f)) {
-                        CaixaDSBettingButton(
+                        LoteriasCaixaDSBettingButton(
                             "Fractional inset",
                             {},
                             Modifier.size(130.dp, 52.dp),
                             color = androidx.compose.ui.graphics.Color.White,
                             content = androidx.compose.ui.graphics.Color.Black,
                             stroke = androidx.compose.ui.graphics.Color.Black,
-                            verticalInset = CaixaDSBettingButtonDefaults.NativeVerticalInset
+                            verticalInset = LoteriasCaixaDSBettingButtonDefaults.NativeVerticalInset
                         )
                     }
                 }
@@ -191,7 +191,7 @@ class BettingButtonNativeInsetTest {
             AddBetToCartUseCase { error("Geometry never submits a bet") },
             initialParameters = BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game))
         )
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(model, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(model, {}, {}) } }
         return model
     }
 }

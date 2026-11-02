@@ -14,7 +14,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.core.app.ActivityOptionsCompat
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.auth.gateway.BiometricAuthenticationGateway
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
@@ -43,7 +43,7 @@ class LoginCoordinationUiTest {
         val viewModel = LoginViewModel(authentication, verifyAccess = allowed())
         compose.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) {
-                CaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSTheme(darkTheme = false) {
                     LoginRoute(viewModel, authentication, version.value, { destinations += it }, {}, {},
                         authorizeOnEnter = automatic.value)
                 }
@@ -79,7 +79,7 @@ class LoginCoordinationUiTest {
         val prompts = AtomicInteger()
         val disposals = AtomicInteger()
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 if (visible.value) {
                     LoginRoute(viewModel, authentication, version.value, {}, {}, {}, authorizeOnEnter = true,
                         biometricPrompt = { _, _, _ ->
@@ -115,7 +115,7 @@ class LoginCoordinationUiTest {
         val viewModel = LoginViewModel(authentication, verifyAccess = allowed())
         compose.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) {
-                CaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSTheme(darkTheme = false) {
                     LoginRoute(viewModel, authentication, "test", { destinations += it }, {}, {},
                         authorizeOnEnter = true, biometricPrompt = { _, _, _ ->
                             prompts.incrementAndGet()
@@ -145,7 +145,7 @@ class LoginCoordinationUiTest {
         })
         viewModel.setBiometricEnabled(true)
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(viewModel, authentication, "test", { error("Must not authenticate") }, {},
                     { invalidations.incrementAndGet() })
             }

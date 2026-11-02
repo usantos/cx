@@ -5,14 +5,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSSelectionDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSSelectionDialog
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 
 @Composable
 internal fun FavoriteConfirmDialog(message: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSDialog(
+    LoteriasCaixaDSDialog(
         title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
         message = message,
         positiveLabel = uiStrings.getString(LocalizedR.string.ui_sim_931345),
@@ -28,7 +28,7 @@ internal fun SpecialSelectionDialog(regularName: String, specialName: String, on
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     var selected by remember { mutableIntStateOf(-1) }
     val options = listOf("Ambas", regularName, specialName)
-    CaixaDSSelectionDialog(
+    LoteriasCaixaDSSelectionDialog(
         title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
         message = uiStrings.getString(LocalizedR.string.ui_existem_2_concursos_abertos_para_a_1_6bb68f, regularName),
         options = options,

@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.feature.betting.presentation.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,10 +21,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckbox
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSCheckbox
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 
@@ -34,14 +33,14 @@ import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMe
 internal fun BettingLegacyMirror(selected: Boolean, onToggle: () -> Unit, manual: Boolean) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val foreground = if (manual) {
-        CaixaDSColorTokens.LotomaniaMirrorText
+        LoteriasCaixaDSColorTokens.LotomaniaMirrorText
     } else {
-        CaixaDSColorTokens.SocialGraphite
+        LoteriasCaixaDSColorTokens.SocialGraphite
     }
     Row(
         Modifier
             .fillMaxWidth()
-            .then(if (manual) Modifier.background(CaixaDSColorTokens.LotomaniaMirrorBackground) else Modifier)
+            .then(if (manual) Modifier.background(LoteriasCaixaDSColorTokens.LotomaniaMirrorBackground) else Modifier)
             .uiId("bet.0268").toggleable(value = selected, role = Role.Checkbox) { onToggle() }
             .padding(
                 start = 16.dp,
@@ -53,11 +52,11 @@ internal fun BettingLegacyMirror(selected: Boolean, onToggle: () -> Unit, manual
         horizontalArrangement = if (manual) Arrangement.Start else Arrangement.Center
     ) {
         androidx.compose.foundation.layout.Box(Modifier.clearAndSetSemantics { }) {
-            CaixaDSCheckbox(
+            LoteriasCaixaDSCheckbox(
                 checked = selected,
                 onClick = null,
                 modifier = (Modifier.size(20.dp)).uiId("bet.0269"),
-                color = if (manual) CaixaDSColorTokens.LotomaniaDark else foreground
+                color = if (manual) LoteriasCaixaDSColorTokens.LotomaniaDark else foreground
             )
         }
         Text(
@@ -71,7 +70,7 @@ internal fun BettingLegacyMirror(selected: Boolean, onToggle: () -> Unit, manual
                 }
             },
             modifier = (Modifier.padding(start = if (manual) 12.dp else 16.dp)).uiId("bet.0270"),
-            fontFamily = CaixaDSFontFamily,
+            fontFamily = LoteriasCaixaDSFontFamily,
             fontSize = if (manual) 12.sp else 14.2.sp,
             lineHeight = if (manual) 15.sp else 17.sp,
             color = foreground,

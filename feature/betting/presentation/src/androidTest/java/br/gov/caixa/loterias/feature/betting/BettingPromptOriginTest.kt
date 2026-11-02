@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.betting
 import android.graphics.Color
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -52,7 +52,7 @@ class BettingPromptOriginTest {
             AddBetToCartUseCase { error("Prompt geometry must never submit") },
             initialParameters = BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game))
         )
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitForIdle()
     }
 

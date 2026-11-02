@@ -20,8 +20,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.workflow.VisitorLoginCallbacks
 import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestination
 import br.gov.caixa.loterias.core.navigation.workflow.rememberPrivateEntryKey
@@ -67,7 +67,7 @@ class VisitorPrivateLoadingUiTest {
 
     private fun show(route: String) {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 nav = rememberNavController()
                 val entryKey = rememberPrivateEntryKey(owner)
                 NavHost(nav, startDestination = "home") {
@@ -125,7 +125,7 @@ class VisitorPrivateLoadingUiTest {
                 }
                 request?.let { requested ->
                     val callbacks = VisitorLoginCallbacks(requested, nav, { request }, { request = null }, { continuation = it })
-                    CaixaDSDialog(
+                    LoteriasCaixaDSDialog(
                         "Atenção",
                         "Efetuar login?",
                         "Sim",
@@ -146,7 +146,7 @@ class VisitorPrivateLoadingUiTest {
     @Test fun authenticatedHistoryRestorationReusesLoadedViewModelWithoutSecondPrivateQuery() {
         val restoration = StateRestorationTester(compose)
         restoration.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 val entryKey = rememberPrivateEntryKey(first)
                 key(entryKey) {
                     val vm = viewModel(key = "restored-history-$entryKey") {
@@ -196,7 +196,7 @@ class VisitorPrivateLoadingUiTest {
         var restoringLease: AuthenticatedSessionIdentity? = first
         val restoration = StateRestorationTester(compose)
         restoration.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 val lease = restoringLease
                 val label = if (lease === first) "Lease A" else "Restored lease"
                 val entryKey = rememberPrivateEntryKey(lease)

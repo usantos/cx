@@ -11,22 +11,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton as Button
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.payment.R as LocalizedR
 import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
-import br.gov.caixa.loterias.feature.payment.presentation.mapper.paymentTopBarTitle
 import br.gov.caixa.loterias.feature.payment.presentation.route.PaymentVisualAssets
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentMode
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentUiState
@@ -45,7 +42,7 @@ internal fun PaymentDataContent(
     actions: PaymentDataActions,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = if (mode == PaymentMode.CARDS) {
             uiStrings.getString(LocalizedR.string.ui_meus_cartoes_8f78b1)
         } else {
@@ -59,9 +56,9 @@ internal fun PaymentDataContent(
             (
                 {
                     Icon(
-                        CaixaDSIcons.Help,
+                        LoteriasCaixaDSIcons.Help,
                         contentDescription = uiStrings.getString(LocalizedR.string.ui_ajuda_fe0add),
-                        tint = CaixaDSColorTokens.White,
+                        tint = LoteriasCaixaDSColorTokens.White,
                         modifier = (Modifier.fillMaxSize().uiId("pay.0087").clickable(onClick = onHelp).padding(12.dp)).uiId("pay.0088")
                     )
                 }
@@ -73,7 +70,7 @@ internal fun PaymentDataContent(
     ) { padding ->
         when {
             state.loading -> Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = CaixaDS.colors.brand)
+                CircularProgressIndicator(color = LoteriasCaixaDS.colors.brand)
             }
 
             state.pixRecoveryRequired || state.pixSessionMismatch -> Column(
@@ -83,7 +80,7 @@ internal fun PaymentDataContent(
             ) {
                 Text(
                     uiStrings.getString(LocalizedR.string.ui_nao_foi_possivel_recuperar_o_codigo_2d2b23),
-                    color = CaixaDS.colors.graphite,
+                    color = LoteriasCaixaDS.colors.graphite,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.uiId("pay.0090")
                 )

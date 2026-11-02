@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceTab
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceTab
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.marketplace.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab
 
@@ -23,7 +23,7 @@ internal fun MarketplaceTabs(selected: MarketplaceTab, onSelect: (MarketplaceTab
     Row(
         Modifier.fillMaxWidth()
             .then(if (largeFont) Modifier.heightIn(min = 66.dp).height(IntrinsicSize.Min) else Modifier.height(66.dp))
-            .background(CaixaDS.colors.surface)
+            .background(LoteriasCaixaDS.colors.surface)
     ) {
         MarketplaceTabItem(
             uiStrings.getString(LocalizedR.string.ui_boloes_f052c3),
@@ -40,5 +40,5 @@ internal fun MarketplaceTabs(selected: MarketplaceTab, onSelect: (MarketplaceTab
 
 @Composable
 private fun RowScope.MarketplaceTabItem(label: String, selected: Boolean, onClick: () -> Unit) {
-    CaixaDSMarketplaceTab(label, selected, onClick, (Modifier.weight(1f)).uiId("pool.0108"))
+    LoteriasCaixaDSMarketplaceTab(label, selected, onClick, (Modifier.weight(1f)).uiId("pool.0108"))
 }

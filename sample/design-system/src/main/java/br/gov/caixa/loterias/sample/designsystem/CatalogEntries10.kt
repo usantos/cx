@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.sample.designsystem
 
 internal val catalogEntries10 = listOf(
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSTopBar",
-        "CaixaDSTopBar",
+        "br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSTopBar",
+        "LoteriasCaixaDSTopBar",
         R.string.category_navigation,
         R.string.api_100_description,
         R.string.api_100_parameters,
@@ -12,8 +12,8 @@ internal val catalogEntries10 = listOf(
             "navigationContent titleSize titleWeight annotatedTitle titleContent subtitle"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSBrandTopBar",
-        "CaixaDSBrandTopBar",
+        "br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSBrandTopBar",
+        "LoteriasCaixaDSBrandTopBar",
         R.string.category_navigation,
         R.string.api_101_description,
         R.string.api_101_parameters,
@@ -21,8 +21,8 @@ internal val catalogEntries10 = listOf(
         "title"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerSheet",
-        "CaixaDSDrawerSheet",
+        "br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerSheet",
+        "LoteriasCaixaDSDrawerSheet",
         R.string.category_navigation,
         R.string.api_102_description,
         R.string.api_102_parameters,
@@ -30,8 +30,8 @@ internal val catalogEntries10 = listOf(
         "campaign content"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerHeader",
-        "CaixaDSDrawerHeader",
+        "br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerHeader",
+        "LoteriasCaixaDSDrawerHeader",
         R.string.category_navigation,
         R.string.api_103_description,
         R.string.api_103_parameters,
@@ -39,8 +39,8 @@ internal val catalogEntries10 = listOf(
         "greeting onClose"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerItem",
-        "CaixaDSDrawerItem",
+        "br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerItem",
+        "LoteriasCaixaDSDrawerItem",
         R.string.category_navigation,
         R.string.api_104_description,
         R.string.api_104_parameters,
@@ -48,8 +48,8 @@ internal val catalogEntries10 = listOf(
         "label onClick modifier expanded child icon"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerInstitution",
-        "CaixaDSDrawerInstitution",
+        "br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerInstitution",
+        "LoteriasCaixaDSDrawerInstitution",
         R.string.category_navigation,
         R.string.api_105_description,
         R.string.api_105_parameters,
@@ -57,8 +57,8 @@ internal val catalogEntries10 = listOf(
         "expanded onClick details"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSHomeTopBar",
-        "CaixaDSHomeTopBar",
+        "br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSHomeTopBar",
+        "LoteriasCaixaDSHomeTopBar",
         R.string.category_navigation,
         R.string.api_106_description,
         R.string.api_106_parameters,
@@ -67,8 +67,8 @@ internal val catalogEntries10 = listOf(
             "onCampaign onQuickAccess quickAccessToggleEnabled campaignRotation actionsVisible"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSModalityTopBar",
-        "CaixaDSModalityTopBar",
+        "br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSModalityTopBar",
+        "LoteriasCaixaDSModalityTopBar",
         R.string.category_navigation,
         R.string.api_107_description,
         R.string.api_107_parameters,
@@ -77,8 +77,8 @@ internal val catalogEntries10 = listOf(
             "backgroundArtwork titleScale"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBarColor",
-        "CaixaDSStatusBarColor",
+        "br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBarColor",
+        "LoteriasCaixaDSStatusBarColor",
         R.string.category_navigation,
         R.string.api_108_description,
         R.string.api_108_parameters,
@@ -86,8 +86,8 @@ internal val catalogEntries10 = listOf(
         "color darkIcons"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBar",
-        "CaixaDSStatusBar",
+        "br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar",
+        "LoteriasCaixaDSStatusBar",
         R.string.category_navigation,
         R.string.api_109_description,
         R.string.api_109_parameters,

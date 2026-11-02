@@ -14,8 +14,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartSummary
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCartSummary
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.state.activeCartSummary
 import br.gov.caixa.loterias.core.navigation.state.activeResumingCartSummary
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
@@ -95,7 +95,7 @@ class ActiveCartSummaryUiTest {
         val repository = Repository()
         val getCart = GetCurrentCart(repository)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (consumerVisible) {
                     BettingSimulationDestination(
                         destinationIdentity = identity, modalityId = 3, viewModelKey = "edit-regression",
@@ -184,9 +184,9 @@ class ActiveCartSummaryUiTest {
         val getCart = GetCurrentCart(repository)
         var revision by mutableIntStateOf(0)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 val snapshot = activeResumingCartSummary(getCart, revision)
-                CaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
+                LoteriasCaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
             }
         }
         compose.waitUntil {
@@ -232,9 +232,9 @@ class ActiveCartSummaryUiTest {
         val repository = Repository()
         val getCart = GetCurrentCart(repository)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 val snapshot = activeResumingCartSummary(getCart)
-                CaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
+                LoteriasCaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
             }
         }
         compose.waitUntil {
@@ -265,10 +265,10 @@ class ActiveCartSummaryUiTest {
         val getCart = GetCurrentCart(repository)
         var refresh by mutableIntStateOf(0)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 val snapshot = activeCartSummary(getCart, refresh)
                 Box {
-                    CaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
+                    LoteriasCaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
                     TextButton(onClick = { refresh++ }) { Text("Atualizar carrinho") }
                 }
             }
@@ -308,10 +308,10 @@ class ActiveCartSummaryUiTest {
         val getCart = GetCurrentCart(repository)
         var refresh by mutableIntStateOf(0)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 val snapshot = activeCartSummary(getCart, refresh)
                 Box {
-                    CaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
+                    LoteriasCaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
                     TextButton(onClick = { model.addCurrentBetToCart() }) { Text("Repetir aposta") }
                     BetRepeatActionsOverlay(model, onCartChanged = {
                         changes++

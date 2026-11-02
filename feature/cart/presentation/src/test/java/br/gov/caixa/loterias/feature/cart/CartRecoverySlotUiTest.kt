@@ -11,8 +11,8 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.components.button.CaixaDSPrimaryButton
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSPrimaryButton
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.navigation.CartRecoveryStatusPresentation
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
@@ -41,11 +41,11 @@ class CartRecoverySlotUiTest {
                     observedLoading += loading
                     assertSame(fixture.network, networkAvailability)
                 }
-                CaixaDSPrimaryButton("LOCAL RETRY", onClick = onRetry)
+                LoteriasCaixaDSPrimaryButton("LOCAL RETRY", onClick = onRetry)
             }
         })
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 adapter.SimulationRecoveryPanel(loading.value, null, { retries++ }, { back++ }, { dismisses++ }, fixture.network)
             }
         }
@@ -74,7 +74,7 @@ class CartRecoverySlotUiTest {
         val fixture = CartWiringFixture()
         val adapter = fixture.adapter()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 adapter.SimulationRecoveryPanel(false, message.value, { retries++ }, { back++ }, {
                     dismisses++
                     message.value =

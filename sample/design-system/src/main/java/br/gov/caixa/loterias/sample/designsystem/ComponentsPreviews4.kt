@@ -9,30 +9,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSOctoberRoseCampaignPanel
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSOctoberRoseRibbon
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSPixPanel
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSPoolTutorialPrimary
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSTextField
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSTutorialPreference
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSWheel
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSOctoberRoseCampaignPanel
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSOctoberRoseRibbon
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSPixPanel
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSPoolTutorialPrimary
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSTextField
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSTutorialPreference
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSWheel
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
 
 internal val componentsPreviews4 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSOctoberRoseRibbon") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSOctoberRoseRibbon") { state ->
         with(state) {
-            CaixaDSOctoberRoseRibbon()
+            LoteriasCaixaDSOctoberRoseRibbon()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSOctoberRoseCampaignPanel") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSOctoberRoseCampaignPanel") { state ->
         with(state) {
-            CaixaDSOctoberRoseCampaignPanel()
+            LoteriasCaixaDSOctoberRoseCampaignPanel()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSPixPanel") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSPixPanel") { state ->
         with(state) {
-            CaixaDSPixPanel(
+            LoteriasCaixaDSPixPanel(
                 purchaseId = 1234L,
                 copyPaste = "PIX-DEMONSTRACAO-SEM-VALOR",
                 remainingSeconds = 180L,
@@ -44,30 +44,30 @@ internal val componentsPreviews4 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSPoolTutorialPrimary") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSPoolTutorialPrimary") { state ->
         with(state) {
-            CaixaDSPoolTutorialPrimary(
+            LoteriasCaixaDSPoolTutorialPrimary(
                 label = AnnotatedString(actionLabel),
                 onClick = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSTutorialPreference") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSTutorialPreference") { state ->
         with(state) {
-            CaixaDSTutorialPreference(
+            LoteriasCaixaDSTutorialPreference(
                 checked = checked,
                 onToggle = toggle
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold") { state ->
         with(state) {
-            CaixaDSScaffold(
+            LoteriasCaixaDSScaffold(
                 title = sample,
                 onBack = action,
                 modifier = Modifier.height(220.dp),
                 content = { padding ->
-                    CaixaDSText(
+                    LoteriasCaixaDSText(
                         hint,
                         Modifier.padding(padding)
                     )
@@ -75,11 +75,11 @@ internal val componentsPreviews4 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSTextField") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSTextField") { state ->
         with(state) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                br.gov.caixa.loterias.core.designsystem.components.CaixaDSTextFieldVariant.entries.forEach { variant ->
-                    CaixaDSTextField(
+                br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSTextFieldVariant.entries.forEach { variant ->
+                    LoteriasCaixaDSTextField(
                         value = text,
                         onValueChange = { text = it },
                         label = variant.name,
@@ -90,9 +90,9 @@ internal val componentsPreviews4 = mapOf(
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSWheel") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSWheel") { state ->
         with(state) {
-            CaixaDSWheel(
+            LoteriasCaixaDSWheel(
                 options = options,
                 selectedIndex = selection,
                 onSelectedIndex = { selection = it },

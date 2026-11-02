@@ -14,9 +14,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingDecision
@@ -38,7 +38,7 @@ internal fun RapidEntryRoute(
     if (decision is HomeBettingDecision.Ready) {
         content(decision.target)
     } else {
-        CaixaDSScaffold(
+        LoteriasCaixaDSScaffold(
             title = uiStrings.getString(LocalizedR.string.ui_rapidao_658c41),
             onBack = onBack,
             modifier = Modifier
@@ -63,7 +63,7 @@ internal fun RapidEntryRoute(
 
                 AppError.Unexpected -> uiStrings.getString(LocalizedR.string.ui_ocorreu_um_erro_inesperado_no_rapida_2ee739)
             }
-            CaixaDSAlertDialog(
+            LoteriasCaixaDSAlertDialog(
                 uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
                 message,
                 stringResource(LocalizedR.string.ui_entendi_9f9373),

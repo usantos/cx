@@ -27,22 +27,22 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.layout.caixaDSModalWidth
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSModalWidth
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R
 
 @Composable
 internal fun ModalityFilterDialog(selected: Int?, modalities: List<Pair<Int, String>>, onDismiss: () -> Unit, onSelect: (Int?) -> Unit) {
     var pending by remember(selected) { mutableStateOf(selected) }
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-        Column(Modifier.caixaDSModalWidth().background(CaixaDSColorTokens.White, RoundedCornerShape(8.dp))) {
+        Column(Modifier.loteriasCaixaDSModalWidth().background(LoteriasCaixaDSColorTokens.White, RoundedCornerShape(8.dp))) {
             Row(
                 Modifier.fillMaxWidth().background(
-                    CaixaDSColorTokens.ComboDark,
+                    LoteriasCaixaDSColorTokens.ComboDark,
                     RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
                 ).padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -50,16 +50,16 @@ internal fun ModalityFilterDialog(selected: Int?, modalities: List<Pair<Int, Str
                 Text(
                     stringResource(R.string.favorite_filter_title),
                     (Modifier.weight(1f)).uiId("bet.0093"),
-                    color = CaixaDSColorTokens.White,
+                    color = LoteriasCaixaDSColorTokens.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     style = favoriteLegacyTextStyle
                 )
                 Icon(
-                    CaixaDSIcons.Close,
+                    LoteriasCaixaDSIcons.Close,
                     stringResource(R.string.favorite_close),
                     (Modifier.size(25.dp).uiId("bet.0094").clickable(onClick = onDismiss)).uiId("bet.0095"),
-                    tint = CaixaDSColorTokens.White
+                    tint = LoteriasCaixaDSColorTokens.White
                 )
             }
             Column(Modifier.weight(1f, fill = false).padding(10.dp).uiId("bet.0096").verticalScroll(rememberScrollState())) {
@@ -74,9 +74,12 @@ internal fun ModalityFilterDialog(selected: Int?, modalities: List<Pair<Int, Str
                 Text(
                     stringResource(R.string.favorite_cancel),
                     (Modifier.padding(8.dp).uiId("bet.0097").clickable(onClick = onDismiss)).uiId("bet.0098"),
-                    color = CaixaDSColorTokens.FavoritePickerBlue,
+                    color = LoteriasCaixaDSColorTokens.FavoritePickerBlue,
                     fontWeight = FontWeight.Bold,
-                    style = TextStyle(fontFamily = CaixaDSFuturaFontFamily, platformStyle = PlatformTextStyle(includeFontPadding = true)),
+                    style = TextStyle(
+                        fontFamily = LoteriasCaixaDSFuturaFontFamily,
+                        platformStyle = PlatformTextStyle(includeFontPadding = true)
+                    ),
                     fontSize = 14.sp
                 )
                 Text(
@@ -86,9 +89,12 @@ internal fun ModalityFilterDialog(selected: Int?, modalities: List<Pair<Int, Str
                             onSelect(pending)
                         }
                         ).uiId("bet.0100"),
-                    color = CaixaDSColorTokens.FavoritePickerBlue,
+                    color = LoteriasCaixaDSColorTokens.FavoritePickerBlue,
                     fontWeight = FontWeight.Bold,
-                    style = TextStyle(fontFamily = CaixaDSFuturaFontFamily, platformStyle = PlatformTextStyle(includeFontPadding = true)),
+                    style = TextStyle(
+                        fontFamily = LoteriasCaixaDSFuturaFontFamily,
+                        platformStyle = PlatformTextStyle(includeFontPadding = true)
+                    ),
                     fontSize = 14.sp
                 )
             }

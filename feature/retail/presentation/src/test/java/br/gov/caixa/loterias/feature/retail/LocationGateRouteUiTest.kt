@@ -17,7 +17,7 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.core.app.ActivityOptionsCompat
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.retail.domain.model.RetailLocationEligibility
 import br.gov.caixa.loterias.feature.retail.domain.usecase.CheckRetailLocationUseCase
 import br.gov.caixa.loterias.feature.retail.presentation.route.LocationGateRoute
@@ -64,7 +64,7 @@ class LocationGateRouteUiTest {
         }
         compose.setContent {
             CompositionLocalProvider(LocalContext provides context, LocalActivityResultRegistryOwner provides registry) {
-                CaixaDSTheme { LocationGateRoute(model, "1.2.3", R.drawable.icon_loteria, onAllowed = allowed) }
+                LoteriasCaixaDSTheme { LocationGateRoute(model, "1.2.3", R.drawable.icon_loteria, onAllowed = allowed) }
             }
         }
     }

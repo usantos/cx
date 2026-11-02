@@ -81,7 +81,7 @@ Este resultado mede testes locais JVM/Android com Robolectric e os limites de tr
 
 ## Campos compartilhados e sample do DS — 22/10/2026
 
-A execução final de `qualityGate verifyCaixaDS verifyCleanArchitecture :sample:design-system:assembleDebug`, com `-PhomeV2=false -PmockBackend=false -PnetworkLogging=false`, terminou com `BUILD SUCCESSFUL` e `QUALITY GATE PASSED`.
+A execução final de `qualityGate verifyLoteriasCaixaDS verifyCleanArchitecture :sample:design-system:assembleDebug`, com `-PhomeV2=false -PmockBackend=false -PnetworkLogging=false`, terminou com `BUILD SUCCESSFUL` e `QUALITY GATE PASSED`.
 
 - Cobertura global LINE: **95,48%** — **42.452/44.460** linhas, 2.008 não cobertas, **66 módulos**. O sample faz parte do denominador e a soma dos módulos coincide com o agregado.
 - JUnit: **2.980 testes em 586 suítes**, sem falhas, erros ou testes ignorados; inclui seis cenários do campo unificado, cinco contratos visuais/funcionais da conta e dez testes do catálogo.

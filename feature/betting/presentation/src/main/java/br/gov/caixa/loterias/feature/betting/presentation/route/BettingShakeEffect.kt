@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState
 import br.gov.caixa.loterias.feature.betting.presentation.state.LOTOGOL_ID
@@ -75,7 +75,7 @@ internal fun BettingShakeEffect(enabled: Boolean, state: BettingGameUiState, vie
         }
     }
     if (confirmation) {
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = uiStrings.getString(LocalizedR.string.ui_voce_perdera_a_aposta_atual_deseja_r_4bcc43),
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_sim_931345),

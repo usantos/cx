@@ -24,9 +24,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSComboColors
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSComboColors
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.ComboTextSize
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.comboText
@@ -44,20 +44,22 @@ internal fun ComboPurchasePanel(
 ) {
     val resources = LocalResources.current
     Column(
-        modifier.background(CaixaDSColorTokens.White).padding(top = 16.dp, bottom = 16.dp).legacyAutomationId("combo-purchase-panel"),
+        modifier.background(
+            LoteriasCaixaDSColorTokens.White
+        ).padding(top = 16.dp, bottom = 16.dp).legacyAutomationId("combo-purchase-panel"),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             formatBetAmount(state.selectedCombo?.amount?.multiply(BigDecimal(state.comboQuantity))),
             style = comboText(ComboTextSize.AMOUNT, FontWeight.ExtraBold),
-            color = CaixaDSColorTokens.Black,
+            color = LoteriasCaixaDSColorTokens.Black,
             modifier = Modifier.uiId("bet.0079")
         )
         Text(
             resources.getString(R.string.combo_quantity_label),
             (Modifier.padding(top = 4.dp)).uiId("bet.0080"),
             style = comboText(ComboTextSize.HEADING),
-            color = CaixaDSComboColors.QuantityLabel
+            color = LoteriasCaixaDSComboColors.QuantityLabel
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             CatalogCounterButton(false, decrease)
@@ -65,7 +67,7 @@ internal fun ComboPurchasePanel(
                 Text(
                     state.comboQuantity.toString(),
                     style = comboText(ComboTextSize.QUANTITY, FontWeight.Bold),
-                    color = CaixaDSColorTokens.ComboDark,
+                    color = LoteriasCaixaDSColorTokens.ComboDark,
                     modifier = Modifier.uiId("bet.0081")
                 )
                 Image(painterResource(R.drawable.linha_inferior_qtd_apostas_detalhe_combo), null, Modifier.width(31.dp).height(1.dp))
@@ -74,7 +76,7 @@ internal fun ComboPurchasePanel(
         }
         Box(
             Modifier.padding(top = 15.dp).width(201.dp).height(59.dp).legacyAutomationId("combo-add-to-cart")
-                .background(CaixaDSColorTokens.ComboDark, RoundedCornerShape(4.dp))
+                .background(LoteriasCaixaDSColorTokens.ComboDark, RoundedCornerShape(4.dp))
                 .uiId("bet.0082").clickable(enabled = !state.loading && state.selectedCombo != null, role = Role.Button, onClick = add),
             contentAlignment = Alignment.Center
         ) {
@@ -84,7 +86,7 @@ internal fun ComboPurchasePanel(
                     append(resources.getString(R.string.ui_ao_carrinho_de_apostas_ef1eb2))
                 },
                 style = comboText(ComboTextSize.LABEL),
-                color = CaixaDSColorTokens.White,
+                color = LoteriasCaixaDSColorTokens.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.uiId("bet.0083")
             )

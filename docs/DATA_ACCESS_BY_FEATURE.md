@@ -463,7 +463,7 @@ Retornos de inclusão são `CartDto`, convertido em carrinho de domínio. Na mes
 ### Pagamentos, Pix e cartões — Payment
 
 O painel Pix exibe um QR Code centralizado acima do campo Copia e Cola, gerado
-localmente pelo CaixaDS a partir do mesmo `PixCharge.copyPaste.trim()` copiado
+localmente pelo LoteriasCaixaDS a partir do mesmo `PixCharge.copyPaste.trim()` copiado
 para a área de transferência. Essa renderização não gera outra cobrança nem
 chama endpoints; funciona também para cobranças restauradas sem imagem Base64.
 O QR é removido ao expirar, tem margem branca e usa preto/branco em ambos os temas.
@@ -972,3 +972,14 @@ A lista abaixo registra os contratos de casos de uso de Domain/API encontrados n
 | [RegisterPushDevice](../core/domain/src/main/kotlin/br/gov/caixa/loterias/core/domain/push/usecase/RegisterPushDevice.kt) | `br.gov.caixa.loterias.core.domain.push.usecase` |
 
 Total conferido: **124 contratos/classes de entrada** neste catálogo. Marketplace Filter reutiliza os contratos listados em Marketplace e Core. As portas de identidade, biometria, localização e conectividade estão descritas nas seções correspondentes.
+
+
+## Isolamento dos formulários de conta — 02/11/2026
+
+O grafo obtém `AccountFormUseCasesFactory.forSession(identity)` ao criar o ViewModel de cadastro ou dados pessoais. `AccountRepositoryFactory` é a porta de Domain; `SessionAccountRepositoryFactory` e `AccountRemoteDataSourceImpl` vinculam os comandos ao transporte existente, por `AccountVerificationSessionBinding`. O formulário não busca um token novo ao executar uma escrita pendente.
+
+- `UpdatePersonalDataUseCase`: `PUT usuarios`, com o mesmo `PersonalDataUpdateDto`; resposta `ApiEnvelope<Unit>`.
+- `RegisterAccountUseCase`: `POST usuarios`, com o mesmo `AccountRegistrationDto`; resposta `ApiEnvelope<UserProfileDto>`.
+- `RecalculateAuthorizedLimitUseCase`: `POST usuarios/recalcular-limite-autorizado`, sem corpo novo; resposta `ApiEnvelope<UserProfileDto>`, da qual é obtido o limite autorizado.
+
+A identidade é um `@Tag` local, não query, body ou header adicional. O interceptor de sessão existente usa o vínculo capturado; identidade ausente, substituída antes do envio ou durante a resposta rejeita a operação, sem fallback ao usuário vigente e sem reenvio automático. Os guards do ViewModel também impedem publicar resultado antigo. Os demais campos, métodos, rotas e headers permanecem conforme as tabelas e DTOs deste guia.

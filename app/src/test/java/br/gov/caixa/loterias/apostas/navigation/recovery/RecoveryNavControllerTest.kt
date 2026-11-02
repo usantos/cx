@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import br.gov.caixa.loterias.apostas.HomeDrawerTestActivity
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -27,7 +27,7 @@ class RecoveryNavControllerTest {
         var automaticEntries = 0
         lateinit var nav: NavHostController
         restoration.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 nav = rememberRecoveryNavController()
                 NavHost(nav, startDestination = "home") {
                     composable("home") { Text("Home") }
@@ -54,7 +54,7 @@ class RecoveryNavControllerTest {
         val restoration = StateRestorationTester(compose)
         lateinit var nav: NavHostController
         restoration.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 nav = rememberRecoveryNavController()
                 NavHost(nav, startDestination = "home") {
                     composable("home") { Text("Home") }

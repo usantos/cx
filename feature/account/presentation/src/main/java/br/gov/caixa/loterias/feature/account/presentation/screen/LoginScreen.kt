@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.account.presentation.route.findActivity
 import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
 
@@ -33,8 +33,8 @@ fun LoginScreen(
     environmentSelector: @Composable (Boolean) -> Unit = {},
     onSwitchUser: () -> Unit = {},
 ) {
-    br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBarColor(
-        br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens.Blue700,
+    br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBarColor(
+        br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens.Blue700,
         darkIcons = false
     )
     val view = LocalView.current
@@ -60,16 +60,16 @@ fun LoginScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(CaixaDS.colors.surface)
+            .background(LoteriasCaixaDS.colors.surface)
             .statusBarsPadding()
             .navigationBarsPadding()
-            .background(CaixaDS.colors.authenticationBackground)
+            .background(LoteriasCaixaDS.colors.authenticationBackground)
     ) {
         val largeFont = androidx.compose.ui.platform.LocalDensity.current.fontScale > 1f
         if (largeFont) {
             Column(Modifier.fillMaxSize().uiId("account.0049").verticalScroll(rememberScrollState())) {
                 LoginPrimaryContent(state, onTryNow, onLogin, largeFont = true, onSwitchUser = onSwitchUser)
-                Spacer(Modifier.height(CaixaDS.spacing.xl))
+                Spacer(Modifier.height(LoteriasCaixaDS.spacing.xl))
                 LoginFooterContent(
                     state,
                     versionName,

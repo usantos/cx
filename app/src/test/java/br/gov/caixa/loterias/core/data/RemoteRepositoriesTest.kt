@@ -877,7 +877,10 @@ class RemoteRepositoriesTest {
     private class TestRemoteSources(apiProvider: LoteriasApiProvider, legacyApiProvider: BackendApiProvider?) :
         AppConfigurationRemoteDataSource by AppConfigurationRemoteDataSourceImpl(apiProvider),
         br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountRemoteDataSource by
-        br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountRemoteDataSourceImpl(apiProvider),
+        br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountRemoteDataSourceImpl(
+            apiProvider,
+            br.gov.caixa.loterias.core.network.api.AccountVerificationSession({ "synthetic-account-token" }, { true })
+        ),
         br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingRemoteDataSource by
         br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingRemoteDataSourceImpl(apiProvider, legacyApiProvider),
         br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartRemoteDataSource by
@@ -894,7 +897,10 @@ class RemoteRepositoriesTest {
             apiProvider,
             legacyApiProvider
         )
-        private val accountSource = br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountRemoteDataSourceImpl(apiProvider)
+        private val accountSource = br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountRemoteDataSourceImpl(
+            apiProvider,
+            br.gov.caixa.loterias.core.network.api.AccountVerificationSession({ "synthetic-account-token" }, { true })
+        )
 
         override suspend fun currentUserProfile() = accountSource.currentUserProfile()
     }
@@ -1232,11 +1238,17 @@ class RemoteRepositoriesTest {
         override suspend fun currentUserProfile() = profile
         override suspend fun municipalities(stateId: Long) = municipalities
         override suspend fun neighborhoodsByZipCode(zipCode: String) = neighborhoods
-        override suspend fun updatePersonalData(request: PersonalDataUpdateDto): ApiEnvelope<Unit> {
+        override suspend fun updatePersonalData(
+            request: PersonalDataUpdateDto,
+            session: br.gov.caixa.loterias.core.network.api.AccountVerificationSession,
+        ): ApiEnvelope<Unit> {
             personalDataUpdate = request
             return ApiEnvelope(Unit)
         }
-        override suspend fun registerAccount(request: AccountRegistrationDto): ApiEnvelope<UserProfileDto> {
+        override suspend fun registerAccount(
+            request: AccountRegistrationDto,
+            session: br.gov.caixa.loterias.core.network.api.AccountVerificationSession,
+        ): ApiEnvelope<UserProfileDto> {
             accountRegistration = request
             return profile
         }
@@ -1244,7 +1256,8 @@ class RemoteRepositoriesTest {
             verificationRequest = request
             return verification
         }
-        override suspend fun recalculateAuthorizedLimit() = profile
+        override suspend fun recalculateAuthorizedLimit(session: br.gov.caixa.loterias.core.network.api.AccountVerificationSession) =
+            profile
         override suspend fun currentCart() = cart
         override suspend fun removeBoundCartBet(
             id: Long,

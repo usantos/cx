@@ -86,7 +86,7 @@ class MainActivity : androidx.activity.ComponentActivity() {
         super.onCreate(savedInstanceState)
         resultShortcuts.restore(intent, savedInstanceState)
         // Mantém a janela de ponta a ponta estável durante a inicialização. Cada tela
-        // desenha o fundo das barras do sistema por meio de CaixaDSStatusBar.
+        // desenha o fundo das barras do sistema por meio de LoteriasCaixaDSStatusBar.
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = false
         // O Android 10+ adiciona contraste à barra de navegação clara por padrão.

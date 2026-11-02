@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.currentStateAsState
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent
 import br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation
@@ -31,7 +31,7 @@ fun ServiceFailureOverlay(
         }
     }
     state.notice?.let { notice ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = notice.message,
             positiveLabel = notice.positiveLabel,

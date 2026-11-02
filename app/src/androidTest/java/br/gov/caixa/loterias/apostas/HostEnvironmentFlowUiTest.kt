@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import br.gov.caixa.loterias.feature.account.presentation.route.LoginEnvironmentPicker
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -17,7 +17,7 @@ class HostEnvironmentFlowUiTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
     @Test fun failedChoiceRetriesBeforeTheClosingAcknowledgement() {
         var changes = 0; var closed = 0
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             LoginEnvironmentPicker(TestEnvironment.EXTERNO_ESTEIRA, true, {
                 changes++; if (changes == 1) error("storage unavailable") else true
             }, { closed++ })
@@ -34,7 +34,7 @@ class HostEnvironmentFlowUiTest {
     }
     @Test fun pendingCommitDisablesThePickerUntilTheNotice() {
         val commit = CompletableDeferred<Boolean>(); var changes = 0
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             LoginEnvironmentPicker(TestEnvironment.EXTERNO_ESTEIRA, true, { changes++; commit.await() }, {})
         } }
         compose.onNodeWithTag("environment-picker").performClick()
@@ -48,7 +48,7 @@ class HostEnvironmentFlowUiTest {
     @Test fun callbackRecompositionDoesNotRepeatACompletedNoChange() {
         var generation by mutableStateOf(0)
         var changes = 0
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             val current = generation
             LoginEnvironmentPicker(TestEnvironment.EXTERNO_ESTEIRA, true, {
                 check(current >= 0)

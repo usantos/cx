@@ -2,12 +2,12 @@
 
 package br.gov.caixa.loterias.sample.designsystem
 
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSSupportTopBar
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSSupportTopBar
 
 internal val navigationPreviews1 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSSupportTopBar") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSSupportTopBar") { state ->
         with(state) {
-            CaixaDSSupportTopBar(
+            LoteriasCaixaDSSupportTopBar(
                 title = sample,
                 onBack = action
             )

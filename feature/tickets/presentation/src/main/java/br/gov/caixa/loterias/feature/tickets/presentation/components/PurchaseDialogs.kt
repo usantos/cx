@@ -13,13 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSAlertDialog as AlertDialog
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSBasicTextField as BasicTextField
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSTextButton as TextButton
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.layout.caixaDSModalWidth
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSAlertDialog as AlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSBasicTextField as BasicTextField
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTextButton as TextButton
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSModalWidth
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.state.PurchaseDialogAction
@@ -31,7 +31,7 @@ internal fun PurchaseStatusDialogView(dialog: PurchaseStatusDialog, onAction: (P
     val positive = dialog.actions.getOrNull(0) ?: return
     val negative = dialog.actions.getOrNull(1)
     val neutral = dialog.actions.getOrNull(2)
-    CaixaDSDialog(
+    LoteriasCaixaDSDialog(
         title = dialog.title,
         message = dialog.message,
         positiveLabel = positive.second,
@@ -48,7 +48,7 @@ internal fun PurchaseStatusDialogView(dialog: PurchaseStatusDialog, onAction: (P
 internal fun FavoritePurchaseDialog(state: TicketsUiState, actions: FavoritePurchaseActions) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     AlertDialog(
-        modifier = (Modifier.caixaDSModalWidth()).uiId("tickets.0035"),
+        modifier = (Modifier.loteriasCaixaDSModalWidth()).uiId("tickets.0035"),
         properties = DialogProperties(usePlatformDefaultWidth = false),
         onDismissRequest = actions.closeFavoriteDialog,
         title = { Text(uiStrings.getString(LocalizedR.string.ui_carrinho_favorito_fc14c7), modifier = Modifier.uiId("tickets.0036")) },
@@ -59,7 +59,7 @@ internal fun FavoritePurchaseDialog(state: TicketsUiState, actions: FavoritePurc
                     onValueChange = actions.changeFavoriteName,
                     modifier = (
                         Modifier.fillMaxWidth().height(52.dp)
-                            .border(1.dp, CaixaDS.colors.brand, RoundedCornerShape(4.dp)).padding(14.dp)
+                            .border(1.dp, LoteriasCaixaDS.colors.brand, RoundedCornerShape(4.dp)).padding(14.dp)
                         ).uiId("tickets.0037"),
                     singleLine = true,
                     decorationBox = { field ->
@@ -67,7 +67,7 @@ internal fun FavoritePurchaseDialog(state: TicketsUiState, actions: FavoritePurc
                             if (state.favoriteName.isBlank()) {
                                 Text(
                                     uiStrings.getString(LocalizedR.string.ui_nome_do_carrinho_3c05fa),
-                                    color = CaixaDS.colors.mutedText,
+                                    color = LoteriasCaixaDS.colors.mutedText,
                                     modifier = Modifier.uiId("tickets.0038")
                                 )
                             }
@@ -82,7 +82,7 @@ internal fun FavoritePurchaseDialog(state: TicketsUiState, actions: FavoritePurc
                         actions.toggleKeepSurprises
                     )
                 }
-                state.errorMessage?.let { Text(it, color = CaixaDS.colors.error, modifier = Modifier.uiId("tickets.0039")) }
+                state.errorMessage?.let { Text(it, color = LoteriasCaixaDS.colors.error, modifier = Modifier.uiId("tickets.0039")) }
             }
         },
         confirmButton = {

@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.support.domain.model.SupportSection
 import br.gov.caixa.loterias.feature.support.presentation.screen.FaqContent
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportAction
@@ -39,7 +39,7 @@ class SupportSectionsLargeFontTest {
             val title = "RESGATE DE PRÊMIOS NAS AGÊNCIAS DA CAIXA"
             val actions = mutableListOf<SupportAction>()
             compose.setContent {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     Box(Modifier.size(360.dp, 640.dp)) {
                         FaqContent(SupportUiState(sections = listOf(SupportSection(SECTION_ID, title, emptyList()))), { actions += it })
                     }

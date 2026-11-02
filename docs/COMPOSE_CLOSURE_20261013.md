@@ -22,7 +22,7 @@ A Home v2 é a apresentação usada no CX, com seus assets e ordem persistida. `
 | Mock do SDK | Desativa sete componentes Topaz, WorkManagerInitializer e onze componentes de entrega. Backup/restore dos estados PM preserva a troca real→mock→real e evita retomar jobs persistidos. Produção sem marcador não altera estados. |
 | Logout | POST `usuarios/sair` vinculado à identidade atual antes da limpeza local; rejeita resposta de sessão antiga e permite recuperar falha de limpeza sem repetir logout remoto confirmado. |
 | Push | POST `push/registros` com CPF, token, plataforma android e canal loterias; persiste sucesso somente com confirmação do backend, protege troca de identidade/token e recebe mensagens no canal legado. Solicita POST_NOTIFICATIONS na entrada do login em Android 13+, aguardando a resposta antes do SSO automático e permitindo login mesmo após negação. Mock não solicita permissão nem registra dispositivo real. |
-| CaixaDS e recursos | Cores dos consumidores movidas para tokens exatos; desenhos registrados; painter nativo para recursos layer-list/inset; fonte HTML original preservada em raw. |
+| LoteriasCaixaDS e recursos | Cores dos consumidores movidas para tokens exatos; desenhos registrados; painter nativo para recursos layer-list/inset; fonte HTML original preservada em raw. |
 | Pipeline | Memória e serialização das suítes de dispositivo ajustadas; cobertura de apostas aumentada com cenários de negócio, sem reduzir limiar. Gate de package/caminho detecta arquivos Kotlin em diretório incorreto. |
 
 A auditoria confrontou BOs/controllers do CX com Retrofit, Data, Domain, ViewModels e navegação desses fluxos. As 99 operações de método/path continuam no gate contratual. Ele sozinho não comprova consumo ou equivalência de regras.

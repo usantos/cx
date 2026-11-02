@@ -10,7 +10,7 @@ import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.apostas.navigation.PostLoginShakeTutorial
 import br.gov.caixa.loterias.apostas.navigation.PostLoginTutorialRequest
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.betting.domain.repository.ShakeSettingsRepository
@@ -120,7 +120,7 @@ class PostLoginShakeTutorialTest {
         )
         val request = PostLoginTutorialRequest(destination, lease)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 PostLoginShakeTutorial(
                     request,
                     identity,

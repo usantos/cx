@@ -14,8 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
 
 internal val catalogPreviews: Map<String, CatalogPreview> =
     artworkPreviews0 +
@@ -39,7 +39,7 @@ internal val catalogPreviews: Map<String, CatalogPreview> =
         iconPreviews0 +
         themePreviews0 +
         webPreviews0 +
-        layoutPreviews0
+        layoutPreviews0 + paymentCardPreviews
 
 class PreviewState {
     var richText by mutableStateOf(androidx.compose.ui.text.input.TextFieldValue())
@@ -87,12 +87,12 @@ fun CatalogDemo(entry: CatalogEntry) {
         ) {
             catalogPreviews.getValue(entry.id)(state)
         }
-        CaixaDSText(stringResource(R.string.interaction_count, state.count))
+        LoteriasCaixaDSText(stringResource(R.string.interaction_count, state.count))
     }
 }
 
 @Composable
 internal fun OpenPreview(state: PreviewState, content: @Composable () -> Unit) {
-    CaixaDSButton(onClick = { state.show = true }) { CaixaDSText(stringResource(R.string.open_preview)) }
+    LoteriasCaixaDSButton(onClick = { state.show = true }) { LoteriasCaixaDSText(stringResource(R.string.open_preview)) }
     if (state.show) content()
 }

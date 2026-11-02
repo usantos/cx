@@ -12,14 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
@@ -41,7 +39,7 @@ internal fun FavoriteBetsContent(
     onLoadMore: () -> Unit = {},
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = uiStrings.getString(LocalizedR.string.ui_apostas_favoritas_f81885),
         onBack = onBack,
         gradientTopBar = false,
@@ -56,12 +54,12 @@ internal fun FavoriteBetsContent(
         modifier = Modifier.uiId("bet.0278")
     ) { padding ->
         when {
-            !privateDataEnabled -> Column(Modifier.fillMaxSize().padding(padding).background(CaixaDSColorTokens.White)) {
+            !privateDataEnabled -> Column(Modifier.fillMaxSize().padding(padding).background(LoteriasCaixaDSColorTokens.White)) {
                 FavoriteListHeader(state.selectedModalityName) {}
             }
 
             state.loading -> Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = CaixaDS.colors.brand)
+                CircularProgressIndicator(color = LoteriasCaixaDS.colors.brand)
             }
 
             state.favorites.isEmpty() -> EmptyFavoriteBets(

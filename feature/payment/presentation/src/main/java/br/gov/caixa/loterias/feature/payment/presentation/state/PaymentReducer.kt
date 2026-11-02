@@ -18,6 +18,7 @@ internal fun reducePaymentState(state: PaymentUiState, action: PaymentAction): P
     is PaymentAction.PixNoticeReceived,
     is PaymentAction.PixStatusReceived,
     PaymentAction.PixStatusDismissed,
+    PaymentAction.PixApprovalNavigationConsumed,
     -> reducePaymentPix(state, action)
 
     PaymentAction.CardDeletionStarted,
@@ -86,6 +87,8 @@ private fun reducePaymentPix(state: PaymentUiState, action: PaymentAction): Paym
     )
 
     PaymentAction.PixStatusDismissed -> state.copy(pixRejected = false)
+
+    PaymentAction.PixApprovalNavigationConsumed -> state.copy(pixApprovalNavigationConsumed = true)
 
     else -> state
 }

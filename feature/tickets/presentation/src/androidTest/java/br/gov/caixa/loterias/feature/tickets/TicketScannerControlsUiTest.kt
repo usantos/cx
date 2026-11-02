@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.TicketScannerScreen
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -21,7 +21,7 @@ class TicketScannerControlsUiTest {
         var closes = 0
         compose.setContent {
             val current = revision.intValue
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 TicketScannerScreen(
                     permissionGranted = true,
                     onBack = { closes++ },

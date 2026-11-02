@@ -20,12 +20,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIconButton as IconButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIconButton as IconButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.drawDateLabel
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.label
@@ -49,7 +48,7 @@ internal fun PoolHeader(
             modifier = (Modifier.width(30.dp).height(48.dp).focusProperties { canFocus = false }).uiId("cart.0007")
         ) {
             Icon(
-                CaixaDSIcons.Back,
+                LoteriasCaixaDSIcons.Back,
                 contentDescription = uiStrings.getString(LocalizedR.string.ui_voltar_59dc92),
                 modifier = (Modifier.size(18.dp)).uiId("cart.0008"),
                 tint = contentColor
@@ -59,7 +58,7 @@ internal fun PoolHeader(
             modality.toDisplayModality().ifBlank { uiStrings.getString(LocalizedR.string.ui_bolao_6bdc7b) },
             (Modifier.weight(1f).padding(start = 24.dp, end = 24.dp)).uiId("cart.0009"),
             color = contentColor,
-            fontFamily = CaixaDSFuturaFontFamily,
+            fontFamily = LoteriasCaixaDSFuturaFontFamily,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )

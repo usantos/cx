@@ -6,11 +6,11 @@ import re
 import sys
 ROOT=Path(__file__).resolve().parents[1]
 PROTECTED={
-    'core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/CaixaDSScreenComponents.kt',
+    'core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/LoteriasCaixaDSScreenComponents.kt',
     'feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/components/CurrentCartScaffold.kt',
 }
 TOKEN=re.compile(r'"""[\s\S]*?"""|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|/\*[\s\S]*?\*/|//[^\n]*')
-CONTROLS=re.compile(r'\b(?:CaixaDS)?(?:Button|TextButton|OutlinedButton|IconButton|Checkbox|RadioButton|TextField|BasicTextField|Switch|DropdownMenuItem|Tab)\s*\(')
+CONTROLS=re.compile(r'\b(?:(?:Loterias)?CaixaDS)?(?:Button|TextButton|OutlinedButton|IconButton|Checkbox|RadioButton|TextField|BasicTextField|Switch|DropdownMenuItem|Tab)\s*\(')
 
 def mask(source):
     return TOKEN.sub(lambda m:re.sub(r'[^\n]',' ' if m[0].startswith(('//','/*')) else 'x',m[0]),source)

@@ -13,7 +13,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.detailText
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.DetailPoolInformation
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.DetailHeader
@@ -33,7 +33,7 @@ class MarketplaceDetailXmlTextSizeUiTest {
     @Test fun richDescriptionsKeepNativeAbsoluteSizeSpanWithoutXmlRounding() {
         val paint = TextPaint().apply { density = 450 / 160f }
         AbsoluteSizeSpan(18, true).updateMeasureState(paint)
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             CompositionLocalProvider(LocalDensity provides Density(450 / 160f, fontScale = 1f)) {
                 DetailPoolInformation(detail())
             }
@@ -44,7 +44,7 @@ class MarketplaceDetailXmlTextSizeUiTest {
 
     @Test fun specialLotofacilScalesAlreadyRoundedXmlTitleByEightyPercent() {
         val nativeSize = nativeXmlSize(18, 450) * .8f
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             CompositionLocalProvider(LocalDensity provides Density(450 / 160f, fontScale = 1f)) {
                 DetailHeader(detail().copy(modality = "LOTOFACIL", contestType = 2), marketplaceColors("LOTOFACIL"), {})
             }
@@ -54,7 +54,7 @@ class MarketplaceDetailXmlTextSizeUiTest {
 
     private fun checkDensity(dpi: Int) {
         val nativeSize = nativeXmlSize(18, dpi)
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             CompositionLocalProvider(LocalDensity provides Density(dpi / 160f, fontScale = 1f)) {
                 Text("Lotérica da Praça Central", style = detailText(18))
             }

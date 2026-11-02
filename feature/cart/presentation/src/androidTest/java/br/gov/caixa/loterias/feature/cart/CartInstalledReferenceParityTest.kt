@@ -19,7 +19,7 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
@@ -73,7 +73,7 @@ class CartInstalledReferenceParityTest {
 
     @Test fun fullCartCapturesInstalledReferenceAndCorrectedBody() {
         val native = mutableStateOf(false)
-        compose.setContent { CaixaDSTheme { if (native.value) CartReferencePreview(cart) else Current(cart) } }
+        compose.setContent { LoteriasCaixaDSTheme { if (native.value) CartReferencePreview(cart) else Current(cart) } }
         capture("cart-after")
         compose.runOnIdle { native.value = true }
         compose.waitForIdle()
@@ -81,7 +81,7 @@ class CartInstalledReferenceParityTest {
     }
 
     @Test fun individualDeleteArtworkMatchesInstalledImageView() {
-        compose.setContent { CaixaDSTheme { CurrentCartRow(individual, Instant.EPOCH, {}, null) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartRow(individual, Instant.EPOCH, {}, null) } }
         val actual = compose.onNodeWithContentDescription("Excluir", useUnmergedTree = true).captureToImage().toPixelMap()
         var expectedWidth = 0
         compose.runOnIdle {
@@ -105,7 +105,7 @@ class CartInstalledReferenceParityTest {
     }
 
     @Test fun footerTotalUsesInstalledRoundedTextSize() {
-        compose.setContent { CaixaDSTheme { Current(cart) } }
+        compose.setContent { LoteriasCaixaDSTheme { Current(cart) } }
         val layouts = mutableListOf<TextLayoutResult>()
         compose.onNodeWithText("R$ 15,50").performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
         var nativeSize = 0f
@@ -125,7 +125,7 @@ class CartInstalledReferenceParityTest {
                 listOf(SUPER_NUMBER)
             }
         )
-        compose.setContent { CaixaDSTheme { CurrentCartRow(superSeven, Instant.EPOCH, {}, null) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartRow(superSeven, Instant.EPOCH, {}, null) } }
         val actual = compose.onNodeWithTag("cart-super-seven-header-0").fetchSemanticsNode().boundsInRoot
         var expectedHeight = 0
         var expectedStart = 0
@@ -177,7 +177,7 @@ class CartInstalledReferenceParityTest {
     }
 
     @Test fun dynamicNumberRowsRetainInstalledFractionalTextSize() {
-        compose.setContent { CaixaDSTheme { CurrentCartRow(individual, Instant.EPOCH, {}, null) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartRow(individual, Instant.EPOCH, {}, null) } }
         val layouts = mutableListOf<TextLayoutResult>()
         compose.onNodeWithText("02 - 10 - 18 - 27 - 32 - 43").performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
         var expectedSize = 0f
@@ -200,7 +200,7 @@ class CartInstalledReferenceParityTest {
         )
         val snapshot = cart.copy(total = superSeven.amount, items = listOf(superSeven))
         val native = mutableStateOf(false)
-        compose.setContent { CaixaDSTheme { if (native.value) CartReferencePreview(snapshot) else Current(snapshot) } }
+        compose.setContent { LoteriasCaixaDSTheme { if (native.value) CartReferencePreview(snapshot) else Current(snapshot) } }
         capture("cart-super-seven-after")
         compose.runOnIdle { native.value = true }
         compose.waitForIdle()
@@ -211,10 +211,10 @@ class CartInstalledReferenceParityTest {
         val expected = reference().modalityColors()
         Log.i("CartReferenceMetrics", "palette=$expected")
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 androidx.compose.foundation.layout.Column {
                     expected.keys.forEach { code ->
-                        br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText(
+                        br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText(
                             code,
                             color = br.gov.caixa.loterias.feature.cart.presentation.screen.currentCartModalityColor(code)
                         )
@@ -235,7 +235,7 @@ class CartInstalledReferenceParityTest {
             items = listOf(individual, lottery, combo.copy(comboBetCount = FIFTEEN_GAMES - 2, amount = BigDecimal("70.50"))),
             totalBetCount = FIFTEEN_GAMES
         )
-        compose.setContent { CaixaDSTheme { Current(snapshot) } }
+        compose.setContent { LoteriasCaixaDSTheme { Current(snapshot) } }
         val layouts = mutableListOf<TextLayoutResult>()
         compose.onNodeWithText(FIFTEEN_GAMES.toString()).performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
         assertEquals(1, layouts.single().lineCount)

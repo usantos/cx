@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.payment.presentation.components
 
 import androidx.compose.runtime.Composable
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.payment.R as LocalizedR
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PurchaseNoticeUiState
 
@@ -14,7 +14,7 @@ internal fun PurchaseNoticeDialog(
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     notice ?: return
-    CaixaDSDialog(
+    LoteriasCaixaDSDialog(
         title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
         message = notice.message,
         positiveLabel = when {

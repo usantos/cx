@@ -8,20 +8,36 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.bottom
+import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
+import androidx.compose.ui.test.height
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.tokens.resolveCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeResultContent
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
-import br.gov.caixa.loterias.feature.results.domain.model.*
+import br.gov.caixa.loterias.feature.results.domain.model.DrawPayout
+import br.gov.caixa.loterias.feature.results.domain.model.DrawRegionalWinner
+import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
+import br.gov.caixa.loterias.feature.results.domain.model.DrawSelectionReward
+import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsMatch
+import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsTeam
 import br.gov.caixa.loterias.feature.results.presentation.state.ResultsUiState
 import java.io.File
 import java.math.BigDecimal
@@ -38,10 +54,14 @@ class HomeResultsStateMatrixUiTest {
 
     private fun render(height: Int = 300) {
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
-                CompositionLocalProvider(LocalUriHandler provides object : UriHandler {
-                    override fun openUri(uri: String) { openedUri = uri }
-                }) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                CompositionLocalProvider(
+                    LocalUriHandler provides object : UriHandler {
+                        override fun openUri(uri: String) {
+                            openedUri = uri
+                        }
+                    }
+                ) {
                     Box(Modifier.size(280.dp, height.dp).background(lottery.value.darkColor)) {
                         HomeResultContent(state.value, lottery.value, Modifier.fillMaxSize())
                     }
@@ -58,16 +78,23 @@ class HomeResultsStateMatrixUiTest {
             result("lotofacil", (1..15).toList()),
             result("lotomania", (81..100).toList()),
             result("duplasena", (1..6).toList()).copy(
-                secondDrawNumbers = (11..16).toList(), payouts = (1..8).map { DrawPayout("000$it", it.toLong() % 3, "1234.56") }),
+                secondDrawNumbers = (11..16).toList(),
+                payouts = (1..8).map {
+                    DrawPayout("000$it", it.toLong() % 3, "1234.56")
+                }
+            ),
             result("maismilionaria", listOf(1, 4, 9, 19, 24, 40)).copy(clovers = listOf(5, 2)),
             result("supersete", List(7) { it }).copy(firstDrawNumberColumns = List(7) { listOf(it) }),
             result("timemania", (1..7).toList()).copy(favoriteTeamReward = DrawSelectionReward("Flamengo/RJ", 1, "8")),
             result("diadesorte", (1..7).toList()).copy(luckyMonthReward = DrawSelectionReward("Outubro", 2, "2.5")),
             result("loteca", emptyList()).copy(lotecaMatches = sports()),
-            result("lotogol", emptyList()).copy(lotogolMatches = sports()),
+            result("lotogol", emptyList()).copy(lotogolMatches = sports())
         )
         fixtures.forEach { result ->
-            compose.runOnIdle { lottery.value = lottery(result.modality); state.value = ResultsUiState(result = result) }
+            compose.runOnIdle {
+                lottery.value = lottery(result.modality)
+                state.value = ResultsUiState(result = result)
+            }
             compose.onNodeWithText("Nº 3073 | 21 Outubro 2026").assertIsDisplayed()
             capture("${result.modality}-top")
             compose.onNodeWithText("Arrecadação total").performScrollTo().assertIsDisplayed()
@@ -89,7 +116,7 @@ class HomeResultsStateMatrixUiTest {
             "loading" to ResultsUiState(isLoading = true),
             "error" to ResultsUiState(errorMessage = "Não foi possível consultar o resultado."),
             "empty" to ResultsUiState(),
-            "stale-modality" to ResultsUiState(result = result("quina", listOf(1, 2, 3))),
+            "stale-modality" to ResultsUiState(result = result("quina", listOf(1, 2, 3)))
         ).forEach { (name, next) ->
             compose.runOnIdle { state.value = next }
             when (name) {
@@ -106,7 +133,7 @@ class HomeResultsStateMatrixUiTest {
         render()
         val next = result("megasena", (1..6).toList()).copy(
             payouts = listOf(DrawPayout("0001", 0, "9999"), DrawPayout("0002", 1, "2000"), DrawPayout("0003", 5, "100")),
-            firstDrawRegionalWinners = (1..31).map { DrawRegionalWinner("Cidade $it - SP", "1 aposta ganhadora") },
+            firstDrawRegionalWinners = (1..31).map { DrawRegionalWinner("Cidade $it - SP", "1 aposta ganhadora") }
         )
         compose.runOnIdle { state.value = ResultsUiState(result = next) }
         compose.onNodeWithText("Sem ganhadores").performScrollTo().assertIsDisplayed()
@@ -153,11 +180,14 @@ class HomeResultsStateMatrixUiTest {
         capture("dia-missing-month")
         compose.runOnIdle {
             lottery.value = lottery("duplasena")
-            state.value = ResultsUiState(result = result("duplasena", (1..6).toList()).copy(
-                secondDrawNumbers = (11..16).toList(),
-                payouts = listOf(DrawPayout("0001", 1, "100")), secondDrawPayouts = listOf(DrawPayout("0005", 2, "50")),
-                secondDrawRegionalWinners = listOf(DrawRegionalWinner("Outra cidade - RJ", "2 apostas ganhadoras")),
-            ))
+            state.value = ResultsUiState(
+                result = result("duplasena", (1..6).toList()).copy(
+                    secondDrawNumbers = (11..16).toList(),
+                    payouts = listOf(DrawPayout("0001", 1, "100")),
+                    secondDrawPayouts = listOf(DrawPayout("0005", 2, "50")),
+                    secondDrawRegionalWinners = listOf(DrawRegionalWinner("Outra cidade - RJ", "2 apostas ganhadoras"))
+                )
+            )
         }
         compose.onNodeWithText("Premiação – 2º sorteio").performScrollTo().assertIsDisplayed()
         capture("dupla-explicit-second-payouts")
@@ -174,9 +204,18 @@ class HomeResultsStateMatrixUiTest {
         compose.onNodeWithText("Sem ganhadores").assertDoesNotExist()
         capture("empty-payouts")
         compose.runOnIdle {
-            val style = resolveCaixaDSLotteryStyle(2, "megasena", br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign.OCTOBER_ROSE)
-            lottery.value = lottery("megasena").copy(color = style.light, darkColor = style.dark, headerContentColor = style.content, octoberRoseTheme = true)
-            state.value = ResultsUiState(result = result("megasena", (1..6).toList()).copy(specialContest = true, specialName = "Mega da Virada"))
+            val style =
+                resolveLoteriasCaixaDSLotteryStyle(
+                    2,
+                    "megasena",
+                    br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign.OCTOBER_ROSE
+                )
+            lottery.value =
+                lottery(
+                    "megasena"
+                ).copy(color = style.light, darkColor = style.dark, headerContentColor = style.content, octoberRoseTheme = true)
+            state.value =
+                ResultsUiState(result = result("megasena", (1..6).toList()).copy(specialContest = true, specialName = "Mega da Virada"))
         }
         compose.onNodeWithText("Nº 3073 | 21 Outubro 2026").performScrollTo().assertIsDisplayed()
         capture("mega-outubro-rosa")
@@ -191,25 +230,35 @@ class HomeResultsStateMatrixUiTest {
         // O AGP pode desinstalar o alvo após a instrumentação; preserve os artefatos de captura nomeados.
         check(name.matches(Regex("[a-z0-9-]+")))
         InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(
-            "cp ${file.absolutePath} /sdcard/Download/simlo-home-results-$name.png",
+            "cp ${file.absolutePath} /sdcard/Download/simlo-home-results-$name.png"
         ).use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() }
     }
 
     private fun lottery(code: String): HomeLottery {
-        val style = resolveCaixaDSLotteryStyle(0, code)
-        return HomeLottery(2, "NORMAL", code, if (code == "megasena") "Mega-Sena" else code, 3074,
+        val style = resolveLoteriasCaixaDSLotteryStyle(0, code)
+        return HomeLottery(
+            2, "NORMAL", code, if (code == "megasena") "Mega-Sena" else code, 3074,
             BigDecimal.ZERO, BigDecimal.ONE, "22/10/2026", "", true, HomeLotteryKind.LOTTERY,
             style.light, style.dark, style.content, R.drawable.legacy_home_trevo_megasena_fundo_escuro,
-            R.drawable.icon_data_megasena, R.drawable.icon_horario_megasena)
+            R.drawable.icon_data_megasena, R.drawable.icon_horario_megasena
+        )
     }
     private fun result(code: String, numbers: List<Int>) = DrawResult(
         code, 3073, "21 outubro 2026", "", numbers, emptyList(), emptyList(), false, "", "1000000", "",
-        listOf(DrawPayout("0001", 0, "1000"), DrawPayout("0002", 1, "200")),
+        listOf(DrawPayout("0001", 0, "1000"), DrawPayout("0002", 1, "200"))
     )
     private fun sports() = listOf(
-        DrawSportsMatch(1, DrawSportsTeam("Argentina", "", "2", true, countryCode = "ARG", nationalTeam = true),
-            DrawSportsTeam("Brasil", "", "1", false, countryCode = "BRA", nationalTeam = true), draw = false),
-        DrawSportsMatch(2, DrawSportsTeam("Casa", "SP", "0", false, countryCode = "BRA"),
-            DrawSportsTeam("Fora", "RJ", "0", false, countryCode = "BRA"), draw = true),
+        DrawSportsMatch(
+            1,
+            DrawSportsTeam("Argentina", "", "2", true, countryCode = "ARG", nationalTeam = true),
+            DrawSportsTeam("Brasil", "", "1", false, countryCode = "BRA", nationalTeam = true),
+            draw = false
+        ),
+        DrawSportsMatch(
+            2,
+            DrawSportsTeam("Casa", "SP", "0", false, countryCode = "BRA"),
+            DrawSportsTeam("Fora", "RJ", "0", false, countryCode = "BRA"),
+            draw = true
+        )
     )
 }

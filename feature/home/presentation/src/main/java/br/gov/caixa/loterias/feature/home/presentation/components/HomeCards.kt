@@ -23,8 +23,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.presentation.formatting.formatBrazilianCurrency
 import br.gov.caixa.loterias.feature.home.R as LocalizedR
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeActions
@@ -99,7 +99,7 @@ internal fun HomePoolAction(
     Box(
         modifier.shadow(2.dp, RoundedCornerShape(4.dp))
             .background(
-                if (lottery.octoberRoseTheme) CaixaDSColorTokens.White else lottery.darkColor,
+                if (lottery.octoberRoseTheme) LoteriasCaixaDSColorTokens.White else lottery.darkColor,
                 RoundedCornerShape(if (lottery.octoberRoseTheme) 10.dp else 4.dp)
             )
             .then(if (lottery.octoberRoseTheme) Modifier.border(1.dp, lottery.darkColor, RoundedCornerShape(10.dp)) else Modifier)
@@ -128,7 +128,7 @@ internal fun HomeBetAction(
 ) {
     Box(
         modifier.shadow(2.dp, RoundedCornerShape(4.dp))
-            .background(CaixaDSColorTokens.White, RoundedCornerShape(4.dp))
+            .background(LoteriasCaixaDSColorTokens.White, RoundedCornerShape(4.dp))
             .border(
                 2.dp,
                 if (lottery.resultCode ==

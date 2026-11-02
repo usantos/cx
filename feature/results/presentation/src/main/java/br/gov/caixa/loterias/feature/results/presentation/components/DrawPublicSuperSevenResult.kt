@@ -31,9 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 /** SuperSeteResultadoLayout: duas linhas centralizadas de sete células de 30×24dp, cada uma com espaçamento de 3dp. */
 @Composable
@@ -48,8 +48,8 @@ internal fun DrawPublicSuperSevenResult(columns: List<List<Int>>, digitColor: Co
                 SuperSevenResultCell(
                     column.toString(),
                     "result_super_seven_header_$column",
-                    CaixaDSColorTokens.SuperSeteContent,
-                    CaixaDSColorTokens.SuperSeteLight,
+                    LoteriasCaixaDSColorTokens.SuperSeteContent,
+                    LoteriasCaixaDSColorTokens.SuperSeteLight,
                     decorative = true
                 )
             }
@@ -79,7 +79,7 @@ private fun SuperSevenResultCell(
     val density = LocalDensity.current
     val viewportWidth = LocalWindowInfo.current.containerSize.width.coerceAtLeast(1)
     val textStyle = TextStyle(
-        fontFamily = CaixaDSFontFamily,
+        fontFamily = LoteriasCaixaDSFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         platformStyle = PlatformTextStyle(includeFontPadding = true)

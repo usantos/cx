@@ -6,6 +6,8 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -14,9 +16,9 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.text.AnnotatedString
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSPixPanel
-import br.gov.caixa.loterias.core.designsystem.components.caixaDSPixPanelText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSPixPanel
+import br.gov.caixa.loterias.core.designsystem.components.loteriasCaixaDSPixPanelText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
@@ -61,12 +63,12 @@ class ControlledPixInteractionTest {
 
     @Test fun pendingUpdateActionHasVisibleWhiteTextOnLegacyGreenBackground() {
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
-                CaixaDSPixPanel(
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSPixPanel(
                     9006, "CONTROLLED-VISIBILITY-DO-NOT-PAY", 284,
                     checking = false, onCheckPayment = { queries.incrementAndGet() },
                     onCopied = {}, onPurchases = {}, showIntro = false, showHeader = false,
-                    showRecoveryGuidance = false, texts = caixaDSPixPanelText().copy(checkPayment = "Atualizar")
+                    showRecoveryGuidance = false, texts = loteriasCaixaDSPixPanelText().copy(checkPayment = "Atualizar")
                 )
             }
         }
@@ -99,8 +101,8 @@ class ControlledPixInteractionTest {
 
     @Test fun singlePaymentFootnoteRetainsPackedAdditionalStartMargin() {
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
-                CaixaDSPixPanel(
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSPixPanel(
                     9005, "CONTROLLED-MARGIN-DO-NOT-PAY", 900,
                     checking = false, onCheckPayment = { fail("No query expected") },
                     onCopied = { fail("No copy expected") }, onPurchases = { fail("No navigation expected") },
@@ -228,8 +230,8 @@ class ControlledPixInteractionTest {
         var copied = 0
         compose.setContent {
             clipboard = LocalClipboardManager.current
-            CaixaDSTheme(darkTheme = false) {
-                CaixaDSPixPanel(
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSPixPanel(
                     9004, code, remaining.value, checking = false,
                     onCheckPayment = { queries.incrementAndGet() }, onCopied = { copied++ },
                     onPurchases = { purchases.incrementAndGet() },
@@ -337,7 +339,7 @@ class ControlledPixInteractionTest {
                     clock = Clock.systemUTC(), dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate)
                 ).also { vm = it }
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 PaymentDataRoute(
                     PaymentMode.PIX, model,
                     onBack = { backs.incrementAndGet() }, onHelp = {}, onPix = {}, onAddCard = {}, onOpenCard = {},

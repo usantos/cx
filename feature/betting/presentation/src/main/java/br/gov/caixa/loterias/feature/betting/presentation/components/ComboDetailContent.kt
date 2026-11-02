@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.feature.betting.presentation.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,17 +17,17 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSLotteryArtwork
-import br.gov.caixa.loterias.core.designsystem.artwork.caixaDSCampaignDrawable
-import br.gov.caixa.loterias.core.designsystem.artwork.caixaDSMarketplaceFilterClover
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSLotteryArtwork
+import br.gov.caixa.loterias.core.designsystem.artwork.loteriasCaixaDSCampaignDrawable
+import br.gov.caixa.loterias.core.designsystem.artwork.loteriasCaixaDSMarketplaceFilterClover
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckbox
-import br.gov.caixa.loterias.core.designsystem.layout.caixaDSDrawablePainter
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSCheckbox
+import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSDrawablePainter
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.ComboTextSize
@@ -41,13 +40,13 @@ internal fun ComboDetailHeader(combo: BetCombo) {
     val resources = LocalResources.current
     val special = combo.specialEntry()?.modality
     val clover = special?.let {
-        caixaDSCampaignDrawable(it.id, it.code, CaixaDSLotteryArtwork.CLOVER_ON_LIGHT)
-            ?: caixaDSMarketplaceFilterClover(it.id, it.code, selected = false)
+        loteriasCaixaDSCampaignDrawable(it.id, it.code, LoteriasCaixaDSLotteryArtwork.CLOVER_ON_LIGHT)
+            ?: loteriasCaixaDSMarketplaceFilterClover(it.id, it.code, selected = false)
     } ?: R.drawable.trevo_fundo_claro_detalhe_combo
-    val color = special?.let { caixaDSLotteryStyle(it.id, it.code).listText } ?: CaixaDSColorTokens.ComboDetailHeading
+    val color = special?.let { loteriasCaixaDSLotteryStyle(it.id, it.code).listText } ?: LoteriasCaixaDSColorTokens.ComboDetailHeading
     Column(Modifier.fillMaxWidth()) {
         Row(Modifier.padding(start = 20.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-            Image(caixaDSDrawablePainter(clover), null, Modifier.size(20.dp).legacyAutomationId("combo-header-clover"))
+            Image(loteriasCaixaDSDrawablePainter(clover), null, Modifier.size(20.dp).legacyAutomationId("combo-header-clover"))
             Text(
                 combo.detailName(),
                 (Modifier.padding(start = 8.dp)).uiId("bet.0072"),
@@ -60,7 +59,7 @@ internal fun ComboDetailHeader(combo: BetCombo) {
                 resources.getString(R.string.ui_incluindo_teimosinhas_para_a_semana_dbc3bd),
             (Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp)).uiId("bet.0073"),
             style = comboText(ComboTextSize.BODY),
-            color = CaixaDSColorTokens.ComboDescription
+            color = LoteriasCaixaDSColorTokens.ComboDescription
         )
         Spacer(Modifier.height(3.dp))
     }
@@ -74,7 +73,7 @@ internal fun ComboNumberPreviewOption(surprise: Boolean, onToggle: () -> Unit) {
             resources.getString(R.string.ui_os_numeros_dos_jogos_dos_combos_sao_57f5d3) +
                 resources.getString(R.string.ui_mas_antes_de_efetuar_o_pagamento_e_p_b8fb7a),
             style = comboText(ComboTextSize.CAPTION),
-            color = CaixaDSColorTokens.Black,
+            color = LoteriasCaixaDSColorTokens.Black,
             modifier = Modifier.uiId("bet.0074")
         )
         Row(
@@ -83,12 +82,17 @@ internal fun ComboNumberPreviewOption(surprise: Boolean, onToggle: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             androidx.compose.foundation.layout.Box(Modifier.clearAndSetSemantics { }) {
-                CaixaDSCheckbox(!surprise, null, (Modifier.size(32.dp)).uiId("bet.0076"), color = CaixaDSColorTokens.SocialGraphite)
+                LoteriasCaixaDSCheckbox(
+                    !surprise,
+                    null,
+                    (Modifier.size(32.dp)).uiId("bet.0076"),
+                    color = LoteriasCaixaDSColorTokens.SocialGraphite
+                )
             }
             Text(
                 resources.getString(R.string.ui_quero_ver_os_numeros_escolhidos_ante_376901),
-                style = comboText(ComboTextSize.LABEL, family = CaixaDSFuturaFontFamily),
-                color = CaixaDSColorTokens.Black,
+                style = comboText(ComboTextSize.LABEL, family = LoteriasCaixaDSFuturaFontFamily),
+                color = LoteriasCaixaDSColorTokens.Black,
                 modifier = Modifier.uiId("bet.0077")
             )
         }

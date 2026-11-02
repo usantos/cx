@@ -19,7 +19,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.notifications.presentation.route.NotificationsRoute
 import br.gov.caixa.loterias.feature.notifications.presentation.viewmodel.NotificationsViewModel
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSelfAssessmentQuestionsUseCase
@@ -65,7 +65,7 @@ class StateCollectionLifecycleUiTest {
                 }
             }
             CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
-                CaixaDSTheme { NotificationsRoute("notifications/messages", viewModel, {}, {}) }
+                LoteriasCaixaDSTheme { NotificationsRoute("notifications/messages", viewModel, {}, {}) }
             }
         }
         compose.runOnIdle { model.updateQuery("Started") }
@@ -105,7 +105,7 @@ class StateCollectionLifecycleUiTest {
                 }
             }
             CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
-                CaixaDSTheme { ResponsibleGamingRoute("responsible/suspension", viewModel, {}, {}, {}) }
+                LoteriasCaixaDSTheme { ResponsibleGamingRoute("responsible/suspension", viewModel, {}, {}, {}) }
             }
         }
         compose.runOnIdle { model.onAction(ResponsibleGamingAction.SelectSuspensionPeriod("24 horas")) }

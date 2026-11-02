@@ -19,13 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSHorizontalDivider as HorizontalDivider
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSRecurringIcon
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSHorizontalDivider as HorizontalDivider
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSRecurringIcon
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.cart.R
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
@@ -38,7 +38,7 @@ import br.gov.caixa.loterias.feature.cart.presentation.mapper.favoriteTextStyle
 @Composable
 internal fun FavoriteBetCard(bet: FavoriteCartBet, onDelete: () -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    val style = caixaDSLotteryStyle(bet.modalityId ?: 0, bet.modality)
+    val style = loteriasCaixaDSLotteryStyle(bet.modalityId ?: 0, bet.modality)
     val color = style.listText
     Column(Modifier.fillMaxWidth()) {
         Box(Modifier.fillMaxWidth().padding(10.dp)) {
@@ -47,15 +47,15 @@ internal fun FavoriteBetCard(bet: FavoriteCartBet, onDelete: () -> Unit) {
                     Text(
                         favoriteDetailModalityName(bet),
                         color = color,
-                        style = favoriteTextStyle.copy(fontFamily = CaixaDSFuturaFontFamily, fontWeight = FontWeight.Bold),
+                        style = favoriteTextStyle.copy(fontFamily = LoteriasCaixaDSFuturaFontFamily, fontWeight = FontWeight.Bold),
                         modifier = Modifier.uiId("cart.0060")
                     )
                     if (bet.recurringDraws > 0) {
                         Icon(
-                            CaixaDSRecurringIcon,
+                            LoteriasCaixaDSRecurringIcon,
                             uiStrings.getString(LocalizedR.string.ui_teimosinha_dba980),
                             (Modifier.padding(start = 5.dp).size(20.dp)).uiId("cart.0061"),
-                            tint = CaixaDSColorTokens.FavoriteCartCard
+                            tint = LoteriasCaixaDSColorTokens.FavoriteCartCard
                         )
                     }
                 }
@@ -74,7 +74,7 @@ internal fun FavoriteBetCard(bet: FavoriteCartBet, onDelete: () -> Unit) {
                     Text(
                         favoriteBetNumbers(bet),
                         (Modifier.padding(top = 10.dp, end = 30.dp)).uiId("cart.0065"),
-                        color = CaixaDSColorTokens.SecondaryText,
+                        color = LoteriasCaixaDSColorTokens.SecondaryText,
                         style = favoriteTextStyle
                     )
                 }
@@ -82,7 +82,7 @@ internal fun FavoriteBetCard(bet: FavoriteCartBet, onDelete: () -> Unit) {
                     Text(
                         favoriteBetClovers(bet),
                         (Modifier.padding(top = 10.dp)).uiId("cart.0066"),
-                        color = CaixaDSColorTokens.SecondaryText,
+                        color = LoteriasCaixaDSColorTokens.SecondaryText,
                         style = favoriteTextStyle
                     )
                 }
@@ -96,11 +96,11 @@ internal fun FavoriteBetCard(bet: FavoriteCartBet, onDelete: () -> Unit) {
                     painterResource(R.drawable.legacy_favorite_ic_icone_lixeira_verde),
                     uiStrings.getString(LocalizedR.string.ui_excluir_aposta_86e1ac),
                     (Modifier.size(17.dp, 20.dp)).uiId("cart.0068"),
-                    tint = CaixaDSColorTokens.FavoriteCartCard
+                    tint = LoteriasCaixaDSColorTokens.FavoriteCartCard
                 )
             }
         }
-        HorizontalDivider(color = CaixaDSColorTokens.FavoriteDivider, modifier = Modifier.uiId("cart.0069"))
+        HorizontalDivider(color = LoteriasCaixaDSColorTokens.FavoriteDivider, modifier = Modifier.uiId("cart.0069"))
     }
 }
 

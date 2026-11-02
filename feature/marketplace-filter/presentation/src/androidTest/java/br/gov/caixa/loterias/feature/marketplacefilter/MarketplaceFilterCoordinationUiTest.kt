@@ -15,7 +15,6 @@ import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -25,7 +24,7 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInputSelection
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.allModalities
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.screen.MarketplaceFilterScreen
@@ -218,7 +217,7 @@ class MarketplaceFilterCoordinationUiTest {
     }
 
     private fun show(form: Form) {
-        compose.setContent { CaixaDSTheme { MarketplaceFilterScreen(form.state.value, form::dispatch) } }
+        compose.setContent { LoteriasCaixaDSTheme { MarketplaceFilterScreen(form.state.value, form::dispatch) } }
     }
 
     private fun open(tag: String) {

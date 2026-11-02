@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -63,7 +63,7 @@ class BettingSportsCoordinationTest {
         compose.setContent {
             val current = if (replace.value) second else first
             val state by current.state.collectAsState()
-            CaixaDSTheme { BettingLegacyTeams(state, current) }
+            LoteriasCaixaDSTheme { BettingLegacyTeams(state, current) }
         }
         compose.waitUntil { first.state.value.game != null && second.state.value.game != null }
         compose.onNodeWithContentDescription("Nome do time").performTextInput("Alfa")
@@ -94,7 +94,7 @@ class BettingSportsCoordinationTest {
             val currentVersion = version.intValue
             val current = if (currentVersion == 0) first else second
             val state by current.state.collectAsState()
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 BettingLegacyLoteca(state, current, onQuantity = { quantity[currentVersion]++ }, onHelp = { help[currentVersion]++ })
             }
         }
@@ -121,7 +121,7 @@ class BettingSportsCoordinationTest {
         compose.setContent {
             val state by model.state.collectAsState()
             val game = requireNotNull(state.game)
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 BettingLegacyTeams(state.copy(game = game.copy(teams = listOf(alfa.copy(shieldBase64 = shield.value)))), model)
             }
         }

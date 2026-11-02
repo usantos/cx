@@ -18,7 +18,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.presentation.components.BetDataCard
@@ -355,7 +355,7 @@ class TicketsContentStateUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { Column { content() } } }
+        compose.setContent { LoteriasCaixaDSTheme { Column { content() } } }
     }
 
     private fun detailActions(load: (Purchase) -> Unit = {}, clear: () -> Unit = {}, filters: () -> Unit = {}, help: (() -> Unit)? = null) =

@@ -11,7 +11,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -50,7 +50,7 @@ class BettingLocalLoadingRecoveryTest {
             AddBetToCartUseCase { error("Simulação local não deve enviar aposta") },
             checkpointSession = session
         )
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(10_000) { vm.state.value.game != null }
         compose.onNodeWithText("Aposta aleatória").assertIsEnabled().performClick()
         compose.waitUntil(10_000) { vm.state.value.selectedNumbers.size == 50 }
@@ -98,7 +98,7 @@ class BettingLocalLoadingRecoveryTest {
                 }
             }
         )
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, { backs.incrementAndGet() }, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, { backs.incrementAndGet() }, {}) } }
         compose.mainClock.advanceTimeBy(750) // LoadingView original: atraso de 500 e transição de opacidade de 200.
         compose.onNode(isDialog()).assertExists()
         compose.onNodeWithText("Carregando…").assertIsDisplayed()

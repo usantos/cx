@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,10 +21,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSBasicTextField as BasicTextField
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSBasicTextField as BasicTextField
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.retail.R as LocalizedR
 
 @Composable
@@ -33,7 +32,7 @@ internal fun PrizePixOtherKeyField(value: String, onValueChange: (String) -> Uni
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val fieldLabel = "Chave Pix"
     val errorMessage = uiStrings.getString(LocalizedR.string.ui_chave_invalida_22ed25)
-    val lineColor = if (error) CaixaDSColorTokens.PrizeUrgent else CaixaDS.colors.line
+    val lineColor = if (error) LoteriasCaixaDSColorTokens.PrizeUrgent else LoteriasCaixaDS.colors.line
     Column(Modifier.fillMaxWidth()) {
         BasicTextField(
             value = value,
@@ -56,14 +55,14 @@ internal fun PrizePixOtherKeyField(value: String, onValueChange: (String) -> Uni
                     )
                 }
                 ).uiId("retail.0017"),
-            textStyle = CaixaDS.typography.bodyLarge.copy(color = CaixaDS.colors.text, fontSize = 16.sp),
+            textStyle = LoteriasCaixaDS.typography.bodyLarge.copy(color = LoteriasCaixaDS.colors.text, fontSize = 16.sp),
             singleLine = true,
             decorationBox = { innerTextField ->
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.CenterStart) {
                     if (value.isEmpty()) {
                         Text(
                             uiStrings.getString(LocalizedR.string.ui_celular_e_mail_chave_aleatoria_4f5955),
-                            color = CaixaDS.colors.mutedText,
+                            color = LoteriasCaixaDS.colors.mutedText,
                             fontSize = 16.sp,
                             modifier = Modifier.uiId("retail.0018")
                         )
@@ -76,7 +75,7 @@ internal fun PrizePixOtherKeyField(value: String, onValueChange: (String) -> Uni
             Text(
                 uiStrings.getString(LocalizedR.string.ui_chave_invalida_22ed25),
                 modifier = (Modifier.padding(top = 4.dp).semantics { liveRegion = LiveRegionMode.Polite }).uiId("retail.0019"),
-                color = CaixaDSColorTokens.PrizeUrgent,
+                color = LoteriasCaixaDSColorTokens.PrizeUrgent,
                 fontSize = 12.sp
             )
         }

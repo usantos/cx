@@ -13,8 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
@@ -107,7 +107,7 @@ class VisitorFavoriteBetGateUiTest {
                     }
                 }
             }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 NavHost(nav, startDestination = "betting/simulation/3") {
                     bettingGraph(dependencies, nav, navigation, session)
                     composable(br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation.pattern) { Text("Login simulado") }
@@ -120,7 +120,7 @@ class VisitorFavoriteBetGateUiTest {
                         clearRequest = { state.visitorLoginRequest = null },
                         continueAfterLogin = { state.visitorReturnRoute = it }
                     )
-                    CaixaDSDialog(
+                    LoteriasCaixaDSDialog(
                         "Atenção",
                         "Deseja efetuar o login?",
                         "Sim",

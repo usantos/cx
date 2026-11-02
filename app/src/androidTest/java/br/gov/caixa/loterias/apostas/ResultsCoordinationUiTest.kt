@@ -7,7 +7,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.results.domain.model.DrawPayout
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.presentation.route.ResultsRoute
@@ -31,7 +31,7 @@ class ResultsCoordinationUiTest {
         var exits = 0
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme { ResultsRoute(model, onBack = { exits++ }) }
+            LoteriasCaixaDSTheme { ResultsRoute(model, onBack = { exits++ }) }
         }
         compose.onNodeWithText("quina").performScrollTo().performClick()
         compose.onNodeWithText("Concurso nº 100").assertExists()
@@ -54,7 +54,7 @@ class ResultsCoordinationUiTest {
         fixture.pending = response
         compose.setContent {
             val model = remember { fixture.create().also { it.selectModality("megasena") } }
-            CaixaDSTheme { ResultsRoute(model, onBack = {}, showDetail = true) }
+            LoteriasCaixaDSTheme { ResultsRoute(model, onBack = {}, showDetail = true) }
         }
         compose.onNodeWithContentDescription("Pesquisar concurso").performClick()
         compose.onNode(hasSetTextAction()).assertTextContains("Número do concurso").performTextReplacement("999")
@@ -86,7 +86,7 @@ class ResultsCoordinationUiTest {
             val old = remember { first.create().also { it.selectModality("megasena") } }
             val current = remember { second.create().also { it.selectModality("quina") } }
             val index = selected.intValue
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 ResultsRoute(if (index == 0) old else current, onBack = { exits += index }, showDetail = true)
             }
         }

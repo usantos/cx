@@ -2,73 +2,73 @@
 
 package br.gov.caixa.loterias.sample.designsystem
 
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSBrandTopBar
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerHeader
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerInstitution
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerItem
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerSheet
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSHomeTopBar
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSModalityTopBar
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBar
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBarColor
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSTopBar
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSBrandTopBar
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerHeader
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerInstitution
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerItem
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerSheet
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSHomeTopBar
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSModalityTopBar
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBarColor
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSTopBar
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 internal val navigationPreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSTopBar") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSTopBar") { state ->
         with(state) {
-            CaixaDSTopBar(
+            LoteriasCaixaDSTopBar(
                 title = sample,
                 onBack = action,
                 subtitle = hint
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSBrandTopBar") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSBrandTopBar") { state ->
         with(state) {
-            CaixaDSBrandTopBar(title = sample)
+            LoteriasCaixaDSBrandTopBar(title = sample)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerSheet") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerSheet") { state ->
         with(state) {
-            CaixaDSDrawerSheet(content = {
-                CaixaDSDrawerItem(
+            LoteriasCaixaDSDrawerSheet(content = {
+                LoteriasCaixaDSDrawerItem(
                     sample,
                     action
                 )
             })
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerHeader") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerHeader") { state ->
         with(state) {
-            CaixaDSDrawerHeader(
+            LoteriasCaixaDSDrawerHeader(
                 greeting = sample,
                 onClose = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerItem") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerItem") { state ->
         with(state) {
-            CaixaDSDrawerItem(
+            LoteriasCaixaDSDrawerItem(
                 label = sample,
                 onClick = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSDrawerInstitution") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSDrawerInstitution") { state ->
         with(state) {
-            CaixaDSDrawerInstitution(
+            LoteriasCaixaDSDrawerInstitution(
                 expanded = checked,
                 onClick = toggle,
                 details = hint
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSHomeTopBar") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSHomeTopBar") { state ->
         with(state) {
-            CaixaDSHomeTopBar(
+            LoteriasCaixaDSHomeTopBar(
                 unreadNotificationCount = count,
                 octoberRose = false,
                 quickAccessExpanded = checked,
@@ -80,12 +80,12 @@ internal val navigationPreviews0 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSModalityTopBar") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSModalityTopBar") { state ->
         with(state) {
-            CaixaDSModalityTopBar(
+            LoteriasCaixaDSModalityTopBar(
                 title = sample,
-                backgroundColor = CaixaDS.colors.brand,
-                contentColor = CaixaDSColorTokens.White,
+                backgroundColor = LoteriasCaixaDS.colors.brand,
+                contentColor = LoteriasCaixaDSColorTokens.White,
                 contestNumber = "1234",
                 drawLabel = sample,
                 drawDate = "22/10/2026",
@@ -94,17 +94,17 @@ internal val navigationPreviews0 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBarColor") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBarColor") { state ->
         with(state) {
-            CaixaDSStatusBarColor(
-                color = CaixaDS.colors.brand,
+            LoteriasCaixaDSStatusBarColor(
+                color = LoteriasCaixaDS.colors.brand,
                 darkIcons = false
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBar") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar") { state ->
         with(state) {
-            CaixaDSStatusBar(content = { CaixaDSText(sample) })
+            LoteriasCaixaDSStatusBar(content = { LoteriasCaixaDSText(sample) })
         }
     }
 )

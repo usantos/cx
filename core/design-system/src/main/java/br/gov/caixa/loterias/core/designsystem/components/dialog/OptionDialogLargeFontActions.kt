@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSRegularFontFamily
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSSemiboldFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSRegularFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSSemiboldFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 @Composable
 internal fun OptionDialogLargeFontActions(
@@ -33,9 +33,9 @@ internal fun OptionDialogLargeFontActions(
             Text(
                 cancelLabel,
                 Modifier.fillMaxWidth(),
-                color = CaixaDSColorTokens.SocialGraphite,
+                color = LoteriasCaixaDSColorTokens.SocialGraphite,
                 fontSize = 16.sp,
-                fontFamily = CaixaDSRegularFontFamily,
+                fontFamily = LoteriasCaixaDSRegularFontFamily,
                 textAlign = TextAlign.Center
             )
         }
@@ -47,9 +47,9 @@ internal fun OptionDialogLargeFontActions(
             Text(
                 confirmLabel,
                 Modifier.fillMaxWidth(),
-                color = if (enabled) CaixaDSColorTokens.ComboDark else CaixaDSColorTokens.AccountHelper.copy(alpha = .6f),
+                color = if (enabled) LoteriasCaixaDSColorTokens.ComboDark else LoteriasCaixaDSColorTokens.AccountHelper.copy(alpha = .6f),
                 fontSize = 16.sp,
-                fontFamily = CaixaDSSemiboldFontFamily,
+                fontFamily = LoteriasCaixaDSSemiboldFontFamily,
                 textAlign = TextAlign.Center
             )
         }

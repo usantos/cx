@@ -16,7 +16,7 @@ import androidx.compose.ui.test.swipeRight
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GenerateRapidBetsUseCase
 import br.gov.caixa.loterias.feature.betting.presentation.route.RapidListRoute
@@ -151,7 +151,7 @@ class RapidGeneratedCardsUiTest {
             FixedCoroutineDispatchers(Dispatchers.Main.immediate),
             autoLoad = false
         )
-        compose.setContent { CaixaDSTheme { RapidListRoute(vm, {}, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { RapidListRoute(vm, {}, {}, {}) } }
         compose.runOnIdle { vm.generate() }
     }
     private class Fixture {

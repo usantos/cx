@@ -17,7 +17,7 @@ import androidx.core.app.ActivityOptionsCompat
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.auth.gateway.BiometricAuthenticationGateway
 import br.gov.caixa.loterias.core.common.result.AppError
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.AccountStatus
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
@@ -97,7 +97,7 @@ class AuthenticationReturnScreenTest {
             CompositionLocalProvider(
                 LocalActivityResultRegistryOwner provides registryOwner
             ) {
-                CaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSTheme(darkTheme = false) {
                     LoginRoute(
                         viewModel, authentication, "test", { error("Must not navigate authenticated") }, {}, {},
                         authorizeOnEnter = true, onAuthorizationCancelled = { returnsToOrigin.incrementAndGet() },
@@ -150,7 +150,7 @@ class AuthenticationReturnScreenTest {
         val authentication = PreferenceAuthentication(enabled = false, available = false)
         val vm = LoginViewModel(authentication, verifyAccess = VerifyPostLoginAccessUseCase { error("Must not verify") })
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(vm, authentication, "test", {}, {}, {}, biometricEnrollment = { launches.incrementAndGet() })
             }
         }
@@ -164,7 +164,7 @@ class AuthenticationReturnScreenTest {
 
     private fun preferenceRoute(authentication: PreferenceAuthentication): LoginViewModel {
         val vm = LoginViewModel(authentication, verifyAccess = VerifyPostLoginAccessUseCase { error("Preference must not log in") })
-        composeRule.setContent { CaixaDSTheme(darkTheme = false) { LoginRoute(vm, authentication, "test", {}, {}, {}) } }
+        composeRule.setContent { LoteriasCaixaDSTheme(darkTheme = false) { LoginRoute(vm, authentication, "test", {}, {}, {}) } }
         return vm
     }
 
@@ -199,6 +199,9 @@ class AuthenticationReturnScreenTest {
     @Test
     fun trialAfterFailedAccountValidationClearsCredentialBeforeReturningToHome() {
         val activeCredential = AtomicBoolean(false)
+        val ownedIdentity = br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity(
+            "a".repeat(SYNTHETIC_OWNER_HASH_LENGTH)
+        )
         val trialNavigation = AtomicInteger()
         val authentication = object : AuthenticationGateway {
             override fun createAuthorizationIntent(): Intent = error("not used")
@@ -209,15 +212,20 @@ class AuthenticationReturnScreenTest {
             override fun logout() {
                 activeCredential.set(false)
             }
+            override fun logout(identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity): Boolean {
+                if (identity !== ownedIdentity || !activeCredential.get()) return false
+                logout()
+                return true
+            }
         }
         val viewModel = LoginViewModel(
             authentication,
             verifyAccess = VerifyPostLoginAccessUseCase {
-                PostLoginAccessResult.AccountCheckFailed(AppError.Network)
+                PostLoginAccessResult.AccountCheckFailed(AppError.Network, ownedIdentity)
             }
         )
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(viewModel, authentication, "test", { error("Unverified access must not authenticate") }, {
                     assertEquals(false, activeCredential.get())
                     trialNavigation.incrementAndGet()
@@ -252,7 +260,7 @@ class AuthenticationReturnScreenTest {
             }
         )
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(viewModel, authentication, "test", {}, { trialNavigation.incrementAndGet() }, {})
             }
         }
@@ -271,7 +279,7 @@ class AuthenticationReturnScreenTest {
         var trialActions = 0
         composeRule.mainClock.autoAdvance = false
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginScreen(state.value, "test", { trialActions++ }, { loginActions++ }, {})
             }
         }
@@ -301,7 +309,7 @@ class AuthenticationReturnScreenTest {
     @Test
     fun pendingBrowserDoesNotPretendTokenExchangeHasStarted() {
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginScreen(LoginUiState(authorizationPending = true), "test", {}, {}, {})
             }
         }
@@ -312,7 +320,7 @@ class AuthenticationReturnScreenTest {
     @Test
     fun catalogUsesTheSameTokenLayoutAndLiteralLabel() {
         composeRule.mainClock.autoAdvance = false
-        composeRule.setContent { CaixaDSTheme(darkTheme = false) { AccountTokenScreen() } }
+        composeRule.setContent { LoteriasCaixaDSTheme(darkTheme = false) { AccountTokenScreen() } }
         composeRule.mainClock.advanceTimeBy(900)
         composeRule.onNodeWithText("Carregando…").assertIsDisplayed()
         composeRule.onNodeWithText("Aguarde").assertDoesNotExist()
@@ -341,7 +349,7 @@ class AuthenticationReturnScreenTest {
             }
         )
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(viewModel, authentication, "test", {
                     navigation.incrementAndGet()
                 }, { navigation.incrementAndGet() }, { invalidations.incrementAndGet() })
@@ -382,7 +390,7 @@ class AuthenticationReturnScreenTest {
             }
         )
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(viewModel, authentication, "test", {
                     assertEquals("home", it)
                     navigation.incrementAndGet()
@@ -403,3 +411,5 @@ class AuthenticationReturnScreenTest {
         assertEquals(1, navigation.get())
     }
 }
+
+private const val SYNTHETIC_OWNER_HASH_LENGTH = 64

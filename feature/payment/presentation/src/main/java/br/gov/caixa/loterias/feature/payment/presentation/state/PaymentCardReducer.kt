@@ -23,6 +23,7 @@ internal fun reducePaymentCardState(state: PaymentCardUiState, action: PaymentCa
     PaymentCardAction.ProcessingStarted,
     PaymentCardAction.PurchaseTrackingStarted,
     PaymentCardAction.PurchaseCompleted,
+    PaymentCardAction.SuccessNavigationConsumed,
     PaymentCardAction.FormStarted,
     is PaymentCardAction.SavedCardPreviewed,
     is PaymentCardAction.SavedCardMissing,
@@ -61,6 +62,8 @@ private fun reducePaymentCardPurchase(state: PaymentCardUiState, action: Payment
     PaymentCardAction.PurchaseTrackingStarted -> state.copy(trackingPurchase = true, cvv = "")
 
     PaymentCardAction.PurchaseCompleted -> state.copy(stage = PaymentCardStage.SUCCESS)
+
+    PaymentCardAction.SuccessNavigationConsumed -> state.copy(successNavigationConsumed = true)
 
     PaymentCardAction.FormStarted -> state.copy(stage = PaymentCardStage.FORM, errorMessage = null)
 

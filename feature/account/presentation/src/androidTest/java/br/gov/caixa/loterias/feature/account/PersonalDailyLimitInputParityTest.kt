@@ -16,7 +16,7 @@ import androidx.compose.ui.test.performTextInputSelection
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextRange
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.presentation.screen.LegacyPersonalDailyLimit
 import br.gov.caixa.loterias.feature.account.presentation.state.PersonalDataUiState
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.parseBrazilianCurrency
@@ -40,7 +40,7 @@ class PersonalDailyLimitInputParityTest {
         )
         val changes = mutableListOf<String>()
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LegacyPersonalDailyLimit(state.value) { value ->
                     changes += value
                     state.value = state.value.copy(dailyLimit = value)
@@ -71,7 +71,7 @@ class PersonalDailyLimitInputParityTest {
         )
         val changes = mutableListOf<String>()
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LegacyPersonalDailyLimit(state.value) { value ->
                     changes += value
                     state.value = state.value.copy(dailyLimit = value)
@@ -108,7 +108,7 @@ class PersonalDailyLimitInputParityTest {
             )
         )
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LegacyPersonalDailyLimit(state.value) { value -> state.value = state.value.copy(dailyLimit = value) }
             }
         }
@@ -131,7 +131,7 @@ class PersonalDailyLimitInputParityTest {
         )
         val changes = mutableListOf<String>()
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LegacyPersonalDailyLimit(state.value) { value ->
                     changes += value
                     state.value = state.value.copy(dailyLimit = value)

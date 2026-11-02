@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.feature.account.domain.usecase.UpdatePersonalDataUs
 interface AccountNavigationDependencies {
     val loginNetworkAvailability: br.gov.caixa.loterias.core.common.network.NetworkAvailability
     val loginConnectionPresentation: LoginConnectionPresentation
+    val accountForms: br.gov.caixa.loterias.feature.account.domain.usecase.AccountFormUseCasesFactory
     val accountProfile: GetAccountProfileUseCase
     val accountReferrerUri: String
     val appVersionName: String

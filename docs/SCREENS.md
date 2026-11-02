@@ -43,7 +43,7 @@ Antes do `NavHost`, telas Compose próprias cobrem sala de espera, indisponibili
 
 ## Splashscreen
 
-Enquanto a segurança de rede, a FilaBRA, a versão e as configurações são validadas, o app reproduz em Compose a animação institucional original `anim_ja_pensou`, em tela cheia, com `centerCrop`, velocidade `1.4x` e duração mínima de dois segundos. O arquivo Lottie original foi preservado como recurso `raw`; nenhum layout XML foi reintroduzido. A marca usa a mesma arte do Login dividida entre as três camadas de imagem originais (trevo, Loterias e CAIXA): os movimentos, posições, curvas e opacidades continuam definidos no Lottie, sem sobreposição estática com fade artificial. O renderizador básico reutilizável fica no DS (`CaixaDSAnimation`). O estado de reprodução envolve também a checagem de atualização obrigatória, evitando reinício na passagem para recuperação de sessão e FilaBRA.
+Enquanto a segurança de rede, a FilaBRA, a versão e as configurações são validadas, o app reproduz em Compose a animação institucional original `anim_ja_pensou`, em tela cheia, com `centerCrop`, velocidade `1.4x` e duração mínima de dois segundos. O arquivo Lottie original foi preservado como recurso `raw`; nenhum layout XML foi reintroduzido. A marca usa a mesma arte do Login dividida entre as três camadas de imagem originais (trevo, Loterias e CAIXA): os movimentos, posições, curvas e opacidades continuam definidos no Lottie, sem sobreposição estática com fade artificial. O renderizador básico reutilizável fica no DS (`LoteriasCaixaDSAnimation`). O estado de reprodução envolve também a checagem de atualização obrigatória, evitando reinício na passagem para recuperação de sessão e FilaBRA.
 
 Antes da animação, a janela de abertura do Android usa somente o mesmo fundo azul, com ícone transparente, evitando o recorte da marca pela máscara de ícones do sistema e a percepção de duas logos seguidas. A duração configurada do ícone é zero e a saída padrão é removida imediatamente quando o primeiro conteúdo está pronto. Não há atraso adicional para sustentar essa janela. Android 12+ aplica a tela de abertura do sistema em partidas frias/mornas; a aplicação não promete eliminar essa etapa da plataforma ([documentação Android](https://developer.android.com/develop/ui/views/launch/splash-screen/migrate)).
 
@@ -57,7 +57,7 @@ A apresentação da +Milionária preserva os dois destinos distintos do legado: 
 
 ## Login
 
-`LoginScreen` preserva o desenho da tela anterior: fundo azul CAIXA, logomarca central, ação contornada “Experimente”, divisor “OU”, CTA laranja “Faça login/cadastre-se”, linha de biometria e versão no rodapé. A implementação é integralmente Compose; logomarca e fontes são assets binários do CaixaDS, sem layout, drawable ou fonte declarados por XML.
+`LoginScreen` preserva o desenho da tela anterior: fundo azul CAIXA, logomarca central, ação contornada “Experimente”, divisor “OU”, CTA laranja “Faça login/cadastre-se”, linha de biometria e versão no rodapé. A implementação é integralmente Compose; logomarca e fontes são assets binários do LoteriasCaixaDS, sem layout, drawable ou fonte declarados por XML.
 
 O login continua abrindo o SSO no navegador seguro gerenciado pelo AppAuth, com o mesmo endpoint, client ID, redirect URI e escopos `openid profile offline_access` do fluxo anterior. A página exibida dentro do navegador permanece fornecida pelo servidor de identidade da CAIXA.
 

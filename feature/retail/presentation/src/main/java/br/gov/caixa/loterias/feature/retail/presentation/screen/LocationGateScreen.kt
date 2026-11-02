@@ -27,14 +27,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton as Button
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButtonDefaults as ButtonDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.retail.R
 import br.gov.caixa.loterias.feature.retail.R as LocalizedR
 import br.gov.caixa.loterias.feature.retail.presentation.mapper.locationActionLabel
@@ -50,7 +50,7 @@ internal fun LocationGateScreen(
     onAction: () -> Unit,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    BoxWithConstraints(Modifier.fillMaxSize().background(CaixaDS.colors.surface).statusBarsPadding().navigationBarsPadding()) {
+    BoxWithConstraints(Modifier.fillMaxSize().background(LoteriasCaixaDS.colors.surface).statusBarsPadding().navigationBarsPadding()) {
         LocationGateTitle(lotteryIconResourceId)
         BoxWithConstraints(Modifier.fillMaxSize()) {
             Icon(
@@ -61,19 +61,19 @@ internal fun LocationGateScreen(
             )
             Box(
                 Modifier.align(Alignment.Center).width(142.dp).height(1.dp)
-                    .background(CaixaDS.colors.line)
+                    .background(LoteriasCaixaDS.colors.line)
             )
             when (state.status) {
                 LocationGateStatus.CHECKING -> CircularProgressIndicator(
                     Modifier.align(Alignment.Center).offset(y = 80.dp),
-                    color = CaixaDS.colors.teal
+                    color = LoteriasCaixaDS.colors.teal
                 )
 
                 else -> Text(
                     locationMessage(state.status),
                     (Modifier.align(Alignment.TopCenter).offset(y = maxHeight / 2 + 18.dp).padding(horizontal = 16.dp)).uiId("retail.0050"),
-                    color = CaixaDSColorTokens.TealAction,
-                    fontFamily = CaixaDSFuturaFontFamily,
+                    color = LoteriasCaixaDSColorTokens.TealAction,
+                    fontFamily = LoteriasCaixaDSFuturaFontFamily,
                     fontSize = 18.sp,
                     textAlign = TextAlign.Center,
                     minLines = 4,
@@ -83,8 +83,8 @@ internal fun LocationGateScreen(
             Text(
                 uiStrings.getString(LocalizedR.string.ui_v_1_s_7ec02d, versionName),
                 (Modifier.align(Alignment.BottomCenter).padding(bottom = 80.dp)).uiId("retail.0051"),
-                color = CaixaDSColorTokens.StatusVersion,
-                fontFamily = CaixaDSFuturaFontFamily,
+                color = LoteriasCaixaDSColorTokens.StatusVersion,
+                fontFamily = LoteriasCaixaDSFuturaFontFamily,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center
             )
@@ -97,14 +97,14 @@ internal fun LocationGateScreen(
                         ).fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp).height(56.dp)
                         ).uiId("retail.0052"),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = CaixaDSColorTokens.YellowAction,
-                        contentColor = CaixaDSColorTokens.White
+                        containerColor = LoteriasCaixaDSColorTokens.YellowAction,
+                        contentColor = LoteriasCaixaDSColorTokens.White
                     ),
                     shape = RoundedCornerShape(0.dp)
                 ) {
                     Text(
                         label,
-                        fontFamily = CaixaDSFuturaFontFamily,
+                        fontFamily = LoteriasCaixaDSFuturaFontFamily,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
@@ -121,16 +121,16 @@ private fun LocationGateTitle(@DrawableRes lotteryIconResourceId: Int) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     Row(
         Modifier.fillMaxWidth().background(
-            CaixaDSColorTokens.Blue700
+            LoteriasCaixaDSColorTokens.Blue700
         ).height(56.dp).padding(start = 32.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             uiStrings.getString(LocalizedR.string.ui_loterias_caixa_267b9d),
             (Modifier.weight(1f)).uiId("retail.0048"),
-            color = CaixaDSColorTokens.White,
+            color = LoteriasCaixaDSColorTokens.White,
             fontSize = 16.sp,
-            fontFamily = CaixaDSFuturaFontFamily,
+            fontFamily = LoteriasCaixaDSFuturaFontFamily,
             fontWeight = FontWeight.Bold
         )
         if (lotteryIconResourceId != 0) {

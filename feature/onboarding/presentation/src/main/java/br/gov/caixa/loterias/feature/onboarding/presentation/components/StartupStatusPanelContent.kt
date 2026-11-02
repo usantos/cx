@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.onboarding.R
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.StartupStatusKind
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.StartupStatusScreen
@@ -64,7 +64,7 @@ fun StartupStatusPanelContent(
         }
     )
     if (exitConfirmation) {
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = stringResource(R.string.startup_attention),
             message = stringResource(R.string.startup_exit_message),
             positiveLabel = stringResource(R.string.startup_exit_confirm),
@@ -78,7 +78,7 @@ fun StartupStatusPanelContent(
         )
     }
     if (storeError) {
-        CaixaDSAlertDialog(
+        LoteriasCaixaDSAlertDialog(
             stringResource(R.string.startup_attention),
             stringResource(R.string.startup_store_error),
             stringResource(R.string.startup_understood),

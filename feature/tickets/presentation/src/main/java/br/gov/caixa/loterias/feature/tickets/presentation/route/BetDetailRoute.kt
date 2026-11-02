@@ -10,8 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSLoading
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSLoading
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.components.BetDetailFavoriteOverwriteDialog
 import br.gov.caixa.loterias.feature.tickets.presentation.components.BetDetailReceiptEffect
@@ -42,9 +42,16 @@ fun BetDetailDataRoute(
             onServiceRedirect(failure.destination)
         }
     }
-    BetDetailServiceFailureDialog(failure, viewModel, onBack)
+    BetDetailServiceFailureDialog(
+        failure,
+        onRetry = viewModel::loadDetails,
+        onDismiss = {
+            viewModel.dismissServiceFailure()
+            onBack()
+        }
+    )
     if (!state.detailsReady && !state.loading) {
-        BetDetailUnavailableScreen(state, viewModel, onBack)
+        BetDetailUnavailableScreen(state, viewModel::loadDetails, onBack)
         return
     }
     BetDetailReceiptEffect(viewModel)
@@ -71,13 +78,13 @@ fun BetDetailDataRoute(
         )
         if (state.loading) {
             Box(
-                Modifier.fillMaxSize().background(CaixaDS.colors.surface.copy(alpha = 0.88f)),
+                Modifier.fillMaxSize().background(LoteriasCaixaDS.colors.surface.copy(alpha = 0.88f)),
                 contentAlignment = Alignment.Center
             ) {
-                CaixaDSLoading("Carregando…", modifier = Modifier.uiId("tickets.0140"))
+                LoteriasCaixaDSLoading(label = "Carregando…", modifier = Modifier.uiId("tickets.0140"))
             }
         }
     }
     BetRepeatActionsOverlay(viewModel, showLoading = false)
-    BetDetailFavoriteOverwriteDialog(state, viewModel)
+    BetDetailFavoriteOverwriteDialog(state, viewModel::confirmFavoriteOverwrite, viewModel::dismissFavoriteOverwrite)
 }

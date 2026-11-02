@@ -12,10 +12,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import br.gov.caixa.loterias.core.designsystem.components.state.CaixaDSGateMessage as GateMessage
+import br.gov.caixa.loterias.core.designsystem.components.state.LoteriasCaixaDSGateMessage as GateMessage
 import br.gov.caixa.loterias.core.queue.parser.QueueConsoleEvent
 import br.gov.caixa.loterias.core.queue.parser.QueueConsoleEventParser
-import br.gov.caixa.loterias.core.designsystem.web.CaixaDSWebPage
+import br.gov.caixa.loterias.core.designsystem.web.LoteriasCaixaDSWebPage
 import kotlinx.coroutines.delay
 import br.gov.caixa.loterias.core.queue.security.QueueOriginPolicy
 import br.gov.caixa.loterias.core.queue.R
@@ -64,7 +64,7 @@ fun FilaBraQueueWebView(location: String, activity: Activity, onConnectionError:
     val queueUrl = remember(secureLocation) {
         secureLocation + if ('?' in secureLocation) "&qfnoredirect=true" else "?qfnoredirect=true"
     }
-    CaixaDSWebPage(
+    LoteriasCaixaDSWebPage(
         url = queueUrl,
         modifier = Modifier.fillMaxSize(),
         javaScriptEnabled = true,
@@ -86,7 +86,7 @@ fun FilaBraQueueWebView(location: String, activity: Activity, onConnectionError:
             }
         } },
         onConsoleMessage = { message ->
-            if (rejected || connectionFailed) return@CaixaDSWebPage
+            if (rejected || connectionFailed) return@LoteriasCaixaDSWebPage
             when (val event = QueueConsoleEventParser.parse(message)) {
                 is QueueConsoleEvent.Pass -> currentPendingPassHandler.value(event)
                 else -> currentBroadcast.value(event)

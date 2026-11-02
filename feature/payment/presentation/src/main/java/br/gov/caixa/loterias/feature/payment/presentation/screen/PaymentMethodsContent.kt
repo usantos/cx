@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.payment.R as LocalizedR
 import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
 import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
@@ -34,7 +34,7 @@ internal fun PaymentMethodsContent(
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     var expandedProviders by remember { mutableStateOf(emptySet<Long>()) }
-    LazyColumn((modifier.fillMaxSize().background(CaixaDS.colors.paymentCanvas)).uiId("pay.0099")) {
+    LazyColumn((modifier.fillMaxSize().background(LoteriasCaixaDS.colors.paymentCanvas)).uiId("pay.0099")) {
         val pix = state.methods.firstOrNull(PaymentMethod::isPix)
         if (pix != null) {
             item {

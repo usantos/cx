@@ -1,15 +1,15 @@
 package br.gov.caixa.loterias.feature.betting.presentation.components
 
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSRegularFontFamily
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,19 +31,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 @Composable
 internal fun RapidPreset(label: String, selected: Boolean, enabled: Boolean, circular: Boolean, onClick: () -> Unit) {
-    val outline = if (circular) CaixaDSColorTokens.RapidWheel else CaixaDSColorTokens.MegaSenaDark
+    val outline = if (circular) LoteriasCaixaDSColorTokens.RapidWheel else LoteriasCaixaDSColorTokens.MegaSenaDark
     val shape = if (circular) CircleShape else RoundedCornerShape(if (selected) 10.dp else 4.dp)
     Box(
         Modifier.padding(if (circular) 10.dp else 5.dp)
             .then(if (circular) Modifier.size(60.dp) else Modifier.heightIn(min = 48.dp))
-            .background(if (selected) CaixaDSColorTokens.RapidWheel else CaixaDSColorTokens.White, shape)
+            .background(if (selected) LoteriasCaixaDSColorTokens.RapidWheel else LoteriasCaixaDSColorTokens.White, shape)
             .border(if (selected) 0.dp else 1.dp, outline, shape)
             .then(
                 if (enabled) {
@@ -61,8 +61,8 @@ internal fun RapidPreset(label: String, selected: Boolean, enabled: Boolean, cir
         Text(
             label,
             (Modifier.padding(horizontal = if (circular) 0.dp else 10.dp)).uiId("bet.0141"),
-            color = if (selected) CaixaDSColorTokens.White else CaixaDSColorTokens.RapidWheel,
-            fontFamily = if (circular) CaixaDSFontFamily else br.gov.caixa.loterias.core.designsystem.theme.CaixaDSRegularFontFamily,
+            color = if (selected) LoteriasCaixaDSColorTokens.White else LoteriasCaixaDSColorTokens.RapidWheel,
+            fontFamily = if (circular) LoteriasCaixaDSFontFamily else LoteriasCaixaDSRegularFontFamily,
             fontWeight = if (circular) FontWeight.Bold else FontWeight.Normal,
             fontSize = if (circular) 14.sp else 17.sp,
             textAlign = TextAlign.Center
@@ -78,7 +78,7 @@ internal fun RapidNumberCells(
     onToggle: ((Int) -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    val color = if (danger) CaixaDSColorTokens.RapidExcluded else CaixaDS.colors.teal
+    val color = if (danger) LoteriasCaixaDSColorTokens.RapidExcluded else LoteriasCaixaDS.colors.teal
     BoxWithConstraints(modifier.fillMaxWidth()) {
         val columns = (maxWidth.value / 56).toInt().coerceAtLeast(1)
         val cellWidth = maxWidth / columns
@@ -87,7 +87,7 @@ internal fun RapidNumberCells(
                 Box(Modifier.width(cellWidth), contentAlignment = Alignment.Center) {
                     val filled = number in selected
                     Box(
-                        Modifier.size(40.dp).background(if (filled) color else CaixaDS.colors.surface, CircleShape)
+                        Modifier.size(40.dp).background(if (filled) color else LoteriasCaixaDS.colors.surface, CircleShape)
                             .border(1.dp, color, CircleShape)
                             .then(
                                 if (onToggle !=
@@ -102,10 +102,10 @@ internal fun RapidNumberCells(
                     ) {
                         Text(
                             number.toString().padStart(2, '0'),
-                            color = if (filled) CaixaDSColorTokens.White else color,
+                            color = if (filled) LoteriasCaixaDSColorTokens.White else color,
                             fontSize = 14.1.sp,
                             fontWeight = FontWeight.Bold,
-                            fontFamily = CaixaDSFontFamily,
+                            fontFamily = LoteriasCaixaDSFontFamily,
                             modifier = Modifier.uiId("bet.0143")
                         )
                     }
@@ -128,10 +128,10 @@ internal fun RapidSectionHeader(
         Text(
             title,
             (Modifier.padding(top = titleTop, start = 8.dp, end = 8.dp)).uiId("bet.0144"),
-            color = CaixaDSColorTokens.ExtendedToolbarLine,
+            color = LoteriasCaixaDSColorTokens.ExtendedToolbarLine,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            fontFamily = CaixaDSFontFamily,
+            fontFamily = LoteriasCaixaDSFontFamily,
             textAlign = TextAlign.Center
         )
         Text(
@@ -141,9 +141,9 @@ internal fun RapidSectionHeader(
                     .then(if (descriptionWidth != null) Modifier.width(descriptionWidth) else Modifier.fillMaxWidth())
                     .padding(descriptionPadding)
                 ).uiId("bet.0145"),
-            color = CaixaDS.colors.graphite,
+            color = LoteriasCaixaDS.colors.graphite,
             fontSize = 14.sp,
-            fontFamily = CaixaDSFontFamily,
+            fontFamily = LoteriasCaixaDSFontFamily,
             textAlign = TextAlign.Center
         )
     }

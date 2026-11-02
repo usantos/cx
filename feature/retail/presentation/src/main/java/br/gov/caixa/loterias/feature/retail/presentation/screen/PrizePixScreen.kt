@@ -16,13 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPixBrand
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPixBrand
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.retail.R as LocalizedR
 import br.gov.caixa.loterias.feature.retail.presentation.components.PrizeHelpAction
 import br.gov.caixa.loterias.feature.retail.presentation.components.PrizePixActionButton
@@ -38,16 +38,16 @@ import java.util.Locale
 @Composable
 internal fun PrizePixDataScreen(state: PrizeRedemptionUiState, onBack: () -> Unit, onHelp: () -> Unit, actions: PrizePixActions) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = uiStrings.getString(LocalizedR.string.ui_resgate_de_premio_via_pix_42150a),
         onBack = onBack,
         topBarAction = { PrizeHelpAction(onHelp) },
 
-        containerColor = CaixaDS.colors.paymentCanvas,
+        containerColor = LoteriasCaixaDS.colors.paymentCanvas,
         modifier = Modifier.uiId("retail.0100")
     ) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).background(CaixaDS.colors.paymentCanvas)
+            Modifier.fillMaxSize().padding(padding).background(LoteriasCaixaDS.colors.paymentCanvas)
                 .uiId("retail.0101").verticalScroll(rememberScrollState())
         ) {
             if (state.stage == PrizeRedemptionStage.PIX_ENTRY) {
@@ -55,13 +55,13 @@ internal fun PrizePixDataScreen(state: PrizeRedemptionUiState, onBack: () -> Uni
             } else {
                 PrizePixKeyConfirmation(requireNotNull(state.pixBeneficiary))
             }
-            Column(Modifier.fillMaxWidth().background(CaixaDSColorTokens.White)) {
+            Column(Modifier.fillMaxWidth().background(LoteriasCaixaDSColorTokens.White)) {
                 Text(
                     uiStrings.getString(LocalizedR.string.ui_valor_do_credito_ceefea),
                     modifier = (Modifier.padding(start = 20.dp, top = 16.dp)).uiId("retail.0102"),
-                    color = CaixaDSColorTokens.PrizeText,
+                    color = LoteriasCaixaDSColorTokens.PrizeText,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = CaixaDSFuturaFontFamily,
+                    fontFamily = LoteriasCaixaDSFuturaFontFamily,
                     fontSize = 14.sp
                 )
                 Text(
@@ -69,20 +69,20 @@ internal fun PrizePixDataScreen(state: PrizeRedemptionUiState, onBack: () -> Uni
                     (Modifier.padding(start = 20.dp, top = 16.dp))
                         .uiId("retail.0103"),
                     fontWeight = FontWeight.Bold,
-                    fontFamily = CaixaDSFuturaFontFamily,
+                    fontFamily = LoteriasCaixaDSFuturaFontFamily,
                     fontSize = 14.sp
                 )
                 Row(Modifier.padding(start = 20.dp, top = 16.dp, bottom = 16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         uiStrings.getString(LocalizedR.string.ui_resgate_processado_via_336deb),
-                        color = CaixaDSColorTokens.PrizeText,
+                        color = LoteriasCaixaDSColorTokens.PrizeText,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = CaixaDSFuturaFontFamily,
+                        fontFamily = LoteriasCaixaDSFuturaFontFamily,
                         fontSize = 14.sp,
                         modifier = Modifier
                             .uiId("retail.0104")
                     )
-                    CaixaDSPixBrand((Modifier.padding(start = 16.dp).size(100.dp, 36.dp)).uiId("retail.0105"))
+                    LoteriasCaixaDSPixBrand((Modifier.padding(start = 16.dp).size(100.dp, 36.dp)).uiId("retail.0105"))
                 }
                 Row(
                     Modifier.fillMaxWidth().padding(start = 20.dp, top = 20.dp, end = 20.dp),

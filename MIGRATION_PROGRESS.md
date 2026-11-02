@@ -124,7 +124,7 @@ Comando final: `ANDROID_SERIAL=emulator-5560 ./gradlew :feature:tickets:check :a
 
 **Resultados:** 825 testes JVM e 122 Android distintos aprovados, zero falhas/erros/skips. A baseline original executou 803 JVM nos seis módulos e 110 Android em Auth/Cart/Payment; a nova caracterização da fila passou antes de sua extração. Após a restauração dos metadados de Auth, 99 JVM Auth + 134 App e 13 Android Auth foram executados novamente, sem inflar a contagem de casos distintos. Os 122 Android incluem App 1, Auth 13, Betting 11, Cart 65 e Payment 32.
 
-**Build/gates:** check/cobertura/lint dos módulos alterados, lint App PrdDebug, compilação e APK PrdDebug, mais os dez gates de formatação, Compose, arquitetura, inventário UI, backend99 operações, CaixaDS, FilaBRA, Topaz, rede e identidade/flavors aprovados. 175 verificações de equivalência/APIs aprovadas. Revisão independente terminou sem achados pendentes; imports implícitos Compose identificados pelo revisor foram restaurados antes da compilação final.
+**Build/gates:** check/cobertura/lint dos módulos alterados, lint App PrdDebug, compilação e APK PrdDebug, mais os dez gates de formatação, Compose, arquitetura, inventário UI, backend99 operações, LoteriasCaixaDS, FilaBRA, Topaz, rede e identidade/flavors aprovados. 175 verificações de equivalência/APIs aprovadas. Revisão independente terminou sem achados pendentes; imports implícitos Compose identificados pelo revisor foram restaurados antes da compilação final.
 
 **Cobertura:** Data 2226/2328 (95,62%), Auth 316/323 (97,83%), Betting 1107/1126 (98,31%), Cart 2044/2101 (97,29%) e Payment 664/668 (99,40%). Mínimos 0.9501 e inputs anteriores mantidos; includes de Betting/Payment ampliados apenas para incorporar os colaboradores. Nenhuma exclusão para aprovar gate.
 
@@ -298,7 +298,7 @@ Revisão independente concluída sem achados. modernCheck aprovado em16m50s e re
 
 ## Validação final do host APP — 20/10/2026
 
-O checkout contém 68 módulos declarados e 62 fontes Kotlin de produção no APP, sem ViewModel de feature. A composição raiz aplica CaixaDS; navegação, inicialização e bindings de composição ficam no host, enquanto os fluxos de negócio permanecem em features e CORE.
+O checkout contém 68 módulos declarados e 62 fontes Kotlin de produção no APP, sem ViewModel de feature. A composição raiz aplica LoteriasCaixaDS; navegação, inicialização e bindings de composição ficam no host, enquanto os fluxos de negócio permanecem em features e CORE.
 
 `modernCheck` passou em 14m22s (2498 tarefas); `releaseCheck` passou para Automação, Prd e Tqs (1575 tarefas, 37s, com R8 já válido reutilizado); a restauração `PrdDebug`, os gates de arquitetura e formatação passaram. A cobertura agregada Data ficou em 2628/2762 linhas (95,148%), acima de 95,01%. Quatro testes instrumentados adicionais do runtime de notificações passaram; nenhum limiar foi reduzido.
 

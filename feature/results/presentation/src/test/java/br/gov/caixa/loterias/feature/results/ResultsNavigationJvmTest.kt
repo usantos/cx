@@ -13,7 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
@@ -127,7 +127,7 @@ class ResultsNavigationJvmTest {
                 true
             }
             val actions = remember { AppNavigationActions({ _, _ -> }, {}, {}, {}, {}, {}) }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 NavHost(controller, startDestination = start) {
                     resultsGraph(dependencies, controller, navigation, actions)
                     composable("tickets/my-bets") { Text("Minhas apostas") }

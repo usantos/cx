@@ -70,7 +70,7 @@ class FeatureModulesTest(unittest.TestCase):
     def test_rejects_legacy_type_names_in_every_module_and_source_set(self):
         for path, declaration in (
             ('app/src/test/kotlin/SessionTest.kt', 'class LegacySessionTest'),
-            ('core/design-system/src/main/kotlin/Panels.kt', 'data class CaixaDSLegacyPanel(val id: Int)'),
+            ('core/design-system/src/main/kotlin/Panels.kt', 'data class LoteriasCaixaDSLegacyPanel(val id: Int)'),
             ('feature/cart/domain/src/main/kotlin/Cart.kt', 'sealed interface LegacyCart'),
             ('feature/home/presentation/src/androidTest/java/ScreenTest.java', 'public class HomeLegacyTest {}'),
         ):

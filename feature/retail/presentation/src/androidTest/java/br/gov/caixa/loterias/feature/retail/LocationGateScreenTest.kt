@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -19,7 +19,7 @@ class LocationGateScreenTest {
     @Test fun permissionSettingsAndRetryStatesKeepTheirMessagesAndCurrentAction() {
         val state = mutableStateOf(LocationGateUiState(LocationGateStatus.PERMISSION_REQUIRED))
         val selected = mutableListOf<LocationGateStatus>()
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             LocationGateScreen(state.value, "characterization", 0) { selected += state.value.status }
         } }
         compose.onNodeWithText("vcharacterization").assertIsDisplayed()
@@ -40,7 +40,7 @@ class LocationGateScreenTest {
 
     @Test fun checkingAndOutsideBrazilDoNotOfferAnAction() {
         val state = mutableStateOf(LocationGateUiState())
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             LocationGateScreen(state.value, "1.0", 0) { error("No action is offered") }
         } }
         compose.onNode(hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)).assertExists()

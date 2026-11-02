@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.account
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -20,7 +20,7 @@ class PersonalDataLimitStatesTest {
             minimumDailyLimit = BigDecimal("10"), authorizedDailyLimit = BigDecimal("200")))
         val changes = mutableListOf<String>()
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LegacyPersonalDailyLimit(state.value) { value ->
                     changes.add(value)
                     state.value = state.value.copy(dailyLimit = value)

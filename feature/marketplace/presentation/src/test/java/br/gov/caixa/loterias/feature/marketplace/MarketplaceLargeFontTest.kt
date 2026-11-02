@@ -17,8 +17,8 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFavoriteRetailer
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFavoriteRetailer
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.DetailPurchasePanel
@@ -99,7 +99,7 @@ class MarketplaceLargeFontTest {
 
     @Test fun favoriteRetailerCityDoesNotOverlapItsOpenAction() = atDoubleFont {
         var calls = 0
-        show { CaixaDSMarketplaceFavoriteRetailer("Caminho da Fortuna", "SAO PAULO - SP", { calls++ }, {}) }
+        show { LoteriasCaixaDSMarketplaceFavoriteRetailer("Caminho da Fortuna", "SAO PAULO - SP", { calls++ }, {}) }
         val city = compose.onNodeWithText("SAO PAULO - SP").assertIsDisplayed()
         val open = compose.onNodeWithText("Ver Bolões").assertIsDisplayed()
         assertReadable(city)
@@ -115,7 +115,7 @@ class MarketplaceLargeFontTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { Box(Modifier.size(width = 360.dp, height = 640.dp)) { content() } } }
+        compose.setContent { LoteriasCaixaDSTheme { Box(Modifier.size(width = 360.dp, height = 640.dp)) { content() } } }
     }
 
     private fun reachable(node: SemanticsNodeInteraction): SemanticsNodeInteraction {

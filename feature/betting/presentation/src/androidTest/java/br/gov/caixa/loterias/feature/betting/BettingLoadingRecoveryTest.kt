@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -56,7 +56,7 @@ class BettingLoadingRecoveryTest {
                 }
             }
         )
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, { backs.incrementAndGet() }, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, { backs.incrementAndGet() }, {}) } }
         compose.mainClock.advanceTimeBy(750) // LoadingView original: atraso de 500 e transição de opacidade de 200.
         compose.onNode(isDialog()).assertExists()
         compose.onNodeWithText("Carregando…").assertIsDisplayed()

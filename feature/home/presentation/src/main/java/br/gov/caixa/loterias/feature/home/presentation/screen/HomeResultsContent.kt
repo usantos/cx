@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.feature.home.R as LocalizedR
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.results.presentation.state.ResultsUiState
@@ -24,7 +24,7 @@ internal fun HomeResultContent(state: ResultsUiState, lottery: HomeLottery, modi
     val result = state.result
     Box(modifier, contentAlignment = Alignment.Center) {
         when {
-            state.isLoading -> br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator(
+            state.isLoading -> br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator(
                 color = homeResultContentColor(lottery.resultCode),
                 modifier = Modifier.legacyAutomationId("home-result-loading").size(32.dp)
             )

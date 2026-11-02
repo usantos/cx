@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.*
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.*
 import br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation
@@ -58,7 +58,7 @@ class MarketplaceSessionEntryUiTest {
         override val searchRetailers: SearchRetailersUseCase get() = error("Retailer search not requested")
     }
     private fun show(route: String) {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             nav = rememberNavController()
             val navigation = rememberAppNavigationState(owner?.ownerKey)
             NavHost(nav, startDestination = route) {

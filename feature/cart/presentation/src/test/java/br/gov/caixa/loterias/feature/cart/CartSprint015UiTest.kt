@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.SemanticsActions
-import androidx.compose.ui.test.assertIsNotSelected
-import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -13,10 +11,10 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaignTheme
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaignTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartLotecaSelection
@@ -43,7 +41,7 @@ class CartSprint015UiTest {
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
     fun longLotecaTeamsStayOnOneLineInBalancedColumns() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Box(Modifier.width(336.dp)) {
                     CartLotecaContent(listOf(CartLotecaSelection(1, "MANCHESTER CITY", "BOURNEMOUTH", true, false, false)))
                 }
@@ -76,7 +74,7 @@ class CartSprint015UiTest {
             modalityCode = "LOTECA",
             lotecaSelections = listOf(CartLotecaSelection(1, "Casa/SP", "Fora/RJ", true, true, false))
         )
-        compose.setContent { CaixaDSTheme { CurrentCartRow(item, Instant.EPOCH, {}, null) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartRow(item, Instant.EPOCH, {}, null) } }
         compose.onNodeWithContentDescription(
             "loteca. Jogo um: Casa/SP selecionado, empate selecionado, Fora/RJ não selecionado. Valor: dez reais."
         ).assertExists()
@@ -89,12 +87,12 @@ class CartSprint015UiTest {
 
     @Test fun cartTitlesUseNativeListColors() {
         compose.setContent {
-            CaixaDSTheme {
-                assertEquals(CaixaDSColorTokens.SuperSeteLight, currentCartModalityColor("SUPER_7"))
-                assertEquals(CaixaDSColorTokens.DiaDeSorteLight, currentCartModalityColor("DIA_DE_SORTE"))
-                assertEquals(CaixaDSColorTokens.TimemaniaLight, currentCartModalityColor("TIMEMANIA"))
-                CaixaDSCampaignTheme(CaixaDSCampaign.OCTOBER_ROSE, CaixaDSCampaign.OCTOBER_ROSE) {
-                    assertEquals(CaixaDSColorTokens.OctoberRose, currentCartModalityColor("MEGA_SENA"))
+            LoteriasCaixaDSTheme {
+                assertEquals(LoteriasCaixaDSColorTokens.SuperSeteLight, currentCartModalityColor("SUPER_7"))
+                assertEquals(LoteriasCaixaDSColorTokens.DiaDeSorteLight, currentCartModalityColor("DIA_DE_SORTE"))
+                assertEquals(LoteriasCaixaDSColorTokens.TimemaniaLight, currentCartModalityColor("TIMEMANIA"))
+                LoteriasCaixaDSCampaignTheme(LoteriasCaixaDSCampaign.OCTOBER_ROSE, LoteriasCaixaDSCampaign.OCTOBER_ROSE) {
+                    assertEquals(LoteriasCaixaDSColorTokens.OctoberRose, currentCartModalityColor("MEGA_SENA"))
                 }
             }
         }

@@ -22,7 +22,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -68,7 +68,7 @@ class StartupUnavailableGeometryTest {
 
     private fun show(kind: StartupStatusKind, compact: Boolean = false, action: () -> Unit = {}) {
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 Box(if (compact) Modifier.width(320.dp).fillMaxSize() else Modifier.fillMaxSize()) {
                     StartupStatusScreen(kind, "Loterias", "1.23.5", action, {}, {})
                 }

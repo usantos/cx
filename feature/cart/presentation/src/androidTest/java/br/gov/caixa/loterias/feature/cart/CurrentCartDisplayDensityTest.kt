@@ -13,7 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.unit.Density
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.core.content.res.ResourcesCompat
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartContent
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartUiState
 import org.junit.Assert.assertEquals
@@ -31,7 +31,7 @@ class CurrentCartDisplayDensityTest {
         val density = Density(dpi / 160f, 1f)
         compose.setContent {
             CompositionLocalProvider(LocalDensity provides density) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     CurrentCartContent(CartUiState(), PaddingValues(), emptyList(), 0L, {}, {}, {})
                 }
             }

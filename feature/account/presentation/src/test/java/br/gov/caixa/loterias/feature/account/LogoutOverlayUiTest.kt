@@ -15,7 +15,7 @@ import androidx.compose.ui.test.performClick
 import androidx.core.app.ActivityOptionsCompat
 import br.gov.caixa.loterias.core.auth.gateway.EndSessionGateway
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
@@ -115,7 +115,9 @@ class LogoutOverlayUiTest {
             FixedCoroutineDispatchers(Dispatchers.Main.immediate)
         )
         compose.setContent {
-            CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) { CaixaDSTheme { LogoutOverlay(model, gateway) } }
+            CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) {
+                LoteriasCaixaDSTheme { LogoutOverlay(model, gateway) }
+            }
         }
         compose.runOnIdle { assertTrue(model.start()) }
         flush()

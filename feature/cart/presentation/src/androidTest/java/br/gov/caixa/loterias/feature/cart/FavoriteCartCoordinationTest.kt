@@ -10,7 +10,7 @@ import androidx.test.uiautomator.UiDevice
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
@@ -38,7 +38,7 @@ class FavoriteCartCoordinationTest {
         var opened: Long? = null
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 FavoriteCartsRoute(model, { back++ }, { opened = it }, {}, onHelp = {}, privateDataEnabled = privateData.value)
             }
         }
@@ -58,7 +58,7 @@ class FavoriteCartCoordinationTest {
         var ready = 0
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 FavoriteCartsRoute(model, {}, {}, {
                     assertFalse(model.state.value.imported)
                     ready++
@@ -80,7 +80,7 @@ class FavoriteCartCoordinationTest {
         var ready = 0
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme { FavoriteCartsRoute(model, {}, {}, { ready++ }) }
+            LoteriasCaixaDSTheme { FavoriteCartsRoute(model, {}, {}, { ready++ }) }
         }
         compose.onNodeWithContentDescription("Transformar carrinho").performClick()
         compose.onNodeWithText("Confirmar").performClick()
@@ -103,7 +103,7 @@ class FavoriteCartCoordinationTest {
         compose.setContent {
             val old = remember { first.create() }
             val current = remember { second.create() }
-            CaixaDSTheme { FavoriteCartsRoute(if (replace.value) current else old, {}, {}, {}) }
+            LoteriasCaixaDSTheme { FavoriteCartsRoute(if (replace.value) current else old, {}, {}, {}) }
         }
         compose.onNodeWithText("Favorito").performClick()
         compose.onNodeWithText("6 num(s)").assertIsDisplayed()
@@ -127,7 +127,7 @@ class FavoriteCartCoordinationTest {
         var help = 0
         compose.setContent {
             val model = remember { fixture.create(detail = true) }
-            CaixaDSTheme { FavoriteCartDetailRoute(model, { back++ }, { help++ }) }
+            LoteriasCaixaDSTheme { FavoriteCartDetailRoute(model, { back++ }, { help++ }) }
         }
         compose.onNodeWithText("Tentar novamente").performClick()
         compose.onNodeWithText("01 - 02 - 03 - 04 - 05 - 06").assertIsDisplayed()

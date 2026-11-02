@@ -585,6 +585,26 @@ class PaymentViewModelTest {
         assertEquals(listOf(1L), requestedMethods)
     }
 
+    @Test fun `Pix approval navigation is consumed once while approval continues preventing status reads`() = runTest {
+        progressResult = AppResult.Success(PurchaseProgress(9, 8))
+        val model = viewModel(PaymentMode.PIX)
+        advanceUntilIdle()
+        assertFalse(model.consumePixApprovalNavigation())
+        model.setPixScreenActive(true)
+        model.checkPixStatus()
+        advanceUntilIdle()
+        assertTrue(model.state.value.pixApproved)
+        assertTrue(model.consumePixApprovalNavigation())
+        assertTrue(model.state.value.pixApprovalNavigationConsumed)
+        assertFalse(model.consumePixApprovalNavigation())
+        assertTrue(model.state.value.pixApproved)
+        model.checkPixStatus()
+        model.load()
+        advanceUntilIdle()
+        assertEquals(1, queriedPixCount)
+        assertEquals(1, generatedPixCount)
+    }
+
     private fun viewModel(
         mode: PaymentMode,
         selectedPaymentMethodId: Long? = null,

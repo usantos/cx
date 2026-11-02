@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.R
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.responsiblegaming.R as LocalizedR
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.mapper.SocialAmount
 
@@ -83,7 +83,7 @@ internal data class SocialCategoryData(val title: String, val amount: SocialAmou
 
 @Composable
 internal fun SocialCategoryPair(left: SocialCategoryData, right: SocialCategoryData, modifier: Modifier = Modifier) {
-    Column(modifier.fillMaxWidth().height(120.dp).background(CaixaDSColorTokens.SocialCanvas)) {
+    Column(modifier.fillMaxWidth().height(120.dp).background(LoteriasCaixaDSColorTokens.SocialCanvas)) {
         Row(Modifier.fillMaxWidth().height(76.dp)) {
             SocialCategoryAmount(left, (Modifier.weight(1f)).uiId("rg.0012"))
             SocialCategoryAmount(right, (Modifier.weight(1f)).uiId("rg.0013"))
@@ -94,7 +94,7 @@ internal fun SocialCategoryPair(left: SocialCategoryData, right: SocialCategoryD
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillBounds,
-                colorFilter = ColorFilter.tint(CaixaDSColorTokens.SocialGraphite)
+                colorFilter = ColorFilter.tint(LoteriasCaixaDSColorTokens.SocialGraphite)
             )
             Row(Modifier.fillMaxSize()) {
                 SocialCategoryLabel(left, (Modifier.weight(1f)).uiId("rg.0014"))
@@ -117,7 +117,7 @@ private fun SocialCategoryAmount(data: SocialCategoryData, modifier: Modifier) {
         )
         Text(
             data.amount?.unit ?: uiStrings.getString(LocalizedR.string.ui_reais_95ff39),
-            color = CaixaDSColorTokens.SocialGraphite,
+            color = LoteriasCaixaDSColorTokens.SocialGraphite,
             fontSize = 12.sp,
             modifier = Modifier.uiId("rg.0017")
         )
@@ -130,7 +130,7 @@ private fun SocialCategoryLabel(data: SocialCategoryData, modifier: Modifier) {
         Text(
             data.title,
             (Modifier.padding(top = 14.dp)).uiId("rg.0018"),
-            color = CaixaDSColorTokens.White,
+            color = LoteriasCaixaDSColorTokens.White,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center

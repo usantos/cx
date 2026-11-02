@@ -11,7 +11,7 @@ src/main/res/layout/item_aposta_carrinho.xml	cart/current#bet-row	feature/cart/s
 src/main/res/layout/item_bolao_carrinho.xml	cart/current#pool-row	feature/cart/src/main/java/br/gov/caixa/loterias/feature/cart/CurrentCartRoute.kt
 src/main/res/layout/item_combo_carrinho.xml	cart/current#combo-row	feature/cart/src/main/java/br/gov/caixa/loterias/feature/cart/CurrentCartRoute.kt
 src/main/res/layout/item_header_carrinho.xml	cart/current#header	feature/cart/src/main/java/br/gov/caixa/loterias/feature/cart/CurrentCartRoute.kt
-src/main/res/layout/item_header_carrinho_fixo.xml	cart/current#summary	core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCartSummary.kt
+src/main/res/layout/item_header_carrinho_fixo.xml	cart/current#summary	core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCartSummary.kt
 src/main/res/layout/item_notificacao.xml	notifications/messages#row	feature/notifications/src/main/java/br/gov/caixa/loterias/feature/notifications/NotificationsRoute.kt
 src/main/res/layout/list_group_aposta_shake.xml	home#shake-settings	app/src/main/java/br/gov/caixa/loterias/apostas/ShakeMenuRow.kt
 src/main/res/layout/loteca_toolbar.xml	betting/simulation#loteca	feature/betting/src/main/java/br/gov/caixa/loterias/feature/betting/BettingGameRoute.kt

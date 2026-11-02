@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.home.R
 import br.gov.caixa.loterias.feature.home.R as LocalizedR
 import br.gov.caixa.loterias.feature.home.presentation.mapper.HomePoolResaleCountdown
@@ -53,7 +53,7 @@ internal fun HomePoolResaleTimer(countdown: HomePoolResaleCountdown, modifier: M
         return
     }
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    val blue = CaixaDSColorTokens.NotificationAction
+    val blue = LoteriasCaixaDSColorTokens.NotificationAction
     val labelStyle = homeLegacyTextStyle(12.sp, FontWeight.SemiBold)
     val titleWidthPx = rememberTextMeasurer().measure(uiStrings.getString(LocalizedR.string.ui_voce_tem_1d937c), labelStyle).size.width
     val titleWidth = with(LocalDensity.current) { titleWidthPx.toDp() }
@@ -100,7 +100,7 @@ internal fun HomePoolResaleTimer(countdown: HomePoolResaleCountdown, modifier: M
 @Composable
 private fun HomeLargeFontPoolTimer(countdown: HomePoolResaleCountdown, modifier: Modifier) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    val blue = CaixaDSColorTokens.NotificationAction
+    val blue = LoteriasCaixaDSColorTokens.NotificationAction
     Column(
         modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp).legacyAutomationId("home-pool-resale-timer"),
         horizontalAlignment = Alignment.CenterHorizontally

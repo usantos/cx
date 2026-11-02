@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 object CxHomeV2Colors {
     val C44003322 = Color(0x44003322)
     val CFF003B71 = Color(0xFF003B71)
-    val CFF005CA9 = CaixaDSColorTokens.Blue700
+    val CFF005CA9 = LoteriasCaixaDSColorTokens.Blue700
     val CFF006B43 = Color(0xFF006B43)
     val CFF006BB4 = Color(0xFF006BB4)
     val CFF008852 = Color(0xFF008852)

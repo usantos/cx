@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -72,7 +72,7 @@ class BettingDailyLimitConfirmationTest {
     private fun show(fixture: Fixture, authenticated: Boolean, total: String) {
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 BettingGameRoute(model, {}, {}, cartTotal = BigDecimal(total), isAuthenticated = authenticated)
             }
         }

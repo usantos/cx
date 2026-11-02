@@ -23,7 +23,7 @@ import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -102,7 +102,7 @@ class FavoriteBetsPreflightUiTest {
 
     private fun show(fixture: Fixture) = compose.setContent {
         val model = remember { fixture.create() }
-        CaixaDSTheme { FavoriteBetsRoute(model, { fixture.exits++ }, {}, {}) }
+        LoteriasCaixaDSTheme { FavoriteBetsRoute(model, { fixture.exits++ }, {}, {}) }
     }
 
     private inner class Fixture(val suspended: Boolean = false, val special: Boolean = false) {

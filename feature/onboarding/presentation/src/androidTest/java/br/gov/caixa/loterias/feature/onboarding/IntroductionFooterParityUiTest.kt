@@ -7,17 +7,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.CompleteIntroductionUseCase
+import br.gov.caixa.loterias.feature.onboarding.presentation.components.IntroductionActions
 import br.gov.caixa.loterias.feature.onboarding.presentation.components.IntroductionScreen
 import br.gov.caixa.loterias.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,10 +39,13 @@ class IntroductionFooterParityUiTest {
         model.confirmAdult()
         model.pageChanged(2)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 val state = model.state.collectAsStateWithLifecycle()
                 Box(Modifier.width(width.value).fillMaxHeight().testTag("intro-viewport")) {
-                    IntroductionScreen(state.value, model)
+                    IntroductionScreen(
+                        state.value,
+                        IntroductionActions(model::pageChanged, model::complete, model::confirmAdult, model::rejectAdult)
+                    )
                 }
             }
         }
@@ -50,9 +59,12 @@ class IntroductionFooterParityUiTest {
             assertEquals("Native 140dp button wraps the final action", 2, layout.lineCount)
             val indicators = compose.onNodeWithTag("introduction-page-indicators").getUnclippedBoundsInRoot()
             val viewport = compose.onNodeWithTag("intro-viewport").getUnclippedBoundsInRoot()
-            assertEquals("Indicators stay centered independently of the action",
+            assertEquals(
+                "Indicators stay centered independently of the action",
                 (viewport.left + viewport.right).value / 2f,
-                (indicators.left + indicators.right).value / 2f, 0.5f)
+                (indicators.left + indicators.right).value / 2f,
+                0.5f
+            )
         }
         compose.onNodeWithText("Acessar o aplicativo").performClick()
         compose.runOnIdle { assertEquals(1, completions) }

@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.feature.notifications
 
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
@@ -10,7 +9,7 @@ import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.notifications.domain.model.AppNotification
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationCategory
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationPreference
@@ -32,7 +31,7 @@ class NotificationsAccessibilityRegressionTest {
     @Test fun preferenceSubjectAndToggleHaveOneSemanticOwner() {
         var calls = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 PreferencesScreen(
                     NotificationsUiState(
                         loading = false,
@@ -52,7 +51,7 @@ class NotificationsAccessibilityRegressionTest {
 
     @Test fun expandedMessagePublishesExpandedState() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 NotificationItem(
                     AppNotification(1, NotificationCategory.TIPS_NEWS, "Mensagem acessível", "Conteúdo", "Hoje", true),
                     true,

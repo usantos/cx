@@ -13,7 +13,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentQuestion
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.screen.AssessmentFormScreen
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.screen.AssessmentStartScreen
@@ -36,7 +36,9 @@ class ResponsibleGamingLargeFontTest {
     @get:Rule val compose = createComposeRule()
 
     @Test fun introductionRespectsSystemScaleAndRetainsReadableText() = atDoubleFont {
-        compose.setContent { CaixaDSTheme { Box(Modifier.size(360.dp, 640.dp)) { AssessmentStartScreen(ResponsibleGamingUiState(), {}) } } }
+        compose.setContent {
+            LoteriasCaixaDSTheme { Box(Modifier.size(360.dp, 640.dp)) { AssessmentStartScreen(ResponsibleGamingUiState(), {}) } }
+        }
         val welcome = compose.onNode(hasText("Bem-vindo", substring = true)).performScrollTo().assertIsDisplayed()
         val layouts = mutableListOf<TextLayoutResult>()
         welcome.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
@@ -60,7 +62,9 @@ class ResponsibleGamingLargeFontTest {
             ResponsibleGamingUiState(
                 questions = listOf(SelfAssessmentQuestion(1, "Pergunta de teste", 1), SelfAssessmentQuestion(2, "Segunda pergunta", 2))
             )
-        compose.setContent { CaixaDSTheme { Box(Modifier.size(360.dp, 640.dp)) { AssessmentFormScreen(state, { actions += it }) } } }
+        compose.setContent {
+            LoteriasCaixaDSTheme { Box(Modifier.size(360.dp, 640.dp)) { AssessmentFormScreen(state, { actions += it }) } }
+        }
         val close = compose.onNodeWithText("Fechar").performScrollTo().assertIsDisplayed()
         listOf("Fechar", "Anterior", "Próximo").forEach { label ->
             val layouts = mutableListOf<TextLayoutResult>()

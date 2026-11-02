@@ -13,7 +13,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.core.content.res.ResourcesCompat
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.R
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.*
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.DetailLotecaMatch
 import org.junit.Assert.assertTrue
@@ -25,7 +25,7 @@ class MarketplaceLotecaIndicatorRasterUiTest {
     @get:Rule val compose = createComposeRule()
 
     @Test fun uncheckedRingMatchesNativeBackgroundAndTintedImageComposite() {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             Box(Modifier.background(Color.White)) {
                 DetailLotecaMatch(0, LotecaMatchSelection(SportsMatch(1,
                     SportsTeam(1, "A"), SportsTeam(2, "B")), false, false, false))

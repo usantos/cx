@@ -18,7 +18,7 @@ import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.presentation.formatting.formatBrazilianCurrency
 import br.gov.caixa.loterias.feature.home.navigation.HomeRuntimeConfiguration
 import br.gov.caixa.loterias.feature.home.navigation.LocalHomeRuntimeConfiguration
@@ -125,7 +125,7 @@ class HomeClassicLargeFontLayoutTest {
                     }
                 )
             ) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     val pager = rememberPagerState { 1 }
                     Box(Modifier.size(width = VIEWPORT_WIDTH, height = VIEWPORT_HEIGHT)) {
                         HomeCarousel(

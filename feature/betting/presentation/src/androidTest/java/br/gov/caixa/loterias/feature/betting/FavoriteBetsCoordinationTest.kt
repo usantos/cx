@@ -21,7 +21,7 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetCartOptions
@@ -59,7 +59,7 @@ class FavoriteBetsCoordinationTest {
         val created = mutableListOf<Int>()
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme { FavoriteBetsRoute(model, {}, {}, { created += it }) }
+            LoteriasCaixaDSTheme { FavoriteBetsRoute(model, {}, {}, { created += it }) }
         }
         compose.onNodeWithContentDescription("Selecionar modalidade").performClick()
         dialogText("loteca").assertDoesNotExist()
@@ -84,7 +84,7 @@ class FavoriteBetsCoordinationTest {
         val fixture = Fixture(listOf(favorite(1, lotomania)), listOf(game(lotomania, recurring = listOf(4, 2, 4))))
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme { FavoriteBetsRoute(model, {}, {}, {}) }
+            LoteriasCaixaDSTheme { FavoriteBetsRoute(model, {}, {}, {}) }
         }
         compose.onNodeWithContentDescription("Adicionar aposta").performClick()
         compose.onNodeWithText("Adicionar ao carrinho").assertIsEnabled()
@@ -118,7 +118,7 @@ class FavoriteBetsCoordinationTest {
                     it.setContestType(2)
                 }
             }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 FavoriteBetsRoute(
                     if (selected.intValue == 0) old else current,
                     {},
@@ -152,7 +152,7 @@ class FavoriteBetsCoordinationTest {
         fixture.deleteResult = AppResult.Failure(AppError.Validation("Exclusão recusada"))
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme { FavoriteBetsRoute(model, {}, {}, {}) }
+            LoteriasCaixaDSTheme { FavoriteBetsRoute(model, {}, {}, {}) }
         }
         compose.onAllNodesWithText("quina").assertCountEquals(2)
         compose.onAllNodesWithContentDescription("Excluir aposta")[0].performClick()

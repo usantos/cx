@@ -24,7 +24,7 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.CampaignActivation
 import br.gov.caixa.loterias.core.domain.configuration.model.CampaignArea
 import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign
@@ -210,7 +210,7 @@ class HomeScreenCoordinationUiTest {
                     serverTime = br.gov.caixa.loterias.core.common.time.ServerTimeSource { java.time.Instant.EPOCH }
                 )
             ) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     HomeRoute(
                         userName = name(), networkAvailability = NetworkAvailability { ConnectionAvailability.CONNECTED },
                         environmentLabel = "TQS", onOpen = {}, onPoolEntry = {}, onLogout = {},

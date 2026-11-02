@@ -20,11 +20,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSContentState
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartSummary
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSContentState
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCartSummary
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.presentation.components.ComboHelpAction
 import br.gov.caixa.loterias.feature.betting.presentation.components.LegacyComboCatalogCard
@@ -45,27 +45,27 @@ internal fun BetCombosScreen(
     onHelp: () -> Unit = {},
 ) {
     val resources = LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = resources.getString(R.string.combo_screen_title),
         onBack = onBack,
         gradientTopBar = false,
-        topBarStartColor = CaixaDSColorTokens.Blue700,
-        topBarEndColor = CaixaDSColorTokens.Blue700,
+        topBarStartColor = LoteriasCaixaDSColorTokens.Blue700,
+        topBarEndColor = LoteriasCaixaDSColorTokens.Blue700,
         topBarActionWidth = 50.dp,
         topBarAction = { ComboHelpAction(onHelp) },
-        bottomBar = { CaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart, modifier = Modifier.uiId("bet.0224")) },
+        bottomBar = { LoteriasCaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart, modifier = Modifier.uiId("bet.0224")) },
         modifier = Modifier.uiId("bet.0225")
     ) { padding ->
-        CaixaDSContentState(state.loading, state.errorMessage, padding, onRetry) {
+        LoteriasCaixaDSContentState(state.loading, state.errorMessage, padding, onRetry) {
             Column(
                 Modifier.fillMaxSize().padding(padding)
-                    .background(Brush.linearGradient(listOf(CaixaDSColorTokens.White, CaixaDSColorTokens.ComboGradientEnd)))
+                    .background(Brush.linearGradient(listOf(LoteriasCaixaDSColorTokens.White, LoteriasCaixaDSColorTokens.ComboGradientEnd)))
             ) {
                 Text(
                     resources.getString(R.string.ui_confira_nossos_combos_e_escolha_o_se_9bbe75),
                     (Modifier.align(Alignment.CenterHorizontally).padding(top = 15.dp, bottom = 7.dp)).uiId("bet.0226"),
                     style = comboText(ComboTextSize.BODY).copy(lineHeight = ComboTextSize.CATALOG_LINE_HEIGHT.sp),
-                    color = CaixaDSColorTokens.ComboDescription,
+                    color = LoteriasCaixaDSColorTokens.ComboDescription,
                     textAlign = TextAlign.Start
                 )
                 LazyColumn(

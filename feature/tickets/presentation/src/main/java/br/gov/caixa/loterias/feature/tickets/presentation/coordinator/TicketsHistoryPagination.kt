@@ -19,25 +19,48 @@ internal class TicketsHistoryPagination(
     private val isSessionCurrent: () -> Boolean,
     private val fail: (String) -> Unit,
 ) {
-    fun loadMorePurchases() {
+    private val queryLock = Any()
+    private var generation = 0L
+    private var loadedGeneration = -1L
+    private var appliedFilters = PurchaseFilters()
+
+    fun beginQuery(): Long = synchronized(queryLock) { ++generation }
+
+    fun ifCurrent(queryGeneration: Long, action: () -> Unit) = synchronized(queryLock) {
+        if (queryGeneration == generation && isSessionCurrent()) action()
+    }
+
+    fun loadMorePurchases(): Unit = synchronized(queryLock) {
         val current = mutableState.value
-        if (current.isLoading || current.isLoadingMore || !current.canLoadMore) return
+        if (!isSessionCurrent() || loadedGeneration != generation) return@synchronized
+        if (current.isLoading || current.isLoadingMore || !current.canLoadMore) return@synchronized
+        val queryGeneration = generation
+        val filters = appliedFilters
+        val offset = current.purchases.size
         mutableState.dispatch(TicketsStateAction.PurchasePageLoading)
         scope.launch(dispatchers.io) {
-            loadPurchasesWith(mutableState.value.purchaseFilters, append = true)
+            loadPage(filters, offset, append = true, queryGeneration)
         }
     }
 
-    suspend fun loadPurchasesWith(filters: PurchaseFilters, append: Boolean) {
-        if (!isSessionCurrent()) return
-        val offset = if (append) mutableState.value.purchases.size else 0
+    suspend fun loadPurchasesWith(filters: PurchaseFilters, queryGeneration: Long) {
+        ifCurrent(queryGeneration) { appliedFilters = filters }
+        loadPage(filters, offset = 0, append = false, queryGeneration)
+    }
+
+    private suspend fun loadPage(filters: PurchaseFilters, offset: Int, append: Boolean, queryGeneration: Long) {
+        val current = synchronized(queryLock) { queryGeneration == generation && isSessionCurrent() }
+        if (!current) return
         val result = getPurchases(filters.query(offset))
-        if (!isSessionCurrent()) return
-        when (result) {
-            is AppResult.Success -> mutableState.dispatch(TicketsStateAction.PurchasePageReceived(append, result.value))
-            is AppResult.Failure -> fail(messageText("nao_foi_possivel_carregar_as_com_4f57c2"))
+        ifCurrent(queryGeneration) {
+            when (result) {
+                is AppResult.Success -> {
+                    if (!append) loadedGeneration = queryGeneration
+                    mutableState.dispatch(TicketsStateAction.PurchasePageReceived(append, result.value))
+                }
+
+                is AppResult.Failure -> fail(messageText("nao_foi_possivel_carregar_as_com_4f57c2"))
+            }
         }
     }
 }
-
-private const val PURCHASE_PAGE_SIZE = 10

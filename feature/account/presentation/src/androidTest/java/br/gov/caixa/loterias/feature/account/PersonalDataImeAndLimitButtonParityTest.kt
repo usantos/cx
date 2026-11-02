@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
@@ -95,7 +95,7 @@ class PersonalDataImeAndLimitButtonParityTest {
         compose.setContent {
             val view = LocalView.current
             SideEffect { contentView = view }
-            CaixaDSTheme(darkTheme = false) { PersonalDataRoute(model, {}, { error("No save completion allowed") }) }
+            LoteriasCaixaDSTheme(darkTheme = false) { PersonalDataRoute(model, {}, { error("No save completion allowed") }) }
         }
         compose.waitUntil { !model.state.value.loading }
     }

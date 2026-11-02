@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -53,7 +53,7 @@ class BetDetailCoordinationUiTest {
         val edited = mutableListOf<Long>()
         val redeemed = mutableListOf<Long>()
         var cart = 0
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             BetDetailDataRoute(model, {}, { viewed.add(it.id) },
                 onRedeemPrize = { redeemed.add(it.id) }, onEdit = { edited.add(it.id) },
                 onCart = { cart++ }, cartTotal = BigDecimal("35.00"), cartBetCount = 3)
@@ -80,7 +80,7 @@ class BetDetailCoordinationUiTest {
     @Test fun favoriteEditorCanCancelAndConflictRequiresConsentBeforeSaving() {
         val fixture = Fixture().apply { validation = AppResult.Failure(AppError.Validation("Duplicada")) }
         val model = fixture.model()
-        compose.setContent { CaixaDSTheme { BetDetailDataRoute(model, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { BetDetailDataRoute(model, {}, {}) } }
         compose.onNodeWithText("Favoritar aposta").performClick()
         compose.onNodeWithContentDescription("Informe o nome da aposta").performTextInput("Minha aposta")
         compose.onNodeWithText("Cancelar").performClick()
@@ -118,7 +118,7 @@ class BetDetailCoordinationUiTest {
         val fixture = Fixture().apply { games = listOf(game("NORMAL"), game("ESPECIAL")) }
         val model = fixture.model()
         var changes = 0
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             BetRepeatActionsOverlay(model, onCartChanged = {
                 assertFalse(model.state.value.cartAdditionConfirmed)
                 changes++
@@ -141,7 +141,7 @@ class BetDetailCoordinationUiTest {
     @Test fun repeatConversionCanBeDeclinedAndOnlyConsentAddsTheConvertedBet() {
         val fixture = Fixture().apply { games = listOf(game("NORMAL")) }
         val model = fixture.model(bet.copy(contestTypeId = 2))
-        compose.setContent { CaixaDSTheme { BetRepeatActionsOverlay(model) } }
+        compose.setContent { LoteriasCaixaDSTheme { BetRepeatActionsOverlay(model) } }
         compose.runOnIdle { model.addCurrentBetToCart() }
         compose.onNodeWithText("A modalidade Mega da Virada não está vigente.", substring = true).assertIsDisplayed()
         compose.onNodeWithText("Não").performClick()
@@ -162,7 +162,7 @@ class BetDetailCoordinationUiTest {
         val model = fixture.model()
         val count = mutableStateOf(0)
         val redirects = mutableListOf<ServiceRedirect>()
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             BetDetailDataRoute(model, {}, {}, onServiceRedirect = {
                 assertNull(model.state.value.serviceFailure)
                 redirects.add(it)
@@ -184,7 +184,7 @@ class BetDetailCoordinationUiTest {
         val newModel = newFixture.model(bet.copy(id = 42))
         val current = mutableStateOf(oldModel)
         val count = mutableStateOf(0)
-        compose.setContent { CaixaDSTheme { BetDetailDataRoute(current.value, {}, {}, cartBetCount = count.value) } }
+        compose.setContent { LoteriasCaixaDSTheme { BetDetailDataRoute(current.value, {}, {}, cartBetCount = count.value) } }
         compose.waitForIdle()
         compose.runOnIdle { current.value = newModel }
         compose.onNodeWithTag("bet-detail-scroll").performScrollToNode(hasText("Gerar comprovante"))

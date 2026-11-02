@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SocialTransfers
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.screen.SocialTransfersScreen
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.state.ResponsibleGamingAction
@@ -35,7 +35,7 @@ class SocialTransfersScreenJvmTest {
         val state = mutableStateOf(ResponsibleGamingUiState())
         val actions = mutableListOf<ResponsibleGamingAction>()
         var terms = 0
-        compose.setContent { CaixaDSTheme { SocialTransfersScreen(state.value, actions::add, { terms++ }) } }
+        compose.setContent { LoteriasCaixaDSTheme { SocialTransfersScreen(state.value, actions::add, { terms++ }) } }
         compose.onNodeWithText("Repasses sociais").assertIsDisplayed()
         compose.onNodeWithText("R$1,00").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("R$0,48*").assertIsDisplayed()
@@ -71,7 +71,7 @@ class SocialTransfersScreenJvmTest {
     fun socialTransferLoadingAndErrorStatesPreserveRetry() {
         val state = mutableStateOf(ResponsibleGamingUiState(loading = true))
         val actions = mutableListOf<ResponsibleGamingAction>()
-        compose.setContent { CaixaDSTheme { SocialTransfersScreen(state.value, actions::add, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { SocialTransfersScreen(state.value, actions::add, {}) } }
         compose.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.ProgressBarRangeInfo)).assertIsDisplayed()
         compose.runOnIdle { state.value = ResponsibleGamingUiState(errorMessage = "Repasses indisponíveis") }
         compose.onNodeWithText("Repasses indisponíveis").assertIsDisplayed()

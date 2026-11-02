@@ -10,12 +10,11 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.results.presentation.components.ResultModalityScreen
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -62,7 +61,7 @@ class ResultModalitiesLargeFontTest {
 
     private fun showModalities(onSelect: (String) -> Unit = {}) {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Box(Modifier.size(width = 360.dp, height = 640.dp)) {
                     ResultModalityScreen({}, onSelect)
                 }

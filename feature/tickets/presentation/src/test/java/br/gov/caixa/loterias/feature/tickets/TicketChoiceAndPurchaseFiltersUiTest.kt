@@ -16,7 +16,7 @@ import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalitiesUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
@@ -206,7 +206,7 @@ class TicketChoiceAndPurchaseFiltersUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { content() } }
+        compose.setContent { LoteriasCaixaDSTheme { content() } }
     }
     private fun model(modalities: GetLotteryModalitiesUseCase) = TicketsViewModel(
         GetConfirmedBetsUseCase {

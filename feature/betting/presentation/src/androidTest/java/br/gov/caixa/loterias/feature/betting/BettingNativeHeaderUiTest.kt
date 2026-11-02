@@ -20,7 +20,7 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.presentation.components.BettingLegacyGameHeader
@@ -60,7 +60,7 @@ class BettingNativeHeaderUiTest {
 
     @Test fun modalityPaletteIsPreservedIncludingContrastingInk() {
         val current = mutableStateOf(game())
-        compose.setContent { CaixaDSTheme { BettingLegacyGameHeader(BettingGameUiState(game = current.value), {}, {}, null) } }
+        compose.setContent { LoteriasCaixaDSTheme { BettingLegacyGameHeader(BettingGameUiState(game = current.value), {}, {}, null) } }
         listOf(
             Triple(game(), Color(0xFF00A651), Color.White),
             Triple(game(20, "timemania", "TIMEMANIA"), Color(0xFFFFF200), Color(0xFF038141)),
@@ -84,7 +84,7 @@ class BettingNativeHeaderUiTest {
         compose.setContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 1.6f)) {
-                CaixaDSTheme { BettingLegacyGameHeader(BettingGameUiState(game = game()), {}, {}, null) }
+                LoteriasCaixaDSTheme { BettingLegacyGameHeader(BettingGameUiState(game = game()), {}, {}, null) }
             }
         }
         val result = layout(compose.onNodeWithText("mega-sena"))
@@ -113,7 +113,7 @@ class BettingNativeHeaderUiTest {
     }
 
     private fun show(game: LotteryGameParameters) {
-        compose.setContent { CaixaDSTheme { BettingLegacyGameHeader(BettingGameUiState(game = game), {}, {}, null) } }
+        compose.setContent { LoteriasCaixaDSTheme { BettingLegacyGameHeader(BettingGameUiState(game = game), {}, {}, null) } }
     }
     private fun layout(node: SemanticsNodeInteraction): TextLayoutResult {
         val results = mutableListOf<TextLayoutResult>()

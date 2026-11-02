@@ -127,7 +127,7 @@ tasks.register('preCommitCheck') {
     group = 'verification'
     description = 'Mandatory complete pre-commit validation; any failed dependency blocks the commit.'
     dependsOn 'verifyIncrementalScopePolicy', 'qualityGate', 'verifyKotlinFormatting', 'verifyCleanArchitecture', 'verifyComposeMigration',
-            'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyCaixaDS', 'verifyFilaBraAar',
+            'verifyLegacyUiInventory', 'verifyLegacyBackendParity', 'verifyLoteriasCaixaDS', 'verifyFilaBraAar',
             'verifyTopazHeartbeat', 'verifyNetworkSecurity', 'verifyAppIdentityAndFlavors',
             'verifyComposePlatformResourcePolicy', 'verifyToolingPolicyTests', 'verifyGitHooksPolicy', 'verifyAutomationIds',
             'aggregateTestReport', ':app:assemblePrdDebug'

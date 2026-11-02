@@ -25,6 +25,7 @@ data class PaymentCardUiState(
     val paymentMethodId: Long = 0,
     val minimumExpirationYear: Int = 2000,
     val stage: PaymentCardStage = PaymentCardStage.LOADING,
+    val successNavigationConsumed: Boolean = false,
     val savedCard: SavedPaymentCard? = null,
     val number: String = "",
     val holderName: String = "",

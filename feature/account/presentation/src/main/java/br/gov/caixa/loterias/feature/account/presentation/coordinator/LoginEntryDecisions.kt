@@ -9,6 +9,7 @@ import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
 internal class LoginEntryDecisions(
     private val mutableState: ReduxStateStore<LoginUiState, LoginAction>,
     private val authentication: SessionAuthentication,
+    private val clearUnverifiedSession: () -> Unit,
 ) {
 
     fun enterVisitor(): Boolean {
@@ -32,7 +33,7 @@ internal class LoginEntryDecisions(
         if (!mutableState.value.blockedAccountCheckFailed) return false
         // Se o armazenamento seguro não puder limpar as credenciais, preserva a decisão de bloqueio para nova tentativa.
         try {
-            authentication.logout()
+            clearUnverifiedSession()
         } catch (_: Exception) {
             return false
         }

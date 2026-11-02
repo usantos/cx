@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,19 +24,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSBasicTextField as BasicTextField
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSBasicTextField as BasicTextField
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.results.R as LocalizedR
 
 @Composable
 internal fun ResultContestSearchAction(searchVisible: Boolean, onToggle: () -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     Icon(
-        if (searchVisible) CaixaDSIcons.Close else CaixaDSIcons.Search,
+        if (searchVisible) LoteriasCaixaDSIcons.Close else LoteriasCaixaDSIcons.Search,
         contentDescription = if (searchVisible) {
             uiStrings.getString(LocalizedR.string.ui_fechar_pesquisa_13432a)
         } else {
@@ -46,7 +45,7 @@ internal fun ResultContestSearchAction(searchVisible: Boolean, onToggle: () -> U
             )
         },
         modifier = (Modifier.padding(end = 16.dp).size(24.dp).uiId("results.0034").clickable(onClick = onToggle)).uiId("results.0035"),
-        tint = CaixaDSColorTokens.White
+        tint = LoteriasCaixaDSColorTokens.White
     )
 }
 
@@ -66,10 +65,10 @@ internal fun ResultContestSearchField(
                 contentDescription =
                     uiStrings.getString(LocalizedR.string.ui_numero_do_concurso_eb635d)
             }.focusRequester(searchFocusRequester)
-                .background(CaixaDSColorTokens.White, RoundedCornerShape(4.dp)).padding(horizontal = 10.dp)
+                .background(LoteriasCaixaDSColorTokens.White, RoundedCornerShape(4.dp)).padding(horizontal = 10.dp)
             ).uiId("results.0036"),
         singleLine = true,
-        textStyle = CaixaDS.typography.bodyMedium.copy(color = CaixaDSColorTokens.Black),
+        textStyle = LoteriasCaixaDS.typography.bodyMedium.copy(color = LoteriasCaixaDSColorTokens.Black),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { onSearch() }),
         decorationBox = { field ->
@@ -77,7 +76,7 @@ internal fun ResultContestSearchField(
                 if (contestInput.isEmpty()) {
                     Text(
                         uiStrings.getString(LocalizedR.string.ui_numero_do_concurso_eb635d),
-                        color = CaixaDSColorTokens.Neutral600,
+                        color = LoteriasCaixaDSColorTokens.Neutral600,
                         fontSize = 14.sp,
                         modifier = Modifier.uiId("results.0037")
                     )

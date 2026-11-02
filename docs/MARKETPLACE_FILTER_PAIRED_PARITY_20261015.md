@@ -30,7 +30,7 @@ A status bar e a toolbar Compose conservam o azul solicitado pelo produto, `#005
 | Bolão — expansão | Textos com spans de 18/16sp, Detalhes, disponibilidade, quantidade, aumentar/diminuir e botão Adicionar ao Carrinho com geometria legada. |
 | Bolão — favoritas e fim | Alinhamento/altura dos itens e ações, ícone original de lixeira, rodapé “Fim da lista” e 88dp de conteúdo inferior. |
 
-Os componentes, tokens, fontes e recursos corrigidos pertencem a `:core:design-system`: `CaixaDSMarketplaceComponents`, `CaixaDSMarketplaceArtwork`, `CaixaDSMarketplaceFilterComponents` e `CaixaDSMarketplaceFilterArtwork`. As features conservam estado, regras e callbacks. O inventário explícito de drawables foi atualizado; não houve redução de limiares ou exclusão de verificações.
+Os componentes, tokens, fontes e recursos corrigidos pertencem a `:core:design-system`: `LoteriasCaixaDSMarketplaceComponents`, `LoteriasCaixaDSMarketplaceArtwork`, `LoteriasCaixaDSMarketplaceFilterComponents` e `LoteriasCaixaDSMarketplaceFilterArtwork`. As features conservam estado, regras e callbacks. O inventário explícito de drawables foi atualizado; não houve redução de limiares ou exclusão de verificações.
 
 ## Pares e métricas
 

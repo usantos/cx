@@ -5,7 +5,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Rule
 import org.junit.Test
 import br.gov.caixa.loterias.feature.account.presentation.components.LogoutStatus
@@ -18,7 +18,7 @@ class LogoutStatusTest {
     @Test fun serverFailureRetainsAccessAndOffersExplicitRetry() {
         val state = mutableStateOf(LogoutUiState(notice = LogoutNotice.SERVER_FAILURE))
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LogoutStatus(state.value) { state.value = LogoutUiState(signingOut = true) }
             }
         }
@@ -31,7 +31,7 @@ class LogoutStatusTest {
     @Test fun incompleteCleanupOffersExplicitRetryInsteadOfDismissal() {
         val state = mutableStateOf(LogoutUiState(notice = LogoutNotice.LOCAL_DATA_FAILURE))
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LogoutStatus(state.value) { state.value = LogoutUiState(clearingLocalData = true) }
             }
         }
@@ -45,7 +45,7 @@ class LogoutStatusTest {
     @Test fun cancellationExplainsLocalAndBrowserSessionsSeparatelyAndEntendiDismisses() {
         val state = mutableStateOf(LogoutUiState(notice = LogoutNotice.CANCELLED))
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LogoutStatus(state.value) { state.value = LogoutUiState() }
             }
         }
@@ -60,7 +60,7 @@ class LogoutStatusTest {
         val state = mutableStateOf(LogoutUiState(waitingForBrowser = true))
         composeRule.mainClock.autoAdvance = false
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) { LogoutStatus(state.value) {} }
+            LoteriasCaixaDSTheme(darkTheme = false) { LogoutStatus(state.value) {} }
         }
         composeRule.mainClock.advanceTimeBy(900)
         composeRule.onNodeWithText("Carregando…").assertIsDisplayed()
@@ -72,7 +72,7 @@ class LogoutStatusTest {
 
     @Test fun localFailureDoesNotSayThatUserHasSignedOut() {
         composeRule.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LogoutStatus(LogoutUiState(notice = LogoutNotice.LOCAL_FAILURE)) {}
             }
         }

@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollTo
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
@@ -52,7 +52,7 @@ class MarketplaceDetailSpecialGamesUiTest {
         val team = SportsTeam(7, "Paraná", state = "PR", countryCode = "BRA", selectionIndicator = true)
         val current = mutableStateOf(detail("TIMEMANIA", listOf(MarketplaceBet(listOf(1, 2), emptyList(), false, favoriteTeam = team))))
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 MarketplaceDetailScreen(MarketplaceDetailUiState(detail = current.value, isLoading = false), {}, {}, {}, {}, {})
             }
         }
@@ -108,7 +108,7 @@ class MarketplaceDetailSpecialGamesUiTest {
     }
 
     private fun show(detail: MarketplacePoolDetail) = compose.setContent {
-        CaixaDSTheme {
+        LoteriasCaixaDSTheme {
             MarketplaceDetailScreen(MarketplaceDetailUiState(detail = detail, isLoading = false), {}, {}, {}, {}, {})
         }
     }

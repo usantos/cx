@@ -7,17 +7,17 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoadingDialog
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog
 
 /** Superfície azul vazia de activity_token, compartilhada pelo callback OAuth e pelo catálogo de telas. */
 @Composable
 fun AccountTokenScreen(modifier: Modifier = Modifier) {
     Box(
-        modifier.fillMaxSize().background(CaixaDS.colors.surface)
+        modifier.fillMaxSize().background(LoteriasCaixaDS.colors.surface)
             .statusBarsPadding().navigationBarsPadding()
-            .background(CaixaDS.colors.authenticationBackground),
+            .background(LoteriasCaixaDS.colors.authenticationBackground)
     ) {
-        CaixaDSAuthenticationLoadingDialog()
+        LoteriasCaixaDSAuthenticationLoadingDialog()
     }
 }

@@ -23,7 +23,7 @@ Data: 18/10/2026. Escopo: os 12 arquivos restantes identificados na auditoria e 
 | CartViewModel.kt | 529 | 264 |
 | RemoteTicketsRepository.kt | 603 | 72 |
 | RemotePaymentRepository.kt | 377 | 58 |
-| CaixaDSLegacyComponents.kt | 1007 | 85 |
+| LoteriasCaixaDSLegacyComponents.kt | 1007 | 85 |
 
 A redução representa extração de responsabilidades, não eliminação de funcionalidades. Os arquivos vizinhos mantêm os componentes e contratos necessários.
 
@@ -325,7 +325,7 @@ ANDROID_SERIAL=emulator-5560 ./gradlew :feature:betting:connectedDebugAndroidTes
 ```
 
 ```sh
-ANDROID_SERIAL=emulator-5560 ./gradlew :app:assemblePrdDebug :app:connectedPrdDebugAndroidTest verifyLegacyUiInventory verifyLegacyBackendParity verifyCaixaDS verifyFilaBraAar verifyTopazHeartbeat verifyNetworkSecurity verifyAppIdentityAndFlavors -Pandroid.testInstrumentationRunnerArguments.class=br.gov.caixa.loterias.apostas.FilaBraQueueCoordinationTest --offline --continue --console=plain
+ANDROID_SERIAL=emulator-5560 ./gradlew :app:assemblePrdDebug :app:connectedPrdDebugAndroidTest verifyLegacyUiInventory verifyLegacyBackendParity verifyLoteriasCaixaDS verifyFilaBraAar verifyTopazHeartbeat verifyNetworkSecurity verifyAppIdentityAndFlavors -Pandroid.testInstrumentationRunnerArguments.class=br.gov.caixa.loterias.apostas.FilaBraQueueCoordinationTest --offline --continue --console=plain
 ```
 
 Os dez gates do projeto foram aprovados. verifyKotlinFormatting conferiu 1186 arquivos, zero violações. Nenhum gate, assertiva, dependência ou oráculo foi enfraquecido.
@@ -427,7 +427,7 @@ Comandos executados com JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-17.j
 - ./gradlew :core:domain:test --rerun :core:preferences:testDebugUnitTest --rerun :core:data:test --rerun :feature:retail:testDebugUnitTest --rerun :feature:tickets:testDebugUnitTest --rerun :feature:notifications:testDebugUnitTest --rerun :feature:responsible-gaming:testDebugUnitTest --rerun :app:testPrdDebugUnitTest --rerun — matriz inicial de 754; o caso adicional do encoder padrão foi executado pelo check final, totalizando 755.
 - ./gradlew :feature:retail:connectedDebugAndroidTest com classes PrizeReceiptIoBoundaryTest, PrizeReceiptInteractionTest, PrizeQrCodeExecutionTest e ControlledPrizeInteractionTest — 27 casos, 26 aprovados e um ignorado.
 - python3 build/verification/seven-compliance-20261018/run-android.py — Preferences, Tickets e Notifications completos; app PrdDebug com StateCollectionLifecycleUiTest e BetReceiptOpeningTest. Comandos exatos em android-results.json.
-- zsh build/verification/seven-compliance-20261018/run-checks.sh — checks de Domain/Data/Preferences/Retail/Tickets/Notifications/ResponsibleGaming; lint e assemble PrdDebug; verifyKotlinFormatting, verifyCleanArchitecture, verifyComposeMigration, verifyLegacyUiInventory, verifyLegacyBackendParity, verifyCaixaDS, verifyFilaBraAar, verifyTopazHeartbeat, verifyNetworkSecurity e verifyAppIdentityAndFlavors. Dependências de instrumentação foram executadas novamente pelo check; contagens não duplicadas.
+- zsh build/verification/seven-compliance-20261018/run-checks.sh — checks de Domain/Data/Preferences/Retail/Tickets/Notifications/ResponsibleGaming; lint e assemble PrdDebug; verifyKotlinFormatting, verifyCleanArchitecture, verifyComposeMigration, verifyLegacyUiInventory, verifyLegacyBackendParity, verifyLoteriasCaixaDS, verifyFilaBraAar, verifyTopazHeartbeat, verifyNetworkSecurity e verifyAppIdentityAndFlavors. Dependências de instrumentação foram executadas novamente pelo check; contagens não duplicadas.
 - python3 build/verification/seven-compliance-20261018/verify-contracts.py — 63 provas aprovadas; nenhum ViewModel/UiState alterado; APIs dos sete arquivos preservadas; mapper do carrinho idêntico.
 
 Evidências de regressão antes/depois: receipt-red.log comprova ContentProvider na Main antes da correção; domain-data-red.log comprova dois cancelamentos absorvidos; lifecycle-red.log comprova atualizações indevidas abaixo de STARTED; receipt-cancellation-red.log reproduz falsos erros de PDF; qr-stale-red.log comprova substituição indevida por geração obsoleta sem propriedade por valor. Logs finais, XMLs JVM/Android/cobertura, scope.json, contracts.json e revisão em build/verification/seven-compliance-20261018/.
@@ -503,7 +503,7 @@ A AVD nova SimloSpecVisual20261019/API36 recebeu o APK nativo local de referênc
 
 Total: 5 executados, 3 aprovados, 2 reprovados, 0 ignorados. O script run-five-visual.py registra os exits individuais em visual-results.json; seu exit 0 externo não significa aprovação dos casos. XMLs/logs originais ficam em visual-prize/ e visual-purchase/. Não se declara paridade visual completa.
 
-Diagnóstico sem modificar os testes: métodos de captura existentes produziram PNGs em capture-retail/ e capture-tickets/. O painel do prêmio é [224,880) na referência e [304,960) no AVD, mesma altura 656px. A compra preparada mostra primeiro roxo 800, contra 720 da referência. A faixa superior branca é 66px versus 146px; visual-window-active.txt confirma statusBars 146px no perfil de 450dpi. CaixaDSLegacyTopBar aplica statusBarsPadding. Isso explica o deslocamento de 80px das capturas preparadas; não explica por si o null do teste sem readiness semântico, nem prova igualdade raster interna. Não foram aplicadas compensações de pixels, alterações de fonte/Row ou novos oráculos. Esses dois casos exigem repetição no perfil físico correspondente; o usuário informou que o aparelho ainda não está disponível. Tamanho/densidade originais do AVD foram restaurados após cada diagnóstico.
+Diagnóstico sem modificar os testes: métodos de captura existentes produziram PNGs em capture-retail/ e capture-tickets/. O painel do prêmio é [224,880) na referência e [304,960) no AVD, mesma altura 656px. A compra preparada mostra primeiro roxo 800, contra 720 da referência. A faixa superior branca é 66px versus 146px; visual-window-active.txt confirma statusBars 146px no perfil de 450dpi. LoteriasCaixaDSLegacyTopBar aplica statusBarsPadding. Isso explica o deslocamento de 80px das capturas preparadas; não explica por si o null do teste sem readiness semântico, nem prova igualdade raster interna. Não foram aplicadas compensações de pixels, alterações de fonte/Row ou novos oráculos. Esses dois casos exigem repetição no perfil físico correspondente; o usuário informou que o aparelho ainda não está disponível. Tamanho/densidade originais do AVD foram restaurados após cada diagnóstico.
 
 ### Recursos locais e homologação real
 
@@ -561,7 +561,7 @@ São 838 casos JVM, incluindo a repetição da suite App por flavor, e dez Andro
   :app:testPrdDebugUnitTest :app:testTqsDebugUnitTest :app:testAutomacaoDebugUnitTest \
   :app:lintPrdDebug :app:lintTqsDebug :app:lintAutomacaoDebug \
   verifyKotlinFormatting verifyComposeMigration verifyLegacyUiInventory \
-  verifyLegacyBackendParity verifyCleanArchitecture verifyCaixaDS verifyFilaBraAar \
+  verifyLegacyBackendParity verifyCleanArchitecture verifyLoteriasCaixaDS verifyFilaBraAar \
   verifyTopazHeartbeat verifyNetworkSecurity verifyAppIdentityAndFlavors \
   --offline --continue --console=plain
 ```
@@ -595,7 +595,7 @@ Total:422 casos JVM e 65 Android aprovados. Gradle reutilizou saídas válidas d
 ./gradlew :feature:cart:check :core:domain:check \
   :app:assemblePrdDebug :app:testPrdDebugUnitTest :app:lintPrdDebug \
   verifyKotlinFormatting verifyComposeMigration verifyLegacyUiInventory \
-  verifyLegacyBackendParity verifyCleanArchitecture verifyCaixaDS verifyFilaBraAar \
+  verifyLegacyBackendParity verifyCleanArchitecture verifyLoteriasCaixaDS verifyFilaBraAar \
   verifyTopazHeartbeat verifyNetworkSecurity verifyAppIdentityAndFlavors \
   --offline --continue --console=plain
 ```
@@ -637,7 +637,7 @@ Total 391 JVM e 41 Android aprovados. Gradle reutilizou saídas válidas de mód
 ./gradlew :feature:tickets:check :core:domain:check \
   :app:assemblePrdDebug :app:testPrdDebugUnitTest :app:lintPrdDebug \
   verifyKotlinFormatting verifyComposeMigration verifyLegacyUiInventory \
-  verifyLegacyBackendParity verifyCleanArchitecture verifyCaixaDS verifyFilaBraAar \
+  verifyLegacyBackendParity verifyCleanArchitecture verifyLoteriasCaixaDS verifyFilaBraAar \
   verifyTopazHeartbeat verifyNetworkSecurity verifyAppIdentityAndFlavors \
   --offline --continue --console=plain
 ```
@@ -679,7 +679,7 @@ ANDROID_SERIAL=emulator-5560 ./gradlew :app:connectedPrdDebugAndroidTest \
 ./gradlew :feature:home:check \
   :app:assemblePrdDebug :app:testPrdDebugUnitTest :app:lintPrdDebug \
   verifyKotlinFormatting verifyComposeMigration verifyLegacyUiInventory \
-  verifyLegacyBackendParity verifyCleanArchitecture verifyCaixaDS verifyFilaBraAar \
+  verifyLegacyBackendParity verifyCleanArchitecture verifyLoteriasCaixaDS verifyFilaBraAar \
   verifyTopazHeartbeat verifyNetworkSecurity verifyAppIdentityAndFlavors \
   --offline --continue --console=plain
 ```
@@ -831,7 +831,7 @@ Esta é a execução mais recente após corrigir as falhas de validação do hos
 | Cinco visuais condicionais | 3 aprovados, 2 reprovados, nenhum skip | `build/verification/app-mvvm-20261019/visual-results.json` |
 | Restauração padrão | Passou: assemble/test/compile `PrdDebug`, Clean Architecture e formatação | `build/verification/app-mvvm-20261019/global-validation-phases.json` |
 
-O gate `verifyCaixaDS` agora verifica o tema na composição raiz `AppContent`, que é a dona real da árvore Compose; `MainActivity` permanece entry point fino. A checagem `verifyComposeMigration` continua rejeitando manifest XML dentro das features. A permissão de notificações já declarada pelo app protege a chamada de envio, e `PushNotifications.show` mantém sua checagem runtime antes de chamar a API Android; a supressão de lint é restrita a essa função protegida.
+O gate `verifyLoteriasCaixaDS` agora verifica o tema na composição raiz `AppContent`, que é a dona real da árvore Compose; `MainActivity` permanece entry point fino. A checagem `verifyComposeMigration` continua rejeitando manifest XML dentro das features. A permissão de notificações já declarada pelo app protege a chamada de envio, e `PushNotifications.show` mantém sua checagem runtime antes de chamar a API Android; a supressão de lint é restrita a essa função protegida.
 
 Quatro testes instrumentados em `feature:notifications:data` validam a store local (incluída a fachada compatível), mensagens FCM de notificação e de dados, guarda de permissão/canal, inicialização idempotente, refresh na sessão e token rotacionado. O token Firebase real não é solicitado nesses testes. O construtor público de `AndroidPushRuntime` e o comportamento padrão de Firebase permanecem; apenas a factory de token para testes é interna. O JaCoCo Data final cobre 2628/2762 linhas (95,148%), acima do mínimo 95,01%, sem exclusões. Os relatórios Domain, Network e Preferences declaram dependência explícita do teste Android compartilhado e todos passaram.
 
@@ -878,7 +878,7 @@ Validação final desta limpeza: 38 testes de política APP e 11 de features apr
 
 A pedido do usuário, a limpeza das superfícies antigas do APP foi aplicada a CORE. Foram removidas as fachadas nos pacotes históricos do app para seleção de ambiente, criação/atualização de clientes, store de chaves assinadas e adaptadores de autorização. Os modelos de ambiente, estado de background e seção de apresentação foram realocados para os pacotes dos módulos CORE que já os compilavam. As nove entradas de CORE em `config/host-public-compatibility.json` foram retiradas; seus contratos JVM históricos deixam de ser preservados nesta decisão.
 
-Os consumidores usam diretamente `core.domain.environment`, `core.network.config`, `core.auth.foreground`, `core.security` e `core.presentation`. Os quatro aliases de identidade/encerramento de sessão de `core.auth` foram removidos e seus consumidores importam os tipos efetivos de Account. Os aliases sem consumidores `CaixaTheme` e `CaixaColors` foram removidos, mantendo `CaixaDSTheme` e `CaixaDS.colors`. O fake de sessão compartilhado agora pertence a `core.testing`. Os arquivos de implementação JWT e do datasource de configuração foram nomeados conforme seus tipos, sem alterar seus comportamentos. `core:preferences` foi retirado das dependências de produção do app; permanece como verificação de cobertura de persistência, com os mesmos produtores e limiares.
+Os consumidores usam diretamente `core.domain.environment`, `core.network.config`, `core.auth.foreground`, `core.security` e `core.presentation`. Os quatro aliases de identidade/encerramento de sessão de `core.auth` foram removidos e seus consumidores importam os tipos efetivos de Account. Os aliases sem consumidores `CaixaTheme` e `CaixaColors` foram removidos, mantendo `LoteriasCaixaDSTheme` e `LoteriasCaixaDS.colors`. O fake de sessão compartilhado agora pertence a `core.testing`. Os arquivos de implementação JWT e do datasource de configuração foram nomeados conforme seus tipos, sem alterar seus comportamentos. `core:preferences` foi retirado das dependências de produção do app; permanece como verificação de cobertura de persistência, com os mesmos produtores e limiares.
 
 As mudanças não alteram URLs, payloads, chaves de persistência, regras de autorização/sessão, ordem de rotação dos clientes/pins, callbacks ou escopos Hilt. Contratos de transporte ativos e as fachadas das features fora deste escopo permanecem. O teste de ABI do host conserva a assertiva da fachada push remanescente; as assertivas dos contratos CORE intencionalmente retirados foram removidas.
 
@@ -961,7 +961,7 @@ Foram retiradas dez fachadas APP, os overloads de navegação antigos, a subclas
 
 O teste de falha de commit foi transferido de Account Data para o dono efetivo Datastore, verificando que uma atualização em memória de commit(false) não confirma durabilidade e que uma nova tentativa grava em disco. O teste exclusivo do wrapper PersistEnvironmentChange foi aposentado; EnvironmentSelectionTest e HostViewModelsTest continuam cobrindo ordem/retentativa do fluxo real. A limpeza de dependências foi guiada pelos imports e assinaturas reais; os 52 módulos que passavam por três scripts de encaminhamento agora aplicam diretamente os mesmos plugins. Gson/coroutines não são mais impostos pelo plugin Data a módulos sem uso dessas bibliotecas.
 
-A revisão independente detectou consumidores por import alias de CaixaDSMarketplaceFilterInput/BetGrid. A compilação em andamento foi cancelada pelo cliente (exit 130), e o daemon confirmou IDLE antes da edição; ambas as declarações e seus imports foram restaurados byte a byte. As buscas seguintes consideram aliases. O achado foi retirado após confirmação da restauração. Também foram corrigidas três descrições obsoletas de DI/KDoc.
+A revisão independente detectou consumidores por import alias de LoteriasCaixaDSMarketplaceFilterInput/BetGrid. A compilação em andamento foi cancelada pelo cliente (exit 130), e o daemon confirmou IDLE antes da edição; ambas as declarações e seus imports foram restaurados byte a byte. As buscas seguintes consideram aliases. O achado foi retirado após confirmação da restauração. Também foram corrigidas três descrições obsoletas de DI/KDoc.
 
 A compilação integrada após a restauração passou em 2min41s; os warnings de nulidade/tipo redundantes motivaram ajustes equivalentes e dois usos de Locale passaram ao construtor equivalente por linguagem pt-BR. A verificação integrada repetida na árvore final passou em 1min17s (1.140 tarefas: 128 executadas e 1.012 atualizadas), com arquitetura, módulos, composição, formatação, TQS Debug/Release, compilação dos testes Android PRD, unitários TQS e Datastore. Logs: `/tmp/final-coherence-targeted-fixed-20261020.log` e `/tmp/final-coherence-targeted-verified-20261020.log`.
 

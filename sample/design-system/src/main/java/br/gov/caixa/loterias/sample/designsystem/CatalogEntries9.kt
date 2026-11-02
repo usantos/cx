@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.sample.designsystem
 
 internal val catalogEntries9 = listOf(
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog",
-        "CaixaDSDialog",
+        "br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog",
+        "LoteriasCaixaDSDialog",
         R.string.category_dialog,
         R.string.api_90_description,
         R.string.api_90_parameters,
@@ -13,8 +13,8 @@ internal val catalogEntries9 = listOf(
             "onNegative neutralLabel onNeutral onDismiss extraContent visitorPrompt"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSSelectionDialog",
-        "CaixaDSSelectionDialog",
+        "br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSSelectionDialog",
+        "LoteriasCaixaDSSelectionDialog",
         R.string.category_dialog,
         R.string.api_91_description,
         R.string.api_91_parameters,
@@ -22,8 +22,8 @@ internal val catalogEntries9 = listOf(
         "title message options selectedIndex onSelect onConfirm onDismiss confirmLabel dismissLabel"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSTextInputDialog",
-        "CaixaDSTextInputDialog",
+        "br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSTextInputDialog",
+        "LoteriasCaixaDSTextInputDialog",
         R.string.category_dialog,
         R.string.api_92_description,
         R.string.api_92_parameters,
@@ -31,8 +31,8 @@ internal val catalogEntries9 = listOf(
         "title value hint onValueChange onSave onDismiss enabled errorMessage"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSAccountCheckbox",
-        "CaixaDSAccountCheckbox",
+        "br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSAccountCheckbox",
+        "LoteriasCaixaDSAccountCheckbox",
         R.string.category_input,
         R.string.api_93_description,
         R.string.api_93_parameters,
@@ -40,8 +40,8 @@ internal val catalogEntries9 = listOf(
         "checked onToggle width"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckSwitch",
-        "CaixaDSCheckSwitch",
+        "br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSCheckSwitch",
+        "LoteriasCaixaDSCheckSwitch",
         R.string.category_input,
         R.string.api_94_description,
         R.string.api_94_parameters,
@@ -49,8 +49,8 @@ internal val catalogEntries9 = listOf(
         "enabled accent onAccent trackBackground invertColors onClick"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSLoginSwitch",
-        "CaixaDSLoginSwitch",
+        "br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSLoginSwitch",
+        "LoteriasCaixaDSLoginSwitch",
         R.string.category_input,
         R.string.api_95_description,
         R.string.api_95_parameters,
@@ -58,8 +58,8 @@ internal val catalogEntries9 = listOf(
         "checked modifier"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSNumberPicker",
-        "CaixaDSNumberPicker",
+        "br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSNumberPicker",
+        "LoteriasCaixaDSNumberPicker",
         R.string.category_input,
         R.string.api_96_description,
         R.string.api_96_parameters,
@@ -67,8 +67,8 @@ internal val catalogEntries9 = listOf(
         "label options selectedIndex onSelect modifier"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSRadioButton",
-        "CaixaDSRadioButton",
+        "br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSRadioButton",
+        "LoteriasCaixaDSRadioButton",
         R.string.category_input,
         R.string.api_97_description,
         R.string.api_97_parameters,
@@ -76,8 +76,8 @@ internal val catalogEntries9 = listOf(
         "selected onClick modifier"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSCheckbox",
-        "CaixaDSCheckbox",
+        "br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSCheckbox",
+        "LoteriasCaixaDSCheckbox",
         R.string.category_input,
         R.string.api_98_description,
         R.string.api_98_parameters,
@@ -85,8 +85,8 @@ internal val catalogEntries9 = listOf(
         "checked onClick modifier color uncheckedColor"
     ),
     CatalogEntry(
-        "br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSTutorialCheckbox",
-        "CaixaDSTutorialCheckbox",
+        "br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSTutorialCheckbox",
+        "LoteriasCaixaDSTutorialCheckbox",
         R.string.category_input,
         R.string.api_99_description,
         R.string.api_99_parameters,

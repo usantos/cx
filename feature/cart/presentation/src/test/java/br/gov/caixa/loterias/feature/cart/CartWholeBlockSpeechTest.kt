@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
@@ -39,7 +39,7 @@ class CartWholeBlockSpeechTest {
             contestNumber = CONTEST,
             selectedNumbers = listOf(listOf(2, SELECTED_NUMBER))
         )
-        compose.setContent { CaixaDSTheme { CurrentCartRow(item, Instant.EPOCH, { deletions++ }, null) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartRow(item, Instant.EPOCH, { deletions++ }, null) } }
         compose.onNodeWithContentDescription(
             "lotofácil. Concurso três mil e vinte e seis. Números: dois, três. Valor: três reais e cinquenta centavos."
         ).assertIsDisplayed()
@@ -73,7 +73,7 @@ class CartWholeBlockSpeechTest {
             modalityCode = "SUPER_SETE",
             selectedNumbers = List(SUPER_SEVEN_COLUMNS) { listOf(0, 2) }
         )
-        compose.setContent { CaixaDSTheme { CurrentCartRow(item, Instant.EPOCH, {}, null) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartRow(item, Instant.EPOCH, {}, null) } }
         val columns = listOf("um", "dois", "três", "quatro", "cinco", "seis", "sete").joinToString(". ") { "Coluna $it: zero, dois" }
         compose.onNodeWithContentDescription("super sete. $columns. Valor: um real.").assertIsDisplayed()
     }
@@ -89,7 +89,7 @@ class CartWholeBlockSpeechTest {
             modalityCode = "MEGA_SENA",
             poolShare = CartPoolShare("A001", 1, TOTAL_SHARES, "1970-01-01T00:01:02Z")
         )
-        compose.setContent { CaixaDSTheme { CurrentCartRow(item, Instant.EPOCH, {}, { details++ }) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartRow(item, Instant.EPOCH, {}, { details++ }) } }
         compose.onNodeWithContentDescription(
             "mega-sena. Código do bolão: A zero zero um. Cota reservada: uma de cem. " +
                 "Expira em um minuto e dois segundos. Valor: um real e um centavo."
@@ -101,7 +101,7 @@ class CartWholeBlockSpeechTest {
     @Test fun comboReadoutIncludesQuantityAndMoneyWhileDetailRemainsIndependent() {
         var details = 0
         val item = CartItem(1, CartItemKind.COMBO, "Combo de apostas", "", BigDecimal("7.00"), comboBetCount = 2)
-        compose.setContent { CaixaDSTheme { CurrentCartRow(item, Instant.EPOCH, {}, { details++ }) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartRow(item, Instant.EPOCH, {}, { details++ }) } }
         compose.onNodeWithContentDescription("combo de apostas. Duas apostas incluídas. Valor: sete reais.").assertIsDisplayed()
         compose.onNodeWithText("Mais detalhes", ignoreCase = true).performClick()
         compose.runOnIdle { assertEquals(1, details) }

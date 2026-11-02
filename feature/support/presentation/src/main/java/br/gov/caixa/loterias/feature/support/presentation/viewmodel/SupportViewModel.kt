@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.feature.support.domain.usecase.GetSupportQuestionsU
 import br.gov.caixa.loterias.feature.support.domain.usecase.GetSupportSectionsUseCase
 import br.gov.caixa.loterias.feature.support.domain.usecase.GetTermsUseCase
 import br.gov.caixa.loterias.feature.support.presentation.formatting.localizedMessage as messageText
+import br.gov.caixa.loterias.feature.support.presentation.mapper.bettingModalityId
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportAction
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportMode
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportMutation
@@ -129,13 +130,6 @@ class SupportViewModel(
                 )
             }
         }
-    }
-
-    private fun bettingModalityId(id: Int): Int = when (id) {
-        3 -> 1
-        16 -> 5
-        13 -> 19
-        else -> id
     }
 
     private fun showLoadFailure(requestId: Long) {

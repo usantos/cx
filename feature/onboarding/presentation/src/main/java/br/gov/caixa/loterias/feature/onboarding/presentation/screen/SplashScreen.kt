@@ -22,11 +22,11 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import br.gov.caixa.loterias.core.designsystem.R as DesignSystemR
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnimation
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnimationImage
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnimationImageHost
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBarColor
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAnimation
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAnimationImage
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAnimationImageHost
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBarColor
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.onboarding.R
 import com.airbnb.lottie.compose.LottieAnimatable
 import com.airbnb.lottie.compose.LottieClipSpec
@@ -41,7 +41,7 @@ internal val LocalSplashAnimation = staticCompositionLocalOf<LottieAnimatable?> 
 @Composable
 fun SplashAnimationHost(content: @Composable () -> Unit) {
     val animation = rememberLottieAnimatable()
-    CaixaDSAnimationImageHost {
+    LoteriasCaixaDSAnimationImageHost {
         CompositionLocalProvider(LocalSplashAnimation provides animation, content = content)
     }
 }
@@ -49,7 +49,7 @@ fun SplashAnimationHost(content: @Composable () -> Unit) {
 /** Splash institucional original, agora renderizado diretamente pelo Compose. */
 @Composable
 fun SplashScreen(modifier: Modifier = Modifier) {
-    CaixaDSStatusBarColor(Color.Transparent, darkIcons = false)
+    LoteriasCaixaDSStatusBarColor(Color.Transparent, darkIcons = false)
     val animation = LocalSplashAnimation.current ?: rememberLottieAnimatable()
     val composition = rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(R.raw.anim_ja_pensou)
@@ -78,7 +78,7 @@ fun SplashScreen(modifier: Modifier = Modifier) {
 
     val description = stringResource(R.string.splash_loterias_logo)
     Box(
-        modifier.fillMaxSize().clipToBounds().background(CaixaDSColorTokens.Blue700)
+        modifier.fillMaxSize().clipToBounds().background(LoteriasCaixaDSColorTokens.Blue700)
             .semantics { contentDescription = description }
     ) {
         // Exibe imediatamente o fundo original enquanto Lottie e suas imagens carregam.
@@ -89,7 +89,7 @@ fun SplashScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize().scale(BACKGROUND_WIDTH / ANIMATION_CANVAS_WIDTH, BACKGROUND_HEIGHT / ANIMATION_CANVAS_HEIGHT),
             contentScale = ContentScale.Crop
         )
-        CaixaDSAnimation(
+        LoteriasCaixaDSAnimation(
             composition = animation.composition,
             progress = { animation.progress },
             modifier = (Modifier.fillMaxSize()).uiId("start.0034"),
@@ -101,9 +101,9 @@ fun SplashScreen(modifier: Modifier = Modifier) {
 
 // Preserva a arte do login, com os quadros-chave legados de entrada do trevo e da marca.
 private val splashBrandImages = listOf(
-    CaixaDSAnimationImage("image_0", "caixa", DesignSystemR.drawable.caixa_loterias_logo, Rect(0f, 0.75f, 1f, 1f)),
-    CaixaDSAnimationImage("image_1", "loterias", DesignSystemR.drawable.caixa_loterias_logo, Rect(0f, 0.49f, 1f, 0.75f)),
-    CaixaDSAnimationImage("image_2", "trevo", DesignSystemR.drawable.caixa_loterias_logo, Rect(0f, 0f, 1f, 0.49f))
+    LoteriasCaixaDSAnimationImage("image_0", "caixa", DesignSystemR.drawable.caixa_loterias_logo, Rect(0f, 0.75f, 1f, 1f)),
+    LoteriasCaixaDSAnimationImage("image_1", "loterias", DesignSystemR.drawable.caixa_loterias_logo, Rect(0f, 0.49f, 1f, 0.75f)),
+    LoteriasCaixaDSAnimationImage("image_2", "trevo", DesignSystemR.drawable.caixa_loterias_logo, Rect(0f, 0f, 1f, 0.49f))
 )
 
 private const val BACKGROUND_WIDTH = 1080f

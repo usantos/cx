@@ -11,7 +11,7 @@ HOST = ROOT / 'feature/home/presentation/src/host/kotlin/br/gov/caixa/loterias/f
 CASES = [
     ('ForbiddenFeatureHostActivity.kt', 'verifyComposeMigration', 'package br.gov.caixa.loterias.feature.home.presentation.host.components\nclass ForbiddenFeatureHostActivity\n'),
     ('ForbiddenFeatureHost.java', 'verifyComposeMigration', 'package br.gov.caixa.loterias.feature.home.presentation.host.components;\nclass ForbiddenFeatureHost {}\n'),
-    ('ForbiddenFeatureHostColor.kt', 'verifyCaixaDS', 'package br.gov.caixa.loterias.feature.home.presentation.host.components\nval forbiddenColor = androidx.compose.ui.graphics.Color(0xff123456)\n'),
+    ('ForbiddenFeatureHostColor.kt', 'verifyLoteriasCaixaDS', 'package br.gov.caixa.loterias.feature.home.presentation.host.components\nval forbiddenColor = androidx.compose.ui.graphics.Color(0xff123456)\n'),
 ]
 if __name__ == '__main__':
     env = os.environ.copy()

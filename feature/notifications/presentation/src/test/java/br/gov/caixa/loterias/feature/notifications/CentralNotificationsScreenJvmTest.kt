@@ -8,7 +8,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.notifications.domain.model.InboxNotification
 import br.gov.caixa.loterias.feature.notifications.presentation.screen.CentralNotificationsScreen
 import br.gov.caixa.loterias.feature.notifications.presentation.state.CentralNotificationsState
@@ -29,7 +29,7 @@ class CentralNotificationsScreenJvmTest {
         val state = mutableStateOf(CentralNotificationsState())
         var backs = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 CentralNotificationsScreen(state.value, { backs++ }, { state.value = state.value.copy(unreadOnly = it) }, {}, {}, {}, {})
             }
         }
@@ -50,7 +50,7 @@ class CentralNotificationsScreenJvmTest {
     @Test fun anonymousFailureOffersLoginAndRetryWithoutEnablingBulkActions() {
         var retries = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 CentralNotificationsScreen(
                     CentralNotificationsState(isAnonymous = true, error = NotificationText.Plain("Falha")),
                     {},
@@ -72,7 +72,7 @@ class CentralNotificationsScreenJvmTest {
     @Test fun loadingHidesRowsAndDisablesMutations() {
         val unread = InboxNotification(UNREAD_NOTIFICATION_ID, "Nova mensagem", "Conteúdo", false)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 CentralNotificationsScreen(
                     CentralNotificationsState(all = listOf(unread), unread = listOf(unread), loading = true),
                     {},
@@ -98,7 +98,7 @@ class CentralNotificationsScreenJvmTest {
         var marks = 0
         var clears = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 CentralNotificationsScreen(
                     state.value,
                     {},

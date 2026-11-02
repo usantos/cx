@@ -18,7 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
@@ -145,7 +145,7 @@ class SupportNavigationJvmTest {
         )
         compose.setContent {
             nav = rememberNavController()
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 NavHost(nav, startDestination = "fixture") {
                     composable("fixture") { Text("Página inicial") }
                     supportGraph(dependencies, nav, session)

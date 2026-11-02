@@ -7,7 +7,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent
 import br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
@@ -203,7 +203,7 @@ class LocalCartReviewScreenTest {
     private fun show(fixture: Fixture) {
         compose.setContent {
             val model = remember { fixture.createModel().also { fixture.model = it } }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 LocalCartReviewRoute(model, onBack = { fixture.navigation.add("back") }, onRemoteCart = { fixture.navigation.add("remote") })
             }
         }

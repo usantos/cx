@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.feature.betting
 
 import androidx.compose.ui.test.swipe
 
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSOptionDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSOptionDialog
 import android.graphics.Bitmap
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.hasTestTag
@@ -13,7 +13,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import java.io.File
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -29,9 +29,9 @@ class BettingWheelSwipeTest {
         var commits = 0
         var chosen = -1
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 if (visible.value) {
-                    CaixaDSOptionDialog(
+                    LoteriasCaixaDSOptionDialog(
                         "Teimosinhas",
                         options,
                         0,

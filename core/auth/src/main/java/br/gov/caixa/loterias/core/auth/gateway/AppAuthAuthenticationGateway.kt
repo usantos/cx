@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.core.auth.gateway
 
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+
 import br.gov.caixa.loterias.feature.account.domain.model.EndSessionLaunch
 import br.gov.caixa.loterias.feature.account.domain.model.EndSessionOutcome
 import android.content.Context
@@ -20,12 +22,18 @@ import br.gov.caixa.loterias.core.auth.appauth.AppAuthSession
 import br.gov.caixa.loterias.core.auth.appauth.AppAuthBrowserAuthorization
 
 internal fun biometricRefreshContext(configuration: OidcConfiguration, nonce: String, idToken: String?): RegularSessionRefreshContext =
-    RegularSessionRefreshContext(configuration, nonce,
+    RegularSessionRefreshContext(
+        configuration,
+        nonce,
         if (idToken != null) RegularSessionIdentityMode.OIDC else RegularSessionIdentityMode.OAUTH_ACCESS,
-        rememberedBiometric = true)
+        rememberedBiometric = true
+    )
 
-internal fun rotatedBiometricCredential(request: RegularSessionRefreshRequest, response: RegularSessionRefreshResponse,
-    enabled: Boolean, previous: BiometricCredential?,
+internal fun rotatedBiometricCredential(
+    request: RegularSessionRefreshRequest,
+    response: RegularSessionRefreshResponse,
+    enabled: Boolean,
+    previous: BiometricCredential?,
 ): BiometricCredential? {
     if (!enabled || previous == null ||
         (request.context.mode != RegularSessionIdentityMode.OIDC && !request.context.rememberedBiometric) ||
@@ -85,6 +93,15 @@ class AppAuthAuthenticationGateway(
     @Synchronized override fun cancelAuthorization() = ending.cancelAuthorization()
 
     @Synchronized override fun logout(): Unit = ending.logout()
+
+    override fun isCurrent(identity: AuthenticatedSessionIdentity): Boolean = tokenStore.isCurrent(identity)
+
+    @Synchronized override fun logout(identity: AuthenticatedSessionIdentity): Boolean = synchronized(tokenStore) {
+        if (!tokenStore.isCurrent(identity)) return false
+        // O monitor do token também impede substituição direta durante a limpeza das credenciais biométricas.
+        ending.logout()
+        true
+    }
 
     @Synchronized override fun prepare(): EndSessionLaunch = ending.prepare()
     override fun intentFor(launch: EndSessionLaunch): Intent = ending.intentFor(launch)

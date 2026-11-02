@@ -8,7 +8,7 @@
 | Processamento de código | KSP | 2.3.6 |
 | Injeção de dependências | Hilt / Dagger | 2.58 |
 | UI | Compose BOM | 2026.06.00 |
-| Design System | CaixaDS (`:core:design-system`) | interno |
+| Design System | LoteriasCaixaDS (`:core:design-system`) | interno |
 | Ícones | Compose Material Icons Core | gerenciado pelo BOM |
 | UI | Activity Compose | 1.12.4 |
 | Inicialização | AndroidX Core SplashScreen | 1.2.0 |

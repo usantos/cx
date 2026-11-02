@@ -26,8 +26,8 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.environment.model.EffectiveEnvironment
 import br.gov.caixa.loterias.core.domain.environment.model.TestEnvironment
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
@@ -96,10 +96,18 @@ class AccountNavigationGraphUiTest {
             override val changeEnvironment = ChangeEnvironment { change(it) }
         }
     private fun dependencies() = AccountNavigationDependenciesAdapter(
+        accountForms = br.gov.caixa.loterias.feature.account.domain.usecase.AccountFormUseCasesFactory(
+            br.gov.caixa.loterias.feature.account.data.repository.SessionAccountRepositoryFactory(
+                br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider(),
+                br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding {
+                    br.gov.caixa.loterias.core.network.api.AccountVerificationSession({ "fixture" }, { true })
+                }
+            )
+        ),
         loginNetworkAvailability = NetworkAvailability { ConnectionAvailability.CONNECTED },
         loginConnectionPresentation = object : LoginConnectionPresentation {
             @Composable override fun Offline(onRetry: () -> Unit, loading: Boolean) {
-                CaixaDSText("OFFLINE FIXTURE")
+                LoteriasCaixaDSText("OFFLINE FIXTURE")
             }
         },
         accountProfile = GetAccountProfileUseCase {
@@ -151,12 +159,12 @@ class AccountNavigationGraphUiTest {
                     }
                 }
             ) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     nav = rememberNavController()
                     NavHost(nav, "home") {
-                        composable("home") { CaixaDSText("HOME FIXTURE") }
-                        composable("tickets/my-bets") { CaixaDSText("MY BETS FIXTURE") }
-                        composable("support/terms") { CaixaDSText("TERMS FIXTURE") }
+                        composable("home") { LoteriasCaixaDSText("HOME FIXTURE") }
+                        composable("tickets/my-bets") { LoteriasCaixaDSText("MY BETS FIXTURE") }
+                        composable("support/terms") { LoteriasCaixaDSText("TERMS FIXTURE") }
                         accountGraph(dependencies, nav, session)
                     }
                 }
@@ -225,7 +233,7 @@ class AccountNavigationGraphUiTest {
         }
         compose.setContent {
             CompositionLocalProvider(LocalContext provides RuntimeEnvironment.getApplication()) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     AccountLoginEnvironmentSelector(true, dependencies)
                 }
             }

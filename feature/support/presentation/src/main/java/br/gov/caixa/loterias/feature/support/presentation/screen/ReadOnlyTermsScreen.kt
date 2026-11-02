@@ -9,14 +9,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.R as CaixaDSR
+import br.gov.caixa.loterias.core.designsystem.R as LoteriasCaixaDSR
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSSupportTopBar
-import br.gov.caixa.loterias.core.designsystem.html.CaixaDSHtmlDocument
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSSupportTopBar
+import br.gov.caixa.loterias.core.designsystem.html.LoteriasCaixaDSHtmlDocument
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.support.R as LocalizedR
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportUiState
 
@@ -24,13 +24,13 @@ import br.gov.caixa.loterias.feature.support.presentation.state.SupportUiState
 @Composable
 internal fun ReadOnlyTermsScreen(state: SupportUiState, onBack: () -> Unit, modifier: Modifier) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = uiStrings.getString(LocalizedR.string.ui_termo_de_uso_d57d7b),
         onBack = onBack,
         modifier = (modifier.legacyAutomationId("support_terms_view")).uiId("help.0015"),
-        containerColor = CaixaDSColorTokens.White,
+        containerColor = LoteriasCaixaDSColorTokens.White,
         customTopBar = {
-            CaixaDSSupportTopBar(uiStrings.getString(LocalizedR.string.ui_termo_de_uso_d57d7b), onBack)
+            LoteriasCaixaDSSupportTopBar(uiStrings.getString(LocalizedR.string.ui_termo_de_uso_d57d7b), onBack)
         }
     ) { padding ->
         Box(
@@ -43,11 +43,11 @@ internal fun ReadOnlyTermsScreen(state: SupportUiState, onBack: () -> Unit, modi
                 // O diálogo de carregamento DS em tela cheia é hospedado por SupportScreen.
                 state.errorMessage != null -> Text(
                     state.errorMessage,
-                    color = CaixaDSColorTokens.NotificationDeleteAction,
+                    color = LoteriasCaixaDSColorTokens.NotificationDeleteAction,
                     modifier = Modifier.uiId("help.0016")
                 )
 
-                else -> CaixaDSHtmlDocument(
+                else -> LoteriasCaixaDSHtmlDocument(
                     html = legacyTermsDocument(state.htmlContent, caixaFontBase64()),
                     modifier = (Modifier.fillMaxSize().legacyAutomationId("support_terms_document")).uiId("help.0017")
                 )
@@ -60,7 +60,7 @@ internal fun ReadOnlyTermsScreen(state: SupportUiState, onBack: () -> Unit, modi
 private fun caixaFontBase64(): String {
     val resources = LocalResources.current
     return remember(resources) {
-        resources.openRawResource(CaixaDSR.raw.caixa_std_regular_html).use { input ->
+        resources.openRawResource(LoteriasCaixaDSR.raw.caixa_std_regular_html).use { input ->
             Base64.encodeToString(input.readBytes(), Base64.NO_WRAP)
         }
     }

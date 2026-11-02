@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.notifications.domain.model.InboxNotification
@@ -153,7 +153,7 @@ class CentralNotificationsRouteJvmTest {
                 sessions,
                 FixedCoroutineDispatchers(Dispatchers.Main.immediate)
             )
-        compose.setContent { CaixaDSTheme { CentralNotificationsRoute(model, { backs++ }) } }
+        compose.setContent { LoteriasCaixaDSTheme { CentralNotificationsRoute(model, { backs++ }) } }
     }
 
     private class InboxRepository : NotificationInboxRepository {

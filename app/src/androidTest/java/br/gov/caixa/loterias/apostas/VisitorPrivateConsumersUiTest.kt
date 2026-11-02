@@ -5,7 +5,7 @@ import androidx.compose.ui.test.*
 import org.junit.Assert.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddFavoriteBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.DeleteFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
@@ -52,7 +52,7 @@ class VisitorPrivateConsumersUiTest {
             DeleteFavoriteBetUseCase { error("Unexpected mutation") },
             AddFavoriteBetToCartUseCase { _, _ -> error("Unexpected mutation") }, autoLoad = false,
         )
-        compose.setContent { CaixaDSTheme { FavoriteBetsRoute(vm, {}, {}, {}, privateDataEnabled = false) } }
+        compose.setContent { LoteriasCaixaDSTheme { FavoriteBetsRoute(vm, {}, {}, {}, privateDataEnabled = false) } }
         compose.waitForIdle()
         compose.onNodeWithText("Aqui ficam seus números favoritos, prontos pra você jogar sempre que precisar.").assertExists()
         compose.onNodeWithText("Selecione a modalidade").assertExists()
@@ -70,7 +70,7 @@ class VisitorPrivateConsumersUiTest {
             DeleteFavoriteCartBetUseCase { _, _ -> error("Unexpected mutation") },
             AddFavoriteCartToCurrentUseCase { _, _ -> error("Unexpected mutation") }, autoLoad = false,
         )
-        compose.setContent { CaixaDSTheme { FavoriteCartsRoute(vm, {}, {}, {}, privateDataEnabled = false) } }
+        compose.setContent { LoteriasCaixaDSTheme { FavoriteCartsRoute(vm, {}, {}, {}, privateDataEnabled = false) } }
         compose.waitForIdle()
         compose.onNodeWithText("Aqui estão todos os seus carrinhos favoritos.").assertExists()
         compose.onNodeWithText("Você pode excluir, detalhar e transformar no seu carrinho atual.").assertExists()
@@ -91,9 +91,14 @@ class VisitorPrivateConsumersUiTest {
             recordRecentPurchase = RecordRecentPurchaseUseCase { error("Unexpected mutation") },
             clock = java.time.Clock.systemUTC(), autoLoad = false,
         )
-        compose.setContent { CaixaDSTheme { PaymentDataRoute(PaymentMode.CARDS, vm,
-            onBack = {}, onHelp = {}, onPix = {}, onAddCard = {}, onOpenCard = {}, onApproved = {},
-            onHome = {}, onPurchases = {}, onRedirect = {}, onRegistration = {}, privateDataEnabled = false) } }
+        compose.setContent { LoteriasCaixaDSTheme {
+            PaymentDataRoute(
+                PaymentMode.CARDS, vm,
+                onBack = {}, onHelp = {}, onPix = {}, onAddCard = {}, onOpenCard = {}, onApproved = {},
+                onHome = {}, onPurchases = {}, onRedirect = {}, onRegistration = {}, privateDataEnabled = false
+            )
+        }
+        }
         compose.waitForIdle()
         compose.onNodeWithText("Cartões cadastrados").assertExists()
         compose.onAllNodesWithText("Você ainda não possui", substring = true).assertCountEquals(0)
@@ -102,13 +107,20 @@ class VisitorPrivateConsumersUiTest {
 
     @Test fun visitorAssessmentKeepsInitialPublicFormIntroWithoutQuestionReadOrErrorClaim() {
         val reads = AtomicInteger()
-        val vm = ResponsibleGamingViewModel("responsible/form",
-            GetSelfAssessmentQuestionsUseCase { reads.incrementAndGet(); AppResult.Success(emptyList()) },
+        val vm = ResponsibleGamingViewModel(
+            "responsible/form",
+            GetSelfAssessmentQuestionsUseCase {
+                reads.incrementAndGet()
+                AppResult.Success(emptyList())
+            },
             SubmitSelfAssessmentUseCase { error("Unexpected mutation") },
             GetSocialTransfersUseCase { error("Unexpected social read") },
-            SuspendAccountUseCase { error("Unexpected mutation") }, autoLoad = false,
+            SuspendAccountUseCase { error("Unexpected mutation") },
+            autoLoad = false
         )
-        compose.setContent { CaixaDSTheme { ResponsibleGamingRoute("responsible/form", vm, {}, {}, {}, privateDataEnabled = false) } }
+        compose.setContent {
+            LoteriasCaixaDSTheme { ResponsibleGamingRoute("responsible/form", vm, {}, {}, {}, privateDataEnabled = false) }
+        }
         compose.waitForIdle()
         compose.onNodeWithText("Autoavaliação para o Apostador").assertExists()
         compose.onNodeWithText("NODS*-CLIP Problem Gambling Screen").assertExists()

@@ -7,7 +7,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -86,7 +86,7 @@ class HomeContentUiTest {
 
     private fun show() {
         val lotteries = parameters.toHomeLotteries(false)
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             HomeContent(home, null, lotteries, ResultsUiState(), requested.value, presentation.value,
                 HomeActions(retry = { calls += "retry" }, openMenu = { calls += "menu" },
                     openNotifications = { calls += "notifications" }, toggleCampaign = { calls += "campaign" },

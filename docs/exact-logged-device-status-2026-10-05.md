@@ -13,7 +13,7 @@ Referência visual principal: APK oficial instalado no XCover7, versão1.24.0/23
 - Minhas apostas: largura de ações corrigida para93dp, pois48dp cortava a ajuda. Backend define o trevo; não substituído por uma cor fixa para simular dados de outra rota.
 - Simulação: crash de InsetDrawable corrigido com renderer Android; segundo erro real de MaterialButton corrigido usando o Theme.SimulaMaterial original, separado do tema AppCompat do Rapidão.
 - Teste Android BettingGameRouteSmokeTest no XCover7: primeiro vermelho por Theme.MaterialComponents; reexecução após correção OK(1test), abre a tela completa, verifica ajuda e seleciona01 sem enviar apostas. Logs: /tmp/exact-simulation-smoke-xcover.log e /tmp/exact-simulation-smoke-xcover-green.log.
-- Debug APK, Kotlin Release, migração, CaixaDS e inventário passaram na rodada /tmp/exact-logged-capture-final-build.log. Testes afetados sem falha nas respectivas rodadas: betting84, account55, tickets33, support14, app48 do flavorAutomacao, data158 (rodada anterior deste turno). Esses resultados não certificam todos os layouts nem contratos reais.
+- Debug APK, Kotlin Release, migração, LoteriasCaixaDS e inventário passaram na rodada /tmp/exact-logged-capture-final-build.log. Testes afetados sem falha nas respectivas rodadas: betting84, account55, tickets33, support14, app48 do flavorAutomacao, data158 (rodada anterior deste turno). Esses resultados não certificam todos os layouts nem contratos reais.
 
 Ajuda geral: Minhas apostas abre TermosUsoActivity com aba Dúvidas ativa e título Loterias Caixa. Corrigido destino para support/terms?tab=FAQ; documento sem abas permanece support/terms-view. Dúvidas da simulação passou a usar esse destino; Como jogar conserva a ajuda local.
 

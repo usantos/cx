@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.*
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.MarketplaceEmptyState
@@ -24,7 +24,7 @@ class MarketplaceVisualNativeContractUiTest {
     @get:Rule val compose = createComposeRule()
 
     @Test fun emptyCardUsesNativeHorizontalInsetAndTopSpacing() {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             Box(Modifier.fillMaxWidth().testTag("empty-root")) { MarketplaceEmptyState("Nenhum bolão") }
         } }
         val root = compose.onNodeWithTag("empty-root").fetchSemanticsNode().boundsInRoot
@@ -36,7 +36,7 @@ class MarketplaceVisualNativeContractUiTest {
     }
 
     @Test fun favoriteEmptyUsesNativeMessage() {
-        compose.setContent { CaixaDSTheme { FavoriteRetailersContent(MarketplaceUiState(), {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { FavoriteRetailersContent(MarketplaceUiState(), {}, {}) } }
         compose.onNodeWithText("Você ainda não possui nenhuma lotérica favorita.").assertIsDisplayed()
     }
 
@@ -47,7 +47,7 @@ class MarketplaceVisualNativeContractUiTest {
             "DUPLA_SENA" to Color(0xFFA62B43), "MAIS_MILIONARIA" to Color(0xFF2A3580),
             "LOTECA" to Color(0xFFED1C24), "TIMEMANIA" to Color(0xFF038141),
             "DIA_DE_SORTE" to Color(0xFF7E6906), "SUPER_SETE" to Color(0xFF038141))
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             inks.keys.forEach {
                 val colors = marketplaceColors(it)
                 actual[it] = colors.listText to colors.darkContent
@@ -63,7 +63,7 @@ class MarketplaceVisualNativeContractUiTest {
     }
 
     @Test fun detailPurchaseMatchesActiveNativeFullWidth48dpButton() {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             MarketplaceDetailScreen(MarketplaceDetailUiState(detail = detail(), isLoading = false), {}, {}, {}, {}, {})
         } }
         val panel = compose.onNodeWithTag("pool-detail-purchase-panel").fetchSemanticsNode().boundsInRoot
@@ -74,14 +74,14 @@ class MarketplaceVisualNativeContractUiTest {
     }
 
     @Test fun specialDetailHeaderShowsSpecialContestName() {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             DetailHeader(detail("QUINA").copy(contestType = 2), marketplaceColors("QUINA"), {})
         } }
         compose.onNodeWithText("quina de são joão").assertIsDisplayed()
     }
 
     @Test fun detailFooterMatchesActiveNativeThreeColumnLabels() {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             MarketplaceDetailScreen(MarketplaceDetailUiState(detail = detail(), isLoading = false), {}, {}, {}, {}, {})
         } }
         compose.onNodeWithText("Valor dessa aposta").assertIsDisplayed()

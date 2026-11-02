@@ -11,7 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSPixPanel
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSPixPanel
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import java.time.Duration
 import java.time.LocalDateTime
@@ -40,7 +40,7 @@ internal fun PendingPurchasePix(purchase: Purchase, checking: Boolean, remaining
             }
         }
     }
-    CaixaDSPixPanel(
+    LoteriasCaixaDSPixPanel(
         purchaseId = purchase.id, copyPaste = purchase.pixCopyPaste, remainingSeconds = remaining,
         checking = checking, onCheckPayment = onCheckPayment, onCopied = { copied = true }, onPurchases = {},
         showIntro = false, showHeader = false, showRecoveryGuidance = false, modifier = Modifier.uiId("tickets.0238")

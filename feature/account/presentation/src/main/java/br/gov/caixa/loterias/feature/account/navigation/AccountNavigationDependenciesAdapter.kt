@@ -20,6 +20,7 @@ class AccountNavigationDependenciesAdapter @Inject constructor(
     override val loginNetworkAvailability: NetworkAvailability,
     override val loginConnectionPresentation: LoginConnectionPresentation,
     override val accountProfile: GetAccountProfileUseCase,
+    override val accountForms: br.gov.caixa.loterias.feature.account.domain.usecase.AccountFormUseCasesFactory,
     override val authentication: AuthenticationGateway,
     override val currentUserIdentity: CurrentUserIdentityProvider,
     override val dispatchers: CoroutineDispatchers,

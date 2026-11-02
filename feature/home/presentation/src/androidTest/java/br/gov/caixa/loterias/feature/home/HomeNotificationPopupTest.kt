@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import android.util.Base64
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSNotificationPlaceholder
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSNotificationPlaceholder
 import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
 import org.junit.Assert.*
 import org.junit.Rule
@@ -18,7 +18,7 @@ class HomeNotificationPopupTest {
 
     @Test fun absentLinkCentersCloseAndPreservesPlainNotificationText() {
         var closes = 0
-        compose.setContent { CaixaDSTheme(darkTheme = false) {
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
             HomeNotificationPopup(AccountNotification(null, "Título", "Mensagem <b>literal</b>", null, null), { closes++ }, { error("No link") })
         } }
         compose.onNodeWithText("Título").assertIsDisplayed()
@@ -26,12 +26,12 @@ class HomeNotificationPopupTest {
         compose.onNodeWithText("Abrir Link").assertDoesNotExist()
         compose.onNodeWithText("Fechar").performScrollTo().performClick()
         compose.runOnIdle { assertEquals(1, closes) }
-        assertEquals(308f, CaixaDSNotificationPlaceholder.viewportWidth)
-        assertEquals(308f, CaixaDSNotificationPlaceholder.viewportHeight)
+        assertEquals(308f, LoteriasCaixaDSNotificationPlaceholder.viewportWidth)
+        assertEquals(308f, LoteriasCaixaDSNotificationPlaceholder.viewportHeight)
     }
 
     @Test fun popupKeepsLegacyFiftyDpSideMarginsAndSeventyPercentHeightLimit() {
-        compose.setContent { CaixaDSTheme(darkTheme = false) {
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
             HomeNotificationPopup(AccountNotification(7, "Título", "Mensagem longa ".repeat(200), null, "https://example.invalid"), {}, {})
         } }
         val overlay = compose.onNodeWithTag("home-notification-overlay").getUnclippedBoundsInRoot()
@@ -46,7 +46,7 @@ class HomeNotificationPopupTest {
     @Test fun openingLinkDoesNotClosePopup() {
         var opens = 0
         var closes = 0
-        compose.setContent { CaixaDSTheme(darkTheme = false) {
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
             HomeNotificationPopup(AccountNotification(7, "Título", "Mensagem", null, "https://example.invalid"), { closes++ }, { opens++ })
         } }
         compose.onNodeWithText("Abrir Link").performScrollTo().performClick()

@@ -9,8 +9,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoadingDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.presentation.effect.NavigationResumeEffect
 import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_UPDATED_TERMS
@@ -32,7 +32,7 @@ fun MercadoPagoRegistrationOverlay(
         if (viewModel.finishWithoutAction()) onFinished()
     }
     if (state.redirect == ServiceRedirect.ACCEPT_TERMS) {
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = LEGACY_UPDATED_TERMS,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),
@@ -44,7 +44,7 @@ fun MercadoPagoRegistrationOverlay(
         }
     }
     state.notice?.let { notice ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = notice.message,
             positiveLabel = notice.positiveLabel,
@@ -60,7 +60,7 @@ fun MercadoPagoRegistrationOverlay(
         )
     }
     state.repeatConsent?.let { consent ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = consent.message,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_sim_931345),
@@ -71,9 +71,9 @@ fun MercadoPagoRegistrationOverlay(
     }
     MercadoPagoBrowser(viewModel, state, simulateBrowser, onFinished)
     when (state.stage) {
-        MercadoPagoRegistrationStage.LOADING -> CaixaDSAuthenticationLoadingDialog()
+        MercadoPagoRegistrationStage.LOADING -> LoteriasCaixaDSAuthenticationLoadingDialog()
 
-        MercadoPagoRegistrationStage.ERROR -> CaixaDSDialog(
+        MercadoPagoRegistrationStage.ERROR -> LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = state.errorMessage.orEmpty(),
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),
@@ -81,7 +81,7 @@ fun MercadoPagoRegistrationOverlay(
         )
 
         MercadoPagoRegistrationStage.OPENED -> if (simulateBrowser) {
-            CaixaDSDialog(
+            LoteriasCaixaDSDialog(
                 title = uiStrings.getString(LocalizedR.string.ui_simulacao_5d2570),
                 message = uiStrings.getString(LocalizedR.string.ui_abertura_do_cadastro_mercado_pago_si_164ef3),
                 positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),

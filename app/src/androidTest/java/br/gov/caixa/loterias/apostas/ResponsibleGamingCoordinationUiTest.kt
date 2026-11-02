@@ -26,7 +26,7 @@ import androidx.navigation.compose.composable
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.AccountSuspension
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentAnswer
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentQuestion
@@ -132,7 +132,7 @@ class ResponsibleGamingCoordinationUiTest {
         compose.setContent {
             androidx.activity.compose.BackHandler { systemBacks++ }
             val model = remember { Fixture().model("responsible/start") }
-            CaixaDSTheme { ResponsibleGamingRoute("responsible/start", model, { closes++ }, {}, {}) }
+            LoteriasCaixaDSTheme { ResponsibleGamingRoute("responsible/start", model, { closes++ }, {}, {}) }
         }
         compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }
         compose.onNodeWithText("Seguir para autoavaliação").assertIsDisplayed()
@@ -173,7 +173,7 @@ class ResponsibleGamingCoordinationUiTest {
         lateinit var nav: androidx.navigation.NavHostController
         compose.setContent {
             nav = androidx.navigation.compose.rememberNavController()
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 androidx.navigation.compose.NavHost(nav, startDestination = "responsible/social") {
                     responsibleGamingGraph(dependencies, nav, session)
                     composable(
@@ -255,7 +255,7 @@ class ResponsibleGamingCoordinationUiTest {
         val privateData = mutableStateOf(true)
         compose.setContent {
             val model = remember { fixture.model("responsible/form") }
-            CaixaDSTheme { ResponsibleGamingRoute("responsible/form", model, {}, {}, {}, privateDataEnabled = privateData.value) }
+            LoteriasCaixaDSTheme { ResponsibleGamingRoute("responsible/form", model, {}, {}, {}, privateDataEnabled = privateData.value) }
         }
         compose.onNodeWithText("Não foi possível conectar. Verifique sua internet e tente novamente.").assertExists()
         compose.runOnIdle { fixture.questionResult = AppResult.Success(emptyList()) }
@@ -369,7 +369,7 @@ class ResponsibleGamingCoordinationUiTest {
             androidx.compose.runtime.CompositionLocalProvider(
                 androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(density.density, fontScale)
             ) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     androidx.compose.foundation.layout.Box(
                         androidx.compose.ui.Modifier.width(360.dp)
                     ) {
@@ -396,7 +396,7 @@ class ResponsibleGamingCoordinationUiTest {
         var backs = 0
         var completions = 0
         compose.setContent {
-            CaixaDSTheme { ResponsibleGamingRoute("responsible/start", current.value, { backs++ }, { completions++ }, {}) }
+            LoteriasCaixaDSTheme { ResponsibleGamingRoute("responsible/start", current.value, { backs++ }, { completions++ }, {}) }
         }
         compose.runOnIdle { old.onAction(ResponsibleGamingAction.Back) }
         compose.runOnIdle {
@@ -427,7 +427,7 @@ class ResponsibleGamingCoordinationUiTest {
     ) {
         compose.setContent {
             val model = remember { fixture.model(route, required) }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 ResponsibleGamingRoute(route, model, onBack, onComplete, onOpenTerms, onSubmitSuspension)
             }
         }

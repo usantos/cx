@@ -22,12 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.gov.caixa.loterias.core.designsystem.R as CaixaDSR
+import br.gov.caixa.loterias.core.designsystem.R as LoteriasCaixaDSR
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceStyle
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.support.R as LocalizedR
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportAction
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportTab
@@ -36,7 +36,7 @@ import br.gov.caixa.loterias.feature.support.presentation.state.SupportTab
 internal fun SupportTabs(selected: SupportTab, onAction: (SupportAction) -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val style = TextStyle(
-        fontFamily = CaixaDSFontFamily,
+        fontFamily = LoteriasCaixaDSFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
         platformStyle = PlatformTextStyle(includeFontPadding = true)
@@ -67,20 +67,20 @@ internal fun SupportTabs(selected: SupportTab, onAction: (SupportAction) -> Unit
                 Box(
                     Modifier.width(if (tab == SupportTab.TERMS) firstWidth else availableWidth - firstWidth)
                         .fillMaxSize()
-                        .background(if (isSelected) CaixaDSMarketplaceStyle.tab else CaixaDSMarketplaceStyle.inactiveTab)
+                        .background(if (isSelected) LoteriasCaixaDSMarketplaceStyle.tab else LoteriasCaixaDSMarketplaceStyle.inactiveTab)
                         .uiId("help.0001").clickable { onAction(SupportAction.SelectTab(tab)) },
                     contentAlignment = Alignment.Center
                 ) {
                     if (isSelected) {
                         Image(
-                            painterResource(CaixaDSR.drawable.legacy_tab_seta),
+                            painterResource(LoteriasCaixaDSR.drawable.legacy_tab_seta),
                             null,
                             Modifier.align(Alignment.BottomCenter)
                         )
                     }
                     Text(
                         label,
-                        color = if (isSelected) CaixaDSColorTokens.White else CaixaDSMarketplaceStyle.tab,
+                        color = if (isSelected) LoteriasCaixaDSColorTokens.White else LoteriasCaixaDSMarketplaceStyle.tab,
                         style = style,
                         modifier = Modifier.uiId("help.0002")
                     )

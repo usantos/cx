@@ -32,7 +32,7 @@ core/data/src/test/java/br/gov/caixa/loterias/core/data/ReceiptPdfTransportTest.
 core/data/src/test/java/br/gov/caixa/loterias/core/data/RemotePaymentRepositoryTest.kt
 core/data/src/test/java/br/gov/caixa/loterias/core/data/RemoteRetailRepositoryTest.kt
 core/data/src/test/java/br/gov/caixa/loterias/core/data/RemoteTicketsRepositoryTest.kt
-core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLegacyComponents.kt
+core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLegacyComponents.kt
 core/network/src/main/java/br/gov/caixa/loterias/core/network/LegacyBackendApi.kt
 core/network/src/test/java/br/gov/caixa/loterias/core/network/ConfirmedBetRangeApiTest.kt
 docs/COMPOSE_CX_EXPERIMENTE_FILES_20261014.txt

@@ -7,7 +7,7 @@ import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
@@ -175,7 +175,7 @@ class CartActionsIntegrationTest {
                     dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate)
                 )
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 CurrentCartRoute(
                     vm, onBack = {}, onContinueBetting = { calls.add("home") }, onPayment = { calls.add("payment") },
                     onLogin = { calls.add("login") }, onAccountRequired = { calls.add("account") },

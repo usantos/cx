@@ -27,7 +27,7 @@ Capturas demonstram layout e estado visível. Injeção ADB de toque/rolagem ser
 
 ## Defeitos reproduzidos e correções
 
-**54 novas regressões JVM passaram nesta rodada**, incluindo 17 de leitura agrupada, duas de introdução e seis do tutorial animado. O consolidado tem **3.379 aprovados, zero falhas, erros ou ignorados, em 68 módulos**. Módulos afetados foram repetidos completos; Lint, Detekt, arquitetura/CaixaDS e montagem passaram. Ktlint de 73 arquivos passou; falhas intermediárias de fixtures estão preservadas nos logs. As regressões usam fonte de sistema em 200% e os componentes reais, com dados sintéticos. Falhas RED e resultados GREEN permanecem nos logs, separados dos totais finais.
+**54 novas regressões JVM passaram nesta rodada**, incluindo 17 de leitura agrupada, duas de introdução e seis do tutorial animado. O consolidado tem **3.379 aprovados, zero falhas, erros ou ignorados, em 68 módulos**. Módulos afetados foram repetidos completos; Lint, Detekt, arquitetura/LoteriasCaixaDS e montagem passaram. Ktlint de 73 arquivos passou; falhas intermediárias de fixtures estão preservadas nos logs. As regressões usam fonte de sistema em 200% e os componentes reais, com dados sintéticos. Falhas RED e resultados GREEN permanecem nos logs, separados dos totais finais.
 
 | Área | Problema reproduzido | Correção |
 |---|---|---|

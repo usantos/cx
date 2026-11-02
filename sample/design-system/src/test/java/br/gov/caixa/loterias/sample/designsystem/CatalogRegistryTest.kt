@@ -33,9 +33,27 @@ class CatalogRegistryTest {
     fun searchesNamesPackagesAndParametersIgnoringCaseAndWhitespace() {
         assertEquals(CatalogRegistry.entries, CatalogRegistry.search("  "))
         assertTrue(CatalogRegistry.search("textFIELD").all { it.name.contains("TextField") })
-        assertTrue(CatalogRegistry.search(" onValueChange ").any { it.name == "CaixaDSTextField" })
-        assertTrue(CatalogRegistry.search("navigation").any { it.name == "CaixaDSTopBar" })
+        assertTrue(CatalogRegistry.search(" onValueChange ").any { it.name == "LoteriasCaixaDSTextField" })
+        assertTrue(CatalogRegistry.search("navigation").any { it.name == "LoteriasCaixaDSTopBar" })
         assertTrue(CatalogRegistry.search("unfindablecomponent").isEmpty())
+    }
+
+    @Test
+    fun typesCoverEveryComponentExactlyOnceAndCombineWithSearch() {
+        val groups = CatalogRegistry.groups("")
+        val grouped = groups.flatMap { it.entries }
+        assertEquals(CatalogRegistry.entries.size, grouped.size)
+        assertEquals(CatalogRegistry.entries.toSet(), grouped.toSet())
+        assertEquals(CatalogType.entries.toSet(), groups.map { it.type }.toSet())
+        groups.forEach { group ->
+            assertEquals(group.entries.sortedBy { it.name }, group.entries)
+            assertTrue(group.entries.all { it.category == group.type.title })
+        }
+        val selection = CatalogRegistry.groups("", CatalogType.SELECTION).flatMap { it.entries }
+        assertTrue(selection.any { it.name == "LoteriasCaixaDSCardPicker" })
+        val buttons = CatalogRegistry.groups("PrimaryButton", CatalogType.BUTTONS)
+        assertEquals(listOf("LoteriasCaixaDSPrimaryButton"), buttons.flatMap { it.entries }.map { it.name })
+        assertTrue(CatalogRegistry.groups("TextField", CatalogType.BUTTONS).isEmpty())
     }
 
     @Test

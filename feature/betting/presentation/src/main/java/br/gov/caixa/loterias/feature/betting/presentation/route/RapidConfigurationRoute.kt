@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
 import br.gov.caixa.loterias.feature.betting.presentation.screen.RapidConfigurationActions
 import br.gov.caixa.loterias.feature.betting.presentation.screen.RapidConfigurationContent
 import br.gov.caixa.loterias.feature.betting.presentation.components.RAPID_PAGE_COUNT
@@ -62,7 +62,7 @@ fun RapidConfigurationRoute(
         )
     )
     state.warningMessage?.let {
-        CaixaDSAlertDialog(
+        LoteriasCaixaDSAlertDialog(
             uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             it,
             stringResource(LocalizedR.string.ui_entendi_9f9373),
@@ -70,7 +70,7 @@ fun RapidConfigurationRoute(
         )
     }
     state.errorMessage?.let {
-        CaixaDSAlertDialog(
+        LoteriasCaixaDSAlertDialog(
             uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             it,
             stringResource(LocalizedR.string.ui_entendi_9f9373),

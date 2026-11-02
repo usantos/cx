@@ -32,7 +32,7 @@ internal fun HomeRouteDialogs(
     val showLocalCartReview = homeState.localCartReviewRequired && !homeState.localCartReviewAcknowledged &&
         !homeState.loading && !homeState.preparingBet && !homeState.parametersUnavailable
     if (showLocalCartReview) {
-        br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog(
+        br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = uiStrings.getString(LocalizedR.string.ui_ha_apostas_locais_sem_confirmacao_de_e4755e),
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_conferir_apostas_f4de2d),
@@ -63,7 +63,7 @@ internal fun HomeRouteDialogs(
         }
     }
     homeState.notificationReadError?.let {
-        br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog(
+        br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog(
             uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             it,
             stringResource(LocalizedR.string.ui_entendi_9f9373),
@@ -71,7 +71,7 @@ internal fun HomeRouteDialogs(
         )
     }
     homeState.notificationNotice?.let { notice ->
-        br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog(
+        br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = notice.message,
             positiveLabel = notice.positiveLabel,
@@ -86,7 +86,7 @@ internal fun HomeRouteDialogs(
             homeState.notificationReadError != null ||
             homeState.notificationNotice != null
     }?.let {
-        br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog(
+        br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog(
             uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             it,
             stringResource(LocalizedR.string.ui_entendi_9f9373),
@@ -94,6 +94,6 @@ internal fun HomeRouteDialogs(
         )
     }
     if (homeState.preparingBet) {
-        br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoadingDialog()
+        br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog()
     }
 }

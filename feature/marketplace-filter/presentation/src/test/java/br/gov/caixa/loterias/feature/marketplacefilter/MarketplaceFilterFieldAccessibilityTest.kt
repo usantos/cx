@@ -8,10 +8,9 @@ import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.core.app.ApplicationProvider
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.components.MarketplaceFilterValueFields
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.components.MarketplaceRetailerSearch
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterAction
@@ -31,7 +30,7 @@ class MarketplaceFilterFieldAccessibilityTest {
 
     @Test fun filledValueAndQuantityInputsRetainTheirDistinctNames() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 MarketplaceFilterValueFields(
                     MarketplaceFilterUiState(
                         minimumValue = "10",
@@ -55,7 +54,7 @@ class MarketplaceFilterFieldAccessibilityTest {
     @Test fun shareErrorBelongsToEditableOwnerAndClearsOnCorrection() {
         val state = mutableStateOf(MarketplaceFilterUiState(minimumShares = "4", minimumSharesError = "Mínimo inválido"))
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 MarketplaceFilterValueFields(state.value) { action ->
                     if (action is MarketplaceFilterAction.ChangeMinimumShares) {
                         state.value = state.value.copy(minimumShares = action.value, minimumSharesError = null)
@@ -75,7 +74,7 @@ class MarketplaceFilterFieldAccessibilityTest {
     @Test fun filledRetailerSearchKeepsItsSubjectAndEditAction() {
         var query = ""
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 MarketplaceRetailerSearch(MarketplaceFilterUiState(lottery = "Lotérica Centro")) { action ->
                     if (action is MarketplaceFilterAction.ChangeLottery) query = action.value
                 }

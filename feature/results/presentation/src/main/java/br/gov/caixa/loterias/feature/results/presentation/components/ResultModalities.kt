@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.feature.results.presentation.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.PlatformTextStyle
@@ -27,14 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.automationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.caixaDSLotteryClover
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.loteriasCaixaDSLotteryClover
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.results.R as LocalizedR
 import br.gov.caixa.loterias.feature.results.presentation.formatting.localizedMessage as messageText
 
@@ -63,11 +61,11 @@ private val resultModalityCodes = listOf(
 internal fun ResultModalityScreen(onBack: () -> Unit, onSelectModality: (String) -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val largeFont = LocalDensity.current.fontScale > 1f
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = uiStrings.getString(LocalizedR.string.ui_resultados_310561),
         onBack = onBack,
         gradientTopBar = false,
-        containerColor = CaixaDSColorTokens.White,
+        containerColor = LoteriasCaixaDSColorTokens.White,
         modifier = Modifier.uiId("results.0038")
     ) { padding ->
         LazyColumn(
@@ -83,9 +81,9 @@ internal fun ResultModalityScreen(onBack: () -> Unit, onSelectModality: (String)
                 Text(
                     uiStrings.getString(LocalizedR.string.ui_modalidades_6b4baa),
                     (Modifier.fillMaxWidth()).uiId("results.0040"),
-                    color = CaixaDS.colors.primaryButton,
+                    color = LoteriasCaixaDS.colors.primaryButton,
                     style = TextStyle(
-                        fontFamily = CaixaDSFontFamily,
+                        fontFamily = LoteriasCaixaDSFontFamily,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center,
@@ -95,9 +93,9 @@ internal fun ResultModalityScreen(onBack: () -> Unit, onSelectModality: (String)
                 Text(
                     uiStrings.getString(LocalizedR.string.ui_selecione_a_modalidade_para_ver_os_s_c1f884),
                     (Modifier.fillMaxWidth().padding(top = 20.dp)).uiId("results.0041"),
-                    color = CaixaDS.colors.graphite,
+                    color = LoteriasCaixaDS.colors.graphite,
                     style = TextStyle(
-                        fontFamily = CaixaDSFontFamily,
+                        fontFamily = LoteriasCaixaDSFontFamily,
                         fontSize = 14.sp,
                         textAlign = TextAlign.Center,
                         platformStyle = PlatformTextStyle(includeFontPadding = true)
@@ -123,7 +121,7 @@ internal fun ResultModalityScreen(onBack: () -> Unit, onSelectModality: (String)
 
 @Composable
 private fun ResultModalityCard(modality: ResultModality, modifier: Modifier, onClick: () -> Unit) {
-    val style = caixaDSLotteryStyle(0, modality.name)
+    val style = loteriasCaixaDSLotteryStyle(0, modality.name)
     val largeFont = LocalDensity.current.fontScale > 1f
     Row(
         modifier.padding(4.dp)
@@ -132,7 +130,7 @@ private fun ResultModalityCard(modality: ResultModality, modifier: Modifier, onC
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            caixaDSLotteryClover(modality.code),
+            loteriasCaixaDSLotteryClover(modality.code),
             contentDescription = null,
             modifier = Modifier.padding(start = 12.dp).size(18.dp)
         )
@@ -145,7 +143,7 @@ private fun ResultModalityCard(modality: ResultModality, modifier: Modifier, onC
                 ).uiId("results.0044"),
             color = style.content,
             style = TextStyle(
-                fontFamily = CaixaDSFuturaFontFamily,
+                fontFamily = LoteriasCaixaDSFuturaFontFamily,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 platformStyle = PlatformTextStyle(includeFontPadding = true)

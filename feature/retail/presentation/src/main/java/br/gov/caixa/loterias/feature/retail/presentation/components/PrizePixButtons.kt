@@ -11,10 +11,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton as Button
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButtonDefaults as ButtonDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 @Composable
 internal fun PrizePixActionButton(
@@ -29,12 +29,12 @@ internal fun PrizePixActionButton(
         modifier = (modifier.height(55.dp).graphicsLayer { alpha = if (enabled) 1f else .3f }).uiId("retail.0010"),
         enabled = enabled,
         shape = RoundedCornerShape(4.dp),
-        border = if (outlined) BorderStroke(1.dp, CaixaDSColorTokens.RedemptionButton) else null,
+        border = if (outlined) BorderStroke(1.dp, LoteriasCaixaDSColorTokens.RedemptionButton) else null,
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (outlined) CaixaDSColorTokens.White else CaixaDSColorTokens.RedemptionButton,
-            contentColor = if (outlined) CaixaDSColorTokens.RedemptionButton else CaixaDSColorTokens.White,
-            disabledContainerColor = CaixaDSColorTokens.RedemptionButton,
-            disabledContentColor = CaixaDSColorTokens.White
+            containerColor = if (outlined) LoteriasCaixaDSColorTokens.White else LoteriasCaixaDSColorTokens.RedemptionButton,
+            contentColor = if (outlined) LoteriasCaixaDSColorTokens.RedemptionButton else LoteriasCaixaDSColorTokens.White,
+            disabledContainerColor = LoteriasCaixaDSColorTokens.RedemptionButton,
+            disabledContentColor = LoteriasCaixaDSColorTokens.White
         ),
         elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp)
     ) {

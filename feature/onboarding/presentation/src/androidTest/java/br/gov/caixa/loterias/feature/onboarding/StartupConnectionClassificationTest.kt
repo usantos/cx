@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.onboarding.presentation.components.StartupStatusPanelContent
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.StartupStatusKind
 import org.junit.Assert.assertEquals
@@ -48,7 +48,7 @@ class StartupConnectionClassificationTest {
 
     private fun show(connection: ConnectionAvailability, kind: StartupStatusKind, retry: () -> Unit = {}) {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 StartupStatusPanelContent(
                     kind = kind,
                     onRetry = retry,

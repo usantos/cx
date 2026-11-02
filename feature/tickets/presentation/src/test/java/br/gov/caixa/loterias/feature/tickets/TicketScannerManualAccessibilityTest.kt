@@ -8,7 +8,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.TicketScannerScreen
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -35,7 +35,7 @@ class TicketScannerManualAccessibilityTest {
         var manualCalls = 0
         try {
             compose.setContent {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     Box(Modifier.size(width = 360.dp, height = 640.dp)) {
                         TicketScannerScreen(granted, {}, {}, cameraPreview = { Box(it) }, onManual = { manualCalls++ })
                     }

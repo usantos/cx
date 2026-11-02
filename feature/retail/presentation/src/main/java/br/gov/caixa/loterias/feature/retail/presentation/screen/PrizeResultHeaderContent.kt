@@ -21,15 +21,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSLotteryArtwork
-import br.gov.caixa.loterias.core.designsystem.artwork.caixaDSCampaignDrawable
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSLotteryArtwork
+import br.gov.caixa.loterias.core.designsystem.artwork.loteriasCaixaDSCampaignDrawable
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.caixaDSLotteryClover
-import br.gov.caixa.loterias.core.designsystem.layout.CaixaDSPrizeMessage
-import br.gov.caixa.loterias.core.designsystem.layout.caixaDSDrawablePainter
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.loteriasCaixaDSLotteryClover
+import br.gov.caixa.loterias.core.designsystem.layout.LoteriasCaixaDSPrizeMessage
+import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSDrawablePainter
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
 import br.gov.caixa.loterias.feature.retail.R as LocalizedR
 import br.gov.caixa.loterias.feature.retail.presentation.mapper.prizeAwardedRows
 import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionUiState
@@ -37,7 +37,10 @@ import java.text.NumberFormat
 import java.util.Locale
 
 @Composable
-internal fun PrizeResultHeader(state: PrizeRedemptionUiState, style: br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSLotteryStyle) {
+internal fun PrizeResultHeader(
+    state: PrizeRedemptionUiState,
+    style: br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSLotteryStyle,
+) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val details = state.details
     Row(
@@ -60,15 +63,15 @@ internal fun PrizeResultHeader(state: PrizeRedemptionUiState, style: br.gov.caix
                 ),
             contentAlignment = Alignment.CenterStart
         ) {
-            caixaDSCampaignDrawable(
+            loteriasCaixaDSCampaignDrawable(
                 details?.modalityId ?: 2,
                 details?.modalityName.orEmpty(),
-                CaixaDSLotteryArtwork.TRAPEZE
+                LoteriasCaixaDSLotteryArtwork.TRAPEZE
             )?.let { resource ->
-                androidx.compose.foundation.Image(caixaDSDrawablePainter(resource), null, Modifier.fillMaxSize())
+                androidx.compose.foundation.Image(loteriasCaixaDSDrawablePainter(resource), null, Modifier.fillMaxSize())
             }
             Icon(
-                caixaDSLotteryClover(details?.modalityId ?: 2),
+                loteriasCaixaDSLotteryClover(details?.modalityId ?: 2),
                 contentDescription = null,
                 tint = Color.Unspecified,
                 modifier = (Modifier.padding(start = 16.dp).size(with(LocalDensity.current) { 22.sp.toDp() }, 22.dp)).uiId("retail.0108")
@@ -79,7 +82,7 @@ internal fun PrizeResultHeader(state: PrizeRedemptionUiState, style: br.gov.caix
             (Modifier.weight(1f)).uiId("retail.0109"),
             color = style.content,
             fontSize = 16.sp,
-            fontFamily = CaixaDSFuturaFontFamily,
+            fontFamily = LoteriasCaixaDSFuturaFontFamily,
             fontWeight = FontWeight.Bold
         )
         PrizeResultContests(state, style)
@@ -90,7 +93,7 @@ internal fun PrizeResultHeader(state: PrizeRedemptionUiState, style: br.gov.caix
     ) {
         val amount = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("pt-BR"))
             .format(details?.netValue ?: java.math.BigDecimal.ZERO)
-        CaixaDSPrizeMessage(
+        LoteriasCaixaDSPrizeMessage(
             message = if (details?.netValue?.signum() == 0 || details == null) {
                 uiStrings.getString(LocalizedR.string.ui_voce_foi_premiado_9441db)
             } else {
@@ -104,7 +107,10 @@ internal fun PrizeResultHeader(state: PrizeRedemptionUiState, style: br.gov.caix
 }
 
 @Composable
-private fun PrizeResultContests(state: PrizeRedemptionUiState, style: br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSLotteryStyle) {
+private fun PrizeResultContests(
+    state: PrizeRedemptionUiState,
+    style: br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSLotteryStyle,
+) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val details = state.details
     val awarded = details?.let(::prizeAwardedRows).orEmpty()
@@ -137,7 +143,7 @@ private fun PrizeResultContests(state: PrizeRedemptionUiState, style: br.gov.cai
             contestText,
             color = style.content,
             fontSize = 16.sp,
-            fontFamily = CaixaDSFuturaFontFamily,
+            fontFamily = LoteriasCaixaDSFuturaFontFamily,
             modifier = Modifier.uiId("retail.0111")
         )
     }

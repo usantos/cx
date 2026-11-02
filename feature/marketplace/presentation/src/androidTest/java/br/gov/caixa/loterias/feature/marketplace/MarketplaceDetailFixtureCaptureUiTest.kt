@@ -36,9 +36,9 @@ class MarketplaceDetailFixtureCaptureUiTest {
             .bufferedReader().use { JSONObject(it.readText()).getJSONObject(modality) }
         val detail = fixture.detail(modality, contestType, args.getString("contest", "3070")!!.toInt())
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
-                val campaign = if (october) CaixaDSCampaign.OCTOBER_ROSE else CaixaDSCampaign.DEFAULT
-                CaixaDSCampaignTheme(campaign, campaign) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                val campaign = if (october) LoteriasCaixaDSCampaign.OCTOBER_ROSE else LoteriasCaixaDSCampaign.DEFAULT
+                LoteriasCaixaDSCampaignTheme(campaign, campaign) {
                     MarketplaceDetailScreen(MarketplaceDetailUiState(detail = detail, isLoading = false,
                         favoriteLottery = false), {}, {}, {}, {}, {}, cartTotal = BigDecimal("35"),
                         cartBetCount = 1, onCart = {}, specialName = specialName)

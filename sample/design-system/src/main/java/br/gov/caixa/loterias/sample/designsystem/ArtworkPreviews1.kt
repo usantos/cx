@@ -2,18 +2,18 @@
 
 package br.gov.caixa.loterias.sample.designsystem
 
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSMercadoPagoBrand
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPrizeMercadoPagoMark
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSMercadoPagoBrand
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPrizeMercadoPagoMark
 
 internal val artworkPreviews1 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPrizeMercadoPagoMark") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPrizeMercadoPagoMark") { state ->
         with(state) {
-            CaixaDSPrizeMercadoPagoMark()
+            LoteriasCaixaDSPrizeMercadoPagoMark()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSMercadoPagoBrand") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSMercadoPagoBrand") { state ->
         with(state) {
-            CaixaDSMercadoPagoBrand()
+            LoteriasCaixaDSMercadoPagoBrand()
         }
     }
 )

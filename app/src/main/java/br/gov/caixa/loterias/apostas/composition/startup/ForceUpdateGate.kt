@@ -16,8 +16,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import br.gov.caixa.loterias.apostas.BuildConfig
 import br.gov.caixa.loterias.apostas.R
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.state.CaixaDSStatusAction
-import br.gov.caixa.loterias.core.designsystem.components.state.showCaixaDSMessage
+import br.gov.caixa.loterias.core.designsystem.components.state.LoteriasCaixaDSStatusAction
+import br.gov.caixa.loterias.core.designsystem.components.state.showLoteriasCaixaDSMessage
 import br.gov.caixa.loterias.feature.onboarding.di.createForceUpdateViewModel
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.SplashAnimationHost
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.SplashScreen
@@ -53,7 +53,7 @@ internal fun ForceUpdateGate(activity: Activity, ready: @Composable () -> Unit) 
             try {
                 activity.startActivity(Intent(Intent.ACTION_VIEW, "https://play.google.com/store/apps/details?id=$id".toUri()))
             } catch (_: ActivityNotFoundException) {
-                showCaixaDSMessage(activity, activity.getString(R.string.force_update_store_unavailable))
+                showLoteriasCaixaDSMessage(activity, activity.getString(R.string.force_update_store_unavailable))
             }
         }
     }) { LauncherIconGate(activity, options, ready) }
@@ -71,12 +71,12 @@ internal fun ForceUpdateGateContent(state: ForceUpdateState, onOpenStore: () -> 
             }
 
             ForceUpdateState.REQUIRED -> {
-                br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSStatusBarColor(
-                    br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens.Blue700,
+                br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBarColor(
+                    br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens.Blue700,
                     darkIcons = false
                 )
                 BackHandler { }
-                CaixaDSStatusAction(
+                LoteriasCaixaDSStatusAction(
                     title = stringResource(R.string.force_update_title),
                     message = stringResource(R.string.force_update_message),
                     action = stringResource(R.string.force_update_action),

@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.feature.home.presentation.route
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -9,9 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Density
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSPullToRefreshBox as PullToRefreshBox
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSPullToRefreshBox as PullToRefreshBox
 import br.gov.caixa.loterias.core.domain.configuration.model.CampaignArea
 import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign as HomeCampaign
 import br.gov.caixa.loterias.core.presentation.mapper.toDSCampaign

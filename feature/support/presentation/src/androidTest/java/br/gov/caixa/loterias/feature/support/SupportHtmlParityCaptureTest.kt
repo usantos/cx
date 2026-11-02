@@ -10,7 +10,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
 import java.io.File
 import org.junit.Assert.assertEquals
@@ -28,7 +28,7 @@ class SupportHtmlParityCaptureTest {
     @get:Rule val compose = createComposeRule()
 
     @Test fun drawerReadOnlyTermsUseMappedTermosAceiteFontWrapper() {
-        compose.setContent { CaixaDSTheme(darkTheme = false) {
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
             SupportScreen(SupportUiState(mode = SupportMode.TERMS_READ_ONLY, htmlContent = HTML), { error("No external action allowed") })
         } }
         compose.onNodeWithTag("support_terms_document").assertExists()
@@ -38,7 +38,7 @@ class SupportHtmlParityCaptureTest {
     }
 
     @Test fun termsUsoAcceptancePreservesUnmodifiedHtmlWithoutAccepting() {
-        compose.setContent { CaixaDSTheme(darkTheme = false) {
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
             SupportScreen(SupportUiState(selectedTab = SupportTab.TERMS, acceptanceRequired = true,
                 htmlContent = HTML, termsAccepted = false), { error("No acceptance allowed") })
         } }
@@ -52,7 +52,7 @@ class SupportHtmlParityCaptureTest {
     @Test fun faqClosedExpandedLoadingAndFailureRemainLocal() {
         val state = mutableStateOf(SupportUiState(selectedSectionId = 1, selectedSectionTitle = "PERGUNTAS",
             questions = listOf(SupportQuestion(1, "Pergunta de Teste", "Resposta sintética de suporte, sem informações pessoais."))))
-        compose.setContent { CaixaDSTheme(darkTheme = false) {
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
             SupportScreen(state.value, { action ->
                 if (action is SupportAction.ToggleQuestion) state.value = state.value.copy(expandedQuestionIds = setOf(action.id))
                 else error("No external support action allowed")

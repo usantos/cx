@@ -27,19 +27,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.notifications.R
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationCategory
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationPreference
@@ -55,7 +52,7 @@ internal fun PreferencesScreen(
     onBack: () -> Unit,
     onHelp: () -> Unit,
 ) {
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = stringResource(R.string.notifications_preferencias_de_notificacoes),
         onBack = onBack,
 
@@ -69,20 +66,20 @@ internal fun PreferencesScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    CaixaDSIcons.Help,
+                    LoteriasCaixaDSIcons.Help,
                     contentDescription = stringResource(R.string.notifications_termos_de_uso),
-                    tint = CaixaDSColorTokens.White,
+                    tint = LoteriasCaixaDSColorTokens.White,
                     modifier = (Modifier.size(24.dp)).uiId("inbox.0043")
                 )
             }
         },
         modifier = Modifier.uiId("inbox.0044")
     ) { padding ->
-        Column(Modifier.fillMaxSize().padding(padding).background(CaixaDS.colors.surface)) {
+        Column(Modifier.fillMaxSize().padding(padding).background(LoteriasCaixaDS.colors.surface)) {
             Text(
                 stringResource(R.string.notifications_escolha_os_assuntos_que_deseja_receber_notificacoes_no_seu_app),
                 (Modifier.fillMaxWidth().padding(16.dp)).uiId("inbox.0045"),
-                color = CaixaDSColorTokens.NotificationIntro,
+                color = LoteriasCaixaDSColorTokens.NotificationIntro,
                 style = notificationLegacyTextStyle(18.sp)
             )
             LazyColumn((Modifier.fillMaxSize()).uiId("inbox.0046")) {
@@ -107,7 +104,7 @@ private fun PreferenceRow(preference: NotificationPreference, onCheckedChange: (
         Column(Modifier.weight(1f)) {
             Text(
                 stringResource(preference.category.titleResource()),
-                color = CaixaDSColorTokens.NotificationText,
+                color = LoteriasCaixaDSColorTokens.NotificationText,
                 style = notificationLegacyTextStyle(14.sp, FontWeight.Bold),
                 modifier = Modifier.uiId("inbox.0048")
             )
@@ -115,14 +112,14 @@ private fun PreferenceRow(preference: NotificationPreference, onCheckedChange: (
                 Text(
                     stringResource(category.descriptionResource()),
                     (Modifier.padding(top = 8.dp)).uiId("inbox.0049"),
-                    color = CaixaDSColorTokens.NotificationText,
+                    color = LoteriasCaixaDSColorTokens.NotificationText,
                     style = notificationLegacyTextStyle(14.sp)
                 )
             }
         }
         LegacyNotificationSwitch(preference.enabled)
     }
-    Box(Modifier.fillMaxWidth().height(0.2.dp).background(CaixaDSColorTokens.NotificationDivider))
+    Box(Modifier.fillMaxWidth().height(0.2.dp).background(LoteriasCaixaDSColorTokens.NotificationDivider))
 }
 
 @Composable
@@ -138,14 +135,14 @@ private fun LegacyNotificationSwitch(checked: Boolean) {
                 .fillMaxWidth()
                 .height(14.dp)
                 .clip(RoundedCornerShape(7.dp))
-                .background(if (checked) CaixaDSColorTokens.Orange100 else CaixaDSColorTokens.NotificationSwitchTrack)
+                .background(if (checked) LoteriasCaixaDSColorTokens.Orange100 else LoteriasCaixaDSColorTokens.NotificationSwitchTrack)
         )
         Box(
             Modifier
                 .offset(x = thumbOffset)
                 .size(20.dp)
                 .clip(CircleShape)
-                .background(if (checked) CaixaDSColorTokens.Orange500 else CaixaDSColorTokens.NotificationSwitchThumb)
+                .background(if (checked) LoteriasCaixaDSColorTokens.Orange500 else LoteriasCaixaDSColorTokens.NotificationSwitchThumb)
         )
     }
 }

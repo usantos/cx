@@ -81,7 +81,7 @@ real ou igualdade pixel a pixel.
 O `modernCheck` **não está verde**. A tentativa completa e a continuação com
 `--continue` encontraram:
 
-1. `verifyCaixaDS`: cores literais em sete arquivos anteriores à nova tela:
+1. `verifyLoteriasCaixaDS`: cores literais em sete arquivos anteriores à nova tela:
    HomeScreen, HomeDrawerStyle, ShakeMenuRow, RapidConfigurationRoute,
    BettingSportsContent, ResponsibleGamingRoute e StartupStatusScreen.
 2. `verifyComposeMigration`: 17 XMLs anteriores fora do inventário permitido,
@@ -104,7 +104,7 @@ classifica como ausente uma implementação que já existe.
 
 | Prioridade | Área | Trabalho restante | Evidência/critério de fechamento |
 |---|---|---|---|
-| P0 | Pipeline | Regularizar os XMLs permitidos, mover cores para CaixaDS, atingir cobertura de apostas e resolver memória do dex; concluir `modernCheck` e `releaseCheck` | Falhas observadas nesta rodada; executar a matriz inteira sem exclusões |
+| P0 | Pipeline | Regularizar os XMLs permitidos, mover cores para LoteriasCaixaDS, atingir cobertura de apostas e resolver memória do dex; concluir `modernCheck` e `releaseCheck` | Falhas observadas nesta rodada; executar a matriz inteira sem exclusões |
 | P0 | Serviços e negócio | Confrontar o CX atual com os 99 contratos e verificar cada operação pelo caminho tela → caso de uso → repository → data source, incluindo payload, criptografia, headers, parâmetros, flags, erro e redirect | `LEGACY_BACKEND_BASELINE.tsv` e `BACKEND_MIGRATION.md`; o gate atual verifica método/path, não consumo nem semântica |
 | P0 | Home v2 | Capturar CX e Compose com o mesmo backend/dados, conferir geometria, insets, fontes, skeleton, rolagem, drag/autoscroll e restauração da ordem após reiniciar | CX real bloqueado em LTR-503; implementação portada, raster ainda não homologado |
 | P0 | Autenticação/conta | Homologar retorno SSO, biometria, bloqueio total/parcial, termos, cadastro, troca de sessão, logout/limpeza, transferência do carrinho e prioridade dos avisos | Auditorias `POST_LOGIN_*`, `LOCAL_SESSION_CLEANUP_AUDIT.md` e `VISUAL_PARITY_MATRIX.md`; faltam pares Android autenticados completos |

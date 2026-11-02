@@ -22,13 +22,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIconButton as IconButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIconButton as IconButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.retail.R as LocalizedR
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel
 import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionUiState
@@ -42,21 +42,21 @@ internal fun PrizeAgencyDataScreen(
     onDownload: () -> Unit,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         uiStrings.getString(LocalizedR.string.ui_agencia_62aa47),
         onBack,
         topBarAction = {
             IconButton(onClick = onHelp, modifier = Modifier.uiId("retail.0054")) {
                 Icon(
-                    CaixaDSIcons.Help,
+                    LoteriasCaixaDSIcons.Help,
                     contentDescription = uiStrings.getString(LocalizedR.string.ui_ajuda_fe0add),
-                    tint = CaixaDSColorTokens.White,
+                    tint = LoteriasCaixaDSColorTokens.White,
                     modifier = (Modifier.size(24.dp)).uiId("retail.0055")
                 )
             }
         },
 
-        containerColor = CaixaDSColorTokens.White,
+        containerColor = LoteriasCaixaDSColorTokens.White,
         modifier = Modifier.uiId("retail.0056")
     ) { padding ->
         Column(Modifier.fillMaxSize().padding(padding).uiId("retail.0057").verticalScroll(rememberScrollState())) {
@@ -67,7 +67,7 @@ internal fun PrizeAgencyDataScreen(
                     Modifier
                         .fillMaxWidth()
                         .height(14.dp)
-                        .background(CaixaDS.colors.graphite)
+                        .background(LoteriasCaixaDS.colors.graphite)
                         .uiId("retail.0058").clickable(onClick = onLottery)
                 )
             }
@@ -91,14 +91,14 @@ internal fun PrizeAgencyDataScreen(
                     .fillMaxWidth()
                     .padding(start = 50.dp, top = 36.dp, end = 50.dp)
                     .height(56.dp)
-                    .background(CaixaDSColorTokens.White, RectangleShape)
-                    .border(1.dp, CaixaDS.colors.teal, RectangleShape)
+                    .background(LoteriasCaixaDSColorTokens.White, RectangleShape)
+                    .border(1.dp, LoteriasCaixaDS.colors.teal, RectangleShape)
                     .uiId("retail.0062").clickable(onClick = onDownload),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     uiStrings.getString(LocalizedR.string.ui_gerar_pdf_9cdd93),
-                    color = CaixaDS.colors.teal,
+                    color = LoteriasCaixaDS.colors.teal,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.uiId("retail.0063")
@@ -117,13 +117,13 @@ private fun PrizeAgencyInstruction(number: Int, text: String, modifier: Modifier
         Box(
             modifier = Modifier
                 .size(40.dp)
-                .background(CaixaDSColorTokens.White, CircleShape)
-                .border(1.dp, CaixaDS.colors.line, CircleShape),
+                .background(LoteriasCaixaDSColorTokens.White, CircleShape)
+                .border(1.dp, LoteriasCaixaDS.colors.line, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 number.toString(),
-                color = CaixaDS.colors.brand,
+                color = LoteriasCaixaDS.colors.brand,
                 fontSize = 17.5.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.uiId("retail.0064")
@@ -132,7 +132,7 @@ private fun PrizeAgencyInstruction(number: Int, text: String, modifier: Modifier
         Text(
             text,
             modifier = (Modifier.weight(1f).padding(start = 8.dp)).uiId("retail.0065"),
-            color = CaixaDS.colors.graphite,
+            color = LoteriasCaixaDS.colors.graphite,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )

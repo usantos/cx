@@ -17,9 +17,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 
 @Composable
@@ -53,13 +53,15 @@ internal fun PoolCartArrow(color: Color, modifier: Modifier = Modifier) {
 internal fun LegacyHomeButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     Box(
-        modifier.width(184.dp).height(84.dp).background(CaixaDSColorTokens.BetAction).uiId("cart.0001").clickable(onClick = onClick),
+        modifier.width(
+            184.dp
+        ).height(84.dp).background(LoteriasCaixaDSColorTokens.BetAction).uiId("cart.0001").clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Text(
             uiStrings.getString(LocalizedR.string.ui_voltar_ao_inicio_372787),
-            fontFamily = CaixaDSFuturaFontFamily,
-            color = CaixaDSColorTokens.White,
+            fontFamily = LoteriasCaixaDSFuturaFontFamily,
+            color = LoteriasCaixaDSColorTokens.White,
             fontSize = 17.7.sp,
             textAlign = TextAlign.Center,
             modifier = Modifier.uiId("cart.0002")

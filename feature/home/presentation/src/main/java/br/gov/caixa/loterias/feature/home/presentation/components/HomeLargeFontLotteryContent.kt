@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.home.R
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
@@ -33,7 +33,7 @@ internal fun HomeLargeFontLotteryContent(lottery: HomeLottery) {
     val resale by rememberHomePoolResale(lottery.closingDateTime, lottery.poolResaleClosingDateTime)
     val remaining by rememberHomeCardCountdown(lottery.closingDateTime)
     val drawDate = if (lottery.resultCode == "loteca") lottery.closingDateTime else lottery.drawDate
-    Box(Modifier.fillMaxSize().background(CaixaDSColorTokens.White)) {
+    Box(Modifier.fillMaxSize().background(LoteriasCaixaDSColorTokens.White)) {
         Image(
             painterResource(R.drawable.legacy_home_trevos_background_card),
             null,

@@ -7,7 +7,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.notifications.domain.model.InboxNotification
 import br.gov.caixa.loterias.feature.notifications.presentation.screen.CentralNotificationsScreen
 import br.gov.caixa.loterias.feature.notifications.presentation.state.CentralNotificationsState
@@ -21,7 +21,7 @@ class CentralNotificationsScreenTest {
     @Test fun emptyAndUnreadTabsDisableBulkOperations() {
         val state = mutableStateOf(CentralNotificationsState())
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 CentralNotificationsScreen(state.value, {}, { state.value = state.value.copy(unreadOnly = it) }, {}, {}, {}, {})
             }
         }
@@ -46,7 +46,7 @@ class CentralNotificationsScreenTest {
         var removed: Long? = null
         var marked = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 CentralNotificationsScreen(
                     CentralNotificationsState(all = listOf(unread, read), unread = listOf(unread)),
                     {},

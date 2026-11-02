@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.feature.payment.presentation.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,13 +20,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton as Button
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButtonDefaults as ButtonDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCheckbox as Checkbox
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCheckbox as Checkbox
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.presentation.state.WorkflowSpec
 import br.gov.caixa.loterias.feature.payment.R as LocalizedR
 import br.gov.caixa.loterias.feature.payment.presentation.formatting.localizedMessage as messageText
@@ -51,22 +50,22 @@ internal fun PixGuidanceScreen(
     onSubmit: () -> Unit,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(title = spec.title, onBack = onBack, modifier = Modifier.uiId("pay.0102")) { padding ->
+    LoteriasCaixaDSScaffold(title = spec.title, onBack = onBack, modifier = Modifier.uiId("pay.0102")) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).background(CaixaDS.colors.surface)
+            Modifier.fillMaxSize().padding(padding).background(LoteriasCaixaDS.colors.surface)
                 .uiId("pay.0103").verticalScroll(rememberScrollState()).padding(top = 16.dp, bottom = 64.dp)
         ) {
             Text(
                 spec.description,
                 (Modifier.fillMaxWidth().padding(start = 17.dp, top = 9.dp, end = 17.dp, bottom = 8.dp)).uiId("pay.0104"),
-                color = CaixaDS.colors.cartDark,
+                color = LoteriasCaixaDS.colors.cartDark,
                 fontSize = 14.sp,
                 style = legacyPaymentTextStyle
             )
             Text(
                 uiStrings.getString(LocalizedR.string.ui_como_pagar_com_pix_47fd8f),
                 (Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp)).uiId("pay.0105"),
-                color = CaixaDS.colors.cartDark,
+                color = LoteriasCaixaDS.colors.cartDark,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
                 style = legacyPaymentTextStyle
@@ -84,7 +83,7 @@ internal fun PixGuidanceScreen(
                 Checkbox(state.pixTermsAccepted, onCheckedChange = null, modifier = Modifier.uiId("pay.0109"))
                 Text(
                     uiStrings.getString(LocalizedR.string.ui_estou_ciente_que_somente_sera_aceito_3c9f45),
-                    color = CaixaDS.colors.cartDark,
+                    color = LoteriasCaixaDS.colors.cartDark,
                     fontSize = 14.sp,
                     style = legacyPaymentTextStyle,
                     lineHeight = 18.sp,
@@ -100,10 +99,10 @@ internal fun PixGuidanceScreen(
                     ).uiId("pay.0111"),
                 shape = RoundedCornerShape(0.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = CaixaDS.colors.pix,
-                    contentColor = CaixaDSColorTokens.White,
-                    disabledContainerColor = CaixaDS.colors.pixDisabled,
-                    disabledContentColor = CaixaDSColorTokens.White
+                    containerColor = LoteriasCaixaDS.colors.pix,
+                    contentColor = LoteriasCaixaDSColorTokens.White,
+                    disabledContainerColor = LoteriasCaixaDS.colors.pixDisabled,
+                    disabledContentColor = LoteriasCaixaDSColorTokens.White
                 )
             ) {
                 Text(
@@ -127,14 +126,14 @@ private fun PixInstructionRows() {
                 uiStrings.getString(LocalizedR.string.ui_1_s_65e020, (index + 1).toString()),
                 fontSize = 14.sp,
                 style = legacyPaymentTextStyle,
-                color = CaixaDS.colors.cartDark,
+                color = LoteriasCaixaDS.colors.cartDark,
                 modifier = Modifier.uiId("pay.0106")
             )
             Text(
                 instruction,
                 fontSize = 14.sp,
                 style = legacyPaymentTextStyle,
-                color = CaixaDS.colors.cartDark,
+                color = LoteriasCaixaDS.colors.cartDark,
                 modifier = Modifier.uiId("pay.0107")
             )
         }

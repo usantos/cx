@@ -6,7 +6,7 @@ Autoridade: SPEC.md; auditoria: MIGRATION_AUDIT.md. Execução explicitamente au
 2. [x] Separar as seis rotas:coordenação, Screen, componentes e adaptadores Android; manter estados/chaves/callbacks/contratos.
 3. [x] Decompor as três ViewModels em colaboradores coesos mantendo fachada pública, StateFlow privado e use cases; testar cancelamento/ordem/respostas antigas.
 4. [x] Separar mapeadores/adaptadores/orquestração dos dois repositories sem alterar DTOs, wire/cache/rotas/erros.
-5. [x] Consolidar CaixaDSLegacyComponents em arquivos por responsabilidade, APIs/corpos/defaults idênticos; previews relevantes.
+5. [x] Consolidar LoteriasCaixaDSLegacyComponents em arquivos por responsabilidade, APIs/corpos/defaults idênticos; previews relevantes.
 6. [x] Migrar os três testes Java restantes para Kotlin com mesmas assertivas; centralizar versões de teste sem atualização indiscriminada.
 7. [x] Aplicar refinamentos de conformidade comprovadamente necessários pela auditoria; preservar segurança e comportamento, sem inventar integrações.
 8. [x] Compilar/testar checkpoints e integrar testes/cobertura dos novos colaboradores sem reduzir gates.

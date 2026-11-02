@@ -11,7 +11,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeDrawResult
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
@@ -85,7 +85,7 @@ class HomeDrawResultBehaviorTest {
         )
         compose.setContent {
             CompositionLocalProvider(LocalUriHandler provides handler) {
-                CaixaDSTheme { HomeDrawResult(result, lottery, Modifier.fillMaxSize()) }
+                LoteriasCaixaDSTheme { HomeDrawResult(result, lottery, Modifier.fillMaxSize()) }
             }
         }
     }

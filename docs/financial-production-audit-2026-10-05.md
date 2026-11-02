@@ -23,7 +23,7 @@ Diferenças observadas: identificador fica antes do meio de pagamento, título T
 
 Correção aplicada somente à tela Apostas da Compra: cabeçalho com CAIXA/font padding, ordem literal e pesos de texto, Total:, cor de situação e margens empacotadas; linhas numéricas comuns com cores de modalidade, grade e rodapé. O cartão genérico compartilhado permanece intacto e atende casos com bolão, trevos, esportes, colunas, time/mês e badges cuja geometria não foi pareada nesta rodada. Os mesmos callbacks de favorito/filtro e ViewModel são preservados. GREEN físico e nova captura comparativa aguardam o coordenador.
 
-Árvores adicionais do mesmo APK extraídas via aapt2: `list_group_compras.txt`, `compra_processada_layout.txt`, `list_item_compras.txt`, `item_compras_dezenas_layout.txt`, `item_dezena_detalhe.txt`. O número empacotado mede35dp com margem8dp; holder complementar define CAIXA bold e ausência de zero inicial. Amostragem read-only de pixels da captura oficial confirma números/círculos404B52, dados757575, situação143DA6, Total/valor48586C e fundo91278F, reproduzidos com tokens existentes do CaixaDS.
+Árvores adicionais do mesmo APK extraídas via aapt2: `list_group_compras.txt`, `compra_processada_layout.txt`, `list_item_compras.txt`, `item_compras_dezenas_layout.txt`, `item_dezena_detalhe.txt`. O número empacotado mede35dp com margem8dp; holder complementar define CAIXA bold e ausência de zero inicial. Amostragem read-only de pixels da captura oficial confirma números/círculos404B52, dados757575, situação143DA6, Total/valor48586C e fundo91278F, reproduzidos com tokens existentes do LoteriasCaixaDS.
 
 ## Recuperação e limites
 

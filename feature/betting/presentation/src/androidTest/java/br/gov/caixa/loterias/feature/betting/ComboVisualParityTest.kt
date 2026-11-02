@@ -22,8 +22,8 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
@@ -62,7 +62,7 @@ class ComboVisualParityTest {
             Log.i("ComboNativeMetrics", legacy.probe(metrics.widthPixels, metrics.heightPixels))
         }
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (detail.value) {
                     Detail(combo)
                 } else {
@@ -77,12 +77,12 @@ class ComboVisualParityTest {
     }
 
     @Test fun detailUsesServerDescriptionInsteadOfUnrelatedGenericCopy() {
-        compose.setContent { CaixaDSTheme { Detail(combo) } }
+        compose.setContent { LoteriasCaixaDSTheme { Detail(combo) } }
         compose.onNodeWithText(combo.description).assertIsDisplayed()
     }
 
     @Test fun quantityAndContestUseNativeModalityColorAndNameWeight() {
-        compose.setContent { CaixaDSTheme { ComboDetailEntryCard(entry) } }
+        compose.setContent { LoteriasCaixaDSTheme { ComboDetailEntryCard(entry) } }
         val expected = oracle().color("mega_verde_claro_mkp")
         for (label in listOf("3 jogos", "mega-sena", "concurso 2800")) {
             assertEquals(label, expected, layout(label).layoutInput.style.color.toArgb())
@@ -91,7 +91,7 @@ class ComboVisualParityTest {
     }
 
     @Test fun singleGameAndRecurringContestRangeMatchLegacyLabels() {
-        compose.setContent { CaixaDSTheme { ComboDetailEntryCard(entry.copy(betQuantity = 1, recurringDraws = RECURRING_DRAWS)) } }
+        compose.setContent { LoteriasCaixaDSTheme { ComboDetailEntryCard(entry.copy(betQuantity = 1, recurringDraws = RECURRING_DRAWS)) } }
         compose.onNodeWithText("1 jogo").assertIsDisplayed()
         compose.onNodeWithText("concurso 2800 a 2802").assertIsDisplayed()
     }
@@ -101,20 +101,20 @@ class ComboVisualParityTest {
             modality = LotteryModality(LOTOFACIL_ID, "Lotofácil", "LOTOFACIL", "Lotofácil da Independência"),
             contestType = "ESPECIAL"
         )
-        compose.setContent { CaixaDSTheme { ComboDetailEntryCard(special) } }
+        compose.setContent { LoteriasCaixaDSTheme { ComboDetailEntryCard(special) } }
         compose.onNodeWithText("lotofácil da independência").assertIsDisplayed()
     }
 
     @Test fun lotomaniaPreservesMirrorSuffixFromNativeHolder() {
         val mirror = entry.copy(modality = LotteryModality(LOTOMANIA_ID, "Lotomania", "LOTOMANIA"))
-        compose.setContent { CaixaDSTheme { ComboDetailEntryCard(mirror) } }
+        compose.setContent { LoteriasCaixaDSTheme { ComboDetailEntryCard(mirror) } }
         compose.onNodeWithText("Lotomania + espelho").assertIsDisplayed()
     }
 
     @Test fun detailCardHeightAndSpacingMatchInstalledXml() {
         val second = entry.copy(contestNumber = entry.contestNumber + 1)
         val third = entry.copy(contestNumber = entry.contestNumber + 2)
-        compose.setContent { CaixaDSTheme { Detail(combo.copy(entries = listOf(entry, second, third))) } }
+        compose.setContent { LoteriasCaixaDSTheme { Detail(combo.copy(entries = listOf(entry, second, third))) } }
         val first = compose.onNodeWithTag("combo-entry-MEGA_SENA-NORMAL-2800").fetchSemanticsNode().boundsInRoot
         val next = compose.onNodeWithTag("combo-entry-MEGA_SENA-NORMAL-2801").fetchSemanticsNode().boundsInRoot
         val last = compose.onNodeWithTag("combo-entry-MEGA_SENA-NORMAL-2802").fetchSemanticsNode().boundsInRoot
@@ -146,13 +146,16 @@ class ComboVisualParityTest {
             )
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (nativeMode.value) ComboReferencePreview(compared, emptyList(), true) else Detail(compared)
             }
         }
         assertEquals(oracle().color("bolao_black_loterias"), layout("Quantidade de Apostas").layoutInput.style.color.toArgb())
         assertEquals(FontWeight.ExtraBold, layout("R$ 20,50").layoutInput.style.fontWeight)
-        assertEquals(CaixaDSFuturaFontFamily, layout("Quero ver os números escolhidos antes de pagar.").layoutInput.style.fontFamily)
+        assertEquals(
+            LoteriasCaixaDSFuturaFontFamily,
+            layout("Quero ver os números escolhidos antes de pagar.").layoutInput.style.fontFamily
+        )
         val clover = compose.onNodeWithTag("combo-header-clover").fetchSemanticsNode().boundsInRoot
         val native = oracle().inflate("activity_detalhe_combo")
         val icon = oracle().text(native, "txtNomeDetalheCombo").compoundDrawablesRelative[0]
@@ -171,7 +174,7 @@ class ComboVisualParityTest {
         val nativeMode = mutableStateOf(false)
         val catalog = listOf(combo, combo.copy(id = 9, name = "Combo Duplo"))
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (nativeMode.value) {
                     ComboReferencePreview(combo, catalog, false)
                 } else {
@@ -181,7 +184,7 @@ class ComboVisualParityTest {
         }
         val layouts = mutableListOf<TextLayoutResult>()
         compose.onAllNodesWithText("R$ 20,50").onFirst().performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
-        assertEquals(CaixaDSFuturaFontFamily, layouts.single().layoutInput.style.fontFamily)
+        assertEquals(LoteriasCaixaDSFuturaFontFamily, layouts.single().layoutInput.style.fontFamily)
         val header = layout(oracle().string("txt_lista_combos_top"))
         assertEquals(header.getLineLeft(0), header.getLineLeft(1), PIXEL_TOLERANCE)
         capture("combo-catalog-after")
@@ -191,7 +194,7 @@ class ComboVisualParityTest {
     }
 
     @Test fun blankServerDescriptionRetainsNativeDefaultText() {
-        compose.setContent { CaixaDSTheme { Detail(combo.copy(description = "")) } }
+        compose.setContent { LoteriasCaixaDSTheme { Detail(combo.copy(description = "")) } }
         compose.onNodeWithText(oracle().string("texto_header_detalhe_combo")).assertIsDisplayed()
     }
 
@@ -204,7 +207,7 @@ class ComboVisualParityTest {
         )
         val detail = mutableStateOf(false)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (detail.value) Detail(special) else LegacyComboCatalogCard(special) {}
             }
         }
@@ -216,7 +219,7 @@ class ComboVisualParityTest {
     @Test fun nativeGradientHeaderShowsHelpAndInvokesItOnce() {
         var helps = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 BetCombosScreen(BettingCatalogUiState(loading = false, combos = listOf(combo)), {
                 }, {}, BigDecimal.ZERO, 0, null, {}, onHelp = { helps++ })
             }

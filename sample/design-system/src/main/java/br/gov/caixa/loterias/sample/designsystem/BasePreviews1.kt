@@ -6,42 +6,42 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSNotificationPlaceholder
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIconButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSModalBottomSheet
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSModalNavigationDrawer
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSOutlinedButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSProvideTextStyle
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSPullToRefreshBox
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSRadioButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSSurface
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSNotificationPlaceholder
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIconButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSModalBottomSheet
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSModalNavigationDrawer
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSOutlinedButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSProvideTextStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSPullToRefreshBox
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSRadioButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSSurface
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 
 internal val basePreviews1 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIconButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIconButton") { state ->
         with(state) {
-            CaixaDSIconButton(
+            LoteriasCaixaDSIconButton(
                 onClick = action,
                 content = {
-                    CaixaDSIcon(
-                        imageVector = CaixaDSNotificationPlaceholder,
+                    LoteriasCaixaDSIcon(
+                        imageVector = LoteriasCaixaDSNotificationPlaceholder,
                         contentDescription = actionLabel
                     )
                 }
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSModalBottomSheet") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSModalBottomSheet") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSModalBottomSheet(
+                LoteriasCaixaDSModalBottomSheet(
                     onDismissRequest = dismiss,
                     content = {
-                        CaixaDSText(
+                        LoteriasCaixaDSText(
                             sample,
                             Modifier.padding(32.dp)
                         )
@@ -50,62 +50,62 @@ internal val basePreviews1 = mapOf(
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSModalNavigationDrawer") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSModalNavigationDrawer") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSModalNavigationDrawer(
+                LoteriasCaixaDSModalNavigationDrawer(
                     drawerState = androidx.compose.material3.rememberDrawerState(androidx.compose.material3.DrawerValue.Open),
                     drawerContent = {
-                        CaixaDSButton(onClick = dismiss) {
-                            CaixaDSText(closeLabel)
+                        LoteriasCaixaDSButton(onClick = dismiss) {
+                            LoteriasCaixaDSText(closeLabel)
                         }
                     },
                     modifier = Modifier.height(180.dp),
-                    content = { CaixaDSText(hint) }
+                    content = { LoteriasCaixaDSText(hint) }
                 )
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSOutlinedButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSOutlinedButton") { state ->
         with(state) {
-            CaixaDSOutlinedButton(
+            LoteriasCaixaDSOutlinedButton(
                 onClick = action,
-                content = { CaixaDSText(actionLabel) }
+                content = { LoteriasCaixaDSText(actionLabel) }
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSProvideTextStyle") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSProvideTextStyle") { state ->
         with(state) {
-            CaixaDSProvideTextStyle(
-                value = CaixaDS.typography.headlineSmall,
-                content = { CaixaDSText(sample) }
+            LoteriasCaixaDSProvideTextStyle(
+                value = LoteriasCaixaDS.typography.headlineSmall,
+                content = { LoteriasCaixaDSText(sample) }
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSPullToRefreshBox") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSPullToRefreshBox") { state ->
         with(state) {
-            CaixaDSPullToRefreshBox(
+            LoteriasCaixaDSPullToRefreshBox(
                 isRefreshing = false,
                 onRefresh = action,
                 modifier = Modifier.height(160.dp),
-                content = { CaixaDSText(hint) }
+                content = { LoteriasCaixaDSText(hint) }
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSRadioButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSRadioButton") { state ->
         with(state) {
-            CaixaDSRadioButton(
+            LoteriasCaixaDSRadioButton(
                 selected = checked,
                 onClick = toggle
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSScaffold") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSScaffold") { state ->
         with(state) {
-            CaixaDSScaffold(
+            LoteriasCaixaDSScaffold(
                 modifier = Modifier.height(180.dp),
                 content = { padding ->
-                    CaixaDSText(
+                    LoteriasCaixaDSText(
                         sample,
                         Modifier.padding(padding)
                     )
@@ -113,13 +113,13 @@ internal val basePreviews1 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSSurface") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSSurface") { state ->
         with(state) {
-            CaixaDSSurface(
+            LoteriasCaixaDSSurface(
                 onClick = toggle,
                 selected = checked,
                 content = {
-                    CaixaDSText(
+                    LoteriasCaixaDSText(
                         sample,
                         Modifier.padding(20.dp)
                     )
@@ -127,9 +127,9 @@ internal val basePreviews1 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText") { state ->
         with(state) {
-            CaixaDSText(text = sample)
+            LoteriasCaixaDSText(text = sample)
         }
     }
 )

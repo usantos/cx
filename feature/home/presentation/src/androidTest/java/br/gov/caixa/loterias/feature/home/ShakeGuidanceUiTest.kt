@@ -5,8 +5,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.home.presentation.components.ShakeMenuRow
 import br.gov.caixa.loterias.feature.home.presentation.state.HomePreferencesUiState
 import org.junit.Assert.assertEquals
@@ -20,8 +20,8 @@ class ShakeGuidanceUiTest {
     @Test fun pinkSwitchKeepsPinkThumbAndWhiteMarkInBothStates() {
         val settings = mutableStateOf(HomePreferencesUiState(loaded = true, shakeEnabled = true))
         compose.setContent {
-            CaixaDSTheme {
-                ShakeMenuRow(settings.value, {}, {}, active = true, accent = CaixaDSColorTokens.OctoberRose,
+            LoteriasCaixaDSTheme {
+                ShakeMenuRow(settings.value, {}, {}, active = true, accent = LoteriasCaixaDSColorTokens.OctoberRose,
                     onAccent = Color.White, trackBackground = Color.White, invertSwitchColors = true)
             }
         }
@@ -31,7 +31,7 @@ class ShakeGuidanceUiTest {
             val trackX = (pixels.width * if (enabled) .25f else .75f).toInt()
             val centerY = pixels.height / 2
             // Amostra o seletor acima da marca branca e inspeciona a área interna da marca.
-            assertEquals(CaixaDSColorTokens.OctoberRose, pixels[thumbX, pixels.height * 17 / 48])
+            assertEquals(LoteriasCaixaDSColorTokens.OctoberRose, pixels[thumbX, pixels.height * 17 / 48])
             assertEquals(Color.White, pixels[trackX, centerY])
             val radius = pixels.width / 8
             assertTrue((thumbX - radius until thumbX + radius).any { x ->
@@ -47,7 +47,7 @@ class ShakeGuidanceUiTest {
         val settings = mutableStateOf(HomePreferencesUiState(loaded = true))
         var consumed = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 ShakeMenuRow(settings.value, {}, { consumed++; settings.value = settings.value.copy(shakeTooltipPending = false) }, active = true)
             }
         }

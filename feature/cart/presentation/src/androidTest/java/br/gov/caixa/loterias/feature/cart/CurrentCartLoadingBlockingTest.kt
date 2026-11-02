@@ -12,7 +12,7 @@ import androidx.test.uiautomator.UiDevice
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -103,7 +103,7 @@ class CurrentCartLoadingBlockingTest {
                     dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate),
                 )
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 CurrentCartRoute(fixture, { backCalls.incrementAndGet() }, { addCalls.incrementAndGet() }, {}, {}, {}, {}, {})
             }
         }

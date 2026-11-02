@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.feature.responsiblegaming.presentation.route
 
 import br.gov.caixa.loterias.feature.responsiblegaming.R as LocalizedR
 
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSProvideTextStyle as ProvideTextStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSProvideTextStyle as ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -10,7 +10,7 @@ import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.screen.AssessmentFormScreen
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.screen.AssessmentStartScreen
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.state.ResponsibleGamingAction
@@ -41,7 +41,7 @@ fun ResponsibleGamingRoute(
     }
     ProvideTextStyle(
         TextStyle(
-            fontFamily = CaixaDSFontFamily,
+            fontFamily = LoteriasCaixaDSFontFamily,
             fontSize = 16.sp,
             platformStyle = PlatformTextStyle(includeFontPadding = true)
         )

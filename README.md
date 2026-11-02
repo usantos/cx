@@ -11,7 +11,7 @@ core/domain/         entidades, contratos de repository e casos de uso
 core/data/           data sources, implementations de repository e mapeadores
 core/persistence/    armazenamento seguro compartilhado e contratos de persistência
 core/network/        Retrofit, OkHttp, DTOs, logs e cURL sanitizado
-core/design-system/  CaixaDS: tokens, tema, ícones e componentes
+core/design-system/  LoteriasCaixaDS: tokens, tema, ícones e componentes
 core/presentation/   contratos de UI, reducers e fluxos reutilizáveis
 core/*               autenticação, navegação, chaves e integrações isoladas
 feature/*/presentation/  telas Compose, ViewModels, UiState, navegação e DI por funcionalidade
@@ -32,7 +32,7 @@ pacotes Kotlin e o namespace Android. As pastas-pai não compilam fontes.
 
 ## GitHub Copilot
 
-As regras do projeto inteiro estão em [.github/copilot-instructions.md](.github/copilot-instructions.md), complementadas por [instruções por área](.github/instructions/). Elas cobrem arquitetura, Android/CaixaDS, IDs, segurança, testes, Gradle/CI, documentação e Robot. Consulte o [guia de uso](docs/COPILOT.md). O pacote Robot contém configuração própria para o repositório receptor.
+As regras do projeto inteiro estão em [.github/copilot-instructions.md](.github/copilot-instructions.md), complementadas por [instruções por área](.github/instructions/). Elas cobrem arquitetura, Android/LoteriasCaixaDS, IDs, segurança, testes, Gradle/CI, documentação e Robot. Consulte o [guia de uso](docs/COPILOT.md). O pacote Robot contém configuração própria para o repositório receptor.
 
 ## Configuração local e CI
 
@@ -73,7 +73,7 @@ Para conferir a resolução e a extração usadas no Sync:
 ```
 
 O pre-commit confere também fontes Kotlin/Java ignoradas ou fora do index e
-colisões de nomes por maiúsculas. O pacote `icon` do CaixaDS faz parte do Git.
+colisões de nomes por maiúsculas. O pacote `icon` do LoteriasCaixaDS faz parte do Git.
 Veja o [sample do design system](sample/design-system/README.md) para compilar
 e abrir o catálogo independente.
 
@@ -99,7 +99,7 @@ Ver [auditoria da Home v2 e pendências de paridade](docs/HOME_V2_CX_PARITY_2026
 ./gradlew modernCheck
 ```
 
-O comando compila o APK, executa lint, testes, gates de cobertura, regras do CaixaDS, validações de segurança e as restrições de dependência da Clean Architecture.
+O comando compila o APK, executa lint, testes, gates de cobertura, regras do LoteriasCaixaDS, validações de segurança e as restrições de dependência da Clean Architecture.
 
 O gate global de qualidade (`./gradlew qualityGate`) reúne Ktlint, Detekt, Lint,
 testes unitários frescos e cobertura LINE global estritamente maior que 95%. Para feedback
@@ -121,7 +121,7 @@ conservadora do pre-commit estão no [guia de qualidade](docs/QUALITY_GATE.md). 
 - [Bibliotecas e toolchain](docs/LIBRARIES.md)
 - [Ambientes e product flavors](docs/ENVIRONMENTS.md)
 - [Catálogo de telas](docs/SCREENS.md)
-- [CaixaDS](docs/CAIXA_DS.md)
+- [LoteriasCaixaDS](docs/LOTERIAS_CAIXA_DS.md)
 - [Estado da migração](docs/MIGRATION_STATUS.md)
 - [Rotação segura de pins TLS](docs/SECURE_PIN_ROTATION.md)
 - [Paridade e migração dos backends](docs/BACKEND_MIGRATION.md)

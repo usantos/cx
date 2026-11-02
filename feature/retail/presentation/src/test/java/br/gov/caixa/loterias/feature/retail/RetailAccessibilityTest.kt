@@ -3,32 +3,25 @@ package br.gov.caixa.loterias.feature.retail
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
-import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsNotSelected
-import androidx.compose.ui.test.assertIsOff
-import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performKeyInput
-import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.pressKey
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SearchRetailersUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavoriteUseCase
 import br.gov.caixa.loterias.feature.retail.presentation.components.PrizePixOtherKeyField
@@ -36,7 +29,6 @@ import br.gov.caixa.loterias.feature.retail.presentation.components.PrizePixTab
 import br.gov.caixa.loterias.feature.retail.presentation.route.RetailSearchRoute
 import br.gov.caixa.loterias.feature.retail.presentation.viewmodel.RetailSearchViewModel
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,7 +45,7 @@ class RetailAccessibilityTest {
         val selected = mutableStateOf(true)
         var calls = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 PrizePixTab("CPF", selected.value, {
                     calls++
                     selected.value = !selected.value
@@ -70,7 +62,7 @@ class RetailAccessibilityTest {
     }
 
     @Test fun invalidFilledPixKeyHasPersistentNameAndAttachedError() {
-        compose.setContent { CaixaDSTheme { PrizePixOtherKeyField("invalid", {}, true) } }
+        compose.setContent { LoteriasCaixaDSTheme { PrizePixOtherKeyField("invalid", {}, true) } }
         compose.onNode(hasSetTextAction() and hasContentDescription("Chave Pix"))
             .assert(SemanticsMatcher.expectValue(SemanticsProperties.Error, "Chave inválida!"))
     }
@@ -84,7 +76,7 @@ class RetailAccessibilityTest {
                 SetRetailerFavoriteUseCase { _, _ -> AppResult.Success(Unit) }
             )
         viewModel.changeQuery("AB")
-        compose.setContent { CaixaDSTheme { RetailSearchRoute(viewModel, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { RetailSearchRoute(viewModel, {}) } }
         compose.onNode(hasSetTextAction() and hasContentDescription("Nome ou código")).assertExists()
     }
 }

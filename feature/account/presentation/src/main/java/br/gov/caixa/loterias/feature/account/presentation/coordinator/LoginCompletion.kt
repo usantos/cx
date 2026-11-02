@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.account.presentation.coordinator
 
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
 import br.gov.caixa.loterias.feature.account.domain.model.AccountStatus
@@ -22,6 +24,12 @@ internal class LoginCompletion(
     private val verifyAccess: VerifyPostLoginAccessUseCase,
     private val biometricAuthorizationFailed: () -> Unit,
 ) {
+    @Volatile private var failedIdentity: AuthenticatedSessionIdentity? = null
+
+    fun clearUnverifiedSession() {
+        val identity = failedIdentity
+        if (identity == null) authentication.logout() else authentication.logout(identity)
+    }
 
     fun completeLogin(biometricExchange: Boolean = false, silentExchange: Boolean = false, exchange: suspend () -> Unit) {
         if (mutableState.value.isLoading || mutableState.value.authenticated || mutableState.value.blockedAccountCheckFailed ||
@@ -59,18 +67,30 @@ internal class LoginCompletion(
 
     private fun applyAccessResult(access: PostLoginAccessResult) {
         when (access) {
-            is PostLoginAccessResult.Verified -> mutableState.dispatch(
-                LoginAction.AccessVerified(
-                    access.access.status != AccountStatus.PARTIALLY_BLOCKED,
-                    access.access.status == AccountStatus.PARTIALLY_BLOCKED,
-                    access.access.destination.loginRoute
+            is PostLoginAccessResult.Verified -> {
+                val identity = access.identity
+                if (identity != null && !authentication.isCurrent(identity)) {
+                    mutableState.dispatch(LoginAction.LoginCancelled)
+                    return
+                }
+                mutableState.dispatch(
+                    LoginAction.AccessVerified(
+                        access.access.status != AccountStatus.PARTIALLY_BLOCKED,
+                        access.access.status == AccountStatus.PARTIALLY_BLOCKED,
+                        access.access.destination.loginRoute
+                    )
                 )
-            )
+            }
 
             is PostLoginAccessResult.AccountCheckFailed -> {
                 // Revoga o titular adquirido antes de exibir um erro ou permitir retorno ao fluxo anterior.
                 try {
-                    authentication.logout()
+                    val identity = access.identity
+                    failedIdentity = identity
+                    if (identity != null && !authentication.logout(identity)) {
+                        mutableState.dispatch(LoginAction.LoginCancelled)
+                        return
+                    }
                     mutableState.dispatch(LoginAction.LoginFailed(access.error.loginUserMessage()))
                 } catch (_: Exception) {
                     // Mantém o aviso de bloqueio até ser possível repetir a limpeza local com segurança.
@@ -78,7 +98,17 @@ internal class LoginCompletion(
                 }
             }
 
-            PostLoginAccessResult.BlockedAccountCheckFailed -> mutableState.dispatch(LoginAction.AccountCheckFailed)
+            PostLoginAccessResult.SessionSuperseded -> mutableState.dispatch(LoginAction.LoginCancelled)
+
+            is PostLoginAccessResult.BlockedAccountCheckFailedForSession -> {
+                failedIdentity = access.identity
+                mutableState.dispatch(LoginAction.AccountCheckFailed)
+            }
+
+            PostLoginAccessResult.BlockedAccountCheckFailed -> {
+                failedIdentity = null
+                mutableState.dispatch(LoginAction.AccountCheckFailed)
+            }
         }
     }
 }

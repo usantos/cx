@@ -18,7 +18,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import java.util.Locale
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -52,7 +52,7 @@ class CatalogPreviewsTest {
         val selected = mutableStateOf(CatalogRegistry.entries.first())
         val state = mutableStateOf(PreviewState())
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 Column(Modifier.verticalScroll(rememberScrollState())) {
                     Column(Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("preview")) {
                         catalogPreviews.getValue(selected.value.id)(state.value)
@@ -78,7 +78,7 @@ class CatalogPreviewsTest {
     }
 
     private fun editAvailableInputs(entry: CatalogEntry, state: PreviewState) {
-        val numeric = entry.name == "CaixaDSRapidAmountDialog"
+        val numeric = entry.name == "LoteriasCaixaDSRapidAmountDialog"
         val input = if (numeric) "1234" else "CAIXA"
         val expected = if (numeric) "R$\u00a012,34" else "CAIXA"
         val inputs = compose.onAllNodes(hasSetTextAction()).fetchSemanticsNodes()

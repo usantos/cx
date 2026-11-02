@@ -2,67 +2,67 @@
 
 package br.gov.caixa.loterias.sample.designsystem
 
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSAttentionIcon
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSLotteryMark
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPaymentBrandMark
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPaymentProvider
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPaymentProviderMark
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPixBrand
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPixCopyIcon
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPixMark
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPixTimerIcon
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPrizeLotteryMark
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSSelfAssessmentIcon
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSAttentionIcon
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSLotteryMark
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPaymentBrandMark
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPaymentProvider
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPaymentProviderMark
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPixBrand
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPixCopyIcon
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPixMark
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPixTimerIcon
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPrizeLotteryMark
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSSelfAssessmentIcon
 
 internal val artworkPreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSAttentionIcon") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSAttentionIcon") { state ->
         with(state) {
-            CaixaDSAttentionIcon()
+            LoteriasCaixaDSAttentionIcon()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSSelfAssessmentIcon") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSSelfAssessmentIcon") { state ->
         with(state) {
-            CaixaDSSelfAssessmentIcon()
+            LoteriasCaixaDSSelfAssessmentIcon()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSLotteryMark") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSLotteryMark") { state ->
         with(state) {
-            CaixaDSLotteryMark()
+            LoteriasCaixaDSLotteryMark()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPixMark") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPixMark") { state ->
         with(state) {
-            CaixaDSPixMark()
+            LoteriasCaixaDSPixMark()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPaymentProviderMark") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPaymentProviderMark") { state ->
         with(state) {
-            CaixaDSPaymentProviderMark(provider = CaixaDSPaymentProvider.MERCADO_PAGO)
+            LoteriasCaixaDSPaymentProviderMark(provider = LoteriasCaixaDSPaymentProvider.MERCADO_PAGO)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPaymentBrandMark") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPaymentBrandMark") { state ->
         with(state) {
-            CaixaDSPaymentBrandMark(brand = "VISA")
+            LoteriasCaixaDSPaymentBrandMark(brand = "VISA")
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPixBrand") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPixBrand") { state ->
         with(state) {
-            CaixaDSPixBrand()
+            LoteriasCaixaDSPixBrand()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPixTimerIcon") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPixTimerIcon") { state ->
         with(state) {
-            CaixaDSPixTimerIcon()
+            LoteriasCaixaDSPixTimerIcon()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPixCopyIcon") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPixCopyIcon") { state ->
         with(state) {
-            CaixaDSPixCopyIcon(copied = checked)
+            LoteriasCaixaDSPixCopyIcon(copied = checked)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSPrizeLotteryMark") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSPrizeLotteryMark") { state ->
         with(state) {
-            CaixaDSPrizeLotteryMark()
+            LoteriasCaixaDSPrizeLotteryMark()
         }
     }
 )

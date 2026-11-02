@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
@@ -69,7 +69,7 @@ class ControlledCardRenderingTest {
             val context = androidx.compose.ui.platform.LocalContext.current
             val model =
                 remember { PaymentTerminalViewModel(paymentScreens(context::getString).first { it.route == "payment/confirmation" }) }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 PaymentTerminalRoute(model, onBack = {}, onComplete = {}, onNavigate = {})
             }
         }
@@ -101,7 +101,7 @@ class ControlledCardRenderingTest {
                     clock = Clock.systemUTC(), dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate), currentYear = 2026
                 ).also { vm = it }
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 PaymentCardFlowRoute(model, {}, {}, {}, {}, {}, {})
             }
         }

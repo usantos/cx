@@ -24,9 +24,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.support.R
 import br.gov.caixa.loterias.feature.support.R as LocalizedR
 import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
@@ -51,7 +51,7 @@ private fun FaqSections(state: SupportUiState, onAction: (SupportAction) -> Unit
         (Modifier.fillMaxSize().padding(top = 22.dp)).uiId("help.0026")
     ) {
         items(state.sections, key = { it.id }) { section ->
-            val divider = CaixaDS.colors.line
+            val divider = LoteriasCaixaDS.colors.line
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -72,7 +72,7 @@ private fun FaqSections(state: SupportUiState, onAction: (SupportAction) -> Unit
             ) {
                 Text(
                     text = section.title,
-                    color = CaixaDS.colors.graphite,
+                    color = LoteriasCaixaDS.colors.graphite,
                     style = supportRegularStyle(14),
                     modifier = (Modifier.weight(.8f)).uiId("help.0028")
                 )
@@ -94,7 +94,7 @@ private fun FaqQuestions(state: SupportUiState, onAction: (SupportAction) -> Uni
     LazyColumn((Modifier.fillMaxSize()).uiId("help.0029")) {
         items(state.questions, key = SupportQuestion::id) { question ->
             val expanded = question.id in state.expandedQuestionIds
-            val divider = CaixaDS.colors.line
+            val divider = LoteriasCaixaDS.colors.line
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -119,7 +119,7 @@ private fun FaqQuestions(state: SupportUiState, onAction: (SupportAction) -> Uni
                 ) {
                     Text(
                         text = question.title,
-                        color = if (expanded) CaixaDSColorTokens.Blue900 else CaixaDS.colors.graphite,
+                        color = if (expanded) LoteriasCaixaDSColorTokens.Blue900 else LoteriasCaixaDS.colors.graphite,
                         style = supportRegularStyle(if (expanded) 16 else 14),
                         modifier = (Modifier.weight(.8f)).uiId("help.0031")
                     )

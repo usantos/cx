@@ -14,7 +14,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.marketplace.domain.usecase.AddMarketplacePoolToCartUseCase
 import br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceDetailUseCase
@@ -45,7 +45,7 @@ class MarketplaceDetailLoadingParityUiTest {
         val showInitialLoad = mutableStateOf(false)
         lateinit var model: MarketplaceDetailViewModel
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (showInitialLoad.value) {
                     MarketplaceDetailRoute(
                         model,
@@ -112,7 +112,7 @@ class MarketplaceDetailLoadingParityUiTest {
             false
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 MarketplaceDetailRoute(
                     model,
                     { backCalls++ },

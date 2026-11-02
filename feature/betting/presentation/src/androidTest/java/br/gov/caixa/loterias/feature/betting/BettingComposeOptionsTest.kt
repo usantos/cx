@@ -16,8 +16,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipe
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSOptionDialog
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSOptionDialog
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.R
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -36,9 +36,9 @@ class BettingComposeOptionsTest {
         val visible = mutableStateOf(true)
         var commits = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (visible.value) {
-                    CaixaDSOptionDialog(
+                    LoteriasCaixaDSOptionDialog(
                         "Quantidade de números",
                         listOf(6, 7, 8),
                         6,
@@ -72,9 +72,9 @@ class BettingComposeOptionsTest {
         var chosen = -1
         var commits = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 if (visible.value) {
-                    CaixaDSOptionDialog(
+                    LoteriasCaixaDSOptionDialog(
                         "TEIMOSINHA",
                         listOf(0, 2, 3),
                         3,
@@ -107,8 +107,8 @@ class BettingComposeOptionsTest {
 
     @Test fun initialPickerShowsThreeEntireRowsWithoutCenterPadding() {
         compose.setContent {
-            CaixaDSTheme {
-                CaixaDSOptionDialog(
+            LoteriasCaixaDSTheme {
+                LoteriasCaixaDSOptionDialog(
                     "TEIMOSINHA",
                     listOf(0, 2, 3),
                     3,
@@ -131,8 +131,8 @@ class BettingComposeOptionsTest {
 
     @Test fun titleAndActionHeightMatchNativeXmlTextViewAndButton() {
         compose.setContent {
-            CaixaDSTheme {
-                CaixaDSOptionDialog(
+            LoteriasCaixaDSTheme {
+                LoteriasCaixaDSOptionDialog(
                     "TEIMOSINHA",
                     listOf(0, 2, 3),
                     3,
@@ -182,8 +182,8 @@ class BettingComposeOptionsTest {
         var chosen: Int? = null
         var dismissed = 0
         compose.setContent {
-            CaixaDSTheme {
-                CaixaDSOptionDialog(
+            LoteriasCaixaDSTheme {
+                LoteriasCaixaDSOptionDialog(
                     "Quantidade",
                     (6..20).toList(),
                     20,
@@ -222,8 +222,8 @@ class BettingComposeOptionsTest {
     @Test fun descriptionUsesNativeRegularTextViewLineMetrics() {
         val description = "Escolha em quantos concursos você quer participar com este mesmo jogo:"
         compose.setContent {
-            CaixaDSTheme {
-                CaixaDSOptionDialog(
+            LoteriasCaixaDSTheme {
+                LoteriasCaixaDSOptionDialog(
                     "TEIMOSINHA",
                     listOf(0, 2, 3),
                     3,

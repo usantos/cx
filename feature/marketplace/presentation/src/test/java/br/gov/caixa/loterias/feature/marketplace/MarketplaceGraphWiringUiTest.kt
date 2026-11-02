@@ -3,8 +3,6 @@
 
 package br.gov.caixa.loterias.feature.marketplace
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -19,8 +17,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParametersUseCase
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.destination.AppDestination
@@ -154,19 +152,21 @@ class MarketplaceGraphWiringUiTest {
     private fun show() {
         val dependencies = dependencies()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 nav = rememberNavController()
                 navigation = rememberAppNavigationState(owner.ownerKey)
                 NavHost(nav, "home") {
-                    composable("home") { CaixaDSText("HOME FIXTURE") }
-                    composable(br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation.pattern) { CaixaDSText("LOGIN FIXTURE") }
-                    composable("cart/current") { CaixaDSText("CART FIXTURE") }
-                    composable("retail/search") { CaixaDSText("RETAIL SEARCH FIXTURE") }
-                    composable("support/terms?tab={tab}") { CaixaDSText("HELP FIXTURE") }
+                    composable("home") { LoteriasCaixaDSText("HOME FIXTURE") }
+                    composable(br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation.pattern) {
+                        LoteriasCaixaDSText("LOGIN FIXTURE")
+                    }
+                    composable("cart/current") { LoteriasCaixaDSText("CART FIXTURE") }
+                    composable("retail/search") { LoteriasCaixaDSText("RETAIL SEARCH FIXTURE") }
+                    composable("support/terms?tab={tab}") { LoteriasCaixaDSText("HELP FIXTURE") }
                     composable(
                         "cart/pool-included?expiresAt={expiresAt}&modality={modality}&contest={contest}&drawDate={drawDate}&amount={amount}"
                     ) {
-                        CaixaDSText("RESERVATION FIXTURE")
+                        LoteriasCaixaDSText("RESERVATION FIXTURE")
                     }
                     marketplaceGraph(dependencies, nav, navigation, session)
                 }

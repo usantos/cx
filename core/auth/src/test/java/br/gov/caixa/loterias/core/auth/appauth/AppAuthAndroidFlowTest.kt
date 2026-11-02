@@ -430,6 +430,40 @@ class AppAuthAndroidFlowTest {
         assertNull(session.biometricCredentials.read())
     }
 
+    @Test fun `session bound logout preserves replacement token and remembered credential`() {
+        val gateway = AppAuthAuthenticationGateway(
+            context,
+            configuration,
+            store,
+            AuthorizationRequestPolicy(AuthorizationDeviceInfoProvider { null }, WeakBiometricAvailability { false })
+        )
+        val oldAttempt = store.beginAuthorization()
+        assertTrue(store.completeAuthorization(oldAttempt, "access-a", ownerKey = "a".repeat(SYNTHETIC_OWNER_HASH_LENGTH)))
+        val oldIdentity = requireNotNull(store.captureIdentity())
+        val replacement = store.beginAuthorization()
+        assertTrue(store.completeAuthorization(replacement, "access-b", ownerKey = "b".repeat(SYNTHETIC_OWNER_HASH_LENGTH)))
+        val newIdentity = requireNotNull(store.captureIdentity())
+        val credential = br.gov.caixa.loterias.core.auth.biometric.BiometricCredential(
+            "refresh-b",
+            "b".repeat(SYNTHETIC_OWNER_HASH_LENGTH),
+            "nonce-b",
+            "Pessoa"
+        )
+        session.biometricCredentials.setEnabled(true)
+        session.biometricCredentials.write(credential)
+        assertEquals("refresh-b", session.biometricCredentials.read()?.refreshToken)
+
+        assertFalse(gateway.logout(oldIdentity))
+        assertTrue(gateway.isCurrent(newIdentity))
+        assertEquals("access-b", store.token())
+        assertEquals("refresh-b", session.biometricCredentials.read()?.refreshToken)
+        assertEquals("b".repeat(SYNTHETIC_OWNER_HASH_LENGTH), session.biometricCredentials.read()?.ownerKey)
+        assertTrue(gateway.logout(newIdentity))
+        assertNull(store.token())
+        assertNull(session.biometricCredentials.read())
+        assertFalse(gateway.logout(newIdentity))
+    }
+
     @Test fun `gateway public facade delegates local cancellation logout and one shot SSO launch`() = runBlocking {
         val gateway = AppAuthAuthenticationGateway(
             context,
@@ -545,3 +579,5 @@ class FlowBiometricManagerShadow {
         var status = BiometricManager.BIOMETRIC_SUCCESS
     }
 }
+
+private const val SYNTHETIC_OWNER_HASH_LENGTH = 64

@@ -7,7 +7,7 @@ O projeto usa o formato nativo de instruções do Copilot. As regras valem para 
 | Arquivo | Conteúdo |
 |---|---|
 | [Instruções gerais](../.github/copilot-instructions.md) | Arquitetura, restrições, segurança, variantes, validação e mapa dos guias |
-| [Android](../.github/instructions/android.instructions.md) | App, Core, features, sample, MVVM/Redux, CaixaDS, acessibilidade e IDs |
+| [Android](../.github/instructions/android.instructions.md) | App, Core, features, sample, MVVM/Redux, LoteriasCaixaDS, acessibilidade e IDs |
 | [Qualidade](../.github/instructions/quality.instructions.md) | Gradle, scripts, CI, testes, pre-commit e JaCoCo |
 | [Segurança](../.github/instructions/security.instructions.md) | Sessão, TLS, rede, persistência e Remote Config |
 | [Documentação](../.github/instructions/documentation.instructions.md) | Guias, contratos, evidências, geração do PDF e manutenção das instruções |

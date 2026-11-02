@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.feature.marketplacefilter
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import java.math.BigDecimal
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -17,7 +17,7 @@ class MarketplaceCartSummaryParityTest {
     @Test fun positiveCartUsesActualAmountAndFullBetCountAndOpensCart() {
         var opened = false
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 MarketplaceFilterScreen(MarketplaceFilterUiState(), {}, cartTotal = BigDecimal("39.00"),
                     cartBetCount = 9, onCart = { opened = true })
             }
@@ -30,7 +30,7 @@ class MarketplaceCartSummaryParityTest {
 
     @Test fun emptyCartHidesTheSummaryEvenWhenCountIsNonzero() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 MarketplaceFilterScreen(MarketplaceFilterUiState(), {}, cartTotal = BigDecimal.ZERO,
                     cartBetCount = 9, onCart = {})
             }

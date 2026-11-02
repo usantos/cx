@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
@@ -57,7 +57,7 @@ class HomeCarouselTest {
 
         val withoutCombos = parameters.toHomeLotteries(hasCombos = false)
         assertEquals(listOf(HomeLotteryKind.LOTTERY, HomeLotteryKind.INSTANT), withoutCombos.map(HomeLottery::kind))
-        assertEquals(CaixaDSColorTokens.MegaSenaLight, withoutCombos.first().color)
+        assertEquals(LoteriasCaixaDSColorTokens.MegaSenaLight, withoutCombos.first().color)
         assertEquals(false, withoutCombos.first().octoberRoseTheme)
 
         val withCombos = parameters.toHomeLotteries(hasCombos = true)

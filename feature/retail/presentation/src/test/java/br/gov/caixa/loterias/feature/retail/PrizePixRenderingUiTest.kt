@@ -25,10 +25,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSLotteryStyle
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeAward
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeDetails
 import br.gov.caixa.loterias.feature.retail.presentation.components.PrizePixOtherKeyField
@@ -60,7 +59,7 @@ class PrizePixRenderingUiTest {
         var density = 1f
         compose.setContent {
             density = LocalDensity.current.density
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Column(Modifier.width(280.dp).padding(8.dp)) {
                     Row(Modifier.fillMaxWidth().height(56.dp).testTag("tabs")) {
                         PrizePixTab("CPF", cpfSelected.value, { cpfSelected.value = true }, Modifier.weight(1f))
@@ -110,7 +109,7 @@ class PrizePixRenderingUiTest {
 
     @Test fun `prize header draws clipped modality trapezoid and derives recurring range from award contests`() {
         var density = 1f
-        lateinit var style: CaixaDSLotteryStyle
+        lateinit var style: LoteriasCaixaDSLotteryStyle
         val details = PrizeDetails(
             9,
             BigDecimal.TEN,
@@ -123,8 +122,8 @@ class PrizePixRenderingUiTest {
         )
         compose.setContent {
             density = LocalDensity.current.density
-            CaixaDSTheme {
-                style = caixaDSLotteryStyle(2, "Mega-Sena")
+            LoteriasCaixaDSTheme {
+                style = loteriasCaixaDSLotteryStyle(2, "Mega-Sena")
                 Column(Modifier.width(320.dp).testTag("header")) { PrizeResultHeader(PrizeRedemptionUiState(details = details), style) }
             }
         }

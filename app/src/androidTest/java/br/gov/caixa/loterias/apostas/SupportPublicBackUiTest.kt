@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
 import br.gov.caixa.loterias.feature.support.domain.model.SupportSection
 import br.gov.caixa.loterias.feature.support.domain.usecase.AcceptTermsUseCase
@@ -44,7 +44,7 @@ class SupportPublicBackUiTest {
                     dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate),
                 )
             }
-            CaixaDSTheme { SupportRoute(model, { exits++ }, { error("Unexpected acceptance") }) }
+            LoteriasCaixaDSTheme { SupportRoute(model, { exits++ }, { error("Unexpected acceptance") }) }
         }
         compose.onNodeWithText("APOSTAS").performClick()
         compose.onNodeWithText("Pergunta sintética").assertIsDisplayed()

@@ -8,6 +8,11 @@ gate=importlib.util.module_from_spec(spec);spec.loader.exec_module(gate)
 class AutomationIdentityPolicyTest(unittest.TestCase):
     def test_new_control_without_id_is_rejected(self):
         self.assertTrue(gate.controle_sem_id('Button(onClick = {}) { Text("OK") }'))
+    def test_both_design_system_prefixes_preserve_identity_policy(self):
+        for prefix in ('CaixaDS', 'LoteriasCaixaDS'):
+            with self.subTest(prefix=prefix):
+                self.assertTrue(gate.controle_sem_id(prefix + 'Button(onClick = {}) {}'))
+                self.assertEqual([], gate.controle_sem_id(prefix + 'Button(onClick = {}, modifier = Modifier.automationId("simlo.ok")) {}'))
     def test_named_modifier_with_explicit_id_is_accepted(self):
         self.assertEqual([],gate.controle_sem_id('Button(onClick = {}, modifier = Modifier.automationId("simlo.ok")) {}'))
     def test_positional_modifier_alias_is_accepted(self):

@@ -27,12 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSModalBottomSheet as ModalBottomSheet
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.state.showCaixaDSMessage
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSRegularFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSResponsibleGamingColors
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSModalBottomSheet as ModalBottomSheet
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.state.showLoteriasCaixaDSMessage
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSRegularFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSResponsibleGamingColors
 import br.gov.caixa.loterias.feature.responsiblegaming.R as LocalizedR
 
 /** Contatos, textos, ordem e destinos de BottomSheetFragment/fragment_bottom_sheet. */
@@ -43,11 +43,11 @@ internal fun AssessmentHelpSheet(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
-        containerColor = CaixaDSColorTokens.White,
+        containerColor = LoteriasCaixaDSColorTokens.White,
         dragHandle = {
             Box(
                 Modifier.padding(top = 20.dp).size(44.dp, 5.dp)
-                    .background(CaixaDSResponsibleGamingColors.Handle, RoundedCornerShape(3.dp))
+                    .background(LoteriasCaixaDSResponsibleGamingColors.Handle, RoundedCornerShape(3.dp))
             )
         },
         modifier = Modifier.uiId("rg.0035")
@@ -55,16 +55,16 @@ internal fun AssessmentHelpSheet(onDismiss: () -> Unit) {
         Text(
             AssessmentHelpText.Title,
             (Modifier.align(Alignment.CenterHorizontally).padding(top = 20.dp)).uiId("rg.0036"),
-            color = CaixaDSColorTokens.BetNavigationLink,
-            fontFamily = CaixaDSRegularFontFamily,
+            color = LoteriasCaixaDSColorTokens.BetNavigationLink,
+            fontFamily = LoteriasCaixaDSRegularFontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp
         )
         Text(
             AssessmentHelpText.Description,
             (Modifier.padding(20.dp)).uiId("rg.0037"),
-            color = CaixaDSResponsibleGamingColors.Description,
-            fontFamily = CaixaDSRegularFontFamily,
+            color = LoteriasCaixaDSResponsibleGamingColors.Description,
+            fontFamily = LoteriasCaixaDSRegularFontFamily,
             fontSize = 15.sp,
             textAlign = TextAlign.Center
         )
@@ -138,11 +138,11 @@ private fun ContactText(
             )
             ).uiId("rg.0040"),
         color = when {
-            web -> CaixaDSResponsibleGamingColors.Link
-            address -> CaixaDSResponsibleGamingColors.Address
-            else -> CaixaDSColorTokens.BetAction
+            web -> LoteriasCaixaDSResponsibleGamingColors.Link
+            address -> LoteriasCaixaDSResponsibleGamingColors.Address
+            else -> LoteriasCaixaDSColorTokens.BetAction
         },
-        fontFamily = CaixaDSRegularFontFamily,
+        fontFamily = LoteriasCaixaDSRegularFontFamily,
         fontSize = 14.sp,
         fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
         textDecoration = if (target != null) TextDecoration.Underline else null
@@ -161,7 +161,7 @@ private fun openContactTarget(context: android.content.Context, target: String, 
                 )
             )
         } catch (_: android.content.ActivityNotFoundException) {
-            showCaixaDSMessage(
+            showLoteriasCaixaDSMessage(
                 context,
                 uiStrings.getString(LocalizedR.string.ui_nao_ha_nenhum_aplicativo_de_e_mail_i_e2f36a)
             )

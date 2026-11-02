@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFavoriteRetailer
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFavoriteRetailer
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.marketplace.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.MarketplaceEmptyState
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplaceFavoriteRetailerName
@@ -22,7 +22,7 @@ internal fun FavoriteRetailersContent(state: MarketplaceUiState, onOpen: (Retail
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     when {
         state.favoriteRetailersLoading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color = CaixaDS.colors.primaryButton)
+            CircularProgressIndicator(color = LoteriasCaixaDS.colors.primaryButton)
         }
 
         state.favoriteRetailersError != null -> MarketplaceEmptyState(
@@ -35,7 +35,7 @@ internal fun FavoriteRetailersContent(state: MarketplaceUiState, onOpen: (Retail
 
         else -> LazyColumn((Modifier.fillMaxSize()).uiId("pool.0080")) {
             items(state.favoriteRetailers, key = Retailer::id) { retailer ->
-                CaixaDSMarketplaceFavoriteRetailer(
+                LoteriasCaixaDSMarketplaceFavoriteRetailer(
                     marketplaceFavoriteRetailerName(retailer.fantasyName),
                     "${retailer.city} - ${retailer.state}",
                     onOpen = { onOpen(retailer) },

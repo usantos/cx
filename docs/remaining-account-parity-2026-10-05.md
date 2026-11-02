@@ -5,7 +5,7 @@ Referência primária: APK oficial instalado `build/verification/installed-refer
 ## Diferenças comprovadas corrigidas
 
 - Cadastro: ajuda CEP centralizada no controle de32dp, igual à geometria instalada e ao helper de Dados Pessoais. Label14sp e callback Correios preservados.
-- Cadastro: footer disabled segue selector instalado `button_state_color`, CFDFE2, consumindo `CaixaDS.colors.legacyDisabledButton`; enabled permanece0066B3. Dados Pessoais conserva0066B3 nos dois estados porque seu footer não possui esse selector. Footer90dp, margens32dp, top16dp e tipografia16sp/bold mantidos.
+- Cadastro: footer disabled segue selector instalado `button_state_color`, CFDFE2, consumindo `LoteriasCaixaDS.colors.legacyDisabledButton`; enabled permanece0066B3. Dados Pessoais conserva0066B3 nos dois estados porque seu footer não possui esse selector. Footer90dp, margens32dp, top16dp e tipografia16sp/bold mantidos.
 - Conta: checkbox desenhado como quadrado preenchido foi substituído pelo widget Android programático CheckBox, sem layout XML, com selector compilado checked006BB6 e unchecked3A4859. Larguras32dp no cadastro e24dp em Dados Pessoais, linhas48dp, texto16sp e margens8dp mantidos. Estado e callbacks permanecem no ViewModel. O drawable/touch do tema ainda precisa comparação física; a mudança não certifica raster do tema.
 - Termos de leitura: removido spinner inline duplicado sob modal DS já hospedado por SupportScreen. Conteúdo, erros e callbacks mantidos.
 
@@ -46,7 +46,7 @@ O agente principal executou `AccountRemainingParityCaptureTest` no XCover7: Cada
 - XCover7, `AccountRemainingParityCaptureTest`: **2 testes passaram**, `/tmp/remaining-account-green-xcover.log`, `OK (2 tests)`. Fixtures completas produziram13PNG e13TXT em `build/verification/remaining-installed-20261005/account-green/`.
 - XCover7, `SupportHtmlParityCaptureTest`: **3 testes passaram**, `/tmp/remaining-support-xcover.log`, `OK (3 tests)`. Seis capturas em `build/verification/remaining-installed-20261005/support-green/`. HTML entregue ao WebView foi verificado contra o controlador mapeado; nenhum termo foi aceito.
 - Build afetado e JVM coordenados: `BUILD SUCCESSFUL` em `/tmp/remaining-final-green-validation.log`. Resultados XML de `feature/account/build/test-results/testDebugUnitTest/` confirmam55 testes, zero failures/errors; suporte confirma14 testes, zero failures/errors.
-- Cinco gates executados e aprovados no mesmo log: `verifyComposeMigration`, `verifyCaixaDS`, `verifyLegacyUiInventory`, `verifyCleanArchitecture`, `verifyLegacyBackendParity`. Esses gates não medem igualdade raster nem medição de foco/scroll com o oficial.
+- Cinco gates executados e aprovados no mesmo log: `verifyComposeMigration`, `verifyLoteriasCaixaDS`, `verifyLegacyUiInventory`, `verifyCleanArchitecture`, `verifyLegacyBackendParity`. Esses gates não medem igualdade raster nem medição de foco/scroll com o oficial.
 
 Inspeção das capturas candidatas `personal-limit-minimum-ime.png` e `registration-bottom-unchecked.png` confirma que o erro mínimo é visível com teclado decimal aberto, footer Atualizar acima do teclado; cadastro mostra checkbox nativo desmarcado/marcado e CTA disabled claro. Isso confirma o cenário produzido, sem transformar imagens redimensionadas do visualizador em medidas pixel/DP. As capturas do aviso usam scroll explícito do teste; não comprovam autoscroll equivalente ao oficial.
 

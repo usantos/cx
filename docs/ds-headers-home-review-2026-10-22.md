@@ -7,9 +7,9 @@ Componentes básicos e reutilizáveis pertencem ao DS. Blocos específicos, esta
 ## Correções
 
 - Jogos, Dúvidas e Termo de Uso passam a reutilizar o Header Caixa: título16sp, seta12×18dp e os mesmos espaçamentos. Antes, o cabeçalho próprio de suporte usava20sp e seta15×23dp.
-- Os três renderizadores de cabeçalho estão no DS: `CaixaDSTopBar` (Caixa), `CaixaDSHomeTopBar` (Home branca com menu/sino/campanha/trevo) e `CaixaDSModalityTopBar` (cores/arte e medidas nativas da modalidade). Home e simulação mantêm adaptadores de dados/callbacks nas features.
+- Os três renderizadores de cabeçalho estão no DS: `LoteriasCaixaDSTopBar` (Caixa), `LoteriasCaixaDSHomeTopBar` (Home branca com menu/sino/campanha/trevo) e `LoteriasCaixaDSModalityTopBar` (cores/arte e medidas nativas da modalidade). Home e simulação mantêm adaptadores de dados/callbacks nas features.
 - Texto, ícones, botões, checkboxes, radio, cartões, superfícies, separadores, diálogos, menus, scaffold, drawer, bottom sheet, progresso e pull to refresh são consumidos por `components.base`. São28 funções/overloads e174 arquivos consumidores migrados, preservando os defaults do renderer instalado. As importações usam aliases para evitar alterar a composição específica das telas.
-- A criação, configuração, cliente de console e descarte da WebView URL foram extraídos para `CaixaDSWebPage`. O componente recebe eventos de console como texto. Validação de URL, parser, broadcasts, atraso e saída da fila continuam em `core/queue`. A dependência direta do renderer WebView foi removida desse módulo. O HTML somente leitura já permanecia no DS.
+- A criação, configuração, cliente de console e descarte da WebView URL foram extraídos para `LoteriasCaixaDSWebPage`. O componente recebe eventos de console como texto. Validação de URL, parser, broadcasts, atraso e saída da fila continuam em `core/queue`. A dependência direta do renderer WebView foi removida desse módulo. O HTML somente leitura já permanecia no DS.
 - Apresentações genéricas de status e avisos nativos também pertencem ao DS. As condições e destinos das ações permanecem nos consumidores.
 - A faixa da Home era uma máscara branca de80% aplicada ao rodapé também quando Outubro Rosa abria. A máscara agora pertence somente ao acesso rápido e não é desenhada sobre a campanha, inclusive em transições. O deslocamento medido da campanha, o carrossel e as regras do carrinho foram preservados.
 
@@ -25,7 +25,7 @@ Compilação PRD, testes e seis gates passaram: arquitetura, DS, migração Comp
 - WebViews testadas com HTML local: JavaScript desativado por padrão, ativação explícita, encaminhamento ao callback atualizado e remoção do renderer.
 - `scripts/test-ds-ownership.py` rejeitou quatro consumidores inválidos (Material importado, chamada Material qualificada, WebView nativa e AndroidView), aceitou o consumidor DS e restaurou todos os fixtures. O baseline final passou.
 
-`verifyCaixaDS` rejeita controles Material3 diretos, WebViews/clientes e widgets nativos fora do DS, inclusive formas qualificadas verificadas. Tipos de estado e anotações técnicas de UI permanecem permitidos. Primitivos de layout/desenho podem compor os blocos específicos das features.
+`verifyLoteriasCaixaDS` rejeita controles Material3 diretos, WebViews/clientes e widgets nativos fora do DS, inclusive formas qualificadas verificadas. Tipos de estado e anotações técnicas de UI permanecem permitidos. Primitivos de layout/desenho podem compor os blocos específicos das features.
 
 Evidências e mapas de migração: `build/verification/ds-basic-components-20261022`.
 

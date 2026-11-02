@@ -8,7 +8,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.results.domain.model.DrawPayout
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsMatch
@@ -32,7 +32,7 @@ class ResultWholeBlockSpeechTest {
     @get:Rule val compose = createComposeRule()
 
     @Test fun numericDrawIsACompleteBlockWithContestNumbersAndDateInWords() {
-        compose.setContent { CaixaDSTheme { ResultContent(result(), "megasena") } }
+        compose.setContent { LoteriasCaixaDSTheme { ResultContent(result(), "megasena") } }
         compose.onNodeWithContentDescription(
             "Mega-Sena. Concurso três mil e vinte e seis. Números sorteados: dois, três. " +
                 "Data do sorteio: vinte e sete de outubro de dois mil e vinte e seis."
@@ -40,7 +40,7 @@ class ResultWholeBlockSpeechTest {
     }
 
     @Test fun payoutKeepsRangeWinnerCountAndMoneyInTheSameReadout() {
-        compose.setContent { CaixaDSTheme { ResultContent(result(), "megasena") } }
+        compose.setContent { LoteriasCaixaDSTheme { ResultContent(result(), "megasena") } }
         compose.onNodeWithContentDescription(
             "Premiação. Quadra - quatro números acertados. Duas apostas ganhadoras. Prêmio: três reais e cinquenta centavos."
         ).assertExists()
@@ -79,7 +79,7 @@ class ResultWholeBlockSpeechTest {
             DrawSportsMatch(1, DrawSportsTeam("Casa", "SP", won = true), DrawSportsTeam("Fora", "RJ", won = false)),
             DrawSportsMatch(2, DrawSportsTeam("Outro", "MG"), DrawSportsTeam("Visitante", "PR"), draw = true)
         )
-        compose.setContent { CaixaDSTheme { DrawLotecaResults(matches, Color.White) } }
+        compose.setContent { LoteriasCaixaDSTheme { DrawLotecaResults(matches, Color.White) } }
         compose.onNodeWithContentDescription(
             "Loteca. Partida um de dois. Domingo. Jogo um. Casa, SP. Fora, RJ. Vencedor: Casa."
         ).assertIsDisplayed()

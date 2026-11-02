@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import br.gov.caixa.loterias.apostas.composition.startup.AppStartupStatusPanel
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.StartupStatusKind
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -21,7 +21,7 @@ class StartupConnectionRecoveryUiTest {
         var connection = ConnectionAvailability.CONNECTED
         var retries = 0
         val network = NetworkAvailability { connection }
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             AppStartupStatusPanel(StartupStatusKind.UNAVAILABLE, { retries++; loading.value = true }, network, loading.value)
         } }
         compose.onNodeWithText("Código do erro: LTR-503").assertExists()
@@ -34,7 +34,7 @@ class StartupConnectionRecoveryUiTest {
     }
 
     @Test fun backAsksBeforeClosingAndCancelKeepsScreen() {
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             AppStartupStatusPanel(StartupStatusKind.UNAVAILABLE, {}, NetworkAvailability { ConnectionAvailability.DISCONNECTED })
         } }
         compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }

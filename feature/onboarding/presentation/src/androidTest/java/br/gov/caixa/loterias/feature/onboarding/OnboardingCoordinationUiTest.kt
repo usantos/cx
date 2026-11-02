@@ -4,7 +4,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.onboarding.domain.model.BettingTutorial
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.CompleteIntroductionUseCase
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.SetBettingTutorialDismissedUseCase
@@ -27,7 +27,7 @@ class OnboardingCoordinationUiTest {
         val viewModel = OnboardingViewModel("onboarding/introduction", CompleteIntroductionUseCase { completions++ })
         viewModel.pageChanged(1)
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 OnboardingRoute(viewModel, {}, { calls += "complete" }, { calls += "underage" }, {}, {}, {})
             }
         }
@@ -53,7 +53,7 @@ class OnboardingCoordinationUiTest {
         val initial = OnboardingViewModel("onboarding/introduction", CompleteIntroductionUseCase { completions++ })
         val viewModel = mutableStateOf(initial)
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 OnboardingRoute(viewModel.value, { calls += "back" }, { calls += "complete" },
                     { calls += "underage" }, { calls += "responsible" }, {}, {})
             }
@@ -82,11 +82,15 @@ class OnboardingCoordinationUiTest {
     @Test fun tutorialToggleWorksFromLabelAndCheckboxAndOnlyStartPersistsDismissal() {
         val calls = mutableListOf<String>()
         val dismissals = mutableListOf<Pair<BettingTutorial, Boolean>>()
-        val viewModel = OnboardingViewModel("onboarding/tutorial", CompleteIntroductionUseCase {},
-            SetBettingTutorialDismissedUseCase { tutorial, dismissed -> dismissals += tutorial to dismissed })
+        fun newViewModel() = OnboardingViewModel(
+            "onboarding/tutorial",
+            CompleteIntroductionUseCase {},
+            SetBettingTutorialDismissedUseCase { tutorial, dismissed -> dismissals += tutorial to dismissed }
+        )
+        val viewModel = mutableStateOf(newViewModel())
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
-                OnboardingRoute(viewModel, {}, {}, {}, {}, { calls += "start" }, { calls += "skip" })
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                OnboardingRoute(viewModel.value, {}, {}, {}, {}, { calls += "start" }, { calls += "skip" })
             }
         }
         compose.onNode(isToggleable()).assertIsOff()
@@ -95,10 +99,19 @@ class OnboardingCoordinationUiTest {
         compose.onNodeWithText("Não mostrar mais esse tutorial").performClick()
         compose.onNodeWithText("Pular").performClick()
         compose.runOnIdle {
-            assertTrue(viewModel.state.value.tutorialDoNotShowAgain)
+            assertTrue(viewModel.value.state.value.tutorialDoNotShowAgain)
             assertTrue(dismissals.isEmpty())
             assertEquals(listOf("skip"), calls)
         }
+        compose.onNodeWithText("Começar").performClick()
+        compose.runOnIdle {
+            assertTrue(dismissals.isEmpty())
+            assertEquals(listOf("skip"), calls)
+            // Uma nova entrada no tutorial possui sua própria intenção de conclusão.
+            viewModel.value = newViewModel()
+        }
+        compose.onNode(isToggleable()).assertIsOff()
+        compose.onNodeWithText("Não mostrar mais esse tutorial").performClick()
         compose.onNodeWithText("Começar").performClick()
         compose.runOnIdle {
             assertEquals(listOf(BettingTutorial.MAIS_MILIONARIA to true), dismissals)

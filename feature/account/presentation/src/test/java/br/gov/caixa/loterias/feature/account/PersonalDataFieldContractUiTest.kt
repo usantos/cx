@@ -23,8 +23,8 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
 import br.gov.caixa.loterias.feature.account.presentation.screen.PersonalDataActions
@@ -49,7 +49,7 @@ class PersonalDataFieldContractUiTest {
         val zipChanges = mutableListOf<String>()
         val limitChanges = mutableListOf<String>()
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 PersonalDataScreen(
                     state.value,
                     false,
@@ -85,7 +85,7 @@ class PersonalDataFieldContractUiTest {
 
     @Test fun `CEP warning and daily bound warning replace helper without removing editable fields`() {
         val state = mutableStateOf(profile())
-        compose.setContent { CaixaDSTheme { PersonalDataScreen(state.value, false, {}, actions()) } }
+        compose.setContent { LoteriasCaixaDSTheme { PersonalDataScreen(state.value, false, {}, actions()) } }
         compose.onNodeWithText("R$ 10,00 até R$ 200,00").performScrollTo().assertExists()
         compose.runOnIdle {
             state.value = state.value.copy(zipCodeErrorMessage = "CEP não encontrado", dailyLimit = "R$ 9,99")
@@ -108,7 +108,7 @@ class PersonalDataFieldContractUiTest {
         val ime = mutableStateOf(false)
         var saves = 0
         compose.setContent {
-            CaixaDSTheme { PersonalDataScreen(state.value, ime.value, {}, actions().copy(submit = { saves++ })) }
+            LoteriasCaixaDSTheme { PersonalDataScreen(state.value, ime.value, {}, actions().copy(submit = { saves++ })) }
         }
         compose.onNodeWithText("Atualizar").assertIsEnabled().performClick()
         compose.runOnIdle { assertEquals(1, saves) }
@@ -140,7 +140,7 @@ class PersonalDataFieldContractUiTest {
         val genders = mutableListOf<Gender>()
         var requests = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 PersonalDataScreen(
                     state.value,
                     false,
@@ -166,16 +166,16 @@ class PersonalDataFieldContractUiTest {
     }
 
     @Test fun `screen keeps Caixa legacy typography and field alignment`() {
-        compose.setContent { CaixaDSTheme { PersonalDataScreen(profile(), false, {}, actions()) } }
+        compose.setContent { LoteriasCaixaDSTheme { PersonalDataScreen(profile(), false, {}, actions()) } }
         val label = compose.onNodeWithText("CPF", useUnmergedTree = true)
         val labelStyle = label.textLayout().layoutInput.style
         assertEquals(16.sp, labelStyle.fontSize)
         assertEquals(FontWeight.Bold, labelStyle.fontWeight)
-        assertEquals(CaixaDSFontFamily, labelStyle.fontFamily)
+        assertEquals(LoteriasCaixaDSFontFamily, labelStyle.fontFamily)
         val field = compose.onNodeWithText("123.456.789-01")
         val inputStyle = field.textLayout().layoutInput.style
         assertEquals(16.sp, inputStyle.fontSize)
-        assertEquals(CaixaDSFontFamily, inputStyle.fontFamily)
+        assertEquals(LoteriasCaixaDSFontFamily, inputStyle.fontFamily)
         val labelBounds = label.fetchSemanticsNode().boundsInRoot
         val nameBounds = compose.onNodeWithText("Nome", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
         assertEquals(labelBounds.left, nameBounds.left, 0.5f)

@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -31,7 +31,7 @@ class BettingInstalledGridGeometryTest {
         assertEquals(450, metrics.densityDpi)
         val vm = bettingVm(game(9, "+Milionária", 50, 6, 6, listOf(BetPrice(6, 2, BigDecimal("6"))),
             minimumClovers = 2, maximumClovers = 6, maximumCloverNumber = 6))
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         val cells = (1..6).map { compose.onNodeWithTag("betting-number-${it.toString().padStart(2, '0')}").fetchSemanticsNode().boundsInRoot }
         assertEquals(listOf(127f, 127f, 127f, 127f, 127f, 127f), cells.map { it.width })
         assertEquals(listOf(0f, 156f, 312f, 469f, 625f, 781f), cells.map { it.left - cells.first().left })
@@ -40,7 +40,7 @@ class BettingInstalledGridGeometryTest {
     @Test fun footerSummaryAndNumberGridRemainVisibleAfterComposeMigration() {
         val vm = bettingVm(game(9, "+Milionária", 50, 6, 6, listOf(BetPrice(6, 2, BigDecimal("6"))),
             minimumClovers = 2, maximumClovers = 6, maximumCloverNumber = 6))
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.onNodeWithTag("betting-footer-amount-Valor dessa aposta").assertIsDisplayed()
         compose.onNodeWithText("R$ 6,00").assertIsDisplayed()
         compose.onNodeWithTag("betting-number-01").assertIsDisplayed().performClick()
@@ -53,7 +53,7 @@ class BettingInstalledGridGeometryTest {
     @Test fun cartBadgeKeepsInstalledFooterFrameDimensions() {
         val vm = bettingVm(game(9, "+Milionária", 50, 6, 6, listOf(BetPrice(6, 2, BigDecimal("6"))),
             minimumClovers = 2, maximumClovers = 6, maximumCloverNumber = 6))
-        compose.setContent { CaixaDSTheme(darkTheme = false) {
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
             BettingGameRoute(vm, {}, {}, cartTotal = BigDecimal("12"), cartBetCount = 2)
         } }
         val metrics = InstrumentationRegistry.getInstrumentation().targetContext.resources.displayMetrics
@@ -81,7 +81,7 @@ class BettingInstalledGridGeometryTest {
 
     private fun assertShortTicketSpacing(game: LotteryGameParameters, lastNumber: String, expectedPixels: Float) {
         val vm = bettingVm(game)
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         val first = compose.onNodeWithTag("betting-number-01").fetchSemanticsNode().boundsInRoot
         val last = compose.onNodeWithTag("betting-number-$lastNumber").fetchSemanticsNode().boundsInRoot
         assertEquals(expectedPixels, last.top - first.top, 1f)

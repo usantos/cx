@@ -5,7 +5,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.assertHasClickAction
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
@@ -52,7 +52,7 @@ class ShakeTutorialGeometryTest {
 
     @Test
     fun frameTransformMatchesLegacyCropAndLetterboxing() {
-        assertEquals(0xFF0066B3.toInt(), CaixaDSColorTokens.CaixaBlue.toArgb())
+        assertEquals(0xFF0066B3.toInt(), LoteriasCaixaDSColorTokens.CaixaBlue.toArgb())
 
         val standard = ShakeTutorialFrameTransform.fromSourceSize(Size(300f, 580f))
         assertEquals(306f, standard.outputWidth, 0f)

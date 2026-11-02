@@ -20,16 +20,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSDivider
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCard as Card
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCardDefaults as CardDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIconButton as IconButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSRapidEditIcon
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSDivider
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCard as Card
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCardDefaults as CardDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIconButton as IconButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSRapidEditIcon
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.formatBetAmount
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidConfigurationUiState
@@ -83,26 +83,26 @@ private fun RapidSummaryCard(label: String, value: String, onEdit: () -> Unit) {
     Card(
         Modifier.fillMaxWidth().padding(15.dp).height(100.dp),
         shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = CaixaDSColorTokens.RapidSummaryBackground),
+        colors = CardDefaults.cardColors(containerColor = LoteriasCaixaDSColorTokens.RapidSummaryBackground),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Box(Modifier.fillMaxSize()) {
             Column(Modifier.align(Alignment.Center).padding(horizontal = 40.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     label,
-                    color = CaixaDS.colors.graphite,
+                    color = LoteriasCaixaDS.colors.graphite,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = CaixaDSFontFamily,
+                    fontFamily = LoteriasCaixaDSFontFamily,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.uiId("bet.0163")
                 )
                 Text(
                     value,
-                    color = CaixaDSColorTokens.FavoriteCartCard,
+                    color = LoteriasCaixaDSColorTokens.FavoriteCartCard,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = CaixaDSFontFamily,
+                    fontFamily = LoteriasCaixaDSFontFamily,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.uiId("bet.0164")
                 )
@@ -112,7 +112,7 @@ private fun RapidSummaryCard(label: String, value: String, onEdit: () -> Unit) {
                 modifier = (Modifier.align(Alignment.TopEnd).size(40.dp)).uiId("bet.0165")
             ) {
                 Icon(
-                    CaixaDSRapidEditIcon,
+                    LoteriasCaixaDSRapidEditIcon,
                     uiStrings.getString(LocalizedR.string.ui_editar_1_s_04ce4e, label),
                     tint = Color.Unspecified,
                     modifier = (Modifier.size(24.dp)).uiId("bet.0166")
@@ -129,10 +129,10 @@ private fun RapidSummaryNumbers(label: String, numbers: Set<Int>, danger: Boolea
         Row(Modifier.padding(start = 16.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 label,
-                color = CaixaDS.colors.graphite,
+                color = LoteriasCaixaDS.colors.graphite,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.2.sp,
-                fontFamily = CaixaDSFontFamily,
+                fontFamily = LoteriasCaixaDSFontFamily,
                 modifier = Modifier.uiId("bet.0167")
             )
             IconButton(
@@ -140,7 +140,7 @@ private fun RapidSummaryNumbers(label: String, numbers: Set<Int>, danger: Boolea
                 modifier = (Modifier.size(40.dp)).uiId("bet.0168")
             ) {
                 Icon(
-                    CaixaDSRapidEditIcon,
+                    LoteriasCaixaDSRapidEditIcon,
                     uiStrings.getString(LocalizedR.string.ui_editar_1_s_04ce4e, label),
                     tint = Color.Unspecified,
                     modifier = Modifier.uiId("bet.0169")
@@ -148,6 +148,6 @@ private fun RapidSummaryNumbers(label: String, numbers: Set<Int>, danger: Boolea
             }
         }
         RapidNumberCells(numbers.sorted(), numbers, danger, null, Modifier.padding(horizontal = 10.dp, vertical = 19.dp))
-        CaixaDSDivider()
+        LoteriasCaixaDSDivider()
     }
 }

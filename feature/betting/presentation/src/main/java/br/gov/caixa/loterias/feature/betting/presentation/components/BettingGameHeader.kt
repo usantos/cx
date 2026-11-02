@@ -2,19 +2,17 @@ package br.gov.caixa.loterias.feature.betting.presentation.components
 
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 
-import br.gov.caixa.loterias.feature.betting.R
-
 import androidx.compose.runtime.Composable
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSModalityTopBar
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryKey
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSModalityTopBar
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryKey
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.bettingHeaderDrawDate
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.fallbackBettingTitle
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.specialHeaderTitle
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState
 import br.gov.caixa.loterias.feature.betting.presentation.state.LOTECA_ID
 import br.gov.caixa.loterias.feature.betting.presentation.state.MAIS_MILIONARIA_ID
-import br.gov.caixa.loterias.core.designsystem.R as CaixaDSR
+import br.gov.caixa.loterias.core.designsystem.R as LoteriasCaixaDSR
 
 // Fronteira declarativa existente da interface; a formatação revelou complexidade da baseline sem alterar a lógica.
 @Suppress("CyclomaticComplexMethod")
@@ -30,9 +28,15 @@ internal fun BettingLegacyGameHeader(state: BettingGameUiState, onBack: () -> Un
     } else {
         game?.modality?.name ?: fallbackBettingTitle(modalityId)
     }
-    val style = if (modalityId == 14) caixaDSLotteryStyle(2, "mega-sena") else caixaDSLotteryStyle(modalityId, fallbackTitle)
+    val style = if (modalityId ==
+        14
+    ) {
+        loteriasCaixaDSLotteryStyle(2, "mega-sena")
+    } else {
+        loteriasCaixaDSLotteryStyle(modalityId, fallbackTitle)
+    }
     val special = game?.contestType.equals("ESPECIAL", ignoreCase = true)
-    val canonicalId = when (caixaDSLotteryKey(modalityId, fallbackTitle)) {
+    val canonicalId = when (loteriasCaixaDSLotteryKey(modalityId, fallbackTitle)) {
         "QUINA" -> 3
         else -> modalityId
     }
@@ -42,7 +46,7 @@ internal fun BettingLegacyGameHeader(state: BettingGameUiState, onBack: () -> Un
     }?.let { if (megaThirtyYears) "mega-sena\n30 anos" else specialHeaderTitle(canonicalId, it.modality.specialName) }
     val specialArtwork = game?.takeIf { special }?.let { specialHeaderArtwork(canonicalId, megaThirtyYears) }
     val reduceTitle = special && (modalityId == 8 || modalityId == LOTECA_ID)
-    CaixaDSModalityTopBar(
+    LoteriasCaixaDSModalityTopBar(
         title = specialTitle ?: fallbackTitle.lowercase(),
         backgroundColor = style.light,
         contentColor = style.content,
@@ -63,18 +67,18 @@ internal fun BettingLegacyGameHeader(state: BettingGameUiState, onBack: () -> Un
 
 private fun specialHeaderArtwork(modalityId: Int, megaThirtyYears: Boolean): Int? = when (modalityId) {
     2 -> if (megaThirtyYears) {
-        CaixaDSR.drawable.caixads_modality_mega_thirty_years
+        LoteriasCaixaDSR.drawable.loterias_caixa_ds_modality_mega_thirty_years
     } else {
-        CaixaDSR.drawable.legacy_campaign_cabecalho_mega_da_virada_detalhe_aposta
+        LoteriasCaixaDSR.drawable.legacy_campaign_cabecalho_mega_da_virada_detalhe_aposta
     }
 
-    3 -> CaixaDSR.drawable.legacy_marketplace_quina_sao_joao_simples
+    3 -> LoteriasCaixaDSR.drawable.legacy_marketplace_quina_sao_joao_simples
 
-    8 -> CaixaDSR.drawable.legacy_marketplace_lotofacil_indepedencia_simples
+    8 -> LoteriasCaixaDSR.drawable.legacy_marketplace_lotofacil_indepedencia_simples
 
-    18 -> CaixaDSR.drawable.caixads_modality_easter
+    18 -> LoteriasCaixaDSR.drawable.loterias_caixa_ds_modality_easter
 
-    19 -> CaixaDSR.drawable.legacy_marketplace_loteca_copa_simples
+    19 -> LoteriasCaixaDSR.drawable.legacy_marketplace_loteca_copa_simples
 
     else -> null
 }

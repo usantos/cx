@@ -2,31 +2,31 @@
 
 package br.gov.caixa.loterias.sample.designsystem
 
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaignTheme
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSHomeV2Theme
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaignTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSHomeV2Theme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 
 internal val themePreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaignTheme") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaignTheme") { state ->
         with(state) {
-            CaixaDSCampaignTheme(
-                campaign = CaixaDSCampaign.DEFAULT,
-                content = { CaixaDSText(sample) }
+            LoteriasCaixaDSCampaignTheme(
+                campaign = LoteriasCaixaDSCampaign.DEFAULT,
+                content = { LoteriasCaixaDSText(sample) }
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.theme.CaixaDSHomeV2Theme") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSHomeV2Theme") { state ->
         with(state) {
-            CaixaDSHomeV2Theme(content = { CaixaDSText(sample) })
+            LoteriasCaixaDSHomeV2Theme(content = { LoteriasCaixaDSText(sample) })
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme") { state ->
         with(state) {
-            CaixaDSTheme(
+            LoteriasCaixaDSTheme(
                 darkTheme = false,
-                content = { CaixaDSText(sample) }
+                content = { LoteriasCaixaDSText(sample) }
             )
         }
     }

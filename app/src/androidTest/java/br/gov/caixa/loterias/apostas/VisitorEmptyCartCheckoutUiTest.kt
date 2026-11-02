@@ -1,16 +1,21 @@
 package br.gov.caixa.loterias.apostas
 
-import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.*
+import br.gov.caixa.loterias.feature.cart.domain.usecase.CheckCheckoutLocationUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.ClearCartUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.HasRecentPurchaseUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordCheckoutLocationRequestUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCartUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.VerifyCartPaymentAccountUseCase
 import br.gov.caixa.loterias.feature.cart.presentation.route.CurrentCartRoute
 import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.CartViewModel
 import java.math.BigDecimal
@@ -48,13 +53,17 @@ class VisitorEmptyCartCheckoutUiTest {
 
     private fun show(vm: CartViewModel, events: MutableList<String>) {
         compose.setContent {
-            CaixaDSTheme {
-                CurrentCartRoute(vm, onBack = {}, onContinueBetting = {},
+            LoteriasCaixaDSTheme {
+                CurrentCartRoute(
+                    vm,
+                    onBack = {},
+                    onContinueBetting = {},
                     onPayment = { error("A guest cart must never open payment") },
                     onLogin = { events += "login" },
                     onAccountRequired = { error("Unexpected account completion") },
                     onLocationBlocked = { events += "blocked" },
-                    onValidationRedirect = { error("Unexpected server redirect") })
+                    onValidationRedirect = { error("Unexpected server redirect") }
+                )
             }
         }
     }
@@ -65,11 +74,18 @@ class VisitorEmptyCartCheckoutUiTest {
         clearCart = ClearCartUseCase { error("Unexpected clear") },
         serverTime = br.gov.caixa.loterias.core.common.time.ServerTimeSource { Instant.parse("2026-10-21T12:00:00Z") },
         verifyPaymentAccount = VerifyCartPaymentAccountUseCase {
-            events += "account"; AppResult.Success(CartPaymentAccountDecision.LoginRequired)
+            events += "account"
+            AppResult.Success(CartPaymentAccountDecision.LoginRequired)
         },
         validateCart = ValidateCartUseCase { error("Guest checkout must not invoke remote validation") },
-        hasRecentPurchase = HasRecentPurchaseUseCase { events += "recent"; AppResult.Success(false) },
-        checkCheckoutLocation = CheckCheckoutLocationUseCase { events += "location"; AppResult.Success(location) },
-        recordLocationRequest = RecordCheckoutLocationRequestUseCase { error("No permission request expected") },
+        hasRecentPurchase = HasRecentPurchaseUseCase {
+            events += "recent"
+            AppResult.Success(false)
+        },
+        checkCheckoutLocation = CheckCheckoutLocationUseCase {
+            events += "location"
+            AppResult.Success(location)
+        },
+        recordLocationRequest = RecordCheckoutLocationRequestUseCase { error("No permission request expected") }
     )
 }

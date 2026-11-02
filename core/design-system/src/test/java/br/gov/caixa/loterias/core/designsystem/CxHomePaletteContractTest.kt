@@ -5,8 +5,8 @@ package br.gov.caixa.loterias.core.designsystem
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.tokens.CxHomeV2Colors
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
@@ -14,7 +14,7 @@ import org.junit.Test
 class CxHomePaletteContractTest {
     @Test
     fun homePaletteSharesCaixaBrandAndPreservesOpaqueAndOverlayRoles() {
-        assertEquals(CaixaDSColorTokens.Blue700, CxHomeV2Colors.CFF005CA9)
+        assertEquals(LoteriasCaixaDSColorTokens.Blue700, CxHomeV2Colors.CFF005CA9)
         assertEquals(Color.White, CxHomeV2Colors.White)
         assertEquals(Color.Transparent, CxHomeV2Colors.Transparent)
         assertEquals(0x44003322, CxHomeV2Colors.C44003322.toArgb())

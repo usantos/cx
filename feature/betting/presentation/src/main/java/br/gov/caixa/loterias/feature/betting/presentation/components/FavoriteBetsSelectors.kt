@@ -13,11 +13,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSWheel
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButtonDefaults as ButtonDefaults
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSOutlinedButton as OutlinedButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSWheel
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSOutlinedButton as OutlinedButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 @Composable
 internal fun FavoritePickerHeading(label: String, onClick: () -> Unit) {
@@ -26,8 +26,8 @@ internal fun FavoritePickerHeading(label: String, onClick: () -> Unit) {
         (Modifier.fillMaxWidth().padding(top = 20.dp).heightIn(min = 50.dp)).uiId("bet.0123"),
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(1.dp, CaixaDSColorTokens.TicketChoiceMuted),
-        colors = ButtonDefaults.outlinedButtonColors(contentColor = CaixaDSColorTokens.SocialGraphite)
+        border = BorderStroke(1.dp, LoteriasCaixaDSColorTokens.TicketChoiceMuted),
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = LoteriasCaixaDSColorTokens.SocialGraphite)
     ) {
         Text(
             label,
@@ -41,14 +41,14 @@ internal fun FavoritePickerHeading(label: String, onClick: () -> Unit) {
 
 @Composable
 internal fun FavoriteComposePicker(options: List<String>, selected: Int, modifier: Modifier, label: String, onChange: (Int) -> Unit) {
-    CaixaDSWheel(
+    LoteriasCaixaDSWheel(
         options = options,
         selectedIndex = selected,
         onSelectedIndex = onChange,
         modifier = (modifier).uiId("bet.0125"),
         itemHeight = 32.dp,
         fontSize = 16.sp,
-        color = CaixaDSColorTokens.FavoritePickerBlue,
+        color = LoteriasCaixaDSColorTokens.FavoritePickerBlue,
         accessibilityLabel = label
     )
 }

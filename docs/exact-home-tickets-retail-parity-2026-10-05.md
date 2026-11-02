@@ -118,14 +118,14 @@ Sem Gradle/device; diffcheck e XMLparse passaram. Continua pendente captura Comp
 
 ### Minhas Apostas: Ajuda na segunda captura
 
-`compose-my-bets-v2.png` confirmou intro/divisórias alinhadas, mas Ajuda ausente mesmo com callback host. `CaixaDSLegacyScaffold` reservava48dp padrão para Row contendo filtro48 e Ajuda45: o segundo filho era medido sem largura disponível. `ConfirmedBetsDataRoute` agora reserva93dp quando callback Ajuda existe, mantendo48dp no caso de filtro único. Não altera scaffold compartilhado ou outras ações. Trevo verde da segunda captura corresponde a SILCE mock, enquanto referência azul corresponde a MICROSERVICE; nenhuma cor foi fixada. Período, data, modalidade e conteúdo continuam não pareados. Diffcheck passou; nova captura necessária para comprovar toolbar completo.
+`compose-my-bets-v2.png` confirmou intro/divisórias alinhadas, mas Ajuda ausente mesmo com callback host. `LoteriasCaixaDSLegacyScaffold` reservava48dp padrão para Row contendo filtro48 e Ajuda45: o segundo filho era medido sem largura disponível. `ConfirmedBetsDataRoute` agora reserva93dp quando callback Ajuda existe, mantendo48dp no caso de filtro único. Não altera scaffold compartilhado ou outras ações. Trevo verde da segunda captura corresponde a SILCE mock, enquanto referência azul corresponde a MICROSERVICE; nenhuma cor foi fixada. Período, data, modalidade e conteúdo continuam não pareados. Diffcheck passou; nova captura necessária para comprovar toolbar completo.
 
 
 ### Pares de carrinhos favoritos/detalhe revisados
 
 `compose-favorite-carts.png` e `compose-favorite-cart-detail.png` comparadas às capturas físicas homônimas. Títulos, cores, fontes da introdução e dos cartões, altura70dp, raio10dp, posições das ações e divisões correspondem à estrutura fonte. Medição dos PNGs1080×2408: na lista, começo da intro azul288px legado/290px Compose; começo do primeiro cartão553px/555px. Isso registra diferença residual2px de métricas/rounding, sem introduzir offset arbitrário divergente do XML. No detalhe, intro289px/290px e lixeira601px/600px; conteúdo não pareado (Mega-Sena/teimosinha6 números vsLotofácil15 números) explica altura/dados diferentes.
 
-Ajuda do detalhe corrigida com fonte concreta: `SettingToolbarActivity` usa `settings.xml` -> `duvidas_toolbar_icon.xml` (InsetDrawable5dp de `icon_duvida2`). `ActionButtonStyleLoterias` fixa50dp. Agora slot50dp e ícone nativo32dp com insets originais (conteúdo22dp), usando painter nativo já existente no CaixaDS; não vetor/PNG substituto. Callbacks intactos. Recursos de Ajuda copiados nas cinco densidades. Não há hardcode de nomes/apostas da referência.
+Ajuda do detalhe corrigida com fonte concreta: `SettingToolbarActivity` usa `settings.xml` -> `duvidas_toolbar_icon.xml` (InsetDrawable5dp de `icon_duvida2`). `ActionButtonStyleLoterias` fixa50dp. Agora slot50dp e ícone nativo32dp com insets originais (conteúdo22dp), usando painter nativo já existente no LoteriasCaixaDS; não vetor/PNG substituto. Callbacks intactos. Recursos de Ajuda copiados nas cinco densidades. Não há hardcode de nomes/apostas da referência.
 
 ### Revisão pareada de ajuda/termos — 2026-10-05
 

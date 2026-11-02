@@ -6,7 +6,7 @@ import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedUser
 import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
@@ -36,7 +36,7 @@ class AccountZipCodeInlineValidationTest {
             ResolveZipCodeUseCase { AppResult.Failure(AppError.Validation(MESSAGE)) },
             UpdatePersonalDataUseCase { _, _ -> error("No account update allowed") },
         )
-        compose.setContent { CaixaDSTheme(darkTheme = false) {
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
             PersonalDataRoute(model, {}, { error("No save completion allowed") })
         } }
         compose.waitUntil { !model.state.value.loading }
@@ -59,7 +59,7 @@ class AccountZipCodeInlineValidationTest {
             ResolveZipCodeUseCase { AppResult.Failure(AppError.Validation(MESSAGE)) },
             RegisterAccountUseCase { error("No registration allowed") },
         )
-        compose.setContent { CaixaDSTheme(darkTheme = false) {
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
             RegistrationRoute(model, {}, { error("No registration completion allowed") }, {})
         } }
         compose.runOnIdle { model.changeZipCode("00000001") }

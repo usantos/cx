@@ -24,17 +24,17 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSScaffold as Scaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.components.navigation.CaixaDSBrandTopBar
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSScaffold as Scaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSBrandTopBar
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.onboarding.R as LocalizedR
 
 @Composable
 internal fun AgeConfirmationDialog(onConfirmAdult: () -> Unit, onRejectAdult: () -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSDialog(
+    LoteriasCaixaDSDialog(
         title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
         message = uiStrings.getString(LocalizedR.string.ui_voce_tem_mais_de_18_anos_215df2),
         positiveLabel = uiStrings.getString(LocalizedR.string.ui_sim_931345),
@@ -48,8 +48,8 @@ internal fun AgeConfirmationDialog(onConfirmAdult: () -> Unit, onRejectAdult: ()
 internal fun AgeScreen(onBack: () -> Unit, onResponsibleGaming: () -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     Scaffold(
-        containerColor = CaixaDS.colors.surface,
-        topBar = { CaixaDSBrandTopBar() },
+        containerColor = LoteriasCaixaDS.colors.surface,
+        topBar = { LoteriasCaixaDSBrandTopBar() },
         modifier = Modifier.uiId("start.0006")
     ) { padding ->
         BoxWithConstraints(Modifier.fillMaxSize().padding(padding)) {
@@ -66,7 +66,7 @@ internal fun AgeScreen(onBack: () -> Unit, onResponsibleGaming: () -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(Modifier.height(24.dp))
-                Box(Modifier.width(125.dp).height(1.dp).background(CaixaDS.colors.brand))
+                Box(Modifier.width(125.dp).height(1.dp).background(LoteriasCaixaDS.colors.brand))
                 Spacer(Modifier.height(24.dp))
                 Text(
                     buildAnnotatedString {
@@ -74,7 +74,7 @@ internal fun AgeScreen(onBack: () -> Unit, onResponsibleGaming: () -> Unit) {
                         withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("18 anos.") }
                     },
                     modifier = (Modifier.width(347.dp).height(54.dp)).uiId("start.0007"),
-                    color = CaixaDS.colors.brand,
+                    color = LoteriasCaixaDS.colors.brand,
                     fontSize = 18.sp,
                     lineHeight = 23.sp,
                     textAlign = TextAlign.Center
@@ -83,7 +83,7 @@ internal fun AgeScreen(onBack: () -> Unit, onResponsibleGaming: () -> Unit) {
                 Text(
                     uiStrings.getString(LocalizedR.string.ui_saiba_mais_sobre_o_jogo_responsavel_696ab2),
                     modifier = (Modifier.width(348.dp).uiId("start.0008").clickable(onClick = onResponsibleGaming)).uiId("start.0009"),
-                    color = CaixaDS.colors.brand,
+                    color = LoteriasCaixaDS.colors.brand,
                     fontSize = 18.sp,
                     lineHeight = 23.sp,
                     fontWeight = FontWeight.Bold,
@@ -95,7 +95,7 @@ internal fun AgeScreen(onBack: () -> Unit, onResponsibleGaming: () -> Unit) {
                 text = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),
                 modifier = Modifier.align(Alignment.BottomCenter).padding(horizontal = 16.dp, vertical = 16.dp)
                     .fillMaxWidth().height(56.dp),
-                color = CaixaDS.colors.brand,
+                color = LoteriasCaixaDS.colors.brand,
                 onClick = onBack
             )
         }

@@ -91,6 +91,14 @@ class PaymentCardViewModel(
     fun resumeAfterRedirect() = redirects.resumeAfterRedirect()
     fun retry() = monitoring.retry()
 
+    /** Reconhece a conclusão antes de entregar a navegação ao hospedeiro. */
+    fun consumeSuccessNavigation(): Boolean = synchronized(mutableState) {
+        val state = mutableState.value
+        if (state.stage != PaymentCardStage.SUCCESS || state.successNavigationConsumed) return false
+        mutableState.dispatch(PaymentCardAction.SuccessNavigationConsumed)
+        true
+    }
+
     fun submit() = submission.submit()
 
     private fun fail(error: AppError) = mutableState.dispatch(PaymentCardAction.Failed(error))

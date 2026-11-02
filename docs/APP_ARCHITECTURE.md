@@ -2,6 +2,19 @@
 
 Para saber **quais classes chamar para obter dados**, consulte [Acesso aos dados por funcionalidade](DATA_ACCESS_BY_FEATURE.md): identidade e cadastro, apostas confirmadas, carrinho, resultados, configurações e catálogo de contratos por feature.
 
+## Revisão por ViewModel — 02/11/2026
+
+A [revisão dos 46 ViewModels de features e dos dois de Core](architecture/MVVM_REVIEW_20261102.md) registra os contratos corrigidos de propriedade das operações, consumo de navegação, consulta por geração e isolamento de sessão. Os resultados e limites dessa rodada ficam separados das evidências históricas abaixo.
+
+## Organização de Compose — 01/11/2026
+
+A [revisão integral de Compose](architecture/COMPOSE_ORGANIZATION.md) cobre as
+14 features, App e Core. Routes integram estado/efeitos, Screens recebem estado
+e ações, seções específicas ficam na feature e controles compartilhados no DS.
+MVVM, Clean Architecture, ReduxKotlin, headers e baselines são preservados.
+A matriz distingue fontes refatoradas das que já estavam coesas, com evidências
+e limites da validação desta rodada.
+
 ## Revisão arquitetural de 28/10/2026
 
 A auditoria atual e sua matriz de resultados estão em [FULL_AUDIT_20261028.md](architecture/FULL_AUDIT_20261028.md). O inventário distingue 68 módulos compiláveis dos 17 agrupadores Gradle. As 14 features possuem 46 ViewModels, 45 com estado Redux, e 72 arquivos de reducers; AccountStatus permanece dedicado a efeitos. As seções datadas abaixo são históricas.
@@ -69,11 +82,11 @@ Os testes e percentuais das seções datadas posteriores são registros históri
 
 O carrinho preserva a projeção plana do backend separadamente dos cards agrupados. Data calcula
 o resumo sem duplicar valores; Domain expõe `ShoppingCart.betCount`, e Home observa o snapshot
-da sessão ou o retorno de consulta. `CaixaDSCartSummary` recebe somente valor/contagem/callback,
+da sessão ou o retorno de consulta. `LoteriasCaixaDSCartSummary` recebe somente valor/contagem/callback,
 sem dependência de Domain ou Data. É compartilhado pela Home e pela tela do carrinho.
 Visibilidade de limpar/favoritar continua em regras da feature. Ver `CART_SUMMARY_PARITY_AUDIT.md`
 para contrato, fallback explicitamente limitado e pendências de upload/homologação.
-`CaixaDSCartActions` também é puramente visual: o ViewModel coordena os gates e chama o caso
+`LoteriasCaixaDSCartActions` também é puramente visual: o ViewModel coordena os gates e chama o caso
 de uso de validação, inclusive para carrinho vazio. Valor mínimo/quantidade não viram autorização
 ou bloqueio local antes do serviço. O handler genérico do validador ainda precisa preservar
 avisos/redirects tipados; ver `CART_CHECKOUT_ACTION_AUDIT.md` para essa pendência.
@@ -87,7 +100,7 @@ Os switches dessa tela também não representam inscrição remota. Ver `NOTIFIC
 `SessionTokenStore` do Hilt. Conteúdo, token, tentativa e identidade fazem parte de um único
 estado imutável; publicação usa CAS, e observação expõe somente conteúdo da sessão ativa.
 O repository de pós-login publica o snapshot já convertido. A Home recebe apenas o caso de
-uso de observação, não DTOs/credenciais; usa CaixaDS para o aviso prioritário de pagamento.
+uso de observação, não DTOs/credenciais; usa LoteriasCaixaDS para o aviso prioritário de pagamento.
 O popup consome `ReadLatestNotificationUseCase`; `LatestNotificationSession` captura/limpa a
 notificação por identidade e CAS no mesmo store. `NotificationReadResult` preserva rejeições
 tipadas sem confirmar leitura. O cliente Retrofit dedicado compartilha pins, logs redigidos e a
@@ -223,7 +236,7 @@ A janela de revenda exige `habilitaRevendaBolaoApp`, modalidade, tipo e número 
 - `:core:auth`: OIDC Authorization Code com PKCE usando AppAuth.
 - Persistência local: em `:feature:<nome>:data`, mantendo schemas e chaves; as preferências de ambiente ficam no APP.
 - `:core:queue`: adapter do FilaBRA e parser testável dos eventos do console.
-- `:core:design-system`: CaixaDS, com tokens semânticos, tema claro/escuro, ícones e componentes institucionais Compose.
+- `:core:design-system`: LoteriasCaixaDS, com tokens semânticos, tema claro/escuro, ícones e componentes institucionais Compose.
 - `:core:presentation`: metadados imutáveis dos destinos compartilhados; estados, ações, efeitos e ViewModels permanecem no módulo proprietário da funcionalidade.
 - `:core:navigation`: biblioteca Android/Compose para destinos, estado e contexto entre features, dependente de contratos Domain.
 - `:core:security`: integrações de segurança/Topaz e inspeção Android.
@@ -390,7 +403,7 @@ O modelo de ameaça, formato e runbook operacional estão em [SECURE_PIN_ROTATIO
 
 O escopo efetivamente medido depende dos filtros de classes em cada módulo. A aprovação de um gate não certifica a cobertura global nem a paridade visual. Em `retail`, o escopo foi ampliado para incluir classes internas de corrotinas, todos os ViewModels e regras; o mínimo é superior a 95% (`0.9501`) e a ausência de dados reprova antes da tarefa JaCoCo. Os demais filtros ainda precisam passar pela mesma auditoria.
 
-O Design System possui testes de invariantes e uma verificação arquitetural que impede cores literais fora de `:core:design-system`. A referência de adoção está em [CAIXA_DS.md](CAIXA_DS.md).
+O Design System possui testes de invariantes e uma verificação arquitetural que impede cores literais fora de `:core:design-system`. A referência de adoção está em [LOTERIAS_CAIXA_DS.md](LOTERIAS_CAIXA_DS.md).
 
 `BetDetailDataRoute` conserva a coleta de estado, o redirecionamento consumido antes da navegação e o retorno antecipado quando os detalhes estão indisponíveis. `BetDetailScreen` reúne a composição pública `BetDetailRoute`, mantendo scaffold, painel fixo e estado restaurável da Teimosinha. `BetDetailReceiptEffect` coleta e abre os comprovantes apenas após a disponibilidade dos detalhes, com o mesmo ViewModel como chave e o IO existente em `BetReceiptFiles`. Editor e confirmação de favoritos ficam em `BetDetailFavorites`; `BetRepeatActionsOverlay` conserva sua coordenação e loading, enquanto `BetDetailDialogs` reúne os diálogos sem alterar a ordem ou os callbacks. ViewModel, regras, APIs públicas, condições e geometria permanecem inalterados.
 
@@ -433,7 +446,7 @@ A validação de 22/10/2026, incluindo os destinos atuais do JaCoCo, resultados 
 
 ## Verificação automática do contrato - pre-commit de 28/10/2026
 
-O hook nativo e o CI versionado usam `scripts/validate-pre-commit.py` e a tarefa `preCommitCheck`. Os gates de camadas, propriedade de fontes, grafo sem ciclos, App/Feature, Compose e CaixaDS são exigidos junto de Ktlint, Detekt, Lint, testes frescos, cobertura e contratos de plataforma. As fixtures XML operam em cópias temporárias. Divergências entre workspace e index ou falhas mantêm o commit bloqueado.
+O hook nativo e o CI versionado usam `scripts/validate-pre-commit.py` e a tarefa `preCommitCheck`. Os gates de camadas, propriedade de fontes, grafo sem ciclos, App/Feature, Compose e LoteriasCaixaDS são exigidos junto de Ktlint, Detekt, Lint, testes frescos, cobertura e contratos de plataforma. As fixtures XML operam em cópias temporárias. Divergências entre workspace e index ou falhas mantêm o commit bloqueado.
 
 A última execução completa aprovou 3.510 testes Android/JVM e JaCoCo LINE 95,11%, mas reprovou em Ktlint global; não é aprovação integral. Headers/baselines permanecem intactos. [Novidades e resultados](UPDATES_20261028.md) e [instalação/limites do pre-commit](quality/hooks-and-ci.md) discriminam a evidência e a proteção remota ainda dependente de configuração.
 

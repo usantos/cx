@@ -4,7 +4,7 @@ import br.gov.caixa.loterias.feature.account.R as LocalizedR
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import java.math.BigDecimal
 import br.gov.caixa.loterias.feature.account.presentation.screen.PersonalDataActions
 import br.gov.caixa.loterias.feature.account.presentation.screen.PersonalDataScreen
@@ -14,7 +14,7 @@ import br.gov.caixa.loterias.feature.account.presentation.state.PersonalDataUiSt
 @Composable
 private fun PersonalDataFormPreview() {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSTheme(darkTheme = false) {
+    LoteriasCaixaDSTheme(darkTheme = false) {
         PersonalDataScreen(
             state = PersonalDataUiState(
                 loading = false,

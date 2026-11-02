@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performTextReplacement
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SearchRetailersUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavoriteUseCase
@@ -48,7 +48,7 @@ class RetailSearchRouteUiTest {
         )
         model.changeQuery("teste")
         model.searchNow()
-        compose.setContent { CaixaDSTheme { RetailSearchRoute(model, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { RetailSearchRoute(model, {}) } }
         flush()
         val content = compose.onNode(androidx.compose.ui.test.hasTestTag("retail-search-content")).fetchSemanticsNode().boundsInRoot
         val loader = compose.onNode(androidx.compose.ui.test.hasTestTag("retail-search-loader")).fetchSemanticsNode().boundsInRoot
@@ -74,7 +74,7 @@ class RetailSearchRouteUiTest {
             )
         var back = 0
         var help = 0
-        compose.setContent { CaixaDSTheme { RetailSearchRoute(model, { back++ }, { help++ }) } }
+        compose.setContent { LoteriasCaixaDSTheme { RetailSearchRoute(model, { back++ }, { help++ }) } }
         compose.onNodeWithText("Nome ou código").assertExists()
         compose.onNodeWithText("Nenhuma Lotérica encontrada").assertExists()
         compose.onNode(hasSetTextAction()).performTextReplacement("casa")
@@ -123,7 +123,7 @@ class RetailSearchRouteUiTest {
                 SetRetailerFavoriteUseCase { _, _ -> error("No favorite allowed") },
                 FixedCoroutineDispatchers(Dispatchers.Main.immediate)
             )
-        compose.setContent { CaixaDSTheme { RetailSearchRoute(model, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { RetailSearchRoute(model, {}) } }
         compose.onNode(hasSetTextAction()).performTextReplacement("ab")
         compose.onNode(hasSetTextAction()).performImeAction()
         flush()

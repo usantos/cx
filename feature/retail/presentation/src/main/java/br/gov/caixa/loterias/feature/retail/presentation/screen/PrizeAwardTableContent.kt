@@ -18,8 +18,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
 import br.gov.caixa.loterias.feature.retail.R as LocalizedR
 import br.gov.caixa.loterias.feature.retail.presentation.mapper.prizeAwardedRows
 import java.text.NumberFormat
@@ -39,7 +39,7 @@ internal fun PrizeAwardTable(details: br.gov.caixa.loterias.feature.retail.domai
                     uiStrings.getString(LocalizedR.string.ui_concurso_1_s_39491d, contest.toString()),
                     (Modifier.padding(horizontal = 32.dp).padding(top = 8.dp)).uiId("retail.0067"),
                     color = contentColor,
-                    fontFamily = CaixaDSFuturaFontFamily,
+                    fontFamily = LoteriasCaixaDSFuturaFontFamily,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -50,7 +50,7 @@ internal fun PrizeAwardTable(details: br.gov.caixa.loterias.feature.retail.domai
                         award.description,
                         (Modifier.weight(1f)).uiId("retail.0068"),
                         color = contentColor,
-                        fontFamily = CaixaDSFuturaFontFamily,
+                        fontFamily = LoteriasCaixaDSFuturaFontFamily,
                         fontSize = 14.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -58,7 +58,7 @@ internal fun PrizeAwardTable(details: br.gov.caixa.loterias.feature.retail.domai
                     Text(
                         award.amount?.let(money::format).orEmpty(),
                         color = contentColor,
-                        fontFamily = CaixaDSFuturaFontFamily,
+                        fontFamily = LoteriasCaixaDSFuturaFontFamily,
                         fontSize = 14.sp,
                         modifier = Modifier.uiId("retail.0069")
                     )

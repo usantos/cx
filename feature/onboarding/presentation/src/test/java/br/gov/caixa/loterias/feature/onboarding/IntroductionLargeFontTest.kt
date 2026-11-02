@@ -16,8 +16,9 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.CompleteIntroductionUseCase
+import br.gov.caixa.loterias.feature.onboarding.presentation.components.IntroductionActions
 import br.gov.caixa.loterias.feature.onboarding.presentation.components.IntroductionScreen
 import br.gov.caixa.loterias.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 import org.junit.Assert.assertFalse
@@ -70,7 +71,14 @@ class IntroductionLargeFontTest {
         model.pageChanged(page)
         compose.setContent {
             val state by model.state.collectAsState()
-            CaixaDSTheme { Box(Modifier.size(360.dp, 640.dp)) { IntroductionScreen(state, model) } }
+            LoteriasCaixaDSTheme {
+                Box(Modifier.size(360.dp, 640.dp)) {
+                    IntroductionScreen(
+                        state,
+                        IntroductionActions(model::pageChanged, model::complete, model::confirmAdult, model::rejectAdult)
+                    )
+                }
+            }
         }
     }
 

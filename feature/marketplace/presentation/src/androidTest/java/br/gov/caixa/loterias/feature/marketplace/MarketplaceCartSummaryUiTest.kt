@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.marketplace
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import java.math.BigDecimal
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -16,7 +16,7 @@ class MarketplaceCartSummaryUiTest {
 
     @Test fun realCartAmountAndFullCountAreDisplayedAndOpenCart() {
         var opened = false
-        compose.setContent { CaixaDSTheme { Screen(BigDecimal("39.00"), 9) { opened = true } } }
+        compose.setContent { LoteriasCaixaDSTheme { Screen(BigDecimal("39.00"), 9) { opened = true } } }
         compose.onNodeWithText("R$ 39,00", useUnmergedTree = true).assertIsDisplayed()
         compose.onNodeWithText("9", useUnmergedTree = true).assertIsDisplayed()
         compose.onNodeWithText("Valor atual do carrinho").performClick()
@@ -24,7 +24,7 @@ class MarketplaceCartSummaryUiTest {
     }
 
     @Test fun zeroCartDoesNotReserveOrShowFooter() {
-        compose.setContent { CaixaDSTheme { Screen(BigDecimal.ZERO, 9) {} } }
+        compose.setContent { LoteriasCaixaDSTheme { Screen(BigDecimal.ZERO, 9) {} } }
         compose.onNodeWithText("Valor atual do carrinho", useUnmergedTree = true).assertDoesNotExist()
         compose.onNodeWithText("R$ 00,00", useUnmergedTree = true).assertDoesNotExist()
         compose.onNodeWithText("Bolão CAIXA").assertIsDisplayed()

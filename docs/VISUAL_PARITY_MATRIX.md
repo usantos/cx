@@ -4,14 +4,14 @@ Atualização visual de 15/10: tutorial de Bolão conferido com captura nativa, 
 
 > Atualização pareada de 15/10/2026: [Bolão e Filtros frente ao CX](MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md). São 20 pares no mesmo AVD/dados, com Outubro Rosa ligada/desligada, e correções centralizadas no DS. `modernCheck releaseCheck` passou na árvore integrada: 1.699 testes JVM, 146 testes Android nos escopos executados e três Releases minificados. O bloqueio de captura das Activities internas foi resolvido pelo runner de instrumentação. A equivalência global de 100% continua pendente nos fluxos e casos históricos indicados abaixo.
 
-> Atualização de 14/10/2026: [consolidação CaixaDS e validação integrada](DS_CONSOLIDATION_20261014.md). Os gates e os três Releases passaram; os testes adicionais cobrem componentes extraídos, com dois testes de origem raster de Dia de Sorte/Lotofácil ainda pendentes (95px esperados, 93px também na base anterior). A alteração de card encerrado/concurso e Dia de Sorte branco foi solicitada pelo produto nesta conversa. As linhas abaixo preservam evidências históricas; não homologam automaticamente a árvore atual.
+> Atualização de 14/10/2026: [consolidação LoteriasCaixaDS e validação integrada](DS_CONSOLIDATION_20261014.md). Os gates e os três Releases passaram; os testes adicionais cobrem componentes extraídos, com dois testes de origem raster de Dia de Sorte/Lotofácil ainda pendentes (95px esperados, 93px também na base anterior). A alteração de card encerrado/concurso e Dia de Sorte branco foi solicitada pelo produto nesta conversa. As linhas abaixo preservam evidências históricas; não homologam automaticamente a árvore atual.
 
 `CART_CHECKOUT_ACTION_AUDIT.md` corrige o CTA do carrinho, título, fundo branco, texto do mínimo
 e estado vazio. Ação em carrinho vazio volta a percorrer gates e validação remota, sem bloqueio
 local por mínimo/quantidade. Dois testes de botões e um de integração foram adicionados;
 capturas Android e os handlers de erro/redirect da validação ainda não estão homologados.
 
-`CART_SUMMARY_PARITY_AUDIT.md` restaura o somador compartilhado da Home/carrinho em CaixaDS:
+`CART_SUMMARY_PARITY_AUDIT.md` restaura o somador compartilhado da Home/carrinho em LoteriasCaixaDS:
 fundo diagonal original, valor/descrição/ícone/contador, overflow `...`, total positivo e slot
 fixo no carrinho. Contagem vem da projeção plana, não dos cards. Toolbar também considera
 essa projeção. Há testes Compose novos; captura pareada e homologação do restante do carrinho
@@ -26,7 +26,7 @@ original vetorizado, base64, link, Fechar e avisos/redirects de leitura. A imple
 a captura pareada de imagem/texto longo, prioridade, erros e retorno do navegador. Ainda não homologado.
 
 `POST_LOGIN_CONTENT_PARITY_AUDIT.md` restaura o aviso prioritário de pagamento não identificado
-na Home, com texto legado, CaixaDS e CTA para Minhas compras. O teste Compose apenas compilou;
+na Home, com texto legado, LoteriasCaixaDS e CTA para Minhas compras. O teste Compose apenas compilou;
 captura pareada/execução Android seguem obrigatórias. O popup foi integrado na revisão citada acima.
 
 `POST_LOGIN_SESSION_INTEGRATION_AUDIT.md` conecta o cadastro ao transporte vinculado à sessão,
@@ -46,7 +46,7 @@ Legenda:
 - **Compose específico**: não usa formulário/tela genérica; possui hierarquia própria na feature.
 - **Estado real**: tela alimentada por `ViewModel`/use case e com estados de loading/erro/dados.
 - **Paridade comportamental**: use somente quando regras de visibilidade, ações, confirmações, filtros e transições do legado tiverem teste ou evidência comparativa.
-- **Componente**: antigo XML parcial absorvido pelo CaixaDS ou pela tela que o utiliza.
+- **Componente**: antigo XML parcial absorvido pelo LoteriasCaixaDS ou pela tela que o utiliza.
 
 ## Entrada e conta
 
@@ -67,9 +67,9 @@ resposta perdida e aplicação dos dados retornados, além de captura/interaçã
 
 Recuperação local na entrada: `SESSION_CLEANUP_RECOVERY_AUDIT.md` mantém o Splash enquanto verifica/retoma uma limpeza pendente e acrescenta aviso de falha ou recuperação local não equivalente ao SSO. O conteúdo das telas só é composto após liberação. Três testes Compose novos compilaram; transição do Splash, processo real e screenshots ainda não foram homologados.
 
-Limpeza na saída: `LOCAL_SESSION_CLEANUP_AUDIT.md` adiciona o estado de loading durante a limpeza persistida e aviso de falha com Tentar novamente, sem liberar a continuação enquanto incompleta no processo atual. Usa CaixaDS; o teste Compose foi compilado, não executado. O texto de falha é adicional, não literal legado, e ainda exige aceite visual/interativo.
+Limpeza na saída: `LOCAL_SESSION_CLEANUP_AUDIT.md` adiciona o estado de loading durante a limpeza persistida e aviso de falha com Tentar novamente, sem liberar a continuação enquanto incompleta no processo atual. Usa LoteriasCaixaDS; o teste Compose foi compilado, não executado. O texto de falha é adicional, não literal legado, e ainda exige aceite visual/interativo.
 
-Logout: `SSO_END_SESSION_AUDIT.md` conecta menu, autossuspensão e falha pós-login ao navegador. Espera usa loading institucional; falha local, cancelamento externo e resultado não confirmado têm avisos distintos em CaixaDS. Os textos adicionais não são atribuídos ao legado. Aparência, interação, retorno SSO e limpeza da pilha Android ainda precisam de homologação.
+Logout: `SSO_END_SESSION_AUDIT.md` conecta menu, autossuspensão e falha pós-login ao navegador. Espera usa loading institucional; falha local, cancelamento externo e resultado não confirmado têm avisos distintos em LoteriasCaixaDS. Os textos adicionais não são atribuídos ao legado. Aparência, interação, retorno SSO e limpeza da pilha Android ainda precisam de homologação.
 
 Bloqueio parcial: `POST_LOGIN_PARTIAL_BLOCK_AUDIT.md` restaura o aviso “Usuário habilitado apenas para consultas.” e mantém a superfície técnica atrás dos avisos pós-login. Reconhecer libera a continuação uma vez, sem logout. A compilação instrumentada e os testes de estado não homologam o visual nem a pilha real de navegação.
 
@@ -182,12 +182,12 @@ Revisão comportamental de cartão: `CARD_POLLING_PARITY_AUDIT.md` registra o ac
 
 ## Componentes XML absorvidos
 
-- Barras `app_bar_*`: `CaixaDSLegacyTopBar` e `CaixaDSLegacyScaffold`.
-- Botões e rodapés: `CaixaDSLegacyPrimaryButton` e `CaixaDSLegacyOutlinedButton`.
-- Campos de 52 dp: `CaixaDSLegacyLabelledField`.
-- Cards, linhas e divisores: `CaixaDSLegacyCard`, `CaixaDSLegacyChoiceRow` e `CaixaDSLegacyDivider`.
-- Grades de dezenas: `BettingLegacyNumberGrid` na feature Betting, usando estilos e tokens do CaixaDS.
-- Dialogs: componentes de dialog do CaixaDS e dialogs específicos das features.
+- Barras `app_bar_*`: `LoteriasCaixaDSLegacyTopBar` e `LoteriasCaixaDSLegacyScaffold`.
+- Botões e rodapés: `LoteriasCaixaDSLegacyPrimaryButton` e `LoteriasCaixaDSLegacyOutlinedButton`.
+- Campos de 52 dp: `LoteriasCaixaDSLegacyLabelledField`.
+- Cards, linhas e divisores: `LoteriasCaixaDSLegacyCard`, `LoteriasCaixaDSLegacyChoiceRow` e `LoteriasCaixaDSLegacyDivider`.
+- Grades de dezenas: `BettingLegacyNumberGrid` na feature Betting, usando estilos e tokens do LoteriasCaixaDS.
+- Dialogs: componentes de dialog do LoteriasCaixaDS e dialogs específicos das features.
 - Itens RecyclerView/GridView: `LazyColumn`, `LazyRow`, `LazyVerticalGrid` e `HorizontalPager` nas features.
 
 ## Validação
@@ -221,7 +221,7 @@ Combo, Instantânea e o atalho de Rapidão passaram a usar decisões verificadas
 - `retail/prize-mercado-pago` foi recomposta a partir de `content_jogos_confirmados_premio_mercado_pago.xml` e de `JogosConfirmadosPremioMercadoPagoActivity`: marca, fundo branco, faixa do prêmio, campo sublinhado, botão verde-azulado sobre o rodapé cinza e ajuda seguem o legado. O botão permanece acionável com e-mail vazio e exibe `E-mail inválido.` no clique, em vez de antecipar a regra desabilitando o controle. No sucesso, a seta de retorno some, a ajuda permanece, o comprovante continua disponível e os dois botões ficam fixos sobre o rodapé de 176 dp. A evidência anterior à correção está em `build/visual-audit/legacy-compose-prize-mp-v4/report.tsv` (`0.865449`); uma nova captura pareada ainda é obrigatória antes da homologação.
 - `retail/prize-lottery` recuperou o título `Lotérica`, QR de 200 dp, textos e margens do XML, timer de 25 sp, divisor, enumeradores circulares, destaque verde de `prêmio` e o botão retangular do estado expirado. O primeiro minuto fica vermelho e os últimos dez/três segundos mantêm pulso/vibração. A Activity legada encerra sem renderizar quando a fixture não consegue fornecer todos os extras e a nova proteção do executor registra corretamente `requires-fixture` em `build/visual-audit/legacy-compose-prize-lottery-v5/report.tsv`; portanto não existe ainda um par visual válido para homologação.
 - `retail/prize-pix` recuperou a marca Pix completa no resumo, cores e seta das abas, campo sublinhado com erro imediato, margens dos fragments e botões de 55 dp com cantos de 4 dp. A navegação também foi separada conforme o código legado: seta/hardware back saem do canal sem cancelar a reserva, enquanto “Cancelar” na confirmação chama o endpoint de cancelamento e só retorna às opções após sucesso. Esses ramos estão cobertos no `PrizeRedemptionViewModelTest`, mas a recaptura interativa ainda é necessária.
-- A revisão seguinte conectou explicitamente o hardware back à ação da seta, restaurou ajuda na lotérica e nos estados de Pix, aplicou a fonte CaixaDS aos campos básicos e separou os validadores de e-mail de Mercado Pago e Pix conforme as duas implementações legadas. Valor líquido zero não é mais substituído por bruto. A [auditoria de resgate](RETAIL_PARITY_AUDIT.md) registra 29 testes JVM aprovados e cobertura de 96,45% dos ViewModels/regras de `retail`, incluindo corrotinas; os APKs e screenshots dessa revisão ainda precisam de validação pelo Gradle/emulador.
+- A revisão seguinte conectou explicitamente o hardware back à ação da seta, restaurou ajuda na lotérica e nos estados de Pix, aplicou a fonte LoteriasCaixaDS aos campos básicos e separou os validadores de e-mail de Mercado Pago e Pix conforme as duas implementações legadas. Valor líquido zero não é mais substituído por bruto. A [auditoria de resgate](RETAIL_PARITY_AUDIT.md) registra 29 testes JVM aprovados e cobertura de 96,45% dos ViewModels/regras de `retail`, incluindo corrotinas; os APKs e screenshots dessa revisão ainda precisam de validação pelo Gradle/emulador.
 - A auditoria comportamental de `tickets/bet-detail` encontrou três ações que ainda estavam aproximadas: comprovante, favorita e repetição da aposta. Elas agora usam, respectivamente, o PDF do backend, `logado/apostas-favoritas/validar` + `logado/apostas-favoritas` e inclusão real no carrinho; “Editar aposta” restaura modalidade, tipo de concurso e dezenas no simulador. Esses estados possuem testes unitários, mas ainda precisam de captura interativa legada/Compose antes de serem marcados como homologados.
 - A segunda auditoria de `tickets/bet-detail` eliminou o achatamento dos payloads especiais: +Milionária mantém trevos; Super Sete mantém colunas; Timemania e Dia de Sorte mantêm seus complementos; Loteca e Lotogol mantêm partidas, marcações e placares. A repetição, a edição e o salvamento de favorita transportam os mesmos dados. As capturas determinísticas estão em `build/visual-audit/confirmed-bet-special/` para as variantes `plus`, `super-seven`, `timemania`, `dia-de-sorte`, `loteca`, `lotogol` e `pool`. Elas comprovam renderização e composição por modalidade, mas não substituem a comparação pareada com os respectivos estados do APK legado.
 - `notifications/preferences` foi recapturada sem popup de rede. O Compose recuperou a fonte Futura original, título misto, ação de ajuda para Termos de Uso, cores, divisores e switch compacto do legado; a evidência está em `build/visual-audit/legacy-compose-notification-preferences-v6/report.tsv`, com SSIM `0.816112`, metadados do dispositivo e árvores semânticas dos dois aplicativos. A ação de ajuda também foi exercitada no APK `automacaoDebug`. Como ainda há diferença geométrica/antialiasing mensurável, a tela não é classificada como pixel a pixel homologada.
@@ -240,7 +240,7 @@ Combo, Instantânea e o atalho de Rapidão passaram a usar decisões verificadas
 - `smoke-compose-routes.sh` percorre obrigatoriamente os 78 destinos do catálogo, valida conteúdo Compose em runtime e trata somente a abertura externa da Conta CAIXA como transição de navegador; `capture-compose-screens.sh` usa o mesmo catálogo e o backend mock determinístico.
 - Um resultado integral do smoke significa “renderizou sem crash”; não significa “pixel a pixel homologado”.
 - `verifyLegacyUiInventory` impede a remoção silenciosa da baseline de 396 layouts e de qualquer um dos 95 pontos de montagem de UI legados.
-- A central de notificações foi verificada no emulador nos estados recolhido e expandido; os antigos ícones XML foram convertidos em vetores nativos do `CaixaDSIcons`.
+- A central de notificações foi verificada no emulador nos estados recolhido e expandido; os antigos ícones XML foram convertidos em vetores nativos do `LoteriasCaixaDSIcons`.
 - As 78 entradas atuais foram novamente percorridas no emulador com `automacaoDebug` e `HAPPY_PATH` (`78/78`, zero falhas). As rotas que dependem de aposta ou compra selecionada usam fixtures somente no APK debug mock; sem esse contexto, retornam ao destino anterior como no fluxo real. Formulário, prévia, CVV e confirmação de cartão foram capturados separadamente para verificar a etapa restaurada e o uso do cartão salvo retornado pelo mock Retrofit.
 - Após os ajustes desta auditoria, `modernCheck` passou com testes, cobertura, lint e todos os gates arquiteturais; `releaseCheck` também passou para `automacaoRelease`, `prdRelease` e `tqsRelease`, todos com R8 e recursos reduzidos.
 
@@ -249,7 +249,7 @@ Combo, Instantânea e o atalho de Rapidão passaram a usar decisões verificadas
 
 O menu passa a seguir a referência fornecida pelo usuário: degradê no azul CAIXA, logo do login centralizada, botão de fechar, ícones e textos claros, sem divisores entre os itens principais e com rodapé escuro. A implementação visual reside no DS. Essa alteração é uma exceção aprovada à reprodução visual do Drawer legado; os contratos de navegação, flags, expansão dos grupos, informações institucionais e confirmação de saída permanecem.
 
-Validação desta alteração: gates `verifyCaixaDS`/`verifyComposeMigration`, APK `prdDebug` normal (mock desativado), 111 testes JVM do app, 32 da Home e 2 testes Android do Drawer aprovados. Capturas do menu aberto e de Minha área expandida foram inspecionadas em `build/verification/drawer-20261015/`; testes e capturas usam emulador dedicado.
+Validação desta alteração: gates `verifyLoteriasCaixaDS`/`verifyComposeMigration`, APK `prdDebug` normal (mock desativado), 111 testes JVM do app, 32 da Home e 2 testes Android do Drawer aprovados. Capturas do menu aberto e de Minha área expandida foram inspecionadas em `build/verification/drawer-20261015/`; testes e capturas usam emulador dedicado.
 
 
 ### Campanhas e status bar — continuação de 15/10/2026

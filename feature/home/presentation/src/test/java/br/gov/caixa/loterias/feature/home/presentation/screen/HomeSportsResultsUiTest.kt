@@ -16,7 +16,7 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsMatch
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsTeam
@@ -103,7 +103,7 @@ class HomeSportsResultsUiTest {
         val bytes = ByteArrayOutputStream().also { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }.toByteArray()
         val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Column {
                     HomeResultShield(encoded)
                     HomeResultShield("data:image/png;base64,$encoded")
@@ -123,7 +123,7 @@ class HomeSportsResultsUiTest {
     }
 
     private fun show(result: DrawResult) {
-        compose.setContent { CaixaDSTheme { HomeSportsResults(result, Color.Black) } }
+        compose.setContent { LoteriasCaixaDSTheme { HomeSportsResults(result, Color.Black) } }
     }
 
     private fun result() = DrawResult(

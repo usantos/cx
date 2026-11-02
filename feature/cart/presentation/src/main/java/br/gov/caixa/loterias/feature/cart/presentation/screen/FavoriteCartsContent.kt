@@ -14,12 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSContentState
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSContentState
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.presentation.components.FavoriteCartRow
 import br.gov.caixa.loterias.feature.cart.presentation.components.FavoriteRouteHeading
@@ -35,14 +34,14 @@ internal fun FavoriteCartsContent(
     actions: FavoriteCartsActions,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = uiStrings.getString(LocalizedR.string.ui_carrinhos_favoritos_0efd75),
 
         onBack = onBack,
-        containerColor = CaixaDSColorTokens.White,
+        containerColor = LoteriasCaixaDSColorTokens.White,
         modifier = Modifier.uiId("cart.0140")
     ) { padding ->
-        CaixaDSContentState(state.loading, state.errorMessage, padding, actions.load) {
+        LoteriasCaixaDSContentState(state.loading, state.errorMessage, padding, actions.load) {
             if (!privateDataEnabled) {
                 Column(Modifier.fillMaxSize().padding(padding)) {
                     FavoriteRouteHeading(
@@ -61,7 +60,7 @@ internal fun FavoriteCartsContent(
                     Text(
                         uiStrings.getString(LocalizedR.string.ui_voce_ainda_nao_possui_carrinhos_favo_baaa0f),
                         modifier = (Modifier.fillMaxWidth().padding(horizontal = 20.dp).align(Alignment.Center)).uiId("cart.0141"),
-                        color = CaixaDSColorTokens.FavoriteCartText,
+                        color = LoteriasCaixaDSColorTokens.FavoriteCartText,
                         style = favoriteTextStyle.copy(fontWeight = FontWeight.Bold),
                         textAlign = TextAlign.Center
                     )

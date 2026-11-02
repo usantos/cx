@@ -13,13 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSTextButton as TextButton
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTextButton as TextButton
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.presentation.components.RapidAmountPage
 import br.gov.caixa.loterias.feature.betting.presentation.components.RapidModalitiesPage
@@ -40,7 +40,7 @@ internal fun RapidConfigurationContent(
     actions: RapidConfigurationActions,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = uiStrings.getString(LocalizedR.string.ui_rapidao_658c41),
         onBack = onBack,
         topBarActionWidth = 80.dp,
@@ -54,9 +54,9 @@ internal fun RapidConfigurationContent(
                 ) {
                     Text(
                         uiStrings.getString(LocalizedR.string.ui_salvar_aef7cd),
-                        color = CaixaDSColorTokens.White,
+                        color = LoteriasCaixaDSColorTokens.White,
                         fontSize = 16.sp,
-                        fontFamily = CaixaDSFontFamily,
+                        fontFamily = LoteriasCaixaDSFontFamily,
                         modifier = Modifier.uiId("bet.0288")
                     )
                 }
@@ -67,10 +67,10 @@ internal fun RapidConfigurationContent(
     ) { padding ->
         if (state.loading) {
             Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = CaixaDS.colors.brand)
+                CircularProgressIndicator(color = LoteriasCaixaDS.colors.brand)
             }
         } else {
-            Column(Modifier.fillMaxSize().padding(padding).background(CaixaDS.colors.surface)) {
+            Column(Modifier.fillMaxSize().padding(padding).background(LoteriasCaixaDS.colors.surface)) {
                 HorizontalPager(state = pager, modifier = Modifier.fillMaxSize()) { page ->
                     when (page) {
                         0 -> RapidWelcomePage()

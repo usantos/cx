@@ -1,17 +1,17 @@
 # Reviewed behavior suites shared by device and Robolectric runners.
 # Hardware/installed APK oracle suites remain device-only; no production classes are excluded.
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCampaignCloverTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSBlueHeaderContractTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSDialogCallbacksTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCartSummaryTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSTextInputDialogTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSModalWidthTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSOctoberRoseCampaignPanelTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSBaseContractTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSCartActionsTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSHomeHeaderSpacingTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSLineSpacingTest.kt
-core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/CaixaDSComponentsTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCampaignCloverTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSBlueHeaderContractTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSDialogCallbacksTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCartSummaryTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSTextInputDialogTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSModalWidthTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSOctoberRoseCampaignPanelTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSBaseContractTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSCartActionsTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSHomeHeaderSpacingTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSLineSpacingTest.kt
+core/design-system/src/androidTest/java/br/gov/caixa/loterias/core/designsystem/LoteriasCaixaDSComponentsTest.kt
 core/presentation/src/androidTest/java/br/gov/caixa/loterias/core/presentation/ServiceFailureOverlayTest.kt
 feature/marketplace-filter/presentation/src/androidTest/java/br/gov/caixa/loterias/feature/marketplacefilter/MarketplaceFilterScreenTest.kt
 feature/marketplace-filter/presentation/src/androidTest/java/br/gov/caixa/loterias/feature/marketplacefilter/MarketplaceCartSummaryParityTest.kt
@@ -121,7 +121,7 @@ feature/onboarding/presentation/src/androidTest/java/br/gov/caixa/loterias/featu
 feature/onboarding/presentation/src/androidTest/java/br/gov/caixa/loterias/feature/onboarding/OnboardingCoordinationUiTest.kt
 feature/onboarding/presentation/src/androidTest/java/br/gov/caixa/loterias/feature/onboarding/TutorialTypographyParityTest.kt
 
-# Device-only: CaixaDSWebPageTest requires Chromium to execute real JavaScript and finish page loading.
+# Device-only: LoteriasCaixaDSWebPageTest requires Chromium to execute real JavaScript and finish page loading.
 # Local policy/callback/disposal assertions are covered separately by the JVM contract suite.
 helper:feature/betting/presentation/src/androidTest/java/br/gov/caixa/loterias/feature/betting/BettingPendingPickerVisualAssertions.kt
 app/src/androidTest/java/br/gov/caixa/loterias/apostas/ForceUpdateGateUiTest.kt

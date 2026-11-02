@@ -27,7 +27,7 @@ import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.auth.gateway.EndSessionGateway
 import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.DetailRestorationOutcome
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
@@ -58,7 +58,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -113,7 +112,9 @@ class AppSessionCoordinatorJvmTest {
         )
         val session =
             AppSessionDependencies(fixture, ForegroundSessionBackgroundState(), Clock.fixed(Instant.ofEpochSecond(100), ZoneOffset.UTC))
-        compose.setContent { CaixaDSTheme { br.gov.caixa.loterias.apostas.navigation.AppNavHost(features, session, "results/modalities") } }
+        compose.setContent {
+            LoteriasCaixaDSTheme { br.gov.caixa.loterias.apostas.navigation.AppNavHost(features, session, "results/modalities") }
+        }
         compose.onNodeWithText("Modalidades").assertIsDisplayed()
         compose.onNodeWithText("quina").performClick()
         compose.onNodeWithText("Concurso nº 10").assertIsDisplayed()
@@ -169,7 +170,7 @@ class AppSessionCoordinatorJvmTest {
             Clock.fixed(Instant.ofEpochSecond(100), ZoneOffset.UTC)
         )
         compose.setContent {
-            CaixaDSTheme { br.gov.caixa.loterias.apostas.navigation.AppNavHost(features, dependencies, "home") }
+            LoteriasCaixaDSTheme { br.gov.caixa.loterias.apostas.navigation.AppNavHost(features, dependencies, "home") }
         }
         compose.runOnIdle { assertEquals(0, recoveryOpens) }
         compose.onNodeWithText("Pular tutorial").assertExists()
@@ -486,7 +487,7 @@ class AppSessionCoordinatorJvmTest {
         compose.setContent {
             nav = rememberNavController()
             navigation = rememberAppNavigationState("coordinator-fixture")
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 coordinator = rememberAppSessionCoordinator(dependencies, nav, navigation, fixture.lease, { restarts++ })
                 NavHost(nav, startDestination = start) {
                     listOf(

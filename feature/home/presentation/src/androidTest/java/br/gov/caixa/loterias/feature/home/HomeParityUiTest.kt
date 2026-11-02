@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.home.presentation.components.*
 import br.gov.caixa.loterias.feature.home.presentation.state.*
 import br.gov.caixa.loterias.feature.results.presentation.state.ResultsUiState
@@ -32,7 +32,7 @@ class HomeParityUiTest {
     )
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { Box(Modifier.size(280.dp, 600.dp).background(Color.Magenta)) { content() } } }
+        compose.setContent { LoteriasCaixaDSTheme { Box(Modifier.size(280.dp, 600.dp).background(Color.Magenta)) { content() } } }
     }
 
     @Test fun homeHeaderRetainsLegacyWhiteBackgroundAndCampaignControls() {
@@ -42,7 +42,7 @@ class HomeParityUiTest {
             pool = {}, bet = {}, openCart = {}
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 HomeTopBar(
                     0,
                     br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign.OUTUBRO_ROSA,
@@ -68,7 +68,7 @@ class HomeParityUiTest {
             pool = {}, bet = {}, openCart = {}
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 br.gov.caixa.loterias.feature.home.presentation.screen.HomeContent(
                     HomeUiState(loading = loading.value),
                     br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign.OUTUBRO_ROSA,
@@ -252,7 +252,7 @@ class HomeParityUiTest {
             pool = {}, bet = {}, openCart = {}
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Box(Modifier.size(320.dp, 700.dp).background(Color.Magenta)) {
                     HomeCarousel(
                         HomeUiState(), listOf(lottery), ResultsUiState(), lottery,
@@ -336,7 +336,7 @@ class HomeParityUiTest {
             pool = {}, bet = {}, openCart = {}
         )
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 br.gov.caixa.loterias.feature.home.presentation.screen.HomeContent(
                     HomeUiState(
                         loading = false,

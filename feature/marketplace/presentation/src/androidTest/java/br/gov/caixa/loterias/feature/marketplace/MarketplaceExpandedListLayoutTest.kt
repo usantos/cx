@@ -22,9 +22,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplacePoolExpansion
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplacePoolSummary
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolExpansion
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolSummary
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import java.io.ByteArrayOutputStream
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -58,9 +58,9 @@ class MarketplaceExpandedListLayoutTest {
                 val base = LocalDensity.current
                 sceneDensity = Density(base.density * minOf(1f, maxWidth.value / width), base.fontScale)
                 CompositionLocalProvider(LocalDensity provides sceneDensity) {
-                    CaixaDSTheme {
+                    LoteriasCaixaDSTheme {
                         Column(Modifier.width(width.dp)) {
-                            CaixaDSMarketplacePoolExpansion(
+                            LoteriasCaixaDSMarketplacePoolExpansion(
                                 null, AnnotatedString("1 aposta de 11 dezenas"),
                                 AnnotatedString("6 cotas disponíveis de 22"), 1, false, true, false, true,
                                 expansionColor, Color.White, expansionColor, {}, {}, { actions += "increase" }, { actions += "add" }
@@ -94,9 +94,9 @@ class MarketplaceExpandedListLayoutTest {
 
     @Test fun expandedPriceAlignsWithRetailerInsteadOfStartingBelowItsName() {
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Column(Modifier.width(384.dp)) {
-                    CaixaDSMarketplacePoolSummary(
+                    LoteriasCaixaDSMarketplacePoolSummary(
                         "J. J. Loterias Ltda", "Sao Paulo - Sp", "", "R$ 170,30",
                         false, "", "", Color.Green, true, false, true, {}, {}
                     )

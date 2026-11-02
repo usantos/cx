@@ -15,7 +15,7 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
@@ -47,7 +47,7 @@ class MarketplaceDetailCoordinationUiTest {
         var returnsToPools = 0
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 MarketplaceDetailRoute(model, {}, {}, onSoldOut = {
                     assertNull(model.state.value.soldOutNotice)
                     returnsToPools++
@@ -73,7 +73,7 @@ class MarketplaceDetailCoordinationUiTest {
             val viewModels = remember { listOf(first.create(), second.create()) }
             val index = selected.intValue
             val model = viewModels[index]
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 MarketplaceDetailRoute(model, {}, {
                     assertNull(model.state.value.confirmation)
                     confirmations += it
@@ -106,7 +106,7 @@ class MarketplaceDetailCoordinationUiTest {
         val fixture = Fixture("B1", initialFavorite = true).apply { failFavorite = true }
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme(darkTheme = false) { MarketplaceDetailRoute(model, {}, {}) }
+            LoteriasCaixaDSTheme(darkTheme = false) { MarketplaceDetailRoute(model, {}, {}) }
         }
         compose.onNodeWithContentDescription("Excluir lotérica favorita").performClick()
         compose.onNodeWithText("Deseja excluir Lotérica B1 da sua lista de favoritas?").assertIsDisplayed()
@@ -135,7 +135,7 @@ class MarketplaceDetailCoordinationUiTest {
             val lifecycleOwner = remember { Owner().also { owner = it } }
             val model = remember { fixture.create() }
             CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
-                CaixaDSTheme(darkTheme = false) { MarketplaceDetailRoute(model, {}, {}) }
+                LoteriasCaixaDSTheme(darkTheme = false) { MarketplaceDetailRoute(model, {}, {}) }
             }
         }
         compose.runOnIdle { assertEquals(1, fixture.gets) }

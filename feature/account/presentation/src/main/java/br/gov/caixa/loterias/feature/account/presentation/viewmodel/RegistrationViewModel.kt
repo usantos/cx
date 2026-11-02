@@ -27,6 +27,7 @@ class RegistrationViewModel(
     private val resolveZipCode: ResolveZipCodeUseCase,
     private val registerAccount: RegisterAccountUseCase,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
+    private val isSessionCurrent: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<RegistrationUiState, RegistrationAction>(
         identityProvider.currentUser().toState(),
@@ -54,9 +55,15 @@ class RegistrationViewModel(
     fun toggleTerms() = mutableState.dispatch(RegistrationAction.TermsToggled)
     fun toggleNotifications() = mutableState.dispatch(RegistrationAction.NotificationsToggled)
 
+    fun consumeCompletion(): Boolean = synchronized(mutableState) {
+        if (!isSessionCurrent() || !state.value.registered || state.value.completionConsumed) return@synchronized false
+        mutableState.dispatch(RegistrationAction.CompletionConsumed)
+        true
+    }
+
     fun submit() {
         val task = synchronized(mutableState) {
-            if (submissionJob?.isCompleted == false || state.value.loading || state.value.registered) return
+            if (!isSessionCurrent() || submissionJob?.isCompleted == false || state.value.loading || state.value.registered) return
             val current = state.value
             mutableState.dispatch(RegistrationAction.SubmitStarted)
             viewModelScope.launch(dispatchers.io, start = CoroutineStart.LAZY) {
@@ -67,7 +74,10 @@ class RegistrationViewModel(
                     acceptsTerms = current.acceptsTerms,
                     acceptsNotifications = current.acceptsNotifications
                 )
-                when (val result = registerAccount(registration)) {
+                if (!isSessionCurrent()) return@launch
+                val result = registerAccount(registration)
+                if (!isSessionCurrent()) return@launch
+                when (result) {
                     is AppResult.Success -> mutableState.dispatch(RegistrationAction.Submitted)
                     is AppResult.Failure -> mutableState.dispatch(RegistrationAction.SubmitFailed(result.error.userMessage()))
                 }
@@ -77,8 +87,10 @@ class RegistrationViewModel(
     }
 
     private fun resolve(zipCode: String, requestVersion: Long) = viewModelScope.launch(dispatchers.io) {
-        if (zipCodeRequestVersion.get() != requestVersion || state.value.zipCode != zipCode) return@launch
-        when (val result = resolveZipCode(zipCode)) {
+        if (zipCodeRequestVersion.get() != requestVersion || state.value.zipCode != zipCode || !isSessionCurrent()) return@launch
+        val result = resolveZipCode(zipCode)
+        if (!isSessionCurrent()) return@launch
+        when (result) {
             is AppResult.Success -> mutableState.dispatch(RegistrationAction.ZipCodeResolved(zipCode, requestVersion, result.value))
 
             is AppResult.Failure -> mutableState.dispatch(

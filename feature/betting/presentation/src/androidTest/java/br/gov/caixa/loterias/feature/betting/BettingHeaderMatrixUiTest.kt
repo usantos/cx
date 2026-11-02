@@ -22,11 +22,11 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.LocalCaixaDSMegaSenaCampaign
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LocalLoteriasCaixaDSMegaSenaCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeSpecialContests
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
@@ -46,7 +46,7 @@ class BettingHeaderMatrixUiTest {
 
     @Test fun allNormalModalitiesRetainNativeColorsFontsAndMetadataSpacing() {
         val current = mutableStateOf(state(2, "mega-sena"))
-        compose.setContent { CaixaDSTheme { BettingLegacyGameHeader(current.value, {}, {}, null) } }
+        compose.setContent { LoteriasCaixaDSTheme { BettingLegacyGameHeader(current.value, {}, {}, null) } }
         data class Entry(val id: Int, val name: String, val background: Long, val ink: Long = 0xFFFFFFFF)
         listOf(
             Entry(2, "mega-sena", 0xFF00A651), Entry(3, "quina", 0xFF2E3192),
@@ -62,11 +62,11 @@ class BettingHeaderMatrixUiTest {
             val title = layout(entry.name)
             assertEquals(entry.name, Color(entry.ink), title.layoutInput.style.color)
             assertEquals(entry.name, 16f, title.layoutInput.style.fontSize.value, .01f)
-            assertEquals(CaixaDSFuturaFontFamily, title.layoutInput.style.fontFamily)
+            assertEquals(LoteriasCaixaDSFuturaFontFamily, title.layoutInput.style.fontFamily)
             assertFalse(entry.name, title.hasVisualOverflow)
             val label = layout("Concurso")
             val number = layout("3073")
-            assertEquals(CaixaDSFontFamily, label.layoutInput.style.fontFamily)
+            assertEquals(LoteriasCaixaDSFontFamily, label.layoutInput.style.fontFamily)
             assertEquals(xmlFontSize(14f), label.layoutInput.style.fontSize.value, .01f)
             assertEquals(xmlFontSize(12f), number.layoutInput.style.fontSize.value, .01f)
             val image = compose.onRoot().captureToImage().asAndroidBitmap()
@@ -82,7 +82,7 @@ class BettingHeaderMatrixUiTest {
 
     @Test fun specialTitlesFontReductionsAndArtworkFollowTheNativeSimulationConsumer() {
         val current = mutableStateOf(state(2, "mega-sena"))
-        compose.setContent { CaixaDSTheme { BettingLegacyGameHeader(current.value, {}, {}, null) } }
+        compose.setContent { LoteriasCaixaDSTheme { BettingLegacyGameHeader(current.value, {}, {}, null) } }
         data class Entry(
             val id: Int,
             val name: String,
@@ -127,8 +127,8 @@ class BettingHeaderMatrixUiTest {
     @Test fun octoberRoseChangesOnlyMegaPaletteAndRetainsSpecialArtwork() {
         val current = mutableStateOf(state(2, "mega-sena"))
         compose.setContent {
-            CompositionLocalProvider(LocalCaixaDSMegaSenaCampaign provides CaixaDSCampaign.OCTOBER_ROSE) {
-                CaixaDSTheme { BettingLegacyGameHeader(current.value, {}, {}, null) }
+            CompositionLocalProvider(LocalLoteriasCaixaDSMegaSenaCampaign provides LoteriasCaixaDSCampaign.OCTOBER_ROSE) {
+                LoteriasCaixaDSTheme { BettingLegacyGameHeader(current.value, {}, {}, null) }
             }
         }
         var image = compose.onRoot().captureToImage().asAndroidBitmap()

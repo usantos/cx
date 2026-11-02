@@ -6,7 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.test.junit4.createComposeRule
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.DeleteSavedCardUseCase
@@ -84,7 +84,7 @@ class InstalledSavedCardsPairTest {
                     recordRecentPurchase = RecordRecentPurchaseUseCase { error("No purchase completion authorized") },
                     clock = Clock.systemUTC(), dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate))
             }
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 PaymentDataRoute(PaymentMode.CARDS, model, onBack = {}, onHelp = {}, onPix = {},
                     onAddCard = { error("No card creation authorized") }, onOpenCard = {}, onApproved = {},
                     onHome = {}, onPurchases = {}, onRedirect = {}, onRegistration = {})

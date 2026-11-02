@@ -19,7 +19,7 @@ import br.gov.caixa.loterias.apostas.navigation.AppNavHost
 import br.gov.caixa.loterias.apostas.navigation.session.AppSessionDependencies
 import br.gov.caixa.loterias.apostas.navigation.startup.mockStartDestination
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.state.CaixaDSStatusAction as StatusAction
+import br.gov.caixa.loterias.core.designsystem.components.state.LoteriasCaixaDSStatusAction as StatusAction
 import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.SplashScreen
 import br.gov.caixa.loterias.feature.onboarding.presentation.viewmodel.StartupViewModel

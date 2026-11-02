@@ -18,7 +18,7 @@ import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
@@ -191,7 +191,7 @@ class RapidConfigurationCoordinationTest {
         compose.setContent {
             val firstModel = remember { first.create() }
             val secondModel = remember { second.create() }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 RapidConfigurationRoute(if (replace.value) secondModel else firstModel, {}, {})
             }
         }
@@ -221,7 +221,7 @@ class RapidConfigurationCoordinationTest {
     private fun show(fixture: Fixture, onSaved: () -> Unit = {}, onBack: () -> Unit = {}) {
         compose.setContent {
             val model = remember { fixture.create() }
-            CaixaDSTheme { RapidConfigurationRoute(model, onBack, onSaved) }
+            LoteriasCaixaDSTheme { RapidConfigurationRoute(model, onBack, onSaved) }
         }
     }
 

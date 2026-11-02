@@ -26,7 +26,7 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
@@ -108,7 +108,7 @@ class CartLocationDialogsUiTest {
             )
         compose.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     val state by model.state.collectAsState()
                     CartLocationDialogs(state, model) { blockedHome++ }
                 }

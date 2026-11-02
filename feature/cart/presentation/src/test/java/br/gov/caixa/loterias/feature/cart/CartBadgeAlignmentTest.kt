@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.cart
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
@@ -24,7 +24,7 @@ class CartBadgeAlignmentTest {
     @Test fun countIsCenteredInsideItsBadge() {
         val item = CartItem(1, CartItemKind.INDIVIDUAL_BET, "Mega-Sena", "", BigDecimal.ONE)
         val cart = ShoppingCart(1, BigDecimal.ONE, listOf(item), totalBetCount = 4)
-        compose.setContent { CaixaDSTheme { CurrentCartFooter(cart, true, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { CurrentCartFooter(cart, true, {}, {}) } }
         val badge = compose.onNodeWithTag("cart-summary-badge", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
         val number = compose.onNodeWithText("4", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
         assertEquals("Horizontal center", badge.center.x, number.center.x, CENTER_TOLERANCE_PIXELS)

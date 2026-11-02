@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -27,7 +27,7 @@ class SupportScreenCoordinationTest {
             expandedQuestionIds = setOf(1),
         ))
         compose.setContent {
-            CaixaDSTheme { SupportScreen(state.value, { error("A link must not dispatch a support action") }) }
+            LoteriasCaixaDSTheme { SupportScreen(state.value, { error("A link must not dispatch a support action") }) }
         }
         compose.onNodeWithText(answer).performTouchInput { click() }
         compose.onNodeWithText("Você será direcionado para a WEB. Deseja continuar?").assertIsDisplayed()
@@ -56,7 +56,7 @@ class SupportScreenCoordinationTest {
         val actions = mutableListOf<Pair<Int, SupportAction>>()
         compose.setContent {
             val currentRevision = revision.intValue
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 SupportScreen(state.value, { action ->
                     actions += currentRevision to action
                     state.value = when (action) {
@@ -98,7 +98,7 @@ class SupportScreenCoordinationTest {
             isLoading = true,
         ))
         val actions = mutableListOf<SupportAction>()
-        compose.setContent { CaixaDSTheme { SupportScreen(state.value, { actions += it }) } }
+        compose.setContent { LoteriasCaixaDSTheme { SupportScreen(state.value, { actions += it }) } }
         compose.onNodeWithText("Carregando…").assertIsDisplayed()
         compose.runOnIdle { state.value = state.value.copy(isLoading = false) }
         compose.onNodeWithTag("support_game_help").assertExists()

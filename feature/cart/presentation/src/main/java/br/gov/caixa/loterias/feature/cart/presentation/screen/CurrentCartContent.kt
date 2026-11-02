@@ -24,12 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSCurrentCartIcon
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSCurrentCartColors
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSCurrentCartIcon
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSCurrentCartColors
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
@@ -58,15 +58,15 @@ internal fun CurrentCartContent(
         Box(Modifier.fillMaxSize().padding(padding), contentAlignment = BiasAlignment(0f, 0.1f)) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(
-                    CaixaDSCurrentCartIcon,
+                    LoteriasCaixaDSCurrentCartIcon,
                     null,
                     (Modifier.legacyAutomationId("cart-empty-icon").size(140.dp)).uiId("cart.0101"),
-                    tint = CaixaDSCurrentCartColors.EmptyIcon
+                    tint = LoteriasCaixaDSCurrentCartColors.EmptyIcon
                 )
                 Text(
                     uiStrings.getString(LocalizedR.string.ui_seu_carrinho_esta_vazio_106816),
                     (Modifier.padding(top = 16.dp)).uiId("cart.0102"),
-                    color = CaixaDSColorTokens.Blue700,
+                    color = LoteriasCaixaDSColorTokens.Blue700,
                     style = cartNativeText(12, FontWeight.SemiBold).copy(fontSize = messageSize)
                 )
             }
@@ -90,17 +90,17 @@ internal fun CurrentCartContent(
             Text(
                 uiStrings.getString(LocalizedR.string.ui_o_valor_minimo_do_carrinho_e_r_2_50_e14f4e),
                 (Modifier.fillMaxWidth().padding(top = 7.dp)).uiId("cart.0105"),
-                color = CaixaDSColorTokens.Black,
+                color = LoteriasCaixaDSColorTokens.Black,
                 style = cartNativeText()
             )
             state.errorMessage?.let {
-                Text(it, (Modifier.padding(top = 7.dp)).uiId("cart.0106"), color = CaixaDS.colors.error)
+                Text(it, (Modifier.padding(top = 7.dp)).uiId("cart.0106"), color = LoteriasCaixaDS.colors.error)
             }
             if (state.cart?.expiredPoolShareRemoved == true) {
                 Text(
                     uiStrings.getString(LocalizedR.string.ui_a_s_cota_s_expirada_s_foram_excluida_410ba9),
                     (Modifier.padding(top = 7.dp)).uiId("cart.0107"),
-                    color = CaixaDS.colors.error
+                    color = LoteriasCaixaDS.colors.error
                 )
             }
         }
@@ -131,7 +131,7 @@ internal fun CartSection(title: String) {
         style = cartNativeText(14, FontWeight.Bold)
     )
     Spacer(Modifier.height(13.dp))
-    Box(Modifier.fillMaxWidth().height(1.dp).background(CaixaDSCurrentCartColors.SectionDivider))
+    Box(Modifier.fillMaxWidth().height(1.dp).background(LoteriasCaixaDSCurrentCartColors.SectionDivider))
     Spacer(Modifier.height(12.dp))
 }
 
@@ -143,11 +143,11 @@ internal fun CartError(message: String, padding: PaddingValues, onRetry: () -> U
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(message, color = CaixaDS.colors.error, modifier = Modifier.uiId("cart.0109"))
+        Text(message, color = LoteriasCaixaDS.colors.error, modifier = Modifier.uiId("cart.0109"))
         Text(
             uiStrings.getString(LocalizedR.string.ui_tentar_novamente_b9e106),
             (Modifier.uiId("cart.0110").clickable(onClick = onRetry).padding(20.dp)).uiId("cart.0111"),
-            color = CaixaDS.colors.brand
+            color = LoteriasCaixaDS.colors.brand
         )
     }
 }

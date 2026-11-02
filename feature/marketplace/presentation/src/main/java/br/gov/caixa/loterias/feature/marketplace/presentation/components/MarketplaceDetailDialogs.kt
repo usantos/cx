@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.feature.marketplace.presentation.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoadingDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.marketplace.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceDetailUiState
 import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceDetailViewModel
@@ -12,7 +12,7 @@ import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.Marketpl
 internal fun MarketplaceDetailDialogs(state: MarketplaceDetailUiState, viewModel: MarketplaceDetailViewModel, onSoldOut: () -> Unit = {}) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     state.soldOutNotice?.let { message ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message,
             stringResource(LocalizedR.string.ui_entendi_9f9373),
@@ -23,7 +23,7 @@ internal fun MarketplaceDetailDialogs(state: MarketplaceDetailUiState, viewModel
         )
     }
     state.pendingFavorite?.let { target ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             if (target) {
                 uiStrings.getString(LocalizedR.string.ui_deseja_incluir_1_s_na_sua_lista_de_f_5f60aa, state.detail?.lotteryName.orEmpty())
@@ -37,12 +37,12 @@ internal fun MarketplaceDetailDialogs(state: MarketplaceDetailUiState, viewModel
         )
     }
     state.favoriteError?.let {
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             it,
             stringResource(LocalizedR.string.ui_entendi_9f9373),
             viewModel::dismissFavoriteError
         )
     }
-    if (state.isUpdatingFavorite || state.isAddingToCart || state.isLoading) CaixaDSAuthenticationLoadingDialog()
+    if (state.isUpdatingFavorite || state.isAddingToCart || state.isLoading) LoteriasCaixaDSAuthenticationLoadingDialog()
 }

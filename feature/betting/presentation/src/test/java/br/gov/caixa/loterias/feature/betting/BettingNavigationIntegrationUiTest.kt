@@ -10,7 +10,6 @@ import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.NavHostController
@@ -23,8 +22,8 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
@@ -286,14 +285,16 @@ class BettingNavigationIntegrationUiTest {
         compose.setContent {
             nav = rememberNavController()
             navigation = rememberAppNavigationState(null)
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 NavHost(nav, startDestination = "origin") {
-                    composable("origin") { CaixaDSText("Origem") }
-                    composable("account/register") { CaixaDSText("Completar cadastro") }
-                    composable("cart/current") { CaixaDSText("Destino carrinho") }
-                    composable("support/terms?tab={tab}") { CaixaDSText("FAQ") }
-                    composable("support/terms") { CaixaDSText("Termos") }
-                    composable("cart/included?modality={modality}&amount={amount}&minimum={minimum}") { CaixaDSText("Aposta incluída") }
+                    composable("origin") { LoteriasCaixaDSText("Origem") }
+                    composable("account/register") { LoteriasCaixaDSText("Completar cadastro") }
+                    composable("cart/current") { LoteriasCaixaDSText("Destino carrinho") }
+                    composable("support/terms?tab={tab}") { LoteriasCaixaDSText("FAQ") }
+                    composable("support/terms") { LoteriasCaixaDSText("Termos") }
+                    composable("cart/included?modality={modality}&amount={amount}&minimum={minimum}") {
+                        LoteriasCaixaDSText("Aposta incluída")
+                    }
                     bettingGraph(adapter, nav, navigation, session)
                 }
             }

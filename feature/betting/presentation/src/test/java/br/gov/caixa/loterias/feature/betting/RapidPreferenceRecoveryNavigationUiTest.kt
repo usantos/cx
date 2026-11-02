@@ -12,7 +12,7 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.persistence.SecureStorageException
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
@@ -55,7 +55,7 @@ class RapidPreferenceRecoveryNavigationUiTest {
             val navigation = rememberAppNavigationState(null)
             val state = rememberAppSessionState()
             val session = remember { visitorSession(state) }
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 NavHost(nav, startDestination = "betting/rapid-config") {
                     bettingGraph(dependencies, nav, navigation, session)
                 }

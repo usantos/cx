@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSContentState
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartSummary
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSContentState
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCartSummary
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.presentation.components.ComboDetailEntryCard
 import br.gov.caixa.loterias.feature.betting.presentation.components.ComboDetailHeader
@@ -43,19 +43,19 @@ internal fun BetComboDetailScreen(
     onHelp: () -> Unit = {},
 ) {
     val resources = LocalResources.current
-    CaixaDSScaffold(
+    LoteriasCaixaDSScaffold(
         title = resources.getString(R.string.combo_screen_title),
         onBack = onBack,
         gradientTopBar = false,
-        topBarStartColor = CaixaDSColorTokens.Blue700,
-        topBarEndColor = CaixaDSColorTokens.Blue700,
+        topBarStartColor = LoteriasCaixaDSColorTokens.Blue700,
+        topBarEndColor = LoteriasCaixaDSColorTokens.Blue700,
         topBarActionWidth = 50.dp,
         topBarAction = { ComboHelpAction(onHelp) },
-        bottomBar = { CaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart, modifier = Modifier.uiId("bet.0221")) },
+        bottomBar = { LoteriasCaixaDSCartSummary(cartTotal, cartBetCount, onClick = onCart, modifier = Modifier.uiId("bet.0221")) },
         modifier = Modifier.uiId("bet.0222")
     ) { padding ->
-        Box(Modifier.fillMaxSize().padding(padding).background(CaixaDSColorTokens.ComboDetailCanvas)) {
-            CaixaDSContentState(state.loading, state.errorMessage, PaddingValues(0.dp), onRetry) {
+        Box(Modifier.fillMaxSize().padding(padding).background(LoteriasCaixaDSColorTokens.ComboDetailCanvas)) {
+            LoteriasCaixaDSContentState(state.loading, state.errorMessage, PaddingValues(0.dp), onRetry) {
                 LazyColumn((Modifier.fillMaxSize().padding(bottom = 36.dp)).uiId("bet.0223")) {
                     state.selectedCombo?.let { combo ->
                         item { ComboDetailHeader(combo) }

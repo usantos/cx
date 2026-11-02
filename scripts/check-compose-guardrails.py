@@ -69,7 +69,7 @@ def check_launcher_resources(results):
         "vector-layout": ("app/src/main/res/drawable/ic_launcher_outubro_rosa_background.xml", lambda s: s.replace("</vector>", "<TextView /></vector>"), "Fundo da campanha"),
         "combo-vector-layout": ("core/design-system/src/main/res/drawable/legacy_combo_trevo_loteca_detalhe_combo.xml", lambda s: s.replace("</vector>", "<TextView /></vector>"), "Arte Combo"),
         "drawable-alias-layout": ("core/design-system/src/main/res/values/drawable_aliases.xml", lambda s: s.replace("</resources>", "<TextView /></resources>"), "Aliases devem preservar"),
-        "drawable-alias-reference": ("core/design-system/src/main/res/values/drawable_aliases.xml", lambda s: s.replace("@drawable/caixads_home_clover", "@drawable/foreign"), "Aliases devem preservar"),
+        "drawable-alias-reference": ("core/design-system/src/main/res/values/drawable_aliases.xml", lambda s: s.replace("@drawable/loterias_caixa_ds_home_clover", "@drawable/foreign"), "Aliases devem preservar"),
         "volantes-layout": ("core/design-system/src/main/res/drawable-mdpi/ic_volantes.xml", lambda s: s.replace("</layer-list>", "<TextView /></layer-list>"), "Recurso ic_volantes"),
         "defaults-force-update": ("app/src/main/res/xml/remote_config_defaults.xml", lambda s: s.replace("<value>false</value>", "<value>true</value>"), "Remote Config defaults"),
         "defaults-extra-key": ("app/src/main/res/xml/remote_config_defaults.xml", lambda s: s.replace("</defaultsMap>", "<entry><key>unexpected</key><value>false</value></entry></defaultsMap>"), "Remote Config defaults"),
@@ -189,19 +189,19 @@ def main():
         raise FileExistsError(f"Fixture path already exists: {source}")
     fixtures = {
         "literal-color": ("val color = androidx.compose.ui.graphics.Color(0xFFA5AAB6)", "Cores literais"),
-        "generic-component": ("fun <T> CaixaDSForbidden(value: T) = value", "devem pertencer ao CaixaDS"),
-        "local-typography": ("val type = androidx.compose.material3.Typography()", "devem pertencer ao CaixaDS"),
-        "material-icon": ("import androidx.compose.material.icons.Icons", "devem pertencer ao CaixaDS"),
+        "generic-component": ("fun <T> LoteriasCaixaDSForbidden(value: T) = value", "devem pertencer ao LoteriasCaixaDS"),
+        "local-typography": ("val type = androidx.compose.material3.Typography()", "devem pertencer ao LoteriasCaixaDS"),
+        "material-icon": ("import androidx.compose.material.icons.Icons", "devem pertencer ao LoteriasCaixaDS"),
     }
     try:
         for name, (content, message) in fixtures.items():
             source.write_text("package br.gov.caixa.loterias.feature.betting\n" + content + "\n")
-            results.append(run(name, "verifyCaixaDS", message))
+            results.append(run(name, "verifyLoteriasCaixaDS", message))
     finally:
         source.unlink(missing_ok=True)
 
     results.append(run("valid-migration", "verifyComposeMigration"))
-    results.append(run("valid-ds", "verifyCaixaDS"))
+    results.append(run("valid-ds", "verifyLoteriasCaixaDS"))
     (OUTPUT / "results.json").write_text(json.dumps(results, indent=2) + "\n")
     print(f"Guardrails: {len(results)} checks passed; all fixtures restored.")
 

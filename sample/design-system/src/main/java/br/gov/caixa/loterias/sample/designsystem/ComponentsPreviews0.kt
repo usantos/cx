@@ -7,24 +7,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSNotificationPlaceholder
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAccountChoice
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAccountCopy
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAccountField
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAccountInlineWarning
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAccountSaveFooter
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnchoredTooltip
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnimation
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoading
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSBetTypeItem
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSBetTypeStrip
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSNotificationPlaceholder
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountChoice
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountCopy
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountField
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountInlineWarning
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountSaveFooter
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAnchoredTooltip
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAnimation
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoading
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSBetTypeItem
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSBetTypeStrip
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 
 internal val componentsPreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSAccountField") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountField") { state ->
         with(state) {
-            CaixaDSAccountField(
+            LoteriasCaixaDSAccountField(
                 label = sample,
                 value = text,
                 onValueChange = { text = it },
@@ -32,14 +32,14 @@ internal val componentsPreviews0 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSAccountInlineWarning") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountInlineWarning") { state ->
         with(state) {
-            CaixaDSAccountInlineWarning(message = hint)
+            LoteriasCaixaDSAccountInlineWarning(message = hint)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSAccountChoice") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountChoice") { state ->
         with(state) {
-            CaixaDSAccountChoice(
+            LoteriasCaixaDSAccountChoice(
                 selected = selection,
                 options = options.mapIndexed {
                         index,
@@ -51,38 +51,38 @@ internal val componentsPreviews0 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSAccountSaveFooter") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountSaveFooter") { state ->
         with(state) {
-            CaixaDSAccountSaveFooter(
+            LoteriasCaixaDSAccountSaveFooter(
                 label = actionLabel,
                 onClick = action,
                 enabled = true
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSAccountCopy") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountCopy") { state ->
         with(state) {
-            CaixaDSAccountCopy(
+            LoteriasCaixaDSAccountCopy(
                 value = sample,
                 size = 18f,
                 bold = true
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnchoredTooltip") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAnchoredTooltip") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSAnchoredTooltip(
+                LoteriasCaixaDSAnchoredTooltip(
                     text = sample,
                     onDismiss = dismiss
                 )
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSAnimation") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAnimation") { state ->
         with(state) {
             val context = LocalContext.current
-            CaixaDSAnimation(
+            LoteriasCaixaDSAnimation(
                 composition = remember(context) {
                     com.airbnb.lottie.LottieCompositionFactory.fromRawResSync(context, R.raw.catalog_animation).value
                 },
@@ -91,27 +91,27 @@ internal val componentsPreviews0 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoading") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoading") { state ->
         with(state) {
-            CaixaDSAuthenticationLoading(label = sample)
+            LoteriasCaixaDSAuthenticationLoading(label = sample)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoadingDialog") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog") { state ->
         with(state) {
             TimedLoadingPreview(state)
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.CaixaDSBetTypeStrip") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSBetTypeStrip") { state ->
         with(state) {
-            CaixaDSBetTypeStrip(
+            LoteriasCaixaDSBetTypeStrip(
                 items = listOf(
-                    CaixaDSBetTypeItem(
+                    LoteriasCaixaDSBetTypeItem(
                         sample,
-                        CaixaDSNotificationPlaceholder
+                        LoteriasCaixaDSNotificationPlaceholder
                     )
                 ),
-                backgroundColor = CaixaDS.colors.brand,
-                contentColor = CaixaDSColorTokens.White
+                backgroundColor = LoteriasCaixaDS.colors.brand,
+                contentColor = LoteriasCaixaDSColorTokens.White
             )
         }
     }

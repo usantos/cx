@@ -4,7 +4,7 @@ import br.gov.caixa.loterias.feature.cart.presentation.mapper.sectionTitle
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.label
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
@@ -38,7 +38,7 @@ class CurrentCartFormattersTest {
     }
     @Test fun sharedTextStyleKeepsFontPaddingSizeAndWeightDefaults() {
         val normal = cartText()
-        assertEquals(CaixaDSFontFamily, normal.fontFamily)
+        assertEquals(LoteriasCaixaDSFontFamily, normal.fontFamily)
         assertEquals(14.sp, normal.fontSize)
         assertEquals(FontWeight.Normal, normal.fontWeight)
         assertEquals(true, normal.platformStyle?.paragraphStyle?.includeFontPadding)

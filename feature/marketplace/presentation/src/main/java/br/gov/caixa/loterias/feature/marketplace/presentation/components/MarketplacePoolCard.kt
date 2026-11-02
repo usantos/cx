@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplacePoolExpansion
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplacePoolSummary
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolExpansion
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolSummary
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.presentation.formatting.formatBrazilianCurrency
 import br.gov.caixa.loterias.feature.marketplace.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
@@ -34,9 +34,9 @@ internal fun PoolCard(
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val color = marketplaceColors(pool.modality).listText
-    Column(Modifier.fillMaxWidth().background(CaixaDSColorTokens.White)) {
+    Column(Modifier.fillMaxWidth().background(LoteriasCaixaDSColorTokens.White)) {
         Column {
-            CaixaDSMarketplacePoolSummary(
+            LoteriasCaixaDSMarketplacePoolSummary(
                 title = if (showModality) {
                     marketplacePoolModalityLabel(pool, modalityNames, specialContests)
                 } else {
@@ -61,7 +61,7 @@ internal fun PoolCard(
             )
             if (expanded) {
                 val colors = marketplaceColors(pool.modality)
-                CaixaDSMarketplacePoolExpansion(
+                LoteriasCaixaDSMarketplacePoolExpansion(
                     contest = if (lotteryFiltered) "Concurso ${pool.contest}" else null,
                     prognostics = pool.prognosticLabel(), availability = pool.shareAvailability(),
                     shares = selectedShares, canDecrease = selectedShares > 1,

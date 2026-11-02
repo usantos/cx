@@ -3,7 +3,7 @@
 
 package br.gov.caixa.loterias.core.presentation
 
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
 import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign
 import br.gov.caixa.loterias.core.presentation.mapper.toDSCampaign
 import br.gov.caixa.loterias.core.presentation.rule.lotteryGameRulesHtml
@@ -27,8 +27,8 @@ class LotteryInstructionsContractTest {
     }
 
     @Test fun `campaign adapter keeps optional default and both commemorative identities`() {
-        assertEquals(CaixaDSCampaign.DEFAULT, null.toDSCampaign())
-        assertEquals(CaixaDSCampaign.OCTOBER_ROSE, CommemorativeCampaign.OUTUBRO_ROSA.toDSCampaign())
-        assertEquals(CaixaDSCampaign.SEPTEMBER_BLUE, CommemorativeCampaign.SETEMBRO_AZUL.toDSCampaign())
+        assertEquals(LoteriasCaixaDSCampaign.DEFAULT, null.toDSCampaign())
+        assertEquals(LoteriasCaixaDSCampaign.OCTOBER_ROSE, CommemorativeCampaign.OUTUBRO_ROSA.toDSCampaign())
+        assertEquals(LoteriasCaixaDSCampaign.SEPTEMBER_BLUE, CommemorativeCampaign.SETEMBRO_AZUL.toDSCampaign())
     }
 }

@@ -31,11 +31,13 @@ fun NavGraphBuilder.accountGraph(
     accountStatusGraph(appContainer, navController, session)
     personalDataGraph(appContainer, navController, session)
     composable("account/register") {
-        val registrationViewModel = viewModel {
+        val registrationViewModel = viewModel(key = "registration-${session.privateEntryKey}") {
+            val form = appContainer.accountForms.forSession(session.identity)
             RegistrationViewModel(
                 identityProvider = appContainer.currentUserIdentity,
                 resolveZipCode = appContainer.resolveZipCode,
-                registerAccount = appContainer.registerAccount,
+                registerAccount = form.registerAccount,
+                isSessionCurrent = session.isPrivateSessionCurrent,
                 dispatchers = appContainer.dispatchers
             )
         }
@@ -136,12 +138,13 @@ private fun NavGraphBuilder.personalDataGraph(
     composable("account/personal-data") {
         androidx.compose.runtime.key(session.privateEntryKey) {
             val personalDataViewModel = viewModel(key = "personal-data-${session.privateEntryKey}") {
+                val form = appContainer.accountForms.forSession(session.identity)
                 PersonalDataViewModel(
                     getProfile = appContainer.accountProfile,
                     resolveZipCode = appContainer.resolveZipCode,
-                    updatePersonalData = appContainer.updatePersonalData,
+                    updatePersonalData = form.updatePersonalData,
                     dispatchers = appContainer.dispatchers,
-                    recalculateAuthorizedLimit = appContainer.recalculateAuthorizedLimit,
+                    recalculateAuthorizedLimit = form.recalculateAuthorizedLimit,
                     deferInitialLoad = session.identity == null,
                     isSessionCurrent = session.isPrivateSessionCurrent
                 )

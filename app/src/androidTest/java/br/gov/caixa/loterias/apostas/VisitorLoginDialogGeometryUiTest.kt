@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +22,7 @@ class VisitorLoginDialogGeometryUiTest {
     @Test fun defaultBettingDialogMatchesInstalledMaterialActivityActionWidthsAndRetains48dpHeight() {
         val exitMessage = "Ao voltar para a página inicial, sua aposta em edição será descartada. Deseja continuar?"
         compose.setContent {
-            CaixaDSTheme { CaixaDSDialog("Atenção", exitMessage, "Confirmar", {}, "Cancelar") }
+            LoteriasCaixaDSTheme { LoteriasCaixaDSDialog("Atenção", exitMessage, "Confirmar", {}, "Cancelar") }
         }
         val nativePackage = "br.gov.caixa.loterias.apostas.cxv2validation"
         val target = InstrumentationRegistry.getInstrumentation().targetContext
@@ -47,7 +47,7 @@ class VisitorLoginDialogGeometryUiTest {
     }
 
     @Test fun defaultSingleEntendiActionRetainsNativeMaterialMinimumWidthAnd48dpHeight() {
-        compose.setContent { CaixaDSTheme { CaixaDSDialog("Atenção", "Quantidade alterada", "Entendi", {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { LoteriasCaixaDSDialog("Atenção", "Quantidade alterada", "Entendi", {}) } }
         val nativePackage = "br.gov.caixa.loterias.apostas.cxv2validation"
         val target = InstrumentationRegistry.getInstrumentation().targetContext
         val native = target.createPackageContext(nativePackage, Context.CONTEXT_IGNORE_SECURITY)
@@ -61,8 +61,8 @@ class VisitorLoginDialogGeometryUiTest {
 
     @Test fun visitorPromptMatchesInstalledNativePrivateActivityFontAndButtonMetrics() {
         compose.setContent {
-            CaixaDSTheme {
-                CaixaDSDialog("Atenção", message, "Sim", {}, "Não", visitorPrompt = true)
+            LoteriasCaixaDSTheme {
+                LoteriasCaixaDSDialog("Atenção", message, "Sim", {}, "Não", visitorPrompt = true)
             }
         }
         val messageBounds = compose.onNodeWithText(message).fetchSemanticsNode().boundsInRoot

@@ -2,21 +2,21 @@
 
 package br.gov.caixa.loterias.sample.designsystem
 
-import br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartActions
-import br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartSummary
+import br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCartActions
+import br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCartSummary
 
 internal val cartPreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartActions") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCartActions") { state ->
         with(state) {
-            CaixaDSCartActions(
+            LoteriasCaixaDSCartActions(
                 onContinueBetting = action,
                 onPayment = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.cart.CaixaDSCartSummary") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCartSummary") { state ->
         with(state) {
-            CaixaDSCartSummary(
+            LoteriasCaixaDSCartSummary(
                 total = java.math.BigDecimal("25.50"),
                 betCount = 3,
                 onClick = action

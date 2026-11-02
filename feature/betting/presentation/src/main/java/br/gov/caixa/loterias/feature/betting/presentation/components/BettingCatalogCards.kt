@@ -24,18 +24,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSLotteryArtwork
-import br.gov.caixa.loterias.core.designsystem.artwork.caixaDSCampaignDrawable
-import br.gov.caixa.loterias.core.designsystem.artwork.caixaDSComboDetailClover
-import br.gov.caixa.loterias.core.designsystem.artwork.caixaDSComboSpecialStrip
-import br.gov.caixa.loterias.core.designsystem.artwork.caixaDSMarketplaceFilterClover
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSLotteryArtwork
+import br.gov.caixa.loterias.core.designsystem.artwork.loteriasCaixaDSCampaignDrawable
+import br.gov.caixa.loterias.core.designsystem.artwork.loteriasCaixaDSComboDetailClover
+import br.gov.caixa.loterias.core.designsystem.artwork.loteriasCaixaDSComboSpecialStrip
+import br.gov.caixa.loterias.core.designsystem.artwork.loteriasCaixaDSMarketplaceFilterClover
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.layout.caixaDSDrawablePainter
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSDrawablePainter
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
@@ -49,12 +49,12 @@ import br.gov.caixa.loterias.feature.betting.presentation.mapper.specialEntry
 @Composable
 internal fun LegacyComboCatalogCard(combo: BetCombo, onClick: () -> Unit) {
     val special = combo.specialEntry()?.modality
-    val strip = special?.let { caixaDSComboSpecialStrip(it.id, it.code) } ?: R.drawable.tarja_trevo_padrao_lista_combos
+    val strip = special?.let { loteriasCaixaDSComboSpecialStrip(it.id, it.code) } ?: R.drawable.tarja_trevo_padrao_lista_combos
     val clover = special?.let {
-        caixaDSCampaignDrawable(it.id, it.code, CaixaDSLotteryArtwork.CLOVER_ON_DARK)
-            ?: caixaDSMarketplaceFilterClover(it.id, it.code, selected = true)
+        loteriasCaixaDSCampaignDrawable(it.id, it.code, LoteriasCaixaDSLotteryArtwork.CLOVER_ON_DARK)
+            ?: loteriasCaixaDSMarketplaceFilterClover(it.id, it.code, selected = true)
     } ?: R.drawable.trevo_lista_combo
-    val nameColor = special?.let { caixaDSLotteryStyle(it.id, it.code).listText } ?: CaixaDSColorTokens.ComboCardName
+    val nameColor = special?.let { loteriasCaixaDSLotteryStyle(it.id, it.code).listText } ?: LoteriasCaixaDSColorTokens.ComboCardName
     Box(
         Modifier.padding(
             top = 8.dp
@@ -65,8 +65,8 @@ internal fun LegacyComboCatalogCard(combo: BetCombo, onClick: () -> Unit) {
     ) {
         Box(
             Modifier.align(Alignment.BottomCenter).width(147.dp).height(96.dp)
-                .background(CaixaDSColorTokens.White, RoundedCornerShape(4.dp))
-                .border(1.dp, CaixaDSColorTokens.ComboCardBorder, RoundedCornerShape(4.dp))
+                .background(LoteriasCaixaDSColorTokens.White, RoundedCornerShape(4.dp))
+                .border(1.dp, LoteriasCaixaDSColorTokens.ComboCardBorder, RoundedCornerShape(4.dp))
         ) {
             Image(
                 painterResource(R.drawable.trevo_background_lista_combo),
@@ -75,9 +75,9 @@ internal fun LegacyComboCatalogCard(combo: BetCombo, onClick: () -> Unit) {
             )
         }
         Box(Modifier.align(Alignment.TopCenter).width(39.dp).height(33.dp)) {
-            Image(caixaDSDrawablePainter(strip), null, Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
+            Image(loteriasCaixaDSDrawablePainter(strip), null, Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
             Image(
-                caixaDSDrawablePainter(clover),
+                loteriasCaixaDSDrawablePainter(clover),
                 null,
                 Modifier.align(Alignment.CenterStart).padding(start = 6.dp).width(22.dp).height(21.dp),
                 contentScale = ContentScale.FillBounds
@@ -94,8 +94,8 @@ internal fun LegacyComboCatalogCard(combo: BetCombo, onClick: () -> Unit) {
                 )
                 Text(
                     formatBetAmount(combo.amount),
-                    style = comboText(ComboTextSize.LABEL, FontWeight.Bold, CaixaDSFuturaFontFamily),
-                    color = CaixaDSColorTokens.Black,
+                    style = comboText(ComboTextSize.LABEL, FontWeight.Bold, LoteriasCaixaDSFuturaFontFamily),
+                    color = LoteriasCaixaDSColorTokens.Black,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.uiId("bet.0016")
                 )
@@ -107,7 +107,7 @@ internal fun LegacyComboCatalogCard(combo: BetCombo, onClick: () -> Unit) {
 @Composable
 internal fun ComboDetailEntryCard(entry: BetComboEntry) {
     val resources = LocalResources.current
-    val color = caixaDSLotteryStyle(entry.modality.id, entry.modality.code).listText
+    val color = loteriasCaixaDSLotteryStyle(entry.modality.id, entry.modality.code).listText
     val contest = if (entry.recurringDraws > 0) {
         resources.getString(
             R.string.combo_contest_range,
@@ -120,11 +120,11 @@ internal fun ComboDetailEntryCard(entry: BetComboEntry) {
     val key = "${entry.modality.code}-${entry.contestType}-${entry.contestNumber}"
     Box(
         Modifier.fillMaxWidth().padding(start = 2.dp, top = 3.dp).height(70.dp)
-            .legacyAutomationId("combo-entry-$key").background(CaixaDSColorTokens.White, RoundedCornerShape(3.5.dp))
-            .border(1.dp, CaixaDSColorTokens.ComboDark, RoundedCornerShape(3.5.dp))
+            .legacyAutomationId("combo-entry-$key").background(LoteriasCaixaDSColorTokens.White, RoundedCornerShape(3.5.dp))
+            .border(1.dp, LoteriasCaixaDSColorTokens.ComboDark, RoundedCornerShape(3.5.dp))
     ) {
         Image(
-            caixaDSDrawablePainter(caixaDSComboDetailClover(entry.modality.id, entry.modality.code)),
+            loteriasCaixaDSDrawablePainter(loteriasCaixaDSComboDetailClover(entry.modality.id, entry.modality.code)),
             null,
             Modifier.padding(start = 1.dp, top = 1.dp).width(40.dp).height(37.dp).legacyAutomationId("combo-clover-$key")
         )

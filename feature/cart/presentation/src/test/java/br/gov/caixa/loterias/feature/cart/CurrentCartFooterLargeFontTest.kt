@@ -10,7 +10,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
@@ -38,7 +38,7 @@ class CurrentCartFooterLargeFontTest {
         val item = CartItem(1, CartItemKind.INDIVIDUAL_BET, "Lotofácil", "", BigDecimal("3.50"))
         val cart = ShoppingCart(1, BigDecimal("7.00"), listOf(item), totalBetCount = 2)
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 Box(Modifier.size(width = 360.dp, height = 640.dp)) {
                     CurrentCartFooter(cart, true, {}, {})
                 }

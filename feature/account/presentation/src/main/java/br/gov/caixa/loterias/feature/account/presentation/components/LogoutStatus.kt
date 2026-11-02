@@ -1,9 +1,8 @@
 package br.gov.caixa.loterias.feature.account.presentation.components
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoadingDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.account.R as LocalizedR
 import br.gov.caixa.loterias.feature.account.presentation.state.LogoutNotice
 import br.gov.caixa.loterias.feature.account.presentation.state.LogoutUiState
@@ -11,9 +10,13 @@ import br.gov.caixa.loterias.feature.account.presentation.state.LogoutUiState
 @Composable
 internal fun LogoutStatus(state: LogoutUiState, onDismissNotice: () -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    if (state.signingOut || state.clearingLocalData || state.launch != null || state.waitingForBrowser) CaixaDSAuthenticationLoadingDialog()
+    if (state.signingOut || state.clearingLocalData || state.launch != null ||
+        state.waitingForBrowser
+    ) {
+        LoteriasCaixaDSAuthenticationLoadingDialog()
+    }
     state.notice?.let { notice ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = when (notice) {
                 LogoutNotice.SERVER_FAILURE -> uiStrings.getString(LocalizedR.string.ui_nao_foi_possivel_encerrar_a_sessao_n_95501b)

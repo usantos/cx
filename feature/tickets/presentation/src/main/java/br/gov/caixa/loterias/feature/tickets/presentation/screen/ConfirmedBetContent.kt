@@ -15,8 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
@@ -33,7 +33,7 @@ internal fun ConfirmedBetSelection(
     bet: ConfirmedBet,
     contentColor: Color,
     result: DrawResult? = null,
-    background: Color = CaixaDSColorTokens.Transparent,
+    background: Color = LoteriasCaixaDSColorTokens.Transparent,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     ConfirmedBetDrawnResults(bet, contentColor, background, result)

@@ -14,7 +14,7 @@ import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.screen.AssessmentStartScreen
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.state.ResponsibleGamingAction
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.state.ResponsibleGamingUiState
@@ -43,7 +43,7 @@ class AssessmentStartLayoutTest {
         compose.setContent {
             val density = LocalDensity.current.density
             CompositionLocalProvider(LocalDensity provides Density(density, fontScale)) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     Box(Modifier.requiredSize(360.dp, 736.dp)) {
                         AssessmentStartScreen(ResponsibleGamingUiState(assessmentRequired = required), actions::add)
                     }

@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.PurchaseDetailActions
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.PurchaseDetailContent
@@ -22,7 +22,7 @@ class PurchaseHelpAvailabilityTest {
         val help = mutableStateOf<(() -> Unit)?>(null)
         var clicks = 0
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 PurchaseDetailContent(
                     state = TicketsUiState(selectedPurchase = purchase),
                     purchase = purchase,

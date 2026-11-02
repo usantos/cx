@@ -46,8 +46,8 @@ ext.verifyComposePlatformResources = { File resourceRoot = rootDir ->
     }
     def drawableAliases = [
             'core/design-system/src/main/res/values/drawable_aliases.xml': [
-                    drawer_header_clover: '@drawable/caixads_home_clover',
-                    icon_duvida2: '@drawable/caixads_modality_help', legacy_icon_duvida2: '@drawable/caixads_modality_help',
+                    drawer_header_clover: '@drawable/loterias_caixa_ds_home_clover',
+                    icon_duvida2: '@drawable/loterias_caixa_ds_modality_help', legacy_icon_duvida2: '@drawable/loterias_caixa_ds_modality_help',
             ],
             'core/design-system/src/main/res/values-nodpi/drawable_aliases.xml': [ic_volantes: '@drawable/ic_volantes_pixels'],
             'feature/payment/presentation/src/main/res/values/drawable_aliases.xml': [legacy_card_provider_recarga: '@drawable/recargapay'],
@@ -194,7 +194,7 @@ tasks.register('verifyComposePlatformResourcePolicy') {
                     [name: 'vector-layout', path: background, error: 'Fundo da campanha', change: { it.replace('</vector>', '<TextView /></vector>') }],
                     [name: 'combo-layout', path: combo, error: 'Arte Combo', change: { it.replace('</vector>', '<TextView /></vector>') }],
                     [name: 'aliases-layout', path: aliases, error: 'Aliases devem preservar', change: { it.replace('</resources>', '<TextView /></resources>') }],
-                    [name: 'aliases-reference', path: aliases, error: 'Aliases devem preservar', change: { it.replace('@drawable/caixads_home_clover', '@drawable/foreign') }],
+                    [name: 'aliases-reference', path: aliases, error: 'Aliases devem preservar', change: { it.replace('@drawable/loterias_caixa_ds_home_clover', '@drawable/foreign') }],
                     [name: 'volantes-layout', path: volantes, error: 'Recurso ic_volantes', change: { it.replace('</layer-list>', '<TextView /></layer-list>') }],
                     [name: 'defaults-force-update', path: defaults, error: 'Remote Config defaults', change: { it.replace('<value>false</value>', '<value>true</value>') }],
                     [name: 'defaults-extra-key', path: defaults, error: 'Remote Config defaults', change: { it.replace('</defaultsMap>', '<entry><key>other</key><value>false</value></entry></defaultsMap>') }],

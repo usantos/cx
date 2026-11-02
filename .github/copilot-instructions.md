@@ -9,12 +9,13 @@ Projeto Gradle modular Kotlin/Jetpack Compose, MVVM, Clean Architecture, ReduxKo
 - Presentation: Route integra plataforma; Screen recebe estado/callbacks; ViewModel coordena casos de uso e efeitos. Estado de negócio de UI usa a ponte Redux existente; reducers puros, sem I/O, relógio global ou navegação.
 - Domain: regras, entidades, portas e casos de uso; sem Android, Compose, Retrofit ou Redux.
 - Data: repositories, fontes e mapeadores; transporte/DTO não vaza para Presentation/Domain. DI liga contratos a implementações. Dependências entre features passam pelos contratos existentes, sem ciclos ou módulos vazios.
-- Use CaixaDS e preserve acessibilidade e IDs estáveis. Leia as instruções específicas em `.github/instructions/` antes de editar a respectiva área, inclusive quando o cliente não as anexar automaticamente.
+- Use LoteriasCaixaDS e preserve acessibilidade e IDs estáveis. Leia as instruções específicas em `.github/instructions/` antes de editar a respectiva área, inclusive quando o cliente não as anexar automaticamente.
 
 ## Restrições de toda alteração
 
 Não alterar headers visuais protegidos, headers HTTP/autenticação nem baselines. Não reduzir gates, adicionar supressões/exclusões para mascarar falhas, excluir código do JaCoCo ou diminuir o limiar: LINE global estritamente maior que 95%.
-Headers visuais protegidos: `CurrentCartScaffold.kt` e `CaixaDSScreenComponents.kt`. Não modificar esses arquivos para facilitar mudanças de UI ou testes.
+Headers visuais protegidos: `CurrentCartScaffold.kt` e `LoteriasCaixaDSScreenComponents.kt`. Não modificar esses arquivos para facilitar mudanças de UI ou testes.
+Exceção autorizada pelo usuário em 02/11/2026: refatoração estrutural dessas duas fachadas, preservando visual, comportamento, medidas e APIs. A proteção visual continua abrangendo `CurrentCartHeaderActions.kt`, `CurrentCartScaffoldContent.kt` e `LoteriasCaixaDSScreenChrome.kt`; novas mudanças visuais precisam de autorização expressa. Essa exceção não se aplica a headers HTTP, baselines ou gates.
 Não versionar credenciais, tokens, dados pessoais, keystores, configurações locais, APKs, caches, resultados de execução ou PDFs exportados. Não desligar TLS/pinning/verificação de instalação. Não efetivar apostas/pagamentos reais em testes.
 Preserve alterações existentes; não usar reset/clean abrangente, apagar dados de dispositivos ou instalar variantes extras sem necessidade autorizada. TQS Debug é a variante de desenvolvimento padrão; PRD e Automação exigem escolha explícita. Não confundir os backends TQS/Automação, que compartilham application ID.
 

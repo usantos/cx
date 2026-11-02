@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.Density
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.support.presentation.screen.ReadOnlyTermsScreen
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportUiState
 import org.junit.Assert.assertEquals
@@ -28,7 +28,7 @@ class SupportTermsReflowUiTest {
         compose.setContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, 2f)) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     ReadOnlyTermsScreen(SupportUiState(htmlContent = "<p><a href='$url'>$url</a></p>"), {}, Modifier)
                 }
             }

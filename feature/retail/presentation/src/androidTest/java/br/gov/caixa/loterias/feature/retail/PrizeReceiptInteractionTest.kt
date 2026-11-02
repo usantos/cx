@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.ContentProvider
 import android.content.ContentResolver
 import android.content.ContentValues
-import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.database.Cursor
@@ -37,7 +36,7 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareBetEntryUseCase
@@ -443,7 +442,7 @@ class PrizeReceiptInteractionTest {
             val currentSavedState = LocalSaveableStateRegistry.current!!
             SideEffect { savedStateRegistry = currentSavedState }
             CompositionLocalProvider(LocalContext provides context, LocalActivityResultRegistryOwner provides registry) {
-                CaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSTheme(darkTheme = false) {
                     PrizeRedemptionRoute(
                         model, initialChannel = restoredInitialChannel, onBack = {}, onHelp = {},
                         onHome = {}, onMyBets = {}, onRegistration = {}, onRedirect = {}, onBetEntry = {}

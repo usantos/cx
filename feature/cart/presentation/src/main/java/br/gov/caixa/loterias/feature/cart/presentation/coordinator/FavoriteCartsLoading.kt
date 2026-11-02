@@ -22,6 +22,7 @@ internal class FavoriteCartsLoading(
     private val isSessionCurrent: () -> Boolean,
     private val betsCache: MutableMap<Long, List<FavoriteCartBet>>
 ) {
+    private var expansionRequest: Any? = null
 
     fun load() = viewModelScope.launch(dispatchers.io) {
         if (!isSessionCurrent()) return@launch
@@ -30,36 +31,50 @@ internal class FavoriteCartsLoading(
     }
 
     fun refreshAfterDetail() {
-        if (!isSessionCurrent()) return
-        betsCache.clear()
-        mutableState.dispatch(FavoriteCartsAction.ExpansionCleared)
+        synchronized(mutableState) {
+            if (!isSessionCurrent()) return
+            expansionRequest = null
+            betsCache.clear()
+            mutableState.dispatch(FavoriteCartsAction.ExpansionCleared)
+        }
         load()
     }
 
     fun toggleCart(id: Long) {
-        if (!isSessionCurrent()) return
-        if (mutableState.value.expandedCartId == id) {
-            mutableState.dispatch(FavoriteCartsAction.ExpansionCleared)
-            return
-        }
-        betsCache[id]?.let { bets ->
-            mutableState.dispatch(FavoriteCartsAction.CachedCartExpanded(id, bets))
-            return
+        val request = synchronized(mutableState) {
+            if (!isSessionCurrent()) return
+            val request = Any()
+            expansionRequest = request
+            if (mutableState.value.expandedCartId == id) {
+                mutableState.dispatch(FavoriteCartsAction.ExpansionCleared)
+                return
+            }
+            betsCache[id]?.let { bets ->
+                mutableState.dispatch(FavoriteCartsAction.CachedCartExpanded(id, bets))
+                return
+            }
+            mutableState.dispatch(FavoriteCartsAction.CartLoadStarted(id))
+            request
         }
         viewModelScope.launch(dispatchers.io) {
-            mutableState.dispatch(FavoriteCartsAction.CartLoadStarted(id))
-            if (!isSessionCurrent()) return@launch
+            if (!isCurrentExpansion(request)) return@launch
             val result = getFavoriteCartBets(id)
-            if (!isSessionCurrent()) return@launch
-            when (result) {
-                is AppResult.Success -> {
-                    betsCache[id] = result.value
-                    mutableState.dispatch(FavoriteCartsAction.CartExpanded(id, result.value))
-                }
+            synchronized(mutableState) {
+                if (!isCurrentExpansion(request)) return@launch
+                when (result) {
+                    is AppResult.Success -> {
+                        betsCache[id] = result.value
+                        mutableState.dispatch(FavoriteCartsAction.CartExpanded(id, result.value))
+                    }
 
-                is AppResult.Failure -> failures.applyFailure(result.error, itemOnly = true)
+                    is AppResult.Failure -> failures.applyFailure(result.error, itemOnly = true)
+                }
             }
         }
+    }
+
+    private fun isCurrentExpansion(request: Any): Boolean = synchronized(mutableState) {
+        isSessionCurrent() && expansionRequest === request
     }
 
     private fun applyCarts(result: AppResult<List<FavoriteCart>>) = if (!isSessionCurrent()) {

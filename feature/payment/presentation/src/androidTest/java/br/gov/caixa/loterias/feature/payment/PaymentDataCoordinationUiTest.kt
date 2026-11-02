@@ -10,7 +10,7 @@ import androidx.lifecycle.SavedStateHandle
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
@@ -191,7 +191,7 @@ class PaymentDataCoordinationUiTest {
         onAddCard: (Long) -> Unit = {}, onOpenCard: (SavedPaymentCard) -> Unit = {},
         onPurchases: () -> Unit = {}, privateData: Boolean = true,
     ) {
-        CaixaDSTheme {
+        LoteriasCaixaDSTheme {
             PaymentDataRoute(mode, model, onBack = onBack, onHelp = onHelp, onPix = onPix,
                 onAddCard = onAddCard, onOpenCard = onOpenCard, onApproved = {}, onHome = {},
                 onPurchases = onPurchases, onRedirect = {}, onRegistration = {}, privateDataEnabled = privateData)

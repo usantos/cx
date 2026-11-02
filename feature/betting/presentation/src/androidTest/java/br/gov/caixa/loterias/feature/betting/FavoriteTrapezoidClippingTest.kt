@@ -13,8 +13,8 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.presentation.components.FavoriteTrapezoid
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -26,9 +26,9 @@ class FavoriteTrapezoidClippingTest {
     @Test fun nativeBackgroundCannotDrawOverAdjacentFavorites() {
         val modality = mutableIntStateOf(2)
         var density = 1f
-        compose.setContent { CaixaDSTheme {
+        compose.setContent { LoteriasCaixaDSTheme {
             density = LocalDensity.current.density
-            Box(Modifier.size(300.dp, 200.dp).background(CaixaDSColorTokens.White).testTag("canvas")) {
+            Box(Modifier.size(300.dp, 200.dp).background(LoteriasCaixaDSColorTokens.White).testTag("canvas")) {
                 FavoriteTrapezoid(modality.intValue, Modifier.offset(20.dp, 40.dp).size(80.dp, 55.dp))
             }
         } }
@@ -38,7 +38,7 @@ class FavoriteTrapezoidClippingTest {
             for (y in 0 until pixels.height step 3) {
                 for (x in 0 until pixels.width step 3) {
                     if (x < 19 * density || x > 101 * density || y < 39 * density || y > 96 * density) {
-                        assertEquals("Modality $id paints outside its header at $x,$y", CaixaDSColorTokens.White, pixels[x, y])
+                        assertEquals("Modality $id paints outside its header at $x,$y", LoteriasCaixaDSColorTokens.White, pixels[x, y])
                     }
                 }
             }

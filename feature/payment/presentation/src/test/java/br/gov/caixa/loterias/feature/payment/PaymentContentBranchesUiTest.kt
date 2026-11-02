@@ -12,7 +12,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
 import br.gov.caixa.loterias.feature.payment.domain.model.PixCharge
 import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
@@ -248,7 +248,7 @@ class PaymentContentBranchesUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { CaixaDSTheme { content() } }
+        compose.setContent { LoteriasCaixaDSTheme { content() } }
     }
 
     @Composable private fun DataContent(

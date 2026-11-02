@@ -2116,7 +2116,7 @@
         },
         {
           "function": "markRead",
-          "parameters": "@Path(\"notificationId\") notificationId: Long,\n        @Tag session: AccountVerificationSession",
+          "parameters": "@Path(\"notificationId\") notificationId: Long,\n        @Tag session: AccountVerificationSession,",
           "return": "Response<NotificationReadEnvelopeDto>",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/NotificationReadApi.kt"
         }
@@ -2742,7 +2742,7 @@
         },
         {
           "function": "validateFavoriteCartName",
-          "parameters": "@Body request: SaveFavoriteCartRequestDto,",
+          "parameters": "@Body request: SaveFavoriteCartRequestDto",
           "return": "Unit",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },
@@ -2785,7 +2785,7 @@
       "variants": [
         {
           "function": "deleteFavoriteCart",
-          "parameters": "@Path(\"cartId\") cartId: Long,",
+          "parameters": "@Path(\"cartId\") cartId: Long",
           "return": "ApiEnvelope<List<FavoriteCartDto>>",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },
@@ -2830,7 +2830,7 @@
       "variants": [
         {
           "function": "favoriteCartBets",
-          "parameters": "@Path(\"cartId\") cartId: Long,",
+          "parameters": "@Path(\"cartId\") cartId: Long",
           "return": "ApiEnvelope<List<FavoriteCartBetDto>>",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },
@@ -2899,7 +2899,7 @@
       "variants": [
         {
           "function": "deleteFavoriteCartBet",
-          "parameters": "@Path(\"cartId\") cartId: Long,\n        @Path(\"betId\") betId: Long,",
+          "parameters": "@Path(\"cartId\") cartId: Long, @Path(\"betId\") betId: Long",
           "return": "ApiEnvelope<List<FavoriteCartBetDto>>",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },
@@ -2975,7 +2975,7 @@
         },
         {
           "function": "removeBoundCartBet",
-          "parameters": "@Path(\"id\") id: Long,\n        @Tag session: AccountVerificationSession,",
+          "parameters": "@Path(\"id\") id: Long, @Tag session: AccountVerificationSession",
           "return": "ApiEnvelope<CartDto>",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },
@@ -4488,7 +4488,7 @@
       "variants": [
         {
           "function": "addFavoriteCartToCurrent",
-          "parameters": "@Path(\"cartId\") cartId: Long,\n        @Body request: AddFavoriteCartRequestDto,",
+          "parameters": "@Path(\"cartId\") cartId: Long, @Body request: AddFavoriteCartRequestDto",
           "return": "ApiEnvelope<CartDto>",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },
@@ -5567,7 +5567,7 @@
         },
         {
           "function": "saveCurrentCartFavorite",
-          "parameters": "@Body request: SaveFavoriteCartRequestDto,",
+          "parameters": "@Body request: SaveFavoriteCartRequestDto",
           "return": "Unit",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },
@@ -7474,7 +7474,7 @@
         },
         {
           "function": "registerPushDevice",
-          "parameters": "@Body body: PushRegistrationRequestDto,\n        @Tag session: AccountVerificationSession",
+          "parameters": "@Body body: PushRegistrationRequestDto,\n        @Tag session: AccountVerificationSession,",
           "return": "PushRegistrationEnvelopeDto",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/NotificationReadApi.kt"
         }
@@ -8655,19 +8655,19 @@
       "method": "POST",
       "path": "usuarios",
       "function": "registerAccount",
-      "parameters": "@Body request: AccountRegistrationDto",
+      "parameters": "@Body request: AccountRegistrationDto,\n        @Tag session: AccountVerificationSession,",
       "return": "ApiEnvelope<UserProfileDto>",
       "source": "feature/account/data/src/main/kotlin/br/gov/caixa/loterias/feature/account/data/datasource/remote/AccountLoteriasApi.kt",
       "variants": [
         {
           "function": "registerAccount",
-          "parameters": "@Body request: AccountRegistrationDto",
+          "parameters": "@Body request: AccountRegistrationDto,\n        @Tag session: AccountVerificationSession,",
           "return": "ApiEnvelope<UserProfileDto>",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },
         {
           "function": "registerAccount",
-          "parameters": "@Body request: AccountRegistrationDto",
+          "parameters": "@Body request: AccountRegistrationDto,\n        @Tag session: AccountVerificationSession,",
           "return": "ApiEnvelope<UserProfileDto>",
           "source": "feature/account/data/src/main/kotlin/br/gov/caixa/loterias/feature/account/data/datasource/remote/AccountLoteriasApi.kt"
         }
@@ -8726,19 +8726,19 @@
       "method": "PUT",
       "path": "usuarios",
       "function": "updatePersonalData",
-      "parameters": "@Body request: PersonalDataUpdateDto",
+      "parameters": "@Body request: PersonalDataUpdateDto, @Tag session: AccountVerificationSession",
       "return": "ApiEnvelope<Unit>",
       "source": "feature/account/data/src/main/kotlin/br/gov/caixa/loterias/feature/account/data/datasource/remote/AccountLoteriasApi.kt",
       "variants": [
         {
           "function": "updatePersonalData",
-          "parameters": "@Body request: PersonalDataUpdateDto",
+          "parameters": "@Body request: PersonalDataUpdateDto, @Tag session: AccountVerificationSession",
           "return": "ApiEnvelope<Unit>",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },
         {
           "function": "updatePersonalData",
-          "parameters": "@Body request: PersonalDataUpdateDto",
+          "parameters": "@Body request: PersonalDataUpdateDto, @Tag session: AccountVerificationSession",
           "return": "ApiEnvelope<Unit>",
           "source": "feature/account/data/src/main/kotlin/br/gov/caixa/loterias/feature/account/data/datasource/remote/AccountLoteriasApi.kt"
         }
@@ -8938,19 +8938,19 @@
       "method": "POST",
       "path": "usuarios/recalcular-limite-autorizado",
       "function": "recalculateAuthorizedLimit",
-      "parameters": "",
+      "parameters": "@Tag session: AccountVerificationSession",
       "return": "ApiEnvelope<UserProfileDto>",
       "source": "feature/account/data/src/main/kotlin/br/gov/caixa/loterias/feature/account/data/datasource/remote/AccountLoteriasApi.kt",
       "variants": [
         {
           "function": "recalculateAuthorizedLimit",
-          "parameters": "",
+          "parameters": "@Tag session: AccountVerificationSession",
           "return": "ApiEnvelope<UserProfileDto>",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },
         {
           "function": "recalculateAuthorizedLimit",
-          "parameters": "",
+          "parameters": "@Tag session: AccountVerificationSession",
           "return": "ApiEnvelope<UserProfileDto>",
           "source": "feature/account/data/src/main/kotlin/br/gov/caixa/loterias/feature/account/data/datasource/remote/AccountLoteriasApi.kt"
         }
@@ -9107,7 +9107,7 @@
       "variants": [
         {
           "function": "suspendAccount",
-          "parameters": "@Body request: SuspendAccountRequestDto,",
+          "parameters": "@Body request: SuspendAccountRequestDto",
           "return": "ApiEnvelope<AccountSuspensionDto>",
           "source": "core/network/src/main/java/br/gov/caixa/loterias/core/network/api/LoteriasApi.kt"
         },

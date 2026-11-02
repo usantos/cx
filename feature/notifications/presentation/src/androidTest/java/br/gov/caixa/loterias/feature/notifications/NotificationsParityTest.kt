@@ -12,7 +12,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.notifications.domain.model.AppNotification
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationCategory
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationPreference
@@ -146,7 +146,7 @@ class NotificationsParityTest {
         )
         viewModel = vm
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 NotificationsRoute(
                     notificationScreens(androidx.compose.ui.platform.LocalContext.current::getString).single {
                         it.route ==

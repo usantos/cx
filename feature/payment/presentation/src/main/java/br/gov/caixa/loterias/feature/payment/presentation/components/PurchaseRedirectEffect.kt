@@ -5,7 +5,7 @@ import br.gov.caixa.loterias.feature.payment.R as LocalizedR
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import br.gov.caixa.loterias.core.presentation.effect.NavigationResumeEffect
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PURCHASE_UPDATED_TERMS_GUIDANCE
 
@@ -24,7 +24,7 @@ internal fun PurchaseRedirectEffect(
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     if (redirect == PurchaseRedirect.ACCEPT_TERMS) {
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = PURCHASE_UPDATED_TERMS_GUIDANCE,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),

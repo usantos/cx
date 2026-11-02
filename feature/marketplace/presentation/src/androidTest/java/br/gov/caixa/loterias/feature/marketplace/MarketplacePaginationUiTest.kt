@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.marketplace
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -18,7 +18,7 @@ class MarketplacePaginationUiTest {
 
     @Test fun scrollingToBottomRequestsNextPageWithoutAnInventedLoadMoreButton() {
         var requests = 0
-        compose.setContent { CaixaDSTheme { Screen(MarketplaceUiState(pools = pools, canLoadMore = true)) { requests++ } } }
+        compose.setContent { LoteriasCaixaDSTheme { Screen(MarketplaceUiState(pools = pools, canLoadMore = true)) { requests++ } } }
         scrollToBottom()
         compose.waitUntil { requests == 1 }
         compose.onNodeWithText("Carregar mais", useUnmergedTree = true).assertDoesNotExist()
@@ -27,8 +27,16 @@ class MarketplacePaginationUiTest {
 
     @Test fun bottomOfLoadingPageDoesNotStartAnotherRequest() {
         var requests = 0
-        compose.setContent { CaixaDSTheme { Screen(MarketplaceUiState(pools = pools,
-            canLoadMore = true, isLoadingMore = true)) { requests++ } } }
+        compose.setContent { LoteriasCaixaDSTheme {
+            Screen(
+                MarketplaceUiState(
+                    pools = pools,
+                    canLoadMore = true,
+                    isLoadingMore = true
+                )
+            ) { requests++ }
+        }
+        }
         scrollToBottom()
         compose.runOnIdle { assertEquals(0, requests) }
     }
@@ -41,9 +49,11 @@ class MarketplacePaginationUiTest {
     }
 
     @Composable private fun Screen(state: MarketplaceUiState, next: () -> Unit) {
-        MarketplaceScreen(state, onBack = {}, onFilter = {}, onHelp = {}, onRetailerSelected = {},
+        MarketplaceScreen(
+            state, onBack = {}, onFilter = {}, onHelp = {}, onRetailerSelected = {},
             onRetry = {}, onLoadMore = next, onPoolSelected = {}, onToggleExpanded = {},
             onDecrease = {}, onIncrease = {}, onFavorite = {}, onAddToCart = {},
-            onSelectTab = {}, onRemoveRetailer = {}, retailerView = false)
+            onSelectTab = {}, onRemoveRetailer = {}, retailerView = false
+        )
     }
 }

@@ -24,12 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCheckbox as Checkbox
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCheckbox as Checkbox
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameActions
@@ -44,9 +44,9 @@ internal fun CloverSelectionContent(state: BettingGameUiState, actions: BettingG
     Text(
         uiStrings.getString(LocalizedR.string.ui_escolha_de_2_a_6_trevos_para_marcar_74f1fb),
         (Modifier.fillMaxWidth().padding(start = 60.dp, end = 60.dp, top = 36.dp)).uiId("bet.0229"),
-        fontFamily = CaixaDSFontFamily,
+        fontFamily = LoteriasCaixaDSFontFamily,
         fontSize = 16.sp,
-        color = CaixaDSColorTokens.SocialGraphite,
+        color = LoteriasCaixaDSColorTokens.SocialGraphite,
         textAlign = TextAlign.Center,
         style = metrics
     )
@@ -55,7 +55,7 @@ internal fun CloverSelectionContent(state: BettingGameUiState, actions: BettingG
             Row {
                 row.forEach { number ->
                     val checked = number in state.selectedClovers
-                    val dark = caixaDSLotteryStyle(MAIS_MILIONARIA_ID).dark
+                    val dark = loteriasCaixaDSLotteryStyle(MAIS_MILIONARIA_ID).dark
                     Box(
                         Modifier.padding(8.dp).size(45.dp)
                             .legacyAutomationId("betting-clover-$number")
@@ -80,8 +80,8 @@ internal fun CloverSelectionContent(state: BettingGameUiState, actions: BettingG
                         )
                         Text(
                             number.toString(),
-                            color = if (checked) CaixaDSColorTokens.White else dark,
-                            fontFamily = CaixaDSFontFamily,
+                            color = if (checked) LoteriasCaixaDSColorTokens.White else dark,
+                            fontFamily = LoteriasCaixaDSFontFamily,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
                             textAlign = TextAlign.Center,

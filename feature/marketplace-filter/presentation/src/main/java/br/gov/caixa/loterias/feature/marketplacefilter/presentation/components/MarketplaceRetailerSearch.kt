@@ -17,14 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterInput as Input
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterLabel as Label
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSMarketplaceFilterStyle
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSHorizontalDivider as HorizontalDivider
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.caixaDSMarketplaceFilterText as filterText
-import br.gov.caixa.loterias.core.designsystem.layout.caixaDSLineHeight
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterInput as Input
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterLabel as Label
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFilterStyle
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSHorizontalDivider as HorizontalDivider
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.loteriasCaixaDSMarketplaceFilterText as filterText
+import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSLineHeight
 import br.gov.caixa.loterias.feature.marketplacefilter.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterAction
@@ -55,8 +55,8 @@ internal fun MarketplaceRetailerSearch(state: MarketplaceFilterUiState, onAction
             uiStrings.getString(LocalizedR.string.ui_numeros_do_segundo_campo_com_6_digit_08a1a7) +
             uiStrings.getString(LocalizedR.string.ui_e_loterico_10_000004_01_digite_00000_fbe38b),
         modifier = (Modifier.fillMaxWidth().padding(start = 12.dp, top = 10.dp, end = 20.dp)).uiId("filter.0033"),
-        color = CaixaDSMarketplaceFilterStyle.hint,
-        style = filterText(12).copy(lineHeight = caixaDSLineHeight(12.sp, 4.dp))
+        color = LoteriasCaixaDSMarketplaceFilterStyle.hint,
+        style = filterText(12).copy(lineHeight = loteriasCaixaDSLineHeight(12.sp, 4.dp))
     )
 }
 
@@ -69,7 +69,7 @@ private fun RetailerSearchFeedback(loading: Boolean, message: String?, suggestio
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.size(22.dp),
-                color = CaixaDSMarketplaceFilterStyle.accent,
+                color = LoteriasCaixaDSMarketplaceFilterStyle.accent,
                 strokeWidth = 2.dp
             )
         }
@@ -78,7 +78,7 @@ private fun RetailerSearchFeedback(loading: Boolean, message: String?, suggestio
         Text(
             it,
             modifier = (Modifier.padding(start = 12.dp, top = 6.dp, end = 20.dp)).uiId("filter.0034"),
-            color = CaixaDSMarketplaceFilterStyle.hint,
+            color = LoteriasCaixaDSMarketplaceFilterStyle.hint,
             fontSize = 12.sp
         )
     }
@@ -99,14 +99,14 @@ private fun RetailerSearchFeedback(loading: Boolean, message: String?, suggestio
                     Text(
                         retailerDisplayLabel(retailer),
                         modifier = (Modifier.weight(1f)).uiId("filter.0037"),
-                        color = CaixaDSMarketplaceFilterStyle.hint,
+                        color = LoteriasCaixaDSMarketplaceFilterStyle.hint,
                         fontSize = 13.sp,
                         maxLines = 1
                     )
                 }
                 HorizontalDivider(
                     modifier = (Modifier.padding(start = 12.dp, end = 20.dp)).uiId("filter.0038"),
-                    color = CaixaDSMarketplaceFilterStyle.line
+                    color = LoteriasCaixaDSMarketplaceFilterStyle.line
                 )
             }
         }

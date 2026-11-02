@@ -2,18 +2,18 @@
 
 package br.gov.caixa.loterias.sample.designsystem
 
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSHtmlDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSOptionDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSRapidAmountDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSSelectionDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSTextInputDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSHtmlDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSOptionDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSRapidAmountDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSSelectionDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSTextInputDialog
 
 internal val dialogPreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSHtmlDialog") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSHtmlDialog") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSHtmlDialog(
+                LoteriasCaixaDSHtmlDialog(
                     title = sample,
                     html = html,
                     onPositive = dismiss,
@@ -22,10 +22,10 @@ internal val dialogPreviews0 = mapOf(
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSOptionDialog") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSOptionDialog") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSOptionDialog(
+                LoteriasCaixaDSOptionDialog(
                     title = sample,
                     options = listOf(
                         0,
@@ -43,10 +43,10 @@ internal val dialogPreviews0 = mapOf(
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSRapidAmountDialog") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSRapidAmountDialog") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSRapidAmountDialog(
+                LoteriasCaixaDSRapidAmountDialog(
                     title = sample,
                     value = text,
                     hint = hint,
@@ -59,10 +59,10 @@ internal val dialogPreviews0 = mapOf(
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSDialog(
+                LoteriasCaixaDSDialog(
                     title = sample,
                     message = hint,
                     positiveLabel = closeLabel,
@@ -72,10 +72,10 @@ internal val dialogPreviews0 = mapOf(
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSSelectionDialog") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSSelectionDialog") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSSelectionDialog(
+                LoteriasCaixaDSSelectionDialog(
                     title = sample,
                     message = hint,
                     options = options,
@@ -87,10 +87,10 @@ internal val dialogPreviews0 = mapOf(
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSTextInputDialog") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSTextInputDialog") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSTextInputDialog(
+                LoteriasCaixaDSTextInputDialog(
                     title = sample,
                     value = text,
                     hint = hint,

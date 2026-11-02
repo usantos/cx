@@ -9,7 +9,7 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
@@ -110,7 +110,7 @@ class MercadoPagoOverlayUiTest {
                 response.await()
             }
         )
-        compose.setContent { CaixaDSTheme { MercadoPagoRegistrationOverlay(model, true, redirects::add, { finishes++ }) } }
+        compose.setContent { LoteriasCaixaDSTheme { MercadoPagoRegistrationOverlay(model, true, redirects::add, { finishes++ }) } }
         compose.runOnIdle { model.start("fixture@example.com") }
         compose.onNodeWithText("Carregando…").assertExists()
         compose.runOnIdle { response.complete(AppResult.Failure(AppError.Network)) }
@@ -126,7 +126,7 @@ class MercadoPagoOverlayUiTest {
                 result
             }
         )
-        compose.setContent { CaixaDSTheme { MercadoPagoRegistrationOverlay(model, true, redirects::add, { finishes++ }) } }
+        compose.setContent { LoteriasCaixaDSTheme { MercadoPagoRegistrationOverlay(model, true, redirects::add, { finishes++ }) } }
         compose.runOnIdle { model.start("fixture@example.com") }
         compose.waitForIdle()
         return model

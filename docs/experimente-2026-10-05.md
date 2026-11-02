@@ -15,7 +15,7 @@ Implementação no checkout Compose em 05/10/2026, com referência ao código de
 ## Evidências
 
 - 461 testes JVM, sem falhas: domain 147, data 154, preferences 33, home 26, betting 66, app AutomacaoDebug 35.
-- BUILD SUCCESSFUL: APK AutomacaoDebug com mock, verifyCaixaDS, verifyComposeMigration e verifyCleanArchitecture.
+- BUILD SUCCESSFUL: APK AutomacaoDebug com mock, verifyLoteriasCaixaDS, verifyComposeMigration e verifyCleanArchitecture.
 - XCover7 RXGL10CDZ0W: oito testes instrumentados de armazenamento passaram. A suíte usa banco temporário isolado e preserva os dados do app instalado.
 - Emulador Pixel 9 Pro: login → Experimente → tutorial → Home → simulação Mega-Sena → inclusão → carrinho. Confirmados números 01–06, dois concursos e total R$10,00. Carrinho restaurado após force-stop e reabertura.
 - Emulador: Bolão solicitou login com a mensagem do legado; menu Shake e confirmação de ativação exibidos; acelerômetro simulado completou seis números e pediu confirmação na segunda agitação.

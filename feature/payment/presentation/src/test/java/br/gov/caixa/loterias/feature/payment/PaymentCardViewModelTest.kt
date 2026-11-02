@@ -744,6 +744,25 @@ class PaymentCardViewModelTest {
         assertEquals(listOf(BigDecimal("30.50")), amounts)
     }
 
+    @Test fun `success navigation is unavailable before completion and consumed without resetting terminal state`() = runTest {
+        val model = viewModel()
+        assertFalse(model.consumeSuccessNavigation())
+        validVisa(model)
+        model.continueFromCard()
+        model.changeCvv("123")
+        model.continueFromCvv()
+        model.submit()
+        advanceUntilIdle()
+        assertEquals(PaymentCardStage.SUCCESS, model.state.value.stage)
+        assertTrue(model.consumeSuccessNavigation())
+        assertTrue(model.state.value.successNavigationConsumed)
+        assertFalse(model.consumeSuccessNavigation())
+        assertEquals(PaymentCardStage.SUCCESS, model.state.value.stage)
+        model.submit()
+        advanceUntilIdle()
+        assertEquals(1, submitCalls)
+    }
+
     private fun validVisa(viewModel: PaymentCardViewModel) {
         viewModel.changeNumber("4111 1111 1111 1111")
         viewModel.changeHolderName("Pessoa")
@@ -775,7 +794,8 @@ class PaymentCardViewModelTest {
             initialStage = initialStage,
             getCards = cards ?: GetSavedCardsUseCase { cardsResult },
             submitCardPayment = submission ?: SubmitCardPaymentUseCase {
-                submitCalls++; submitted = it
+                submitCalls++
+                submitted = it
                 outcomeOverride ?: when (val result = submitResult) {
                     is AppResult.Failure -> result
                     is AppResult.Success -> AppResult.Success(CardSubmissionOutcome.Submitted(result.value))
@@ -787,7 +807,7 @@ class PaymentCardViewModelTest {
                 progressResults.removeFirstOrNull() ?: AppResult.Success(PurchaseProgress(it, 1))
             },
             dispatchers = FixedCoroutineDispatchers(dispatcher),
-            currentYear = currentYear,
+            currentYear = currentYear
         )
     }
 }

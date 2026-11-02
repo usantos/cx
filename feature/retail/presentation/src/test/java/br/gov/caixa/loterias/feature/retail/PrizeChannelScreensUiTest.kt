@@ -20,7 +20,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextReplacement
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.retail.domain.model.LotteryRedemptionCode
 import br.gov.caixa.loterias.feature.retail.domain.model.PixBeneficiary
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeAward
@@ -65,7 +65,7 @@ class PrizeChannelScreensUiTest {
             { state.value = state.value.copy(pixKey = it) },
             { state.value = state.value.copy(pixOwnershipAccepted = !state.value.pixOwnershipAccepted) }
         )
-        compose.setContent { CaixaDSTheme { PrizePixDataScreen(state.value, { calls += "back" }, { calls += "help" }, actions) } }
+        compose.setContent { LoteriasCaixaDSTheme { PrizePixDataScreen(state.value, { calls += "back" }, { calls += "help" }, actions) } }
         compose.onNodeWithText("synthetic-cpf").assertExists()
         compose.onNodeWithText("Continuar").performScrollTo().assertIsEnabled()
         compose.onNodeWithText("Outra Chave").performScrollTo().performClick()
@@ -125,7 +125,7 @@ class PrizeChannelScreensUiTest {
                 {},
                 { toggles++ }
             )
-        compose.setContent { CaixaDSTheme { PrizePixDataScreen(state.value, { back++ }, { help++ }, actions) } }
+        compose.setContent { LoteriasCaixaDSTheme { PrizePixDataScreen(state.value, { back++ }, { help++ }, actions) } }
         compose.onNode(isToggleable()).performScrollTo().performClick()
         compose.runOnIdle { assertEquals(1, toggles) }
         compose.onNodeWithText("CPF").performScrollTo().performClick()
@@ -162,7 +162,7 @@ class PrizeChannelScreensUiTest {
         }
         compose.setContent {
             CompositionLocalProvider(LocalHapticFeedback provides feedback) {
-                CaixaDSTheme {
+                LoteriasCaixaDSTheme {
                     PrizeLotteryDataScreen(state.value, { back++ }, { help++ }, { refresh++ })
                 }
             }
@@ -204,7 +204,7 @@ class PrizeChannelScreensUiTest {
                 )
             )
         )
-        compose.setContent { CaixaDSTheme { PrizeOptionsScreen(state.value, {}, {}, {}, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { PrizeOptionsScreen(state.value, {}, {}, {}, {}, {}) } }
         compose.onNodeWithText("Concursos").assertExists()
         compose.onNodeWithText("3000 - 3001").assertExists()
         compose.onNodeWithText("Concurso: 3000").assertExists()

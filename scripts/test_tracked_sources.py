@@ -26,8 +26,8 @@ class TrackedSourcesTest(unittest.TestCase):
         self.git('init', '-q')
         self.source = self.root / 'core/ds/src/main/java/icon'
         self.source.mkdir(parents=True)
-        self.file = self.source / 'CaixaDSIcons.kt'
-        self.file.write_text('object CaixaDSIcons\n')
+        self.file = self.source / 'LoteriasCaixaDSIcons.kt'
+        self.file.write_text('object LoteriasCaixaDSIcons\n')
 
     def git(self, *args):
         return subprocess.run(['git', '-C', str(self.root), *args], check=True, capture_output=True, env=self.env)
@@ -40,13 +40,13 @@ class TrackedSourcesTest(unittest.TestCase):
         self.assertEqual(self.problems(), [])
 
     def test_untracked_source_is_rejected(self):
-        self.assertIn('CaixaDSIcons.kt', '\n'.join(self.problems()))
+        self.assertIn('LoteriasCaixaDSIcons.kt', '\n'.join(self.problems()))
 
     def test_ignored_icon_package_is_rejected(self):
         self.git('config', 'core.ignorecase', 'true')
         (self.root / '.gitignore').write_text('Icon\n')
         self.git('add', '.')
-        self.assertIn('CaixaDSIcons.kt', '\n'.join(self.problems()))
+        self.assertIn('LoteriasCaixaDSIcons.kt', '\n'.join(self.problems()))
 
     def test_repository_ignore_preserves_icon_sources_and_ignores_finder_metadata(self):
         (self.root / '.gitignore').write_bytes((ROOT / '.gitignore').read_bytes())
@@ -62,13 +62,13 @@ class TrackedSourcesTest(unittest.TestCase):
     def test_case_colliding_index_sources_are_rejected(self):
         self.git('add', '.')
         blob = self.git('hash-object', '-w', str(self.file)).stdout.decode().strip()
-        self.git('update-index', '--add', '--cacheinfo', f'100644,{blob},core/ds/src/main/java/icon/caixadsicons.kt')
+        self.git('update-index', '--add', '--cacheinfo', f'100644,{blob},core/ds/src/main/java/icon/loteriascaixadsicons.kt')
         self.assertIn('Colisão de nomes no Windows', '\n'.join(self.problems()))
 
     def test_case_only_alias_is_accepted_only_when_it_is_the_same_filesystem_file(self):
         self.git('add', '.')
         original = self.file.relative_to(self.root).as_posix()
-        renamed = original.replace('CaixaDSIcons.kt', 'caixadsicons.kt')
+        renamed = original.replace('LoteriasCaixaDSIcons.kt', 'loteriascaixadsicons.kt')
         blob = self.git('hash-object', '-w', str(self.file)).stdout.decode().strip()
         self.git('update-index', '--force-remove', original)
         self.git('update-index', '--add', '--cacheinfo', f'100644,{blob},{renamed}')

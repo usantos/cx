@@ -14,7 +14,7 @@ import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeDetails
 import br.gov.caixa.loterias.feature.retail.presentation.screen.PrizeMercadoPagoDataScreen
 import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionUiState
@@ -70,7 +70,7 @@ class MercadoPagoLargeFontAccessibilityTest {
             loading = false
         )
         compose.setContent {
-            CaixaDSTheme { Box(Modifier.size(360.dp, 640.dp)) { PrizeMercadoPagoDataScreen(state, {}, {}, {}, onEmail) } }
+            LoteriasCaixaDSTheme { Box(Modifier.size(360.dp, 640.dp)) { PrizeMercadoPagoDataScreen(state, {}, {}, {}, onEmail) } }
         }
     }
 

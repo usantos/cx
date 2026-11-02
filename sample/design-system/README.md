@@ -12,7 +12,7 @@ Use o JDK 21 e o Android SDK 36 configurados para o projeto. O sample pode ser s
 
 O launcher se chama **CAIXA • Design System**. O catálogo agrupa 121 APIs públicas Compose por família, incluindo os primitivos do DS. A busca aceita o nome, o pacote ou um parâmetro da API. Toque em um item para ver um exemplo interativo, a chamada de uso e as assinaturas das sobrecargas. Os controles de navegação e o botão Voltar do sistema retornam à lista preservando a busca.
 
-A página `CaixaDSTextField` mostra as variantes `OUTLINED`, `LABELLED` e `LEGACY`. A página `CaixaDSBasicTextField` apresenta as sobrecargas `String` e `TextFieldValue`. Os exemplos mantêm o estado local; ações incrementam um contador demonstrativo. Diálogos, menus e folhas abrem mediante uma ação explícita e podem ser fechados.
+A página `LoteriasCaixaDSTextField` mostra as variantes `OUTLINED`, `LABELLED` e `LEGACY`. A página `LoteriasCaixaDSBasicTextField` apresenta as sobrecargas `String` e `TextFieldValue`. Os exemplos mantêm o estado local; ações incrementam um contador demonstrativo. Diálogos, menus e folhas abrem mediante uma ação explícita e podem ser fechados.
 
 O exemplo Web usa apenas `file:///android_asset/catalog.html`, com JavaScript desativado e uma política que bloqueia outras origens. O manifesto não solicita a permissão de internet. A animação usa um arquivo JSON vetorial incluído nos recursos. Os valores de pagamento/carrinho são fictícios e nenhum callback realiza uma operação financeira.
 
@@ -25,9 +25,9 @@ Validação local em 22/10/2026: dez testes do catálogo passaram, incluindo a a
 ## Ícones e portabilidade do checkout
 
 Os 14 fontes do pacote `core/design-system/.../icon` são versionados, incluindo
-`CaixaDSIcons.kt` e `CaixaDSFingerprint.kt`. O símbolo interno tem o nome
+`LoteriasCaixaDSIcons.kt` e `LoteriasCaixaDSFingerprint.kt`. O símbolo interno tem o nome
 `FingerprintVector`; para consumir a digital fora do módulo, use o componente
-público `CaixaDSFingerprintIcon`. A regra de ignore para o metadado `Icon` do
+público `LoteriasCaixaDSFingerprintIcon`. A regra de ignore para o metadado `Icon` do
 Finder é restrita a nomes com caractere de controle, preservando o pacote `icon`.
 
 `verifyTrackedSources` verifica fontes Kotlin/Java nas pastas `src` dos projetos
@@ -40,8 +40,8 @@ tarefas executadas e 10 testes do catálogo aprovados. O APK foi instalado e
 aberto no emulador Android 36; catálogo, busca, exemplo da digital e seta de
 navegação foram conferidos. Isso não representa execução no Windows remoto.
 
-O exemplo numérico de `CaixaDSCatalog` usa chamadas Compose explícitas para
+O exemplo numérico de `LoteriasCaixaDSCatalog` usa chamadas Compose explícitas para
 03, 12, 27, 41 e 56, preservando o Modifier/ID original. Isso remove a expressão
 `listOf(...).forEach` apontada pelo editor no Windows. O teste
-`CaixaDSCatalogJvmTest` confere os cinco números nos temas claro e escuro.
+`LoteriasCaixaDSCatalogJvmTest` confere os cinco números nos temas claro e escuro.
 A compilação e abertura locais não comprovam a sincronização do IDE remoto.

@@ -12,7 +12,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.lifecycle.viewModelScope
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.presentation.state.WorkflowSpec
 import br.gov.caixa.loterias.feature.payment.presentation.route.PaymentTerminalRoute
 import br.gov.caixa.loterias.feature.payment.presentation.screen.paymentScreens
@@ -60,7 +60,7 @@ class PaymentTerminalCoordinationTest {
         compose.setContent {
             first = remember { model(spec("payment/pix-guidance")) }
             second = remember { model(spec("payment/pix-guidance")) }
-            CaixaDSTheme { PaymentTerminalRoute(if (replace.value) second else first, { back++ }, { complete++ }) }
+            LoteriasCaixaDSTheme { PaymentTerminalRoute(if (replace.value) second else first, { back++ }, { complete++ }) }
         }
         compose.onNode(isToggleable()).performScrollTo().performClick()
         compose.runOnIdle { replace.value = true }
@@ -116,7 +116,7 @@ class PaymentTerminalCoordinationTest {
         val destinations = mutableListOf<String>()
         compose.setContent {
             val vm = remember { model(spec("payment/success").copy(secondaryAction = null)) }
-            CaixaDSTheme { PaymentTerminalRoute(vm, {}, {}, destinations::add) }
+            LoteriasCaixaDSTheme { PaymentTerminalRoute(vm, {}, {}, destinations::add) }
         }
         compose.onNodeWithText("Estamos processando sua compra.").assertIsDisplayed()
         compose.onNodeWithText("Voltar ao início").assertDoesNotExist()
@@ -135,7 +135,7 @@ class PaymentTerminalCoordinationTest {
             } else {
                 { destination -> first.add(destination) }
             }
-            CaixaDSTheme { PaymentTerminalRoute(vm, {}, {}, onNavigate) }
+            LoteriasCaixaDSTheme { PaymentTerminalRoute(vm, {}, {}, onNavigate) }
         }
         compose.runOnIdle { replace.value = true }
         compose.onNodeWithText("Acompanhe suas compras").performClick()
@@ -155,7 +155,7 @@ class PaymentTerminalCoordinationTest {
         lateinit var vm: PaymentTerminalViewModel
         compose.setContent {
             vm = remember { model(spec(route)) }
-            CaixaDSTheme { PaymentTerminalRoute(vm, onBack, onComplete, onNavigate) }
+            LoteriasCaixaDSTheme { PaymentTerminalRoute(vm, onBack, onComplete, onNavigate) }
         }
         compose.waitForIdle()
         return vm

@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.feature.account
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCodeUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.UpdatePersonalDataUseCase
@@ -24,7 +24,7 @@ class PersonalDataVisitorUnderlayParityTest {
             isSessionCurrent = { false },
         )
         compose.setContent {
-            CaixaDSTheme { PersonalDataRoute(model, {}, { error("Visitor cannot save") }) }
+            LoteriasCaixaDSTheme { PersonalDataRoute(model, {}, { error("Visitor cannot save") }) }
         }
         compose.waitForIdle()
         compose.onNodeWithText("R$ %1\$s até %2\$s").assertExists()

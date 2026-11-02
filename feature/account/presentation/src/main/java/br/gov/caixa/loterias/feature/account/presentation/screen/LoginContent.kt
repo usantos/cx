@@ -24,11 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.automationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSFingerprintIcon
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSLoteriasLogo
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.input.CaixaDSLoginSwitch
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSFingerprintIcon
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSLoteriasLogo
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.input.LoteriasCaixaDSLoginSwitch
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.account.R as LocalizedR
 import br.gov.caixa.loterias.feature.account.presentation.components.LegacyLoginButton
 import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
@@ -47,10 +47,10 @@ internal fun LoginPrimaryContent(
         modifier = Modifier
             .then(modifier)
             .fillMaxWidth()
-            .padding(start = CaixaDS.spacing.xl, top = if (largeFont) 24.dp else 130.dp, end = CaixaDS.spacing.xl),
+            .padding(start = LoteriasCaixaDS.spacing.xl, top = if (largeFont) 24.dp else 130.dp, end = LoteriasCaixaDS.spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CaixaDSLoteriasLogo(
+        LoteriasCaixaDSLoteriasLogo(
             contentDescription = uiStrings.getString(LocalizedR.string.ui_logo_loterias_caixa_0ec4dc),
             modifier = (Modifier.size(width = 93.dp, height = 95.dp)).uiId("account.0037")
         )
@@ -67,17 +67,17 @@ internal fun LoginPrimaryContent(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(Modifier.weight(1f).height(1.dp).background(CaixaDS.colors.onBrand))
+            Box(Modifier.weight(1f).height(1.dp).background(LoteriasCaixaDS.colors.onBrand))
             Text(
                 text = uiStrings.getString(LocalizedR.string.ui_ou_79a904),
                 modifier = (Modifier.padding(horizontal = 6.dp)).uiId("account.0039"),
-                color = CaixaDS.colors.onBrand,
-                fontFamily = br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily,
+                color = LoteriasCaixaDS.colors.onBrand,
+                fontFamily = br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
                 style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = true))
             )
-            Box(Modifier.weight(1f).height(1.dp).background(CaixaDS.colors.onBrand))
+            Box(Modifier.weight(1f).height(1.dp).background(LoteriasCaixaDS.colors.onBrand))
         }
         Spacer(Modifier.height(42.dp))
         LegacyLoginButton(
@@ -95,14 +95,14 @@ internal fun LoginPrimaryContent(
                     enabled = !state.isLoading && !state.authorizationPending && !state.blockedAccountCheckFailed,
                     role = Role.Button,
                     onClick = onSwitchUser
-                ).padding(horizontal = CaixaDS.spacing.md),
+                ).padding(horizontal = LoteriasCaixaDS.spacing.md),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = uiStrings.getString(LocalizedR.string.ui_trocar_usuario),
                     modifier = (Modifier.fillMaxWidth()).uiId("account.0042"),
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    color = CaixaDS.colors.onBrand,
+                    color = LoteriasCaixaDS.colors.onBrand,
                     fontSize = 16.sp
                 )
             }
@@ -110,8 +110,8 @@ internal fun LoginPrimaryContent(
         state.errorMessage?.let { message ->
             Text(
                 text = message,
-                modifier = (Modifier.padding(top = CaixaDS.spacing.md)).uiId("account.0043"),
-                color = CaixaDS.colors.onBrand,
+                modifier = (Modifier.padding(top = LoteriasCaixaDS.spacing.md)).uiId("account.0043"),
+                color = LoteriasCaixaDS.colors.onBrand,
                 fontSize = 14.sp
             )
         }
@@ -150,18 +150,18 @@ internal fun LoginFooterContent(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                CaixaDSFingerprintIcon(
-                    color = CaixaDS.colors.onBrand,
+                LoteriasCaixaDSFingerprintIcon(
+                    color = LoteriasCaixaDS.colors.onBrand,
                     modifier = (Modifier.size(width = 23.dp, height = 30.dp)).uiId("account.0045")
                 )
                 Text(
                     text = uiStrings.getString(LocalizedR.string.ui_acessar_com_biometria_3765f3),
-                    color = CaixaDS.colors.onBrand,
+                    color = LoteriasCaixaDS.colors.onBrand,
                     fontSize = 20.sp,
                     modifier = (if (largeFont) Modifier.weight(1f).padding(horizontal = 8.dp) else Modifier).uiId("account.0046"),
                     maxLines = if (largeFont) Int.MAX_VALUE else 1
                 )
-                CaixaDSLoginSwitch(checked = state.biometricEnabled, modifier = Modifier.uiId("account.0047"))
+                LoteriasCaixaDSLoginSwitch(checked = state.biometricEnabled, modifier = Modifier.uiId("account.0047"))
             }
         }
         if (environmentSelectorVisible) {
@@ -169,11 +169,11 @@ internal fun LoginFooterContent(
                 environmentSelector(!state.authorizationPending && !state.isLoading)
             }
         } else {
-            Spacer(Modifier.height(CaixaDS.spacing.xl))
+            Spacer(Modifier.height(LoteriasCaixaDS.spacing.xl))
         }
         Text(
             text = uiStrings.getString(LocalizedR.string.ui_v_1_s_8c8fcd, versionName),
-            color = CaixaDS.colors.onBrand,
+            color = LoteriasCaixaDS.colors.onBrand,
             fontSize = 12.sp,
             lineHeight = 16.sp,
             modifier = Modifier.uiId("account.0048")

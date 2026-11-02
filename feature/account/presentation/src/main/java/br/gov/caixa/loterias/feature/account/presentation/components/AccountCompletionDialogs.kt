@@ -4,15 +4,15 @@ import br.gov.caixa.loterias.feature.account.R as LocalizedR
 
 import androidx.compose.runtime.Composable
 import br.gov.caixa.loterias.feature.account.presentation.state.AccountCompletionState
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAuthenticationLoadingDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 
 @Composable
 fun AccountCompletionDialogs(state: AccountCompletionState, onRetry: () -> Unit, onDismiss: () -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    if (state.checking) CaixaDSAuthenticationLoadingDialog()
+    if (state.checking) LoteriasCaixaDSAuthenticationLoadingDialog()
     state.error?.let { message ->
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = message,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_tentar_novamente_b9e106),

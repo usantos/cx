@@ -10,8 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
@@ -117,11 +117,11 @@ class BettingTutorialNavigationUiTest {
             val context = androidx.compose.ui.platform.LocalContext.current
             nav = rememberNavController()
             navigation = rememberAppNavigationState(null)
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 NavHost(nav, startDestination = "origin") {
-                    composable("origin") { CaixaDSText("Origem") }
-                    composable("betting/pools") { CaixaDSText("Destino bolões") }
-                    composable("betting/simulation") { CaixaDSText("Destino simulação") }
+                    composable("origin") { LoteriasCaixaDSText("Origem") }
+                    composable("betting/pools") { LoteriasCaixaDSText("Destino bolões") }
+                    composable("betting/simulation") { LoteriasCaixaDSText("Destino simulação") }
                     bettingTutorialGraph(dependencies, nav, navigation, bettingScreens(context::getString))
                 }
             }

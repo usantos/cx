@@ -9,8 +9,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.presentation.screen.PaymentCardActions
 import br.gov.caixa.loterias.feature.payment.presentation.screen.PaymentCardFlowScreen
@@ -34,7 +34,9 @@ fun PaymentCardFlowRoute(
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     PurchaseRedirectResumeEffect(viewModel::resumeAfterRedirect)
-    LaunchedEffect(state.stage) { if (state.stage == PaymentCardStage.SUCCESS) onSuccess() }
+    LaunchedEffect(state.stage) {
+        if (viewModel.consumeSuccessNavigation()) onSuccess()
+    }
     PaymentCardFlowScreen(
         state = state,
         onBack = onBack,
@@ -56,7 +58,7 @@ fun PaymentCardFlowRoute(
         if (viewModel.consumeRegistrationNotice(it)) onRegistration()
     }
     if (state.stage == PaymentCardStage.REVIEW_REQUIRED && !state.redirectPaused) {
-        CaixaDSDialog(
+        LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = PURCHASE_REVIEW_GUIDANCE,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),
@@ -64,7 +66,7 @@ fun PaymentCardFlowRoute(
         )
     }
     state.errorMessage?.takeIf { state.stage != PaymentCardStage.FAILURE }?.let {
-        CaixaDSAlertDialog(
+        LoteriasCaixaDSAlertDialog(
             uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             it,
             stringResource(LocalizedR.string.ui_entendi_9f9373),

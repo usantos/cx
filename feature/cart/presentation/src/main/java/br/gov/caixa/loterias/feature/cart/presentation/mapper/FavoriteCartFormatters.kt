@@ -8,12 +8,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
 import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
 
 internal val favoriteTextStyle = TextStyle(
-    fontFamily = CaixaDSFontFamily,
+    fontFamily = LoteriasCaixaDSFontFamily,
     fontSize = 14.sp,
     platformStyle = PlatformTextStyle(includeFontPadding = true)
 )

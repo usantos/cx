@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.feature.tickets
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.CheckTicketUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetConfirmedBetsUseCase
@@ -25,7 +25,7 @@ class ReceiptRecurringContractTest {
         statusId = 9, recurringDraws = 3, exchange = false)
     @Test fun settledRecurringExplainsFirstContestOnceAfterDismissal() {
         val restoration = androidx.compose.ui.test.junit4.StateRestorationTester(compose)
-        restoration.setContent { CaixaDSTheme { BetDetailRoute(bet, {}, {}) } }
+        restoration.setContent { LoteriasCaixaDSTheme { BetDetailRoute(bet, {}, {}) } }
         compose.onNodeWithText("A conferência dos jogos da Teimosinha é realizada para todos os concursos apostados, no entanto, é exibida apenas a do primeiro concurso.").assertExists()
         compose.onNodeWithText("Entendi").performClick()
         compose.onNodeWithText("Entendi").assertDoesNotExist()
@@ -33,7 +33,7 @@ class ReceiptRecurringContractTest {
         compose.onNodeWithText("Entendi").assertDoesNotExist()
     }
     @Test fun actualPaidOriginalRecurringShowsExchangeGuidance() {
-        compose.setContent { CaixaDSTheme { BetDetailRoute(bet.copy(statusId = 11, status = "Prêmio pago"), {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { BetDetailRoute(bet.copy(statusId = 11, status = "Prêmio pago"), {}, {}) } }
         compose.onNodeWithText("Esta aposta com Teimosinha não é mais válida para acompanhamento.", substring = true).assertExists()
     }
     @Test fun purchasePixRecreationUsesCapturedServerDeadlineAndExpiresMonotonically() {
@@ -55,7 +55,7 @@ class ReceiptRecurringContractTest {
             elapsedMillis = { elapsed },
         )
         val restoration = androidx.compose.ui.test.junit4.StateRestorationTester(compose)
-        restoration.setContent { CaixaDSTheme { PurchaseDetailDataRoute(model, purchase, {}) } }
+        restoration.setContent { LoteriasCaixaDSTheme { PurchaseDetailDataRoute(model, purchase, {}) } }
         compose.onNode(hasScrollAction()).performScrollToNode(hasText("10:00"))
         compose.onNodeWithText("10:00").assertExists()
         compose.onNodeWithText("Verificar Pagamento").performClick()
@@ -71,7 +71,7 @@ class ReceiptRecurringContractTest {
     }
     @Test fun pendingAndAwardedRecurringRespectCxExclusion() {
         val current = androidx.compose.runtime.mutableStateOf(bet.copy(statusId = 4, status = "Concurso não apurado"))
-        compose.setContent { CaixaDSTheme { BetDetailRoute(current.value, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme { BetDetailRoute(current.value, {}, {}) } }
         compose.onNodeWithText("Entendi").assertDoesNotExist()
         compose.runOnIdle { current.value = bet.copy(statusId = 100, status = "Premiada") }
         compose.onNodeWithText("Entendi").assertDoesNotExist()

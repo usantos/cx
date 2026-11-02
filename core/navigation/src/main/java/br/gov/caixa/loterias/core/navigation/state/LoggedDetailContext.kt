@@ -5,11 +5,9 @@ import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.OutputStream
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.remember
 import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.LotogolMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
@@ -110,14 +108,6 @@ class LoggedDetailContext(owner: String?) {
         }
         owner = nextOwner
     }
-}
-
-@Composable
-fun rememberLoggedDetailContext(owner: String?): LoggedDetailContext {
-    // Detalhes privados permanecem em memória; seleções brutas e códigos Pix não devem entrar no SavedState.
-    val context = remember { LoggedDetailContext(owner) }
-    context.reconcile(owner)
-    return context
 }
 
 /** Um único limite de tamanho protege o Bundle da Activity; contextos inválidos ou grandes demais são descartados. */

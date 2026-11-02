@@ -23,15 +23,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.R
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSIcons
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.caixaDSLotteryKey
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryKey
 import br.gov.caixa.loterias.feature.marketplace.R as LocalizedR
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
 import br.gov.caixa.loterias.feature.marketplace.presentation.mapper.marketplaceDetailModalityLabel
@@ -40,7 +38,7 @@ import br.gov.caixa.loterias.feature.marketplace.presentation.mapper.marketplace
 internal fun DetailHeader(detail: MarketplacePoolDetail?, colors: MarketplaceColors, onBack: () -> Unit, specialName: String? = null) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val special = detail?.contestType == 2
-    val key = caixaDSLotteryKey(0, detail?.modality.orEmpty())
+    val key = loteriasCaixaDSLotteryKey(0, detail?.modality.orEmpty())
     val artwork = detailHeaderArtwork(special, key, specialName)
     val label = if (special) {
         when (key) {
@@ -62,7 +60,7 @@ internal fun DetailHeader(detail: MarketplacePoolDetail?, colors: MarketplaceCol
                 Alignment.CenterEnd
             ) {
                 Icon(
-                    CaixaDSIcons.Back,
+                    LoteriasCaixaDSIcons.Back,
                     uiStrings.getString(LocalizedR.string.ui_voltar_59dc92),
                     (Modifier.padding(end = 8.dp).size(12.dp, 18.dp)).uiId("pool.0054"),
                     tint = colors.content
@@ -71,7 +69,7 @@ internal fun DetailHeader(detail: MarketplacePoolDetail?, colors: MarketplaceCol
             val specialLabel = specialName?.takeIf(String::isNotBlank)?.let {
                 if (key == "LOTECA") it.replace('\n', ' ') else it
             }
-            val titleStyle = detailText(18, FontWeight.Bold).copy(fontFamily = CaixaDSFuturaFontFamily)
+            val titleStyle = detailText(18, FontWeight.Bold).copy(fontFamily = LoteriasCaixaDSFuturaFontFamily)
             Text(
                 if (special) {
                     specialLabel ?: label ?: uiStrings.getString(

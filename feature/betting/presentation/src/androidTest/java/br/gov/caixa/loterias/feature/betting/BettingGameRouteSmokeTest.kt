@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.result.AppError
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
@@ -57,7 +57,7 @@ class BettingGameRouteSmokeTest {
         val model = BettingGameViewModel(9, GetBettingParametersUseCase {
             AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
         }, addBet)
-        compose.setContent { CaixaDSTheme(darkTheme = false) {
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
             BettingGameRoute(model, onBack = {}, onAdded = { notifications.incrementAndGet() })
         } }
         compose.waitUntil(10_000) { !model.state.value.loading }
@@ -104,7 +104,7 @@ class BettingGameRouteSmokeTest {
             addBet = addBet,
         )
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 BettingGameRoute(viewModel, onBack = {}, onAdded = {}, shakeEnabled = false, onHelp = { onHelp.incrementAndGet() })
             }
         }
@@ -154,7 +154,7 @@ class BettingGameRouteSmokeTest {
             },
             addBet = AddBetFake(),
         )
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(timeoutMillis = 10_000) { vm.state.value.game != null }
         saveDeviceCapture("compose-special-quina-entry")
         compose.onNodeWithText("quina de \nsão joão").assertIsDisplayed()
@@ -182,7 +182,7 @@ class BettingGameRouteSmokeTest {
             },
             addBet = AddBetFake(),
         )
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(timeoutMillis = 10_000) { vm.state.value.game != null }
         val carets = compose.onAllNodesWithTag("betting-dropdown-icon", useUnmergedTree = true)
         assertEquals(2, carets.fetchSemanticsNodes().size)
@@ -192,7 +192,7 @@ class BettingGameRouteSmokeTest {
 
     @Test fun entrySelectorsAndFooterActionsKeepInstalledDimensions() {
         val vm = megaSenaViewModel()
-        compose.setContent { CaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(timeoutMillis = 10_000) { vm.state.value.game != null }
         compose.onNodeWithTag("betting-button-6 números", useUnmergedTree = true).assertWidthIsEqualTo(112.dp).assertHeightIsEqualTo(45.dp)
         compose.onNodeWithTag("betting-button-Teimosinha", useUnmergedTree = true).assertWidthIsEqualTo(112.dp).assertHeightIsEqualTo(45.dp)
@@ -224,7 +224,7 @@ class BettingGameRouteSmokeTest {
         val onCart = AtomicInteger(0)
         val vm = megaSenaViewModel()
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 BettingGameRoute(
                     viewModel = vm,
                     onBack = {},
@@ -247,7 +247,7 @@ class BettingGameRouteSmokeTest {
             addBet = AddBetFake(),
         )
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 BettingGameRoute(vm, onBack = {}, onAdded = {}, fallbackModalityId = 8)
             }
         }
@@ -260,7 +260,7 @@ class BettingGameRouteSmokeTest {
         val onCart = AtomicInteger(0)
         val vm = megaSenaViewModel()
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
+            LoteriasCaixaDSTheme(darkTheme = false) {
                 BettingGameRoute(
                     viewModel = vm,
                     onBack = {},

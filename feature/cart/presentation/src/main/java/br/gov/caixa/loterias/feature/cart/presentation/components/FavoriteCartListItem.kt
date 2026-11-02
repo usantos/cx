@@ -33,13 +33,13 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon as Icon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSSurface as Surface
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.icon.CaixaDSRecurringIcon
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.core.designsystem.tokens.CaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSSurface as Surface
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSRecurringIcon
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.cart.R
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
@@ -67,7 +67,7 @@ internal fun FavoriteCartRow(
     val rowHeight = maxOf(70.dp, nameHeight + 20.dp)
     val summaryTop = (rowHeight + nameHeight) / 2 + 10.dp
     val background by animateColorAsState(
-        if (expanded) CaixaDSColorTokens.FavoriteCartExpanded else CaixaDSColorTokens.FavoriteCartCard,
+        if (expanded) LoteriasCaixaDSColorTokens.FavoriteCartExpanded else LoteriasCaixaDSColorTokens.FavoriteCartCard,
         animationSpec = tween(100),
         label = uiStrings.getString(LocalizedR.string.ui_favorite_cart_background_096634)
     )
@@ -88,7 +88,7 @@ internal fun FavoriteCartRow(
                 Text(
                     text = favorite.name,
                     modifier = (Modifier.padding(horizontal = 10.dp).width(150.dp)).uiId("cart.0073"),
-                    color = CaixaDSColorTokens.White,
+                    color = LoteriasCaixaDSColorTokens.White,
                     style = favoriteTextStyle.copy(fontSize = nameSize)
 
                 )
@@ -124,7 +124,7 @@ internal fun FavoriteCartRow(
                 Box(Modifier.fillMaxWidth().padding(top = 70.dp).height(30.dp), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(20.dp),
-                        color = CaixaDSColorTokens.White,
+                        color = LoteriasCaixaDSColorTokens.White,
                         strokeWidth = 2.dp
                     )
                 }
@@ -143,7 +143,7 @@ private fun FavoriteCartRasterAction(resource: Int, description: String, onClick
             painterResource(resource),
             description,
             (Modifier.size(20.dp)).uiId("cart.0075"),
-            tint = CaixaDSColorTokens.White
+            tint = LoteriasCaixaDSColorTokens.White
         )
     }
 }
@@ -158,24 +158,24 @@ private fun FavoriteCartBetSummary(bet: FavoriteCartBet) {
         Text(
             favoriteSummaryModalityName(bet),
             modifier = (Modifier.weight(1f)).uiId("cart.0076"),
-            color = CaixaDSColorTokens.White,
-            style = favoriteTextStyle.copy(fontFamily = CaixaDSFuturaFontFamily, fontWeight = FontWeight.Bold),
+            color = LoteriasCaixaDSColorTokens.White,
+            style = favoriteTextStyle.copy(fontFamily = LoteriasCaixaDSFuturaFontFamily, fontWeight = FontWeight.Bold),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         Box(Modifier.padding(end = 5.dp).size(20.dp)) {
             if (bet.recurringDraws > 0) {
                 Icon(
-                    CaixaDSRecurringIcon,
+                    LoteriasCaixaDSRecurringIcon,
                     uiStrings.getString(LocalizedR.string.ui_teimosinha_dba980),
                     (Modifier.fillMaxSize()).uiId("cart.0077"),
-                    tint = CaixaDSColorTokens.White
+                    tint = LoteriasCaixaDSColorTokens.White
                 )
             }
         }
         Text(
             favoriteBetSummaryText(bet),
-            color = CaixaDSColorTokens.White,
+            color = LoteriasCaixaDSColorTokens.White,
             style = favoriteTextStyle,
             modifier = (Modifier.padding(5.dp)).uiId("cart.0078"),
             maxLines = 1

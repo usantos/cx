@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.cart.navigation
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
-import br.gov.caixa.loterias.core.designsystem.components.CaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
@@ -72,7 +72,7 @@ class CartNavigationDependenciesAdapter @Inject constructor(
         BackHandler { if (!loading) onBack() }
         startupStatusPresentation.Content(loading, onRetry, networkAvailability)
         if (message != null) {
-            CaixaDSAlertDialog(
+            LoteriasCaixaDSAlertDialog(
                 title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
                 message = message,
                 confirmText = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),

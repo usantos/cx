@@ -7,64 +7,64 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.artwork.CaixaDSNotificationPlaceholder
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSAlertDialog
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSBasicTextField
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCard
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCheckbox
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSDropdownMenu
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSDropdownMenuItem
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSHorizontalDivider
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSTextButton
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDS
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSNotificationPlaceholder
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSAlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSBasicTextField
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCard
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCheckbox
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSDropdownMenu
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSDropdownMenuItem
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSHorizontalDivider
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTextButton
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 
 internal val basePreviews0 = mapOf(
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSAlertDialog") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSAlertDialog") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSAlertDialog(
+                LoteriasCaixaDSAlertDialog(
                     onDismissRequest = dismiss,
-                    confirmButton = { CaixaDSTextButton(onClick = dismiss) { CaixaDSText(closeLabel) } },
-                    title = { CaixaDSText(sample) },
-                    text = { CaixaDSText(hint) }
+                    confirmButton = { LoteriasCaixaDSTextButton(onClick = dismiss) { LoteriasCaixaDSText(closeLabel) } },
+                    title = { LoteriasCaixaDSText(sample) },
+                    text = { LoteriasCaixaDSText(hint) }
                 )
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSBasicTextField") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSBasicTextField") { state ->
         with(state) {
-            CaixaDSBasicTextField(
+            LoteriasCaixaDSBasicTextField(
                 value = text,
                 onValueChange = { text = it },
                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                textStyle = CaixaDS.typography.bodyLarge
+                textStyle = LoteriasCaixaDS.typography.bodyLarge
             )
-            CaixaDSBasicTextField(
+            LoteriasCaixaDSBasicTextField(
                 value = richText,
                 onValueChange = { richText = it },
                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                textStyle = CaixaDS.typography.bodyLarge
+                textStyle = LoteriasCaixaDS.typography.bodyLarge
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSButton") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton") { state ->
         with(state) {
-            CaixaDSButton(
+            LoteriasCaixaDSButton(
                 onClick = action,
-                content = { CaixaDSText(actionLabel) }
+                content = { LoteriasCaixaDSText(actionLabel) }
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCard") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCard") { state ->
         with(state) {
-            CaixaDSCard(
+            LoteriasCaixaDSCard(
                 onClick = action,
                 content = {
-                    CaixaDSText(
+                    LoteriasCaixaDSText(
                         sample,
                         Modifier.padding(20.dp)
                     )
@@ -72,28 +72,28 @@ internal val basePreviews0 = mapOf(
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCheckbox") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCheckbox") { state ->
         with(state) {
-            CaixaDSCheckbox(
+            LoteriasCaixaDSCheckbox(
                 checked = checked,
                 onCheckedChange = { checked = it }
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSCircularProgressIndicator") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator") { state ->
         with(state) {
-            CaixaDSCircularProgressIndicator(progress = { 0.65f })
+            LoteriasCaixaDSCircularProgressIndicator(progress = { 0.65f })
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSDropdownMenu") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSDropdownMenu") { state ->
         with(state) {
             OpenPreview(state) {
-                CaixaDSDropdownMenu(
+                LoteriasCaixaDSDropdownMenu(
                     expanded = show,
                     onDismissRequest = dismiss,
                     content = {
-                        CaixaDSDropdownMenuItem(
-                            text = { CaixaDSText(sample) },
+                        LoteriasCaixaDSDropdownMenuItem(
+                            text = { LoteriasCaixaDSText(sample) },
                             onClick = dismiss
                         )
                     }
@@ -101,23 +101,23 @@ internal val basePreviews0 = mapOf(
             }
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSDropdownMenuItem") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSDropdownMenuItem") { state ->
         with(state) {
-            CaixaDSDropdownMenuItem(
-                text = { CaixaDSText(sample) },
+            LoteriasCaixaDSDropdownMenuItem(
+                text = { LoteriasCaixaDSText(sample) },
                 onClick = action
             )
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSHorizontalDivider") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSHorizontalDivider") { state ->
         with(state) {
-            CaixaDSHorizontalDivider()
+            LoteriasCaixaDSHorizontalDivider()
         }
     },
-    preview("br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSIcon") { state ->
+    preview("br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon") { state ->
         with(state) {
-            CaixaDSIcon(
-                imageVector = CaixaDSNotificationPlaceholder,
+            LoteriasCaixaDSIcon(
+                imageVector = LoteriasCaixaDSNotificationPlaceholder,
                 contentDescription = sample
             )
         }

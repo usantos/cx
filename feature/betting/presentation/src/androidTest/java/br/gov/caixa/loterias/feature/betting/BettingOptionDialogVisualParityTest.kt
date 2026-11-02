@@ -17,8 +17,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.components.dialog.CaixaDSOptionDialog
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSOptionDialog
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import java.io.ByteArrayOutputStream
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -83,8 +83,8 @@ class BettingOptionDialogVisualParityTest {
 
     private fun showLotomania() {
         compose.setContent {
-            CaixaDSTheme(darkTheme = false) {
-                CaixaDSOptionDialog("Quantidade de números", listOf(LOTOMANIA_NUMBER_COUNT), LOTOMANIA_NUMBER_COUNT, {
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                LoteriasCaixaDSOptionDialog("Quantidade de números", listOf(LOTOMANIA_NUMBER_COUNT), LOTOMANIA_NUMBER_COUNT, {
                     "50 números por R$ 3,00"
                 }, {}, {})
             }

@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.lifecycle.Lifecycle
-import br.gov.caixa.loterias.core.designsystem.theme.CaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeDialogActions
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeRouteDialogs
@@ -95,7 +95,7 @@ class HomeDialogPriorityUiTest {
             { calls.add("notification-link") }
         )
         compose.setContent {
-            CaixaDSTheme {
+            LoteriasCaixaDSTheme {
                 HomeRouteDialogs(state, lifecycle.value, { calls.add("open:$it") }, actions)
             }
         }

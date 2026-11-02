@@ -7,12 +7,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSAlertDialog as AlertDialog
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.components.base.CaixaDSTextButton as TextButton
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSAlertDialog as AlertDialog
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTextButton as TextButton
 import br.gov.caixa.loterias.feature.onboarding.R
 import br.gov.caixa.loterias.feature.onboarding.R as LocalizedR
 import br.gov.caixa.loterias.feature.onboarding.presentation.components.AgeScreen
+import br.gov.caixa.loterias.feature.onboarding.presentation.components.IntroductionActions
 import br.gov.caixa.loterias.feature.onboarding.presentation.components.IntroductionScreen
 import br.gov.caixa.loterias.feature.onboarding.presentation.components.TutorialScreen
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.SplashScreen
@@ -56,7 +57,10 @@ fun OnboardingRoute(
         )
     }
     when (state.route) {
-        "onboarding/introduction" -> IntroductionScreen(state, viewModel)
+        "onboarding/introduction" -> IntroductionScreen(
+            state,
+            IntroductionActions(viewModel::pageChanged, viewModel::complete, viewModel::confirmAdult, viewModel::rejectAdult)
+        )
 
         "onboarding/tutorial" -> TutorialScreen(
             checked = state.tutorialDoNotShowAgain,
