@@ -66,7 +66,7 @@ Comando final: `ANDROID_SERIAL=emulator-5560 ./gradlew :feature:tickets:check :a
 - **Preservado:** construtor/defaults/retornos Unit/StateFlow; mesmo MutableStateFlow e viewModelScope; init/retry/revisões; filtro/áreas/páginas/append automático; cabeçalho regular/especial; travas dos favoritos; cotas/pedido/preços/reserva/mensagens. Nenhum escopo, lock, retry, deduplicação ou sincronização de listas adicional.
 - **Validação:**41 JVM aprovados no original e final, incluindo7 novas caracterizações;27 Android aprovados, zero falhas/erros/skips. Check/lint, compilação PrdDebug e gates de formatação/arquitetura/Compose aprovados em2m 33s. Cobertura376/377=99,73%, mínimo 0.95 e todos os includes anteriores intactos; colaboradores/coroutines incluídos de forma aditiva.47 verificações de equivalência aprovadas;19 testes originais intactos. Revisão independente somente leitura sem achados.
 - **Pendências/riscos:** nenhuma nova pendência identificada nesta extração. Homologação de serviços privados, matriz global/release e paridade visual integral não foram repetidas; permanecem os limites históricos de MIGRATION_VALIDATION.md. AVD/pacotes/tamanho/densidade/fonte preservados. Sem commits/pushes.
-- **Evidências:** build/verification/marketplace-viewmodel-extraction-20261018/ e docs/superpowers/plans/2026-10-18-marketplace-viewmodel-extraction.md.
+- **Evidências:** build/verification/marketplace-viewmodel-extraction-20261018/ e docs/engineering/plans/2026-10-18-marketplace-viewmodel-extraction.md.
 
 ## Continuação — PaymentCardViewModel (18/10/2026)
 
@@ -76,7 +76,7 @@ Comando final: `ANDROID_SERIAL=emulator-5560 ./gradlew :feature:tickets:check :a
 - **Preservado:** API/defaults/retornos Unit/Boolean/Job, MutableStateFlow privado/StateFlow público, init, entradas legadas, snapshot de seleção/CVV antes do carrinho/POST, total original, guardas e marcador de revisão, polling/IDs/intervalos/limites/retry/conclusão, avisos por identidade, redirects por igualdade, pausas e cancelamento. Nenhuma submissão automática, timeout, limpeza ou trava nova.
 - **Validação:** 104 JVM aprovados no original e final, incluindo cinco novas caracterizações; 32 Android aprovados, zero falhas/erros/skips. Check/lint, compilação PrdDebug e gates de formatação/arquitetura/Compose aprovados em 2m 20s. Cobertura ampliada para 608/612 linhas = 99,35%, mínimo 0.9501 e todos os includes anteriores preservados. Sessenta verificações de equivalência aprovadas; 28 testes originais intactos; revisão independente somente leitura sem achados de regressão.
 - **Pendências/riscos:** nenhuma nova pendência identificada nesta extração. Homologação de provedores privados, matriz global/release e paridade visual integral não foram repetidas; limites históricos permanecem em MIGRATION_VALIDATION.md. Pacotes/tamanho/densidade/fonte do AVD preservados. Sem commits/pushes.
-- **Evidências:** build/verification/payment-card-viewmodel-extraction-20261018/ e docs/superpowers/plans/2026-10-18-payment-card-viewmodel-extraction.md.
+- **Evidências:** build/verification/payment-card-viewmodel-extraction-20261018/ e docs/engineering/plans/2026-10-18-payment-card-viewmodel-extraction.md.
 
 ## Continuação — RemoteRetailRepository (18/10/2026)
 
@@ -86,7 +86,7 @@ Comando final: `ANDROID_SERIAL=emulator-5560 ./gradlew :feature:tickets:check :a
 - **Preservado:** construtor/default cast, três contratos públicos, validação tardia da fonte, consulta de favoritos antes de cada busca/sem cache, payloads crus e IDs, prioridades/fallbacks/escala decimal/zeros/canais/Loteca/ordem das premiações, bytes dos PDFs, allowRegistration por canal, tratamento HTTP/IO e propagação das demais falhas/cancelamento. Nenhum retry, scope, normalização ou fallback novo.
 - **Validação:** 218 JVM de Data aprovados no original e final, incluindo cinco novas caracterizações; mais 55 JVM de Retail e 104 de Payment executados novamente. Total final: 377, zero falhas/erros/skips. Check Data/cobertura, compilação app PrdDebug/Hilt e gates de formatação/arquitetura/Compose aprovados em 14s. Cobertura Data 2196/2296 linhas = 95,64%; build.gradle byte a byte idêntico, incluindo todas as classes/coroutines e mínimo 0.9501. Cinquenta e seis verificações de equivalência aprovadas, 29 testes originais intactos e revisão independente sem achados.
 - **Pendências/riscos:** nenhuma nova pendência identificada na extração. Esta rodada JVM não repetiu instrumentação Android, matriz global/release ou homologação privada; limites históricos permanecem em MIGRATION_VALIDATION.md. Sem mudanças de UI/DI/Domain/Network/Retrofit/persistência/dependências e sem commits/pushes.
-- **Evidências:** build/verification/retail-repository-extraction-20261018/ e docs/superpowers/plans/2026-10-18-retail-repository-extraction.md.
+- **Evidências:** build/verification/retail-repository-extraction-20261018/ e docs/engineering/plans/2026-10-18-retail-repository-extraction.md.
 
 ## Continuação — RemoteBettingRepository (18/10/2026)
 
@@ -96,7 +96,7 @@ Comando final: `ANDROID_SERIAL=emulator-5560 ./gradlew :feature:tickets:check :a
 - **Preservado:** API, payloads completos por modalidade, tipos/descrições/quantidades/trevos, números versus colunas Super Sete sem reordenação, campos esportivos/placares string/mês/espelho/opcionais, game?:nextGame/hasNextContest, escudos condicionais/último ID, defaults/case/valores/escala/combos/pools, retorno do carrinho e falhas. Mantido o runCatching amplo original da consulta opcional de escudos, inclusive fallback quando a fonte lança cancelamento; não foi alterada esta regra durante refatoração.
 - **Validação:** 226 testes JVM Data aprovados no original e final, incluindo oito novas caracterizações; 139 de Betting e 101 de Cart executados novamente. Total final: 466, zero falhas/erros/skips. Check/cobertura Data, compilação PrdDebug/Hilt e gates de formatação/arquitetura/Compose aprovados em 15s. Cobertura Data 2210/2310 linhas = 95,67%; build.gradle byte-idêntico, incluindo todas as classes/coroutines e mínimo 0.9501. Trinta e uma verificações de equivalência aprovadas; fontes/contratos/testes antigos intactos; revisão independente sem achados.
 - **Pendências/riscos:** nenhuma nova pendência identificada nesta extração. Rodada JVM sem nova instrumentação Android, matriz global/release, homologação de provedores privados ou comparação visual integral; limites históricos permanecem em MIGRATION_VALIDATION.md. Nenhum scope/cache/retry/validação/dependência novo e sem commits/pushes.
-- **Evidências:** build/verification/betting-repository-extraction-20261018/ e docs/superpowers/plans/2026-10-18-betting-repository-extraction.md.
+- **Evidências:** build/verification/betting-repository-extraction-20261018/ e docs/engineering/plans/2026-10-18-betting-repository-extraction.md.
 
 ## Continuação — BettingSportsContent (18/10/2026)
 
@@ -106,7 +106,7 @@ Comando final: `ANDROID_SERIAL=emulator-5560 ./gradlew :feature:tickets:check :a
 - **Preservado:** ViewModel/Route/API/defaults, filtro/label selecionado/grade 3 colunas, tamanhos/fontes/modificadores, distribuição e alinhamento inteiro, descrição vinculada a remember(team,descriptionBindingKey), scroll, estados/ordem dos resultados, Base64/raw/data URI/fallback e chamadas de quantidade/ajuda. Recursos e testes antigos intactos.
 - **Validação:** 139 JVM executados novamente e24 Android aprovados a 480 dpi, zero falhas/erros/skips; mesmos 24 Android passaram antes da extração. Três caracterizações novas testam troca de VM/callbacks e pixels/geometria dos escudos. Check/lint, PrdDebug e gates aprovados em 3m 24s; cobertura1066/1084= 98,34%,configuração/mínimo 0.9501 intactos.20 checks de equivalência/APIs aprovados e revisão independente somente leitura sem achados.
 - **Pendências/riscos:** no perfil inicial450 dpi, três comparativos nativos já falhavam no original (Partidas54 vs 55 px, distribuição379 vs 380 px, cabeçalho SuperSete158 vs 156 px). Repetidos após a extração: mesmas três falhas e mensagens; sem alterar oráculos/gates/geometria. Perfil480 dpi é o declarado pelos testes nativos. Paridade completa, matriz global/release e homologação privada não foram repetidas. Configuração/pacotes do AVD restaurados; sem commits/pushes.
-- **Evidências:** build/verification/betting-sports-extraction-20261018/ e docs/superpowers/plans/2026-10-18-betting-sports-extraction.md; detalhes em MIGRATION_VALIDATION.md.
+- **Evidências:** build/verification/betting-sports-extraction-20261018/ e docs/engineering/plans/2026-10-18-betting-sports-extraction.md; detalhes em MIGRATION_VALIDATION.md.
 
 ## Continuação — sete arquivos por responsabilidade (18/10/2026)
 
@@ -130,7 +130,7 @@ Comando final: `ANDROID_SERIAL=emulator-5560 ./gradlew :feature:tickets:check :a
 
 **Pendências/riscos:** nenhuma regressão conhecida identificada nesta rodada. Homologação real de OAuth/biometria/SSO, fila SDK/provedores privados, matriz global/release dos três flavors e paridade visual de todos os estados não foram repetidas. Divergências geométricas históricas permanecem registradas separadamente. Configuração/pacotes do AVD preservados; somente o emulador iniciado nesta rodada foi encerrado. Sem novas dependências, alterações de DI/DTOs/recursos/manifests, commits ou pushes.
 
-**Evidências:** build/verification/seven-responsibilities-20261018/; plano em docs/superpowers/plans/2026-10-18-seven-responsibilities.md; comandos, resultados e limites em MIGRATION_VALIDATION.md.
+**Evidências:** build/verification/seven-responsibilities-20261018/; plano em docs/engineering/plans/2026-10-18-seven-responsibilities.md; comandos, resultados e limites em MIGRATION_VALIDATION.md.
 
 ## Continuação — dez arquivos por responsabilidade (18/10/2026)
 
@@ -163,7 +163,7 @@ As features permanecem na Presentation consumindo os mesmos use cases de Domain;
 
 **Pendências/riscos:** nenhuma regressão local identificada no escopo; um teste geométrico de resgate exige perfil 1080×2408/450dpi e permaneceu condicional no AVD 1280×2856/450dpi. Não foram repetidas a matriz global/release, homologação de serviços privados, hardware biométrico ou paridade visual integral. Comportamentos preexistentes foram preservados, inclusive limites de concorrência/tratamento de exceções.
 
-**Evidências:** `build/verification/ten-responsibilities-20261018/`; plano em `docs/superpowers/plans/2026-10-18-ten-responsibilities.md`. Pacotes nativos de referência e perfil do AVD preservados; encerrado somente o emulador criado nesta rodada. Sem commits/pushes.
+**Evidências:** `build/verification/ten-responsibilities-20261018/`; plano em `docs/engineering/plans/2026-10-18-ten-responsibilities.md`. Pacotes nativos de referência e perfil do AVD preservados; encerrado somente o emulador criado nesta rodada. Sem commits/pushes.
 
 ## Sete ajustes concretos de conformidade — 19/10/2026
 

@@ -81,7 +81,7 @@ average_luma_for() {
 
 tap_visible_text() {
   local label="$1"
-  local dump_path="/sdcard/codex-parity-window.xml"
+  local dump_path="/sdcard/simlo-parity-window.xml"
   local node="" bounds left top right bottom
   for _ in $(seq 1 5); do
     adb shell rm -f "$dump_path" </dev/null >/dev/null 2>&1 || true
@@ -190,7 +190,7 @@ awk -F '\t' 'NR > 1 && $4 == "compose" && $1 ~ /Activity\.java$/ && $3 !~ /#/ {p
 
     # Uma referência sem servidor pode exibir o alerta global de tempo limite. Ele não
     # representa a tela solicitada e não deve produzir um SSIM enganoso.
-    legacy_dump_path="/sdcard/codex-parity-legacy.xml"
+    legacy_dump_path="/sdcard/simlo-parity-legacy.xml"
     adb shell rm -f "$legacy_dump_path" </dev/null >/dev/null 2>&1 || true
     adb shell uiautomator dump --compressed "$legacy_dump_path" </dev/null >/dev/null 2>&1 || true
     adb pull "$legacy_dump_path" "$output_dir/legacy-ui/${filename%.png}.xml" </dev/null >/dev/null 2>&1 || true
@@ -239,7 +239,7 @@ awk -F '\t' 'NR > 1 && $4 == "compose" && $1 ~ /Activity\.java$/ && $3 !~ /#/ {p
       sleep "$post_tap_settle_seconds"
     fi
     adb exec-out screencap -p </dev/null > "$compose_image"
-    compose_dump_path="/sdcard/codex-parity-compose.xml"
+    compose_dump_path="/sdcard/simlo-parity-compose.xml"
     adb shell rm -f "$compose_dump_path" </dev/null >/dev/null 2>&1 || true
     adb shell uiautomator dump --compressed "$compose_dump_path" </dev/null >/dev/null 2>&1 || true
     adb pull "$compose_dump_path" "$output_dir/compose-ui/${filename%.png}.xml" </dev/null >/dev/null 2>&1 || true

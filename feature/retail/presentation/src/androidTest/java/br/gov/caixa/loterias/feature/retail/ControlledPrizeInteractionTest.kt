@@ -284,7 +284,7 @@ class ControlledPrizeInteractionTest {
     private fun capture(name: String) {
         compose.waitForIdle()
         val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
-        val folder = java.io.File(requireNotNull(instrumentation.targetContext.externalCacheDir), "codex-financial-parity").apply {
+        val folder = java.io.File(requireNotNull(instrumentation.targetContext.externalCacheDir), "simlo-financial-parity").apply {
             mkdirs()
         }
         val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
@@ -298,7 +298,7 @@ class ControlledPrizeInteractionTest {
                 "densityDpi=${instrumentation.targetContext.resources.displayMetrics.densityDpi}\n" +
                 "fontScale=${instrumentation.targetContext.resources.configuration.fontScale}\n"
         )
-        android.util.Log.i("CodexParityCapture", java.io.File(folder, "$name.png").absolutePath)
+        android.util.Log.i("SimloParityCapture", java.io.File(folder, "$name.png").absolutePath)
         assertTrue(java.io.File(folder, "$name.png").length() > 0)
     }
 

@@ -10,7 +10,7 @@ Lotomania deixa de usar Checkbox Material3, título/explicação inventados no f
 
 ## Fixtures públicas e limites
 
-`ExtendedInstalledPairsTest` captura estados em `externalCacheDir/codex-parity`: `compose-installed-{id}-{contest}-{state}.{png,txt}`. Cada metadata registra JSON do snapshot, números/trevos/espelho, densidade/fonte, `fixture=true` e `networkSends=0`. `AddBetToCartUseCase` lança erro se for invocado. As seleções são aplicadas pelo ViewModel; as capturas comprovam renderização controlada e precisam comparação com estados idênticos da referência.
+`ExtendedInstalledPairsTest` captura estados em `externalCacheDir/simlo-parity`: `compose-installed-{id}-{contest}-{state}.{png,txt}`. Cada metadata registra JSON do snapshot, números/trevos/espelho, densidade/fonte, `fixture=true` e `networkSends=0`. `AddBetToCartUseCase` lança erro se for invocado. As seleções são aplicadas pelo ViewModel; as capturas comprovam renderização controlada e precisam comparação com estados idênticos da referência.
 
 | Fixture pública registrada pelo principal | Estados implementados | Limite |
 | --- | --- | --- |

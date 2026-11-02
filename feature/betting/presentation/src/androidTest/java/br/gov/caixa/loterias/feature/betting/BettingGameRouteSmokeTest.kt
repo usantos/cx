@@ -313,7 +313,7 @@ class BettingGameRouteSmokeTest {
         compose.waitForIdle()
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         instrumentation.waitForIdleSync()
-        val directory = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "codex-parity").apply { mkdirs() }
+        val directory = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "simlo-parity").apply { mkdirs() }
         val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
         File(directory, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
         bitmap.recycle()

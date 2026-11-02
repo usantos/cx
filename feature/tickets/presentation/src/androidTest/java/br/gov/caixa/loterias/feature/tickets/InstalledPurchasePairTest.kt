@@ -207,7 +207,7 @@ class InstalledPurchasePairTest {
             )
             outer.layout(0, 0, outer.measuredWidth, outer.measuredHeight)
             nativeRowHeight = row.measuredHeight
-            val directory = java.io.File(requireNotNull(context.externalCacheDir), "codex-financial-parity").apply { mkdirs() }
+            val directory = java.io.File(requireNotNull(context.externalCacheDir), "simlo-financial-parity").apply { mkdirs() }
             java.io.File(directory, "purchase-native-data-row-metrics.txt").writeText(
                 "nativeRowHeight=$nativeRowHeight\nnativeDateHeight=${nativeDate.measuredHeight}\nnativeDateTop=${nativeDate.top}\n" +
                     "nativeDateTextSizePx=${nativeDate.textSize}\nnativeAmountHeight=${nativeAmount.measuredHeight}\n" +
@@ -253,7 +253,7 @@ class InstalledPurchasePairTest {
                 android.view.View.MeasureSpec.makeMeasureSpec(0, android.view.View.MeasureSpec.UNSPECIFIED)
             )
             nativeHeight = view.measuredHeight
-            val directory = java.io.File(requireNotNull(context.externalCacheDir), "codex-financial-parity").apply { mkdirs() }
+            val directory = java.io.File(requireNotNull(context.externalCacheDir), "simlo-financial-parity").apply { mkdirs() }
             java.io.File(directory, "purchase-native-status-metrics.txt").writeText(
                 "nativeHeight=$nativeHeight\nnativeWidth=${view.measuredWidth}\nnativeLines=${view.lineCount}\n" +
                     "nativeLineHeight=${view.lineHeight}\nnativeBaseline=${view.baseline}\n" +
@@ -309,7 +309,7 @@ class InstalledPurchasePairTest {
     private fun capture() {
         compose.waitForIdle()
         val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
-        val directory = java.io.File(requireNotNull(instrumentation.targetContext.externalCacheDir), "codex-financial-parity").apply {
+        val directory = java.io.File(requireNotNull(instrumentation.targetContext.externalCacheDir), "simlo-financial-parity").apply {
             mkdirs()
         }
         val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())

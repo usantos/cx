@@ -94,7 +94,7 @@ class InstalledMegaPairTest {
         instrumentation.waitForIdleSync()
         android.os.SystemClock.sleep(300)
         instrumentation.waitForIdleSync()
-        val folder = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "codex-parity").apply { mkdirs() }
+        val folder = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "simlo-parity").apply { mkdirs() }
         val name = "compose-mega-$state"
         val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
         File(folder, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }

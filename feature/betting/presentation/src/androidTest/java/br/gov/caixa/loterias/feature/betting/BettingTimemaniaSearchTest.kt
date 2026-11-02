@@ -103,7 +103,7 @@ class BettingTimemaniaSearchTest {
         android.os.SystemClock.sleep(100)
         val folder = File(
             requireNotNull(InstrumentationRegistry.getInstrumentation().targetContext.externalCacheDir),
-            "codex-parity",
+            "simlo-parity",
         ).apply { mkdirs() }
         val name = "betting-20-search-$state"
         val bitmap = compose.onRoot().captureToImage().asAndroidBitmap()

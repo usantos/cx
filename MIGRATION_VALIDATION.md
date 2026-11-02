@@ -142,7 +142,7 @@ UI adicional (`final-ui.log`): 23 casos selecionados, 22 aprovados, zero falhas/
 
 **Pendência visual preexistente:** investigar a diferença de geometria acima em tarefa própria. Não foi alterada a UI nem a assertiva para aparentar aprovação. A refatoração preserva o comportamento e não introduziu essa diferença; não se declara esta suíte inteira aprovada no perfil legado. Logs/XMLs dos dois resultados foram preservados.
 
-Evidências desta continuação: `build/verification/prize-viewmodel-extraction-20261018/`, incluindo snapshots, equivalência, API compilada, resultados JVM/cobertura, UI e revisão. Plano: `docs/superpowers/plans/2026-10-18-prize-viewmodel-extraction.md`. A homologação externa citada na rodada anterior permanece separada.
+Evidências desta continuação: `build/verification/prize-viewmodel-extraction-20261018/`, incluindo snapshots, equivalência, API compilada, resultados JVM/cobertura, UI e revisão. Plano: `docs/engineering/plans/2026-10-18-prize-viewmodel-extraction.md`. A homologação externa citada na rodada anterior permanece separada.
 
 Após restaurar o código final e o tamanho original do AVD, `PrizeReceiptInteractionTest#agencyWritesAndOpensPdfThenReusesTheSavedUri` passou novamente, sem skip (`restored-final-ui-smoke.log`, 7s). Este smoke é repetição de um dos 22 casos aprovados, não um caso distinto adicional.
 
@@ -572,7 +572,7 @@ Primeira execução: BUILD SUCCESSFUL em 2m59s; 1013 tarefas (155 executadas, se
 
 ## Checkout do carrinho: separação e validação — 19/10/2026
 
-**Escopo:** CartCheckoutCoordinator separa entrada/coordenação, localização, permissões, compra recente, validação, avisos e redirecionamentos. Plano: docs/superpowers/plans/2026-10-19-cart-checkout.md. Baseline de 1554 arquivos e APIs em build/verification/cart-checkout-20261019/. O checkout contém trabalho anterior autorizado; esta comparação usa snapshots desta etapa, não HEAD.
+**Escopo:** CartCheckoutCoordinator separa entrada/coordenação, localização, permissões, compra recente, validação, avisos e redirecionamentos. Plano: docs/engineering/plans/2026-10-19-cart-checkout.md. Baseline de 1554 arquivos e APIs em build/verification/cart-checkout-20261019/. O checkout contém trabalho anterior autorizado; esta comparação usa snapshots desta etapa, não HEAD.
 
 **Caracterização no original:** `./gradlew :feature:cart:testDebugUnitTest --rerun :core:domain:test --offline --continue --console=plain` aprovado em 3 s,103 testes Cart e 185 Domain. Duas caracterizações adicionadas antes da extração passaram sobre o coordenador original. A extração passou novamente nos 103 Cart em 3 s. Trata-se de preservação de comportamento; nenhum RED de correção funcional foi alegado.
 
@@ -608,7 +608,7 @@ Resultado: BUILD SUCCESSFUL em 5 m 18 s;886 tarefas,50 executadas e 836 atualiza
 
 ## Histórico Tickets: extração e validação — 19/10/2026
 
-**Escopo:** coordenação, apostas, compras, filtros, paginação e recuperação de falhas. Plano: docs/superpowers/plans/2026-10-19-tickets-history.md. Baseline 1560 arquivos e três APIs compiladas em build/verification/tickets-history-20261019/. A comparação preserva o checkout com trabalho anterior autorizado, usando snapshots desta rodada.
+**Escopo:** coordenação, apostas, compras, filtros, paginação e recuperação de falhas. Plano: docs/engineering/plans/2026-10-19-tickets-history.md. Baseline 1560 arquivos e três APIs compiladas em build/verification/tickets-history-20261019/. A comparação preserva o checkout com trabalho anterior autorizado, usando snapshots desta rodada.
 
 **Caracterização anterior:** `./gradlew :feature:tickets:testDebugUnitTest --rerun :core:domain:test --offline --continue --console=plain` aprovado em 12 s:72 TicketsJVM e 185 Domain, sem falhas/erros/skips. Os três testes novos já estavam presentes e passaram no coordenador original. Após extração, os 72 Tickets passaram em 11 s (characterization-after-fixed.log). Uma referência incorreta gerada no retry foi corrigida após a primeira compilação; o diagnóstico está preservado em characterization-after.log. Nenhum teste RED de correção funcional nova foi alegado para esta extração de comportamento existente.
 
@@ -652,7 +652,7 @@ Resultado: BUILD SUCCESSFUL em 4 m 2 s;886 tarefas,17 executadas e 869 atualizad
 
 ## Home clássica: composição e equivalência visual — 19/10/2026
 
-**Escopo:** HomeLegacyContent de 302 para 103 linhas; seis arquivos novos (TopBar, Carousel, Cards, QuickAccess, Campaign e CartSummary), sete funções Composable internas sem estado e nenhuma classe de produção nova. As duas data classes e a assinatura de conteúdo permanecem iguais. Inventário de destinos/telas não mudou: nenhuma nova migração nesta etapa, nenhum Java próprio introduzido. Plano em docs/superpowers/plans/2026-10-19-home-legacy-content.md; 1566 snapshots/APIs/evidências em build/verification/home-legacy-20261019/.
+**Escopo:** HomeLegacyContent de 302 para 103 linhas; seis arquivos novos (TopBar, Carousel, Cards, QuickAccess, Campaign e CartSummary), sete funções Composable internas sem estado e nenhuma classe de produção nova. As duas data classes e a assinatura de conteúdo permanecem iguais. Inventário de destinos/telas não mudou: nenhuma nova migração nesta etapa, nenhum Java próprio introduzido. Plano em docs/engineering/plans/2026-10-19-home-legacy-content.md; 1566 snapshots/APIs/evidências em build/verification/home-legacy-20261019/.
 
 **Preservação:** key/remember/LaunchedEffect, seleção/cálculos de largura e tratamento vazio continuam no dono original. BoxScopes sem wrappers novos preservam alinhamento/constraints, ordem de desenho, modifiers/insets/dimensões, escala/offset, tempos/easings das animações, gates de scroll/clique/rodapé e argumentos de callbacks. HomeRoute/HomeScreen, LotteryCard existente, mapeadores, ViewModels/UiStates/StateFlows, Domain/Data, Hilt, rede, recursos, manifestos e builds foram preservados por hash. Nove verificações de corpos/estado/modelos passaram. As três APIs declaradas foram comparadas por javap, excluindo apenas bridges sintéticas access$ de implementação privada. Revisão independente: zero achados críticos/importantes/menores; nenhum julgamento de comportamento do escopo recusado. O único ajuste posterior foi sincronização do relógio nativo nos helpers de captura dos testes.
 
@@ -701,7 +701,7 @@ Resultados: 167 JVM e 17 Android aprovados. O Gradle reutilizou resultados váli
 
 ## MVVM/Clean e propriedade por feature — 19/10/2026
 
-**Escopo concluído em produção:** 14 features com Presentation/Domain/Data pertencentes à feature; estados/efeitos fora dos arquivos de ViewModel; coordenação, componentes e mapeadores classificados por responsabilidade real. São 665 fontes Kotlin de produção nas raízes físicas: 464 main, 58 domain, 81 data, 17 platform e 45 host. A tabela por feature está em MIGRATION_PROGRESS.md. Plano/design em docs/superpowers/; evidências e snapshots anteriores em build/verification/feature-mvvm-20261019/.
+**Escopo concluído em produção:** 14 features com Presentation/Domain/Data pertencentes à feature; estados/efeitos fora dos arquivos de ViewModel; coordenação, componentes e mapeadores classificados por responsabilidade real. São 665 fontes Kotlin de produção nas raízes físicas: 464 main, 58 domain, 81 data, 17 platform e 45 host. A tabela por feature está em MIGRATION_PROGRESS.md. Plano/design em docs/engineering/; evidências e snapshots anteriores em build/verification/feature-mvvm-20261019/.
 
 Domain/Data/Platform continuam compilados uma única vez pelos módulos core existentes; Home host é compilado somente por app. Não há novo módulo/dependência. Essa organização conserva os ciclos de contratos preexistentes e não representa isolamento binário de cada domínio nem migração para KMP. Account usa portas puras, deixando Intents nas rotas; revisão local do carrinho usa casos de uso; preferências Home têm ViewModel/StateFlow próprio, escrita ordenada em IO e proteção contra publicação após cancelamento. Os StateFlows existentes são mantidos. FQNs e assinaturas nas fronteiras UI/plataforma de Account/injeção da revisão local foram adaptados com os consumidores; não se declara compatibilidade binária dos pacotes antigos.
 
@@ -841,7 +841,7 @@ O AAR público `androidx.fragment:fragment:1.3.4` ausente no cache offline foi r
 
 ## Host APP tipado e separação de ownership — 20/10/2026
 
-Execução do plano `docs/superpowers/plans/2026-10-20-app-host-coherence.md` após aprovação do usuário. `AppNavHost` e `LoteriasApp` agora usam `AppFeatureNavigationDependencies` tipado; as 13 implementações/bindings de navegação vivem nos owners das features. `HostFeatureConfiguration` entrega valores de build e ambiente ao grafo de features. A inicialização e coordenação de sessão usam dependências estreitas no host. `AppContainer` não é injetado nem chamado por composição/rotas; continua apenas no inventário de compatibilidade. As 13 dependências de produção `app → feature:*:data` foram removidas; dependências de teste do app seguem permitidas.
+Execução do plano `docs/engineering/plans/2026-10-20-app-host-coherence.md` após aprovação do usuário. `AppNavHost` e `LoteriasApp` agora usam `AppFeatureNavigationDependencies` tipado; as 13 implementações/bindings de navegação vivem nos owners das features. `HostFeatureConfiguration` entrega valores de build e ambiente ao grafo de features. A inicialização e coordenação de sessão usam dependências estreitas no host. `AppContainer` não é injetado nem chamado por composição/rotas; continua apenas no inventário de compatibilidade. As 13 dependências de produção `app → feature:*:data` foram removidas; dependências de teste do app seguem permitidas.
 
 | Verificação | Resultado |
 |---|---|

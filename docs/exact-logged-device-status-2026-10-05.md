@@ -35,7 +35,7 @@ Resumo de verificação: `build/verification/exact-layout-20261005/verification-
 
 ## Continuação solicitada: referência, estados e transações
 
-Plano: docs/superpowers/plans/2026-10-05-paridade-referencia-instalada.md. APK/recurso extraído em build/verification/installed-reference-20261005; manifesto e hash em reference.json. Matrizes desta rodada: installed-betting-matrix-2026-10-05.md, installed-account-states-2026-10-05.md e installed-commerce-validation-2026-10-05.md.
+Plano: docs/engineering/plans/2026-10-05-paridade-referencia-instalada.md. APK/recurso extraído em build/verification/installed-reference-20261005; manifesto e hash em reference.json. Matrizes desta rodada: installed-betting-matrix-2026-10-05.md, installed-account-states-2026-10-05.md e installed-commerce-validation-2026-10-05.md.
 
 Achados reproduzidos: mesma VM Pix fazia segundo POST em reload existente, pending e retorno de redirect; três testes vermelhos antes da correção. Testes Payment/RetaiI verdes após correção, sem envio financeiro real. Aliases de resgate com betId100 e preview de sucesso passam a fixtures mock; produção direciona às apostas com ID real. Prévia explícita mock não sobrepõe loading ou resultado real.
 

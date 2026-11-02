@@ -87,7 +87,7 @@ class BettingModalityRenderingTest(private val id: Int, private val name: String
     private fun screenshot(state: String) {
         compose.waitForIdle()
         val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
-        val folder = java.io.File(requireNotNull(instrumentation.targetContext.externalCacheDir),"codex-parity").apply { mkdirs() }
+        val folder = java.io.File(requireNotNull(instrumentation.targetContext.externalCacheDir),"simlo-parity").apply { mkdirs() }
         val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
         java.io.File(folder,"betting-$id-$state.png").outputStream().use { bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,it) }
         bitmap.recycle()

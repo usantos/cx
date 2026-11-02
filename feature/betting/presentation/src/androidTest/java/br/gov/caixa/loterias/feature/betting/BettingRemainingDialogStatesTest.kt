@@ -165,7 +165,7 @@ class BettingRemainingDialogStatesTest {
         instrumentation.waitForIdleSync()
         android.os.SystemClock.sleep(700)
         instrumentation.waitForIdleSync()
-        val dir = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "codex-parity").apply { mkdirs() }
+        val dir = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "simlo-parity").apply { mkdirs() }
         val name = "compose-mega-$state"
         val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
         File(dir, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }

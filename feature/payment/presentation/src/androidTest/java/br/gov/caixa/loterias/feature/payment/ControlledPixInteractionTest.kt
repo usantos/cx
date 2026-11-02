@@ -286,7 +286,7 @@ class ControlledPixInteractionTest {
         val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
         val folder = java.io.File(
             requireNotNull(instrumentation.targetContext.externalCacheDir),
-            "codex-financial-parity"
+            "simlo-financial-parity"
         ).apply { mkdirs() }
         val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
         java.io.File(folder, "$name.png").outputStream().use { bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it) }

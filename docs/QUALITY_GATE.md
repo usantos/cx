@@ -200,7 +200,7 @@ GitHub; um arquivo de workflow sozinho não impõe essa política de merge.
   os três pipelines corporativos existentes.
 - `docs/QUALITY_GATE.md`, `docs/QUALITY_GATE_RESULTS_20261022.md`,
   `docs/quality/android-lint.md`, `docs/quality/hooks-and-ci.md` e
-  `docs/superpowers/plans/2026-10-22-quality-gate.md`: desenho e evidências.
+  `docs/engineering/plans/2026-10-22-quality-gate.md`: desenho e evidências.
 
 ## Contratos XML de plataforma — auditoria de 28/10/2026
 

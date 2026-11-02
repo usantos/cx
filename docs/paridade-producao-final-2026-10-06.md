@@ -30,7 +30,7 @@
 - Recaptura atual do prêmio: `build/verification/production-plans-20261005/retail-compose-only-recapture/compose-installed/prize-installed-seven-options-compose.png`; métricas separadas em `build/verification/production-plans-20261005/prize-compose-only-raster-metrics-2026-10-06.json` (resumo 94,19%, opções 97,73% e conteúdo total 97,06% dentro de 1 RGB).
 - Rodapé da Quina: `build/verification/production-plans-20261005/betting-native-cart-recapture/footer-native-cart-paired-metrics.json` registra a recaptura pós-ajuste. Todo o recorte do rodapé — rótulos, carrinho e badge — ficou 100% exato. A imagem, metadados e log dos oito pares estão no mesmo diretório.
 - Pares controlados: `build/verification/production-plans-20261005/betting-native-cart-recapture/extended-pairs-xcover.log` (8/8 no XCover); sem envio de aposta ou resgate.
-- Relatórios por plano: `docs/superpowers/plans/2026-10-05-01-layout-producao.md`, `2026-10-05-02-modalidades-conteudo-producao.md`, `2026-10-05-03-conta-sessao-producao.md`, `2026-10-05-04-compras-resgates-producao.md` e `2026-10-05-producao-execucao.md`.
+- Relatórios por plano: `docs/engineering/plans/2026-10-05-01-layout-producao.md`, `2026-10-05-02-modalidades-conteudo-producao.md`, `2026-10-05-03-conta-sessao-producao.md`, `2026-10-05-04-compras-resgates-producao.md` e `2026-10-05-producao-execucao.md`.
 
 O XCover7 foi desbloqueado para a validação desta retomada. As suítes instrumentadas conseguiram interagir com a tela Compose. Fixtures locais não enviaram apostas, compras, pagamentos, resgates nem dados pessoais.
 

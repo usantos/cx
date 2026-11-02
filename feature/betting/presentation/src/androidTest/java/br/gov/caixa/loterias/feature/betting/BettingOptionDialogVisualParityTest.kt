@@ -103,7 +103,7 @@ class BettingOptionDialogVisualParityTest {
             val output = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, PNG_QUALITY, output)
             val chunks = Base64.encodeToString(output.toByteArray(), Base64.NO_WRAP).chunked(LOG_CHUNK_SIZE)
-            chunks.forEachIndexed { index, chunk -> Log.i("CodexOptionDialog", "$name:$index/${chunks.size}:$chunk") }
+            chunks.forEachIndexed { index, chunk -> Log.i("SimloOptionDialog", "$name:$index/${chunks.size}:$chunk") }
         } finally {
             bitmap.recycle()
         }

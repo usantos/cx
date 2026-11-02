@@ -1,6 +1,6 @@
 # Comparação runtime CX / Compose — 14/10/2026
 
-Branch `codex/migracao-compose`, base desta rodada `cb342f336`. Este relatório complementa `COMPOSE_CLOSURE_20261013.md`; conversão de telas e homologação real têm evidências distintas.
+Contexto da migração Compose, base desta rodada `cb342f336`. Este relatório complementa `COMPOSE_CLOSURE_20261013.md`; conversão de telas e homologação real têm evidências distintas.
 
 ## Execução real
 

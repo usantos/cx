@@ -590,7 +590,7 @@ class BettingLotecaParityTest {
         compose.waitForIdle()
         instrumentation.waitForIdleSync()
         android.os.SystemClock.sleep(300)
-        val dir = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "codex-parity").apply { mkdirs() }
+        val dir = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "simlo-parity").apply { mkdirs() }
         val name = if (state.startsWith("random") || state.startsWith("mounted") ||
             state == "counter-metrics"
         ) {

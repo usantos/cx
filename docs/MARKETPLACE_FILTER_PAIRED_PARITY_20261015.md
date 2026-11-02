@@ -1,6 +1,6 @@
 # Bolão e Filtros — comparação pareada com o CX
 
-Revisão de 15/10/2026, no checkout `codex/migracao-compose`. Esta rodada substitui a pendência anterior de captura nativa de Filtros e de Bolão carregado.
+Revisão de 15/10/2026, no checkout da migração Compose. Esta rodada substitui a pendência anterior de captura nativa de Filtros e de Bolão carregado.
 
 ## Escopo e método
 

@@ -2,7 +2,7 @@
 
 > Complemento posterior: a comparação nativa pareada de Bolão/Filtros foi executada em [MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md](MARKETPLACE_FILTER_PAIRED_PARITY_20261015.md). O texto abaixo preserva os limites da rodada anterior.
 
-Continuação na árvore `codex/migracao-compose`, base `2cf348582`, preservando os ajustes anteriores do usuário. Fontes legadas consultadas somente para leitura em `/Users/ubiracysantos/Projects/cx/app/src/main`. A captura de Filtros fornecida pelo usuário representa a versão anterior às correções descritas abaixo.
+Continuação na árvore da migração Compose, base `2cf348582`, preservando os ajustes anteriores do usuário. Fontes legadas consultadas somente para leitura em `/Users/ubiracysantos/Projects/cx/app/src/main`. A captura de Filtros fornecida pelo usuário representa a versão anterior às correções descritas abaixo.
 
 ## Resultado da revisão
 

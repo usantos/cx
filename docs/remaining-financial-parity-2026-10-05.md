@@ -16,7 +16,7 @@ Referência primária: `build/verification/installed-reference-20261005/legacy-i
 
 ## Capturas Android controladas
 
-As classes usam DTOs equivalentes em schema/canal/estado, IDs900x, código CONTROLLED não pagável, e-mail `.test`, cartão de número inicial/final000000/0000. Não usam HTTP. O cartão interrompe o teste caso qualquer use case de envio, polling ou conclusão seja invocado. As capturas PNG + metadados vão para `externalCacheDir/codex-financial-parity`; metadados incluem density/fontScale e contadores. Capturas superior/ações complementam telas que excedem o viewport.
+As classes usam DTOs equivalentes em schema/canal/estado, IDs900x, código CONTROLLED não pagável, e-mail `.test`, cartão de número inicial/final000000/0000. Não usam HTTP. O cartão interrompe o teste caso qualquer use case de envio, polling ou conclusão seja invocado. As capturas PNG + metadados vão para `externalCacheDir/simlo-financial-parity`; metadados incluem density/fontScale e contadores. Capturas superior/ações complementam telas que excedem o viewport.
 
 | Classe | Estados adicionais |
 |---|---|

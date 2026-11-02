@@ -1,4 +1,4 @@
-Branch: codex/migracao-compose
+Contexto: migração Compose
 Base: cb342f3367042f50ef98591dd3f2f6d4df64baab
 Arquivos alterados nesta rodada: 138
 
@@ -78,7 +78,7 @@ core/network/src/test/java/br/gov/caixa/loterias/core/network/SessionRefreshInte
 core/network/src/test/java/br/gov/caixa/loterias/core/network/SilceTransportInterceptorTest.kt
 docs/COMPOSE_CX_RUNTIME_FILES_20261014.txt
 docs/COMPOSE_CX_RUNTIME_PARITY_20261014.md
-docs/superpowers/plans/2026-10-13-compose-cx-runtime-parity.md
+docs/engineering/plans/2026-10-13-compose-cx-runtime-parity.md
 feature/account/src/main/java/br/gov/caixa/loterias/feature/account/LoginRoute.kt
 feature/betting/src/androidTest/java/br/gov/caixa/loterias/feature/betting/PoolTutorialLegacyGeometryTest.kt
 feature/betting/src/main/java/br/gov/caixa/loterias/feature/betting/BettingRoute.kt

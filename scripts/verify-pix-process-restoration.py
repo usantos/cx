@@ -83,7 +83,7 @@ class Driver:
             return None
         # O Android 16 pode informar /dev/tty sem emitir o XML. Mantém o dump
         # temporário no dispositivo, analisa na memória do hospedeiro e remove mesmo em caso de falha.
-        remote_xml = "/data/local/tmp/codex-pix-probe-" + uuid.uuid4().hex + ".xml"
+        remote_xml = "/data/local/tmp/simlo-pix-probe-" + uuid.uuid4().hex + ".xml"
         try:
             self.adb("shell", "uiautomator", "dump", remote_xml, timeout=15)
             raw = self.adb("exec-out", "cat", remote_xml)

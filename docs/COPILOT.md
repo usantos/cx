@@ -50,3 +50,8 @@ Copie todo o conteúdo de `automation/robot-certificacao/`, incluindo `.github/`
 Atualize instruções quando a arquitetura, os comandos ou os contratos mudarem. Não gravar contagens de testes ou percentuais históricos como garantias permanentes. Fontes técnicas continuam em `docs/`; PDFs, ZIPs, APKs e resultados são artefatos gerados, fora do commit.
 
 Formato conferido na [documentação oficial do GitHub sobre instruções de repositório](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions) e na [documentação do VS Code sobre instruções personalizadas](https://code.visualstudio.com/docs/agent-customization/custom-instructions), em 29/10/2026. A disponibilidade por cliente deve ser conferida na versão usada pela equipe.
+
+
+## Nomenclatura de evidências e registros
+
+As evidências técnicas usam nomes do projeto: diretórios `simlo-parity` e `simlo-financial-parity`, tags `SimloParityCapture` e `SimloOptionDialog` e arquivos temporários `simlo-pix-probe-<identificador>`. Planos e especificações ficam em `docs/engineering/`. As datas, hashes e métricas de relatórios históricos foram preservadas; a nomenclatura apresentada foi padronizada sem reexecutar capturas antigas. Os cinco registros de baseline relacionados a violações já corrigidas foram removidos mediante autorização específica, sem novas exceções.

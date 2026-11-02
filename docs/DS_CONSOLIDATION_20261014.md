@@ -1,6 +1,6 @@
 # Consolidação LoteriasCaixaDS e validação integrada — 14/10/2026
 
-Continuação em `codex/migracao-compose`, base `2cf348582`, preservando os ajustes solicitados de Home: concurso no card com registro encerrado e Dia de Sorte branco. Complementa `COMPOSE_CX_EXPERIMENTE_PARITY_20261014.md` e o relatório de runtime; não amplia a homologação de estados inacessíveis.
+Continuação em `migração Compose`, base `2cf348582`, preservando os ajustes solicitados de Home: concurso no card com registro encerrado e Dia de Sorte branco. Complementa `COMPOSE_CX_EXPERIMENTE_PARITY_20261014.md` e o relatório de runtime; não amplia a homologação de estados inacessíveis.
 
 ## Mudanças
 

@@ -41,6 +41,6 @@
 
 ## Pedidos arquiteturais separados
 
-Strings globais e DataStore criptografado/retomada ainda não foram implementados integralmente. Propostas em `docs/superpowers/specs/2026-10-22-app-string-resources-design.md` e `docs/superpowers/specs/2026-10-22-encrypted-datastore-recovery-design.md`.
+Strings globais e DataStore criptografado/retomada ainda não foram implementados integralmente. Propostas em `docs/engineering/specs/2026-10-22-app-string-resources-design.md` e `docs/engineering/specs/2026-10-22-encrypted-datastore-recovery-design.md`.
 
 Compose Multiplatform não foi aplicado, conforme a condição expressa do usuário de não converter sem compatibilidade total. A vaga na FilaBra não pode ser garantida por estado local se o servidor/SDK a expirar ou revogar.

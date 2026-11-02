@@ -87,7 +87,7 @@ Os achados anteriores ARQ-01 e ARQ-02 receberam correções específicas após a
 
 ## Evidências
 
-Plano: docs/superpowers/plans/2026-10-27-redux-all-features.md. Execuções e inventário atuais: build/verification/redux-all-20261027/. Resultados finais e seu escopo são publicados em docs/technical-guide/verification.json após a verificação. O piloto anterior (403 testes Support/App e seis verificações Samsung) permanece histórico em build/verification/redux-mvvm-20261027/, sem ser contabilizado como nova execução.
+Plano: docs/engineering/plans/2026-10-27-redux-all-features.md. Execuções e inventário atuais: build/verification/redux-all-20261027/. Resultados finais e seu escopo são publicados em docs/technical-guide/verification.json após a verificação. O piloto anterior (403 testes Support/App e seis verificações Samsung) permanece histórico em build/verification/redux-mvvm-20261027/, sem ser contabilizado como nova execução.
 
 ## Validação da expansão - 27/10/2026
 

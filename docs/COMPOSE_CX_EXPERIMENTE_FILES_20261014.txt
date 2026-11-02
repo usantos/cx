@@ -1,5 +1,5 @@
 Lista provisória — atualizar após revisão final e gates.
-Branch: codex/migracao-compose
+Contexto: migração Compose
 Base da continuação: 911d5bc31
 Fonte atual: 2cf348582
 Total: 87 arquivos
@@ -37,7 +37,7 @@ core/network/src/main/java/br/gov/caixa/loterias/core/network/LegacyBackendApi.k
 core/network/src/test/java/br/gov/caixa/loterias/core/network/ConfirmedBetRangeApiTest.kt
 docs/COMPOSE_CX_EXPERIMENTE_FILES_20261014.txt
 docs/COMPOSE_CX_EXPERIMENTE_PARITY_20261014.md
-docs/superpowers/plans/2026-10-14-compose-cx-pending-contracts.md
+docs/engineering/plans/2026-10-14-compose-cx-pending-contracts.md
 feature/account/src/androidTest/java/br/gov/caixa/loterias/feature/account/AuthenticationReturnScreenTest.kt
 feature/account/src/main/java/br/gov/caixa/loterias/feature/account/LoginRoute.kt
 feature/account/src/main/java/br/gov/caixa/loterias/feature/account/LoginViewModel.kt

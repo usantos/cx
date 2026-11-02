@@ -95,13 +95,20 @@ class InstalledSavedCardsPairTest {
     private fun capture() {
         compose.waitForIdle()
         val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
-        val directory = java.io.File(requireNotNull(instrumentation.targetContext.externalCacheDir), "codex-financial-parity").apply { mkdirs() }
+        val directory = java.io.File(
+            requireNotNull(instrumentation.targetContext.externalCacheDir),
+            "simlo-financial-parity"
+        ).apply { mkdirs() }
         val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
         java.io.File(directory, "saved-cards-installed-single.png").outputStream().use {
             bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it)
         }
         bitmap.recycle()
-        java.io.File(directory, "saved-cards-installed-single.txt").writeText(
-            "fixture=true\nnetworkSends=0\ndeletions=0\nidentifiers=synthetic\nexcludeCardNumberAndExpiryFromRasterComparison=true\n")
+        java.io.File(
+            directory,
+            "saved-cards-installed-single.txt"
+        ).writeText(
+            "fixture=true\nnetworkSends=0\ndeletions=0\nidentifiers=synthetic\nexcludeCardNumberAndExpiryFromRasterComparison=true\n"
+        )
     }
 }

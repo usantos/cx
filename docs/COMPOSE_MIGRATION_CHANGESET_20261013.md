@@ -1,6 +1,6 @@
 # Inventário dos commits da migração para Compose — 13/10/2026
 
-Branch: `codex/migracao-compose`. Base: `ee27c98776b7942354ea759708162c01dcccc1e4`.
+Contexto: migração Compose. Base: `ee27c98776b7942354ea759708162c01dcccc1e4`.
 
 Este inventário registra todas as alterações pendentes incorporadas à branch,
 incluindo a migração que já estava no workspace e a Home v2 portada do CX.
@@ -3235,12 +3235,12 @@ foi homologada. Ver `HOME_V2_CX_PARITY_20261013.md` para critérios e pendência
 | A | `docs/remaining-betting-parity-2026-10-05.md` |
 | A | `docs/remaining-financial-parity-2026-10-05.md` |
 | A | `docs/remaining-pix-process-restoration-2026-10-05.md` |
-| A | `docs/superpowers/plans/2026-10-05-01-layout-producao.md` |
-| A | `docs/superpowers/plans/2026-10-05-02-modalidades-conteudo-producao.md` |
-| A | `docs/superpowers/plans/2026-10-05-03-conta-sessao-producao.md` |
-| A | `docs/superpowers/plans/2026-10-05-04-compras-resgates-producao.md` |
-| A | `docs/superpowers/plans/2026-10-05-experimente.md` |
-| A | `docs/superpowers/plans/2026-10-05-fluxo-logado-layout.md` |
-| A | `docs/superpowers/plans/2026-10-05-paridade-referencia-instalada.md` |
-| A | `docs/superpowers/plans/2026-10-05-producao-execucao.md` |
-| A | `docs/superpowers/plans/2026-10-08-menu-compose-parity.md` |
+| A | `docs/engineering/plans/2026-10-05-01-layout-producao.md` |
+| A | `docs/engineering/plans/2026-10-05-02-modalidades-conteudo-producao.md` |
+| A | `docs/engineering/plans/2026-10-05-03-conta-sessao-producao.md` |
+| A | `docs/engineering/plans/2026-10-05-04-compras-resgates-producao.md` |
+| A | `docs/engineering/plans/2026-10-05-experimente.md` |
+| A | `docs/engineering/plans/2026-10-05-fluxo-logado-layout.md` |
+| A | `docs/engineering/plans/2026-10-05-paridade-referencia-instalada.md` |
+| A | `docs/engineering/plans/2026-10-05-producao-execucao.md` |
+| A | `docs/engineering/plans/2026-10-08-menu-compose-parity.md` |

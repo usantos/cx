@@ -24,7 +24,7 @@ Sem novas fontes fictícias em produção, sem alteração de protocolo de auten
 
 ## Continuação — sete arquivos por responsabilidade (18/10/2026)
 
-Plano detalhado: docs/superpowers/plans/2026-10-18-seven-responsibilities.md. Pedido explicitamente autorizado; execução inline no checkout atual, sem commits/pushes.
+Plano detalhado: docs/engineering/plans/2026-10-18-seven-responsibilities.md. Pedido explicitamente autorizado; execução inline no checkout atual, sem commits/pushes.
 
 1. [x] Capturar snapshots/hashes/APIs; executar baseline JVM e caracterizações Android originais.
 2. [x] Separar TicketsPayloadMapper e RemoteCartRepository por operação/tipo de payload, mantendo entradas e falhas.
@@ -39,7 +39,7 @@ Os mínimos e inputs de cobertura permanecem; includes Betting/Payment recebem s
 
 ## Continuação — dez arquivos por responsabilidade (18/10/2026)
 
-Plano detalhado: `docs/superpowers/plans/2026-10-18-ten-responsibilities.md`. Execução inline autorizada no checkout existente, sem commits/pushes.
+Plano detalhado: `docs/engineering/plans/2026-10-18-ten-responsibilities.md`. Execução inline autorizada no checkout existente, sem commits/pushes.
 
 1. [x] Capturar snapshots/hashes, 877 testes JVM de referência e APIs compiladas.
 2. [x] Separar os quatro ViewModels por coordenação/estado/carregamento/formulário/decisões, mantendo os owners originais.
@@ -55,7 +55,7 @@ A matriz global modernCheck/releaseCheck histórica não foi repetida integralme
 
 ## Sete ajustes concretos de conformidade — 19/10/2026
 
-Concluída a etapa dos sete ajustes concretos: testes de regressão antes das correções reproduziram I/O na Main, cancelamentos absorvidos e coleta abaixo de STARTED. A implementação preservou APIs/StateFlows e separou as políticas do carrinho da persistência. Plano executado: docs/superpowers/plans/2026-10-18-seven-compliance.md.
+Concluída a etapa dos sete ajustes concretos: testes de regressão antes das correções reproduziram I/O na Main, cancelamentos absorvidos e coleta abaixo de STARTED. A implementação preservou APIs/StateFlows e separou as políticas do carrinho da persistência. Plano executado: docs/engineering/plans/2026-10-18-seven-compliance.md.
 
 Próximas etapas: decidir o destino da caixa de notificações legada com base em contrato real; priorizar refinamentos estruturais por benefício comprovado; completar a homologação global de integrações e perfis visuais. Esta entrega não declara a SPEC inteira encerrada.
 
@@ -77,7 +77,7 @@ Caracterizar o provider real pela factory antes e depois, comparar o catálogo l
 
 ## Extração do checkout do carrinho — 19/10/2026
 
-Plano detalhado: docs/superpowers/plans/2026-10-19-cart-checkout.md. Execução inline no checkout existente, preservando trabalho anterior e sem commits/pushes.
+Plano detalhado: docs/engineering/plans/2026-10-19-cart-checkout.md. Execução inline no checkout existente, preservando trabalho anterior e sem commits/pushes.
 
 - Capturar baseline de fontes/APIs e caracterizar suspensão de permissão/cancelamento nas etapas seguintes no coordenador original.
 - Manter coordenação/guardas de entrada na fachada; separar localização, permissões, compra recente, validação, avisos e redirecionamentos.
@@ -88,7 +88,7 @@ A mudança não redesenha regras de negócio, rede, persistência, UI, reserva d
 
 ## Extração do histórico Tickets — 19/10/2026
 
-Plano: docs/superpowers/plans/2026-10-19-tickets-history.md. Execução inline no checkout atual, com snapshots próprios para preservar trabalho anterior e sem commits/pushes.
+Plano: docs/engineering/plans/2026-10-19-tickets-history.md. Execução inline no checkout atual, com snapshots próprios para preservar trabalho anterior e sem commits/pushes.
 
 - Caracterizar primeiro, sobre o original, append após expirar sessão, retry com catálogos existentes e leitura enfileirada dos filtros.
 - Manter a fachada e separar TicketsHistoryBets, TicketsHistoryPurchases, TicketsHistoryPagination, TicketsHistoryBetFilters, TicketsHistoryPurchaseFilters e TicketsHistoryRecovery.
@@ -100,13 +100,13 @@ A instrumentação usa somente o AVD temporário SimloTicketsHistory 20261019/em
 
 ## Extração da Home clássica — 19/10/2026
 
-Plano executável em docs/superpowers/plans/2026-10-19-home-legacy-content.md. Preservar o checkout compartilhado e comparar snapshots próprios, sem commit/push. Caracterizar geometria/callbacks, seleção após recomposição e quadros intermediários das animações sobre o original antes de extrair. Manter composição/estado no dono atual e separar barra superior, carrossel, cartões, atalhos, campanha e resumo em funções sem estado.
+Plano executável em docs/engineering/plans/2026-10-19-home-legacy-content.md. Preservar o checkout compartilhado e comparar snapshots próprios, sem commit/push. Caracterizar geometria/callbacks, seleção após recomposição e quadros intermediários das animações sobre o original antes de extrair. Manter composição/estado no dono atual e separar barra superior, carrossel, cartões, atalhos, campanha e resumo em funções sem estado.
 
 Comparar corpos/assinaturas declaradas e capturas exatas antes/depois, sem máscaras/tolerâncias. Executar a Home clássica com identidade/flag somente de comando; restaurar configuração padrão para Home check, App PrdDebug assemble/JVM/lint e dez gates. Revisão independente e resultados reais em MIGRATION_VALIDATION.md. A etapa não encerra as pendências globais de assinatura, testes físicos, mensagens demonstrativas e homologação privada.
 
 ## Refatoração MVVM/Clean de todas as features —19/10/2026
 
-Escopo autorizado:14features, seus pacotes Presentation/Domain/Data, estados/efeitos separados de ViewModels e correção dos acoplamentos conhecidos de Home e conta. Design:docs/superpowers/specs/2026-10-19-feature-mvvm-design.md. Plano:docs/superpowers/plans/2026-10-19-feature-mvvm.md. Execução incremental inline, snapshots próprios, sem commits/pushes.
+Escopo autorizado:14features, seus pacotes Presentation/Domain/Data, estados/efeitos separados de ViewModels e correção dos acoplamentos conhecidos de Home e conta. Design:docs/engineering/specs/2026-10-19-feature-mvvm-design.md. Plano:docs/engineering/plans/2026-10-19-feature-mvvm.md. Execução incremental inline, snapshots próprios, sem commits/pushes.
 
 Ordem: baseline/gate negativo → piloto Support → features simples → Betting/Cart/Marketplace → Payment/Retail/Tickets → Account/Home e seams de plataforma → modernCheck/releaseCheck completos e revisão independente. Cada grupo deve compilar e passar seus testes antes da próxima migração. Preservar wire/persistência/segurança e a origem legada autorizada das mensagens; não atribuir homologação privada aos testes locais.
 
@@ -114,7 +114,7 @@ Etapa MVVM concluída: todos os grupos e as sete extrações implementados e rev
 
 ## Plano atual — módulos independentes por feature, 19/10/2026
 
-Referência detalhada: `docs/superpowers/plans/2026-10-19-feature-modules.md`; arquitetura atual em `ARCHITECTURE.md`. Os planos anteriores são registros históricos, não a localização atual dos fontes.
+Referência detalhada: `docs/engineering/plans/2026-10-19-feature-modules.md`; arquitetura atual em `ARCHITECTURE.md`. Os planos anteriores são registros históricos, não a localização atual dos fontes.
 
 - [x] Capturar baseline e contratos; verificar os ciclos/roots anteriores.
 - [x] Cortar ciclos com contratos mínimos e compilar Domain/API separadamente.
@@ -131,11 +131,11 @@ Não criar camadas/reducers/APIs vazios nem alterar armazenamento, backend, sess
 
 ## Continuação — estrutura APP → features → CORE (19/10/2026)
 
-A orientação final do usuário define a propriedade física dos módulos, não só pastas por camada dentro do app. Atualizados os donos: app como host/composição/navegação, estado e adaptadores nas features e serviços compartilhados nos módulos CORE. Foram mantidos os FQNs públicos existentes com donos explícitos e sem duplicar bindings. Plano de execução e evidências desta continuação: `docs/superpowers/plans/2026-10-19-app-mvvm.md` e `build/verification/app-mvvm-20261019`. Resultado global fica condicionado à conclusão da matriz atual; homologação física/privada segue fora da disponibilidade local.
+A orientação final do usuário define a propriedade física dos módulos, não só pastas por camada dentro do app. Atualizados os donos: app como host/composição/navegação, estado e adaptadores nas features e serviços compartilhados nos módulos CORE. Foram mantidos os FQNs públicos existentes com donos explícitos e sem duplicar bindings. Plano de execução e evidências desta continuação: `docs/engineering/plans/2026-10-19-app-mvvm.md` e `build/verification/app-mvvm-20261019`. Resultado global fica condicionado à conclusão da matriz atual; homologação física/privada segue fora da disponibilidade local.
 
 ## Host APP tipado e sem agregação Data — 20/10/2026
 
-Plano: `docs/superpowers/plans/2026-10-20-app-host-coherence.md`; especificação aprovada: `docs/superpowers/specs/2026-10-20-app-host-coherence-design.md`.
+Plano: `docs/engineering/plans/2026-10-20-app-host-coherence.md`; especificação aprovada: `docs/engineering/specs/2026-10-20-app-host-coherence-design.md`.
 
 - [x] Caracterizar as fronteiras e instalar os gates APP e Feature.
 - [x] Transferir adaptadores/bindings dos 13 grafos para suas features e declarar configuração tipada do host.

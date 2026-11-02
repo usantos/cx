@@ -29,4 +29,4 @@ A comparação de identidades dos testes confirma exatamente os mesmos 2.105 cas
 
 Os corpos dos 59 arquivos movidos e dos 75 consumidores restantes foram comparados com o baseline. Todos os 21.851 literais Kotlin, incluindo testes, foram preservados. Os 2.228 hashes de inputs permaneceram iguais durante a matriz. Manifestos, configurações Gradle e dependências permaneceram iguais. Os APKs PRD/TQS/Automação foram gerados com R8, IDs e hashes conferidos. AndroidTest dos três flavors compilado; o app oficial não foi instalado nem instrumentado.
 
-Evidências: `build/verification/unused-packages-20261021/`. Plano: [2026-10-21-unused-packages-transport.md](superpowers/plans/2026-10-21-unused-packages-transport.md). Nenhum commit ou push.
+Evidências: `build/verification/unused-packages-20261021/`. Plano: [2026-10-21-unused-packages-transport.md](engineering/plans/2026-10-21-unused-packages-transport.md). Nenhum commit ou push.

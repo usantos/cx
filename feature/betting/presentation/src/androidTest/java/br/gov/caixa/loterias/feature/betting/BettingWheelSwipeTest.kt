@@ -58,7 +58,7 @@ class BettingWheelSwipeTest {
         assertTrue("A real swipe must change the centered option", centerPosition > 0)
 
         val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val directory = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "codex-parity")
+        val directory = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "simlo-parity")
             .apply { mkdirs() }
         val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
         File(directory, "compose-mega-recurrence-swiped.png").outputStream().use {

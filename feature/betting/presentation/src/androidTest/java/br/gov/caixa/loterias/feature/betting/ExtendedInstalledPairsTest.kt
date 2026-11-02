@@ -145,7 +145,7 @@ class ExtendedInstalledPairsTest(private val caseName: String, private val snaps
         instrumentation.waitForIdleSync()
         android.os.SystemClock.sleep(350)
         instrumentation.waitForIdleSync()
-        val dir = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "codex-parity").apply { mkdirs() }
+        val dir = File(requireNotNull(instrumentation.targetContext.externalCacheDir), "simlo-parity").apply { mkdirs() }
         val name = "compose-installed-${snapshot.getInt("id")}-${snapshot.getInt("contest") }-$state"
         val png = File(dir, "$name.png")
         val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())

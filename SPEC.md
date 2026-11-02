@@ -812,7 +812,7 @@ Não começar automaticamente pela autenticação, navegação principal ou outr
 
 ---
 
-## 19. Instruções operacionais para o Codex
+## 19. Diretrizes de execução
 
 Você está autorizado a analisar e refatorar o código existente respeitando os limites desta especificação.
 

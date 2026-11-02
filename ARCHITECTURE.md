@@ -133,7 +133,7 @@ O host segue a recomendação oficial de que o módulo de aplicação seja o ent
 
 `HostFeatureConfiguration` concentra valores do host necessários às features (ambiente, endpoints, versão, opções Firebase e flags). `AppHostRuntime`, `AppInitializationDependencies` e `AppSessionDependencies` mantêm inicialização e sessão globais no host; Network, Account e Onboarding executam suas operações nos respectivos owners. Módulos `di/` sob os pacotes das features são donos dos bindings; `app/di` fica restrito a valores de plataforma e composição global. O agregado de implementação dos 13 módulos Data foi removido; dependências `testImplementation` do app são permitidas para testes de contrato e não chegam ao runtime.
 
-Na verificação final, `modernCheck` e `releaseCheck` passaram juntos nos três flavors, assim como os gates Python de APP e Feature e `verifyCleanArchitecture`/`verifyFeatureModules`. O registro de execução e os limites de ABI/homologação permanecem em `MIGRATION_VALIDATION.md` e no plano `docs/superpowers/plans/2026-10-20-app-host-coherence.md`.
+Na verificação final, `modernCheck` e `releaseCheck` passaram juntos nos três flavors, assim como os gates Python de APP e Feature e `verifyCleanArchitecture`/`verifyFeatureModules`. O registro de execução e os limites de ABI/homologação permanecem em `MIGRATION_VALIDATION.md` e no plano `docs/engineering/plans/2026-10-20-app-host-coherence.md`.
 
 ## CORE — donos e APIs consolidados (20/10/2026)
 
@@ -394,7 +394,7 @@ Conta usa capacidades puras `SessionAuthentication`, `BiometricLoginPreferences`
 
 Os FQNs mudaram para refletir os novos pacotes. As assinaturas nas fronteiras UI/Android de login/logout e na injeção da revisão local foram adaptadas com seus consumidores; não se declara compatibilidade binária com os pacotes antigos. As cinco fachadas de extração isolada mantêm a API compilada pública. Payloads, enumerações de transporte, URLs, identificadores, recursos, preferências e StateFlows existentes são preservados.
 
-Os gates usam as raízes reais de compilação e verificam também os fontes relocados. Fixtures negativas exercitam o Gradle real para rejeitar Android em Domain e Activity/Java/cor literal em Home host. Cobertura mantém mínimos e padrões anteriores, adicionando somente colaboradores extraídos. Decisões: `docs/superpowers/specs/2026-10-19-feature-mvvm-design.md`; validação e limites em MIGRATION_VALIDATION.md.
+Os gates usam as raízes reais de compilação e verificam também os fontes relocados. Fixtures negativas exercitam o Gradle real para rejeitar Android em Domain e Activity/Java/cor literal em Home host. Cobertura mantém mínimos e padrões anteriores, adicionando somente colaboradores extraídos. Decisões: `docs/engineering/specs/2026-10-19-feature-mvvm-design.md`; validação e limites em MIGRATION_VALIDATION.md.
 
 
 ## Histórico: revisão final transversal — 20/10/2026

@@ -1,6 +1,6 @@
 # Fechamento técnico da migração Compose — 13/10/2026
 
-Branch: `codex/migracao-compose`. Referência: árvore atual do projeto CX, base `b46cc63`, incluindo a Home v2 e alterações locais. Este documento atualiza as pendências técnicas de `HOME_V2_CX_PARITY_20261013.md`; os relatórios anteriores são históricos.
+Contexto: migração Compose. Referência: árvore atual do projeto CX, base `b46cc63`, incluindo a Home v2 e alterações locais. Este documento atualiza as pendências técnicas de `HOME_V2_CX_PARITY_20261013.md`; os relatórios anteriores são históricos.
 
 ## Conversão e comparação
 
