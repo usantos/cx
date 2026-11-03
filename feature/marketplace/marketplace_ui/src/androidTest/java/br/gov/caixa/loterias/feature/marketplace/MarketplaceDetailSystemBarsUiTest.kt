@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.feature.marketplace
 
-import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -9,12 +8,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.core.view.WindowCompat
 import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.MarketplaceDetailScreenDelivered
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceDetailUiState
@@ -25,7 +24,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class MarketplaceDetailSystemBarsUiTest {
-    @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
+    @get:Rule val compose = createFeatureComposeRule()
 
     @Test fun systemNavigationInsetIsWhiteWithoutContrastScrimOnDarkContent() {
         compose.runOnUiThread {

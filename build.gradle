@@ -117,6 +117,7 @@ tasks.register('verifyComposeMigration') {
                 'feature/betting/presentation/src/androidTest/AndroidManifest.xml',
                 'feature/onboarding/presentation/src/androidTest/AndroidManifest.xml',
                 'feature/cart/presentation/src/androidTest/AndroidManifest.xml',
+                'feature/cart/cart_ui/src/androidTest/AndroidManifest.xml',
         ].each { path ->
             def manifest = file(path).canonicalFile
             if (manifest.isFile()) {

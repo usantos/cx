@@ -16,7 +16,6 @@ import androidx.compose.ui.test.bottom
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.height
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
@@ -29,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeResultContent
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
@@ -48,7 +48,7 @@ import org.junit.Test
 
 /** Captura massas sintéticas de TEST; dados de resultado de produção permanecem intactos. */
 class HomeResultsStateMatrixUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private val state = mutableStateOf(ResultsUiState())
     private val lottery = mutableStateOf(lottery("megasena"))
     private var openedUri: String? = null

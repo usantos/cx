@@ -6,13 +6,13 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -36,7 +36,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class MarketplaceModalityLabelsUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRule()
 
     @Test fun retailerCardsUseConfiguredSpecialContestNameInCarouselAndList() {
         withRetailerCards(MarketplaceFilter.empty().withLottery("101")) {

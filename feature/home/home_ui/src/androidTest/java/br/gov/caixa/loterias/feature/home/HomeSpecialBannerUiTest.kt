@@ -10,13 +10,13 @@ import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.presentation.components.LotteryBanner
 import br.gov.caixa.loterias.feature.home.presentation.mapper.homeSpecialBannerResource
@@ -33,7 +33,7 @@ import org.junit.Test
 
 /** Referência de origem: ROSA dca5d9d9, cl_especiais de card_modalidade e EstiloModalidadeMKP. */
 class HomeSpecialBannerUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private val mega = HomeLottery(
         2, "ESPECIAL", "megasena", "Mega da Virada", 3073,
         BigDecimal.TEN, BigDecimal.ONE, "", "", true, HomeLotteryKind.LOTTERY,

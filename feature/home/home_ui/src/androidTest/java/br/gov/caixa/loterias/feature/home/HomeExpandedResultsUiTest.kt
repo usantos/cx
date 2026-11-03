@@ -8,12 +8,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeDrawResult
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
@@ -27,7 +27,7 @@ import org.junit.Test
 
 /** Referências de regressão de renderização de ModalidadeSorteioResultadoView e dos XMLs de resultado das modalidades. */
 class HomeExpandedResultsUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private val lottery = HomeLottery(
         18, "NORMAL", "duplasena", "Dupla Sena", 3073, BigDecimal.ZERO, BigDecimal.ONE,
         "22/10/2026", "", true, HomeLotteryKind.LOTTERY, Color(0xFF9B1B4A), Color(0xFF681536),

@@ -6,10 +6,10 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasProgressBarRangeInfo
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.retail.presentation.state.LocationGateStatus
 import br.gov.caixa.loterias.feature.retail.presentation.state.LocationGateUiState
@@ -20,7 +20,7 @@ import org.junit.Test
 
 /** Rótulos de estado errados, falta de ação de permissão/configurações ou callback obsoleto fazem esta suíte falhar. */
 class LocationGateScreenTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun permissionSettingsAndRetryStatesKeepTheirMessagesAndCurrentAction() {
         val state = mutableStateOf(LocationGateUiState(LocationGateStatus.PERMISSION_REQUIRED))

@@ -113,7 +113,7 @@ class SplashParityUiTest {
                 "Clover must already be opaque at frame $frame, independently of the words",
                 cloverWhitePixels(image) > MIN_VISIBLE_PIXELS
             )
-            val directory = InstrumentationRegistry.getInstrumentation().context.getExternalFilesDir(null)!!
+            val directory = InstrumentationRegistry.getInstrumentation().targetContext.cacheDir
             val screenshot = File(directory, "splash-frame-${frame.toInt()}.png")
             screenshot.outputStream().use {
                 image.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, PNG_QUALITY, it)

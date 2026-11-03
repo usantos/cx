@@ -8,7 +8,6 @@ import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.bottom
 import androidx.compose.ui.test.hasScrollAction
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
@@ -18,6 +17,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaignTheme
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
@@ -36,7 +36,7 @@ import org.junit.Test
 
 /** Capturas sem conexão correspondentes aos conteúdos de LegacyDetailInstrumentation exclusivos dos testes. */
 class MarketplaceDetailFixtureCaptureUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRule()
 
     @Test fun captureRequestedOfflineDetailFixture() {
         val args = InstrumentationRegistry.getArguments()
@@ -77,9 +77,15 @@ class MarketplaceDetailFixtureCaptureUiTest {
         compose.waitForIdle()
         android.os.SystemClock.sleep(400)
         val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val output = File(instrumentation.context.filesDir, "pool-detail-captures").apply { mkdirs() }
+        val output = File(instrumentation.targetContext.cacheDir, "pool-detail-captures").apply { check(isDirectory || mkdirs()) }
         val bitmap = checkNotNull(instrumentation.uiAutomation.takeScreenshot())
-        File(output, "$name.png").outputStream().use { check(bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)) }
+        try {
+            val capture = File(output, "$name.png")
+            capture.outputStream().use { check(bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)) }
+            check(capture.length() > 0)
+        } finally {
+            bitmap.recycle()
+        }
         val nodes = compose.onAllNodes(SemanticsMatcher("all nodes") { true }, useUnmergedTree = true).fetchSemanticsNodes()
         val values = JSONArray()
         compose.runOnIdle {

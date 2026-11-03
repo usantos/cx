@@ -4,11 +4,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.hasSetTextAction
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.presentation.screen.LegacyPersonalDailyLimit
 import br.gov.caixa.loterias.feature.account.presentation.state.PersonalDataUiState
@@ -19,7 +19,7 @@ import org.junit.Test
 
 /** Apenas limites sintéticos; exercita digitação, foco e exibição sem dados de conta nem gravações na rede. */
 class PersonalDataLimitStatesTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun focusedDecimalInputSwitchesBetweenHelperAndInstalledMinimumMaximumMessages() {
         val state = mutableStateOf(

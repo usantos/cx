@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasClickAction
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.components.cart.isCartSummaryVisible
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.presentation.components.HomeCartSummary
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeActions
@@ -20,7 +20,7 @@ import org.junit.Test
 
 /** SomadorCarrinhoFragment: total positivo controla a visibilidade; contagem do retrato completo controla o indicador. */
 class HomeCartSummaryUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun homeCartTracksEmptyPopulatedAndOverflowStatesAndOpensTheCart() {
         val state = mutableStateOf(HomeUiState(cartItemCount = 8))

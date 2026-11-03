@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.feature.tickets
 
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
@@ -10,6 +9,7 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.testing.delivery.InstalledFeatureTestContent
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
@@ -26,7 +26,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class ReceiptRecurringContractTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private val bet = ConfirmedBet(
         41, "Quina", 7000, "01/10/2026", "Não premiada", listOf(1, 2, 3, 4, 5),
         statusId = 9, recurringDraws = 3, exchange = false

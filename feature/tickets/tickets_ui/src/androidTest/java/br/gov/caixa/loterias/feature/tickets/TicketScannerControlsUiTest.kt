@@ -2,11 +2,11 @@ package br.gov.caixa.loterias.feature.tickets
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.TicketScannerScreenDelivered
 import org.junit.Assert.assertEquals
@@ -14,7 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class TicketScannerControlsUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun automaticQrHasNoModeButtonAndCloseKeepsBack() {
         val revision = mutableIntStateOf(0)

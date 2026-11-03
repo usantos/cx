@@ -2,13 +2,11 @@ package br.gov.caixa.loterias.feature.cart
 
 import android.graphics.Rect
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.bottom
 import androidx.compose.ui.test.click
-import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.top
@@ -18,6 +16,7 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -40,7 +39,7 @@ import org.junit.Test
 
 /** A CX bloqueia a janela tanto no GET inicial quanto no GET de parâmetros, mesmo com conteúdo do carrinho em cache. */
 class CurrentCartLoadingBlockingTest {
-    @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private val reply = CompletableDeferred<Unit>()
     private val backCalls = AtomicInteger()
     private val addCalls = AtomicInteger()

@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.feature.tickets
 
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -11,6 +10,7 @@ import androidx.compose.ui.test.performSemanticsAction
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
@@ -32,7 +32,7 @@ import org.junit.Test
 
 /** Par de exibição só para leitura: sorteio/números públicos coincidem com a tela instalada; todos os IDs são sintéticos. */
 class InstalledPurchasePairTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private val transaction = "CONTROLLED".padEnd(32, '0')
     private val purchase = Purchase(
         9010, "05/10/2026", "Finalizada - Todas as apostas efetivadas", "Pix",

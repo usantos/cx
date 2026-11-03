@@ -10,11 +10,11 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.presentation.components.FavoriteTrapezoid
 import org.junit.Assert.assertEquals
@@ -22,7 +22,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class FavoriteTrapezoidClippingTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRule()
 
     @Test fun nativeBackgroundCannotDrawOverAdjacentFavorites() {
         val modality = mutableIntStateOf(2)

@@ -155,8 +155,10 @@ def main():
     check_launcher_resources(results)
     check_receipt_paths(results)
     check_campaign_labels(results)
-    for feature in ("betting", "onboarding", "cart"):
-        manifest = ROOT / f"feature/{feature}/presentation/src/androidTest/AndroidManifest.xml"
+    oracle_owners = [(name, f"feature/{name}/presentation") for name in ("betting", "onboarding", "cart")]
+    oracle_owners.append(("cart-ui", "feature/cart/cart_ui"))
+    for feature, owner in oracle_owners:
+        manifest = ROOT / f"{owner}/src/androidTest/AndroidManifest.xml"
         original = manifest.read_bytes()
         xml = original.decode()
         fixtures = {

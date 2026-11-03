@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -24,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
@@ -50,7 +51,7 @@ private const val ROW_GAP = 3
 private const val PNG_QUALITY = 100
 
 class ComboVisualParityTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private val entry = BetComboEntry(LotteryModality(2, "Mega-Sena", "MEGA_SENA"), "NORMAL", 3, 0, 6, 0, 2800)
     private val combo = BetCombo(8, "Combo da Sorte", "Descrição recebida do serviço", true, BigDecimal("20.50"), listOf(entry))
     private fun oracle() = ComboNativeOracle(InstrumentationRegistry.getInstrumentation().targetContext)
@@ -186,7 +187,10 @@ class ComboVisualParityTest {
             }
         }
         val layouts = mutableListOf<TextLayoutResult>()
-        compose.onAllNodesWithText("R$ 20,50").onFirst().performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
+        // O card clicável mescla o nome e o preço; consulte o texto real para medir somente a fonte da quantia.
+        compose.onAllNodesWithText("R$ 20,50", useUnmergedTree = true).onFirst()
+            .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
+        assertEquals("R$ 20,50", layouts.single().layoutInput.text.text)
         assertEquals(LoteriasCaixaDSFuturaFontFamily, layouts.single().layoutInput.style.fontFamily)
         val header = layout(oracle().string("txt_lista_combos_top"))
         assertEquals(header.getLineLeft(0), header.getLineLeft(1), PIXEL_TOLERANCE)
@@ -219,7 +223,7 @@ class ComboVisualParityTest {
         compose.onNodeWithText("Combo da Sorte Quina de São João").assertIsDisplayed()
     }
 
-    @Test fun nativeGradientHeaderShowsHelpAndInvokesItOnce() {
+    @Test fun institutionalHeaderStaysSolidBlueAndInvokesHelpOnce() {
         var helps = 0
         compose.setFeatureContent {
             LoteriasCaixaDSTheme {
@@ -230,7 +234,10 @@ class ComboVisualParityTest {
         val root = compose.onRoot().captureToImage().toPixelMap()
         val title = compose.onNodeWithText(oracle().string("titulo_combos")).fetchSemanticsNode().boundsInRoot
         val y = title.center.y.toInt()
-        assertEquals(oracle().color("verdeazul"), root[0, y].toArgb())
+        // LoteriasCaixaDSFlatHeaderTest exige azul sólido no header institucional, inclusive para pedidos legados de degradê.
+        val headerBlue = LoteriasCaixaDSColorTokens.Blue700.toArgb()
+        assertEquals(headerBlue, root[0, y].toArgb())
+        assertEquals(headerBlue, root[root.width - 1, y].toArgb())
         compose.onNodeWithContentDescription("Ajuda").performClick()
         compose.runOnIdle { assertEquals(1, helps) }
     }

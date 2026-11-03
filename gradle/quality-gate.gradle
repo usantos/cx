@@ -133,6 +133,44 @@ tasks.register('preCommitCheck') {
             'aggregateTestReport', ':app:assemblePrdDebug'
 }
 
+// As suítes locais não abrangem todos os fontes instrumentados. Compila também
+// Kotlin e Java desses testes para detectar contratos quebrados entre módulos.
+ext.androidTestCompilationTaskNames = { names ->
+    names.findAll { it in ['compileDebugAndroidTestKotlin', 'compileDebugAndroidTestJavaWithJavac',
+                          'compileTqsDebugAndroidTestKotlin', 'compileTqsDebugAndroidTestJavaWithJavac'] }.sort()
+}
+subprojects { owner ->
+    owner.tasks.register('verifyOwnAndroidTestCompilation') {
+        group = 'verification'
+        dependsOn providers.provider {
+            rootProject.incrementalScope().contains(owner) ?
+                    rootProject.androidTestCompilationTaskNames(owner.tasks.names).collect { owner.tasks.named(it) } : []
+        }
+    }
+}
+tasks.register('verifyAndroidTestCompilationPolicy') {
+    group = 'verification'
+    doLast {
+        assert rootProject.androidTestCompilationTaskNames([
+                'compileDebugAndroidTestKotlin', 'compileDebugAndroidTestJavaWithJavac',
+                'compileDebugUnitTestKotlin', 'compileReleaseKotlin', 'compileDebugKotlin',
+        ]) == ['compileDebugAndroidTestJavaWithJavac', 'compileDebugAndroidTestKotlin']
+        assert rootProject.androidTestCompilationTaskNames([
+                'compileTqsDebugAndroidTestKotlin', 'compileTqsDebugAndroidTestJavaWithJavac',
+                'compilePrdDebugAndroidTestKotlin', 'compileAutomacaoDebugAndroidTestKotlin',
+        ]) == ['compileTqsDebugAndroidTestJavaWithJavac', 'compileTqsDebugAndroidTestKotlin']
+        assert rootProject.androidTestCompilationTaskNames(['compileKotlin', 'compileTestKotlin']).isEmpty()
+        logger.lifecycle('Seleção de compilação instrumentada: fixtures Kotlin/Java, variantes e módulos JVM aprovadas.')
+    }
+}
+tasks.register('verifyAndroidTestCompilation') {
+    group = 'verification'
+    description = 'Compila testes instrumentados dos módulos selecionados, incluindo fontes fora das suítes locais.'
+    dependsOn 'verifyAndroidTestCompilationPolicy'
+    dependsOn subprojects.collect { it.path + ':verifyOwnAndroidTestCompilation' }
+}
+tasks.named('preCommitCheck') { dependsOn 'verifyAndroidTestCompilation' }
+
 tasks.named('preCommitCheck') { dependsOn 'verifyAndroidStudioRunConfiguration' }
 
 tasks.register('verifyQualitySummaryPolicy') {

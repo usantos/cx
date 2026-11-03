@@ -82,6 +82,9 @@
                 systemProperty 'simlo.dynamicFeature.baseApplicationId', base.android.applicationVariants.find { it.name == 'prdDebug' }.applicationId
             }
         }
+        owner.dependencies.add('androidTestImplementation', owner.dependencies.platform(libs.androidx.compose.bom))
+        owner.dependencies.add('androidTestImplementation', libs.androidx.compose.ui.test.junit4)
+        owner.dependencies.add('androidTestImplementation', libs.androidx.test.runner)
         def helpers = rootProject.file('core/testing/src/moduleTestSupport/kotlin')
         owner.android.sourceSets.androidTest.java.srcDir(helpers)
         owner.android.sourceSets.androidTest.kotlin.srcDir(helpers)

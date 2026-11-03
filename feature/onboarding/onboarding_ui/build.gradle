@@ -55,5 +55,7 @@ dependencies {
     androidTestImplementation platform(libs.androidx.compose.bom)
     androidTestImplementation libs.androidx.compose.ui.test.junit4
     androidTestImplementation project(':core:testing')
+    androidTestImplementation project(':feature:onboarding:presentation')
+    androidTestImplementation project(':core:common')
     debugImplementation libs.androidx.compose.ui.test.manifest
 }

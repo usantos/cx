@@ -16,7 +16,6 @@ import androidx.compose.ui.test.hasAnySibling
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.test.isToggleable
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -24,6 +23,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
@@ -31,23 +31,20 @@ import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfigura
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketPeriod
 import br.gov.caixa.loterias.feature.tickets.presentation.components.BetFiltersActions
-import br.gov.caixa.loterias.feature.tickets.presentation.components.BetFiltersDialog
 import br.gov.caixa.loterias.feature.tickets.presentation.components.PurchaseBetFiltersActions
-import br.gov.caixa.loterias.feature.tickets.presentation.components.PurchaseBetFiltersDialog
 import br.gov.caixa.loterias.feature.tickets.presentation.components.PurchaseFiltersActions
-import br.gov.caixa.loterias.feature.tickets.presentation.components.PurchaseFiltersDialog
-import br.gov.caixa.loterias.feature.tickets.presentation.mapper.contestType
 import br.gov.caixa.loterias.feature.tickets.presentation.state.BetFilters
 import br.gov.caixa.loterias.feature.tickets.presentation.state.PurchaseBetFilters
 import br.gov.caixa.loterias.feature.tickets.presentation.state.PurchaseFilters
 import br.gov.caixa.loterias.feature.tickets.presentation.state.TicketsUiState
+import br.gov.caixa.loterias.feature.tickets.ui.TicketsUiEntryImpl
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
 /** Exercita diálogos de produção com estado elevado; nenhum serviço, repositório ou ViewModel é substituído. */
 class TicketsFilterInteractionsTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun purchaseFiltersSelectSpecificAndAllOptionsThenClearApplyCancelAndDismiss() {
         val state = mutableStateOf(
@@ -199,7 +196,7 @@ class TicketsFilterInteractionsTest {
         compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 if (visible.value) {
-                    BetFiltersDialog(
+                    TicketsUiEntryImpl().BetFiltersDialog(
                         state.value,
                         BetFiltersActions(
                             closeBetFilters = {
@@ -335,7 +332,7 @@ class TicketsFilterInteractionsTest {
         compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 if (visible.value) {
-                    PurchaseFiltersDialog(
+                    TicketsUiEntryImpl().PurchaseFiltersDialog(
                         state.value,
                         PurchaseFiltersActions(
                             closePurchaseFilters = {
@@ -378,7 +375,7 @@ class TicketsFilterInteractionsTest {
         compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 if (visible.value) {
-                    PurchaseBetFiltersDialog(
+                    TicketsUiEntryImpl().PurchaseBetFiltersDialog(
                         state.value,
                         PurchaseBetFiltersActions(
                             closePurchaseBetFilters = {

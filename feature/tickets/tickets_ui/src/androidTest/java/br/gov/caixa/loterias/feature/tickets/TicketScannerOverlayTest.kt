@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.TicketScannerScreenDelivered
 import org.junit.Assert.assertTrue
@@ -16,7 +16,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class TicketScannerOverlayTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun overlayIsTranslucentBlueWithClearCameraWindowAndLowerTitle() {
         compose.setFeatureContent {

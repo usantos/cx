@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.bottom
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -22,6 +21,7 @@ import androidx.core.content.res.ResourcesCompat
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketPeriod
@@ -42,7 +42,7 @@ import org.junit.Test
 
 /** Dados sintéticos de teste para carrinho/lista vazia; nenhum aplicativo autenticado ou serviço real é usado. */
 class ConfirmedBetsRuntimeParityTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun emptyListUsesCxEightDpRowInsetAndKeepsBetAction() {
         var betNow = false

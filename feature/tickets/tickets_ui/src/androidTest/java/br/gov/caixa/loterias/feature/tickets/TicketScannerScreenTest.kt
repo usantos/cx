@@ -6,11 +6,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.TicketScannerScreenDelivered
 import org.junit.Assert.assertEquals
@@ -19,7 +19,7 @@ import org.junit.Test
 
 /** Exercita ações reais de sobreposição/permissão; só a prévia do hardware é fornecida pelo teste. */
 class TicketScannerScreenTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun deniedPermissionOffersTheCurrentPermissionCallbackAndNoScannerControls() {
         val replacement = mutableStateOf(false)

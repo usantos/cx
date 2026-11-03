@@ -4,12 +4,12 @@ import android.graphics.Bitmap
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.click
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
 import br.gov.caixa.loterias.feature.support.presentation.screen.SupportScreen
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportAction
@@ -20,7 +20,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class SupportFaqCoordinationTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun pendingLinkSurvivesRecompositionButResetsWhenTheAnswerChanges() {
         val answer = "www.caixa.gov.br"

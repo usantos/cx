@@ -10,11 +10,11 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.click
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.presentation.components.RapidPageIndicator
 import br.gov.caixa.loterias.feature.betting.presentation.components.RapidPagerSynchronization
@@ -23,7 +23,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class RapidPagerNavigationTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun summaryDotJumpBackToAmountSettlesWithoutIntermediatePageFeedback() {
         val requested = mutableIntStateOf(0)

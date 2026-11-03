@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.marketplacefilter
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.screen.MarketplaceFilterScreenDelivered
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
@@ -15,7 +15,7 @@ import org.junit.Test
 
 /** Apenas retratos sintéticos; abrir o carrinho invoca um callback sem realizar compras. */
 class MarketplaceCartSummaryParityTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRule()
 
     @Test fun positiveCartUsesActualAmountAndFullBetCountAndOpensCart() {
         var opened = false

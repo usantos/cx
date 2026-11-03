@@ -10,19 +10,17 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.presentation.components.CurrentCartFooter
 import br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartRowDelivered
 import java.math.BigDecimal
 import java.time.Instant
@@ -33,7 +31,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class CurrentCartFilledVisualParityTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun lotomaniaKeepsInstalledCartRawNumberFormatting() {
         show(
@@ -61,33 +59,17 @@ class CurrentCartFilledVisualParityTest {
         compose.onNodeWithText("1 apostas").assertDoesNotExist()
     }
 
-    @Test fun filledFooterCountKeepsNativeVerticalTranslationInsideBadge() {
-        val items = listOf(
-            CartItem(1, CartItemKind.INDIVIDUAL_BET, "Mega-Sena", "", BigDecimal("6.00")),
-            CartItem(2, CartItemKind.COMBO, "Combo", "", BigDecimal("12.00"), comboBetCount = 2)
-        )
-        compose.setFeatureContent {
-            LoteriasCaixaDSTheme(darkTheme = false) {
-                CurrentCartFooter(ShoppingCart(1, BigDecimal("18.00"), items), true, {}, {})
-            }
-        }
-        val icon = compose.onNodeWithContentDescription("Carrinho").fetchSemanticsNode().boundsInRoot
-        val count = compose.onNodeWithText("3").fetchSemanticsNode().boundsInRoot
-        // activity_carrinho instalado: indicador de 15dp, texto centralizado, translationY=1.5dp.
-        assertEquals(9f * compose.density.density, count.center.y - icon.top, 1f)
-    }
-
     @Test fun poolReservationFollowsTitleWithoutDeleteIconInflatingHeader() {
         show(pool())
-        val title = compose.onNodeWithText("mega-sena").fetchSemanticsNode().boundsInRoot
-        val reservation = compose.onNodeWithText("cota reservada nº 1 de 10").fetchSemanticsNode().boundsInRoot
+        val title = compose.onNodeWithText("mega-sena", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
+        val reservation = compose.onNodeWithText("cota reservada nº 1 de 10", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
         assertEquals(8f * compose.density.density, reservation.top - title.bottom, 1f)
     }
 
     @Test fun comboCountFollowsTitleWithoutDeleteIconInflatingHeader() {
         show(CartItem(2, CartItemKind.COMBO, "Combo especial", "", BigDecimal("6.00"), comboBetCount = 2))
-        val title = compose.onNodeWithText("Combo especial").fetchSemanticsNode().boundsInRoot
-        val count = compose.onNodeWithText("2 apostas").fetchSemanticsNode().boundsInRoot
+        val title = compose.onNodeWithText("Combo especial", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
+        val count = compose.onNodeWithText("2 apostas", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
         var nativeGap = 0
         compose.runOnIdle {
             val context = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().targetContext
@@ -152,7 +134,7 @@ class CurrentCartFilledVisualParityTest {
     @Test fun poolReservationUsesInstalledGreyTextColor() {
         show(pool())
         val layouts = mutableListOf<TextLayoutResult>()
-        compose.onNodeWithText("cota reservada nº 1 de 10")
+        compose.onNodeWithText("cota reservada nº 1 de 10", useUnmergedTree = true)
             .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
         assertEquals(Color(0xFF404B52), layouts.single().layoutInput.style.color)
     }

@@ -5,13 +5,13 @@ import android.graphics.Canvas
 import android.util.Log
 import android.view.View
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -19,18 +19,21 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.test.platform.app.InstrumentationRegistry
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.common.time.ServerTimeSource
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.presentation.components.CurrentCartActions
-import br.gov.caixa.loterias.feature.cart.presentation.components.CurrentCartScaffold
-import br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartContentDelivered
+import br.gov.caixa.loterias.feature.cart.presentation.route.CurrentCartRoute
 import br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartRowDelivered
-import br.gov.caixa.loterias.feature.cart.presentation.state.CartUiState
+import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.CartViewModel
 import java.math.BigDecimal
 import java.time.Instant
+import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -49,7 +52,7 @@ private const val PNG_QUALITY = 100
 
 /** Verificações de regressão usam a referência instalada, sem serviços, sessão de usuário ou mutação de carrinho. */
 class CartInstalledReferenceParityTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private val individual = CartItem(
         1, CartItemKind.INDIVIDUAL_BET, "Mega-Sena", "", BigDecimal("6.00"),
         modalityCode = "MEGA_SENA", contestNumber = 3070, numberQuantity = 6,
@@ -127,7 +130,7 @@ class CartInstalledReferenceParityTest {
             }
         )
         compose.setFeatureContent { LoteriasCaixaDSTheme { CurrentCartRowDelivered(superSeven, Instant.EPOCH, {}, null) } }
-        val actual = compose.onNodeWithTag("cart-super-seven-header-0").fetchSemanticsNode().boundsInRoot
+        val actual = compose.onNodeWithTag("cart-super-seven-header-0", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
         var expectedHeight = 0
         var expectedStart = 0
         var expectedTitleColor = 0
@@ -157,30 +160,40 @@ class CartInstalledReferenceParityTest {
         assertEquals(
             "All seven native column widths and gaps",
             expectedLastEnd.toFloat(),
-            compose.onNodeWithTag("cart-super-seven-header-${SUPER_COLUMNS - 1}").fetchSemanticsNode().boundsInRoot.right,
+            compose.onNodeWithTag(
+                "cart-super-seven-header-${SUPER_COLUMNS - 1}",
+                useUnmergedTree = true
+            ).fetchSemanticsNode().boundsInRoot.right,
             PIXEL_TOLERANCE
         )
         assertEquals(
             "Native contest anchor above the Super Sete grid",
             expectedContestTop.toFloat(),
-            compose.onNodeWithText("Conc. 3070").fetchSemanticsNode().boundsInRoot.top,
+            compose.onNodeWithText("Conc. 3070", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot.top,
             PIXEL_TOLERANCE
         )
         assertEquals(
             "Native price anchor below the contest",
             expectedPriceTop.toFloat(),
-            compose.onNodeWithText("R$ 6,00").fetchSemanticsNode().boundsInRoot.top,
+            compose.onNodeWithText("R$ 6,00", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot.top,
             PIXEL_TOLERANCE
         )
         val titleLayouts = mutableListOf<TextLayoutResult>()
-        compose.onNodeWithText("super sete").performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(titleLayouts) }
+        compose.onNodeWithText("super sete", useUnmergedTree = true).performSemanticsAction(SemanticsActions.GetTextLayoutResult) {
+            it(titleLayouts)
+        }
         assertEquals("Super Sete native title color", expectedTitleColor, titleLayouts.single().layoutInput.style.color.toArgb())
     }
 
     @Test fun dynamicNumberRowsRetainInstalledFractionalTextSize() {
         compose.setFeatureContent { LoteriasCaixaDSTheme { CurrentCartRowDelivered(individual, Instant.EPOCH, {}, null) } }
         val layouts = mutableListOf<TextLayoutResult>()
-        compose.onNodeWithText("02 - 10 - 18 - 27 - 32 - 43").performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
+        compose.onNodeWithText(
+            "02 - 10 - 18 - 27 - 32 - 43",
+            useUnmergedTree = true
+        ).performSemanticsAction(SemanticsActions.GetTextLayoutResult) {
+            it(layouts)
+        }
         var expectedSize = 0f
         compose.runOnIdle {
             val native = reference()
@@ -264,9 +277,30 @@ class CartInstalledReferenceParityTest {
 
     @androidx.compose.runtime.Composable
     private fun Current(snapshot: ShoppingCart) {
-        val state = CartUiState(loading = false, cart = snapshot, authenticated = true)
-        CurrentCartScaffold(state, snapshot, {}, {}, CurrentCartActions({}, {}, {}, {})) { padding ->
-            CurrentCartContentDelivered(state, padding, snapshot.items, 0L, {}, {}, {})
+        val viewModel = remember(snapshot) {
+            CartViewModel(
+                getCurrentCart = { AppResult.Success(snapshot) },
+                removeCartItem = { error("A comparação visual não remove apostas") },
+                clearCart = { error("A comparação visual não limpa o carrinho") },
+                serverTime = ServerTimeSource { Instant.EPOCH },
+                verifyPaymentAccount = { error("A comparação visual não inicia pagamento") },
+                validateCart = { error("A comparação visual não valida apostas") },
+                hasRecentPurchase = { error("A comparação visual não consulta compras") },
+                checkCheckoutLocation = { error("A comparação visual não consulta localização") },
+                recordLocationRequest = { error("A comparação visual não solicita localização") },
+                authenticated = true,
+                dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate)
+            )
         }
+        CurrentCartRoute(
+            viewModel = viewModel,
+            onBack = {},
+            onContinueBetting = {},
+            onPayment = {},
+            onLogin = {},
+            onAccountRequired = {},
+            onLocationBlocked = {},
+            onValidationRedirect = {}
+        )
     }
 }

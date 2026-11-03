@@ -57,6 +57,7 @@ export JAVA_HOME='/Applications/Android Studio.app/Contents/jbr/Contents/Home'
 ./gradlew lintQualityCheck
 ./gradlew quickQualityCheck
 ./gradlew allUnitTests
+./gradlew verifyAndroidTestCompilation
 ./gradlew verifyCoverage
 ./gradlew qualityGate
 ./gradlew preCommitCheck

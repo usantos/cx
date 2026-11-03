@@ -5,9 +5,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.bottom
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.height
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -17,6 +18,7 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.top
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsMatch
@@ -33,7 +35,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class BetDetailNativeLayoutTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private val bet = ConfirmedBet(
         41, "LOTOFACIL", 3804, "14/10/2026", "Não Premiada",
         listOf(2, 4, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 20, 21, 24), modalityId = 8, statusId = 9,
@@ -113,7 +115,18 @@ class BetDetailNativeLayoutTest {
             }
         }
         compose.onNodeWithText("7 números").assertExists()
-        compose.onAllNodesWithText("1").assertCountEquals(16)
+        // Cada grupo contém sete dígitos e o cabeçalho da coluna 1; a árvore mesclada reúne esses dois textos.
+        compose.onAllNodesWithText("1", useUnmergedTree = true).assertCountEquals(16)
+        for (index in 1..7) {
+            for (description in listOf("Coluna $index: 1", "Coluna $index: 1 acertou")) {
+                compose.onNodeWithContentDescription(description).assertExists()
+                val column = hasAnyAncestor(hasContentDescription(description))
+                compose.onAllNodes(hasText("1") and column, useUnmergedTree = true)
+                    .assertCountEquals(if (index == 1) 2 else 1)
+                compose.onAllNodes(hasText(index.toString()) and column, useUnmergedTree = true)
+                    .assertCountEquals(if (index == 1) 2 else 1)
+            }
+        }
         compose.onNodeWithText("Suas colunas").assertExists()
     }
 

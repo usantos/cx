@@ -2,13 +2,13 @@ package br.gov.caixa.loterias.feature.marketplace
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import br.gov.caixa.loterias.feature.marketplace.presentation.delivery.MarketplaceScreenActions
@@ -20,7 +20,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class MarketplacePaginationUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRule()
     private val pools = (1..12).map {
         MarketplacePool(
             "B$it", "MEGA_SENA", 3070,

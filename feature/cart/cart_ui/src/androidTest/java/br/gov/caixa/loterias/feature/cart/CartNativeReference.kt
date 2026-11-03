@@ -54,7 +54,8 @@ internal class CartNativeReference(target: Context) {
                 code,
                 "",
                 java.math.BigDecimal.ONE,
-                modalityCode = code
+                modalityCode = code,
+                contestNumber = 3070
             )
             text(betRow(item), "tvModalidade").currentTextColor
         }

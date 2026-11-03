@@ -12,7 +12,6 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDialog
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -22,6 +21,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.unit.dp
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.marketplace.domain.rule.MarketplaceFilterRules
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.allModalities
@@ -37,7 +37,7 @@ import org.junit.Test
 
 class MarketplaceFilterScreenTest {
     @get:Rule
-    val compose = createComposeRule()
+    val compose = createFeatureComposeRule()
 
     @Test
     fun currencyDigits_applyAsCentsLikeNativeMask() {

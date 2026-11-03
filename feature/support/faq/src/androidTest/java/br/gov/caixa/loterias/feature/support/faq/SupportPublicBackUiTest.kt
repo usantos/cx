@@ -3,12 +3,12 @@ package br.gov.caixa.loterias.feature.support.faq
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
 import br.gov.caixa.loterias.feature.support.domain.model.SupportSection
 import br.gov.caixa.loterias.feature.support.domain.usecase.AcceptTermsUseCase
@@ -24,7 +24,7 @@ import org.junit.Test
 
 /** O detalhe da pergunta no legado usa uma Activity separada: Voltar do sistema retorna primeiro às seções. */
 class SupportPublicBackUiTest {
-    @get:Rule val compose = createAndroidComposeRule<androidx.activity.ComponentActivity>()
+    @get:Rule val compose = createFeatureComposeRule()
 
     @Test fun systemBackFromQuestionsReturnsToSectionsBeforeExitingSupport() {
         var exits = 0

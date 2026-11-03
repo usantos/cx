@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -20,6 +19,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.top
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.presentation.components.CollapsedLotteryContent
 import br.gov.caixa.loterias.feature.home.presentation.components.HomeCarousel
@@ -33,12 +33,13 @@ import br.gov.caixa.loterias.feature.home.presentation.state.HomeUiState
 import br.gov.caixa.loterias.feature.results.presentation.state.ResultsUiState
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
 /** Referências de card_modalidade.xml e ScaleTransformer(0.8) de PrincipalActivity. */
 class HomeParityUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private val lottery = HomeLottery(
         2, "NORMAL", "megasena", "Mega-Sena", 3073,
         BigDecimal("200000000"), BigDecimal("6"), "22/10/2026 21:00:00", "", true,
@@ -197,69 +198,6 @@ class HomeParityUiTest {
         assertEquals(expectedWidth.toFloat(), actual, 1f)
     }
 
-    @Test fun quickAccessLocksToggleAndDelaysReturnUntilFadeChainCompletes() {
-        compose.mainClock.autoAdvance = false
-        val expanded = androidx.compose.runtime.mutableStateOf(false)
-        var motion: br.gov.caixa.loterias.feature.home.presentation.route.HomePanelAnimations? = null
-        compose.setFeatureContent {
-            motion = br.gov.caixa.loterias.feature.home.presentation.route.homePanelAnimations(expanded.value, false, 500.dp)
-            androidx.compose.material3.Text("Animação")
-        }
-        compose.runOnIdle { expanded.value = true }
-        compose.mainClock.advanceTimeByFrame()
-        compose.runOnIdle { assertEquals(false, motion!!.quickAccessToggleEnabled) }
-        compose.mainClock.advanceTimeBy(1600)
-        compose.runOnIdle { assertEquals(true, motion!!.quickAccessToggleEnabled) }
-        compose.runOnIdle { expanded.value = false }
-        compose.mainClock.advanceTimeBy(2000)
-        compose.runOnIdle {
-            assertEquals(500f, motion!!.carouselOffset.value, GEOMETRY_TOLERANCE)
-            assertEquals(false, motion!!.quickAccessToggleEnabled)
-        }
-        compose.mainClock.advanceTimeBy(1200)
-        compose.runOnIdle {
-            assertEquals(0f, motion!!.carouselOffset.value, GEOMETRY_TOLERANCE)
-            assertEquals(true, motion!!.quickAccessToggleEnabled)
-        }
-    }
-
-    @Test fun campaignUsesContentHeightWithoutMaskingCarouselFooter() {
-        compose.mainClock.autoAdvance = false
-        val campaign = androidx.compose.runtime.mutableStateOf(false)
-        var motion: br.gov.caixa.loterias.feature.home.presentation.route.HomePanelAnimations? = null
-        compose.setFeatureContent {
-            motion =
-                br.gov.caixa.loterias.feature.home.presentation.route.homePanelAnimations(
-                    false,
-                    campaign.value,
-                    quickAccessOffset = 600.dp,
-                    campaignContentHeight = 314.dp
-                )
-            androidx.compose.material3.Text("Campanha")
-        }
-        compose.runOnIdle { campaign.value = true }
-        compose.mainClock.advanceTimeBy(800)
-        compose.runOnIdle {
-            assertEquals(330f, motion!!.carouselOffset.value, GEOMETRY_TOLERANCE)
-            assertEquals(360f, motion!!.campaignRotation, GEOMETRY_TOLERANCE)
-            assertEquals(0f, motion!!.footerScrimAlpha, .01f)
-            assertEquals(true, motion!!.quickAccessToggleEnabled)
-            campaign.value = false
-        }
-        compose.mainClock.advanceTimeBy(450)
-        compose.runOnIdle {
-            assertEquals(330f, motion!!.carouselOffset.value, GEOMETRY_TOLERANCE)
-            assertEquals(false, motion!!.quickAccessToggleEnabled)
-        }
-        compose.mainClock.advanceTimeBy(700)
-        compose.runOnIdle {
-            assertEquals(0f, motion!!.carouselOffset.value, GEOMETRY_TOLERANCE)
-            assertEquals(0f, motion!!.campaignRotation, GEOMETRY_TOLERANCE)
-            assertEquals(0f, motion!!.footerScrimAlpha, .01f)
-            assertEquals(true, motion!!.quickAccessToggleEnabled)
-        }
-    }
-
     @Test fun campaignNeverDrawsTheQuickAccessWhiteFooterOverModalities() {
         val alpha = androidx.compose.runtime.mutableStateOf(.8f)
         val actions = br.gov.caixa.loterias.feature.home.presentation.screen.HomeActions(
@@ -372,13 +310,20 @@ class HomeParityUiTest {
         compose.onNodeWithText("mega-sena").assertIsDisplayed()
         compose.waitForIdle()
         val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
-        val output = java.io.File(instrumentation.context.getExternalFilesDir(null), "home-parity-reference.png")
-        output.outputStream().use {
-            instrumentation.uiAutomation.takeScreenshot().compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it)
+        // O diretório externo do APK de teste pode ser nulo; o cache do host mantém a captura em armazenamento gravável.
+        val output = java.io.File(instrumentation.targetContext.cacheDir, "home-parity-reference.png")
+        val screenshot = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
+        try {
+            output.outputStream().use {
+                assertTrue(
+                    "A captura deve ser comprimida como PNG",
+                    screenshot.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it)
+                )
+            }
+            assertTrue("A captura PNG deve existir e conter dados", output.isFile && output.length() > 0L)
+        } finally {
+            screenshot.recycle()
         }
-        instrumentation.uiAutomation.executeShellCommand(
-            "cp ${output.absolutePath} /sdcard/Download/simlo-home-parity-reference.png"
-        ).use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() }
     }
 }
 

@@ -68,6 +68,9 @@ dependencies {
     androidTestImplementation platform(libs.androidx.compose.bom)
     androidTestImplementation libs.androidx.compose.ui.test.junit4
     androidTestImplementation project(':core:testing')
+    androidTestImplementation project(':feature:home:presentation')
+    androidTestImplementation project(':core:common')
+    androidTestImplementation project(':core:navigation')
     androidTestImplementation project(':feature:results:domain')
     androidTestImplementation project(':feature:results:presentation')
     androidTestImplementation project(':feature:responsible-gaming:domain')

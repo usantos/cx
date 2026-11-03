@@ -2,13 +2,13 @@ package br.gov.caixa.loterias.feature.tickets
 
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
@@ -37,7 +37,7 @@ import org.junit.runners.Parameterized
 /** Seis estados sintéticos de teste, callbacks reais da interface, nenhum servidor ou POST de compra. */
 @RunWith(Parameterized::class)
 class ControlledPurchaseStatusInteractionTest(private val statusId: Long) {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
     private lateinit var vm: TicketsViewModel
     private val opened = mutableListOf<String>()
     private val queried = mutableListOf<Long>()

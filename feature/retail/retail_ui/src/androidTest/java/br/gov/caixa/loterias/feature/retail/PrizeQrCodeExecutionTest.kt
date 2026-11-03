@@ -13,9 +13,9 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.unit.dp
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.retail.presentation.components.PrizeQrCodeImage
 import br.gov.caixa.loterias.feature.retail.presentation.components.renderPrizeQrCode
@@ -37,7 +37,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class PrizeQrCodeExecutionTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun bitmapGenerationCalledFromMainUsesAWorkerAndPreservesDecodedContent() {
         val workerThread = AtomicReference<Thread>()

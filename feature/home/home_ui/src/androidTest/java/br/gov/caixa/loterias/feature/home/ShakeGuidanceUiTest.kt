@@ -6,11 +6,11 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.height
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.presentation.components.ShakeMenuRow
 import br.gov.caixa.loterias.feature.home.presentation.state.HomePreferencesUiState
@@ -20,7 +20,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class ShakeGuidanceUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun pinkSwitchKeepsPinkThumbAndWhiteMarkInBothStates() {
         val settings = mutableStateOf(HomePreferencesUiState(loaded = true, shakeEnabled = true))

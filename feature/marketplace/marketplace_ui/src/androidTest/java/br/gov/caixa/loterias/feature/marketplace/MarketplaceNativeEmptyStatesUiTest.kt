@@ -2,10 +2,10 @@ package br.gov.caixa.loterias.feature.marketplace
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.marketplace.presentation.delivery.MarketplaceScreenActions
 import br.gov.caixa.loterias.feature.marketplace.presentation.delivery.MarketplaceScreenNavigation
@@ -15,7 +15,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class MarketplaceNativeEmptyStatesUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRule()
     private val empty = "Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente."
 
     @Test fun unfilteredFailureUsesNativeEmptyCardAndNoInventedRetryAction() {

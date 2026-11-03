@@ -35,6 +35,81 @@ A integração da FilaBRA usa um substituto de transporte com a ABI do SDK somen
 
 ## Qualidade dos testes
 
+### Revisão completa — 03/11/2026
+
+O gate global executou **3.875 testes locais em 802 suítes**, com zero falhas,
+erros ou testes ignorados. A cobertura LINE foi **95,29%**: 63.348 de 66.477
+linhas elegíveis, sem alterar exclusões, limiares, headers ou baselines.
+Ktlint, Detekt, Android Lint, arquitetura, IDs, 235 testes de ferramentas e a
+compilação global Kotlin/Java dos testes instrumentados foram aprovados.
+
+As execuções conectadas complementares aprovaram **354 testes**, sem falhas,
+erros ou ignorados: 341 nos 12 splits com suítes próprias e 13 testes de rodapé,
+contador e animação nos módulos de apresentação da base. O limite diário de
+Account foi conferido no Android, incluindo edição em centavos, seleção de texto,
+edições consecutivas, validação mínima/máxima e callbacks.
+
+Os cenários físicos de Retail/Tickets foram repetidos no perfil AOSP de barra
+de status de 66px descrito em [SCREEN_PROFILE_VALIDATION](SCREEN_PROFILE_VALIDATION.md),
+com recursos e frame do WindowManager confirmados antes da execução. As
+coordenadas, cores e tolerâncias desses testes permaneceram preservadas.
+
+As correções abrangem dependências instrumentadas, propriedade de testes/fixtures,
+hospedeiro Compose dos splits, seleção de componentes na árvore sem mesclagem
+e gravação de capturas no cache do host. A antiga expectativa de degradê em
+Combos foi reconciliada com o contrato de azul sólido já exigido pelo teste do
+Design System, sem modificar o header. A expectativa antiga de deslocar o texto
+do contador foi substituída por verificações de tamanho, ancoragem e centralização,
+compatíveis com o contrato atual de `CartBadgeAlignmentTest`.
+
+As contagens locais e conectadas são separadas, pois algumas classes de UI são
+reutilizadas por Robolectric. Compilar todos os instrumentados não significa
+executar todos os cenários do repositório em dispositivo. Relatórios locais:
+`build/reports/tests/aggregate/index.html`, `build/reports/jacoco/aggregate/summary.json`
+e `build/reports/quality/full-summary.json`.
+
+### Compilação dos testes instrumentados
+
+`./gradlew verifyAndroidTestCompilation` compila Kotlin e Java de `src/androidTest`
+em todos os módulos Android: variante TQS Debug no aplicativo e nos splits,
+Debug nas bibliotecas. A tarefa integra `preCommitCheck` e mantém a seleção de
+módulos alterados e consumidores no modo incremental. Fontes instrumentados
+fora de `local-ui-suites.txt` também são verificados.
+
+Compilar não executa os cenários no Android. A execução conectada requer um
+aplicativo e um APK de teste da mesma variante, incluindo os splits necessários.
+Testes de componentes internos pertencem ao módulo que os implementa; testes
+entre módulos usam os contratos públicos reais. Dependências necessárias somente
+ao teste devem ser declaradas em `androidTestImplementation`, pois `compileOnly`
+da produção não garante o classpath instrumentado.
+
+Os testes dos splits usam as factories compartilhadas `createFeatureComposeRule`
+e `createFeatureComposeRuleV2`, em `core/testing/src/moduleTestSupport/kotlin`.
+Elas resolvem `HomeDrawerTestActivity`, o hospedeiro vazio de depuração já
+declarado no aplicativo, preservando o agendamento das respectivas APIs Compose.
+A Activity genérica `ComponentActivity` é removida do manifesto de produção e
+não pode ser usada como ponto de entrada desses testes conectados.
+
+A fixture de comparação de Cart pertence a `cart_ui`, junto dos testes que a
+consomem. Seu manifesto instrumentado declara somente a visibilidade do APK de
+referência `cxv2validation`; o gate rejeita permissões, componentes ou pacotes
+adicionais. A presença desse APK e a geometria exigida por cada cenário devem
+ser verificadas antes da execução conectada. As dependências não são substituídas
+por testes ignorados para aprovar uma execução incompleta.
+
+`HomeNativeOracleUiTest` também exige uma cópia autorizada do APK legado chamada
+`legacy-reference.apk` em uma pasta externa ao repositório. Informe essa pasta
+ao gerar o APK instrumentado de Home:
+
+```sh
+./gradlew :feature:home:home_ui:assembleTqsDebugAndroidTest \
+  -PlegacyHomeReferenceAssets=/caminho/externo/referencias
+```
+
+O APK de referência é empacotado somente como asset do teste, não no aplicativo
+distribuído. Não versionar esse binário ou credenciais. A ausência da referência
+faz o cenário falhar explicitamente; não constitui aprovação ou teste ignorado.
+
 As suítes novas verificam resultados, estados e callbacks; os transportes e dados sensíveis são substituídos por fixtures locais. Literais numéricos que representam entradas e resultados esperados possuem supressões `MagicNumber` limitadas ao arquivo de teste e acompanhadas de justificativa. As regras globais dos analisadores e suas baselines não são alteradas para admitir os novos testes. Helpers foram separados quando ultrapassavam os limites de tamanho ou complexidade.
 
 A geração de cópias locais precede a compilação, o KSP e as tarefas de análise/modelo do Lint unitário. Isso permite validar também essas fontes em um checkout sem artefatos anteriores.

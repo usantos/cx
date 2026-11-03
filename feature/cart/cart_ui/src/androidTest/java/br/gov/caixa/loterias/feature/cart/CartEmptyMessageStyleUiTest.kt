@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.cart
 
 import androidx.compose.ui.test.height
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import kotlin.math.roundToInt
 import org.junit.Assert.assertEquals
@@ -14,7 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class CartEmptyMessageStyleUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRule()
 
     @Test fun emptyMessageUsesNativeCaixaSemiboldTwelveSpAndIconSize() {
         compose.setFeatureContent {

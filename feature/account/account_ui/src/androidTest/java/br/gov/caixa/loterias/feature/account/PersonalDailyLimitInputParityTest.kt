@@ -8,7 +8,6 @@ import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasSetTextAction
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
@@ -17,6 +16,7 @@ import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextRange
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.presentation.screen.LegacyPersonalDailyLimit
 import br.gov.caixa.loterias.feature.account.presentation.state.PersonalDataUiState
@@ -28,7 +28,7 @@ import org.junit.Test
 
 /** DadosPessoaisActivity$4 instalado formata cada edição em centavos; sem perfil real nem gravações. */
 class PersonalDailyLimitInputParityTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun unpunctuatedDigitsAreCentsBeforeValidationAndCallback() {
         val state = mutableStateOf(

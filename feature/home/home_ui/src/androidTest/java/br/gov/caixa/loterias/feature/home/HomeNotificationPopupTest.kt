@@ -5,7 +5,6 @@ import android.util.Base64
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.bottom
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -13,6 +12,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.top
 import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSNotificationPlaceholder
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
 import br.gov.caixa.loterias.feature.home.presentation.components.RenderHomeNotificationPopup as HomeNotificationPopup
@@ -24,7 +24,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class HomeNotificationPopupTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createFeatureComposeRuleV2()
 
     @Test fun absentLinkCentersCloseAndPreservesPlainNotificationText() {
         var closes = 0
